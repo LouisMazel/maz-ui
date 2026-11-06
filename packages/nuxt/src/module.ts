@@ -201,7 +201,7 @@ const defaults = {
   },
   agents: {
     rules: false,
-    mcp: true,
+    mcp: false,
   },
 } satisfies Required<MazUiNuxtOptions>
 
@@ -241,7 +241,7 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
 
   try {
     const { rootDir, workspaceDir } = nuxt.options
-    const { targets: requestedTargets, rules = true, mcp = true, dir } = typeof agents === 'object'
+    const { targets: requestedTargets, rules = true, mcp = true, dir, paths } = typeof agents === 'object'
       ? agents
       : {}
     // In a monorepo, the agents start at the workspace root, not in the Nuxt app
@@ -259,6 +259,7 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
       targets,
       rules,
       mcp,
+      paths,
       mcpVersion: installedMcpVersion(rootDir),
       ...(mazUiDir
         ? {

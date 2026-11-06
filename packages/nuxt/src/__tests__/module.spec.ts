@@ -801,7 +801,7 @@ describe('nuxt module', () => {
         it('then only the MCP server of the detected agents is configured', () => {
           callSetup({}, {}, { dev: true })
 
-          expect(config.defaults.agents).toEqual({ rules: false, mcp: true })
+          expect(config.defaults.agents).toEqual({ rules: false, mcp: false })
           expect(setupAgents).toHaveBeenCalledWith({
             rootDir: '/project',
             targets: ['claude'],

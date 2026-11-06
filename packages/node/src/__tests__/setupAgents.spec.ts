@@ -1,8 +1,11 @@
 import type { AgentDocs, AgentsTool, SetupAgentsResult } from '../setupAgents'
+import { createHash } from 'node:crypto'
 
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
+import { parse } from 'jsonc-parser'
+import * as agentsEntry from '../agents'
 import {
   AGENT_TARGETS,
   AGENTS_MD_BEGIN,
@@ -14,6 +17,7 @@ import {
   findInstalledPackage,
   findProjectPackage,
   findWorkspaceDirs,
+  findWorkspacesUsing,
   installsMcpPackage,
   isEditedManagedContent,
   MANAGED_MARKER,
@@ -23,6 +27,7 @@ import {
   readAgentDocs,
   readManagedVersion,
   readWorkspacePatterns,
+  resolveRulePaths,
   setupAgents,
   writeFileAtomic,
 } from '../setupAgents'
@@ -1661,6 +1666,369 @@ describe('given isEditedManagedContent', () => {
   })
 })
 
+function writePackage(folder: string, fields: Record<string, unknown>): void {
+  writeProjectFile(join(folder, 'package.json'), JSON.stringify({ name: folder || 'root', ...fields }))
+}
+
+const RULE_FILE = '.claude/rules/maz-ui.md'
+
+describe('given findWorkspacesUsing', () => {
+  describe('when only some workspaces of a monorepo depend on the packages', () => {
+    it('then it returns those workspaces, whatever the dependency field', () => {
+      writeProjectFile('pnpm-workspace.yaml', 'packages:\n  - apps/*\n  - packages/*\n')
+      writePackage('', {
+        devDependencies: { '@maz-ui/mcp': '^5.0.0' },
+      })
+      writePackage('apps/pwa', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+      writePackage('apps/api', {
+        dependencies: { fastify: '^5.0.0' },
+      })
+      writePackage('packages/ui', {
+        peerDependencies: { '@maz-ui/themes': '^5.0.0' },
+      })
+      writePackage('packages/kit', {
+        devDependencies: { '@maz-ui/icons': '^5.0.0' },
+      })
+
+      expect(findWorkspacesUsing(rootDir, ['maz-ui', '@maz-ui/themes', '@maz-ui/icons']).sort()).toEqual(['apps/pwa', 'packages/kit', 'packages/ui'])
+    })
+  })
+
+  describe('when the root of the project depends on the packages', () => {
+    it('then it returns the root as an empty folder', () => {
+      writePackage('', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+
+      expect(findWorkspacesUsing(rootDir, ['maz-ui'])).toEqual([''])
+    })
+  })
+
+  describe('when nothing depends on the packages', () => {
+    it('then it returns nothing', () => {
+      writePackage('', {
+        dependencies: { vue: '^3.5.0' },
+      })
+
+      expect(findWorkspacesUsing(rootDir, ['maz-ui'])).toEqual([])
+    })
+  })
+})
+
+describe('given resolveRulePaths', () => {
+  const tool: AgentsTool = {
+    ...MAZ_UI_AGENTS_TOOL,
+    packages: ['maz-ui'],
+    ruleGlobs: ['**/*.vue', 'tailwind.config.*'],
+  }
+
+  describe('when a workspace of a monorepo depends on the tool', () => {
+    it('then it scopes the rule to the files of that workspace', () => {
+      writeProjectFile('pnpm-workspace.yaml', 'packages:\n  - apps/*\n')
+      writePackage('', {
+        devDependencies: { '@maz-ui/mcp': '^5.0.0' },
+      })
+      writePackage('apps/pwa', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+      writePackage('apps/api', {})
+
+      expect(resolveRulePaths(rootDir, tool)).toEqual(['apps/pwa/**/*.vue', 'apps/pwa/tailwind.config.*'])
+    })
+  })
+
+  describe('when a single package project depends on the tool', () => {
+    it('then it scopes the rule to the files of the tool in the whole project', () => {
+      writePackage('', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+
+      expect(resolveRulePaths(rootDir, tool)).toEqual(['**/*.vue', 'tailwind.config.*'])
+    })
+  })
+
+  describe('when the root and a workspace depend on the tool', () => {
+    it('then the root scope covers the project', () => {
+      writeProjectFile('pnpm-workspace.yaml', 'packages:\n  - apps/*\n')
+      writePackage('', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+      writePackage('apps/pwa', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+
+      expect(resolveRulePaths(rootDir, tool)).toEqual(['**/*.vue', 'tailwind.config.*'])
+    })
+  })
+
+  describe('when no package.json depends on the tool', () => {
+    it('then it scopes the rule to the files of the tool in the whole project', () => {
+      expect(resolveRulePaths(rootDir, tool)).toEqual(['**/*.vue', 'tailwind.config.*'])
+    })
+  })
+
+  describe('when the tool declares no package', () => {
+    it('then the rule is always loaded', () => {
+      expect(resolveRulePaths(rootDir, { ...tool, packages: undefined })).toBeUndefined()
+    })
+  })
+
+  describe('when the tool applies to the whole project', () => {
+    it('then the rule is always loaded', () => {
+      writePackage('', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+
+      expect(resolveRulePaths(rootDir, { ...tool, ruleGlobs: undefined })).toBeUndefined()
+    })
+  })
+
+  describe('when the paths option is all', () => {
+    it('then the rule is always loaded', () => {
+      expect(resolveRulePaths(rootDir, tool, 'all')).toBeUndefined()
+    })
+  })
+
+  describe('when the paths option lists globs', () => {
+    it('then they are used as is, without duplicates', () => {
+      expect(resolveRulePaths(rootDir, tool, [' src/** ', 'src/**', ''])).toEqual(['src/**'])
+    })
+  })
+
+  describe('when the paths option is an empty list or matches everything', () => {
+    it.each([
+      [[]],
+      [
+        ['**/*'],
+      ],
+      [
+        ['src/**', '**'],
+      ],
+    ])('then the rule is always loaded for %j', (paths) => {
+      expect(resolveRulePaths(rootDir, tool, paths)).toBeUndefined()
+    })
+  })
+})
+
+describe('given setupAgents with the claude rule scope', () => {
+  const rulePaths = '---\npaths:\n  - "apps/pwa/**/*.{vue,ts,tsx,css,scss}"\n---\n\n<!-- Managed by maz-ui'
+
+  function createMonorepo(): void {
+    writeProjectFile('CLAUDE.md', '# my project')
+    writeProjectFile('pnpm-workspace.yaml', 'packages:\n  - apps/*\n')
+    writePackage('', {
+      devDependencies: { '@maz-ui/mcp': '^5.0.0' },
+    })
+    writePackage('apps/pwa', {
+      dependencies: { 'maz-ui': '^5.0.0' },
+    })
+    writePackage('apps/api', {})
+  }
+
+  describe('when a workspace of a monorepo depends on maz-ui', () => {
+    it('then the frontmatter is the first thing of the rule, before the managed header', () => {
+      createMonorepo()
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(readProjectFile(RULE_FILE).startsWith(rulePaths)).toBe(true)
+      expect(result.claudeRulePaths).toEqual(['apps/pwa/**/*.{vue,ts,tsx,css,scss}'])
+      expect(isEditedManagedContent(readProjectFile(RULE_FILE))).toBe(false)
+    })
+
+    it('then a second run changes nothing', () => {
+      createMonorepo()
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(changeOf(setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      }), RULE_FILE)?.action).toBe('unchanged')
+    })
+  })
+
+  describe('when the paths option is all', () => {
+    it('then the rule starts with the managed header, without frontmatter', () => {
+      createMonorepo()
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        paths: 'all',
+      })
+
+      expect(readProjectFile(RULE_FILE).startsWith('<!-- Managed by maz-ui')).toBe(true)
+      expect(result.claudeRulePaths).toBeUndefined()
+    })
+  })
+
+  describe('when the paths option lists globs', () => {
+    it('then the rule is scoped to them', () => {
+      createMonorepo()
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        paths: ['web/**', 'docs/**/*.vue'],
+      })
+
+      expect(readProjectFile(RULE_FILE).startsWith('---\npaths:\n  - "web/**"\n  - "docs/**/*.vue"\n---\n\n<!-- Managed by maz-ui')).toBe(true)
+      expect(result.claudeRulePaths).toEqual(['web/**', 'docs/**/*.vue'])
+    })
+  })
+
+  describe('when the rule was generated before the frontmatter existed', () => {
+    it('then it is updated with the frontmatter, in place of being taken for an edited rule', () => {
+      createMonorepo()
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        paths: 'all',
+      })
+      expect(readProjectFile(RULE_FILE).startsWith('<!-- Managed by maz-ui')).toBe(true)
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(changeOf(result, RULE_FILE)).toEqual({ file: RULE_FILE, action: 'update' })
+      expect(readProjectFile(RULE_FILE).startsWith(rulePaths)).toBe(true)
+    })
+
+    it('then an old rule edited by hand is kept', () => {
+      createMonorepo()
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        paths: 'all',
+      })
+      writeProjectFile(RULE_FILE, `${readProjectFile(RULE_FILE)}\nMy own rule.\n`)
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(changeOf(result, RULE_FILE)?.action).toBe('skip')
+      expect(readProjectFile(RULE_FILE).startsWith('<!-- Managed by maz-ui')).toBe(true)
+    })
+  })
+
+  describe('when a rule with frontmatter is edited by hand', () => {
+    it('then the edit is detected and the rule is kept', () => {
+      createMonorepo()
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+      writeProjectFile(RULE_FILE, `${readProjectFile(RULE_FILE)}\nMy own rule.\n`)
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(isEditedManagedContent(readProjectFile(RULE_FILE))).toBe(true)
+      expect(changeOf(result, RULE_FILE)?.action).toBe('skip')
+      expect(readProjectFile(RULE_FILE)).toContain('My own rule.')
+    })
+  })
+
+  describe('when the workspace list changes', () => {
+    it('then the frontmatter is rewritten and the rule is not taken for an edited one', () => {
+      createMonorepo()
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+      writePackage('apps/admin', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(changeOf(result, RULE_FILE)?.action).toBe('update')
+      expect(readProjectFile(RULE_FILE)).toContain('  - "apps/admin/**/*.{vue,ts,tsx,css,scss}"')
+    })
+  })
+
+  describe('when the rule is removed', () => {
+    it('then the file with its frontmatter is deleted', () => {
+      createMonorepo()
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        remove: true,
+      })
+
+      expect(changeOf(result, RULE_FILE)?.action).toBe('remove')
+      expect(projectFileExists(RULE_FILE)).toBe(false)
+    })
+  })
+
+  describe('when another tool declares its own packages and globs', () => {
+    it('then its rule is scoped to the workspaces that depend on them', () => {
+      createMonorepo()
+      writePackage('apps/api', {
+        devDependencies: { relizy: '^1.0.0' },
+      })
+      const tool: AgentsTool = {
+        ...MAZ_UI_AGENTS_TOOL,
+        name: 'relizy',
+        packages: ['relizy'],
+        ruleGlobs: ['relizy.config.*'],
+      }
+
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool,
+        agentDocs: {
+          directory: docsDir,
+          version: '1.0.0',
+          claudeRule: '# relizy\n\nRules.',
+          agentsMdSection: '## relizy',
+        },
+      })
+
+      expect(result.claudeRulePaths).toEqual(['apps/api/relizy.config.*'])
+      expect(readProjectFile('.claude/rules/relizy.md').startsWith('---\npaths:\n  - "apps/api/relizy.config.*"\n---\n\n<!-- Managed by relizy 1.0.0')).toBe(true)
+    })
+  })
+})
+
 describe('given readWorkspacePatterns', () => {
   describe('when the project has a pnpm-workspace.yaml', () => {
     it('then it returns its packages without negations', () => {
@@ -2184,6 +2552,598 @@ describe('given mcpServerCommand with another tool', () => {
         command: 'npx',
         args: ['-y', 'relizy@2.0.0'],
       })
+    })
+  })
+})
+
+function bodyChecksum(body: string): string {
+  return createHash('sha256').update(body.replaceAll(/\s+/g, '')).digest('hex').slice(0, 12)
+}
+
+describe('given the agents entry', () => {
+  describe('when its exports are read', () => {
+    it('then it exposes the same API as the setupAgents module', async () => {
+      const source = await import('../setupAgents')
+
+      expect(Object.keys(agentsEntry).sort()).toEqual(Object.keys(source).sort())
+      expect(agentsEntry.setupAgents).toBe(source.setupAgents)
+    })
+  })
+})
+
+describe('given setupAgents with a custom marker', () => {
+  const ACME: AgentsTool = {
+    ...RELIZY,
+    name: 'acme',
+    mcpPackage: '@acme/mcp',
+    mcpBin: 'acme-mcp',
+    mcpArgs: undefined,
+    marker: 'Managed by @acme/mcp',
+  }
+
+  describe('when the rules are written', () => {
+    it('then the header, the version and the edit detection use the marker', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+
+      setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md'],
+        tool: ACME,
+        agentDocs: relizyDocs('2.0.0'),
+      })
+
+      const rule = readProjectFile('.claude/rules/acme.md')
+
+      expect(rule).toMatch(/^<!-- Managed by @acme\/mcp 2\.0\.0 \(sha256:[\da-f]{12}\): generated by/)
+      expect(rule).not.toContain('Managed by acme')
+      expect(readManagedVersion(rule, ACME)).toBe('2.0.0')
+      expect(isEditedManagedContent(rule, ACME)).toBe(false)
+      expect(isEditedManagedContent(`${rule}\nMy own rule.`, ACME)).toBe(true)
+      expect(readProjectFile('AGENTS.md')).toContain('<!-- BEGIN:acme -->\n\n<!-- Managed by @acme/mcp 2.0.0')
+    })
+  })
+
+  describe('when a rule written with that marker already exists', () => {
+    it('then it is recognized as owned and updated', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        agentDocs: relizyDocs('2.0.0'),
+      })
+
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        agentDocs: relizyDocs('2.1.0'),
+      })
+
+      expect(changeOf(result, '.claude/rules/acme.md')?.action).toBe('update')
+      expect(readManagedVersion(readProjectFile('.claude/rules/acme.md'), ACME)).toBe('2.1.0')
+    })
+
+    it('then a second run changes nothing', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        agentDocs: relizyDocs(),
+      })
+
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        agentDocs: relizyDocs(),
+      })
+
+      expect(changeOf(result, '.claude/rules/acme.md')?.action).toBe('unchanged')
+    })
+  })
+
+  describe('when a file was written with the default marker of the tool', () => {
+    it('then it is not owned and left untouched', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+      writeProjectFile('.claude/rules/acme.md', '<!-- Managed by acme 1.0.0: generated -->\n\n# old')
+
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        agentDocs: relizyDocs(),
+      })
+
+      expect(changeOf(result, '.claude/rules/acme.md')?.action).toBe('skip')
+    })
+  })
+
+  describe('when the tool declares no marker', () => {
+    it('then the marker is derived from its name', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: { ...ACME, marker: undefined },
+        agentDocs: relizyDocs(),
+      })
+
+      expect(readProjectFile('.claude/rules/acme.md')).toContain('<!-- Managed by acme 1.14.0')
+    })
+  })
+})
+
+describe('given setupAgents with the version note disabled', () => {
+  describe('when the rules are written', () => {
+    it('then neither the Claude rule nor the AGENTS.md section has a note', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+
+      setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md'],
+        tool: { ...RELIZY, versionNote: false },
+        agentDocs: relizyDocs(),
+      })
+
+      expect(readProjectFile('.claude/rules/relizy.md')).toContain('# relizy\n\nPreview the release first.')
+      expect(readProjectFile('.claude/rules/relizy.md')).not.toContain('is installed')
+      expect(readProjectFile('AGENTS.md')).toContain('## relizy\n\nPreview the release first.')
+      expect(readProjectFile('AGENTS.md')).not.toContain('is installed')
+    })
+
+    it('then a second run changes nothing and the rules are not taken for edited', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+      const tool = { ...RELIZY, versionNote: false as const }
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool,
+        agentDocs: relizyDocs(),
+      })
+
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool,
+        agentDocs: relizyDocs(),
+      })
+
+      expect(changeOf(result, '.claude/rules/relizy.md')?.action).toBe('unchanged')
+    })
+  })
+})
+
+describe('given setupAgents with former MCP packages', () => {
+  const ACME: AgentsTool = {
+    ...RELIZY,
+    name: 'acme',
+    mcpPackage: '@acme/mcp',
+    mcpBin: 'acme-mcp',
+    mcpArgs: undefined,
+    legacyMcpPackages: ['@acme/old-mcp', 'old-mcp'],
+  }
+
+  function mcpServers(file: string, rootKey = 'mcpServers'): Record<string, unknown> {
+    return parse(readProjectFile(file))[rootKey]
+  }
+
+  describe('when .mcp.json registers a former package', () => {
+    it('then the entry is replaced in place by the entry of the tool, with the comments kept', () => {
+      writeProjectFile('.mcp.json', '{\n  // servers\n  "mcpServers": {\n    "other": { "command": "x" },\n    "legacy": { "command": "npx", "args": ["-y", "@acme/old-mcp@1.0.0"], "env": { "A": "1" } }\n  }\n}\n')
+
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        rules: false,
+        mcpVersion: '2.0.0',
+      })
+
+      expect(mcpServers('.mcp.json')).toEqual({
+        other: { command: 'x' },
+        legacy: {
+          type: 'stdio',
+          command: 'npx',
+          args: ['-y', '@acme/mcp@2.0.0'],
+        },
+      })
+      expect(readProjectFile('.mcp.json')).toContain('// servers')
+      expect(changeOf(result, '.mcp.json')).toEqual({ file: '.mcp.json', action: 'update', reason: '"legacy" migrated from @acme/old-mcp to @acme/mcp' })
+    })
+
+    it('then a second run changes nothing', () => {
+      writeProjectFile('.mcp.json', '{"mcpServers":{"legacy":{"command":"npx","args":["-y","@acme/old-mcp"]}}}\n')
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        rules: false,
+        mcpVersion: '2.0.0',
+      })
+
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        rules: false,
+        mcpVersion: '2.0.0',
+      })
+
+      expect(changeOf(result, '.mcp.json')?.action).toBe('unchanged')
+    })
+  })
+
+  describe('when the config file has no trailing newline', () => {
+    it('then the migrated file ends with a newline', () => {
+      writeProjectFile('.mcp.json', '{"mcpServers":{"legacy":{"command":"npx","args":["-y","@acme/old-mcp"]}}}')
+
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        rules: false,
+        mcpVersion: '2.0.0',
+      })
+
+      expect(readProjectFile('.mcp.json').endsWith('\n')).toBe(true)
+    })
+  })
+
+  describe('when the entry only references the bin of a former package', () => {
+    it('then it is migrated too', () => {
+      writeProjectFile('.mcp.json', '{"mcpServers":{"legacy":{"command":"pnpm","args":["exec","old-mcp"]}}}\n')
+
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        rules: false,
+        mcpVersion: '2.0.0',
+      })
+
+      expect(mcpServers('.mcp.json').legacy).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', '@acme/mcp@2.0.0'],
+      })
+    })
+  })
+
+  describe('when the Cursor and VS Code configs register a former package', () => {
+    it('then each config keeps its own format', () => {
+      writeProjectFile('.cursor/mcp.json', '{"mcpServers":{"legacy":{"command":"npx","args":["-y","@acme/old-mcp"]}}}\n')
+      writeProjectFile('.vscode/mcp.json', '{"servers":{"legacy":{"type":"stdio","command":"npx","args":["-y","@acme/old-mcp"]}}}\n')
+
+      setupAgents({
+        rootDir,
+        targets: ['cursor', 'vscode'],
+        tool: ACME,
+        rules: false,
+        mcpVersion: '2.0.0',
+      })
+
+      expect(mcpServers('.cursor/mcp.json').legacy).toEqual({
+        command: 'npx',
+        args: ['-y', '@acme/mcp@2.0.0'],
+      })
+      expect(mcpServers('.vscode/mcp.json', 'servers').legacy).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', '@acme/mcp@2.0.0'],
+      })
+    })
+  })
+
+  describe('when the tool already has an entry besides the former one', () => {
+    it('then only the entry of the tool is updated and the former one is left', () => {
+      writeProjectFile('.mcp.json', '{"mcpServers":{"legacy":{"command":"npx","args":["-y","@acme/old-mcp"]},"acme":{"command":"npx","args":["-y","@acme/mcp@1.0.0"]}}}\n')
+
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        rules: false,
+        mcpVersion: '2.0.0',
+      })
+
+      expect(mcpServers('.mcp.json')).toEqual({
+        legacy: {
+          command: 'npx',
+          args: ['-y', '@acme/old-mcp'],
+        },
+        acme: {
+          command: 'npx',
+          args: ['-y', '@acme/mcp@2.0.0'],
+        },
+      })
+    })
+  })
+
+  describe('when a server named like the tool runs another command next to a former entry', () => {
+    it('then the former entry is migrated and the other server is untouched', () => {
+      writeProjectFile('.mcp.json', '{"mcpServers":{"acme":{"command":"node","args":["custom.js"]},"legacy":{"command":"npx","args":["-y","@acme/old-mcp"]}}}\n')
+
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        rules: false,
+        mcpVersion: '2.0.0',
+      })
+
+      expect(mcpServers('.mcp.json').acme).toEqual({
+        command: 'node',
+        args: ['custom.js'],
+      })
+      expect(mcpServers('.mcp.json').legacy).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', '@acme/mcp@2.0.0'],
+      })
+    })
+  })
+
+  describe('when the tool declares no former package', () => {
+    it('then an entry of another package is left and the server is added', () => {
+      writeProjectFile('.mcp.json', '{"mcpServers":{"legacy":{"command":"npx","args":["-y","@acme/old-mcp"]}}}\n')
+
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: { ...ACME, legacyMcpPackages: undefined },
+        rules: false,
+        mcpVersion: '2.0.0',
+      })
+
+      expect(Object.keys(mcpServers('.mcp.json'))).toEqual(['legacy', 'acme'])
+    })
+  })
+
+  describe('when the setup is removed', () => {
+    it('then the entry of a former package is left', () => {
+      writeProjectFile('.mcp.json', '{"mcpServers":{"legacy":{"command":"npx","args":["-y","@acme/old-mcp"]}}}\n')
+
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: ACME,
+        remove: true,
+      })
+
+      expect(result.changes).toEqual([])
+      expect(mcpServers('.mcp.json').legacy).toBeDefined()
+    })
+  })
+})
+
+describe('given isEditedManagedContent with a frontmatter', () => {
+  function createMonorepoRule(): string {
+    writeProjectFile('CLAUDE.md', '# my project')
+    writeProjectFile('pnpm-workspace.yaml', 'packages:\n  - apps/*\n')
+    writeProjectFile('apps/pwa/package.json', JSON.stringify({
+      dependencies: { 'maz-ui': '^5.0.0' },
+    }))
+    setupAgents({
+      rootDir,
+      docsDir,
+      targets: ['claude'],
+    })
+
+    return readProjectFile('.claude/rules/maz-ui.md')
+  }
+
+  describe('when the paths of the frontmatter are edited by hand', () => {
+    it('then the rule is detected as edited and kept', () => {
+      const rule = createMonorepoRule()
+      writeProjectFile('.claude/rules/maz-ui.md', rule.replace('apps/pwa/**', 'apps/web/**'))
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(isEditedManagedContent(readProjectFile('.claude/rules/maz-ui.md'))).toBe(true)
+      expect(changeOf(result, '.claude/rules/maz-ui.md')?.action).toBe('skip')
+      expect(readProjectFile('.claude/rules/maz-ui.md')).toContain('apps/web/**')
+    })
+  })
+
+  describe('when a formatter only changes the whitespace of the frontmatter', () => {
+    it('then the rule is not detected as edited', () => {
+      const rule = createMonorepoRule()
+
+      expect(isEditedManagedContent(rule.replace('  - "apps', '    -   "apps'))).toBe(false)
+    })
+  })
+
+  describe('when a formatter only changes the quotes of the frontmatter', () => {
+    it('then the rule is not detected as edited', () => {
+      const rule = createMonorepoRule()
+      const frontmatter = rule.slice(0, rule.indexOf('<!--'))
+
+      expect(isEditedManagedContent(rule.replace(frontmatter, frontmatter.replaceAll('"', '\''))))
+        .toBe(false)
+      expect(isEditedManagedContent(rule.replace(frontmatter, frontmatter.replaceAll('"', '')))).toBe(false)
+    })
+  })
+
+  describe('when the checksum only covers the body, as before the frontmatter was part of it', () => {
+    it('then the rule is not detected as edited and is rewritten with the new checksum', () => {
+      const rule = createMonorepoRule()
+      const body = rule.slice(rule.indexOf('-->') + 3)
+      const legacyRule = rule.replace(/sha256:[\da-f]+/, `sha256:${bodyChecksum(body)}`)
+      writeProjectFile('.claude/rules/maz-ui.md', legacyRule)
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(isEditedManagedContent(legacyRule)).toBe(false)
+      expect(changeOf(result, '.claude/rules/maz-ui.md')?.action).toBe('update')
+      expect(readProjectFile('.claude/rules/maz-ui.md')).toBe(rule)
+    })
+
+    it('then an edit of the body is still detected', () => {
+      const rule = createMonorepoRule()
+      const body = rule.slice(rule.indexOf('-->') + 3)
+      const legacyRule = rule.replace(/sha256:[\da-f]+/, `sha256:${bodyChecksum(body)}`)
+
+      expect(isEditedManagedContent(`${legacyRule}\nMy own rule.`)).toBe(true)
+    })
+  })
+
+  describe('when the rule was written by a published version, without frontmatter', () => {
+    it('then it is not detected as edited', () => {
+      const body = '# maz-ui\n\nUse maz-ui components.\n'
+      const published = `<!-- Managed by maz-ui 5.2.0 (sha256:${bodyChecksum(body)}): generated by x -->\n\n${body}`
+
+      expect(isEditedManagedContent(published)).toBe(false)
+      expect(isEditedManagedContent(`${published}\nMy own rule.`)).toBe(true)
+    })
+  })
+})
+
+describe('given findWorkspacesUsing with negated workspace patterns', () => {
+  function createMonorepoWithLegacy(declaration: string): void {
+    writeProjectFile('pnpm-workspace.yaml', declaration)
+    writePackage('apps/web', {
+      dependencies: { 'maz-ui': '^5.0.0' },
+    })
+    writePackage('apps/legacy', {
+      dependencies: { 'maz-ui': '^5.0.0' },
+    })
+    writePackage('apps/legacy/inner', {
+      dependencies: { 'maz-ui': '^5.0.0' },
+    })
+  }
+
+  describe('when pnpm-workspace.yaml excludes a workspace', () => {
+    it('then the excluded workspace is left out with the folders below it', () => {
+      createMonorepoWithLegacy('packages:\n  - "apps/**"\n  - "!apps/legacy"\n')
+
+      expect(findWorkspacesUsing(rootDir, ['maz-ui'])).toEqual(['apps/web'])
+    })
+
+    it('then a negated pattern with a leading dot and a globstar excludes the same folders', () => {
+      createMonorepoWithLegacy('packages:\n  - "apps/**"\n  - "!./apps/legacy/**"\n')
+
+      expect(findWorkspacesUsing(rootDir, ['maz-ui'])).toEqual(['apps/web'])
+    })
+  })
+
+  describe('when the package.json excludes a workspace', () => {
+    it('then the excluded workspace is left out', () => {
+      writePackage('', {
+        workspaces: ['apps/*', '!apps/legacy'],
+      })
+      writePackage('apps/web', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+      writePackage('apps/legacy', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+
+      expect(findWorkspacesUsing(rootDir, ['maz-ui'])).toEqual(['apps/web'])
+    })
+  })
+
+  describe('when the root depends on the packages and workspaces are excluded', () => {
+    it('then the root is kept', () => {
+      writePackage('', {
+        workspaces: ['apps/*', '!apps/legacy'],
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+      writePackage('apps/legacy', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+
+      expect(findWorkspacesUsing(rootDir, ['maz-ui'])).toEqual([''])
+    })
+  })
+
+  describe('when the claude rule is scoped', () => {
+    it('then the excluded workspace is not in the globs', () => {
+      createMonorepoWithLegacy('packages:\n  - "apps/*"\n  - "!apps/legacy"\n')
+
+      expect(resolveRulePaths(rootDir, MAZ_UI_AGENTS_TOOL)).toEqual(['apps/web/**/*.{vue,ts,tsx,css,scss}'])
+    })
+  })
+})
+
+describe('given resolveRulePaths with special characters in workspace folders', () => {
+  describe('when a folder name contains glob characters', () => {
+    it('then they are escaped in the generated globs', () => {
+      writeProjectFile('pnpm-workspace.yaml', 'packages:\n  - "apps/*"\n')
+      writePackage('apps/[web]', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+      writePackage('apps/(site)', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+      writePackage('apps/a{b}!', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+      writePackage('apps/plain', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+
+      expect(resolveRulePaths(rootDir, MAZ_UI_AGENTS_TOOL)?.sort()).toEqual([
+        'apps/\\(site\\)/**/*.{vue,ts,tsx,css,scss}',
+        'apps/\\[web\\]/**/*.{vue,ts,tsx,css,scss}',
+        'apps/a\\{b\\}\\!/**/*.{vue,ts,tsx,css,scss}',
+        'apps/plain/**/*.{vue,ts,tsx,css,scss}',
+      ])
+    })
+  })
+
+  describe('when the folder names have no glob character', () => {
+    it('then the globs are unchanged', () => {
+      writeProjectFile('pnpm-workspace.yaml', 'packages:\n  - "apps/*"\n')
+      writePackage('apps/web', {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+
+      expect(resolveRulePaths(rootDir, MAZ_UI_AGENTS_TOOL)).toEqual(['apps/web/**/*.{vue,ts,tsx,css,scss}'])
+    })
+  })
+})
+
+describe('given resolveRulePaths with many workspaces', () => {
+  const tool: AgentsTool = {
+    ...RELIZY,
+    packages: ['maz-ui'],
+    ruleGlobs: ['**/*.{a,b,c,d,e,f,g,h,i,j}', 'plain.md', String.raw`escaped\{x,y\}.md`],
+  }
+
+  function createWorkspaces(count: number): void {
+    writeProjectFile('pnpm-workspace.yaml', 'packages:\n  - "apps/*"\n')
+
+    for (let index = 0; index < count; index++) {
+      writePackage(`apps/app-${index}`, {
+        dependencies: { 'maz-ui': '^5.0.0' },
+      })
+    }
+  }
+
+  describe('when the expanded patterns stay within the budget of Claude Code', () => {
+    it('then each workspace has its globs', () => {
+      createWorkspaces(80)
+
+      expect(resolveRulePaths(rootDir, tool)).toHaveLength(80 * 3)
+    })
+  })
+
+  describe('when the expanded patterns exceed the budget of Claude Code', () => {
+    it('then the rule falls back to the globs of the whole project', () => {
+      createWorkspaces(100)
+
+      expect(resolveRulePaths(rootDir, tool)).toEqual(['**/*.{a,b,c,d,e,f,g,h,i,j}', 'plain.md', String.raw`escaped\{x,y\}.md`])
     })
   })
 })

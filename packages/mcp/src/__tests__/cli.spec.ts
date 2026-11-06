@@ -310,6 +310,44 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(logged()).not.toContain('Codex and Windsurf')
     })
 
+    it('then --paths scopes the Claude rule with a frontmatter and reports it', async () => {
+      const cwd = createTempDir()
+
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--paths',
+        'apps/web/**, packages/ui/**',
+        '--docs',
+        BUNDLE_DIR,
+        '--cwd',
+        cwd,
+      ])
+
+      expect(readFileSync(join(cwd, '.claude/rules/maz-ui.md'), 'utf8').startsWith('---\npaths:\n  - "apps/web/**"\n  - "packages/ui/**"\n---\n\n<!-- Managed by maz-ui')).toBe(true)
+      expect(logged()).toContain('only loaded for: apps/web/**, packages/ui/**')
+    })
+
+    it('then --paths all keeps the Claude rule always loaded', async () => {
+      const cwd = createTempDir()
+
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--paths',
+        'all',
+        '--docs',
+        BUNDLE_DIR,
+        '--cwd',
+        cwd,
+      ])
+
+      expect(readFileSync(join(cwd, '.claude/rules/maz-ui.md'), 'utf8').startsWith('<!-- Managed by maz-ui')).toBe(true)
+      expect(logged()).not.toContain('only loaded for')
+    })
+
     it('then --no-rules only registers the MCP server', async () => {
       const cwd = createTempDir()
 

@@ -345,14 +345,16 @@ export interface MazUiNuxtOptions {
    * - `rules`: also writes the maz-ui rules in `.claude/rules/maz-ui.md` and in a delimited section of `AGENTS.md` (for agents without MCP).
    * - `targets`: agents to configure (`'claude'`, `'agents-md'`, `'cursor'`, `'vscode'`), default: the detected ones. Nothing is written when no agent is detected.
    * - `dir`: folder where the agent files are written, relative to the Nuxt root. Default: the workspace root (`workspaceDir`), so that in a monorepo the files land where the agents start
+   * - `paths`: globs (relative to `dir`) the Claude Code rule is scoped to, so that it is only loaded when Claude reads or edits a matching file. Default `'auto'`: the workspaces that depend on maz-ui. `'all'`: always loaded
    * - `true`: `{ mcp: true, rules: true }`, `false`: disabled
    * @example `agents: { rules: true }` or `agents: false`
-   * @default { rules: false, mcp: true }
+   * @default { rules: false, mcp: false }
    */
   agents?: boolean | {
     targets?: AgentTarget[]
     rules?: boolean
     mcp?: boolean
     dir?: string
+    paths?: 'auto' | 'all' | string[]
   }
 }

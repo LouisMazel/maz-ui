@@ -3,7 +3,10 @@ import { join } from 'node:path'
 import { stringifyFrontmatter } from '../markdown/frontmatter'
 
 export interface AgentContent {
+  /** Complete rules: the AGENTS.md section, the skill and the rules page */
   rules: string
+  /** Core of the rules, always useful: the Claude Code rule, loaded in the context of the agent, stays short */
+  rulesCore: string
   workflow: string
 }
 
@@ -12,6 +15,7 @@ export const SKILL_DESCRIPTION = 'Build Vue and Nuxt UIs with the maz-ui ecosyst
 export function loadAgentContent(contentDir: string): AgentContent {
   return {
     rules: readFileSync(join(contentDir, 'rules.md'), 'utf8').trim(),
+    rulesCore: readFileSync(join(contentDir, 'rules-core.md'), 'utf8').trim(),
     workflow: readFileSync(join(contentDir, 'skill.md'), 'utf8').trim(),
   }
 }
@@ -34,11 +38,11 @@ ${content.rules}
 `
 }
 
-/** Content of `.claude/rules/maz-ui.md`, always loaded by Claude Code */
+/** Content of `.claude/rules/maz-ui.md`: the core of the rules, the rest is served on demand by the MCP tools */
 export function renderClaudeRule(content: AgentContent): string {
   return `# maz-ui
 
-${content.rules}
+${content.rulesCore}
 `
 }
 
