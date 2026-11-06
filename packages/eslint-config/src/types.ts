@@ -102,6 +102,17 @@ export interface MazESLintOptions extends OptionsConfig {
   tailwindcss?: boolean | TailwindcssPreset | MazTailwindcssOptions
 
   /**
+   * pnpm rules of `@antfu/eslint-config` (`package.json` and `pnpm-workspace.yaml`).
+   *
+   * - `undefined` *(default)*: enabled in a pnpm workspace, without
+   *   `pnpm/json-enforce-catalog`: the dependencies are not moved to the catalog.
+   * - `true`: enabled, with `pnpm/json-enforce-catalog` when the workspace has a catalog.
+   * - `{ catalogs: true }`: enforce the catalog for every dependency.
+   * - `false`: disabled.
+   */
+  pnpm?: OptionsConfig['pnpm']
+
+  /**
    * Enable SonarJS rules for code quality
    * @default true
    */

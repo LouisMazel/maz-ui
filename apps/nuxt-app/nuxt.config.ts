@@ -39,7 +39,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-07-22',
 
   vite: {
-    plugins: [VitePreNestedCss(), tailwindcss(), svgLoader()],
+    plugins: [
+      VitePreNestedCss(),
+      tailwindcss(),
+      svgLoader(),
+    ],
     // Resolve `monorepo:dev` first when developing so we consume maz-ui's
     // raw src/ (with HMR), and fall back to the published dist for prod
     // builds. Same trick as accor-core-library.
@@ -52,7 +56,12 @@ export default defineNuxtConfig({
             'module',
             'default',
           ]
-        : ['import', 'browser', 'module', 'default'],
+        : [
+            'import',
+            'browser',
+            'module',
+            'default',
+          ],
     },
   },
 

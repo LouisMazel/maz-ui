@@ -20,19 +20,19 @@
   },
   "dependencies": {
     "@maz-ui/node": "workspace:^",
-    "typescript": "^6.0.3",
+    "typescript": "catalog:",
     "vue-component-meta": "3.3.14",
     "vue-docgen-api": "^4.79.2",
-    "yaml": "^2.9.1"
+    "yaml": "catalog:"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
-    "@types/node": "^26.6.6",
-    "@vitest/coverage-v8": "^5.1.0",
-    "cross-env": "^10.1.0",
-    "eslint": "^10.14.0",
-    "tsx": "^4.23.15",
-    "vitest": "5.1.0"
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "tsx": "catalog:",
+    "vitest": "catalog:"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

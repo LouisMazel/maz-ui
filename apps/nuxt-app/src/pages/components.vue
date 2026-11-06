@@ -6,10 +6,26 @@ import { MazHome } from '@maz-ui/icons/lazy/MazHome'
 import { MazUser } from '@maz-ui/icons/lazy/MazUser'
 import { ref } from 'vue'
 
-const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast'] as const
+const colors = [
+  'primary',
+  'secondary',
+  'accent',
+  'info',
+  'success',
+  'warning',
+  'destructive',
+  'contrast',
+] as const
 const btnColors = [...colors, 'surface', 'transparent'] as const
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
-const sizeUnits = ['10px', '20px', '30px', '2rem', '3em', '15vw'] as const
+const sizeUnits = [
+  '10px',
+  '20px',
+  '30px',
+  '2rem',
+  '3em',
+  '15vw',
+] as const
 const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', 'full'] as const
 
 const switchValue = ref(true)
@@ -65,10 +81,30 @@ const tableHeaders = [
   { label: 'Status', key: 'status' },
 ]
 const tableRows = [
-  { name: 'Alice Martin', email: 'alice@example.com', role: 'Admin', status: 'Active' },
-  { name: 'Bob Smith', email: 'bob@example.com', role: 'Editor', status: 'Active' },
-  { name: 'Carol White', email: 'carol@example.com', role: 'Viewer', status: 'Inactive' },
-  { name: 'David Lee', email: 'david@example.com', role: 'Admin', status: 'Active' },
+  {
+    name: 'Alice Martin',
+    email: 'alice@example.com',
+    role: 'Admin',
+    status: 'Active',
+  },
+  {
+    name: 'Bob Smith',
+    email: 'bob@example.com',
+    role: 'Editor',
+    status: 'Active',
+  },
+  {
+    name: 'Carol White',
+    email: 'carol@example.com',
+    role: 'Viewer',
+    status: 'Inactive',
+  },
+  {
+    name: 'David Lee',
+    email: 'david@example.com',
+    role: 'Admin',
+    status: 'Active',
+  },
 ]
 
 const timelineSteps: MazTimelineProps['steps'] = [
@@ -99,11 +135,26 @@ function makePlaceholder(color: string, label: string): string {
 }
 
 const galleryImages = [
-  { src: makePlaceholder('#6366f1', 'Image 1'), alt: 'Placeholder 1' },
-  { src: makePlaceholder('#8b5cf6', 'Image 2'), alt: 'Placeholder 2' },
-  { src: makePlaceholder('#0ea5e9', 'Image 3'), alt: 'Placeholder 3' },
-  { src: makePlaceholder('#10b981', 'Image 4'), alt: 'Placeholder 4' },
-  { src: makePlaceholder('#f59e0b', 'Image 5'), alt: 'Placeholder 5' },
+  {
+    src: makePlaceholder('#6366f1', 'Image 1'),
+    alt: 'Placeholder 1',
+  },
+  {
+    src: makePlaceholder('#8b5cf6', 'Image 2'),
+    alt: 'Placeholder 2',
+  },
+  {
+    src: makePlaceholder('#0ea5e9', 'Image 3'),
+    alt: 'Placeholder 3',
+  },
+  {
+    src: makePlaceholder('#10b981', 'Image 4'),
+    alt: 'Placeholder 4',
+  },
+  {
+    src: makePlaceholder('#f59e0b', 'Image 5'),
+    alt: 'Placeholder 5',
+  },
 ] satisfies MazGalleryImage[]
 
 const avatarPlaceholder = makePlaceholder('#6366f1', 'JD')

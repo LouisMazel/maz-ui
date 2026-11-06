@@ -137,6 +137,23 @@ defineConfig({
 
 The plugin recognizes the most common class-name utilities out of the box (`clsx`, `cn`, `tw-merge`, `cva`, `tv`, …); see the [plugin docs](https://github.com/schoero/eslint-plugin-better-tailwindcss) for the full list and how to register your own.
 
+## pnpm workspace
+
+In a pnpm workspace (a `pnpm-workspace.yaml` in the project or one of its parent directories), the pnpm rules of `@antfu/eslint-config` lint the `package.json` files and the `pnpm-workspace.yaml`, without `pnpm/json-enforce-catalog`: a dependency moves to the [catalog](https://pnpm.io/catalogs) only when you decide it.
+
+| Value                   | Behavior                                                                    |
+| ----------------------- | --------------------------------------------------------------------------- |
+| `undefined` _(default)_ | Enabled in a pnpm workspace, without enforcing the catalog.                 |
+| `true`                  | Enabled, and enforces the catalog when `pnpm-workspace.yaml` has a catalog. |
+| `{ catalogs: true }`    | Enabled, and enforces the catalog for every dependency.                     |
+| `false`                 | Disabled.                                                                   |
+
+```ts
+defineConfig({
+  pnpm: { catalogs: true },
+})
+```
+
 ## Custom rules
 
 `@maz-ui/eslint-config` ships its own ESLint plugin under the **`maz/*`** namespace. Rules are grouped by category — `maz/tailwind-*` today, with room for `maz/js-*` and others as they get added.

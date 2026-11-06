@@ -6,7 +6,8 @@ on:
       - 'packages/**'
       - 'apps/docs/**'
       - pnpm-lock.yaml
-      - .github/workflows/typecheck.yml
+      - .github/workflows/build-and-typecheck.yml
+      - .github/scripts/check-dist-imports.mjs
 
 jobs:
   build-and-typecheck:
@@ -25,6 +26,9 @@ jobs:
 
       - name: Build packages
         run: pnpm build:packages
+
+      - name: Check the packages imported by the published files
+        run: node .github/scripts/check-dist-imports.mjs
 
       - name: Typecheck packages
         run: pnpm typecheck:all

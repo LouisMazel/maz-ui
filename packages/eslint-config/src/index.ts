@@ -1,8 +1,8 @@
 import type { Logger } from './configs/logger'
 import type { MazESLintConfig, MazESLintOptions, MazESLintUserConfig, MazTailwindcssOptions, TailwindcssPreset } from './types'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import antfu from '@antfu/eslint-config'
 import { configs as sonarConfigs } from 'eslint-plugin-sonarjs'
 
@@ -59,6 +59,25 @@ function hasDependency(pkg: PackageJson | undefined, ...names: string[]): boolea
     return false
   const buckets = [pkg.dependencies, pkg.devDependencies, pkg.peerDependencies]
   return names.some(name => buckets.some(bucket => bucket && name in bucket))
+}
+
+function hasPnpmWorkspace(directory = process.cwd()): boolean {
+  if (existsSync(join(directory, 'pnpm-workspace.yaml')))
+    return true
+  const parent = dirname(directory)
+  return parent !== directory && hasPnpmWorkspace(parent)
+}
+
+/**
+ * In a pnpm workspace, the pnpm rules are enabled without `pnpm/json-enforce-catalog`:
+ * a dependency moves to the catalog only when you decide it
+ */
+function resolvePnpm(option: MazESLintOptions['pnpm']): MazESLintOptions['pnpm'] {
+  if (option !== undefined)
+    return option
+  return hasPnpmWorkspace()
+    ? { catalogs: false }
+    : false
 }
 
 type Source = 'explicit' | 'auto-detected' | 'default'
@@ -334,6 +353,7 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   return antfu({
     formatters: opts.formatters,
     ...opts,
+    pnpm: resolvePnpm(opts.pnpm),
     rules: baseRules(env === 'production'),
     ignores: (() => {
       return opts.ignores
