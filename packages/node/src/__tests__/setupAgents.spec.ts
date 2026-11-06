@@ -2960,6 +2960,17 @@ describe('given isEditedManagedContent with a frontmatter', () => {
     })
   })
 
+  describe('when a formatter only changes the quotes of the frontmatter', () => {
+    it('then the rule is not detected as edited', () => {
+      const rule = createMonorepoRule()
+      const frontmatter = rule.slice(0, rule.indexOf('<!--'))
+
+      expect(isEditedManagedContent(rule.replace(frontmatter, frontmatter.replaceAll('"', '\''))))
+        .toBe(false)
+      expect(isEditedManagedContent(rule.replace(frontmatter, frontmatter.replaceAll('"', '')))).toBe(false)
+    })
+  })
+
   describe('when the checksum only covers the body, as before the frontmatter was part of it', () => {
     it('then the rule is not detected as edited and is rewritten with the new checksum', () => {
       const rule = createMonorepoRule()
