@@ -2,10 +2,10 @@
   "mcpServers": {
     "maz-ui": {
       "type": "stdio",
-      "command": "npx",
+      "command": "sh",
       "args": [
-        "-y",
-        "@maz-ui/mcp@latest"
+        "-c",
+        "pnpm nx run @maz-ui/mcp:build >&2 && exec pnpm exec @maz-ui/mcp"
       ]
     },
     "relizy": {

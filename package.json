@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
+    "@maz-ui/mcp": "workspace:^",
     "@maz-ui/node": "workspace:^",
     "@types/node": "catalog:",
     "@yoloship/action": "0.2.0-beta.15",

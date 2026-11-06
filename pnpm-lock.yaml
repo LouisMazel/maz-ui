@@ -289,6 +289,9 @@ importers:
       '@maz-ui/eslint-config':
         specifier: workspace:^
         version: link:packages/eslint-config
+      '@maz-ui/mcp':
+        specifier: workspace:^
+        version: link:packages/mcp
       '@maz-ui/node':
         specifier: workspace:^
         version: link:packages/node
