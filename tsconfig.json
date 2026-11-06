@@ -4,6 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "types": ["node"],
     "allowImportingTsExtensions": false,
     "strict": true,
     "noUnusedLocals": true,
@@ -15,7 +16,6 @@
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
-
   },
   "include": ["**/*"],
   "exclude": [
