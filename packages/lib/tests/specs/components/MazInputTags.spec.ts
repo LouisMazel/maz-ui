@@ -155,8 +155,16 @@ describe('given a MazUi global default for size', () => {
   describe('when no size prop is passed', () => {
     it('then the input receives the global size', () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['a'] },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+        props: {
+          modelValue: ['a'],
+        },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'xl' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('xl')
@@ -164,8 +172,16 @@ describe('given a MazUi global default for size', () => {
 
     it('then the tag button receives the mapped button size', () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['a'] },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+        props: {
+          modelValue: ['a'],
+        },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'xl' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent(MazBtn).props('size')).toBe('lg')
@@ -175,8 +191,17 @@ describe('given a MazUi global default for size', () => {
   describe('when a component-scoped default differs from the global default', () => {
     it('then the input receives the component-scoped size', () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['a'] },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazInputTags: { size: 'lg' } } } },
+        props: {
+          modelValue: ['a'],
+        },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'mini' },
+              MazInputTags: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('lg')
@@ -186,8 +211,18 @@ describe('given a MazUi global default for size', () => {
   describe('when a size prop is passed', () => {
     it('then the instance prop wins over every configured default', () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['a'], size: 'sm' },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazInputTags: { size: 'lg' } } } },
+        props: {
+          modelValue: ['a'],
+          size: 'sm',
+        },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'mini' },
+              MazInputTags: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('sm')

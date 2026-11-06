@@ -21,7 +21,21 @@ const INCLUDE_REGEX = /^\s*<!--\s*@include:\s*(\S+?)\s*-->\s*$/
 const CONTAINER_OPEN_REGEX = /^\s*:::\s*([\w-]+)\s*(.*)$/
 const CONTAINER_CLOSE_REGEX = /^\s*:::\s*$/
 const HTML_BLOCK_START_REGEX = /^\s*<[a-z][\w-]*(?=[\s>/]|$)/i
-const VOID_ELEMENTS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'])
+const VOID_ELEMENTS = new Set([
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'source',
+  'track',
+  'wbr',
+])
 const MAX_INCLUDE_DEPTH = 5
 
 const CONTAINER_LABELS: Record<string, string> = {
@@ -55,7 +69,9 @@ export function resolveIncludes(source: string, context: CleanMarkdownContext, d
       if (included === undefined)
         return ''
 
-      return depth >= MAX_INCLUDE_DEPTH ? included : resolveIncludes(included, context, depth + 1)
+      return depth >= MAX_INCLUDE_DEPTH
+        ? included
+        : resolveIncludes(included, context, depth + 1)
     })
     .join('\n')
 }
@@ -76,13 +92,17 @@ function replaceMustaches(line: string, context: CleanMarkdownContext): string {
 function mapOutsideInlineCode(line: string, transform: (text: string) => string): string {
   return line
     .split(/(`+[^`]*`+)/)
-    .map((part, index) => (index % 2 === 1 ? part : transform(part)))
+    .map((part, index) => (index % 2 === 1
+      ? part
+      : transform(part)))
     .join('')
 }
 
 /** Rewrites markdown links and drops images, except inside inline code spans (link labels may contain code) */
 function rewriteLinks(text: string, context: CleanMarkdownContext): string {
-  const codeSpans = [...text.matchAll(/(`+)[^`]*\1/g)].map(match => [match.index ?? 0, (match.index ?? 0) + match[0].length])
+  const codeSpans = [
+    ...text.matchAll(/(`+)[^`]*\1/g),
+  ].map(match => [match.index ?? 0, (match.index ?? 0) + match[0].length])
   const inCode = (offset: number): boolean => codeSpans.some(([start, end]) => offset > start && offset < end)
 
   return text.replaceAll(/(!?)\[((?:`[^`]*`|[^\]`])+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (match: string, image: string, label: string, href: string, offset: number) => {
@@ -94,7 +114,9 @@ function rewriteLinks(text: string, context: CleanMarkdownContext): string {
 
     const target = context.resolveLink(href)
 
-    return target ? `[${label}](${target})` : label
+    return target
+      ? `[${label}](${target})`
+      : label
   })
 }
 
@@ -153,7 +175,9 @@ function scanTextChar(line: string, index: number, state: HtmlScanState): number
     return index + 4
   }
 
-  const tagMatch = line[index] === '<' ? /^<(\/?)([A-Z][\w-]*)/i.exec(line.slice(index)) : null
+  const tagMatch = line[index] === '<'
+    ? /^<(\/?)([A-Z][\w-]*)/i.exec(line.slice(index))
+    : null
 
   if (!tagMatch)
     return index + 1
@@ -246,15 +270,23 @@ function linksOfHtmlBlock(block: string, context: CleanMarkdownContext): string[
   const links: string[] = []
 
   for (const [, href] of block.matchAll(/\shref="([^"#][^"]*)"/g)) {
-    const target = /^[a-z]+:/i.test(href) ? undefined : context.resolveLink(href)
-    const title = target ? context.linkTitle?.(href) : undefined
-    const line = target && title ? `- [${title}](${target})` : undefined
+    const target = /^[a-z]+:/i.test(href)
+      ? undefined
+      : context.resolveLink(href)
+    const title = target
+      ? context.linkTitle?.(href)
+      : undefined
+    const line = target && title
+      ? `- [${title}](${target})`
+      : undefined
 
     if (line && !links.includes(line))
       links.push(line)
   }
 
-  return links.length > 0 ? ['', ...links, ''] : []
+  return links.length > 0
+    ? ['', ...links, '']
+    : []
 }
 
 function isAutolink(line: string): boolean {
@@ -283,7 +315,13 @@ function containerLines(line: string, context: CleanMarkdownContext): string[] |
   const title = cleanProseLine(rawTitle.trim(), context)
   const label = CONTAINER_LABELS[type] ?? type.charAt(0).toUpperCase() + type.slice(1)
 
-  return ['', title ? `**${label}: ${title}**` : `**${label}:**`, '']
+  return [
+    '',
+    title
+      ? `**${label}: ${title}**`
+      : `**${label}:**`,
+    '',
+  ]
 }
 
 /** Converts the HTML block starting at `start`: keeps its code fences, or its internal links */
@@ -292,11 +330,21 @@ function htmlBlockLines(lines: string[], start: number, context: CleanMarkdownCo
   const titleMatch = /<ComponentDemo[^>]*\stitle="([^"]+)"/.exec(lines[start])
   const end = consumeHtmlBlock(lines, start, keptFences)
 
-  if (keptFences.length === 0)
-    return { output: linksOfHtmlBlock(lines.slice(start, end + 1).join('\n'), context), end }
+  if (keptFences.length === 0) {
+    return {
+      output: linksOfHtmlBlock(lines.slice(start, end + 1).join('\n'), context),
+      end,
+    }
+  }
 
   return {
-    output: ['', ...(titleMatch ? [`**${titleMatch[1]}**`, ''] : []), ...keptFences.map(stripInternalPrefix)],
+    output: [
+      '',
+      ...(titleMatch
+        ? [`**${titleMatch[1]}**`, '']
+        : []),
+      ...keptFences.map(stripInternalPrefix),
+    ],
     end,
   }
 }
@@ -327,7 +375,9 @@ export function cleanMarkdown(source: string, context: CleanMarkdownContext): st
       index = block.end
     }
     else {
-      output.push(...(containerLines(line, context) ?? [cleanProseLine(line, context)]))
+      output.push(...(containerLines(line, context) ?? [
+        cleanProseLine(line, context),
+      ]))
     }
 
     index++
@@ -389,7 +439,11 @@ export function extractHeadings(markdown: string): MarkdownHeading[] {
     const match = !inFence && /^(#{1,6})\s+(\S.*?)\s*(?:#+\s*)?$/.exec(line)
 
     if (match) {
-      headings.push({ level: match[1].length, title: match[2].replaceAll(/[*_`]/g, ''), line: index })
+      headings.push({
+        level: match[1].length,
+        title: match[2].replaceAll(/[*_`]/g, ''),
+        line: index,
+      })
     }
   }
 

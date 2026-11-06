@@ -104,7 +104,12 @@ describe('given MazMarkdownEditor component', () => {
       const renderFunction = vi.fn(() => '<custom-render></custom-render>')
 
       const wrapper = mount(MazMarkdownEditor, {
-        props: { modelValue: 'x', mode: 'preview', sanitize: false, renderFunction },
+        props: {
+          modelValue: 'x',
+          mode: 'preview',
+          sanitize: false,
+          renderFunction,
+        },
       })
       await flushPromises()
 
@@ -131,7 +136,9 @@ describe('given MazMarkdownEditor component', () => {
       ['strikethrough', '~~hello~~'],
       ['code', '`hello`'],
     ])('then clicking %s wraps the selection', async (action, expected) => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello', toolbar: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello', toolbar: true },
+      })
       selectAll(wrapper, 0, 5)
       await wrapper.find(`[data-action="${action}"]`).trigger('click')
 
@@ -139,7 +146,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then clicking code block wraps the selection in a fenced block', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'x', toolbar: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'x', toolbar: true },
+      })
       selectAll(wrapper, 0, 1)
       await wrapper.find('[data-action="codeBlock"]').trigger('click')
 
@@ -147,13 +156,27 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it.each<[string, string, number, number, string]>([
-      ['quote', 'quote me', 0, 0, '> quote me'],
+      [
+        'quote',
+        'quote me',
+        0,
+        0,
+        '> quote me',
+      ],
       ['bulletList', 'item', 0, 0, '- item'],
       ['orderedList', 'item', 0, 0, '1. item'],
-      ['checkList', 'todo', 0, 0, '- [ ] todo'],
+      [
+        'checkList',
+        'todo',
+        0,
+        0,
+        '- [ ] todo',
+      ],
       ['link', 'site', 0, 4, '[site](url)'],
     ])('then clicking the %s action updates the value', async (action, modelValue, from, to, expected) => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue, toolbar: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue, toolbar: true },
+      })
       selectAll(wrapper, from, to)
       await wrapper.find(`[data-action="${action}"]`).trigger('click')
 
@@ -161,7 +184,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then clicking the image button inserts a markdown image', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'site', toolbar: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'site', toolbar: true },
+      })
       selectAll(wrapper, 0, 4)
       await wrapper.find('[data-action="image"]').trigger('click')
 
@@ -169,7 +194,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then clicking the table button inserts a markdown table', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: '', toolbar: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: '', toolbar: true },
+      })
       selectAll(wrapper, 0, 0)
       await wrapper.find('[data-action="table"]').trigger('click')
 
@@ -179,7 +206,9 @@ describe('given MazMarkdownEditor component', () => {
 
   describe('when applyHeading is called', () => {
     it('then it prefixes the line with hashes', () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'item', toolbar: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'item', toolbar: true },
+      })
       selectAll(wrapper, 0, 0)
 
       wrapper.vm.applyHeading(2)
@@ -190,7 +219,9 @@ describe('given MazMarkdownEditor component', () => {
 
   describe('when the heading dropdown items are activated', () => {
     it('then each item applies the matching heading level', () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'title', toolbar: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'title', toolbar: true },
+      })
       selectAll(wrapper, 0, 0)
 
       wrapper.vm.headingItems[0].onClick()
@@ -243,7 +274,10 @@ describe('given MazMarkdownEditor component', () => {
   describe('when the toolbar is configured with an array of actions', () => {
     it('then it renders only the requested actions in order', () => {
       const wrapper = mount(MazMarkdownEditor, {
-        props: { modelValue: '', toolbar: ['bold', 'link'] },
+        props: {
+          modelValue: '',
+          toolbar: ['bold', 'link'],
+        },
       })
 
       const actions = wrapper.findAll('.m-markdown-editor__toolbar [data-action]')
@@ -255,7 +289,9 @@ describe('given MazMarkdownEditor component', () => {
   describe('when execCommand is supported', () => {
     it('then it relies on the native insertion without emitting from the helper', async () => {
       document.execCommand = vi.fn(() => true)
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello', toolbar: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello', toolbar: true },
+      })
       selectAll(wrapper, 0, 5)
 
       await wrapper.find('[data-action="bold"]').trigger('click')
@@ -271,7 +307,11 @@ describe('given MazMarkdownEditor component', () => {
       vi.mocked(marked.parse).mockClear()
 
       mount(MazMarkdownEditor, {
-        props: { modelValue: 'x', mode: 'preview', markedOptions: { breaks: false } },
+        props: {
+          modelValue: 'x',
+          mode: 'preview',
+          markedOptions: { breaks: false },
+        },
       })
       await flushPromises()
 
@@ -378,7 +418,9 @@ describe('given MazMarkdownEditor component', () => {
 
   describe('when keyboard shortcuts are used', () => {
     it('then Cmd/Ctrl+B applies bold', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello' },
+      })
       selectAll(wrapper, 0, 5)
       await wrapper.find('textarea').trigger('keydown', { key: 'b', metaKey: true })
 
@@ -386,7 +428,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then Ctrl+I applies italic', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello' },
+      })
       selectAll(wrapper, 0, 5)
       await wrapper.find('textarea').trigger('keydown', { key: 'i', ctrlKey: true })
 
@@ -394,7 +438,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then Cmd+Shift+X applies strikethrough', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello' },
+      })
       selectAll(wrapper, 0, 5)
       await wrapper.find('textarea').trigger('keydown', { key: 'x', metaKey: true, shiftKey: true })
 
@@ -402,29 +448,55 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then Cmd+Shift+8 applies a bulleted list', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'item' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'item' },
+      })
       selectAll(wrapper, 0, 0)
-      await wrapper.find('textarea').trigger('keydown', { code: 'Digit8', key: '8', metaKey: true, shiftKey: true })
+      await wrapper.find('textarea').trigger('keydown', {
+        code: 'Digit8',
+        key: '8',
+        metaKey: true,
+        shiftKey: true,
+      })
 
       expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['- item'])
     })
 
     it('then Cmd+Alt+1/2/3 applies the matching heading level', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'title' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'title' },
+      })
       selectAll(wrapper, 0, 0)
 
-      await wrapper.find('textarea').trigger('keydown', { code: 'Digit1', key: '1', metaKey: true, altKey: true })
+      await wrapper.find('textarea').trigger('keydown', {
+        code: 'Digit1',
+        key: '1',
+        metaKey: true,
+        altKey: true,
+      })
       expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['# title'])
 
-      await wrapper.find('textarea').trigger('keydown', { code: 'Digit2', key: '2', metaKey: true, altKey: true })
+      await wrapper.find('textarea').trigger('keydown', {
+        code: 'Digit2',
+        key: '2',
+        metaKey: true,
+        altKey: true,
+      })
       expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['## title'])
 
-      await wrapper.find('textarea').trigger('keydown', { code: 'Digit3', key: '3', metaKey: true, altKey: true })
+      await wrapper.find('textarea').trigger('keydown', {
+        code: 'Digit3',
+        key: '3',
+        metaKey: true,
+        altKey: true,
+      })
       expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['### title'])
     })
 
     it('then it ignores a key without a modifier', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello' },
+      })
       selectAll(wrapper, 0, 5)
       await wrapper.find('textarea').trigger('keydown', { key: 'b' })
 
@@ -432,7 +504,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it ignores an unmapped modifier combo', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello' },
+      })
       selectAll(wrapper, 0, 5)
       await wrapper.find('textarea').trigger('keydown', { key: 'z', metaKey: true })
 
@@ -440,7 +514,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it does nothing when shortcuts are disabled', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello', shortcuts: false } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello', shortcuts: false },
+      })
       selectAll(wrapper, 0, 5)
       await wrapper.find('textarea').trigger('keydown', { key: 'b', metaKey: true })
 
@@ -448,7 +524,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it does nothing while readonly', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello', readonly: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello', readonly: true },
+      })
       selectAll(wrapper, 0, 5)
       await wrapper.find('textarea').trigger('keydown', { key: 'b', metaKey: true })
 
@@ -456,14 +534,23 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then the toolbar buttons expose the shortcut in their title', () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: '', toolbar: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: '', toolbar: true },
+      })
 
       expect(wrapper.find('[data-action="bold"]').attributes('title')).toContain('B')
     })
 
     it('then the toolbar buttons omit the shortcut when shortcuts are disabled', () => {
       const wrapper = mount(MazMarkdownEditor, {
-        props: { modelValue: '', toolbar: true, shortcuts: false, translations: { toolbar: { bold: 'Bold' } } },
+        props: {
+          modelValue: '',
+          toolbar: true,
+          shortcuts: false,
+          translations: {
+            toolbar: { bold: 'Bold' },
+          },
+        },
       })
 
       expect(wrapper.find('[data-action="bold"]').attributes('title')).toBe('Bold')
@@ -472,7 +559,9 @@ describe('given MazMarkdownEditor component', () => {
 
   describe('when pressing Enter inside a list', () => {
     it('then it continues a bulleted list', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: '- item' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: '- item' },
+      })
       selectAll(wrapper, 6, 6)
       await wrapper.find('textarea').trigger('keydown', { key: 'Enter' })
 
@@ -480,7 +569,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it continues a numbered list with an incremented index', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: '1. item' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: '1. item' },
+      })
       selectAll(wrapper, 7, 7)
       await wrapper.find('textarea').trigger('keydown', { key: 'Enter' })
 
@@ -488,7 +579,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it continues a task list with an unchecked box', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: '- [x] done' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: '- [x] done' },
+      })
       selectAll(wrapper, 10, 10)
       await wrapper.find('textarea').trigger('keydown', { key: 'Enter' })
 
@@ -496,7 +589,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it preserves indentation', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: '  - item' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: '  - item' },
+      })
       selectAll(wrapper, 8, 8)
       await wrapper.find('textarea').trigger('keydown', { key: 'Enter' })
 
@@ -504,7 +599,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it removes the marker on an empty list item', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: '- ' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: '- ' },
+      })
       selectAll(wrapper, 2, 2)
       await wrapper.find('textarea').trigger('keydown', { key: 'Enter' })
 
@@ -512,7 +609,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it leaves a non-list line untouched', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'hello' },
+      })
       selectAll(wrapper, 5, 5)
       await wrapper.find('textarea').trigger('keydown', { key: 'Enter' })
 
@@ -520,7 +619,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it ignores Enter when a selection is active', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: '- item' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: '- item' },
+      })
       selectAll(wrapper, 0, 6)
       await wrapper.find('textarea').trigger('keydown', { key: 'Enter' })
 
@@ -528,7 +629,9 @@ describe('given MazMarkdownEditor component', () => {
     })
 
     it('then it does nothing while readonly', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: '- item', readonly: true } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: '- item', readonly: true },
+      })
       selectAll(wrapper, 6, 6)
       await wrapper.find('textarea').trigger('keydown', { key: 'Enter' })
 
@@ -588,7 +691,13 @@ describe('given MazMarkdownEditor component', () => {
   describe('when inserting a link without a selection', () => {
     it('then it uses the fallback link label', async () => {
       const wrapper = mount(MazMarkdownEditor, {
-        props: { modelValue: '', toolbar: true, translations: { toolbar: { link: 'URL' } } },
+        props: {
+          modelValue: '',
+          toolbar: true,
+          translations: {
+            toolbar: { link: 'URL' },
+          },
+        },
       })
 
       selectAll(wrapper, 0, 0)
@@ -653,7 +762,9 @@ describe('given MazMarkdownEditor component', () => {
 
   describe('when a formatting action runs without a textarea', () => {
     it('then it is a no-op', () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'text' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'text' },
+      })
       wrapper.unmount()
 
       expect(() => {
@@ -670,7 +781,9 @@ describe('given MazMarkdownEditor component', () => {
 
   describe('when the textarea scrolls without line numbers', () => {
     it('then it does not throw', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'a\nb' } })
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'a\nb' },
+      })
 
       await expect(wrapper.find('textarea').trigger('scroll')).resolves.not.toThrow()
     })

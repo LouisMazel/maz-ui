@@ -103,7 +103,9 @@ function resolveElement(target: HTMLElement | string | null | undefined): HTMLEl
     if (!isClient())
       return undefined
     const found = document.querySelector(target)
-    return found instanceof HTMLElement ? found : undefined
+    return found instanceof HTMLElement
+      ? found
+      : undefined
   }
   return target
 }
@@ -205,15 +207,25 @@ export function useDrag(target: UseDragTarget, options: UseDragOptions = {}): Us
     if (pointerId !== undefined && event.pointerId !== pointerId)
       return
 
-    const dx = axis === 'y' ? 0 : event.clientX - startX
-    const dy = axis === 'x' ? 0 : event.clientY - startY
+    const dx = axis === 'y'
+      ? 0
+      : event.clientX - startX
+    const dy = axis === 'x'
+      ? 0
+      : event.clientY - startY
 
     offsetX.value = dx
     offsetY.value = dy
     distance.value = Math.hypot(dx, dy)
     direction.value = Math.abs(dx) > Math.abs(dy)
-      ? (dx > 0 ? 'right' : 'left')
-      : (dy !== 0 ? (dy > 0 ? 'down' : 'up') : direction.value)
+      ? (dx > 0
+          ? 'right'
+          : 'left')
+      : (dy !== 0
+          ? (dy > 0
+              ? 'down'
+              : 'up')
+          : direction.value)
 
     if (!isDragging.value) {
       if (distance.value < threshold)

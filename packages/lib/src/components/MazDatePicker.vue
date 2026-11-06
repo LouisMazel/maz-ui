@@ -468,7 +468,9 @@ onBeforeMount(() => {
  * @returns {string} The formatted date for the calendar
  */
 function getCalendarDate(value: MazDatePickerValue): string {
-  const baseDate = (isRangeModelValue(value) ? value.start : value) ?? dayjs().format()
+  const baseDate = (isRangeModelValue(value)
+    ? value.start
+    : value) ?? dayjs().format()
 
   if (minDate && dayjs(baseDate).isBefore(minDate)) {
     return minDate
@@ -489,8 +491,12 @@ const isHour12 = computed(
 
 const formatterOptions = computed<DateTimeFormatOptions>(() => ({
   ...inputDateFormat,
-  timeStyle: hasTime.value ? inputDateFormat.timeStyle ?? 'short' : undefined,
-  hour12: hasTime.value ? inputDateFormat.hour12 ?? isHour12.value : undefined,
+  timeStyle: hasTime.value
+    ? inputDateFormat.timeStyle ?? 'short'
+    : undefined,
+  hour12: hasTime.value
+    ? inputDateFormat.hour12 ?? isHour12.value
+    : undefined,
 } satisfies DateTimeFormatOptions))
 
 const inputValue = computed(() => {
@@ -522,7 +528,9 @@ const inputValue = computed(() => {
     })
   }
 
-  return inputDateTransformer && formattedDate ? inputDateTransformer({ formattedDate, value: modelValue, locale: localeModel.value }) : formattedDate
+  return inputDateTransformer && formattedDate
+    ? inputDateTransformer({ formattedDate, value: modelValue, locale: localeModel.value })
+    : formattedDate
 })
 
 const hasPickerOpen = defineModel('open', { default: false })

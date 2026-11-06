@@ -19,7 +19,10 @@ vi.mock('@modelcontextprotocol/sdk/server/stdio.js', () => ({
 describe('given startStdioServer', () => {
   describe('when it starts', () => {
     it('then it connects the server to a stdio transport', async () => {
-      const server = await startStdioServer({ cwd: getEmptyCwd(), bundledDir: BUNDLE_DIR })
+      const server = await startStdioServer({
+        cwd: getEmptyCwd(),
+        bundledDir: BUNDLE_DIR,
+      })
 
       expect(transports.created).toBe(1)
       expect(server.isConnected()).toBe(true)
@@ -31,7 +34,10 @@ describe('given startStdioServer', () => {
 describe('given createContext', () => {
   describe('when no knowledge is given', () => {
     it('then it loads the knowledge from the options', () => {
-      const context = createContext({ cwd: getEmptyCwd(), bundledDir: BUNDLE_DIR })
+      const context = createContext({
+        cwd: getEmptyCwd(),
+        bundledDir: BUNDLE_DIR,
+      })
 
       expect(context.knowledge.source.kind).toBe('bundled')
       expect(context.cwd).toBe(getEmptyCwd())

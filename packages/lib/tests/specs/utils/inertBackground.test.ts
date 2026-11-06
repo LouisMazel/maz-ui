@@ -28,7 +28,15 @@ describe('given a page with a modal', () => {
 
       expect(held).toEqual([app])
       expect(app.hasAttribute('inert')).toBe(true)
-      expect([toasts, panel, live, status, alert, style, modalRoot].some(element => element.hasAttribute('inert'))).toBe(false)
+      expect([
+        toasts,
+        panel,
+        live,
+        status,
+        alert,
+        style,
+        modalRoot,
+      ].some(element => element.hasAttribute('inert'))).toBe(false)
     })
   })
 

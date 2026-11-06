@@ -82,7 +82,9 @@ describe('given MazTable component', () => {
 
     wrapper.vm.allSelected = true
 
-    expect(wrapper.emitted('update:model-value')?.[0]).toStrictEqual([[1, 2, 3, 4]])
+    expect(wrapper.emitted('update:model-value')?.[0]).toStrictEqual([
+      [1, 2, 3, 4],
+    ])
 
     await wrapper.findAll('thead tr th')[3].trigger('click')
 
@@ -152,10 +154,34 @@ describe('given MazTable component', () => {
         { label: 'City', key: 'city' },
       ],
       rows: [
-        { id: 1, firstname: 'John', lastname: 'Doe', age: 25, city: 'New York' },
-        { id: 2, firstname: 'Jane', lastname: 'Doe', age: 22, city: 'Paris' },
-        { id: 3, firstname: 'John', lastname: 'Smith', age: 32, city: 'London' },
-        { id: 4, firstname: 'Jane', lastname: 'Smith', age: 28, city: 'Tokyo' },
+        {
+          id: 1,
+          firstname: 'John',
+          lastname: 'Doe',
+          age: 25,
+          city: 'New York',
+        },
+        {
+          id: 2,
+          firstname: 'Jane',
+          lastname: 'Doe',
+          age: 22,
+          city: 'Paris',
+        },
+        {
+          id: 3,
+          firstname: 'John',
+          lastname: 'Smith',
+          age: 32,
+          city: 'London',
+        },
+        {
+          id: 4,
+          firstname: 'Jane',
+          lastname: 'Smith',
+          age: 28,
+          city: 'Tokyo',
+        },
       ],
     }
 
@@ -256,10 +282,34 @@ describe('given MazTable component', () => {
         { label: 'City', key: 'city' },
       ],
       rows: [
-        { id: 1, firstname: 'John', lastname: 'Doe', age: 25, city: 'New York' },
-        { id: 2, firstname: 'Jane', lastname: 'Doe', age: 22, city: 'Paris' },
-        { id: 3, firstname: 'John', lastname: 'Smith', age: 32, city: 'London' },
-        { id: 4, firstname: 'Jane', lastname: 'Smith', age: 28, city: 'Tokyo' },
+        {
+          id: 1,
+          firstname: 'John',
+          lastname: 'Doe',
+          age: 25,
+          city: 'New York',
+        },
+        {
+          id: 2,
+          firstname: 'Jane',
+          lastname: 'Doe',
+          age: 22,
+          city: 'Paris',
+        },
+        {
+          id: 3,
+          firstname: 'John',
+          lastname: 'Smith',
+          age: 32,
+          city: 'London',
+        },
+        {
+          id: 4,
+          firstname: 'Jane',
+          lastname: 'Smith',
+          age: 28,
+          city: 'Tokyo',
+        },
       ],
     }
 
@@ -272,8 +322,22 @@ describe('given MazTable component', () => {
     wrapper.vm.searchQueryModel = 'Doe'
 
     expect(wrapper.vm.rowsFiltered).toStrictEqual([
-      { id: 1, firstname: 'John', lastname: 'Doe', age: 25, city: 'New York', selected: undefined },
-      { id: 2, firstname: 'Jane', lastname: 'Doe', age: 22, city: 'Paris', selected: undefined },
+      {
+        id: 1,
+        firstname: 'John',
+        lastname: 'Doe',
+        age: 25,
+        city: 'New York',
+        selected: undefined,
+      },
+      {
+        id: 2,
+        firstname: 'Jane',
+        lastname: 'Doe',
+        age: 22,
+        city: 'Paris',
+        selected: undefined,
+      },
     ])
   })
 
@@ -295,10 +359,34 @@ describe('given MazTable component', () => {
         { label: 'City', key: 'city' },
       ],
       rows: [
-        { id: 1, firstname: 'John', lastname: 'Doe', age: 25, city: 'New York' },
-        { id: 2, firstname: 'Jane', lastname: 'Doe', age: 22, city: 'Paris' },
-        { id: 3, firstname: 'John', lastname: 'Smith', age: 32, city: 'London' },
-        { id: 4, firstname: 'Jane', lastname: 'Smith', age: 28, city: 'Tokyo' },
+        {
+          id: 1,
+          firstname: 'John',
+          lastname: 'Doe',
+          age: 25,
+          city: 'New York',
+        },
+        {
+          id: 2,
+          firstname: 'Jane',
+          lastname: 'Doe',
+          age: 22,
+          city: 'Paris',
+        },
+        {
+          id: 3,
+          firstname: 'John',
+          lastname: 'Smith',
+          age: 32,
+          city: 'London',
+        },
+        {
+          id: 4,
+          firstname: 'Jane',
+          lastname: 'Smith',
+          age: 28,
+          city: 'Tokyo',
+        },
       ],
     }
 
@@ -309,15 +397,43 @@ describe('given MazTable component', () => {
     await vi.dynamicImportSettled()
 
     expect(wrapper.vm.rowsOfPage).toStrictEqual([
-      { id: 1, firstname: 'John', lastname: 'Doe', age: 25, city: 'New York', selected: undefined },
-      { id: 2, firstname: 'Jane', lastname: 'Doe', age: 22, city: 'Paris', selected: undefined },
+      {
+        id: 1,
+        firstname: 'John',
+        lastname: 'Doe',
+        age: 25,
+        city: 'New York',
+        selected: undefined,
+      },
+      {
+        id: 2,
+        firstname: 'Jane',
+        lastname: 'Doe',
+        age: 22,
+        city: 'Paris',
+        selected: undefined,
+      },
     ])
 
     wrapper.vm.currentPageModel = 2
 
     expect(wrapper.vm.rowsOfPage).toStrictEqual([
-      { id: 3, firstname: 'John', lastname: 'Smith', age: 32, city: 'London', selected: undefined },
-      { id: 4, firstname: 'Jane', lastname: 'Smith', age: 28, city: 'Tokyo', selected: undefined },
+      {
+        id: 3,
+        firstname: 'John',
+        lastname: 'Smith',
+        age: 32,
+        city: 'London',
+        selected: undefined,
+      },
+      {
+        id: 4,
+        firstname: 'Jane',
+        lastname: 'Smith',
+        age: 28,
+        city: 'Tokyo',
+        selected: undefined,
+      },
     ])
   })
 
@@ -357,7 +473,9 @@ describe('given MazTable component', () => {
 
         expect(wrapper.emitted('update:model-value')).toBeTruthy()
         const emittedValues = wrapper.emitted('update:model-value')
-        expect(emittedValues?.at(-1)).toStrictEqual([[1, 2]])
+        expect(emittedValues?.at(-1)).toStrictEqual([
+          [1, 2],
+        ])
 
         wrapper.vm.currentPageModel = 2
 
@@ -368,14 +486,18 @@ describe('given MazTable component', () => {
         await checkboxesPage2[1].vm.$emit('update:model-value', true)
 
         const emittedValuesAfterPageChange = wrapper.emitted('update:model-value')
-        expect(emittedValuesAfterPageChange?.at(-1)).toStrictEqual([[1, 2, 3]])
+        expect(emittedValuesAfterPageChange?.at(-1)).toStrictEqual([
+          [1, 2, 3],
+        ])
 
         wrapper.vm.currentPageModel = 1
 
         await vi.dynamicImportSettled()
 
         const emittedValuesBackToPage1 = wrapper.emitted('update:model-value')
-        expect(emittedValuesBackToPage1?.at(-1)).toStrictEqual([[1, 2, 3]])
+        expect(emittedValuesBackToPage1?.at(-1)).toStrictEqual([
+          [1, 2, 3],
+        ])
       })
     })
   })
@@ -383,10 +505,14 @@ describe('given MazTable component', () => {
   describe('Given a global config provides defaults for MazTable', () => {
     describe('When the component mounts without a roundedSize prop', () => {
       it('Then it applies the per-component global roundedSize', () => {
-        const config = { MazTable: { roundedSize: 'full' as const } }
+        const config = {
+          MazTable: { roundedSize: 'full' as const },
+        }
 
         const wrapper = mount(MazTable, {
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(wrapper.find('.m-table-wrapper').classes()).toContain('--rounded-full')
@@ -395,10 +521,14 @@ describe('given MazTable component', () => {
 
     describe('When the roundedSize comes from defaults.global', () => {
       it('Then it applies the global roundedSize', () => {
-        const config = { global: { roundedSize: 'lg' as const } }
+        const config = {
+          global: { roundedSize: 'lg' as const },
+        }
 
         const wrapper = mount(MazTable, {
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(wrapper.find('.m-table-wrapper').classes()).toContain('--rounded-lg')
@@ -407,11 +537,15 @@ describe('given MazTable component', () => {
 
     describe('When an instance roundedSize is passed alongside the global config', () => {
       it('Then the instance prop wins over the global default', () => {
-        const config = { MazTable: { roundedSize: 'full' as const } }
+        const config = {
+          MazTable: { roundedSize: 'full' as const },
+        }
 
         const wrapper = mount(MazTable, {
           props: { roundedSize: 'sm' as const },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(wrapper.find('.m-table-wrapper').classes()).toContain('--rounded-sm')
@@ -421,11 +555,19 @@ describe('given MazTable component', () => {
 
     describe('When the size comes from the global config', () => {
       it('Then the table titles receive the global size class', async () => {
-        const config = { MazTable: { size: 'xl' as const } }
+        const config = {
+          MazTable: { size: 'xl' as const },
+        }
 
         const wrapper = mount(MazTable, {
-          props: { headers: [{ label: 'Id', key: 'id' }] },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          props: {
+            headers: [
+              { label: 'Id', key: 'id' },
+            ],
+          },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         await vi.dynamicImportSettled()
@@ -436,11 +578,20 @@ describe('given MazTable component', () => {
 
     describe('When an instance size is passed alongside the global config', () => {
       it('Then the instance size wins on the table titles', async () => {
-        const config = { MazTable: { size: 'xl' as const } }
+        const config = {
+          MazTable: { size: 'xl' as const },
+        }
 
         const wrapper = mount(MazTable, {
-          props: { headers: [{ label: 'Id', key: 'id' }], size: 'sm' as const },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          props: {
+            headers: [
+              { label: 'Id', key: 'id' },
+            ],
+            size: 'sm' as const,
+          },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         await vi.dynamicImportSettled()
@@ -484,15 +635,27 @@ describe('given MazTable component', () => {
         props: {
           animatedRows: true,
           rowKey: 'id',
-          headers: [{ label: 'Id', key: 'id' }],
-          rows: [{ id: 1 }, { id: 2 }, { id: 3 }],
+          headers: [
+            { label: 'Id', key: 'id' },
+          ],
+          rows: [
+            { id: 1 },
+            { id: 2 },
+            { id: 3 },
+          ],
         } as any,
       })
 
       await vi.dynamicImportSettled()
       expect(wrapper.findAll('tbody tr td').map(td => td.text())).toStrictEqual(['1', '2', '3'])
 
-      await wrapper.setProps({ rows: [{ id: 3 }, { id: 1 }, { id: 2 }] })
+      await wrapper.setProps({
+        rows: [
+          { id: 3 },
+          { id: 1 },
+          { id: 2 },
+        ],
+      })
       await vi.dynamicImportSettled()
 
       expect(wrapper.findAll('tbody tr td').map(td => td.text())).toStrictEqual(['3', '1', '2'])
@@ -502,8 +665,13 @@ describe('given MazTable component', () => {
       const wrapper = mount(MazTable, {
         props: {
           animatedRows: true,
-          headers: [{ label: 'Id', key: 'id' }],
-          rows: [{ id: 1 }, { id: 2 }],
+          headers: [
+            { label: 'Id', key: 'id' },
+          ],
+          rows: [
+            { id: 1 },
+            { id: 2 },
+          ],
         } as any,
       })
 

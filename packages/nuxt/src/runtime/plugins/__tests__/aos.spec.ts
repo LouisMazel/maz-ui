@@ -13,8 +13,12 @@ const { MockAosHandler, mockAosPlugin, mockRouter, aosInstances } = vi.hoisted((
   return {
     MockAosHandler,
     aosInstances,
-    mockAosPlugin: { install: vi.fn() },
-    mockRouter: { push: vi.fn() },
+    mockAosPlugin: {
+      install: vi.fn(),
+    },
+    mockRouter: {
+      push: vi.fn(),
+    },
   }
 })
 
@@ -38,7 +42,13 @@ describe('aos plugin', () => {
     const mockUse = vi.fn()
     const vueApp = { use: mockUse }
     const context = {
-      $config: { public: { mazUi: { plugins: { aos: true } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: { aos: true },
+          },
+        },
+      },
       vueApp,
     }
 
@@ -53,7 +63,13 @@ describe('aos plugin', () => {
     const vueApp = { use: mockUse }
     const aosOptions = { delay: 200, duration: 500 }
     const context = {
-      $config: { public: { mazUi: { plugins: { aos: aosOptions } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: { aos: aosOptions },
+          },
+        },
+      },
       vueApp,
     }
 
@@ -69,7 +85,15 @@ describe('aos plugin', () => {
     const mockUse = vi.fn()
     const vueApp = { use: mockUse }
     const context = {
-      $config: { public: { mazUi: { plugins: { aos: { router: true } } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: {
+              aos: { router: true },
+            },
+          },
+        },
+      },
       vueApp,
     }
 
@@ -85,7 +109,15 @@ describe('aos plugin', () => {
     const mockUse = vi.fn()
     const vueApp = { use: mockUse }
     const context = {
-      $config: { public: { mazUi: { plugins: { aos: { router: false } } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: {
+              aos: { router: false },
+            },
+          },
+        },
+      },
       vueApp,
     }
 
@@ -101,7 +133,13 @@ describe('aos plugin', () => {
     const mockUse = vi.fn()
     const vueApp = { use: mockUse }
     const context = {
-      $config: { public: { mazUi: { plugins: { aos: true } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: { aos: true },
+          },
+        },
+      },
       vueApp,
     }
 

@@ -60,21 +60,27 @@ describe('components/MazContainer.vue', () => {
 function mountWithGlobalConfig(config: unknown, props: Record<string, unknown> = {}) {
   return mount(MazContainer, {
     props,
-    global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+    global: {
+      provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+    },
   })
 }
 
 describe('given a MazUi global default for roundedSize', () => {
   describe('when no roundedSize prop is passed', () => {
     it('then it applies the global default rounded class', () => {
-      const wrapper = mountWithGlobalConfig({ global: { roundedSize: 'full' } })
+      const wrapper = mountWithGlobalConfig({
+        global: { roundedSize: 'full' },
+      })
       expect(wrapper.classes()).toContain('maz:rounded-full')
     })
   })
 
   describe('when a roundedSize prop is passed', () => {
     it('then the instance prop wins over the global default', () => {
-      const wrapper = mountWithGlobalConfig({ global: { roundedSize: 'full' } }, { roundedSize: 'none' })
+      const wrapper = mountWithGlobalConfig({
+        global: { roundedSize: 'full' },
+      }, { roundedSize: 'none' })
       expect(wrapper.classes()).not.toContain('maz:rounded-full')
     })
   })
@@ -83,14 +89,18 @@ describe('given a MazUi global default for roundedSize', () => {
 describe('given a component-scoped default for bordered', () => {
   describe('when no bordered prop is passed', () => {
     it('then the component default disables the border', () => {
-      const wrapper = mountWithGlobalConfig({ MazContainer: { bordered: false } })
+      const wrapper = mountWithGlobalConfig({
+        MazContainer: { bordered: false },
+      })
       expect(wrapper.classes()).not.toContain('maz:border')
     })
   })
 
   describe('when a bordered prop is passed', () => {
     it('then the instance prop wins over the component default', () => {
-      const wrapper = mountWithGlobalConfig({ MazContainer: { bordered: false } }, { bordered: true })
+      const wrapper = mountWithGlobalConfig({
+        MazContainer: { bordered: false },
+      }, { bordered: true })
       expect(wrapper.classes()).toContain('maz:border')
     })
   })

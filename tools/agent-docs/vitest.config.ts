@@ -7,13 +7,21 @@ export default defineConfig({
   test: {
     silent: !!process.env.CI,
     hideSkippedTests: !!process.env.CI,
-    reporters: process.env.CI ? ['dot'] : ['tree'],
+    reporters: process.env.CI
+      ? ['dot']
+      : ['tree'],
     environment: 'node',
     globals: true,
     testTimeout: 60_000,
     coverage: {
       provider: 'v8',
-      reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
+      reporter: [
+        'clover',
+        'html',
+        'lcov',
+        'text',
+        'text-summary',
+      ],
       include: ['src/**/*.ts'],
       exclude: [
         ...coverageConfigDefaults.exclude,

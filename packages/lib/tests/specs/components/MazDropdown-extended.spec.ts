@@ -249,7 +249,9 @@ describe('MazDropdown extended coverage', () => {
   describe('when items have colors', () => {
     it('should apply color class to action buttons', async () => {
       const wrapper = await getWrapper({
-        items: [{ label: 'Delete', onClick: actionSpy, color: 'destructive' }],
+        items: [
+          { label: 'Delete', onClick: actionSpy, color: 'destructive' },
+        ],
       })
       await wrapper.find('.m-popover-trigger').trigger('click')
 
@@ -261,7 +263,9 @@ describe('MazDropdown extended coverage', () => {
   describe('when items have href with target', () => {
     it('should apply target to link items', async () => {
       const wrapper = await getWrapper({
-        items: [{ label: 'External', href: 'https://example.com', target: '_blank' }],
+        items: [
+          { label: 'External', href: 'https://example.com', target: '_blank' },
+        ],
       })
       await wrapper.find('.m-popover-trigger').trigger('click')
 
@@ -273,7 +277,9 @@ describe('MazDropdown extended coverage', () => {
   describe('when items have href without target', () => {
     it('should default target to _self for href items', async () => {
       const wrapper = await getWrapper({
-        items: [{ label: 'Internal', href: '/page' }],
+        items: [
+          { label: 'Internal', href: '/page' },
+        ],
       })
       await wrapper.find('.m-popover-trigger').trigger('click')
 

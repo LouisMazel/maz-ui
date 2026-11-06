@@ -83,7 +83,9 @@ function addTags(event: Event) {
     const values = inputValue.value
       .trim()
       .split(',')
-      .map(value => (value.trim() === ',' ? undefined : value.trim()))
+      .map(value => (value.trim() === ','
+        ? undefined
+        : value.trim()))
       .filter(truthyFilter)
 
     const newValues = values.filter(
@@ -91,7 +93,12 @@ function addTags(event: Event) {
     )
     emits(
       'update:model-value',
-      modelValue ? [...modelValue, ...newValues] : [...newValues],
+      modelValue
+        ? [
+            ...modelValue,
+            ...newValues,
+          ]
+        : [...newValues],
     )
     inputValue.value = undefined
   }

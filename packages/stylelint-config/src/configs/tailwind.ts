@@ -51,7 +51,12 @@ export const TAILWIND_AT_RULES = [
  * — keep that rule out of this set and merge it in only when SCSS is off.
  */
 export const tailwindRules: StylelintRules = {
-  'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply'] }],
+  'at-rule-no-deprecated': [
+    true,
+    {
+      ignoreAtRules: ['apply'],
+    },
+  ],
 
   /**
    * `stylelint-config-recommended@18` enables the core rule
@@ -60,7 +65,12 @@ export const tailwindRules: StylelintRules = {
    * not a valid prelude grammar, so every `@apply` triggers a false positive.
    * Whitelist Tailwind's at-rules (keeping `media`, ignored by recommended).
    */
-  'at-rule-prelude-no-invalid': [true, { ignoreAtRules: [...TAILWIND_AT_RULES, 'media'] }],
+  'at-rule-prelude-no-invalid': [
+    true,
+    {
+      ignoreAtRules: [...TAILWIND_AT_RULES, 'media'],
+    },
+  ],
 
   /**
    * Tailwind v4 only parses the `prefix(...)` modifier on the bare-string
@@ -79,7 +89,10 @@ export const tailwindRules: StylelintRules = {
  * recommended config.
  */
 export const tailwindAtRuleNoUnknown: StylelintRules = {
-  'at-rule-no-unknown': [true, { ignoreAtRules: TAILWIND_AT_RULES }],
+  'at-rule-no-unknown': [
+    true,
+    { ignoreAtRules: TAILWIND_AT_RULES },
+  ],
 }
 
 /**

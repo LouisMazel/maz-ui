@@ -57,7 +57,9 @@ export function decodeSvgDataUri(value: string): string | undefined {
       ? new TextDecoder().decode(Uint8Array.from(atob(data), char => char.charCodeAt(0)))
       : decodeURIComponent(data)
 
-    return isRawSvg(text) ? text : undefined
+    return isRawSvg(text)
+      ? text
+      : undefined
   }
   catch {
     return undefined
@@ -119,7 +121,9 @@ export async function fetchSvgText(url: string, init?: RequestInit): Promise<str
     return inflight
 
   const promise = (async () => {
-    const response = await (init ? fetch(url, init) : fetch(url))
+    const response = await (init
+      ? fetch(url, init)
+      : fetch(url))
     if (!response.ok)
       throw new Error(`[MazIcon] Could not fetch icon at ${url} (${response.status})`)
 
@@ -164,7 +168,9 @@ export function prefetchSvgText(url: string): void {
     return
 
   svgPrefetchFailures.delete(url)
-  fetchSvgText(url, { signal: AbortSignal.timeout(SVG_PREFETCH_TIMEOUT_MS) }).catch((error: unknown) => {
+  fetchSvgText(url, {
+    signal: AbortSignal.timeout(SVG_PREFETCH_TIMEOUT_MS),
+  }).catch((error: unknown) => {
     svgPrefetchFailures.set(url, Date.now() + SVG_PREFETCH_FAILURE_TTL_MS)
     console.warn(error)
   })

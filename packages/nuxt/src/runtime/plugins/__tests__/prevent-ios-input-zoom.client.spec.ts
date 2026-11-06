@@ -16,7 +16,11 @@ vi.mock('@maz-ui/utils/helpers/isIos', () => ({
 function runPlugin({ ios, viewport }: { ios: boolean, viewport?: string }) {
   vi.mocked(isIos).mockReturnValue(ios)
   vi.stubGlobal('document', {
-    querySelector: () => viewport === undefined ? null : { getAttribute: () => viewport },
+    querySelector: () => viewport === undefined
+      ? null
+      : {
+          getAttribute: () => viewport,
+        },
   })
 
   ;(preventIosInputZoomPlugin as unknown as () => void)()
@@ -33,7 +37,9 @@ describe('given the prevent-ios-input-zoom plugin', () => {
       runPlugin({ ios: true, viewport: 'width=device-width, initial-scale=1' })
 
       expect(useHead).toHaveBeenCalledWith({
-        meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1' }],
+        meta: [
+          { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1' },
+        ],
       })
     })
   })

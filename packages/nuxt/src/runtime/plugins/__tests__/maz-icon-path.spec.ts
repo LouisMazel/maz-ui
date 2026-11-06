@@ -11,7 +11,13 @@ describe('maz-icon-path plugin', () => {
     const mockProvide = vi.fn()
     const vueApp = { provide: mockProvide }
     const context = {
-      $config: { public: { mazUi: { general: { defaultMazIconPath: '/icons' } } } },
+      $config: {
+        public: {
+          mazUi: {
+            general: { defaultMazIconPath: '/icons' },
+          },
+        },
+      },
       vueApp,
     }
 
@@ -25,7 +31,11 @@ describe('maz-icon-path plugin', () => {
     const mockProvide = vi.fn()
     const vueApp = { provide: mockProvide }
     const context = {
-      $config: { public: { mazUi: { general: {} } } },
+      $config: {
+        public: {
+          mazUi: { general: {} },
+        },
+      },
       vueApp,
     }
 

@@ -30,7 +30,9 @@ export function splitWords(value: string): string[] {
 }
 
 export function unique<T>(values: Iterable<T>): T[] {
-  return [...new Set(values)]
+  return [
+    ...new Set(values),
+  ]
 }
 
 export function truncate(value: string, max: number): string {

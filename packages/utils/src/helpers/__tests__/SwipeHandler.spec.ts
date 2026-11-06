@@ -186,7 +186,12 @@ describe('given Swipe class', () => {
   describe('when a disallowed pointer type is used', () => {
     it('then it ignores the gesture', () => {
       const onLeft = vi.fn()
-      const swipe = new Swipe({ ...defaultOptions, onLeft, threshold: 10, pointerTypes: ['touch'] })
+      const swipe = new Swipe({
+        ...defaultOptions,
+        onLeft,
+        threshold: 10,
+        pointerTypes: ['touch'],
+      })
       swipe.start()
       mockElement.dispatchEvent(createPointerEvent('pointerdown', { clientX: 200, clientY: 100, pointerType: 'mouse' }))
       mockElement.dispatchEvent(createPointerEvent('pointermove', { clientX: 50, clientY: 100, pointerType: 'mouse' }))
@@ -251,7 +256,12 @@ describe('given Swipe class', () => {
   describe('when triggerOnEnd is true and the pointer is released without moving', () => {
     it('then it does not call the direction callbacks', () => {
       const onLeft = vi.fn()
-      const swipe = new Swipe({ ...defaultOptions, onLeft, triggerOnEnd: true, threshold: 10 })
+      const swipe = new Swipe({
+        ...defaultOptions,
+        onLeft,
+        triggerOnEnd: true,
+        threshold: 10,
+      })
       swipe.start()
       mockElement.dispatchEvent(createPointerEvent('pointerdown', { clientX: 200, clientY: 100 }))
       mockElement.dispatchEvent(createPointerEvent('pointerup', { clientX: 200, clientY: 100 }))
@@ -263,7 +273,13 @@ describe('given Swipe class', () => {
     it('then it calls the direction callback on pointer up and resets the values', () => {
       const onLeft = vi.fn()
       const onValuesChanged = vi.fn()
-      const swipe = new Swipe({ ...defaultOptions, onLeft, onValuesChanged, triggerOnEnd: true, threshold: 10 })
+      const swipe = new Swipe({
+        ...defaultOptions,
+        onLeft,
+        onValuesChanged,
+        triggerOnEnd: true,
+        threshold: 10,
+      })
       swipe.start()
 
       mockElement.dispatchEvent(createPointerEvent('pointerdown', { clientX: 200, clientY: 100 }))

@@ -5,7 +5,9 @@ import { nextTick } from 'vue'
 describe('given a MazDatePicker', () => {
   describe('when it is closed', () => {
     it('then its input is a collapsed combobox opening a dialog', async () => {
-      const wrapper = mount(MazDatePicker, { props: { label: 'Date', locale: 'en-US', modelValue: '2024-01-15' } })
+      const wrapper = mount(MazDatePicker, {
+        props: { label: 'Date', locale: 'en-US', modelValue: '2024-01-15' },
+      })
       await vi.dynamicImportSettled()
 
       const input = wrapper.find('.m-date-picker__input input')
@@ -21,7 +23,15 @@ describe('given a MazDatePicker', () => {
 
   describe('when it is open', () => {
     it('then its input is expanded and controls the picker panel', async () => {
-      const wrapper = mount(MazDatePicker, { props: { label: 'Date', locale: 'en-US', modelValue: '2024-01-15', open: true }, attachTo: document.body })
+      const wrapper = mount(MazDatePicker, {
+        props: {
+          label: 'Date',
+          locale: 'en-US',
+          modelValue: '2024-01-15',
+          open: true,
+        },
+        attachTo: document.body,
+      })
       await vi.dynamicImportSettled()
       await nextTick()
 

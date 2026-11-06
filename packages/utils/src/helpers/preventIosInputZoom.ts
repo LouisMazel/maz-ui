@@ -9,7 +9,9 @@ export function addViewportMaximumScale(content: string): string {
   if (MAXIMUM_SCALE_REGEX.test(content))
     return content.replace(MAXIMUM_SCALE_REGEX, 'maximum-scale=1')
 
-  return content.trim() ? `${content}, maximum-scale=1` : 'maximum-scale=1'
+  return content.trim()
+    ? `${content}, maximum-scale=1`
+    : 'maximum-scale=1'
 }
 
 /**

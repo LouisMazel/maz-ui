@@ -33,22 +33,37 @@ export const TOOLS: ToolDefinition[] = [
 
 export async function runTool(context: ServerContext, tool: ToolDefinition, args: unknown): Promise<CallToolResult> {
   try {
-    return { content: [{ type: 'text', text: await tool.run(context, args) }] }
+    return {
+      content: [
+        { type: 'text', text: await tool.run(context, args) },
+      ],
+    }
   }
   catch (error) {
     const message = error instanceof ToolInputError
       ? error.message
       : `Unexpected error in ${tool.name}: ${getErrorMessage(error)}. Retry with other arguments or fall back to the docs in ${context.knowledge.source.directory}.`
 
-    return { content: [{ type: 'text', text: message }], isError: true }
+    return {
+      content: [
+        { type: 'text', text: message },
+      ],
+      isError: true,
+    }
   }
 }
 
 export function createMazUiMcpServer(options: CreateContextOptions = {}): { server: McpServer, context: ServerContext } {
   const context = createContext(options)
   const server = new McpServer(
-    { name: 'maz-ui', title: 'maz-ui', version: readOwnVersion() },
-    { instructions: buildInstructions(context) },
+    {
+      name: 'maz-ui',
+      title: 'maz-ui',
+      version: readOwnVersion(),
+    },
+    {
+      instructions: buildInstructions(context),
+    },
   )
 
   for (const tool of TOOLS) {

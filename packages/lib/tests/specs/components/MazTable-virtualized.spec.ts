@@ -46,7 +46,9 @@ const headers = [
 async function mountTable(props: Partial<MazTableProps<{ id: number, name: string }>>, slots?: Record<string, string>) {
   const wrapper = mount(MazTable, {
     props: { headers, ...props } as any,
-    ...(slots ? { slots } : {}),
+    ...(slots
+      ? { slots }
+      : {}),
   })
   await vi.dynamicImportSettled()
   await flushPromises()
@@ -70,7 +72,11 @@ describe('given a virtualized MazTable', () => {
     it('then it renders only the windowed rows surrounded by spacer rows', async () => {
       setWindow([10, 11, 12], 100)
 
-      const wrapper = await mountTable({ rows: buildRows(100), virtualized: true, maxHeight: '400px' })
+      const wrapper = await mountTable({
+        rows: buildRows(100),
+        virtualized: true,
+        maxHeight: '400px',
+      })
 
       expect(wrapper.findAll('tbody tr.m-table-row')).toHaveLength(3)
       expect(wrapper.findAll('tbody tr.m-table-virtual-spacer')).toHaveLength(2)
@@ -84,7 +90,11 @@ describe('given a virtualized MazTable', () => {
     it('then it exposes aria-rowcount and per-row aria-rowindex', async () => {
       setWindow([10, 11, 12], 100)
 
-      const wrapper = await mountTable({ rows: buildRows(100), virtualized: true, maxHeight: '400px' })
+      const wrapper = await mountTable({
+        rows: buildRows(100),
+        virtualized: true,
+        maxHeight: '400px',
+      })
 
       expect(wrapper.get('table').attributes('aria-rowcount')).toBe('100')
       const rows = wrapper.findAll('tbody tr.m-table-row')
@@ -97,7 +107,11 @@ describe('given a virtualized MazTable', () => {
     it('then it renders neither data rows nor spacers', async () => {
       setWindow([], 100)
 
-      const wrapper = await mountTable({ rows: buildRows(100), virtualized: true, maxHeight: '400px' })
+      const wrapper = await mountTable({
+        rows: buildRows(100),
+        virtualized: true,
+        maxHeight: '400px',
+      })
 
       expect(wrapper.findAll('tbody tr.m-table-row')).toHaveLength(0)
       expect(wrapper.findAll('tbody tr.m-table-virtual-spacer')).toHaveLength(0)
@@ -108,7 +122,11 @@ describe('given a virtualized MazTable', () => {
     it('then no top spacer is rendered', async () => {
       setWindow([0, 1, 2], 100)
 
-      const wrapper = await mountTable({ rows: buildRows(100), virtualized: true, maxHeight: '400px' })
+      const wrapper = await mountTable({
+        rows: buildRows(100),
+        virtualized: true,
+        maxHeight: '400px',
+      })
 
       expect(wrapper.findAll('tbody tr.m-table-virtual-spacer')).toHaveLength(1)
     })
@@ -118,12 +136,19 @@ describe('given a virtualized MazTable', () => {
     it('then it emits the selection using the real row index', async () => {
       setWindow([10, 11, 12], 100)
 
-      const wrapper = await mountTable({ rows: buildRows(100), virtualized: true, maxHeight: '400px', selectedKey: 'id' })
+      const wrapper = await mountTable({
+        rows: buildRows(100),
+        virtualized: true,
+        maxHeight: '400px',
+        selectedKey: 'id',
+      })
 
       const secondRow = wrapper.findAll('tbody tr.m-table-row')[1]
       await secondRow.findComponent({ name: 'MazCheckbox' }).vm.$emit('update:model-value', true)
 
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toStrictEqual([[11]])
+      expect(wrapper.emitted('update:model-value')?.at(-1)).toStrictEqual([
+        [11],
+      ])
     })
   })
 
@@ -131,7 +156,12 @@ describe('given a virtualized MazTable', () => {
     it('then it renders every row, no spacer, and warns', async () => {
       setWindow([0, 1, 2], 100)
 
-      const wrapper = await mountTable({ rows: buildRows(100), virtualized: true, maxHeight: '400px', animatedRows: true })
+      const wrapper = await mountTable({
+        rows: buildRows(100),
+        virtualized: true,
+        maxHeight: '400px',
+        animatedRows: true,
+      })
 
       expect(wrapper.findAll('tbody tr.m-table-row')).toHaveLength(100)
       expect(wrapper.findAll('tbody tr.m-table-virtual-spacer')).toHaveLength(0)
@@ -144,7 +174,11 @@ describe('given a virtualized MazTable', () => {
       setWindow([0, 1, 2], 100)
 
       const wrapper = await mountTable(
-        { rows: buildRows(100), virtualized: true, maxHeight: '400px' },
+        {
+          rows: buildRows(100),
+          virtualized: true,
+          maxHeight: '400px',
+        },
         { default: '<tr class="custom-row"><td>custom content</td></tr>' },
       )
 
@@ -158,7 +192,10 @@ describe('given a virtualized MazTable', () => {
     it('then it warns that maxHeight is required', async () => {
       setWindow([0, 1, 2], 100)
 
-      await mountTable({ rows: buildRows(100), virtualized: true })
+      await mountTable({
+        rows: buildRows(100),
+        virtualized: true,
+      })
 
       expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('`maxHeight`'))
     })

@@ -14,7 +14,10 @@ const defaultOptions: {
 }
 
 function createFormComponent(options?: typeof defaultOptions) {
-  const opts = { ...defaultOptions, ...options }
+  const opts = {
+    ...defaultOptions,
+    ...options,
+  }
   return defineComponent({
     setup() {
       const schema = {
@@ -55,7 +58,12 @@ function createFormComponent(options?: typeof defaultOptions) {
       })
       const passwordField = useFormField<string>('password', { formIdentifier: identifier })
 
-      return { form, nameField, ageField, passwordField }
+      return {
+        form,
+        nameField,
+        ageField,
+        passwordField,
+      }
     },
     template: `
       <div>
@@ -492,7 +500,9 @@ describe('given the returned scrollToError', () => {
       document.body.appendChild(el)
 
       const [result] = withSetup(() => useFormValidator({
-        schema: { name: pipe(string(), minLength(2)) },
+        schema: {
+          name: pipe(string(), minLength(2)),
+        },
         defaultValues: { name: '' },
       }))
 
@@ -511,7 +521,9 @@ describe('given the returned scrollToError', () => {
       document.body.appendChild(el)
 
       const [result] = withSetup(() => useFormValidator({
-        schema: { name: pipe(string(), minLength(2)) },
+        schema: {
+          name: pipe(string(), minLength(2)),
+        },
         defaultValues: { name: '' },
         options: { scrollToError: '.configured-error' },
       }))
@@ -526,7 +538,9 @@ describe('given the returned scrollToError', () => {
   describe('when called without selector and scrollToError is a boolean', () => {
     it('then it falls back to the default selector without throwing', () => {
       const [result] = withSetup(() => useFormValidator({
-        schema: { name: pipe(string(), minLength(2)) },
+        schema: {
+          name: pipe(string(), minLength(2)),
+        },
         defaultValues: { name: '' },
         options: { scrollToError: true },
       }))

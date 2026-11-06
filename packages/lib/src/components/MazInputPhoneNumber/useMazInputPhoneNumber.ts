@@ -20,7 +20,9 @@ function getBrowserLocale() {
   }
 
   const parts = browserLocale.split('-')
-  let locale = parts.length > 1 ? parts[1].slice(0, 2).toUpperCase() : parts[0].slice(0, 2).toUpperCase()
+  let locale = parts.length > 1
+    ? parts[1].slice(0, 2).toUpperCase()
+    : parts[0].slice(0, 2).toUpperCase()
 
   if (locale === 'EN') {
     locale = 'US'

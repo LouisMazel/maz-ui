@@ -31,7 +31,12 @@ const props = defineProps({
   range: { type: Boolean, required: true },
 })
 
-const emits = defineEmits(['update:model-value', 'update:calendar-date', 'update:hoverred-day', 'navigate'])
+const emits = defineEmits([
+  'update:model-value',
+  'update:calendar-date',
+  'update:hoverred-day',
+  'navigate',
+])
 
 const modelValue = computed({
   get: () => props.modelValue,

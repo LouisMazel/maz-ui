@@ -214,7 +214,9 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('click')
 
-      expect(wrapper.emitted('update:model-value')).toEqual([[1]])
+      expect(wrapper.emitted('update:model-value')).toEqual([
+        [1],
+      ])
     })
 
     it('then it emits click-step with step data and index on click', async () => {
@@ -223,7 +225,9 @@ describe('given MazTimeline component', () => {
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('click')
 
       expect(wrapper.emitted('click-step')).toEqual([
-        [{ step: defaultSteps[1], index: 1 }],
+        [
+          { step: defaultSteps[1], index: 1 },
+        ],
       ])
     })
 
@@ -359,8 +363,14 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('keydown', { key: 'Enter' })
 
-      expect(wrapper.emitted('update:model-value')).toEqual([[1]])
-      expect(wrapper.emitted('click-step')).toEqual([[{ step: defaultSteps[1], index: 1 }]])
+      expect(wrapper.emitted('update:model-value')).toEqual([
+        [1],
+      ])
+      expect(wrapper.emitted('click-step')).toEqual([
+        [
+          { step: defaultSteps[1], index: 1 },
+        ],
+      ])
     })
 
     it('then Space key on a step emits update:modelValue and click-step', async () => {
@@ -368,8 +378,14 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('keydown', { key: ' ' })
 
-      expect(wrapper.emitted('update:model-value')).toEqual([[1]])
-      expect(wrapper.emitted('click-step')).toEqual([[{ step: defaultSteps[1], index: 1 }]])
+      expect(wrapper.emitted('update:model-value')).toEqual([
+        [1],
+      ])
+      expect(wrapper.emitted('click-step')).toEqual([
+        [
+          { step: defaultSteps[1], index: 1 },
+        ],
+      ])
     })
 
     it('then ArrowRight moves focus to next step in horizontal mode', async () => {
@@ -468,7 +484,10 @@ describe('given MazTimeline component', () => {
 
     it('then step aria-label without title only includes index and state', () => {
       const wrapper = mountTimeline({
-        steps: [{ subtitle: 'No title' }, { title: 'Step 2' }],
+        steps: [
+          { subtitle: 'No title' },
+          { title: 'Step 2' },
+        ],
       })
 
       const step = wrapper.findAll('.m-timeline-step')[0]!
@@ -494,7 +513,10 @@ describe('given MazTimeline component', () => {
     it('then clickable disabled step has no role="button" and no tabindex', () => {
       const wrapper = mountTimeline({
         clickable: true,
-        steps: [{ title: 'Step 1', disabled: true }, { title: 'Step 2' }],
+        steps: [
+          { title: 'Step 1', disabled: true },
+          { title: 'Step 2' },
+        ],
       })
 
       const step = wrapper.findAll('.m-timeline-step')[0]!
@@ -733,11 +755,15 @@ describe('given MazTimeline component', () => {
   describe('given a global config provides defaults for MazTimeline', () => {
     describe('when the component mounts without size or roundedSize props', () => {
       it('then it applies the per-component global size and roundedSize', () => {
-        const config = { MazTimeline: { size: 'xl' as const, roundedSize: 'full' as const } }
+        const config = {
+          MazTimeline: { size: 'xl' as const, roundedSize: 'full' as const },
+        }
 
         const wrapper = mount(MazTimeline, {
           props: { steps: defaultSteps, direction: 'horizontal' as const },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(wrapper.classes()).toContain('--xl')
@@ -747,11 +773,15 @@ describe('given MazTimeline component', () => {
 
     describe('when the defaults come from defaults.global', () => {
       it('then it applies the global size and roundedSize', () => {
-        const config = { global: { size: 'lg' as const, roundedSize: '2xl' as const } }
+        const config = {
+          global: { size: 'lg' as const, roundedSize: '2xl' as const },
+        }
 
         const wrapper = mount(MazTimeline, {
           props: { steps: defaultSteps, direction: 'horizontal' as const },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(wrapper.classes()).toContain('--lg')
@@ -761,11 +791,20 @@ describe('given MazTimeline component', () => {
 
     describe('when instance props are passed alongside the global config', () => {
       it('then the instance props win over the global defaults', () => {
-        const config = { MazTimeline: { size: 'xl' as const, roundedSize: 'full' as const } }
+        const config = {
+          MazTimeline: { size: 'xl' as const, roundedSize: 'full' as const },
+        }
 
         const wrapper = mount(MazTimeline, {
-          props: { steps: defaultSteps, direction: 'horizontal' as const, size: 'sm' as const, roundedSize: 'none' as const },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          props: {
+            steps: defaultSteps,
+            direction: 'horizontal' as const,
+            size: 'sm' as const,
+            roundedSize: 'none' as const,
+          },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(wrapper.classes()).toContain('--sm')

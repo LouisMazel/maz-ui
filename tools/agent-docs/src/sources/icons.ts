@@ -3,13 +3,17 @@ import { readFileSync } from 'node:fs'
 /** Reads the static icon names (`MazTrash`...) from the generated `@maz-ui/icons` list */
 export function collectIconNames(iconListPath: string): string[] {
   const source = readFileSync(iconListPath, 'utf8')
-  const names = [...source.matchAll(/'(Maz\w+)'/g)].map(match => match[1])
+  const names = [
+    ...source.matchAll(/'(Maz\w+)'/g),
+  ].map(match => match[1])
 
   if (names.length === 0) {
     throw new Error(`No icon found in ${iconListPath}`)
   }
 
-  return [...new Set(names)].sort((a, b) => a.localeCompare(b))
+  return [
+    ...new Set(names),
+  ].sort((a, b) => a.localeCompare(b))
 }
 
 export interface IconGroup {
@@ -22,7 +26,11 @@ export function groupIcons(names: string[]): IconGroup[] {
   const squareFlags = names.filter(name => name.startsWith('MazFlagSquare'))
   const flags = names.filter(name => /^MazFlag[A-Z]{2}/.test(name) && !name.startsWith('MazFlagSquare'))
   const logos = names.filter(name => name.startsWith('MazLogo'))
-  const special = new Set([...squareFlags, ...flags, ...logos])
+  const special = new Set([
+    ...squareFlags,
+    ...flags,
+    ...logos,
+  ])
 
   return [
     {

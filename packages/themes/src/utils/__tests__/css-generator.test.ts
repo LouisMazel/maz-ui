@@ -118,7 +118,15 @@ describe('given generateCSS function', () => {
     })
 
     it('then emits the rounded scale (xs..3xl)', () => {
-      for (const key of ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']) {
+      for (const key of [
+        'xs',
+        'sm',
+        'md',
+        'lg',
+        'xl',
+        '2xl',
+        '3xl',
+      ]) {
         expect(css).toContain(`--maz-rounded-${key}:`)
       }
     })
@@ -198,7 +206,10 @@ describe('given generateCSS function', () => {
 
     describe('when a foundation entry is falsy', () => {
       const css = generateCSS(
-        { ...mazUi, foundation: { ...mazUi.foundation, 'border-width': '' as any } },
+        {
+          ...mazUi,
+          foundation: { ...mazUi.foundation, 'border-width': '' as any },
+        },
         {
           prefix: 'maz',
           mode: 'light',
@@ -239,7 +250,13 @@ describe('given generateCSS function', () => {
 
     describe('when a literal value is set on a non-md key', () => {
       const css = generateCSS(
-        { ...mazUi, scales: { ...mazUi.scales, rounded: { md: '1rem' as const, xs: '0.1rem' as const } } },
+        {
+          ...mazUi,
+          scales: {
+            ...mazUi.scales,
+            rounded: { md: '1rem' as const, xs: '0.1rem' as const },
+          },
+        },
         {
           prefix: 'maz',
           mode: 'light',
@@ -258,7 +275,10 @@ describe('given generateCSS function', () => {
 
     describe('when the rounded.md anchor itself is missing from the preset', () => {
       const css = generateCSS(
-        { ...mazUi, scales: { ...mazUi.scales, rounded: {} as any } },
+        {
+          ...mazUi,
+          scales: { ...mazUi.scales, rounded: {} as any },
+        },
         {
           prefix: 'maz',
           mode: 'light',
@@ -310,7 +330,13 @@ describe('given generateCSS function', () => {
 
     describe('when a shadow entry is empty', () => {
       const css = generateCSS(
-        { ...mazUi, scales: { ...mazUi.scales, shadow: { ...mazUi.scales.shadow, sm: '' } } } as any,
+        {
+          ...mazUi,
+          scales: {
+            ...mazUi.scales,
+            shadow: { ...mazUi.scales.shadow, sm: '' },
+          },
+        } as any,
         {
           prefix: 'maz',
           mode: 'light',
@@ -371,8 +397,12 @@ describe('given generateCSS function', () => {
       const preset = {
         ...mazUi,
         components: {
-          container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
-          input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
+          container: {
+            bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' },
+          },
+          input: {
+            bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' },
+          },
         },
       }
       const css = generateCSS(preset, {
@@ -395,8 +425,12 @@ describe('given generateCSS function', () => {
       const preset = {
         ...mazUi,
         components: {
-          container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
-          input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
+          container: {
+            bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' },
+          },
+          input: {
+            bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' },
+          },
         },
       }
       const css = generateCSS(preset, {
@@ -420,8 +454,12 @@ describe('given generateCSS function', () => {
       const preset = {
         ...mazUi,
         components: {
-          container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
-          input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
+          container: {
+            bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' },
+          },
+          input: {
+            bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' },
+          },
         },
       }
       const css = generateCSS(preset, {
@@ -444,7 +482,9 @@ describe('given generateCSS function', () => {
       const preset = {
         ...mazUi,
         components: {
-          container: { bg: { dark: 'oklch(0.3 0 0)' } as any },
+          container: {
+            bg: { dark: 'oklch(0.3 0 0)' } as any,
+          },
         },
       }
       const css = generateCSS(preset, {
@@ -463,7 +503,9 @@ describe('given generateCSS function', () => {
       const preset = {
         ...mazUi,
         components: {
-          container: { bg: { light: 'oklch(0.9 0 0)' } as any },
+          container: {
+            bg: { light: 'oklch(0.9 0 0)' } as any,
+          },
         },
       }
       const css = generateCSS(preset, {
@@ -482,7 +524,9 @@ describe('given generateCSS function', () => {
       const preset = {
         ...mazUi,
         components: {
-          container: { bg: { light: 'var(--maz-surface)', dark: 'var(--maz-surface)' } },
+          container: {
+            bg: { light: 'var(--maz-surface)', dark: 'var(--maz-surface)' },
+          },
         },
       }
       const css = generateCSS(preset, {
@@ -502,7 +546,9 @@ describe('given generateCSS function', () => {
     describe('when components.container.bg has neither light nor dark and mode=both', () => {
       const preset = {
         ...mazUi,
-        components: { container: { bg: {} as any } },
+        components: {
+          container: { bg: {} as any },
+        },
       }
       const css = generateCSS(preset, {
         prefix: 'maz',
@@ -518,7 +564,12 @@ describe('given generateCSS function', () => {
     })
 
     describe('when components.btn.font-weight is provided', () => {
-      const preset = { ...mazUi, components: { btn: { 'font-weight': '600' } } }
+      const preset = {
+        ...mazUi,
+        components: {
+          btn: { 'font-weight': '600' },
+        },
+      }
       const css = generateCSS(preset, {
         prefix: 'maz',
         mode: 'light',
@@ -534,7 +585,9 @@ describe('given generateCSS function', () => {
     describe('when components.dialog max-width and min-width are provided', () => {
       const preset = {
         ...mazUi,
-        components: { dialog: { 'max-width': '40rem', 'min-width': '30rem' } as any },
+        components: {
+          dialog: { 'max-width': '40rem', 'min-width': '30rem' } as any,
+        },
       }
       const css = generateCSS(preset, {
         prefix: 'maz',
@@ -559,7 +612,9 @@ describe('given generateCSS function', () => {
     describe('when components.dialog has only max-width', () => {
       const preset = {
         ...mazUi,
-        components: { dialog: { 'max-width': '50rem' } as any },
+        components: {
+          dialog: { 'max-width': '50rem' } as any,
+        },
       }
       const css = generateCSS(preset, {
         prefix: 'maz',
@@ -575,7 +630,12 @@ describe('given generateCSS function', () => {
     })
 
     describe('when components is provided without dialog sizing', () => {
-      const preset = { ...mazUi, components: { btn: { 'font-weight': '500' } } }
+      const preset = {
+        ...mazUi,
+        components: {
+          btn: { 'font-weight': '500' },
+        },
+      }
       const css = generateCSS(preset, {
         prefix: 'maz',
         mode: 'light',
@@ -590,7 +650,12 @@ describe('given generateCSS function', () => {
     })
 
     describe('when components is provided without container or input bg', () => {
-      const preset = { ...mazUi, components: { btn: { 'font-weight': '700' } } }
+      const preset = {
+        ...mazUi,
+        components: {
+          btn: { 'font-weight': '700' },
+        },
+      }
       const css = generateCSS(preset, {
         prefix: 'maz',
         mode: 'light',
@@ -702,7 +767,9 @@ describe('given generateCSS function', () => {
       const preset = {
         ...mazUi,
         components: {
-          container: { bg: { light: 'oklch(0.9 0 0)' } },
+          container: {
+            bg: { light: 'oklch(0.9 0 0)' },
+          },
         },
       }
       const css = generateCSS(preset, {
@@ -721,7 +788,9 @@ describe('given generateCSS function', () => {
       const preset = {
         ...mazUi,
         components: {
-          container: { bg: { dark: 'oklch(0.3 0 0)' } },
+          container: {
+            bg: { dark: 'oklch(0.3 0 0)' },
+          },
         },
       }
       const css = generateCSS(preset, {

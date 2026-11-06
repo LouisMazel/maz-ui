@@ -9,7 +9,7 @@ description: The ultimate Nuxt module for Maz-UI - zero-config setup with auto-i
 
 ::: tip Model Context Protocol (MCP)
 
-In development, the module connects the AI coding agents detected in the project (Claude Code, Cursor, Copilot...) to the maz-ui [MCP server](./mcp.md), which gives them the docs and rules of the installed maz-ui. See [AI Agents](#ai-agents).
+In development, the module can connect the AI coding agents detected in the project (Claude Code, Cursor, Copilot...) to the maz-ui [MCP server](./mcp.md), which gives them the docs and rules of the installed maz-ui (opt-in with `agents: { mcp: true }`). See [AI Agents](#ai-agents).
 
 Check out the documentation of [@maz-ui/mcp](./mcp.md)
 
@@ -191,7 +191,7 @@ export default defineNuxtConfig({
       vZoomImg: true,
     },
 
-    // AI coding agents (default: { rules: false, mcp: true }, false to disable)
+    // AI coding agents (default: { rules: false, mcp: false }, true to enable everything)
     agents: { rules: true, mcp: true },
   }
 })
@@ -441,7 +441,7 @@ Connect your AI coding agents (Claude Code, Cursor, GitHub Copilot, Codex, Winds
 
 ```ts
 const agents = {
-  // Register the maz-ui MCP server in .mcp.json, .cursor/mcp.json, .vscode/mcp.json (default: true)
+  // Register the maz-ui MCP server in .mcp.json, .cursor/mcp.json, .vscode/mcp.json (default: false)
   // Its instructions give the maz-ui rules to the agents
   mcp: true,
   // Also write the rules in .claude/rules/maz-ui.md and in AGENTS.md, for agents without MCP (default: false)

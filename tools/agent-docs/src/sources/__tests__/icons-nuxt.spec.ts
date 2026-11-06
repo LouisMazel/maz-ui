@@ -43,13 +43,32 @@ describe('given collectIconNames', () => {
 describe('given groupIcons', () => {
   describe('when names mix interface icons, logos and flags', () => {
     it('then splits them into groups', () => {
-      const groups = groupIcons(['MazTrash', 'MazFlag', 'MazLogoVue', 'MazFlagFR', 'MazFlagSquareFR', 'MazFlagGEAB'])
+      const groups = groupIcons([
+        'MazTrash',
+        'MazFlag',
+        'MazLogoVue',
+        'MazFlagFR',
+        'MazFlagSquareFR',
+        'MazFlagGEAB',
+      ])
 
       expect(groups.map(group => [group.title, group.names])).toEqual([
-        ['Interface icons', ['MazTrash', 'MazFlag']],
-        ['Logos', ['MazLogoVue']],
-        ['Country flags (3x2)', ['MazFlagFR', 'MazFlagGEAB']],
-        ['Country flags (1x1)', ['MazFlagSquareFR']],
+        [
+          'Interface icons',
+          ['MazTrash', 'MazFlag'],
+        ],
+        [
+          'Logos',
+          ['MazLogoVue'],
+        ],
+        [
+          'Country flags (3x2)',
+          ['MazFlagFR', 'MazFlagGEAB'],
+        ],
+        [
+          'Country flags (1x1)',
+          ['MazFlagSquareFR'],
+        ],
       ])
     })
   })

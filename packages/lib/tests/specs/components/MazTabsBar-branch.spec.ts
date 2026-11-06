@@ -18,7 +18,11 @@ function mountTabsBar(props: Record<string, unknown> = {}, provide?: ReturnType<
   const tabsProvide = provide ?? createTabsProvide()
   return mount(MazTabsBar, {
     props: {
-      items: [{ label: 'Tab 1' }, { label: 'Tab 2' }, { label: 'Tab 3' }],
+      items: [
+        { label: 'Tab 1' },
+        { label: 'Tab 2' },
+        { label: 'Tab 3' },
+      ],
       ...props,
     },
     global: {
@@ -32,7 +36,9 @@ function mountTabsBar(props: Record<string, unknown> = {}, provide?: ReturnType<
 describe('MazTabsBar branch coverage', () => {
   let originalLocation: Location
   beforeEach(() => {
-    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
+    vi.useFakeTimers({
+      toFake: ['setTimeout', 'clearTimeout'],
+    })
 
     originalLocation = globalThis.location
 
@@ -67,7 +73,10 @@ describe('MazTabsBar branch coverage', () => {
 
     it('normalizes object items with labels', () => {
       const wrapper = mountTabsBar({
-        items: [{ label: 'First' }, { label: 'Second' }],
+        items: [
+          { label: 'First' },
+          { label: 'Second' },
+        ],
       })
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
@@ -77,7 +86,10 @@ describe('MazTabsBar branch coverage', () => {
 
     it('normalizes mixed string and object items', () => {
       const wrapper = mountTabsBar({
-        items: ['Plain', { label: 'Object' }],
+        items: [
+          'Plain',
+          { label: 'Object' },
+        ],
       })
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
@@ -109,7 +121,9 @@ describe('MazTabsBar branch coverage', () => {
 
     it('defaults disabled to false when not specified in object items', () => {
       const wrapper = mountTabsBar({
-        items: [{ label: 'No disabled prop' }],
+        items: [
+          { label: 'No disabled prop' },
+        ],
       })
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
@@ -119,7 +133,10 @@ describe('MazTabsBar branch coverage', () => {
     it('handles items with badge property', () => {
       const wrapper = mountTabsBar({
         items: [
-          { label: 'With Badge', badge: { content: 5 } },
+          {
+            label: 'With Badge',
+            badge: { content: 5 },
+          },
           { label: 'No Badge' },
         ],
       })
@@ -171,7 +188,10 @@ describe('MazTabsBar branch coverage', () => {
     it('does not call selectTab for disabled items', async () => {
       const provide = createTabsProvide()
       const wrapper = mountTabsBar({
-        items: [{ label: 'Tab 1' }, { label: 'Tab 2', disabled: true }],
+        items: [
+          { label: 'Tab 1' },
+          { label: 'Tab 2', disabled: true },
+        ],
       }, provide)
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
@@ -281,7 +301,10 @@ describe('MazTabsBar branch coverage', () => {
 
     it('returns empty style for disabled tab', () => {
       const wrapper = mountTabsBar({
-        items: [{ label: 'Tab 1' }, { label: 'Disabled', disabled: true }],
+        items: [
+          { label: 'Tab 1' },
+          { label: 'Disabled', disabled: true },
+        ],
       }, createTabsProvide(1))
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
@@ -383,7 +406,10 @@ describe('MazTabsBar branch coverage', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
       mountTabsBar({
-        items: [{ label: 'Tab 1' }, { label: 'Tab 2' }],
+        items: [
+          { label: 'Tab 1' },
+          { label: 'Tab 2' },
+        ],
       }, createTabsProvide(5))
 
       expect(consoleSpy).toHaveBeenCalledWith(
@@ -429,7 +455,10 @@ describe('MazTabsBar branch coverage', () => {
     it('provides item, active, and index to item slot', () => {
       const wrapper = mount(MazTabsBar, {
         props: {
-          items: [{ label: 'Tab 1' }, { label: 'Tab 2' }],
+          items: [
+            { label: 'Tab 1' },
+            { label: 'Tab 2' },
+          ],
         },
         global: {
           provide: {
@@ -456,7 +485,10 @@ describe('MazTabsBar branch coverage', () => {
     it('renders badge when item has badge property', async () => {
       const wrapper = mountTabsBar({
         items: [
-          { label: 'Tab 1', badge: { content: 5 } },
+          {
+            label: 'Tab 1',
+            badge: { content: 5 },
+          },
           { label: 'Tab 2' },
         ],
       })
@@ -473,7 +505,9 @@ describe('MazTabsBar branch coverage', () => {
 
     it('does not render badge for items without badge', () => {
       const wrapper = mountTabsBar({
-        items: [{ label: 'No Badge' }],
+        items: [
+          { label: 'No Badge' },
+        ],
       })
 
       expect(wrapper.findAll('.m-tabs-bar__item')).toHaveLength(1)

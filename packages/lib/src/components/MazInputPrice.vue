@@ -62,7 +62,9 @@ const valueNumber = computed<number | undefined>(() => {
 })
 
 const priceFormatted = computed(() =>
-  typeof valueNumber.value === 'number' ? formatCurrency(valueNumber.value, locale, { ...currencyOptions, currency }) : undefined,
+  typeof valueNumber.value === 'number'
+    ? formatCurrency(valueNumber.value, locale, { ...currencyOptions, currency })
+    : undefined,
 )
 
 const isLetterRegex = /[^\d.]/g
@@ -74,7 +76,9 @@ function getAdjustedPrice(value?: string | number) {
     ? Number.parseFloat(value.replace(',', '.').replaceAll(isLetterRegex, ''))
     : value
 
-  newValue = isNegative && newValue ? -newValue : newValue
+  newValue = isNegative && newValue
+    ? -newValue
+    : newValue
 
   if (typeof newValue !== 'number' || Number.isNaN(newValue))
     newValue = undefined

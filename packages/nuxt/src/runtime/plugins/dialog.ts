@@ -23,7 +23,9 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const { DialogHandler } = await import('maz-ui/plugins/dialog')
 
   const dialogOptions = $config.public.mazUi?.plugins?.dialog
-  const options = typeof dialogOptions === 'object' ? dialogOptions : undefined
+  const options = typeof dialogOptions === 'object'
+    ? dialogOptions
+    : undefined
 
   return {
     provide: {

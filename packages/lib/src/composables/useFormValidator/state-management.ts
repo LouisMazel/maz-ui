@@ -34,7 +34,9 @@ export function getFieldState<
   fieldState: FieldState<Model, ModelKey, FieldType>
   options?: Pick<StrictOptions<Model, ModelKey>, 'debouncedFields' | 'throttledFields' | 'mode'>
 }): FieldState<Model, ModelKey, FieldType> {
-  const hasValidation = schema ? fieldHasValidation<Model, ModelKey>(name, schema) : false
+  const hasValidation = schema
+    ? fieldHasValidation<Model, ModelKey>(name, schema)
+    : false
 
   const validateFunction = getValidateFunction<Model, ModelKey>({
     name,
@@ -53,7 +55,9 @@ export function getFieldState<
     validated: false,
     initialValue: useFreezeValue(initialValue) as Readonly<FieldType>,
     validateFunction: validateFunction as FieldState<Model, ModelKey, FieldType>['validateFunction'],
-    mode: hasValidation ? options?.mode ?? fieldState?.mode ?? CONFIG.mode : undefined,
+    mode: hasValidation
+      ? options?.mode ?? fieldState?.mode ?? CONFIG.mode
+      : undefined,
   }
 }
 
@@ -148,13 +152,17 @@ export function updateFieldState<
     options,
   })
 
-  const newMode = updateMode ? mode ?? fieldState.mode ?? CONFIG.mode : fieldState.mode
+  const newMode = updateMode
+    ? mode ?? fieldState.mode ?? CONFIG.mode
+    : fieldState.mode
 
   return {
     ...fieldState,
     initialValue,
     mode: newMode,
-    ...(fieldState?.mode && newMode !== fieldState.mode ? rest : {}),
+    ...(fieldState?.mode && newMode !== fieldState.mode
+      ? rest
+      : {}),
   }
 }
 
@@ -216,7 +224,9 @@ export function handleFieldBlur<
   const isDirty = !isEqual(fieldValue, fieldState.initialValue)
 
   fieldState.dirty = isDirty
-  fieldState.blurred = fieldState.blurred || (fieldState.mode === 'eager' ? isDirty : true)
+  fieldState.blurred = fieldState.blurred || (fieldState.mode === 'eager'
+    ? isDirty
+    : true)
 
   const shouldValidate = force || canExecuteValidation<Model, ModelKey, FieldType>({ eventName: 'blur', fieldState, isSubmitted })
 
@@ -229,7 +239,9 @@ export function handleFieldBlur<
     fieldState: fieldState as FieldState<Model, ModelKey, Model[ModelKey]>,
     schema,
     payload,
-    setError: fieldState.mode === 'progressive' ? fieldState.validated || fieldState.blurred : true,
+    setError: fieldState.mode === 'progressive'
+      ? fieldState.validated || fieldState.blurred
+      : true,
   })
 }
 
@@ -271,7 +283,9 @@ export function handleFieldInput<
     fieldState: fieldState as FieldState<Model, ModelKey, Model[ModelKey]>,
     schema,
     payload,
-    setError: fieldState.mode === 'progressive' ? fieldState.validated || fieldState.blurred : true,
+    setError: fieldState.mode === 'progressive'
+      ? fieldState.validated || fieldState.blurred
+      : true,
   })
 }
 

@@ -279,8 +279,12 @@ describe('preset-merger', () => {
         const overrides: ThemePresetOverrides = {
           components: {
             btn: { 'font-weight': '700' },
-            container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
-            input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
+            container: {
+              bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' },
+            },
+            input: {
+              bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' },
+            },
           },
         }
 
@@ -301,15 +305,23 @@ describe('preset-merger', () => {
           scales: { rounded: {}, shadow: {} },
           components: {
             btn: { 'font-weight': '500' },
-            container: { bg: { light: 'oklch(1 0 0)', dark: 'oklch(0.2 0 0)' } },
-            input: { bg: { light: 'oklch(0.95 0 0)' } },
+            container: {
+              bg: { light: 'oklch(1 0 0)', dark: 'oklch(0.2 0 0)' },
+            },
+            input: {
+              bg: { light: 'oklch(0.95 0 0)' },
+            },
           },
         } as unknown as ThemePreset
 
         const overrides: ThemePresetOverrides = {
           components: {
-            container: { bg: { dark: 'oklch(0.4 0 0)' } },
-            input: { bg: { dark: 'oklch(0.3 0 0)' } },
+            container: {
+              bg: { dark: 'oklch(0.4 0 0)' },
+            },
+            input: {
+              bg: { dark: 'oklch(0.3 0 0)' },
+            },
           },
         }
 
@@ -362,13 +374,18 @@ describe('preset-merger', () => {
           foundation: {},
           scales: { rounded: {}, shadow: {} },
           components: {
-            input: { 'bg': { light: 'oklch(1 0 0)' }, 'top-label-font-weight': '600' },
+            input: {
+              'bg': { light: 'oklch(1 0 0)' },
+              'top-label-font-weight': '600',
+            },
           },
         } as unknown as ThemePreset
 
         const overrides: ThemePresetOverrides = {
           components: {
-            input: { bg: { dark: 'oklch(0.3 0 0)' } },
+            input: {
+              bg: { dark: 'oklch(0.3 0 0)' },
+            },
           },
         }
 
@@ -439,11 +456,19 @@ describe('preset-merger', () => {
     describe('when merging nested objects', () => {
       it('then it deep merges nested structures', () => {
         const result = deepMerge(
-          { a: { x: 1, y: 2 }, b: 'keep' },
-          { a: { y: 3, z: 4 } },
+          {
+            a: { x: 1, y: 2 },
+            b: 'keep',
+          },
+          {
+            a: { y: 3, z: 4 },
+          },
         )
 
-        expect(result).toEqual({ a: { x: 1, y: 3, z: 4 }, b: 'keep' })
+        expect(result).toEqual({
+          a: { x: 1, y: 3, z: 4 },
+          b: 'keep',
+        })
       })
     })
 
@@ -457,15 +482,23 @@ describe('preset-merger', () => {
 
     describe('when source contains an array', () => {
       it('then it replaces the target value with the array', () => {
-        const result = deepMerge({ a: [1, 2] }, { a: [3, 4] })
+        const result = deepMerge({
+          a: [1, 2],
+        }, {
+          a: [3, 4],
+        })
 
-        expect(result).toEqual({ a: [3, 4] })
+        expect(result).toEqual({
+          a: [3, 4],
+        })
       })
     })
 
     describe('when source value is a primitive overriding an object', () => {
       it('then it replaces the object with the primitive', () => {
-        const result = deepMerge({ a: { x: 1 } } as any, { a: 'string' } as any)
+        const result = deepMerge({
+          a: { x: 1 },
+        } as any, { a: 'string' } as any)
 
         expect(result).toEqual({ a: 'string' })
       })

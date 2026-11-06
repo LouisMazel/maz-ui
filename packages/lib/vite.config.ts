@@ -56,7 +56,9 @@ export default defineConfig(({ mode }) => {
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
-        outDirs: [resolver('dist')],
+        outDirs: [
+          resolver('dist'),
+        ],
       }),
       ViteCompileStyles(),
       codecovVitePlugin({
@@ -92,7 +94,9 @@ export default defineConfig(({ mode }) => {
           moduleSideEffects: false,
           propertyReadSideEffects: false,
           unknownGlobalSideEffects: false,
-          manualPureFunctions: isProduction ? ['console.log', 'console.debug'] : [],
+          manualPureFunctions: isProduction
+            ? ['console.log', 'console.debug']
+            : [],
         },
         external: (id) => {
           // Bundle dayjs plugins to avoid CJS interop issues
@@ -104,7 +108,10 @@ export default defineConfig(({ mode }) => {
           format: 'es',
           comments: { legal: false },
           minify: isProduction
-            ? { compress: { dropDebugger: true, dropConsole: false, joinVars: false }, mangle: false }
+            ? {
+                compress: { dropDebugger: true, dropConsole: false, joinVars: false },
+                mangle: false,
+              }
             : false,
           chunkFileNames: 'chunks/[name].[hash].js',
           assetFileNames: 'assets/[name].[hash][extname]',

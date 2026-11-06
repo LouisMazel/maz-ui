@@ -63,7 +63,29 @@ const META_DOCS = new Map<string, RegExp>([
 const META_DOC_FACTOR = 0.15
 
 /** Generic verbs and nouns that describe the context of a need more than the feature itself */
-const LOW_VALUE_TERMS = new Set(['add', 'show', 'display', 'delete', 'remove', 'update', 'set', 'open', 'close', 'user', 'users', 'page', 'item', 'data', 'value', 'list', 'text', 'click', 'between', 'before', 'after'].map(term => processTerm(term) ?? term))
+const LOW_VALUE_TERMS = new Set([
+  'add',
+  'show',
+  'display',
+  'delete',
+  'remove',
+  'update',
+  'set',
+  'open',
+  'close',
+  'user',
+  'users',
+  'page',
+  'item',
+  'data',
+  'value',
+  'list',
+  'text',
+  'click',
+  'between',
+  'before',
+  'after',
+].map(term => processTerm(term) ?? term))
 const LOW_VALUE_FACTOR = 0.4
 /** Applied to a doc that only matches the low-value terms of a query that has others */
 const LOW_VALUE_ONLY_FACTOR = 0.25
@@ -106,7 +128,9 @@ export class DocSearch {
   }
 
   private toIndexed(doc: DocEntry): IndexedDoc {
-    const component = doc.category === 'component' ? this.knowledge.componentsByName.get(doc.title) : undefined
+    const component = doc.category === 'component'
+      ? this.knowledge.componentsByName.get(doc.title)
+      : undefined
     const api = component
       ? [
           ...component.props.map(prop => prop.name),
@@ -148,8 +172,12 @@ export class DocSearch {
     if (terms.length === 0)
       return []
 
-    const hintedCategory = category ? undefined : terms.map(term => CATEGORY_HINTS[term]).find(Boolean)
-    const expansion = [...new Set(terms.flatMap(term => this.synonyms.get(term) ?? []))].filter(term => !terms.includes(term))
+    const hintedCategory = category
+      ? undefined
+      : terms.map(term => CATEGORY_HINTS[term]).find(Boolean)
+    const expansion = [
+      ...new Set(terms.flatMap(term => this.synonyms.get(term) ?? [])),
+    ].filter(term => !terms.includes(term))
     const exact = this.exactMatch(query)
     const normalizedQuery = query.trim().toLowerCase()
     const hasValuableTerm = terms.some(term => !LOW_VALUE_TERMS.has(term))
@@ -157,12 +185,32 @@ export class DocSearch {
     const results = this.index.search({
       combineWith: 'OR',
       queries: [
-        { queries: [terms.join(' ')], combineWith: 'OR', boostTerm: (term: string) => (LOW_VALUE_TERMS.has(term) ? LOW_VALUE_FACTOR : 1) },
-        ...(expansion.length > 0 ? [{ queries: [expansion.join(' ')], combineWith: 'OR' as const, boostTerm: () => 0.45 }] : []),
+        {
+          queries: [
+            terms.join(' '),
+          ],
+          combineWith: 'OR',
+          boostTerm: (term: string) => (LOW_VALUE_TERMS.has(term)
+            ? LOW_VALUE_FACTOR
+            : 1),
+        },
+        ...(expansion.length > 0
+          ? [
+              {
+                queries: [
+                  expansion.join(' '),
+                ],
+                combineWith: 'OR' as const,
+                boostTerm: () => 0.45,
+              },
+            ]
+          : []),
       ],
     }, {
       boost: FIELD_BOOSTS,
-      fuzzy: (term: string) => (term.length >= 5 ? 0.2 : false),
+      fuzzy: (term: string) => (term.length >= 5
+        ? 0.2
+        : false),
       prefix: (term: string) => term.length >= 4,
       weights: { fuzzy: 0.35, prefix: 0.5 },
       filter: result => !category || this.knowledge.docsById.get(result.id as string)?.category === category,
@@ -328,9 +376,21 @@ function iconWords(name: string): string[] {
     return cached
 
   const flag = /^MazFlag(?:Square)?([A-Z]{2})(?:[A-Z]{2})?$/.exec(name)
-  const country = flag ? regionName(flag[1]) : ''
+  const country = flag
+    ? regionName(flag[1])
+    : ''
 
-  const words = [...analyze(name.replace(/^Maz/, '')), ...(flag ? ['flag', 'country', flag[1].toLowerCase()] : []), ...analyze(country)]
+  const words = [
+    ...analyze(name.replace(/^Maz/, '')),
+    ...(flag
+      ? [
+          'flag',
+          'country',
+          flag[1].toLowerCase(),
+        ]
+      : []),
+    ...analyze(country),
+  ]
   iconWordsCache.set(name, words)
 
   return words
@@ -355,10 +415,15 @@ export function searchIcons(names: Iterable<string>, query: string, limit = 20):
       let score = 0
 
       for (const word of words) {
-        const candidates = [word, ...(synonyms.get(word) ?? [])]
+        const candidates = [
+          word,
+          ...(synonyms.get(word) ?? []),
+        ]
 
         for (const [index, candidate] of candidates.entries()) {
-          const weight = index === 0 ? 1 : 0.8
+          const weight = index === 0
+            ? 1
+            : 0.8
 
           if (parts.includes(candidate))
             score += 3 * weight

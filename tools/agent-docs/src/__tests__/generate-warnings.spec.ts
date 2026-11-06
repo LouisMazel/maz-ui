@@ -38,7 +38,10 @@ describe('given a documentation folder with mistakes', () => {
     page(docsSrc, 'ecosystem/utils/no-frontmatter.md', '# Helper\n\nSome text.\n')
     page(docsSrc, 'composables/use-thing.md', '---\ntitle: useWrongName\ndescription: Composable that returns the reactive state of the thing.\n---\n\n# useWrongName\n\n```ts\nimport { useThing } from \'maz-ui/composables/useThing\'\n```\n')
 
-    knowledge = await generateKnowledge({ ...getSourcePaths(), docsSrc })
+    knowledge = await generateKnowledge({
+      ...getSourcePaths(),
+      docsSrc,
+    })
   }, 120_000)
 
   afterAll(() => {

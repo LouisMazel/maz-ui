@@ -5,7 +5,12 @@ import { generateKnowledge, HOMEPAGE, resolveHrefToId } from '../generate'
 import { findOutdatedFiles } from '../write'
 
 describe('given resolveHrefToId', () => {
-  const knownIds = new Set(['components/maz-btn', 'guide/vue', 'ecosystem/utils', 'ecosystem/utils/debounce'])
+  const knownIds = new Set([
+    'components/maz-btn',
+    'guide/vue',
+    'ecosystem/utils',
+    'ecosystem/utils/debounce',
+  ])
 
   describe('when the href is relative with an extension and an anchor', () => {
     it('then resolves it from the source page', () => {
@@ -115,12 +120,21 @@ describe('given generateKnowledge', () => {
     })
 
     it('then never contains em or en dashes', () => {
-      for (const file of [...knowledge.bundle, ...knowledge.site, ...knowledge.skill])
+      for (const file of [
+        ...knowledge.bundle,
+        ...knowledge.site,
+        ...knowledge.skill,
+      ])
         expect(/[–—]/.test(file.content), file.path).toBe(false)
     })
 
     it('then ships the index, the rules and the agent files', () => {
-      for (const path of ['README.md', 'rules.md', 'agents/claude-rule.md', 'agents/agents-md.md'])
+      for (const path of [
+        'README.md',
+        'rules.md',
+        'agents/claude-rule.md',
+        'agents/agents-md.md',
+      ])
         expect(bundleFile(path), path).toBeDefined()
 
       expect(knowledge.skill.map(file => file.path)).toEqual(['skills/maz-ui/SKILL.md'])

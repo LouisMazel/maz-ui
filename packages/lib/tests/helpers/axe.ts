@@ -14,7 +14,9 @@ const jsdomSafeRules: AxeRuleOverrides = {
 }
 
 function toElement(target: VueWrapper<any> | Element): Element {
-  return target instanceof Element ? target : (target.element as Element)
+  return target instanceof Element
+    ? target
+    : (target.element as Element)
 }
 
 /**
@@ -29,5 +31,10 @@ function toElement(target: VueWrapper<any> | Element): Element {
  * @param rules Per-rule overrides merged on top of the jsdom-safe defaults.
  */
 export function runAxe(target: VueWrapper<any> | Element, rules: AxeRuleOverrides = {}) {
-  return axe(toElement(target), { rules: { ...jsdomSafeRules, ...rules } })
+  return axe(toElement(target), {
+    rules: {
+      ...jsdomSafeRules,
+      ...rules,
+    },
+  })
 }

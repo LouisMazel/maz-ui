@@ -38,7 +38,9 @@ const asYouTypeFormatted = computed(() => {
 })
 
 const displayedPhoneNumber = computed({
-  get: () => (!inputFocused.value && autoFormat === 'blur') || autoFormat === 'typing' ? asYouTypeFormatted.value : modelValue.value,
+  get: () => (!inputFocused.value && autoFormat === 'blur') || autoFormat === 'typing'
+    ? asYouTypeFormatted.value
+    : modelValue.value,
   set: (value) => {
     modelValue.value = sanitizePhoneNumber(value)
   },
@@ -68,7 +70,9 @@ const inputLabelOrPlaceholder = computed(() => {
   }
   else {
     const phoneExample = getCountryPhoneNumberExample(selectedCountry.value)
-    return results.value?.isValid || !phoneExample ? defaultPlaceholder : phoneExample
+    return results.value?.isValid || !phoneExample
+      ? defaultPlaceholder
+      : phoneExample
   }
 })
 

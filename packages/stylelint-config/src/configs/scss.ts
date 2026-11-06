@@ -32,12 +32,17 @@ const SCSS_AT_RULES = [
  */
 export function scssRules(includeTailwind: boolean | string): StylelintRules {
   return {
-    'scss/at-rule-no-unknown': [true, {
-      ignoreAtRules: [
-        ...SCSS_AT_RULES,
-        ...(includeTailwind ? TAILWIND_AT_RULES : []),
-      ],
-    }],
+    'scss/at-rule-no-unknown': [
+      true,
+      {
+        ignoreAtRules: [
+          ...SCSS_AT_RULES,
+          ...(includeTailwind
+            ? TAILWIND_AT_RULES
+            : []),
+        ],
+      },
+    ],
     /**
      * SCSS `@use` is forbidden by default in some configs because it must be
      * at the very top of the file. We trust authors here — the SCSS compiler

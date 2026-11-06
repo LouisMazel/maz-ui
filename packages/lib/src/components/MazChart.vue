@@ -71,7 +71,9 @@ const canvasRef = useTemplateRef<HTMLCanvasElement>('canvasRef')
 const attrs = useAttrs()
 
 // A canvas has no accessible content: once named (aria-label / aria-labelledby), the chart is exposed as an image
-const canvasRole = computed(() => attrs['aria-label'] || attrs['aria-labelledby'] ? 'img' : undefined)
+const canvasRole = computed(() => attrs['aria-label'] || attrs['aria-labelledby']
+  ? 'img'
+  : undefined)
 const chartInstance = shallowRef<ChartInstance | null>(null) as { value: ChartInstance | null }
 
 async function loadChartCtor() {
@@ -100,13 +102,34 @@ async function loadChartCtor() {
   } = cjs
 
   const TYPE_MODULES: Record<ChartType, ReadonlyArray<ChartComponentLike>> = {
-    bar: [BarController, BarElement, CategoryScale, LinearScale],
-    line: [LineController, LineElement, PointElement, CategoryScale, LinearScale],
-    scatter: [ScatterController, LineElement, PointElement, LinearScale],
+    bar: [
+      BarController,
+      BarElement,
+      CategoryScale,
+      LinearScale,
+    ],
+    line: [
+      LineController,
+      LineElement,
+      PointElement,
+      CategoryScale,
+      LinearScale,
+    ],
+    scatter: [
+      ScatterController,
+      LineElement,
+      PointElement,
+      LinearScale,
+    ],
     bubble: [BubbleController, PointElement, LinearScale],
     pie: [PieController, ArcElement],
     doughnut: [DoughnutController, ArcElement],
-    radar: [RadarController, LineElement, PointElement, RadialLinearScale],
+    radar: [
+      RadarController,
+      LineElement,
+      PointElement,
+      RadialLinearScale,
+    ],
     polarArea: [PolarAreaController, ArcElement, RadialLinearScale],
   }
 
@@ -128,7 +151,9 @@ onMounted(async () => {
     data,
     options,
     plugins,
-    ...(datasetIdKey ? { datasetIdKey } : {}),
+    ...(datasetIdKey
+      ? { datasetIdKey }
+      : {}),
   } as ConstructorParameters<typeof Chart>[1])) as ChartInstance
 })
 

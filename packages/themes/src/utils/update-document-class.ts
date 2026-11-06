@@ -7,8 +7,12 @@ export function updateDocumentClass(colorMode: ColorMode, state?: ThemeState): v
     return
   }
 
-  const resolved = colorMode === 'auto' ? getSystemColorMode() : colorMode
-  const classToAdd = resolved === 'dark' ? state.darkClass : state.lightClass
+  const resolved = colorMode === 'auto'
+    ? getSystemColorMode()
+    : colorMode
+  const classToAdd = resolved === 'dark'
+    ? state.darkClass
+    : state.lightClass
 
   noTransition(() => {
     const html = document.documentElement

@@ -139,7 +139,9 @@ function selectStep(step: number) {
 }
 
 function hasDataForStep(property: 'title' | 'titleInfo' | 'subtitle', step: number): boolean {
-  const data = property === 'titleInfo' ? 'title-info' : property
+  const data = property === 'titleInfo'
+    ? 'title-info'
+    : property
 
   const hasSlot = Object.keys(slots)
     .filter(slot => slot.startsWith(`${data}-`))

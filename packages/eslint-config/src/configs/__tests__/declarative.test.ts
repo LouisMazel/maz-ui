@@ -23,7 +23,10 @@ describe('baseRules', () => {
       'error',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ])
-    expect(rules.complexity).toEqual(['error', { max: 20 }])
+    expect(rules.complexity).toEqual([
+      'error',
+      { max: 20 },
+    ])
     expect(rules['no-useless-assignment']).toBe('error')
   })
 })

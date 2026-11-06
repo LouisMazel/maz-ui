@@ -60,8 +60,13 @@ describe('useTheme integration with real vue reactivity', () => {
           remove: vi.fn(),
         },
       },
-      head: { appendChild: vi.fn() },
-      createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
+      head: {
+        appendChild: vi.fn(),
+      },
+      createElement: vi.fn(() => ({
+        remove: vi.fn(),
+        textContent: '',
+      })),
       cookie: '',
     })
 

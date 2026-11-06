@@ -371,7 +371,9 @@ const debounceEmitValue = debounceFn(
   (value?: T) => {
     emits('update:model-value', value)
   },
-  typeof debounce === 'number' ? debounce : 500,
+  typeof debounce === 'number'
+    ? debounce
+    : 500,
 )
 
 function emitValue(value?: T) {

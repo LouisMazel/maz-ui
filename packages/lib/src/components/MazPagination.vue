@@ -85,9 +85,13 @@ const buttonsPropsMerged = computed<MazBtnProps>(() => ({
   ...buttonProps,
 }))
 
-const previousPage = computed(() => (modelValue > 1 ? modelValue - 1 : 1))
+const previousPage = computed(() => (modelValue > 1
+  ? modelValue - 1
+  : 1))
 const nextPage = computed(() =>
-  modelValue < totalPages ? modelValue + 1 : totalPages,
+  modelValue < totalPages
+    ? modelValue + 1
+    : totalPages,
 )
 
 const allPages = computed(() =>
@@ -102,11 +106,15 @@ const allPages = computed(() =>
 )
 
 const firstOne = computed(() =>
-  modelValue - pageRange > 1 ? allPages.value.slice(0, 1) : [],
+  modelValue - pageRange > 1
+    ? allPages.value.slice(0, 1)
+    : [],
 )
 
 const lastOne = computed(() =>
-  modelValue < totalPages - pageRange ? allPages.value.slice(-1) : [],
+  modelValue < totalPages - pageRange
+    ? allPages.value.slice(-1)
+    : [],
 )
 
 const rangeStartAt = computed(() => {
@@ -128,10 +136,18 @@ const rangeEndAt = computed(() => {
 const range = computed(() => allPages.value.slice(rangeStartAt.value, rangeEndAt.value))
 
 const firstDivider = computed(() =>
-  modelValue - pageRange > 2 ? [{ divider: true }] : [],
+  modelValue - pageRange > 2
+    ? [
+        { divider: true },
+      ]
+    : [],
 )
 const lastDivider = computed(() =>
-  modelValue < totalPages - pageRange - 1 ? [{ divider: true }] : [],
+  modelValue < totalPages - pageRange - 1
+    ? [
+        { divider: true },
+      ]
+    : [],
 )
 
 const pages = computed(() => [

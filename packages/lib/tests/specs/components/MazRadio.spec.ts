@@ -65,7 +65,13 @@ describe('given a MazUi global default for MazRadio size', () => {
     it('then the configured size drives the radio dimensions', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'option1', name: 'radioGroup' },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazRadio: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazRadio: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.find('label').attributes('style')).toContain('--radio-size: 2rem')
@@ -76,7 +82,13 @@ describe('given a MazUi global default for MazRadio size', () => {
     it('then the instance prop wins over the configured default', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'option1', name: 'radioGroup', size: 'mini' },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazRadio: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazRadio: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.find('label').attributes('style')).toContain('--radio-size: 1.2rem')

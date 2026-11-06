@@ -27,7 +27,9 @@ export function cleanType(type: string): string {
     .filter(member => member !== 'undefined')
     .join(' | ')
 
-  return cleaned.length > MAX_TYPE_LENGTH ? `${cleaned.slice(0, MAX_TYPE_LENGTH - 3)}...` : cleaned
+  return cleaned.length > MAX_TYPE_LENGTH
+    ? `${cleaned.slice(0, MAX_TYPE_LENGTH - 3)}...`
+    : cleaned
 }
 
 /** Splits a union type on its top level `|` */
@@ -78,11 +80,20 @@ export function propValues(type: string, valuesTag: string | undefined): { value
     return { values: literals, strict: true }
 
   const fromTag = valuesTag
-    ? [...valuesTag.matchAll(/['"`]?([\w.-]+)['"`]?/g)].map(match => match[1]).filter(value => !/^(?:or|a|an|any|like|unit|css|and)$/i.test(value))
+    ? [
+        ...valuesTag.matchAll(/['"`]?([\w.-]+)['"`]?/g),
+      ].map(match => match[1]).filter(value => !/^(?:or|a|an|any|like|unit|css|and)$/i.test(value))
     : []
-  const values = [...new Set([...literals, ...fromTag])]
+  const values = [
+    ...new Set([
+      ...literals,
+      ...fromTag,
+    ]),
+  ]
 
-  return values.length > 0 ? { values, strict: false } : { strict: false }
+  return values.length > 0
+    ? { values, strict: false }
+    : { strict: false }
 }
 
 function normalizeDefault(value: string | undefined): string | undefined {
@@ -91,24 +102,37 @@ function normalizeDefault(value: string | undefined): string | undefined {
 
   const cleaned = oneLine(value)
 
-  return cleaned === 'undefined' ? undefined : cleaned
+  return cleaned === 'undefined'
+    ? undefined
+    : cleaned
 }
 
 export function toPropApi(prop: PropertyMeta, models: Set<string>): PropApi {
   const type = cleanType(prop.type)
   const { values, strict } = propValues(type, tag(prop.tags, 'values'))
-  const description = [prop.description || tag(prop.tags, 'model'), tag(prop.tags, 'description')].filter(Boolean).map(text => oneLine(text as string)).join(' - ')
+  const description = [
+    prop.description || tag(prop.tags, 'model'),
+    tag(prop.tags, 'description'),
+  ].filter(Boolean).map(text => oneLine(text as string)).join(' - ')
   const defaultValue = normalizeDefault(prop.default) ?? normalizeDefault(tag(prop.tags, 'default'))
 
   return {
     name: prop.name,
     type,
-    ...(description ? { description } : {}),
+    ...(description
+      ? { description }
+      : {}),
     required: prop.required,
-    ...(defaultValue === undefined ? {} : { default: defaultValue }),
-    ...(values ? { values } : {}),
+    ...(defaultValue === undefined
+      ? {}
+      : { default: defaultValue }),
+    ...(values
+      ? { values }
+      : {}),
     strictValues: strict,
-    ...(models.has(prop.name) ? { model: prop.name } : {}),
+    ...(models.has(prop.name)
+      ? { model: prop.name }
+      : {}),
   }
 }
 
@@ -118,8 +142,14 @@ export function toEventApi(event: EventMeta): EventApi {
 
   return {
     name: event.name,
-    ...(description ? { description: oneLine(description) } : {}),
-    ...(payload ? { payload } : {}),
+    ...(description
+      ? {
+          description: oneLine(description),
+        }
+      : {}),
+    ...(payload
+      ? { payload }
+      : {}),
   }
 }
 
@@ -145,8 +175,12 @@ export function slotBindings(type: string): Array<{ name: string, type: string }
     if (char === ';' && depth === 0) {
       const match = /^\s*([\w$-]+)\??\s*:\s*([\s\S]+)$/.exec(current)
 
-      if (match)
-        bindings.push({ name: match[1], type: cleanType(match[2]) })
+      if (match) {
+        bindings.push({
+          name: match[1],
+          type: cleanType(match[2]),
+        })
+      }
       current = ''
       continue
     }
@@ -160,7 +194,11 @@ export function slotBindings(type: string): Array<{ name: string, type: string }
 export function toSlotApi(slot: SlotMeta): SlotApi {
   return {
     name: slot.name,
-    ...(slot.description ? { description: oneLine(slot.description) } : {}),
+    ...(slot.description
+      ? {
+          description: oneLine(slot.description),
+        }
+      : {}),
     bindings: slotBindings(slot.type),
   }
 }
@@ -168,7 +206,11 @@ export function toSlotApi(slot: SlotMeta): SlotApi {
 function toExposeApi(exposed: ExposeMeta): { name: string, description?: string } {
   return {
     name: exposed.name,
-    ...(exposed.description ? { description: oneLine(exposed.description) } : {}),
+    ...(exposed.description
+      ? {
+          description: oneLine(exposed.description),
+        }
+      : {}),
   }
 }
 
@@ -179,7 +221,9 @@ function forwardedModel(model: string, events: EventApi[]): PropApi {
   return {
     name: model,
     type: event?.payload?.replace(/^\w+:\s*/, '') || 'unknown',
-    description: event?.description ?? `Value of \`${model === 'modelValue' ? 'v-model' : `v-model:${pascalToKebab(model)}`}\`, forwarded to the inner component`,
+    description: event?.description ?? `Value of \`${model === 'modelValue'
+      ? 'v-model'
+      : `v-model:${pascalToKebab(model)}`}\`, forwarded to the inner component`,
     required: false,
     strictValues: false,
     model,
@@ -201,7 +245,11 @@ export function attributeProps(source: string, props: PropApi[]): PropApi[] {
     .map(name => ({
       name,
       type: ATTRIBUTE_TYPES[name] ?? 'unknown',
-      description: `HTML attribute handled by the component${name === 'to' ? ': renders a `RouterLink` (or `NuxtLink`)' : name === 'href' ? ': renders a link (`<a>`)' : ''}`,
+      description: `HTML attribute handled by the component${name === 'to'
+        ? ': renders a `RouterLink` (or `NuxtLink`)'
+        : name === 'href'
+          ? ': renders a link (`<a>`)'
+          : ''}`,
       required: false,
       strictValues: false,
     }))
@@ -212,13 +260,17 @@ export function attributeProps(source: string, props: PropApi[]): PropApi[] {
  * They are named with their variable part in braces (`cell-{key}`) and take the bindings of the slot named like their prefix.
  */
 export function dynamicSlots(source: string, slots: SlotApi[]): SlotApi[] {
-  return [...source.matchAll(/<slot\b[^>]*?:name="`([\w-]*)\$\{([^}`]+)\}([\w-]*)`"/g)].map(([, prefix, expression, suffix]) => {
+  return [
+    ...source.matchAll(/<slot\b[^>]*?:name="`([\w-]*)\$\{([^}`]+)\}([\w-]*)`"/g),
+  ].map(([, prefix, expression, suffix]) => {
     const variable = /[a-z_$][\w$]*(?=\W*$)/i.exec(expression.trim())?.[0] ?? 'name'
     const base = slots.find(slot => slot.name === prefix.replace(/-$/, ''))
 
     return {
       name: `${prefix}{${variable}}${suffix}`,
-      description: `One slot per \`${variable}\`: \`#${prefix}<${variable}>${suffix}\`.${base?.description ? ` ${base.description}` : ''}`,
+      description: `One slot per \`${variable}\`: \`#${prefix}<${variable}>${suffix}\`.${base?.description
+        ? ` ${base.description}`
+        : ''}`,
       bindings: base?.bindings ?? [],
     }
   })
@@ -258,16 +310,49 @@ export interface DocgenDescriptions {
 }
 
 export function docgenDescriptions(doc: ComponentDoc | undefined): DocgenDescriptions {
-  const text = (value: unknown): string | undefined => (typeof value === 'string' && value.trim() ? oneLine(value) : undefined)
+  const text = (value: unknown): string | undefined => (typeof value === 'string' && value.trim()
+    ? oneLine(value)
+    : undefined)
 
   return {
-    props: new Map((doc?.props ?? []).flatMap(prop => (text(prop.description) ? [[prop.name, text(prop.description) as string]] : []))),
-    events: new Map((doc?.events ?? []).flatMap(event => (text(event.description) ? [[event.name, text(event.description) as string]] : []))),
-    slots: new Map((doc?.slots ?? []).map(slot => [slot.name, {
-      description: text(slot.description),
-      bindings: new Map((slot.bindings ?? []).flatMap(binding => (binding.name && text(binding.description) ? [[binding.name, text(binding.description) as string]] : []))),
-    }])),
-    expose: new Map((doc?.expose ?? []).flatMap(exposed => (text(exposed.description) ? [[exposed.name, text(exposed.description) as string]] : []))),
+    props: new Map((doc?.props ?? []).flatMap(prop => (text(prop.description)
+      ? [
+          [
+            prop.name,
+            text(prop.description) as string,
+          ],
+        ]
+      : []))),
+    events: new Map((doc?.events ?? []).flatMap(event => (text(event.description)
+      ? [
+          [
+            event.name,
+            text(event.description) as string,
+          ],
+        ]
+      : []))),
+    slots: new Map((doc?.slots ?? []).map(slot => [
+      slot.name,
+      {
+        description: text(slot.description),
+        bindings: new Map((slot.bindings ?? []).flatMap(binding => (binding.name && text(binding.description)
+          ? [
+              [
+                binding.name,
+                text(binding.description) as string,
+              ],
+            ]
+          : []))),
+      },
+    ])),
+    expose: new Map((doc?.expose ?? []).flatMap(exposed => (text(exposed.description)
+      ? [
+          [
+            exposed.name,
+            text(exposed.description) as string,
+          ],
+        ]
+      : []))),
   }
 }
 
@@ -277,22 +362,43 @@ export function mergeDescriptions(api: ComponentApi, descriptions: DocgenDescrip
 
   return {
     ...api,
-    props: api.props.map(prop => (prop.description || !descriptions.props.get(prop.name) ? prop : { ...prop, description: descriptions.props.get(prop.name) })),
-    events: api.events.map(event => (event.description || !descriptions.events.get(event.name) ? event : { ...event, description: descriptions.events.get(event.name) })),
+    props: api.props.map(prop => (prop.description || !descriptions.props.get(prop.name)
+      ? prop
+      : {
+          ...prop,
+          description: descriptions.props.get(prop.name),
+        })),
+    events: api.events.map(event => (event.description || !descriptions.events.get(event.name)
+      ? event
+      : {
+          ...event,
+          description: descriptions.events.get(event.name),
+        })),
     slots: api.slots.map((slot) => {
       const docgen = descriptions.slots.get(slot.name)
 
       return {
         ...slot,
-        ...(slot.description || !docgen?.description ? {} : { description: docgen.description }),
+        ...(slot.description || !docgen?.description
+          ? {}
+          : { description: docgen.description }),
         bindings: slot.bindings.map((binding) => {
-          const description = binding.description ?? docgen?.bindings.get(binding.name) ?? docgen?.bindings.get(binding.name.replaceAll(/[A-Z]/g, char => `-${char.toLowerCase()}`)) ?? [...(docgen?.bindings.entries() ?? [])].find(([name]) => camel(name) === binding.name)?.[1]
+          const description = binding.description ?? docgen?.bindings.get(binding.name) ?? docgen?.bindings.get(binding.name.replaceAll(/[A-Z]/g, char => `-${char.toLowerCase()}`)) ?? [
+            ...(docgen?.bindings.entries() ?? []),
+          ].find(([name]) => camel(name) === binding.name)?.[1]
 
-          return description ? { ...binding, description } : binding
+          return description
+            ? { ...binding, description }
+            : binding
         }),
       }
     }),
-    expose: api.expose.map(exposed => (exposed.description || !descriptions.expose.get(exposed.name) ? exposed : { ...exposed, description: descriptions.expose.get(exposed.name) })),
+    expose: api.expose.map(exposed => (exposed.description || !descriptions.expose.get(exposed.name)
+      ? exposed
+      : {
+          ...exposed,
+          description: descriptions.expose.get(exposed.name),
+        })),
   }
 }
 
@@ -309,7 +415,10 @@ export async function parseDocgen(path: string): Promise<ComponentDoc | undefine
 }
 
 export function collectComponentApis(componentsDir: string, tsconfig: string): Promise<ComponentApi[]> {
-  const checker = createChecker(tsconfig, { schema: false, printer: { newLine: 1 } })
+  const checker = createChecker(tsconfig, {
+    schema: false,
+    printer: { newLine: 1 },
+  })
   const files = readdirSync(componentsDir)
     .filter(file => /^[A-Z]\w*\.vue$/.test(file))
     .sort()
@@ -323,8 +432,14 @@ export function collectComponentApis(componentsDir: string, tsconfig: string): P
 
     return {
       ...api,
-      props: [...api.props, ...attributeProps(source, api.props)],
-      slots: [...api.slots, ...dynamicSlots(source, api.slots)],
+      props: [
+        ...api.props,
+        ...attributeProps(source, api.props),
+      ],
+      slots: [
+        ...api.slots,
+        ...dynamicSlots(source, api.slots),
+      ],
     }
   }))
 }

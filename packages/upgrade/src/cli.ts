@@ -80,7 +80,13 @@ function parseArgs(argv: string[]): CliOptions {
     process.exit(1)
   }
 
-  return { dryRun, groups, roots, gitignore, install }
+  return {
+    dryRun,
+    groups,
+    roots,
+    gitignore,
+    install,
+  }
 }
 
 function parseGroups(value: string): readonly TransformGroup[] {
@@ -310,7 +316,17 @@ async function processSourceFiles(opts: CliOptions, cwd: string, packageJsonFile
     }
   }
 
-  return { scanned, changed, needsUtilsDep, needsValibotDep, radiusFiles, avatarSizeFiles, badgeSizeFiles, iconLegacyFiles, distImportFiles }
+  return {
+    scanned,
+    changed,
+    needsUtilsDep,
+    needsValibotDep,
+    radiusFiles,
+    avatarSizeFiles,
+    badgeSizeFiles,
+    iconLegacyFiles,
+    distImportFiles,
+  }
 }
 
 function processPackageJsonFiles(files: string[], opts: CliOptions, cwd: string, deps: { addUtilsDep: boolean, addValibotDep: boolean }): { scanned: number, changed: number, depsChanged: boolean } {

@@ -18,7 +18,9 @@ function levenshteinDistance(string1: string, string2: string): number {
   // Calcul de la distance de Levenshtein
   for (let index = 1; index <= length1; index++) {
     for (let index_ = 1; index_ <= length2; index_++) {
-      const cost = string1[index - 1] === string2[index_ - 1] ? 0 : 1
+      const cost = string1[index - 1] === string2[index_ - 1]
+        ? 0
+        : 1
       matrix[index][index_] = Math.min(
         matrix[index - 1][index_] + 1,
         matrix[index][index_ - 1] + 1,

@@ -122,7 +122,9 @@ export async function execPromise(
   }
 
   const internalLogger = logger ?? defaultLogger
-  const packageNameStr = packageName ? `[${packageName}]: ` : ''
+  const packageNameStr = packageName
+    ? `[${packageName}]: `
+    : ''
 
   const safeCommand = redactSecrets(command)
 
@@ -134,7 +136,12 @@ export async function execPromise(
       killSignal,
       shell,
       signal,
-      env: env ? { ...process.env, ...env } : undefined,
+      env: env
+        ? {
+            ...process.env,
+            ...env,
+          }
+        : undefined,
     }, (error, stdout, stderr) => {
       if (stdout) {
         internalLogger.debug(`${safeCommand} - stdout output:`, redactSecrets(stdout))
@@ -155,7 +162,9 @@ export async function execPromise(
       if (error) {
         const safeError = redactError(error)
         if (!noError) {
-          const reason = error.killed && timeout ? `timed out after ${timeout}ms` : 'failed'
+          const reason = error.killed && timeout
+            ? `timed out after ${timeout}ms`
+            : 'failed'
           internalLogger.error(`${packageNameStr}${safeCommand} ${reason}`, safeError)
         }
         reject(safeError)

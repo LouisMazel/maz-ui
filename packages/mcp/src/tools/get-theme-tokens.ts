@@ -48,7 +48,9 @@ export async function getThemeTokens(context: ServerContext, { topics, project =
     ? `# maz-ui ${context.knowledge.version} Tailwind theme\n\n${topics.map((topic) => {
       const section = findSection(markdown, THEME_TOPICS[topic])
 
-      return section ? sectionContent(markdown, section) : ''
+      return section
+        ? sectionContent(markdown, section)
+        : ''
     }).filter(Boolean).join('\n\n')}`
     : markdown.trim()
 

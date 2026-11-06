@@ -24,7 +24,9 @@ function sections(context: ServerContext, id: string, titles: string[]): string[
 }
 
 export function getSetupGuide(context: ServerContext, { framework, tailwind = true }: GetSetupGuideArgs): string {
-  const parts = [`# Set up maz-ui ${context.knowledge.version} in a ${framework === 'nuxt' ? 'Nuxt' : 'Vue'} app`]
+  const parts = [`# Set up maz-ui ${context.knowledge.version} in a ${framework === 'nuxt'
+    ? 'Nuxt'
+    : 'Vue'} app`]
 
   if (framework === 'nuxt')
     parts.push(...sections(context, 'ecosystem/nuxt', ['Installation', 'Minimal Setup']))
@@ -35,14 +37,18 @@ export function getSetupGuide(context: ServerContext, { framework, tailwind = tr
     parts.push(
       '## Tailwind CSS',
       ...sections(context, 'guide/tailwind', ['Setup']),
-      `Then style with the theme tokens only (\`get_theme_tokens\`).${framework === 'nuxt' ? ' With Tailwind, set `mazUi.css.injectCss: false` and import `maz-ui/style.css` first in your Tailwind entry to control the CSS order.' : ''}`,
+      `Then style with the theme tokens only (\`get_theme_tokens\`).${framework === 'nuxt'
+        ? ' With Tailwind, set `mazUi.css.injectCss: false` and import `maz-ui/style.css` first in your Tailwind entry to control the CSS order.'
+        : ''}`,
     )
   }
 
   parts.push(
     '## AI agents',
     'Run `npx @maz-ui/mcp init` in the project: it registers this MCP server and writes the maz-ui rules for your agents (Claude Code, Cursor, Copilot, Codex...) without touching your own instructions.',
-    `Full guides: \`get_doc({ id: "${framework === 'nuxt' ? 'ecosystem/nuxt' : 'guide/vue'}" })\`, \`get_doc({ id: "ecosystem/themes" })\` (presets, dark mode), \`get_doc({ id: "ecosystem/translations" })\`.`,
+    `Full guides: \`get_doc({ id: "${framework === 'nuxt'
+      ? 'ecosystem/nuxt'
+      : 'guide/vue'}" })\`, \`get_doc({ id: "ecosystem/themes" })\` (presets, dark mode), \`get_doc({ id: "ecosystem/translations" })\`.`,
   )
 
   return parts.join('\n\n')

@@ -34,7 +34,12 @@ export async function reviewCodeTool(context: ServerContext, { paths, code, file
   }
 
   if (paths?.length) {
-    const { reviews, truncated } = await reviewFiles(paths, { knowledge: context.knowledge, cwd: context.cwd, framework, minSeverity })
+    const { reviews, truncated } = await reviewFiles(paths, {
+      knowledge: context.knowledge,
+      cwd: context.cwd,
+      framework,
+      minSeverity,
+    })
 
     if (reviews.length === 0)
       throw new ToolInputError(`No .vue, .ts, .js or .css file matches ${paths.join(', ')} (from ${context.cwd}).`)
@@ -42,7 +47,11 @@ export async function reviewCodeTool(context: ServerContext, { paths, code, file
     const withIssues = reviews.filter(review => review.findings.length > 0)
     const totals = countBySeverity(reviews.flatMap(review => review.findings))
 
-    sections.push(`Reviewed ${reviews.length} file${reviews.length > 1 ? 's' : ''}: ${totals.error} errors, ${totals.warning} warnings, ${totals.info} info.${truncated ? ` Only the first ${MAX_REVIEWED_FILES} files were reviewed: narrow the paths.` : ''}`)
+    sections.push(`Reviewed ${reviews.length} file${reviews.length > 1
+      ? 's'
+      : ''}: ${totals.error} errors, ${totals.warning} warnings, ${totals.info} info.${truncated
+      ? ` Only the first ${MAX_REVIEWED_FILES} files were reviewed: narrow the paths.`
+      : ''}`)
     sections.push(...withIssues.map(review => formatFindings(review.findings, review.file)))
   }
 

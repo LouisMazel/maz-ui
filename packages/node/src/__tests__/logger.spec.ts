@@ -240,7 +240,9 @@ describe('given logger module', () => {
     describe('when adding and removing a reporter', () => {
       it('then does not throw', () => {
         const log = createLogger()
-        const reporter = { log: vi.fn() }
+        const reporter = {
+          log: vi.fn(),
+        }
         expect(() => log.addReporter(reporter)).not.toThrow()
         expect(() => log.removeReporter(reporter)).not.toThrow()
       })

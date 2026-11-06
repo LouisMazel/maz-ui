@@ -112,7 +112,15 @@ describe('mazChart', () => {
     const instance = chartInstances[0]
 
     await wrapper.setProps({
-      data: { ...pieChart.data, datasets: [{ ...pieChart.data.datasets[0], data: [10, 20, 30] }] },
+      data: {
+        ...pieChart.data,
+        datasets: [
+          {
+            ...pieChart.data.datasets[0],
+            data: [10, 20, 30],
+          },
+        ],
+      },
     })
 
     expect(instance.update).toHaveBeenCalledWith('reset')
@@ -130,7 +138,15 @@ describe('mazChart', () => {
     const instance = chartInstances[0]
 
     await wrapper.setProps({
-      data: { ...pieChart.data, datasets: [{ ...pieChart.data.datasets[0], data: [1, 2, 3] }] },
+      data: {
+        ...pieChart.data,
+        datasets: [
+          {
+            ...pieChart.data.datasets[0],
+            data: [1, 2, 3],
+          },
+        ],
+      },
     })
 
     expect(instance.update).toHaveBeenCalledWith('none')
@@ -156,7 +172,9 @@ describe('mazChart', () => {
 describe('given a MazChart', () => {
   describe('when it has no accessible name', () => {
     it('then the canvas has no role', () => {
-      const wrapper = mount(MazChart, { props: { data: pieChart.data, type: pieChart.type as any } })
+      const wrapper = mount(MazChart, {
+        props: { data: pieChart.data, type: pieChart.type as any },
+      })
 
       expect(wrapper.find('canvas').attributes('role')).toBeUndefined()
     })
@@ -167,7 +185,10 @@ describe('given a MazChart', () => {
     ['aria-labelledby', 'chart-title'],
   ])('when it has an %s', (attribute, value) => {
     it('then the canvas is exposed as a named image', () => {
-      const wrapper = mount(MazChart, { props: { data: pieChart.data, type: pieChart.type as any }, attrs: { [attribute]: value } })
+      const wrapper = mount(MazChart, {
+        props: { data: pieChart.data, type: pieChart.type as any },
+        attrs: { [attribute]: value },
+      })
       const canvas = wrapper.find('canvas')
 
       expect(canvas.attributes('role')).toBe('img')

@@ -9,7 +9,10 @@ function mountWithSidebar(
   return mount(MazSidebar, {
     props: sidebarProps,
     slots: {
-      default: { template: groupSlot, components: { MazSidebarGroup } },
+      default: {
+        template: groupSlot,
+        components: { MazSidebarGroup },
+      },
     },
   })
 }

@@ -122,7 +122,10 @@ export class Swipe {
   public options: SwipeOptionsWithDefaults
 
   constructor(readonly inputOption: SwipeOptions) {
-    this.options = { ...defaultOptions, ...inputOption }
+    this.options = {
+      ...defaultOptions,
+      ...inputOption,
+    }
 
     this.onPointerDownCallback = this.handlePointerDown.bind(this)
     this.onPointerMoveCallback = this.handlePointerMove.bind(this)

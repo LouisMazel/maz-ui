@@ -139,7 +139,12 @@ describe('MazDialogConfirm extended coverage', () => {
     it('should merge accept button props', async () => {
       wrapper = getWrapper({
         modelValue: true,
-        acceptProps: { color: 'primary', type: 'accept', text: 'OK', response: 'ok' },
+        acceptProps: {
+          color: 'primary',
+          type: 'accept',
+          text: 'OK',
+          response: 'ok',
+        },
       })
       await vi.dynamicImportSettled()
 
@@ -153,7 +158,12 @@ describe('MazDialogConfirm extended coverage', () => {
     it('should merge reject button props', async () => {
       wrapper = getWrapper({
         modelValue: true,
-        rejectProps: { color: 'warning', type: 'reject', text: 'Nope', response: 'nope' },
+        rejectProps: {
+          color: 'warning',
+          type: 'reject',
+          text: 'Nope',
+          response: 'nope',
+        },
       })
       await vi.dynamicImportSettled()
 

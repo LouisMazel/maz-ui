@@ -14,7 +14,9 @@ describe('MazInputTags branch coverage', () => {
   describe('when modelValue has tags', () => {
     it('should render tags', () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['tag1', 'tag2'] },
+        props: {
+          modelValue: ['tag1', 'tag2'],
+        },
       })
       expect(wrapper.findAll('.m-input-tags__tag')).toHaveLength(2)
       wrapper.unmount()
@@ -24,7 +26,9 @@ describe('MazInputTags branch coverage', () => {
   describe('when entering a tag', () => {
     it('should emit new tag on enter', async () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['existing'] },
+        props: {
+          modelValue: ['existing'],
+        },
       })
       const input = wrapper.find('input')
       await input.setValue('newtag')
@@ -50,7 +54,9 @@ describe('MazInputTags branch coverage', () => {
 
     it('should not add duplicate tags', async () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['existing'] },
+        props: {
+          modelValue: ['existing'],
+        },
       })
       const input = wrapper.find('input')
       await input.setValue('existing')
@@ -68,7 +74,9 @@ describe('MazInputTags branch coverage', () => {
   describe('when removing a tag', () => {
     it('should remove tag on button click', async () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['tag1', 'tag2'] },
+        props: {
+          modelValue: ['tag1', 'tag2'],
+        },
       })
       const tagButtons = wrapper.findAll('.m-input-tags__tag')
       await tagButtons[0].trigger('click')
@@ -81,7 +89,9 @@ describe('MazInputTags branch coverage', () => {
   describe('when pressing delete key', () => {
     it('should highlight last tag on first delete', async () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['tag1', 'tag2'] },
+        props: {
+          modelValue: ['tag1', 'tag2'],
+        },
       })
       const input = wrapper.find('input')
       await input.trigger('keydown.delete')
@@ -93,7 +103,9 @@ describe('MazInputTags branch coverage', () => {
     it('should remove last tag on second delete', async () => {
       vi.useFakeTimers()
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['tag1', 'tag2'] },
+        props: {
+          modelValue: ['tag1', 'tag2'],
+        },
       })
       const input = wrapper.find('input')
       await input.trigger('keydown.delete')
@@ -108,7 +120,9 @@ describe('MazInputTags branch coverage', () => {
 
     it('should not remove when input has value', async () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['tag1'] },
+        props: {
+          modelValue: ['tag1'],
+        },
       })
       const input = wrapper.find('input')
       await input.setValue('something')
@@ -189,7 +203,14 @@ describe('MazInputTags branch coverage', () => {
   })
 
   describe('when focused with different colors', () => {
-    const colors = ['primary', 'secondary', 'info', 'destructive', 'success', 'warning'] as const
+    const colors = [
+      'primary',
+      'secondary',
+      'info',
+      'destructive',
+      'success',
+      'warning',
+    ] as const
 
     for (const color of colors) {
       it(`should apply ${color} border when focused`, async () => {
@@ -276,7 +297,9 @@ describe('MazInputTags branch coverage', () => {
   describe('when tag has hover state', () => {
     it('should handle mouseenter/mouseleave on tags', async () => {
       const wrapper = mount(MazInputTags, {
-        props: { modelValue: ['tag1'] },
+        props: {
+          modelValue: ['tag1'],
+        },
       })
       const tagBtn = wrapper.find('.m-input-tags__tag')
       await tagBtn.trigger('mouseenter')

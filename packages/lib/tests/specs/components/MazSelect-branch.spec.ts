@@ -322,7 +322,9 @@ describe('given MazSelect component (branch coverage)', () => {
     it('then it should return false for option with undefined value', () => {
       wrapper = mount(MazSelect, {
         props: {
-          options: [{ label: 'None', value: undefined }],
+          options: [
+            { label: 'None', value: undefined },
+          ],
           modelValue: undefined,
         },
       })
@@ -334,7 +336,9 @@ describe('given MazSelect component (branch coverage)', () => {
     it('then it should return false for option with null value', () => {
       wrapper = mount(MazSelect, {
         props: {
-          options: [{ label: 'Null', value: null }],
+          options: [
+            { label: 'Null', value: null },
+          ],
           modelValue: null,
         },
       })
@@ -348,7 +352,9 @@ describe('given MazSelect component (branch coverage)', () => {
     it('then it should return false for option with null/undefined value', () => {
       wrapper = mount(MazSelect, {
         props: {
-          options: [{ label: 'None', value: undefined }],
+          options: [
+            { label: 'None', value: undefined },
+          ],
           modelValue: 'something',
         },
       })

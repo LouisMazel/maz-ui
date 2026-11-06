@@ -35,7 +35,9 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   if (!themeState.value)
     return
 
-  const _preset = typeof preset === 'string' ? await getPreset(preset) : preset
+  const _preset = typeof preset === 'string'
+    ? await getPreset(preset)
+    : preset
 
   if (!_preset || !themeState.value.preset) {
     console.error('[@maz-ui/themes] No preset found — with buildtime strategy you must pass a full preset')
@@ -76,7 +78,9 @@ async function setColorMode(colorMode: ColorMode, options: { animate?: boolean }
     themeState.value!.colorMode = colorMode
     setCookie('maz-color-mode', colorMode)
     if (colorMode === 'auto') {
-      saveResolvedColorMode(getSystemColorMode() === 'dark' ? 'dark' : 'light')
+      saveResolvedColorMode(getSystemColorMode() === 'dark'
+        ? 'dark'
+        : 'light')
     }
   }
 

@@ -598,7 +598,9 @@ function focusEdgeOption(event: KeyboardEvent) {
     return
 
   event.preventDefault()
-  itemsElements[event.key === 'Home' ? 0 : itemsElements.length - 1]?.focus()
+  itemsElements[event.key === 'Home'
+    ? 0
+    : itemsElements.length - 1]?.focus()
 }
 
 function keydownHandler(event: KeyboardEvent) {

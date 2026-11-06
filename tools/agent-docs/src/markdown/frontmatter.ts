@@ -24,7 +24,9 @@ export function parseFrontmatter(source: string): ParsedMarkdown {
   const data = parse(match[1]) as unknown
 
   return {
-    frontmatter: data && typeof data === 'object' ? data as Frontmatter : {},
+    frontmatter: data && typeof data === 'object'
+      ? data as Frontmatter
+      : {},
     body: source.slice(match[0].length),
   }
 }

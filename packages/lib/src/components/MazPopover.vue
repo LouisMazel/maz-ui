@@ -280,7 +280,9 @@ const middleware = computed(() => {
   }
   else {
     middleware.push(flip({
-      fallbackPlacements: fallbackPosition ? [fallbackPosition] : undefined,
+      fallbackPlacements: fallbackPosition
+        ? [fallbackPosition]
+        : undefined,
     }))
   }
   return middleware
@@ -317,7 +319,9 @@ const positionRef = computed(() => {
       return withinTrigger
     }
 
-    return isClient() ? document.querySelector<HTMLElement>(positionReference) : null
+    return isClient()
+      ? document.querySelector<HTMLElement>(positionReference)
+      : null
   }
 
   return positionReference
@@ -388,14 +392,30 @@ const ownedTriggerAttributes = new Set<string>()
 let triggerObserver: MutationObserver | undefined
 
 const triggerAria = computed<Record<string, string | undefined>>(() => ({
-  'aria-expanded': role === 'dialog' || role === 'menu' ? String(isOpen.value) : undefined,
-  'aria-haspopup': role === 'dialog' || role === 'menu' ? role : undefined,
-  'aria-describedby': role === 'tooltip' && isOpen.value ? panelId.value : ariaDescribedby,
+  'aria-expanded': role === 'dialog' || role === 'menu'
+    ? String(isOpen.value)
+    : undefined,
+  'aria-haspopup': role === 'dialog' || role === 'menu'
+    ? role
+    : undefined,
+  'aria-describedby': role === 'tooltip' && isOpen.value
+    ? panelId.value
+    : ariaDescribedby,
   'aria-labelledby': ariaLabelledby,
   'aria-controls': isOpen.value ? panelId.value : undefined,
 }))
 
-const NON_TEXT_INPUT_TYPES = new Set(['button', 'submit', 'reset', 'checkbox', 'radio', 'image', 'file', 'color', 'range'])
+const NON_TEXT_INPUT_TYPES = new Set([
+  'button',
+  'submit',
+  'reset',
+  'checkbox',
+  'radio',
+  'image',
+  'file',
+  'color',
+  'range',
+])
 
 /**
  * `aria-expanded` is not allowed on a text field (role textbox): a text field opening a popup
@@ -431,7 +451,9 @@ function syncTriggerAria() {
   if (!target || target.getAttribute('role') === 'combobox')
     return
 
-  const skippedAttributes = isTextField(target) ? ['aria-expanded'] : []
+  const skippedAttributes = isTextField(target)
+    ? ['aria-expanded']
+    : []
 
   for (const [name, value] of Object.entries(triggerAria.value)) {
     if (skippedAttributes.includes(name))
@@ -478,7 +500,9 @@ const wrapperTriggerAttributes = computed(() => {
 
   return {
     ...triggerAria.value,
-    role: effectiveTrigger.value === 'click' ? 'button' : undefined,
+    role: effectiveTrigger.value === 'click'
+      ? 'button'
+      : undefined,
     tabindex: isClickTrigger ? 0 : undefined,
   }
 })

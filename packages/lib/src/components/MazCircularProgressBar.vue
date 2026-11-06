@@ -123,7 +123,9 @@ const adjustedPercentage = computed<number>(() => {
 })
 
 const currentColor = computed<MazColor | undefined>(() =>
-  autoColor ? getStatusColor(adjustedPercentage.value) : color,
+  autoColor
+    ? getStatusColor(adjustedPercentage.value)
+    : color,
 )
 
 /* Gradient stops derived via OKLCh offsets (mirrors SCALE_OFFSETS: -400, -700). */

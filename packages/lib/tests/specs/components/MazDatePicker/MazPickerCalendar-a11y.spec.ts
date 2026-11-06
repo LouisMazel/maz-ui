@@ -30,7 +30,13 @@ const gridProps = {
 }
 
 async function mountGrid(props: Partial<typeof gridProps> & Record<string, unknown> = {}) {
-  const wrapper = mount(MazPickerCalendarGrid, { props: { ...gridProps, ...props }, attachTo: document.body })
+  const wrapper = mount(MazPickerCalendarGrid, {
+    props: {
+      ...gridProps,
+      ...props,
+    },
+    attachTo: document.body,
+  })
   mountedWrappers.push(wrapper)
   await vi.dynamicImportSettled()
   await nextTick()
@@ -82,7 +88,10 @@ describe('given the calendar grid of a month', () => {
 
   describe('when a range is selected', () => {
     it('then the start and the days between are selected and the start is in the tab sequence', async () => {
-      const wrapper = await mountGrid({ range: true, modelValue: { start: '2024-01-10', end: '2024-01-12' } })
+      const wrapper = await mountGrid({
+        range: true,
+        modelValue: { start: '2024-01-10', end: '2024-01-12' },
+      })
 
       expect(['10', '11', '12'].map(day => getDay(wrapper, `2024-01-${day}`).element.parentElement?.getAttribute('aria-selected'))).toEqual(['true', 'true', 'true'])
       expect(getDay(wrapper, '2024-01-10').attributes('tabindex')).toBe('0')
@@ -92,7 +101,9 @@ describe('given the calendar grid of a month', () => {
   describe('when the month is the current month', () => {
     it('then today is the current date and is in the tab sequence', async () => {
       const today = dayjs()
-      const wrapper = await mountGrid({ calendarDate: today.format() })
+      const wrapper = await mountGrid({
+        calendarDate: today.format(),
+      })
       const day = getDay(wrapper, today.format('YYYY-MM-DD'))
 
       expect(day.attributes('aria-current')).toBe('date')
@@ -144,7 +155,9 @@ describe('given the calendar grid of a month', () => {
 
   describe('when the next day is disabled', () => {
     it('then the focus skips it', async () => {
-      const wrapper = await mountGrid({ disabledDates: ['2024-01-16'] })
+      const wrapper = await mountGrid({
+        disabledDates: ['2024-01-16'],
+      })
 
       await getDay(wrapper, '2024-01-15').trigger('keydown', { key: 'ArrowRight' })
 
@@ -179,7 +192,9 @@ describe('given the calendar grid of a month', () => {
 
   describe('when every following day is disabled', () => {
     it('then the focus does not move', async () => {
-      const wrapper = await mountGrid({ disabledWeekly: [0, 1, 2, 3, 4, 5, 6] })
+      const wrapper = await mountGrid({
+        disabledWeekly: [0, 1, 2, 3, 4, 5, 6],
+      })
       const day = getDay(wrapper, '2024-01-15')
 
       await day.trigger('keydown', { key: 'ArrowRight' })
@@ -230,7 +245,9 @@ describe('given the calendar grid of a month', () => {
 describe('given the days of the week', () => {
   describe('when they are rendered', () => {
     it('then they are a row of column headers with the full day name', () => {
-      const wrapper = mount(MazPickerCalendarDays, { props: { locale: 'en-US', firstDayOfWeek: 1 } })
+      const wrapper = mount(MazPickerCalendarDays, {
+        props: { locale: 'en-US', firstDayOfWeek: 1 },
+      })
       const headers = wrapper.findAll('[role="columnheader"]')
 
       expect(wrapper.attributes('role')).toBe('row')
@@ -244,7 +261,9 @@ describe('given the days of the week', () => {
 describe('given a calendar month', () => {
   describe('when it is rendered', () => {
     it('then it is a grid labelled by its month', async () => {
-      const wrapper = mount(MazPickerCalendarMonth, { props: { ...gridProps, offsetMonth: 1 } })
+      const wrapper = mount(MazPickerCalendarMonth, {
+        props: { ...gridProps, offsetMonth: 1 },
+      })
       mountedWrappers.push(wrapper)
       await vi.dynamicImportSettled()
 

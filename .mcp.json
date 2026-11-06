@@ -7,6 +7,15 @@
         "-y",
         "@maz-ui/mcp@latest"
       ]
+    },
+    "relizy": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": [
+        "exec",
+        "relizy",
+        "mcp"
+      ]
     }
   }
 }

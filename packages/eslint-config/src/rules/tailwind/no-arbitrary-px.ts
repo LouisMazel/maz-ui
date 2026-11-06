@@ -105,7 +105,10 @@ const rule: Rule.RuleModule = {
         additionalProperties: false,
         properties: {
           baseFontSize: { type: 'number', minimum: 1 },
-          unit: { type: 'string', enum: ['rem', 'em'] },
+          unit: {
+            type: 'string',
+            enum: ['rem', 'em'],
+          },
         },
       },
     ],
@@ -158,7 +161,9 @@ const rule: Rule.RuleModule = {
 
     if (parserServices.defineTemplateBodyVisitor) {
       return parserServices.defineTemplateBodyVisitor(
-        { VLiteral: (node: any) => check(node) },
+        {
+          VLiteral: (node: any) => check(node),
+        },
         jsVisitor,
       )
     }

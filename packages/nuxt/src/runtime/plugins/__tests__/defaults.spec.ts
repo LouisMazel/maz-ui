@@ -10,10 +10,17 @@ vi.mock('nuxt/app', () => ({
 describe('defaults plugin', () => {
   it('provides the global config when defaults are set', () => {
     const provide = vi.fn()
-    const defaults = { global: { roundedSize: 'lg' }, MazBtn: { roundedSize: 'full' } }
+    const defaults = {
+      global: { roundedSize: 'lg' },
+      MazBtn: { roundedSize: 'full' },
+    }
     const context = {
       vueApp: { provide },
-      $config: { public: { mazUi: { defaults } } },
+      $config: {
+        public: {
+          mazUi: { defaults },
+        },
+      },
     }
 
     ;(defaultsPlugin as (...args: any[]) => any)(context)
@@ -25,7 +32,11 @@ describe('defaults plugin', () => {
     const provide = vi.fn()
     const context = {
       vueApp: { provide },
-      $config: { public: { mazUi: { defaults: {} } } },
+      $config: {
+        public: {
+          mazUi: { defaults: {} },
+        },
+      },
     }
 
     ;(defaultsPlugin as (...args: any[]) => any)(context)
@@ -37,7 +48,9 @@ describe('defaults plugin', () => {
     const provide = vi.fn()
     const context = {
       vueApp: { provide },
-      $config: { public: { mazUi: {} } },
+      $config: {
+        public: { mazUi: {} },
+      },
     }
 
     ;(defaultsPlugin as (...args: any[]) => any)(context)

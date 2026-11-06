@@ -15,7 +15,9 @@ export function formatDate(date: string | number | Date, locale: string, options
   const opts = options ?? DEFAULT_OPTIONS
 
   try {
-    const usedDate = date instanceof Date ? date : new Date(date)
+    const usedDate = date instanceof Date
+      ? date
+      : new Date(date)
 
     return new Intl.DateTimeFormat(locale, opts).format(usedDate)
   }

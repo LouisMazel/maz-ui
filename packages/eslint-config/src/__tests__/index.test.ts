@@ -88,21 +88,27 @@ describe('defineConfig', () => {
   })
 
   it('auto-detects Vue from package.json', async () => {
-    stubPackageJson({ dependencies: { vue: '^3.0.0' } })
+    stubPackageJson({
+      dependencies: { vue: '^3.0.0' },
+    })
     const defineConfig = await loadDefineConfig()
     const config = await defineConfig({ logLevel: 'silent' })
     expect(Array.isArray(config)).toBe(true)
   })
 
   it('auto-detects Nuxt from devDependencies', async () => {
-    stubPackageJson({ devDependencies: { nuxt: '^3.0.0' } })
+    stubPackageJson({
+      devDependencies: { nuxt: '^3.0.0' },
+    })
     const defineConfig = await loadDefineConfig()
     const config = await defineConfig({ logLevel: 'silent' })
     expect(Array.isArray(config)).toBe(true)
   })
 
   it('checks peerDependencies for auto-detection', async () => {
-    stubPackageJson({ peerDependencies: { vue: '^3.0.0' } })
+    stubPackageJson({
+      peerDependencies: { vue: '^3.0.0' },
+    })
     const defineConfig = await loadDefineConfig()
     const config = await defineConfig({ logLevel: 'silent' })
     expect(Array.isArray(config)).toBe(true)
@@ -123,7 +129,9 @@ describe('defineConfig', () => {
   })
 
   it('honors explicit `vue: false`', async () => {
-    stubPackageJson({ dependencies: { vue: '^3.0.0' } })
+    stubPackageJson({
+      dependencies: { vue: '^3.0.0' },
+    })
     const defineConfig = await loadDefineConfig()
     const config = await defineConfig({ vue: false, logLevel: 'silent' })
     expect(Array.isArray(config)).toBe(true)
@@ -221,7 +229,10 @@ describe('defineConfig', () => {
     const config = await defineConfig({
       tailwindcss: 'recommended',
       rules: {
-        'maz/tailwind-no-arbitrary-px': ['error', { baseFontSize: 10, unit: 'em' }],
+        'maz/tailwind-no-arbitrary-px': [
+          'error',
+          { baseFontSize: 10, unit: 'em' },
+        ],
       },
       logLevel: 'silent',
     })
@@ -232,7 +243,10 @@ describe('defineConfig', () => {
       .map(block => block?.rules?.['maz/tailwind-no-arbitrary-px'])
       .filter(Boolean)
 
-    expect(ruleEntries.at(-1)).toEqual(['error', { baseFontSize: 10, unit: 'em' }])
+    expect(ruleEntries.at(-1)).toEqual([
+      'error',
+      { baseFontSize: 10, unit: 'em' },
+    ])
   })
 
   it('keeps internal noArbitraryPx defaults when the user does not override them', async () => {
@@ -247,7 +261,10 @@ describe('defineConfig', () => {
       .map(block => block?.rules?.['maz/tailwind-no-arbitrary-px'])
       .filter(Boolean)
 
-    expect(ruleEntries.at(-1)).toEqual(['error', { baseFontSize: 16, unit: 'rem' }])
+    expect(ruleEntries.at(-1)).toEqual([
+      'error',
+      { baseFontSize: 16, unit: 'rem' },
+    ])
   })
 
   it('does not register the maz/tailwind-* rule when tailwindcss is disabled', async () => {
@@ -281,7 +298,10 @@ describe('defineConfig', () => {
     const defineConfig = await loadDefineConfig()
     const config = await defineConfig(
       { logLevel: 'silent' },
-      { files: ['**/*.legacy.ts'], rules: { 'no-console': 'off' } },
+      {
+        files: ['**/*.legacy.ts'],
+        rules: { 'no-console': 'off' },
+      },
     )
     expect(Array.isArray(config)).toBe(true)
   })
@@ -321,7 +341,10 @@ describe('defineConfig', () => {
       tailwindcss: 'recommended',
       rules: { 'no-console': 'error' },
       logLevel: 'verbose',
-    }, { files: ['**/*.x.ts'], rules: {} })
+    }, {
+      files: ['**/*.x.ts'],
+      rules: {},
+    })
     expect(Array.isArray(config)).toBe(true)
   })
 

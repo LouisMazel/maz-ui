@@ -181,7 +181,9 @@ function checkValue(value?: number) {
     return
   if (value <= min)
     return min
-  return value >= max ? max : findClosestStep(value)
+  return value >= max
+    ? max
+    : findClosestStep(value)
 }
 
 const emitThrottled = throttle((value?: number) => emitValue(value), 300)

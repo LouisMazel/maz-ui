@@ -23,26 +23,50 @@ describe('given isEqual function', () => {
   describe('when comparing arrays', () => {
     it('then it should return true for equal arrays', () => {
       expect(isEqual([1, 2, 3], [1, 2, 3])).toBe(true)
-      expect(isEqual([1, [2, 3]], [1, [2, 3]])).toBe(true)
+      expect(isEqual([
+        1,
+        [2, 3],
+      ], [
+        1,
+        [2, 3],
+      ])).toBe(true)
     })
 
     it('then it should return false for different arrays', () => {
       expect(isEqual([1, 2, 3], [1, 2, 4])).toBe(false)
       expect(isEqual([1, 2, 3], [1, 2])).toBe(false)
-      expect(isEqual([1, [2, 3]], [1, [2, 4]])).toBe(false)
+      expect(isEqual([
+        1,
+        [2, 3],
+      ], [
+        1,
+        [2, 4],
+      ])).toBe(false)
     })
   })
 
   describe('when comparing objects', () => {
     it('then it should return true for equal objects', () => {
       expect(isEqual({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true)
-      expect(isEqual({ a: 1, b: { c: 2 } }, { a: 1, b: { c: 2 } })).toBe(true)
+      expect(isEqual({
+        a: 1,
+        b: { c: 2 },
+      }, {
+        a: 1,
+        b: { c: 2 },
+      })).toBe(true)
     })
 
     it('then it should return false for different objects', () => {
       expect(isEqual({ a: 1, b: 2 }, { a: 1, b: 3 })).toBe(false)
       expect(isEqual({ a: 1, b: 2 }, { a: 1, c: 2 })).toBe(false)
-      expect(isEqual({ a: 1, b: { c: 2 } }, { a: 1, b: { c: 3 } })).toBe(false)
+      expect(isEqual({
+        a: 1,
+        b: { c: 2 },
+      }, {
+        a: 1,
+        b: { c: 3 },
+      })).toBe(false)
     })
   })
 

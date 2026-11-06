@@ -60,7 +60,12 @@ describe('given getFieldState function', () => {
         name: pipe(string(), minLength(3)),
       }
 
-      const state = getFieldState({ name: 'name', schema, initialValue: 'John', fieldState: {} as FieldState<{ name: string }, 'name', string> })
+      const state = getFieldState({
+        name: 'name',
+        schema,
+        initialValue: 'John',
+        fieldState: {} as FieldState<{ name: string }, 'name', string>,
+      })
 
       expect(state).toEqual({
         blurred: false,
@@ -145,7 +150,9 @@ describe('given getFieldsErrors function', () => {
     it('then it returns the correct fields errors', () => {
       const fieldsStates = {
         name: {
-          errors: [{ message: 'Name is required' }],
+          errors: [
+            { message: 'Name is required' },
+          ],
         },
         age: {
           errors: [],
@@ -155,7 +162,9 @@ describe('given getFieldsErrors function', () => {
       const errors = getFieldsErrors(fieldsStates)
 
       expect(errors).toEqual({
-        name: [{ message: 'Name is required' }],
+        name: [
+          { message: 'Name is required' },
+        ],
         age: [],
       })
     })
@@ -197,8 +206,14 @@ describe('given addEventToInteractiveElements function', () => {
   describe('when called with interactive elements and event handlers', () => {
     it('then it add correct event listeners based on the mode', () => {
       const mockElements = [
-        { addEventListener: vi.fn(), getAttribute: vi.fn().mockReturnValue('text') },
-        { addEventListener: vi.fn(), getAttribute: vi.fn().mockReturnValue('radio') },
+        {
+          addEventListener: vi.fn(),
+          getAttribute: vi.fn().mockReturnValue('text'),
+        },
+        {
+          addEventListener: vi.fn(),
+          getAttribute: vi.fn().mockReturnValue('radio'),
+        },
       ] as unknown as HTMLElement[]
       const onBlur = vi.fn()
 
@@ -416,7 +431,12 @@ describe('given getFieldValidationResult function', () => {
 })
 
 describe('given canExecuteValidation function', () => {
-  const fieldState = { dirty: false, blurred: false, mode: 'eager', valid: false } as FieldState<{ name: string }, 'name', string>
+  const fieldState = {
+    dirty: false,
+    blurred: false,
+    mode: 'eager',
+    valid: false,
+  } as FieldState<{ name: string }, 'name', string>
 
   it('returns true when form is submitted', () => {
     expect(canExecuteValidation({ eventName: 'input', fieldState, isSubmitted: true })).toBe(true)
@@ -448,7 +468,13 @@ describe('given handleFieldBlur function', () => {
 
   it('updates field state and validates on blur', () => {
     const payload = { name: 'John' }
-    handleFieldBlur({ name: 'name', payload, fieldState, schema, isSubmitted: false })
+    handleFieldBlur({
+      name: 'name',
+      payload,
+      fieldState,
+      schema,
+      isSubmitted: false,
+    })
     expect(fieldState.dirty).toBe(true)
     expect(fieldState.blurred).toBe(true)
   })
@@ -470,7 +496,13 @@ describe('given handleFieldInput function', () => {
 
   it('updates field state and validates on input', () => {
     const payload = { name: 'John' }
-    handleFieldInput({ name: 'name', payload, fieldState, schema, isSubmitted: true })
+    handleFieldInput({
+      name: 'name',
+      payload,
+      fieldState,
+      schema,
+      isSubmitted: true,
+    })
     expect(fieldState.dirty).toBe(true)
     expect(fieldState.validateFunction).toHaveBeenCalledTimes(1)
   })
@@ -483,8 +515,12 @@ describe('given getErrorMessages function', () => {
   } as unknown as FieldsStates<{ name: string, age: number }, 'name' | 'age'>
 
   const errors = {
-    name: [{ message: 'Name is required' }],
-    age: [{ message: 'Age must be a number' }],
+    name: [
+      { message: 'Name is required' },
+    ],
+    age: [
+      { message: 'Age must be a number' },
+    ],
   } as unknown as Record<string, ValidationIssues>
 
   it('returns error messages for fields with errors', () => {

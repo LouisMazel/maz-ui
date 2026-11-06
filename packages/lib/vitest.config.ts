@@ -9,7 +9,16 @@ import { ViteBuildIcons, ViteBuildThemes } from './build'
 
 export default defineConfig({
   logLevel: process.env.CI ? 'error' : 'info',
-  plugins: [Vue({ template: { compilerOptions: { comments: false } } }), SvgLoader(), ViteBuildIcons({ testing: true }), ViteBuildThemes({ testing: true })],
+  plugins: [
+    Vue({
+      template: {
+        compilerOptions: { comments: false },
+      },
+    }),
+    SvgLoader(),
+    ViteBuildIcons({ testing: true }),
+    ViteBuildThemes({ testing: true }),
+  ],
   server: {
     port: 1111,
   },
@@ -19,7 +28,9 @@ export default defineConfig({
     clearMocks: true,
     silent: !!process.env.CI,
     hideSkippedTests: !!process.env.CI,
-    reporters: process.env.CI ? ['dot'] : ['tree'],
+    reporters: process.env.CI
+      ? ['dot']
+      : ['tree'],
 
     environmentOptions: {
       jsdom: {
@@ -36,7 +47,13 @@ export default defineConfig({
     coverage: {
       ...coverageConfigDefaults,
       provider: 'v8',
-      reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
+      reporter: [
+        'clover',
+        'html',
+        'lcov',
+        'text',
+        'text-summary',
+      ],
       include: ['src/**/*.{js,ts,vue}'],
       exclude: [
         ...coverageConfigDefaults.exclude,

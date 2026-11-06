@@ -38,7 +38,9 @@ export function describeSource(context: ServerContext): string {
 }
 
 export function listDocs(context: ServerContext, { category }: ListDocsArgs): string {
-  const categories = category ? [category] : docCategories
+  const categories = category
+    ? [category]
+    : docCategories
   const sections = categories
     .map((current) => {
       const docs = context.knowledge.docs.filter(doc => doc.category === current)

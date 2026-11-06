@@ -10,7 +10,10 @@ afterEach(() => {
 })
 
 async function mountEditor(props: Record<string, unknown> = {}) {
-  const wrapper = mount(MazMarkdownEditor, { props: { label: 'Content', name: 'content', ...props }, attachTo: document.body })
+  const wrapper = mount(MazMarkdownEditor, {
+    props: { label: 'Content', name: 'content', ...props },
+    attachTo: document.body,
+  })
   mountedWrappers.push(wrapper)
   await vi.dynamicImportSettled()
   await nextTick()
@@ -84,7 +87,10 @@ describe('given a MazMarkdownEditor', () => {
       await getTabs(wrapper)[0].trigger('keydown', { key: 'End' })
       await getTabs(wrapper)[2].trigger('keydown', { key: 'Home' })
 
-      expect(wrapper.emitted('update:mode')).toEqual([['split'], ['write']])
+      expect(wrapper.emitted('update:mode')).toEqual([
+        ['split'],
+        ['write'],
+      ])
     })
   })
 

@@ -27,14 +27,33 @@ const IGNORED = [
   '**/*.{spec,test}.*',
 ]
 const MAX_FILE_SIZE = 300_000
-const PATTERNS = ['*.css', '*.ts', '*.mts', '*.cts', '*.js', '*.mjs']
+const PATTERNS = [
+  '*.css',
+  '*.ts',
+  '*.mts',
+  '*.cts',
+  '*.js',
+  '*.mjs',
+]
 const IGNORED_PATH = /(?:^|\/)(?:node_modules|dist|build|coverage|public|fixtures|__tests__|\.[^/]+)\/|\.min\.css$|\.d\.ts$|\.(?:spec|test)\.\w+$/
 
 /** Source files of the project: the git files (fast, respects `.gitignore`), or a glob outside git */
 function projectFiles(rootDir: string): string[] {
   try {
     // eslint-disable-next-line sonarjs/no-os-command-from-path -- the git of the user, run in its own project
-    return execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '--', ...PATTERNS], { cwd: rootDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024 })
+    return execFileSync('git', [
+      'ls-files',
+      '--cached',
+      '--others',
+      '--exclude-standard',
+      '--',
+      ...PATTERNS,
+    ], {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+      maxBuffer: 64 * 1024 * 1024,
+    })
       .split('\n')
       .filter(file => file && !IGNORED_PATH.test(file))
   }
@@ -46,7 +65,9 @@ function projectFiles(rootDir: string): string[] {
 
 function readSmallFile(path: string): string | undefined {
   try {
-    return statSync(path).size <= MAX_FILE_SIZE ? readFileSync(path, 'utf8') : undefined
+    return statSync(path).size <= MAX_FILE_SIZE
+      ? readFileSync(path, 'utf8')
+      : undefined
   }
   catch {
     return undefined
@@ -110,18 +131,24 @@ function code(value: string): string {
 }
 
 function shorten(value: string, max = 70): string {
-  return value.length > max ? `${value.slice(0, max - 3)}...` : value
+  return value.length > max
+    ? `${value.slice(0, max - 3)}...`
+    : value
 }
 
 function display(value: PresetValue | undefined): string {
   if (value === undefined)
     return '-'
 
-  return code(shorten(typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value)))
+  return code(shorten(typeof value === 'object' && value !== null
+    ? JSON.stringify(value)
+    : String(value)))
 }
 
 function asRecord(value: PresetValue | undefined): Record<string, PresetValue> {
-  return value && typeof value === 'object' && !Array.isArray(value) ? value : {}
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? value
+    : {}
 }
 
 const COLOR_CLASSES: Record<string, string> = {
@@ -134,14 +161,21 @@ function colorClasses(name: string): string {
   if (COLOR_CLASSES[name])
     return COLOR_CLASSES[name]
 
-  return name.endsWith('-foreground') ? code(`text-${name}`) : `${code(`bg-${name}`)} ${code(`text-${name}`)}`
+  return name.endsWith('-foreground')
+    ? code(`text-${name}`)
+    : `${code(`bg-${name}`)} ${code(`text-${name}`)}`
 }
 
 function presetColors(preset: ProjectPreset): string[] {
   const colors = asRecord(preset.overrides.colors)
   const light = asRecord(colors.light)
   const dark = asRecord(colors.dark)
-  const names = [...new Set([...Object.keys(light), ...Object.keys(dark)])]
+  const names = [
+    ...new Set([
+      ...Object.keys(light),
+      ...Object.keys(dark),
+    ]),
+  ]
 
   if (names.length === 0)
     return []
@@ -158,27 +192,40 @@ function presetFoundation(preset: ProjectPreset, wanted: (topic: ThemeTopic) => 
     .filter(([key]) => wanted(FOUNDATION_USAGE[key]?.topic ?? 'css-variables'))
     .map(([key, value]) => `| \`${key}\` | \`--maz-${key}\` | ${FOUNDATION_USAGE[key]?.usage ?? '-'} | ${display(value)} |`)
 
-  return rows.length > 0 ? ['| Foundation | CSS variable | Used by | Value |', '| --- | --- | --- | --- |', ...rows] : []
+  return rows.length > 0
+    ? ['| Foundation | CSS variable | Used by | Value |', '| --- | --- | --- | --- |', ...rows]
+    : []
 }
 
 function presetScales(preset: ProjectPreset, wanted: (topic: ThemeTopic) => boolean): string[] {
   const scales = asRecord(preset.overrides.scales)
   const rows = [
-    ...(wanted('radius') ? Object.entries(asRecord(scales.rounded)).map(([key, value]) => `| ${code(`rounded-${key}`)} | ${display(value)} |`) : []),
-    ...(wanted('shadows') ? Object.entries(asRecord(scales.shadow)).map(([key, value]) => `| ${code(`shadow-${key}`)} | ${display(value)} |`) : []),
+    ...(wanted('radius')
+      ? Object.entries(asRecord(scales.rounded)).map(([key, value]) => `| ${code(`rounded-${key}`)} | ${display(value)} |`)
+      : []),
+    ...(wanted('shadows')
+      ? Object.entries(asRecord(scales.shadow)).map(([key, value]) => `| ${code(`shadow-${key}`)} | ${display(value)} |`)
+      : []),
   ]
 
-  return rows.length > 0 ? ['| Class | Value |', '| --- | --- |', ...rows] : []
+  return rows.length > 0
+    ? ['| Class | Value |', '| --- | --- |', ...rows]
+    : []
 }
 
 function flatten(value: PresetValue, path: string): Array<[string, PresetValue]> {
   const record = asRecord(value)
   const keys = Object.keys(record)
 
-  if (keys.length === 0 || keys.every(key => key === 'light' || key === 'dark'))
-    return [[path, value]]
+  if (keys.length === 0 || keys.every(key => key === 'light' || key === 'dark')) {
+    return [
+      [path, value],
+    ]
+  }
 
-  return keys.flatMap(key => flatten(record[key], path ? `${path}.${key}` : key))
+  return keys.flatMap(key => flatten(record[key], path
+    ? `${path}.${key}`
+    : key))
 }
 
 function presetComponents(preset: ProjectPreset): string[] {
@@ -186,24 +233,34 @@ function presetComponents(preset: ProjectPreset): string[] {
     .filter(([path]) => path)
     .map(([path, value]) => `| \`components.${path}\` | ${COMPONENT_USAGE[path] ?? '-'} | ${display(value)} |`)
 
-  return rows.length > 0 ? ['| Component token | Used by | Value |', '| --- | --- | --- |', ...rows] : []
+  return rows.length > 0
+    ? ['| Component token | Used by | Value |', '| --- | --- | --- |', ...rows]
+    : []
 }
 
 function renderPreset(preset: ProjectPreset, wanted: (topic: ThemeTopic) => boolean, filtered: boolean): string | undefined {
-  const name = typeof preset.overrides.name === 'string' ? ` \`${preset.overrides.name}\`` : ''
+  const name = typeof preset.overrides.name === 'string'
+    ? ` \`${preset.overrides.name}\``
+    : ''
   const origin = [preset.exportName && `\`${preset.exportName}\``, preset.base && `base \`${preset.base}\``].filter(Boolean).join(', ')
   const tables = [
-    wanted('colors') ? presetColors(preset) : [],
+    wanted('colors')
+      ? presetColors(preset)
+      : [],
     presetFoundation(preset, wanted),
     presetScales(preset, wanted),
-    wanted('colors') ? presetComponents(preset) : [],
+    wanted('colors')
+      ? presetComponents(preset)
+      : [],
   ].filter(table => table.length > 0)
 
   if (filtered && tables.length === 0)
     return undefined
 
   return [
-    `### Preset${name} - \`${preset.file}\`${origin ? ` (${origin})` : ''}`,
+    `### Preset${name} - \`${preset.file}\`${origin
+      ? ` (${origin})`
+      : ''}`,
     'The preset sets the **values** of the maz-ui tokens at runtime, the class names stay the same: `bg-primary` uses the preset `primary`, `font-display` the preset `font-display-stack`. Brand colors, fonts, radius, shadows and motion belong here, not in CSS.',
     ...tables.map(table => table.join('\n')),
   ].join('\n\n')
@@ -232,7 +289,9 @@ function tokenNote(token: ProjectToken, mazUi: Map<string, string>): string {
   const original = mazUi.get(token.variable)
   const notes = [
     token.comment,
-    original && original !== token.value ? `Redefines the maz-ui token (maz-ui: ${code(shorten(original, 50))}): this class no longer follows the preset.` : undefined,
+    original && original !== token.value
+      ? `Redefines the maz-ui token (maz-ui: ${code(shorten(original, 50))}): this class no longer follows the preset.`
+      : undefined,
   ]
 
   return notes.filter(Boolean).join(' ').replaceAll('|', '\\|') || '-'
@@ -260,11 +319,25 @@ function renderStylesheet(stylesheet: ProjectStylesheet, mazUi: Map<string, stri
   if (stylesheet.resets.length > 0 && wanted('colors'))
     sections.push(`Reset namespaces: ${stylesheet.resets.map(reset => code(reset)).join(', ')}: the default Tailwind tokens of these namespaces do not exist.`)
 
-  if (stylesheet.variants.length > 0 && (wanted('variants') || wanted('breakpoints')))
-    sections.push(['#### Custom variants', '', '| Variant | Definition |', '| --- | --- |', ...stylesheet.variants.map(variant => `| \`${variant.name}:\` | ${code(shorten(variant.definition))} |`)].join('\n'))
+  if (stylesheet.variants.length > 0 && (wanted('variants') || wanted('breakpoints'))) {
+    sections.push([
+      '#### Custom variants',
+      '',
+      '| Variant | Definition |',
+      '| --- | --- |',
+      ...stylesheet.variants.map(variant => `| \`${variant.name}:\` | ${code(shorten(variant.definition))} |`),
+    ].join('\n'))
+  }
 
-  if (stylesheet.utilities.length > 0 && wanted('utilities'))
-    sections.push(['#### Custom utilities', '', '| Class | CSS |', '| --- | --- |', ...stylesheet.utilities.map(utility => `| \`${utility.name}\` | ${code(shorten(utility.css))} |`)].join('\n'))
+  if (stylesheet.utilities.length > 0 && wanted('utilities')) {
+    sections.push([
+      '#### Custom utilities',
+      '',
+      '| Class | CSS |',
+      '| --- | --- |',
+      ...stylesheet.utilities.map(utility => `| \`${utility.name}\` | ${code(shorten(utility.css))} |`),
+    ].join('\n'))
+  }
 
   const keyframes = stylesheet.keyframes.filter(name => !animated.has(name))
 
@@ -290,9 +363,15 @@ function renderStylesheetSection(stylesheet: ProjectStylesheet, mazUi: Map<strin
   if (topics?.length && sections.length === 0)
     return undefined
 
-  const imports = stylesheet.imports.length > 0 ? [`Imports: ${stylesheet.imports.map(path => code(path)).join(', ')}`] : []
+  const imports = stylesheet.imports.length > 0
+    ? [`Imports: ${stylesheet.imports.map(path => code(path)).join(', ')}`]
+    : []
 
-  return [`### Tailwind \`${stylesheet.file}\``, ...imports, ...sections].join('\n\n')
+  return [
+    `### Tailwind \`${stylesheet.file}\``,
+    ...imports,
+    ...sections,
+  ].join('\n\n')
 }
 
 /** Setup problems of a Tailwind entry (the file that imports `tailwindcss`) */

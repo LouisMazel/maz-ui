@@ -194,14 +194,25 @@ describe('MazRadio extended branch coverage', () => {
 
     it('error takes precedence over warning and success', () => {
       const wrapper = mount(MazRadio, {
-        props: { value: 'a', name: 'g', error: true, warning: true, success: true },
+        props: {
+          value: 'a',
+          name: 'g',
+          error: true,
+          warning: true,
+          success: true,
+        },
       })
       expect(wrapper.attributes('style')).toContain('var(--maz-destructive)')
     })
 
     it('warning takes precedence over success', () => {
       const wrapper = mount(MazRadio, {
-        props: { value: 'a', name: 'g', warning: true, success: true },
+        props: {
+          value: 'a',
+          name: 'g',
+          warning: true,
+          success: true,
+        },
       })
       expect(wrapper.attributes('style')).toContain('var(--maz-warning)')
     })
@@ -310,21 +321,36 @@ describe('MazRadio extended branch coverage', () => {
 
     it('applies --error class to hint when error is true', () => {
       const wrapper = mount(MazRadio, {
-        props: { value: 'a', name: 'g', hint: 'Error', error: true },
+        props: {
+          value: 'a',
+          name: 'g',
+          hint: 'Error',
+          error: true,
+        },
       })
       expect(wrapper.find('.m-radio__hint').classes()).toContain('--error')
     })
 
     it('applies --success class to hint when success is true', () => {
       const wrapper = mount(MazRadio, {
-        props: { value: 'a', name: 'g', hint: 'Success', success: true },
+        props: {
+          value: 'a',
+          name: 'g',
+          hint: 'Success',
+          success: true,
+        },
       })
       expect(wrapper.find('.m-radio__hint').classes()).toContain('--success')
     })
 
     it('applies --warning class to hint when warning is true', () => {
       const wrapper = mount(MazRadio, {
-        props: { value: 'a', name: 'g', hint: 'Warning', warning: true },
+        props: {
+          value: 'a',
+          name: 'g',
+          hint: 'Warning',
+          warning: true,
+        },
       })
       expect(wrapper.find('.m-radio__hint').classes()).toContain('--warning')
     })
@@ -382,7 +408,11 @@ describe('MazRadio extended branch coverage', () => {
 
     it('applies custom style to root element', () => {
       const wrapper = mount(MazRadio, {
-        props: { value: 'a', name: 'g', style: { padding: '4px' } },
+        props: {
+          value: 'a',
+          name: 'g',
+          style: { padding: '4px' },
+        },
       })
       expect(wrapper.attributes('style')).toContain('padding: 4px')
     })

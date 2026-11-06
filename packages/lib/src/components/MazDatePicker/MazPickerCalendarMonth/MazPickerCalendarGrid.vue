@@ -54,7 +54,9 @@ const modelValue = computed({
 })
 
 const monthDays = computed<{ label: string | number, date: Dayjs }[]>(() =>
-  Array.from({ length: getDaysInMonth(props.calendarDate) }, (_v, i) => i + 1).map(day => ({
+  Array.from({
+    length: getDaysInMonth(props.calendarDate),
+  }, (_v, i) => i + 1).map(day => ({
     label: day,
     date: dayjs(props.calendarDate).set('date', day),
   })),
@@ -80,11 +82,18 @@ const weeks = computed(() => {
     ...monthDays.value,
   ]
 
-  return Array.from({ length: Math.ceil(cells.length / 7) }, (_v, i) => cells.slice(i * 7, i * 7 + 7))
+  return Array.from({
+    length: Math.ceil(cells.length / 7),
+  }, (_v, i) => cells.slice(i * 7, i * 7 + 7))
 })
 
 function getDayLabel(date: Dayjs) {
-  return formatDate(date.toDate(), props.locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  return formatDate(date.toDate(), props.locale, {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
 }
 
 function isToday(date: Dayjs) {
@@ -104,10 +113,15 @@ const focusedDateKey = ref<string>()
 function getSelectedDateKey(): string | undefined {
   const value = props.modelValue
 
-  if (isRangeValue(value))
-    return value.start ? getDateKey(dayjs(value.start)) : undefined
+  if (isRangeValue(value)) {
+    return value.start
+      ? getDateKey(dayjs(value.start))
+      : undefined
+  }
 
-  return value && isValidDate(value) ? getDateKey(dayjs(value)) : undefined
+  return value && isValidDate(value)
+    ? getDateKey(dayjs(value))
+    : undefined
 }
 
 /**
@@ -115,7 +129,11 @@ function getSelectedDateKey(): string | undefined {
  */
 const tabbableDateKey = computed(() => {
   const enabledKeys = monthDays.value.filter(({ date }) => !isDayDisabled(date)).map(({ date }) => getDateKey(date))
-  const candidates = [focusedDateKey.value, getSelectedDateKey(), getDateKey(dayjs())]
+  const candidates = [
+    focusedDateKey.value,
+    getSelectedDateKey(),
+    getDateKey(dayjs()),
+  ]
 
   return candidates.find(key => key && enabledKeys.includes(key)) ?? enabledKeys[0]
 })
@@ -149,21 +167,50 @@ function getKeyboardTarget(event: KeyboardEvent, date: Dayjs): { date: Dayjs, st
 
   switch (event.key) {
     case 'ArrowRight':
-      return { date: date.add(isRtl ? -1 : 1, 'day'), step: isRtl ? -1 : 1 }
+      return {
+        date: date.add(isRtl
+          ? -1
+          : 1, 'day'),
+        step: isRtl
+          ? -1
+          : 1,
+      }
     case 'ArrowLeft':
-      return { date: date.add(isRtl ? 1 : -1, 'day'), step: isRtl ? 1 : -1 }
+      return {
+        date: date.add(isRtl
+          ? 1
+          : -1, 'day'),
+        step: isRtl
+          ? 1
+          : -1,
+      }
     case 'ArrowDown':
-      return { date: date.add(7, 'day'), step: 1 }
+      return {
+        date: date.add(7, 'day'),
+        step: 1,
+      }
     case 'ArrowUp':
-      return { date: date.subtract(7, 'day'), step: -1 }
+      return {
+        date: date.subtract(7, 'day'),
+        step: -1,
+      }
     case 'Home':
       return { date: startOfWeek, step: 1 }
     case 'End':
-      return { date: startOfWeek.add(6, 'day'), step: -1 }
+      return {
+        date: startOfWeek.add(6, 'day'),
+        step: -1,
+      }
     case 'PageUp':
-      return { date: date.subtract(1, event.shiftKey ? 'year' : 'month'), step: -1 }
+      return {
+        date: date.subtract(1, event.shiftKey ? 'year' : 'month'),
+        step: -1,
+      }
     case 'PageDown':
-      return { date: date.add(1, event.shiftKey ? 'year' : 'month'), step: 1 }
+      return {
+        date: date.add(1, event.shiftKey ? 'year' : 'month'),
+        step: 1,
+      }
     default:
       return undefined
   }
@@ -265,8 +312,12 @@ function getDayButtonColor(date: Dayjs): MazColor {
   const value = props.modelValue
 
   if (typeof value === 'object') {
-    const isStartDate = value.start ? isSameDate(date, value.start, 'date') : false
-    const isEndDate = value.end ? isSameDate(date, value.end, 'date') : false
+    const isStartDate = value.start
+      ? isSameDate(date, value.start, 'date')
+      : false
+    const isEndDate = value.end
+      ? isSameDate(date, value.end, 'date')
+      : false
     const isBetweenDates = checkIsBetween(date)
 
     if (isStartDate || isEndDate || isBetweenDates) {
@@ -275,7 +326,9 @@ function getDayButtonColor(date: Dayjs): MazColor {
     return 'transparent'
   }
   else {
-    return checkIsSameDate(date) ? props.color : 'transparent'
+    return checkIsSameDate(date)
+      ? props.color
+      : 'transparent'
   }
 }
 

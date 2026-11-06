@@ -3,12 +3,17 @@ import type { UserConfig } from 'vitepress'
 const isNextEnv = process.env.DEPLOY_ENV === 'next'
 
 export function getAssetBaseUrl(path: string): string {
-  const base = process.env.NODE_ENV === 'production' ? 'https://maz-ui.com' : ''
+  const base = process.env.NODE_ENV === 'production'
+    ? 'https://maz-ui.com'
+    : ''
   return `${base}${path}`
 }
 
 export const head = [
-  ['meta', { name: 'theme-color', content: '#1d90ff' }],
+  [
+    'meta',
+    { name: 'theme-color', content: '#1d90ff' },
+  ],
   [
     'link',
     {
@@ -58,10 +63,28 @@ export const head = [
       href: getAssetBaseUrl('/img/icons/favicon-32x32.png'),
     },
   ],
-  ['link', { rel: 'manifest', href: getAssetBaseUrl('/manifest.webmanifest') }],
-  ['meta', { name: 'robots', content: isNextEnv ? 'noindex, nofollow' : 'index, follow' }],
-  ['meta', { name: 'application-name', content: 'Maz-UI' }],
-  ['meta', { name: 'apple-mobile-web-app-title', content: 'Maz-UI' }],
+  [
+    'link',
+    {
+      rel: 'manifest',
+      href: getAssetBaseUrl('/manifest.webmanifest'),
+    },
+  ],
+  [
+    'meta',
+    {
+      name: 'robots',
+      content: isNextEnv ? 'noindex, nofollow' : 'index, follow',
+    },
+  ],
+  [
+    'meta',
+    { name: 'application-name', content: 'Maz-UI' },
+  ],
+  [
+    'meta',
+    { name: 'apple-mobile-web-app-title', content: 'Maz-UI' },
+  ],
   [
     'meta',
     { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
@@ -74,10 +97,16 @@ export const head = [
     'meta',
     { name: 'twitter:site', content: '@maz__ui' },
   ],
-  ['meta', { name: 'twitter:creator', content: '@mazeel' }],
+  [
+    'meta',
+    { name: 'twitter:creator', content: '@mazeel' },
+  ],
   [
     'link',
-    { rel: 'apple-touch-icon', href: getAssetBaseUrl('/img/icons/apple-touch-icon.png') },
+    {
+      rel: 'apple-touch-icon',
+      href: getAssetBaseUrl('/img/icons/apple-touch-icon.png'),
+    },
   ],
   [
     'link',
@@ -87,12 +116,33 @@ export const head = [
       color: '#3eaf7c',
     },
   ],
-  ['meta', { name: 'msapplication-TileColor', content: '#2d89ef' }],
-  ['meta', { name: 'theme-color', content: '#ffffff' }],
-  ['meta', { name: 'msapplication-TileImage', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
-  ['meta', { name: 'og:site_name', content: 'Maz-UI' }],
-  ['meta', { name: 'og:locale', content: 'en-US' }],
-  ['meta', { name: 'article:author', content: 'Loïc Mazuel' }],
+  [
+    'meta',
+    { name: 'msapplication-TileColor', content: '#2d89ef' },
+  ],
+  [
+    'meta',
+    { name: 'theme-color', content: '#ffffff' },
+  ],
+  [
+    'meta',
+    {
+      name: 'msapplication-TileImage',
+      content: getAssetBaseUrl('/img/maz-ui-preview.jpg'),
+    },
+  ],
+  [
+    'meta',
+    { name: 'og:site_name', content: 'Maz-UI' },
+  ],
+  [
+    'meta',
+    { name: 'og:locale', content: 'en-US' },
+  ],
+  [
+    'meta',
+    { name: 'article:author', content: 'Loïc Mazuel' },
+  ],
   [
     'script',
     {

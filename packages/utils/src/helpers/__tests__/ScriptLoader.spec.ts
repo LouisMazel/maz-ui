@@ -112,7 +112,9 @@ describe('given ScriptLoader class', () => {
     })
 
     it('then it should remove the tag when given a string identifier', () => {
-      const mockTag = { remove: vi.fn() }
+      const mockTag = {
+        remove: vi.fn(),
+      }
       mockDocument.head.querySelector.mockReturnValue(mockTag)
 
       loader.removeTag('test')
@@ -121,7 +123,9 @@ describe('given ScriptLoader class', () => {
     })
 
     it('then it should remove the tag when given an Element', () => {
-      const mockTag = { remove: vi.fn() }
+      const mockTag = {
+        remove: vi.fn(),
+      }
       loader.removeTag(mockTag as any)
       expect(mockTag.remove).toHaveBeenCalled()
     })

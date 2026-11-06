@@ -19,7 +19,13 @@ function getEntries(pattern: string) {
   ]
 }
 
-const testPaths = ['**/__tests__/**/*', '**/__fixtures__/**/*', '**/__mocks__/**/*', '**/*.spec.ts', 'src/**/*.test.ts']
+const testPaths = [
+  '**/__tests__/**/*',
+  '**/__fixtures__/**/*',
+  '**/__mocks__/**/*',
+  '**/*.spec.ts',
+  'src/**/*.test.ts',
+]
 
 const entries = Object.fromEntries(
   glob.sync('src/**/*.ts', {
@@ -70,14 +76,19 @@ export default defineConfig(({ mode }) => {
           moduleSideEffects: false,
           propertyReadSideEffects: false,
           unknownGlobalSideEffects: false,
-          manualPureFunctions: isProduction ? ['console.log', 'console.debug'] : [],
+          manualPureFunctions: isProduction
+            ? ['console.log', 'console.debug']
+            : [],
         },
         external: getExternalDependencies(pkg),
         output: {
           format: 'es',
           comments: { legal: false },
           minify: isProduction
-            ? { compress: { dropDebugger: true, dropConsole: false, joinVars: false }, mangle: false }
+            ? {
+                compress: { dropDebugger: true, dropConsole: false, joinVars: false },
+                mangle: false,
+              }
             : false,
           chunkFileNames: 'chunks/[name].[hash].js',
           assetFileNames: 'assets/[name].[hash][extname]',

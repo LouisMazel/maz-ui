@@ -118,7 +118,9 @@ describe('locales', () => {
     describe('when the locale is already loaded', () => {
       it('then it resolves immediately without reloading', async () => {
         globalState.loadedLocales.add('en')
-        globalState.messages = { en: { greeting: 'Hello' } as any }
+        globalState.messages = {
+          en: { greeting: 'Hello' } as any,
+        }
 
         await loadLocale('en')
 
@@ -150,7 +152,9 @@ describe('locales', () => {
     describe('when loading a locale with user messages as an object', () => {
       it('then it merges user messages into default messages', async () => {
         globalState.userMessages = {
-          en: { custom: { key: 'custom value' } } as any,
+          en: {
+            custom: { key: 'custom value' },
+          } as any,
         }
 
         await loadLocale('en')
@@ -177,7 +181,9 @@ describe('locales', () => {
     describe('when loading a locale with user messages as an async function returning default export', () => {
       it('then it unwraps the default export and merges', async () => {
         globalState.userMessages = {
-          en: (() => Promise.resolve({ default: { wrappedKey: 'wrappedValue' } })) as any,
+          en: (() => Promise.resolve({
+            default: { wrappedKey: 'wrappedValue' },
+          })) as any,
         }
 
         await loadLocale('en')
@@ -225,11 +231,15 @@ describe('locales', () => {
   describe('given getMessages function', () => {
     describe('when messages exist in global state', () => {
       it('then it returns the messages object', () => {
-        globalState.messages = { en: { hello: 'world' } as any }
+        globalState.messages = {
+          en: { hello: 'world' } as any,
+        }
 
         const result = getMessages()
 
-        expect(result).toEqual({ en: { hello: 'world' } })
+        expect(result).toEqual({
+          en: { hello: 'world' },
+        })
       })
     })
 
@@ -287,7 +297,9 @@ describe('locales', () => {
 
     describe('when setting messages for an existing locale', () => {
       it('then it merges the new messages with existing ones', () => {
-        globalState.messages = { en: { existing: 'value' } as any }
+        globalState.messages = {
+          en: { existing: 'value' } as any,
+        }
 
         setLocaleMessage('en', { added: 'new' } as any)
 

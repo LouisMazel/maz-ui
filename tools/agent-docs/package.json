@@ -21,18 +21,18 @@
   "dependencies": {
     "@maz-ui/node": "workspace:^",
     "typescript": "^6.0.3",
-    "vue-component-meta": "3.3.13",
+    "vue-component-meta": "3.3.14",
     "vue-docgen-api": "^4.79.2",
     "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
-    "@types/node": "^22.20.5",
-    "@vitest/coverage-v8": "^5.0.5",
+    "@types/node": "^26.6.6",
+    "@vitest/coverage-v8": "^5.1.0",
     "cross-env": "^10.1.0",
-    "eslint": "^10.13.0",
+    "eslint": "^10.14.0",
     "tsx": "^4.23.15",
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

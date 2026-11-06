@@ -51,7 +51,9 @@ function getPhoneNumberResults({
     const parsedNumber = parsePhoneNumberFromString(phoneNumber, countryCode ?? undefined)
     const isValid = parsedNumber?.isValid() ?? false
 
-    const isSameCountryCode = countryCode && checkCountryCode ? parsedNumber?.country && countryCode === parsedNumber.country : true
+    const isSameCountryCode = countryCode && checkCountryCode
+      ? parsedNumber?.country && countryCode === parsedNumber.country
+      : true
 
     return {
       isValid: isValid && !!isSameCountryCode,
@@ -87,7 +89,9 @@ function getPhoneNumberExample(countryCode?: CountryCode | undefined | null) {
       return
     }
 
-    return countryCode ? getExampleNumber(countryCode, examples.value)?.formatNational() : undefined
+    return countryCode
+      ? getExampleNumber(countryCode, examples.value)?.formatNational()
+      : undefined
   }
   catch (error) {
     console.error(`[maz-ui](MazInputPhoneNumber) ${error}`)

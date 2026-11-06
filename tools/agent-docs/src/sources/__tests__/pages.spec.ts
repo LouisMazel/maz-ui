@@ -57,7 +57,14 @@ describe('given collectSourcePages', () => {
     it('then excludes marketing, history and v3 pages', () => {
       const ids = new Set(pages.map(page => page.id))
 
-      for (const excluded of ['index', 'changelog', 'components', 'guide/cli', 'guide/migration-v4', 'blog/v5'])
+      for (const excluded of [
+        'index',
+        'changelog',
+        'components',
+        'guide/cli',
+        'guide/migration-v4',
+        'blog/v5',
+      ])
         expect(ids.has(excluded)).toBe(false)
     })
   })

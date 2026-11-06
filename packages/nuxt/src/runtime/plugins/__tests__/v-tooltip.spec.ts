@@ -3,7 +3,9 @@ import { describe, expect, it, vi } from 'vitest'
 import vTooltipPlugin from '../v-tooltip'
 
 const { mockInstall } = vi.hoisted(() => ({
-  mockInstall: { install: vi.fn() },
+  mockInstall: {
+    install: vi.fn(),
+  },
 }))
 
 vi.mock('maz-ui/directives/vTooltip', () => ({
@@ -20,7 +22,13 @@ describe('v-tooltip plugin', () => {
     const vueApp = { use: mockUse }
     const context = {
       vueApp,
-      $config: { public: { mazUi: { directives: { vTooltip: true } } } },
+      $config: {
+        public: {
+          mazUi: {
+            directives: { vTooltip: true },
+          },
+        },
+      },
     }
 
     ;(vTooltipPlugin as (...args: any[]) => any)(context)
@@ -34,7 +42,13 @@ describe('v-tooltip plugin', () => {
     const tooltipOptions = { position: 'top' }
     const context = {
       vueApp,
-      $config: { public: { mazUi: { directives: { vTooltip: tooltipOptions } } } },
+      $config: {
+        public: {
+          mazUi: {
+            directives: { vTooltip: tooltipOptions },
+          },
+        },
+      },
     }
 
     ;(vTooltipPlugin as (...args: any[]) => any)(context)

@@ -36,15 +36,24 @@ describe('toastHandler', () => {
 
   it('should show a message toast with button option', () => {
     toastHandler.message('Hello', {
-      button: { text: 'OK', action: () => {} },
+      button: {
+        text: 'OK',
+        action: () => {},
+      },
     })
   })
 
   it('should show a message toast with multiple buttons', () => {
     toastHandler.message('Hello', {
       buttons: [
-        { text: 'OK', action: () => {} },
-        { text: 'Cancel', action: () => {} },
+        {
+          text: 'OK',
+          action: () => {},
+        },
+        {
+          text: 'Cancel',
+          action: () => {},
+        },
       ],
     })
   })
@@ -52,7 +61,10 @@ describe('toastHandler', () => {
   it('should show a message toast with custom type and button', () => {
     toastHandler.message('Hello', {
       type: 'success',
-      button: { text: 'OK', action: () => {} },
+      button: {
+        text: 'OK',
+        action: () => {},
+      },
     })
   })
 

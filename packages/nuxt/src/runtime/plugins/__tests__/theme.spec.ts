@@ -74,7 +74,9 @@ describe('theme plugin', () => {
   })
 
   it('should merge presets when overrides are provided', async () => {
-    const overrides = { colors: { primary: '#ff0000' } }
+    const overrides = {
+      colors: { primary: '#ff0000' },
+    }
     const context = createContext({ overrides })
     await (themePlugin as (...args: any[]) => any)(context)
     expect(mockMergePresets).toHaveBeenCalledWith({ colors: {} }, overrides)
@@ -101,7 +103,11 @@ describe('theme plugin', () => {
 
   it('should use saved color mode from cookie when available', async () => {
     mockUseCookie.mockImplementation(((name: string) => {
-      return { value: name === 'maz-color-mode' ? 'dark' : undefined }
+      return {
+        value: name === 'maz-color-mode'
+          ? 'dark'
+          : undefined,
+      }
     }) as any)
     const context = createContext({ colorMode: 'auto' })
     await (themePlugin as (...args: any[]) => any)(context)
@@ -215,7 +221,9 @@ describe('theme plugin', () => {
   it('should restore a scoped switch when the cookie base matches the resolved default', async () => {
     const presetCookie: { value: string | null } = { value: 'maz-ui:nova' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     mockGetPreset
       .mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
@@ -230,7 +238,9 @@ describe('theme plugin', () => {
   it('should restore a scoped switch for the configured string preset', async () => {
     const presetCookie: { value: string | null } = { value: 'maz-ui:nova' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     mockGetPreset
       .mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
@@ -243,7 +253,9 @@ describe('theme plugin', () => {
   it('should keep the custom preset object when a foreign cookie targets another base', async () => {
     const presetCookie: { value: string | null } = { value: 'other-app:nova' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     const customPreset = { name: 'custom-app-theme', colors: {} } as any
     const context = createContext({ preset: customPreset })
@@ -255,7 +267,9 @@ describe('theme plugin', () => {
   it('should keep the configured string preset when a foreign cookie targets another base', async () => {
     const presetCookie: { value: string | null } = { value: 'other-app:nova' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     mockGetPreset.mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
     const context = createContext({ preset: 'maz-ui' })
@@ -267,7 +281,9 @@ describe('theme plugin', () => {
   it('should heal the cookie to the object base when the scoped active fails to resolve', async () => {
     const presetCookie: { value: string | null } = { value: 'custom-app-theme:unknown' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     mockGetPreset.mockRejectedValueOnce(new Error('not found'))
     const customPreset = { name: 'custom-app-theme', colors: {} } as any
@@ -280,7 +296,9 @@ describe('theme plugin', () => {
   it('should fall back to the resolved default when the scoped active fails to resolve', async () => {
     const presetCookie: { value: string | null } = { value: 'maz-ui:unknown' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     mockGetPreset
       .mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
@@ -302,7 +320,9 @@ describe('theme plugin', () => {
   it('should ignore a maz-preset cookie with an empty base segment', async () => {
     const presetCookie: { value: string | null } = { value: ':nova' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     mockGetPreset.mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
     const context = createContext({ preset: undefined })
@@ -315,7 +335,9 @@ describe('theme plugin', () => {
   it('should ignore a legacy plain-name maz-preset cookie value', async () => {
     const presetCookie: { value: string | null } = { value: 'nova' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     mockGetPreset.mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
     const context = createContext({ preset: undefined })
@@ -338,7 +360,9 @@ describe('theme plugin', () => {
   it('should skip the lookup when the scoped cookie active matches the preset object base', async () => {
     const presetCookie: { value: string | null } = { value: 'custom-app-theme:custom-app-theme' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     const customPreset = { name: 'custom-app-theme', colors: {} } as any
     const context = createContext({ preset: customPreset })
@@ -350,7 +374,9 @@ describe('theme plugin', () => {
   it('should skip cookie read and write when persistPreset is false', async () => {
     const presetCookie: { value: string | null } = { value: 'nova' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? presetCookie : { value: undefined }
+      return name === 'maz-preset'
+        ? presetCookie
+        : { value: undefined }
     }) as any)
     const context = createContext({ preset: undefined, persistPreset: false })
     await (themePlugin as (...args: any[]) => any)(context)
@@ -362,9 +388,19 @@ describe('theme plugin', () => {
 
   describe('Given the plugin boots on the client with darkModeStrategy class', () => {
     describe.each([
-      { label: 'colorMode dark', themeOptions: { colorMode: 'dark', mode: 'both' } },
-      { label: 'colorMode auto with system dark', themeOptions: { colorMode: 'auto', mode: 'both' }, systemColorMode: 'dark' as const },
-      { label: 'mode dark', themeOptions: { colorMode: 'light', mode: 'dark' } },
+      {
+        label: 'colorMode dark',
+        themeOptions: { colorMode: 'dark', mode: 'both' },
+      },
+      {
+        label: 'colorMode auto with system dark',
+        themeOptions: { colorMode: 'auto', mode: 'both' },
+        systemColorMode: 'dark' as const,
+      },
+      {
+        label: 'mode dark',
+        themeOptions: { colorMode: 'light', mode: 'dark' },
+      },
     ])('When isDark resolves to true via $label', ({ themeOptions, systemColorMode }) => {
       it('Then no htmlAttrs entry is registered via useHead so navigation cannot re-apply the boot class', async () => {
         if (systemColorMode) {

@@ -2,7 +2,9 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { useDialog } from '../useDialog'
 
-const mockDialogHandler = { open: vi.fn() }
+const mockDialogHandler = {
+  open: vi.fn(),
+}
 
 vi.mock('nuxt/app', () => ({
   useNuxtApp: vi.fn(() => ({

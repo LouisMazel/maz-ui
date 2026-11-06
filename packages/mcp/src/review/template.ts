@@ -28,7 +28,9 @@ function staticAttribute(element: ElementNode, name: string): AttributeNode | un
 }
 
 function directiveArg(directive: DirectiveNode): string | undefined {
-  return directive.arg?.type === NodeTypes.SIMPLE_EXPRESSION && directive.arg.isStatic ? directive.arg.content : undefined
+  return directive.arg?.type === NodeTypes.SIMPLE_EXPRESSION && directive.arg.isStatic
+    ? directive.arg.content
+    : undefined
 }
 
 function directiveExpression(directive: DirectiveNode): { content: string, offset: number } | undefined {
@@ -41,7 +43,9 @@ function directiveExpression(directive: DirectiveNode): { content: string, offse
 function valueOffset(attribute: AttributeNode, source: string): number {
   const start = attribute.value?.loc.start.offset ?? attribute.loc.start.offset
 
-  return /["']/.test(source[start] ?? '') ? start + 1 : start
+  return /["']/.test(source[start] ?? '')
+    ? start + 1
+    : start
 }
 
 function findProp(component: ComponentApi, name: string): PropApi | undefined {
@@ -54,16 +58,24 @@ function findProp(component: ComponentApi, name: string): PropApi | undefined {
 export function mazTagName(tag: string): string | undefined {
   const pascal = toPascal(tag).replace(/^Lazy(?=Maz)/, '')
 
-  return /^Maz[A-Z\d]/.test(pascal) ? pascal : undefined
+  return /^Maz[A-Z\d]/.test(pascal)
+    ? pascal
+    : undefined
 }
 
 function checkPropValue(prop: PropApi, value: string, offset: number, component: ComponentApi, context: ReviewContext): void {
   if (prop.type === 'boolean' && (value === 'false' || value === 'true')) {
     context.report({
       rule: 'boolean-prop-string',
-      severity: value === 'false' ? 'error' : 'info',
-      message: `\`${toKebab(prop.name)}="${value}"\` on ${component.name} passes the string "${value}"${value === 'false' ? ', which is truthy' : ''}.`,
-      suggestion: value === 'false' ? `Remove the attribute or bind it: \`:${toKebab(prop.name)}="false"\`.` : `Write \`${toKebab(prop.name)}\` alone.`,
+      severity: value === 'false'
+        ? 'error'
+        : 'info',
+      message: `\`${toKebab(prop.name)}="${value}"\` on ${component.name} passes the string "${value}"${value === 'false'
+        ? ', which is truthy'
+        : ''}.`,
+      suggestion: value === 'false'
+        ? `Remove the attribute or bind it: \`:${toKebab(prop.name)}="false"\`.`
+        : `Write \`${toKebab(prop.name)}\` alone.`,
     }, offset)
     return
   }
@@ -75,7 +87,9 @@ function checkPropValue(prop: PropApi, value: string, offset: number, component:
       rule: 'invalid-prop-value',
       severity: 'error',
       message: `"${value}" is not a valid \`${toKebab(prop.name)}\` for ${component.name}.`,
-      suggestion: `Accepted values: ${prop.values.map(entry => `"${entry}"`).join(', ')}.${near[0] ? ` Did you mean "${near[0]}"?` : ''}`,
+      suggestion: `Accepted values: ${prop.values.map(entry => `"${entry}"`).join(', ')}.${near[0]
+        ? ` Did you mean "${near[0]}"?`
+        : ''}`,
     }, offset)
   }
 }
@@ -121,9 +135,20 @@ export function propSuggestions(name: string, component: ComponentApi, { contain
   const withWords = containing
     ? props.filter(prop => words.every(word => nameWords(prop).includes(word))).sort((a, b) => a.length - b.length)
     : []
-  const near = closest(camel, props, { max: camel.length <= 3 ? 1 : 2, limit: 2 })
+  const near = closest(camel, props, {
+    max: camel.length <= 3
+      ? 1
+      : 2,
+    limit: 2,
+  })
 
-  return [...new Set([...synonyms, ...withWords, ...near])].slice(0, 3)
+  return [
+    ...new Set([
+      ...synonyms,
+      ...withWords,
+      ...near,
+    ]),
+  ].slice(0, 3)
 }
 
 function reportUnknownProp(name: string, offset: number, component: ComponentApi, context: ReviewContext): void {
@@ -133,7 +158,9 @@ function reportUnknownProp(name: string, offset: number, component: ComponentApi
   if (passthrough && near.length === 0)
     return
 
-  const names = near.map(entry => (entry === 'modelValue' ? '`v-model`' : `\`${toKebab(entry)}\``)).join(' or ')
+  const names = near.map(entry => (entry === 'modelValue'
+    ? '`v-model`'
+    : `\`${toKebab(entry)}\``)).join(' or ')
 
   context.report({
     rule: 'unknown-prop',
@@ -152,13 +179,19 @@ function checkModel(directive: DirectiveNode, component: ComponentApi, context: 
   const prop = findProp(component, arg)
 
   if (!prop) {
-    const models = component.props.filter(entry => entry.model).map(entry => (entry.name === 'modelValue' ? 'v-model' : `v-model:${toKebab(entry.name)}`))
+    const models = component.props.filter(entry => entry.model).map(entry => (entry.name === 'modelValue'
+      ? 'v-model'
+      : `v-model:${toKebab(entry.name)}`))
 
     context.report({
       rule: 'unknown-model',
       severity: 'error',
-      message: `${component.name} has no \`${arg === 'modelValue' ? 'v-model' : `v-model:${arg}`}\`.`,
-      suggestion: models.length > 0 ? `Available: ${models.map(entry => `\`${entry}\``).join(', ')}.` : `${component.name} has no v-model.`,
+      message: `${component.name} has no \`${arg === 'modelValue'
+        ? 'v-model'
+        : `v-model:${arg}`}\`.`,
+      suggestion: models.length > 0
+        ? `Available: ${models.map(entry => `\`${entry}\``).join(', ')}.`
+        : `${component.name} has no v-model.`,
     }, directive.loc.start.offset)
   }
 }
@@ -189,11 +222,16 @@ function checkEvent(directive: DirectiveNode, component: ComponentApi, context: 
     return
   }
 
-  const near = closest(kebab, [...events, ...NATIVE_EVENTS], { max: 2, limit: 1 })
+  const near = closest(kebab, [
+    ...events,
+    ...NATIVE_EVENTS,
+  ], { max: 2, limit: 1 })
 
   context.report({
     rule: 'unknown-event',
-    severity: near.length > 0 ? 'error' : 'warning',
+    severity: near.length > 0
+      ? 'error'
+      : 'warning',
     message: `${component.name} does not emit \`${name}\` and it is not a DOM event.`,
     suggestion: near.length > 0
       ? `Did you mean \`@${near[0]}\`?`
@@ -239,7 +277,9 @@ function checkSlots(element: ElementNode, component: ComponentApi, context: Revi
       rule: 'unknown-slot',
       severity: 'error',
       message: `${component.name} has no \`#${name}\` slot: its content will not be rendered.`,
-      suggestion: near.length > 0 ? `Did you mean ${near.map(entry => `\`#${entry}\``).join(' or ')}?` : `Slots: ${slots.map(slot => `\`#${slot}\``).join(', ') || 'none'}.`,
+      suggestion: near.length > 0
+        ? `Did you mean ${near.map(entry => `\`#${entry}\``).join(' or ')}?`
+        : `Slots: ${slots.map(slot => `\`#${slot}\``).join(', ') || 'none'}.`,
     }, offset)
   }
 }
@@ -293,11 +333,22 @@ function checkMazComponent(element: ElementNode, component: ComponentApi, source
   checkSlots(element, component, context)
 }
 
-const SVG_SHAPES = new Set(['path', 'circle', 'rect', 'polyline', 'polygon', 'line', 'ellipse'])
+const SVG_SHAPES = new Set([
+  'path',
+  'circle',
+  'rect',
+  'polyline',
+  'polygon',
+  'line',
+  'ellipse',
+])
 const ICON_MAX_VIEWBOX = 32
 
 function descendantsOf(element: ElementNode): ElementNode[] {
-  return element.children.filter(isElement).flatMap(child => [child, ...descendantsOf(child)])
+  return element.children.filter(isElement).flatMap(child => [
+    child,
+    ...descendantsOf(child),
+  ])
 }
 
 function isAnimated(element: ElementNode): boolean {
@@ -326,8 +377,40 @@ export function isIconLikeSvg(svg: ElementNode): boolean {
   return ![svg, ...descendants].some(node => isAnimated(node) || (node !== svg && node.props.some(prop => prop.type === NodeTypes.DIRECTIVE)))
 }
 
-const LAYOUT_TAGS = new Set(['div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'dl', 'img', 'picture', 'video', 'canvas', 'section', 'article', 'header', 'footer', 'figure', 'table'])
-const NEUTRAL_COMPONENTS = new Set(['Transition', 'TransitionGroup', 'KeepAlive', 'Teleport', 'Suspense', 'ClientOnly', 'NuxtLink', 'RouterLink'])
+const LAYOUT_TAGS = new Set([
+  'div',
+  'p',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'ul',
+  'ol',
+  'li',
+  'dl',
+  'img',
+  'picture',
+  'video',
+  'canvas',
+  'section',
+  'article',
+  'header',
+  'footer',
+  'figure',
+  'table',
+])
+const NEUTRAL_COMPONENTS = new Set([
+  'Transition',
+  'TransitionGroup',
+  'KeepAlive',
+  'Teleport',
+  'Suspense',
+  'ClientOnly',
+  'NuxtLink',
+  'RouterLink',
+])
 
 /** Children that render something: no comment, no whitespace-only text */
 function contentOf(element: ElementNode): TemplateChildNode[] {
@@ -396,7 +479,9 @@ function checkNativeElement(element: ElementNode, context: ReviewContext): void 
     context.report({
       rule: 'prefer-maz-component',
       severity: replacement.severity,
-      message: `Native \`<${element.tag}>\`${element.tag === 'input' ? ` (type "${staticAttribute(element, 'type')?.value?.content ?? 'text'}")` : ''}.`,
+      message: `Native \`<${element.tag}>\`${element.tag === 'input'
+        ? ` (type "${staticAttribute(element, 'type')?.value?.content ?? 'text'}")`
+        : ''}.`,
       suggestion: `Use ${replacement.component}: themed, accessible and consistent with the rest of the UI. Add \`<!-- maz-ui-review-ignore -->\` above it if the native element is intended.`,
     }, element.loc.start.offset)
   }
@@ -419,15 +504,29 @@ function checkClassBindings(element: ElementNode, source: string, context: Revie
   }
 }
 
-const ICON_PROPS = new Set(['icon', 'start-icon', 'startIcon', 'end-icon', 'endIcon'])
-const LABEL_PROPS = new Set(['text', 'aria-label', 'ariaLabel', 'aria-labelledby', 'ariaLabelledby'])
+const ICON_PROPS = new Set([
+  'icon',
+  'start-icon',
+  'startIcon',
+  'end-icon',
+  'endIcon',
+])
+const LABEL_PROPS = new Set([
+  'text',
+  'aria-label',
+  'ariaLabel',
+  'aria-labelledby',
+  'ariaLabelledby',
+])
 
 /** Name of a static attribute or of a bound prop, `undefined` for `v-bind="object"` */
 function propName(prop: ElementNode['props'][number]): string | undefined {
   if (prop.type === NodeTypes.ATTRIBUTE)
     return prop.name
 
-  return prop.name === 'bind' ? directiveArg(prop) : prop.name
+  return prop.name === 'bind'
+    ? directiveArg(prop)
+    : prop.name
 }
 
 /** A MazBtn that only shows an icon has no accessible name without a `text` or an `aria-label` */
@@ -460,13 +559,18 @@ function checkMazTag(element: ElementNode, mazName: string, source: string, cont
   if (context.knowledge.iconNames.has(mazName))
     return
 
-  const near = closest(mazName, [...context.knowledge.componentsByName.keys(), ...context.knowledge.iconNames], { max: 3, limit: 3 })
+  const near = closest(mazName, [
+    ...context.knowledge.componentsByName.keys(),
+    ...context.knowledge.iconNames,
+  ], { max: 3, limit: 3 })
 
   context.report({
     rule: 'unknown-component',
     severity: 'error',
     message: `\`<${element.tag}>\` is neither a maz-ui component nor a @maz-ui/icons icon.`,
-    suggestion: near.length > 0 ? `Did you mean ${near.map(entry => `\`${entry}\``).join(' or ')}?` : 'Use `search_docs` or `find_icons` to find the right name.',
+    suggestion: near.length > 0
+      ? `Did you mean ${near.map(entry => `\`${entry}\``).join(' or ')}?`
+      : 'Use `search_docs` or `find_icons` to find the right name.',
   }, element.loc.start.offset)
 }
 
@@ -476,7 +580,9 @@ function walk(node: ElementNode | RootNode, source: string, context: ReviewConte
     if (!isElement(child))
       continue
 
-    const pascal = /[A-Z-]/.test(child.tag) ? toPascal(child.tag) : undefined
+    const pascal = /[A-Z-]/.test(child.tag)
+      ? toPascal(child.tag)
+      : undefined
     const mazName = pascal && context.localComponents?.has(pascal)
       ? mazTagName(context.localComponents.get(pascal) ?? '')
       : mazTagName(child.tag)

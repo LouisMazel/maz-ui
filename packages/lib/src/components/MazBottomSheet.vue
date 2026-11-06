@@ -125,7 +125,9 @@ const handleEl = ref<HTMLElement>()
 const dragOffset = ref(0)
 
 const sheetStyle = computed<StyleValue>(() =>
-  dragOffset.value > 0 ? { transform: `translateY(${dragOffset.value}px)` } : {},
+  dragOffset.value > 0
+    ? { transform: `translateY(${dragOffset.value}px)` }
+    : {},
 )
 
 const { isDragging } = useDrag(handleEl, {

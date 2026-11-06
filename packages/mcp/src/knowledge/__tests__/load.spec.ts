@@ -12,7 +12,10 @@ describe('given the knowledge loader', () => {
   describe('when an explicit docsDir is given', () => {
     it('then it loads the bundle of this directory as a custom source', () => {
       const directory = writeFakeBundle(createTempDir())
-      const knowledge = loadKnowledge({ docsDir: directory, cwd: createTempDir() })
+      const knowledge = loadKnowledge({
+        docsDir: directory,
+        cwd: createTempDir(),
+      })
 
       expect(knowledge.source).toEqual({ kind: 'custom', directory })
       expect(knowledge.version).toBe('9.9.9')
@@ -24,7 +27,10 @@ describe('given the knowledge loader', () => {
       const directory = writeFakeBundle(createTempDir())
       vi.stubEnv('MAZ_UI_DOCS_DIR', directory)
 
-      const knowledge = loadKnowledge({ cwd: createTempDir(), bundledDir: BUNDLE_DIR })
+      const knowledge = loadKnowledge({
+        cwd: createTempDir(),
+        bundledDir: BUNDLE_DIR,
+      })
 
       expect(knowledge.source.kind).toBe('custom')
       expect(knowledge.source.directory).toBe(directory)
@@ -80,13 +86,18 @@ describe('given the knowledge loader', () => {
     it('then it throws a reinstall hint', () => {
       const bundledDir = createTempDir()
 
-      expect(() => loadKnowledge({ cwd: createTempDir(), bundledDir })).toThrow('Reinstall the package')
+      expect(() => loadKnowledge({
+        cwd: createTempDir(),
+        bundledDir,
+      })).toThrow('Reinstall the package')
     })
   })
 
   describe('when no bundledDir is given', () => {
     it('then it uses the default bundled directory', () => {
-      const knowledge = loadKnowledge({ cwd: createTempDir() })
+      const knowledge = loadKnowledge({
+        cwd: createTempDir(),
+      })
 
       expect(knowledge.source.directory).toBe(defaultBundledDir())
       expect(knowledge.source.projectVersion).toBeUndefined()
@@ -101,7 +112,10 @@ describe('given readManifest', () => {
 
   describe('when the manifest does not match the schema', () => {
     it('then it returns undefined', () => {
-      const directory = writeFakeBundle(createTempDir(), { ...fakeManifest(), schemaVersion: 2 })
+      const directory = writeFakeBundle(createTempDir(), {
+        ...fakeManifest(),
+        schemaVersion: 2,
+      })
 
       expect(readManifest(directory)).toBeUndefined()
     })
@@ -165,7 +179,10 @@ describe('given a Knowledge instance', () => {
 
   describe('when an unknown doc is read', () => {
     it('then it throws', () => {
-      const knowledge = new Knowledge(fakeManifest(), { kind: 'custom', directory: createTempDir() })
+      const knowledge = new Knowledge(fakeManifest(), {
+        kind: 'custom',
+        directory: createTempDir(),
+      })
 
       expect(() => knowledge.readDoc('components/nope')).toThrow('Unknown doc "components/nope"')
     })
@@ -183,7 +200,10 @@ describe('given a Knowledge instance', () => {
 
   describe('when the indexes are built', () => {
     it('then docs, components and icons are indexed', () => {
-      const knowledge = new Knowledge(fakeManifest(), { kind: 'custom', directory: createTempDir() })
+      const knowledge = new Knowledge(fakeManifest(), {
+        kind: 'custom',
+        directory: createTempDir(),
+      })
 
       expect(knowledge.docs).toHaveLength(1)
       expect(knowledge.docsById.has('components/maz-fake')).toBe(true)

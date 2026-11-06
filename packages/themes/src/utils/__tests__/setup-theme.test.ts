@@ -30,7 +30,9 @@ vi.mock('@maz-ui/utils/helpers/isServer', () => ({
 }))
 
 vi.mock('../use-mutation-observer', () => ({
-  useMutationObserver: vi.fn(() => ({ stop: vi.fn() })),
+  useMutationObserver: vi.fn(() => ({
+    stop: vi.fn(),
+  })),
 }))
 
 vi.mock('../cookie-storage', () => ({
@@ -132,7 +134,9 @@ describe('setup-theme', () => {
     vi.mocked(getSystemColorMode).mockReturnValue('light')
     vi.mocked(isServer).mockReturnValue(false)
     vi.mocked(mergePresets).mockImplementation((preset: ThemePreset) => preset)
-    vi.mocked(useMutationObserver).mockReturnValue({ stop: vi.fn() } as never)
+    vi.mocked(useMutationObserver).mockReturnValue({
+      stop: vi.fn(),
+    } as never)
 
     vi.stubGlobal('matchMedia', vi.fn(() => ({
       matches: false,
@@ -350,7 +354,11 @@ describe('setup-theme', () => {
 
     describe('when overrides are non-empty', () => {
       it('then it calls mergePresets with the preset and overrides', () => {
-        const overrides = { colors: { light: { primary: '100 50% 50%' as const } } }
+        const overrides = {
+          colors: {
+            light: { primary: '100 50% 50%' as const },
+          },
+        }
 
         setupTheme({ preset: mockPreset, overrides })
 
@@ -595,7 +603,9 @@ describe('setup-theme', () => {
         let mutationCallback: (() => void) | undefined
         vi.mocked(useMutationObserver).mockImplementation((_el: any, cb: any, _opts: any) => {
           mutationCallback = cb
-          return { stop: vi.fn() } as never
+          return {
+            stop: vi.fn(),
+          } as never
         })
         vi.mocked(isServer).mockReturnValue(false)
 
@@ -616,7 +626,9 @@ describe('setup-theme', () => {
         let mutationCallback: (() => void) | undefined
         vi.mocked(useMutationObserver).mockImplementation((_el: any, cb: any, _opts: any) => {
           mutationCallback = cb
-          return { stop: vi.fn() } as never
+          return {
+            stop: vi.fn(),
+          } as never
         })
         vi.mocked(isServer).mockReturnValue(false)
 
@@ -637,7 +649,9 @@ describe('setup-theme', () => {
         let mutationCallback: (() => void) | undefined
         vi.mocked(useMutationObserver).mockImplementation((_el: any, cb: any, _opts: any) => {
           mutationCallback = cb
-          return { stop: vi.fn() } as never
+          return {
+            stop: vi.fn(),
+          } as never
         })
         vi.mocked(isServer).mockReturnValue(false)
         vi.mocked(getColorMode).mockReturnValue('light')
@@ -660,7 +674,9 @@ describe('setup-theme', () => {
         let mutationCallback: (() => void) | undefined
         vi.mocked(useMutationObserver).mockImplementation((_el: any, cb: any, _opts: any) => {
           mutationCallback = cb
-          return { stop: vi.fn() } as never
+          return {
+            stop: vi.fn(),
+          } as never
         })
 
         vi.mocked(isServer)
@@ -847,7 +863,10 @@ describe('setup-theme', () => {
         vi.mocked(mergePresets).mockReturnValueOnce({ ...oceanPreset, name: 'ocean-merged' })
         const customPreset = { ...mockPreset, name: 'custom-app-theme' }
 
-        setupTheme({ preset: customPreset, overrides: { foundation: {} as never } })
+        setupTheme({
+          preset: customPreset,
+          overrides: { foundation: {} as never },
+        })
 
         await new Promise(resolve => setTimeout(resolve, 0))
         await new Promise(resolve => setTimeout(resolve, 0))

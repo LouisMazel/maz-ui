@@ -24,7 +24,9 @@ function table(headers: string[], rows: string[][]): string {
 
 export function renderTailwindReference(tokens: TailwindManifest): string {
   const colors = tokens.colors.filter(color => color.name !== 'elevation')
-  const scaleRange = (scale: string[]): string => (scale.length > 0 ? `\`-${scale[0]}\` to \`-${scale.at(-1)}\`` : '-')
+  const scaleRange = (scale: string[]): string => (scale.length > 0
+    ? `\`-${scale[0]}\` to \`-${scale.at(-1)}\``
+    : '-')
 
   return `# Tailwind CSS theme reference
 
@@ -52,13 +54,24 @@ ${table(['Import', 'Content'], tokens.entries.map(entry => [`\`${entry.path}\``,
 Each color works with every color utility (${COLOR_UTILITIES}) and with opacity modifiers (\`bg-primary/50\`). Colors are light/dark aware (\`light-dark()\`): **do not add \`dark:\` overrides for theme colors**.
 
 ${table(
-  ['Color', 'Utilities', 'Foreground', 'Scale', 'CSS variable', 'Use for'],
+  [
+    'Color',
+    'Utilities',
+    'Foreground',
+    'Scale',
+    'CSS variable',
+    'Use for',
+  ],
   colors.map(color => [
     `\`${color.name}\``,
     colorUtilities(color.name).map(utility => `\`${utility}\``).join(' '),
-    color.foreground ? `\`text-${color.name}-foreground\`` : '-',
+    color.foreground
+      ? `\`text-${color.name}-foreground\``
+      : '-',
     scaleRange(color.scale),
-    color.variable ? `\`${color.variable}\`` : '-',
+    color.variable
+      ? `\`${color.variable}\``
+      : '-',
     color.usage,
   ]),
 )}
@@ -93,7 +106,11 @@ In TypeScript: \`import { screens } from 'maz-ui/tailwindcss'\`, or the \`useBre
 
 ## Typography and motion
 
-${table(['Utility', 'Value'], [...tokens.fonts, ...tokens.durations, ...tokens.easings].map(token => [`\`${token.name}\``, `\`${token.value}\``]))}
+${table(['Utility', 'Value'], [
+  ...tokens.fonts,
+  ...tokens.durations,
+  ...tokens.easings,
+].map(token => [`\`${token.name}\``, `\`${token.value}\``]))}
 
 - The default border width and the default transition duration and easing also follow the preset.
 - Durations are theme variables, use them with the arbitrary syntax: \`transition-colors duration-(--duration-fast)\`.

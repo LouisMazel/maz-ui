@@ -52,7 +52,12 @@ describe('mazInputCode', () => {
     await inputFields[3].setValue('2')
 
     expect(wrapper.emitted('update:model-value')).toHaveLength(4)
-    expect(wrapper.emitted('update:model-value')).toStrictEqual([[''], ['1'], ['1'], ['12']])
+    expect(wrapper.emitted('update:model-value')).toStrictEqual([
+      [''],
+      ['1'],
+      ['1'],
+      ['12'],
+    ])
   })
 
   it('allows alphanumeric values when acceptAlpha prop is true', async () => {
@@ -72,6 +77,11 @@ describe('mazInputCode', () => {
     expect(inputFields[3].element.value).toBe('2')
 
     expect(wrapper.emitted('update:model-value')).toHaveLength(4)
-    expect(wrapper.emitted('update:model-value')).toStrictEqual([['a'], ['a1'], ['a1b'], ['a1b2']])
+    expect(wrapper.emitted('update:model-value')).toStrictEqual([
+      ['a'],
+      ['a1'],
+      ['a1b'],
+      ['a1b2'],
+    ])
   })
 })

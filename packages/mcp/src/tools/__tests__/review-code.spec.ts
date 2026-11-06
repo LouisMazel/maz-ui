@@ -35,7 +35,9 @@ describe('given the review_code tool', () => {
       writeFile(project, 'src/A.vue', '<template><button>b</button></template>')
       writeFile(project, 'src/b.ts', 'export const a = 1')
 
-      const output = await reviewCodeTool(createContextFor(project), { paths: ['src'] })
+      const output = await reviewCodeTool(createContextFor(project), {
+        paths: ['src'],
+      })
 
       expect(output).toContain('Reviewed 2 files: 0 errors, 1 warnings, 0 info.')
       expect(output).toContain('src/A.vue: 1 warning')
@@ -46,13 +48,17 @@ describe('given the review_code tool', () => {
       const project = createTempDir()
       writeFile(project, 'a.ts', 'export const a = 1')
 
-      expect(await reviewCodeTool(createContextFor(project), { paths: ['a.ts'] })).toContain('Reviewed 1 file:')
+      expect(await reviewCodeTool(createContextFor(project), {
+        paths: ['a.ts'],
+      })).toContain('Reviewed 1 file:')
     })
 
     it('then it throws when nothing matches', async () => {
       const project = createTempDir()
 
-      await expect(reviewCodeTool(createContextFor(project), { paths: ['src/**/*.vue'] })).rejects.toThrow('No .vue, .ts, .js or .css file matches src/**/*.vue')
+      await expect(reviewCodeTool(createContextFor(project), {
+        paths: ['src/**/*.vue'],
+      })).rejects.toThrow('No .vue, .ts, .js or .css file matches src/**/*.vue')
     })
   })
 
@@ -61,7 +67,11 @@ describe('given the review_code tool', () => {
       const project = createTempDir()
       writeFile(project, 'a.css', '.a { color: #1d90ff; }')
 
-      const output = await reviewCodeTool(createContextFor(project), { code: 'const a = 1', filename: 'x.ts', paths: ['a.css'] })
+      const output = await reviewCodeTool(createContextFor(project), {
+        code: 'const a = 1',
+        filename: 'x.ts',
+        paths: ['a.css'],
+      })
 
       expect(output).toContain('x.ts: no issue found.')
       expect(output).toContain('a.css: 1 warning')

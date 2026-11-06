@@ -6,12 +6,21 @@ type ObserverCallback = (entries: Array<{ isIntersecting: boolean, target: Eleme
 let observerCallbacks: ObserverCallback[] = []
 
 function triggerAllObservers(target: Element) {
-  observerCallbacks.forEach(cb => cb([{ isIntersecting: true, target }]))
+  observerCallbacks.forEach(cb => cb([
+    { isIntersecting: true, target },
+  ]))
 }
 
 beforeEach(() => {
   observerCallbacks = []
-  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'cancelAnimationFrame'] })
+  vi.useFakeTimers({
+    toFake: [
+      'setTimeout',
+      'clearTimeout',
+      'requestAnimationFrame',
+      'cancelAnimationFrame',
+    ],
+  })
 
   class MockIntersectionObserver {
     constructor(cb: ObserverCallback) {

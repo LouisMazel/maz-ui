@@ -79,7 +79,10 @@ export default defineConfig({
       output: {
         format: 'es',
         comments: { legal: false },
-        minify: { compress: { dropDebugger: true, dropConsole: false, joinVars: false }, mangle: false },
+        minify: {
+          compress: { dropDebugger: true, dropConsole: false, joinVars: false },
+          mangle: false,
+        },
         exports: 'named',
         preserveModules: true,
         preserveModulesRoot: 'src',

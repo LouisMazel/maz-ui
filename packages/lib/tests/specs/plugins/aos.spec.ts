@@ -24,7 +24,9 @@ class IntersectionObserverMock {
   }
 
   observe(target: Element) {
-    this.callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver)
+    this.callback([
+      { target, isIntersecting: true } as IntersectionObserverEntry,
+    ], this as unknown as IntersectionObserver)
   }
 
   unobserve() {

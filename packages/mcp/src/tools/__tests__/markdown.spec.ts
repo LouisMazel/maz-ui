@@ -60,7 +60,13 @@ describe('given the section helpers', () => {
     it('then headings in code fences are ignored and ends are computed by level', () => {
       const sections = listSections(MARKDOWN)
 
-      expect(sections.map(section => section.title)).toEqual(['Basic usage', 'Sizes', 'Loading state', 'Deep detail', 'API'])
+      expect(sections.map(section => section.title)).toEqual([
+        'Basic usage',
+        'Sizes',
+        'Loading state',
+        'Deep detail',
+        'API',
+      ])
       expect(sectionContent(MARKDOWN, sections[0])).toContain('Sizes text')
       expect(sectionContent(MARKDOWN, sections[0])).not.toContain('Loading text')
     })

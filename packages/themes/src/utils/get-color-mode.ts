@@ -29,7 +29,9 @@ export function getSystemColorMode() {
     return 'light'
   }
 
-  return globalThis.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  return globalThis.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light'
 }
 
 export function saveResolvedColorMode(resolvedMode: 'light' | 'dark'): void {

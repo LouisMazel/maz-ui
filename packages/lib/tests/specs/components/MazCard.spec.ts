@@ -101,28 +101,36 @@ describe('components/MazCard.vue', () => {
 function mountWithGlobalConfig(config: unknown, props: Record<string, unknown> = {}) {
   return mount(MazCard, {
     props,
-    global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+    global: {
+      provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+    },
   })
 }
 
 describe('given a MazUi global default applied to MazCard', () => {
   describe('when no elevation prop is passed', () => {
     it('then the component default enables the elevation', () => {
-      const wrapper = mountWithGlobalConfig({ MazCard: { elevation: true } })
+      const wrapper = mountWithGlobalConfig({
+        MazCard: { elevation: true },
+      })
       expect(wrapper.classes()).toContain('maz:shadow-elevation')
     })
   })
 
   describe('when no bordered prop is passed', () => {
     it('then the component default disables the border', () => {
-      const wrapper = mountWithGlobalConfig({ MazCard: { bordered: false } })
+      const wrapper = mountWithGlobalConfig({
+        MazCard: { bordered: false },
+      })
       expect(wrapper.classes()).not.toContain('maz:border')
     })
   })
 
   describe('when a bordered prop is passed', () => {
     it('then the instance prop wins over the component default', () => {
-      const wrapper = mountWithGlobalConfig({ MazCard: { bordered: false } }, { bordered: true })
+      const wrapper = mountWithGlobalConfig({
+        MazCard: { bordered: false },
+      }, { bordered: true })
       expect(wrapper.classes()).toContain('maz:border')
     })
   })

@@ -1,7 +1,7 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  entries: ['src/index'],
+  entries: ['src/index', 'src/agents'],
   declaration: true,
   clean: true,
   failOnWarn: true,

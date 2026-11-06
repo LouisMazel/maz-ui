@@ -46,13 +46,21 @@ function neutralSuggestion(utility: string): string {
 }
 
 function themeSuggestion(utility: string, hue: string, step: string): string {
-  const neutral = ['slate', 'gray', 'zinc', 'neutral', 'stone'].includes(hue)
+  const neutral = [
+    'slate',
+    'gray',
+    'zinc',
+    'neutral',
+    'stone',
+  ].includes(hue)
 
   if (neutral)
     return neutralSuggestion(utility)
 
   const colors = HUE_TO_THEME[hue].split(' / ')
-  const scale = step === '500' ? '' : `-${step}`
+  const scale = step === '500'
+    ? ''
+    : `-${step}`
 
   return colors.map(color => `\`${utility}-${color}${scale}\``).join(' or ')
 }

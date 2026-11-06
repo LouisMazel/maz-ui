@@ -34,10 +34,28 @@ describe('given extractImports', () => {
       ].join('\n')
 
       expect(extractImports(code)).toEqual([
-        { specifier: 'maz-ui/components/MazBtn', names: [], defaultName: 'MazBtn', typeOnly: false },
-        { specifier: 'maz-ui/composables', names: ['useToast', 'useDialog', 'Foo'], typeOnly: false },
-        { specifier: '@maz-ui/themes', names: ['ThemePreset'], typeOnly: true },
-        { specifier: 'pkg', names: ['named'], defaultName: 'Default', typeOnly: false },
+        {
+          specifier: 'maz-ui/components/MazBtn',
+          names: [],
+          defaultName: 'MazBtn',
+          typeOnly: false,
+        },
+        {
+          specifier: 'maz-ui/composables',
+          names: ['useToast', 'useDialog', 'Foo'],
+          typeOnly: false,
+        },
+        {
+          specifier: '@maz-ui/themes',
+          names: ['ThemePreset'],
+          typeOnly: true,
+        },
+        {
+          specifier: 'pkg',
+          names: ['named'],
+          defaultName: 'Default',
+          typeOnly: false,
+        },
       ])
     })
   })
@@ -46,13 +64,22 @@ describe('given extractImports', () => {
 describe('given formatImport', () => {
   describe('when the statement has a default and named imports', () => {
     it('then formats a single import line', () => {
-      expect(formatImport({ specifier: 'pkg', names: ['a', 'b'], defaultName: 'Def', typeOnly: false })).toBe('import Def, { a, b } from \'pkg\'')
+      expect(formatImport({
+        specifier: 'pkg',
+        names: ['a', 'b'],
+        defaultName: 'Def',
+        typeOnly: false,
+      })).toBe('import Def, { a, b } from \'pkg\'')
     })
   })
 
   describe('when the statement is type only', () => {
     it('then keeps the type keyword', () => {
-      expect(formatImport({ specifier: '@maz-ui/themes', names: ['ThemePreset'], typeOnly: true })).toBe('import type { ThemePreset } from \'@maz-ui/themes\'')
+      expect(formatImport({
+        specifier: '@maz-ui/themes',
+        names: ['ThemePreset'],
+        typeOnly: true,
+      })).toBe('import type { ThemePreset } from \'@maz-ui/themes\'')
     })
   })
 })
@@ -72,13 +99,33 @@ describe('given parseExportedNames', () => {
 
   describe('when all exports are requested', () => {
     it('then returns runtime and type exports', () => {
-      expect(parseExportedNames(source)).toEqual(['debounce', 'load', 'sleep', 'Swipe', 'Options', 'Config', 'Mode', 'declared', 'publicName', 'HiddenType', 'plain'])
+      expect(parseExportedNames(source)).toEqual([
+        'debounce',
+        'load',
+        'sleep',
+        'Swipe',
+        'Options',
+        'Config',
+        'Mode',
+        'declared',
+        'publicName',
+        'HiddenType',
+        'plain',
+      ])
     })
   })
 
   describe('when only runtime exports are requested', () => {
     it('then skips types', () => {
-      expect(parseExportedNames(source, { runtimeOnly: true })).toEqual(['debounce', 'load', 'sleep', 'Swipe', 'declared', 'publicName', 'plain'])
+      expect(parseExportedNames(source, { runtimeOnly: true })).toEqual([
+        'debounce',
+        'load',
+        'sleep',
+        'Swipe',
+        'declared',
+        'publicName',
+        'plain',
+      ])
     })
   })
 })

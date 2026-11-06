@@ -23,7 +23,9 @@ const doc = {
     { name: 'size', description: 'The size' },
     { name: 'empty', description: '   ' },
   ],
-  events: [{ name: 'close', description: 'Emitted on close' }],
+  events: [
+    { name: 'close', description: 'Emitted on close' },
+  ],
   slots: [
     {
       name: 'header',
@@ -36,7 +38,9 @@ const doc = {
       ],
     },
   ],
-  expose: [{ name: 'open', description: 'Opens it' }],
+  expose: [
+    { name: 'open', description: 'Opens it' },
+  ],
 } as unknown as ComponentDoc
 
 describe('given docgenDescriptions', () => {
@@ -55,10 +59,14 @@ describe('given docgenDescriptions', () => {
     it('then blank descriptions and unnamed bindings are ignored', () => {
       const descriptions = docgenDescriptions(doc)
 
-      expect([...descriptions.props.keys()]).toEqual(['size'])
+      expect([
+        ...descriptions.props.keys(),
+      ]).toEqual(['size'])
       expect(descriptions.events.get('close')).toBe('Emitted on close')
       expect(descriptions.slots.get('header')?.description).toBe('Header slot')
-      expect([...(descriptions.slots.get('header')?.bindings.keys() ?? [])]).toEqual(['is-open', 'close', 'toggle-all'])
+      expect([
+        ...(descriptions.slots.get('header')?.bindings.keys() ?? []),
+      ]).toEqual(['is-open', 'close', 'toggle-all'])
       expect(descriptions.expose.get('open')).toBe('Opens it')
     })
   })
@@ -68,16 +76,42 @@ describe('given mergeDescriptions', () => {
   describe('when vue-component-meta misses the descriptions', () => {
     it('then the docgen descriptions fill them, matching camelCase and kebab-case binding names', () => {
       const merged = mergeDescriptions(api({
-        props: [{ name: 'size', type: 'string', required: false, strictValues: false }],
-        events: [{ name: 'close' }],
-        slots: [{ name: 'header', bindings: [{ name: 'isOpen', type: 'boolean' }, { name: 'close', type: '() => void' }, { name: 'toggleAll', type: '() => void' }, { name: 'other', type: 'string' }] }],
-        expose: [{ name: 'open' }],
+        props: [
+          {
+            name: 'size',
+            type: 'string',
+            required: false,
+            strictValues: false,
+          },
+        ],
+        events: [
+          { name: 'close' },
+        ],
+        slots: [
+          {
+            name: 'header',
+            bindings: [
+              { name: 'isOpen', type: 'boolean' },
+              { name: 'close', type: '() => void' },
+              { name: 'toggleAll', type: '() => void' },
+              { name: 'other', type: 'string' },
+            ],
+          },
+        ],
+        expose: [
+          { name: 'open' },
+        ],
       }), docgenDescriptions(doc))
 
       expect(merged.props[0].description).toBe('The size')
       expect(merged.events[0].description).toBe('Emitted on close')
       expect(merged.slots[0].description).toBe('Header slot')
-      expect(merged.slots[0].bindings.map(binding => binding.description)).toEqual(['Open state', 'Closes it', 'Toggles everything', undefined])
+      expect(merged.slots[0].bindings.map(binding => binding.description)).toEqual([
+        'Open state',
+        'Closes it',
+        'Toggles everything',
+        undefined,
+      ])
       expect(merged.expose[0].description).toBe('Opens it')
     })
   })
@@ -85,10 +119,30 @@ describe('given mergeDescriptions', () => {
   describe('when vue-component-meta already has the descriptions', () => {
     it('then they are kept', () => {
       const merged = mergeDescriptions(api({
-        props: [{ name: 'size', type: 'string', required: false, strictValues: false, description: 'Meta size' }],
-        events: [{ name: 'close', description: 'Meta close' }],
-        slots: [{ name: 'header', description: 'Meta header', bindings: [{ name: 'close', description: 'Meta binding' }] }],
-        expose: [{ name: 'open', description: 'Meta open' }],
+        props: [
+          {
+            name: 'size',
+            type: 'string',
+            required: false,
+            strictValues: false,
+            description: 'Meta size',
+          },
+        ],
+        events: [
+          { name: 'close', description: 'Meta close' },
+        ],
+        slots: [
+          {
+            name: 'header',
+            description: 'Meta header',
+            bindings: [
+              { name: 'close', description: 'Meta binding' },
+            ],
+          },
+        ],
+        expose: [
+          { name: 'open', description: 'Meta open' },
+        ],
       }), docgenDescriptions(doc))
 
       expect(merged.props[0].description).toBe('Meta size')
@@ -101,9 +155,23 @@ describe('given mergeDescriptions', () => {
 
   describe('when docgen does not know the slot', () => {
     it('then the slot is left untouched', () => {
-      const merged = mergeDescriptions(api({ slots: [{ name: 'footer', bindings: [{ name: 'close' }] }] }), docgenDescriptions(doc))
+      const merged = mergeDescriptions(api({
+        slots: [
+          {
+            name: 'footer',
+            bindings: [
+              { name: 'close' },
+            ],
+          },
+        ],
+      }), docgenDescriptions(doc))
 
-      expect(merged.slots[0]).toEqual({ name: 'footer', bindings: [{ name: 'close' }] })
+      expect(merged.slots[0]).toEqual({
+        name: 'footer',
+        bindings: [
+          { name: 'close' },
+        ],
+      })
     })
   })
 })

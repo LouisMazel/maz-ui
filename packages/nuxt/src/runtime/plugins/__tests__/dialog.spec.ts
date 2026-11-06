@@ -29,7 +29,13 @@ describe('dialog plugin', () => {
   it('should create DialogHandler with vueApp', async () => {
     const vueApp = {}
     const context = {
-      $config: { public: { mazUi: { plugins: { dialog: true } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: { dialog: true },
+          },
+        },
+      },
       vueApp,
     }
 
@@ -44,7 +50,13 @@ describe('dialog plugin', () => {
     const vueApp = {}
     const dialogOptions = { closable: false }
     const context = {
-      $config: { public: { mazUi: { plugins: { dialog: dialogOptions } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: { dialog: dialogOptions },
+          },
+        },
+      },
       vueApp,
     }
 
@@ -56,7 +68,13 @@ describe('dialog plugin', () => {
   it('should provide mazDialog in client mode (import.meta.server is false)', async () => {
     const vueApp = {}
     const context = {
-      $config: { public: { mazUi: { plugins: { dialog: true } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: { dialog: true },
+          },
+        },
+      },
       vueApp,
     }
 
@@ -68,7 +86,13 @@ describe('dialog plugin', () => {
   it('should pass undefined options when dialog is boolean', async () => {
     const vueApp = {}
     const context = {
-      $config: { public: { mazUi: { plugins: { dialog: true } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: { dialog: true },
+          },
+        },
+      },
       vueApp,
     }
 

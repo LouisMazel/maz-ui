@@ -19,7 +19,9 @@ describe('useMazDialogConfirm', () => {
     const identifier = 'test-dialog'
 
     // @ts-expect-error - test case
-    dialogState.value = [{ id: identifier, isActive: true }]
+    dialogState.value = [
+      { id: identifier, isActive: true },
+    ]
 
     const response = await accept(dialogState.value[0])
 
@@ -39,7 +41,9 @@ describe('useMazDialogConfirm', () => {
     let resolved = false
 
     const promise = new Promise((resolve) => {
-      dialogState.value = [{ id: identifier, isActive: true, accept: resolve }]
+      dialogState.value = [
+        { id: identifier, isActive: true, accept: resolve },
+      ]
     }).then(() => {
       resolved = true
     })
@@ -56,7 +60,9 @@ describe('useMazDialogConfirm', () => {
 
     const promise = new Promise((_resolve, reject) => {
       // @ts-expect-error - test case
-      dialogState.value = [{ id: identifier, isActive: true, reject }]
+      dialogState.value = [
+        { id: identifier, isActive: true, reject },
+      ]
     }).catch(() => {
       rejected = true
     })

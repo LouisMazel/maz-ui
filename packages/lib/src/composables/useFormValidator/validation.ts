@@ -83,7 +83,9 @@ export async function setFieldValidationState<
       fieldState.error = !isValid
     }
 
-    fieldState.errors = result.issues ? [...result.issues] : []
+    fieldState.errors = result.issues
+      ? [...result.issues]
+      : []
     fieldState.validated = true
   }
   finally {
@@ -127,7 +129,9 @@ export function getErrorMessages<
 
   for (const [name, value] of Object.entries(errors)) {
     const issues = value as ValidationIssues
-    errorMessages[name as ModelKey] = fieldsStates[name as ModelKey].error && issues[0] ? issues[0].message : undefined
+    errorMessages[name as ModelKey] = fieldsStates[name as ModelKey].error && issues[0]
+      ? issues[0].message
+      : undefined
   }
 
   return errorMessages
@@ -173,14 +177,18 @@ export function getValidateFunction<
     return debounceId(
       String(fieldName),
       setFieldValidationState<Model, ModelKey>,
-      typeof debouncedFields[fieldName] === 'number' ? debouncedFields[fieldName] : CONFIG.debounceTime,
+      typeof debouncedFields[fieldName] === 'number'
+        ? debouncedFields[fieldName]
+        : CONFIG.debounceTime,
     )
   }
   else if (throttledFields?.[fieldName]) {
     return throttleId(
       String(fieldName),
       setFieldValidationState<Model, ModelKey>,
-      typeof throttledFields[fieldName] === 'number' ? throttledFields[fieldName] : CONFIG.throttleTime,
+      typeof throttledFields[fieldName] === 'number'
+        ? throttledFields[fieldName]
+        : CONFIG.throttleTime,
     )
   }
   else {

@@ -9,7 +9,9 @@ const options = [
 describe('given a MazRadioButtons', () => {
   describe('when it is rendered', () => {
     it('then its root is a radiogroup of native radios', () => {
-      const wrapper = mount(MazRadioButtons, { props: { options, modelValue: 1 } })
+      const wrapper = mount(MazRadioButtons, {
+        props: { options, modelValue: 1 },
+      })
 
       expect(wrapper.attributes('role')).toBe('radiogroup')
       expect(wrapper.findAll('[role="radiogroup"] input[type="radio"]')).toHaveLength(2)
@@ -20,7 +22,10 @@ describe('given a MazRadioButtons', () => {
 
   describe('when an aria-label is passed', () => {
     it('then it labels the radiogroup', () => {
-      const wrapper = mount(MazRadioButtons, { props: { options }, attrs: { 'aria-label': 'Quantity' } })
+      const wrapper = mount(MazRadioButtons, {
+        props: { options },
+        attrs: { 'aria-label': 'Quantity' },
+      })
 
       expect(wrapper.attributes('aria-label')).toBe('Quantity')
     })
@@ -28,7 +33,9 @@ describe('given a MazRadioButtons', () => {
 
   describe('when it has a hint and an error', () => {
     it('then the radiogroup is invalid and described by the hint', () => {
-      const wrapper = mount(MazRadioButtons, { props: { options, hint: 'Pick one', error: true } })
+      const wrapper = mount(MazRadioButtons, {
+        props: { options, hint: 'Pick one', error: true },
+      })
       const hint = wrapper.find('.m-radio-buttons__hint')
 
       expect(wrapper.attributes('aria-describedby')).toBe(hint.attributes('id'))
@@ -55,7 +62,9 @@ describe('given a MazRadioButtons', () => {
 
   describe('when a name is passed', () => {
     it('then the radios use it', () => {
-      const wrapper = mount(MazRadioButtons, { props: { options, name: 'quantity' } })
+      const wrapper = mount(MazRadioButtons, {
+        props: { options, name: 'quantity' },
+      })
 
       expect(wrapper.findAll('input[type="radio"]').map(radio => radio.attributes('name'))).toEqual(['quantity', 'quantity'])
       expect(wrapper.find('input[type="radio"]').attributes('id')).toBe('option-0-1-quantity')

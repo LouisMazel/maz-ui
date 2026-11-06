@@ -33,7 +33,11 @@ describe('messages', () => {
 
     describe('when accessing a nested key with dot notation', () => {
       it('then it returns the deeply nested value', () => {
-        const obj = { a: { b: { c: 'deep' } } }
+        const obj = {
+          a: {
+            b: { c: 'deep' },
+          },
+        }
 
         const result = getMessage(obj, 'a.b.c')
 
@@ -93,23 +97,33 @@ describe('messages', () => {
 
     describe('when merging nested objects', () => {
       it('then it deep merges the nested structures', () => {
-        const target = { a: { b: 'one', c: 'two' } } as any
-        const source = { a: { c: 'three', d: 'four' } } as any
+        const target = {
+          a: { b: 'one', c: 'two' },
+        } as any
+        const source = {
+          a: { c: 'three', d: 'four' },
+        } as any
 
         const result = mergeMessages(target, source)
 
-        expect(result).toEqual({ a: { b: 'one', c: 'three', d: 'four' } })
+        expect(result).toEqual({
+          a: { b: 'one', c: 'three', d: 'four' },
+        })
       })
     })
 
     describe('when source contains flattened dot-notation keys', () => {
       it('then it normalizes them to nested structure before merging', () => {
-        const target = { a: { b: 'original' } } as any
+        const target = {
+          a: { b: 'original' },
+        } as any
         const source = { 'a.b': 'replaced', 'a.c': 'added' } as any
 
         const result = mergeMessages(target, source)
 
-        expect(result).toEqual({ a: { b: 'replaced', c: 'added' } })
+        expect(result).toEqual({
+          a: { b: 'replaced', c: 'added' },
+        })
       })
     })
 
@@ -120,7 +134,9 @@ describe('messages', () => {
 
         const result = mergeMessages(target, source)
 
-        expect(result).toEqual({ x: { y: 'value' } })
+        expect(result).toEqual({
+          x: { y: 'value' },
+        })
       })
     })
 
@@ -146,18 +162,27 @@ describe('messages', () => {
 
         const result = mergeMessages(target, source)
 
-        expect(result).toEqual({ a: { b: 'dotted' }, c: 'regular' })
+        expect(result).toEqual({
+          a: { b: 'dotted' },
+          c: 'regular',
+        })
       })
     })
 
     describe('when merging with nested source overriding simple target key', () => {
       it('then it deep merges the nested source into target', () => {
-        const target = { a: { x: 'keep' } } as any
-        const source = { a: { b: 'nested' } } as any
+        const target = {
+          a: { x: 'keep' },
+        } as any
+        const source = {
+          a: { b: 'nested' },
+        } as any
 
         const result = mergeMessages(target, source)
 
-        expect(result).toEqual({ a: { x: 'keep', b: 'nested' } })
+        expect(result).toEqual({
+          a: { x: 'keep', b: 'nested' },
+        })
       })
     })
   })
@@ -226,7 +251,9 @@ describe('messages', () => {
   describe('given t function', () => {
     describe('when the key exists in the current locale messages', () => {
       it('then it returns the translated message', () => {
-        globalState.messages = { en: { greeting: 'Hello' } } as any
+        globalState.messages = {
+          en: { greeting: 'Hello' },
+        } as any
         locale.value = 'en'
 
         const result = t('greeting' as any)
@@ -237,7 +264,11 @@ describe('messages', () => {
 
     describe('when the key exists in a nested structure', () => {
       it('then it returns the nested translated message', () => {
-        globalState.messages = { en: { app: { title: 'My App' } } } as any
+        globalState.messages = {
+          en: {
+            app: { title: 'My App' },
+          },
+        } as any
         locale.value = 'en'
 
         const result = t('app.title' as any)
@@ -248,7 +279,9 @@ describe('messages', () => {
 
     describe('when the key has variables', () => {
       it('then it interpolates the variables into the message', () => {
-        globalState.messages = { en: { welcome: 'Hello {name}' } } as any
+        globalState.messages = {
+          en: { welcome: 'Hello {name}' },
+        } as any
         locale.value = 'en'
 
         const result = t('welcome' as any, { name: 'World' })
@@ -349,7 +382,9 @@ describe('messages', () => {
 
     describe('when the message value is not a string', () => {
       it('then it converts the value to a string', () => {
-        globalState.messages = { en: { count: 42 } } as any
+        globalState.messages = {
+          en: { count: 42 },
+        } as any
         locale.value = 'en'
 
         const result = t('count' as any)

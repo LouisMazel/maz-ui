@@ -23,7 +23,17 @@ describe('given MazBadge component', () => {
 
   describe('when rendered with different colors', () => {
     it.each(
-      ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'surface'] as MazBadgeColor[],
+      [
+        'primary',
+        'secondary',
+        'accent',
+        'info',
+        'success',
+        'warning',
+        'destructive',
+        'contrast',
+        'surface',
+      ] as MazBadgeColor[],
     )('then it applies the %s color classes', (color) => {
       const wrapper = mount(MazBadge, {
         props: { color },
@@ -129,14 +139,18 @@ describe('given MazBadge component', () => {
 function mountBadgeWithGlobalConfig(config: unknown, props: Record<string, unknown> = {}) {
   return mount(MazBadge, {
     props,
-    global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+    global: {
+      provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+    },
   })
 }
 
 describe('given a MazUi global default for size', () => {
   describe('when no size prop is passed', () => {
     it('then it applies the global default size class', () => {
-      const wrapper = mountBadgeWithGlobalConfig({ global: { size: 'xl' } })
+      const wrapper = mountBadgeWithGlobalConfig({
+        global: { size: 'xl' },
+      })
 
       expect(wrapper.classes()).toContain('--xl')
       expect(wrapper.classes()).toContain('maz:text-xl')
@@ -145,7 +159,9 @@ describe('given a MazUi global default for size', () => {
 
   describe('when a size prop is passed', () => {
     it('then the instance prop wins over the global default', () => {
-      const wrapper = mountBadgeWithGlobalConfig({ global: { size: 'xl' } }, { size: 'sm' })
+      const wrapper = mountBadgeWithGlobalConfig({
+        global: { size: 'xl' },
+      }, { size: 'sm' })
 
       expect(wrapper.classes()).toContain('--sm')
       expect(wrapper.classes()).not.toContain('--xl')
@@ -156,7 +172,9 @@ describe('given a MazUi global default for size', () => {
 describe('given a MazUi global default for roundedSize', () => {
   describe('when no roundedSize prop is passed', () => {
     it('then it applies the global default rounded class', () => {
-      const wrapper = mountBadgeWithGlobalConfig({ global: { roundedSize: 'full' } })
+      const wrapper = mountBadgeWithGlobalConfig({
+        global: { roundedSize: 'full' },
+      })
 
       expect(wrapper.classes()).toContain('maz:rounded-full')
     })
@@ -164,7 +182,10 @@ describe('given a MazUi global default for roundedSize', () => {
 
   describe('when a component-scoped default differs from the global default', () => {
     it('then the component-scoped default wins over the global default', () => {
-      const wrapper = mountBadgeWithGlobalConfig({ global: { roundedSize: 'full' }, MazBadge: { roundedSize: 'sm' } })
+      const wrapper = mountBadgeWithGlobalConfig({
+        global: { roundedSize: 'full' },
+        MazBadge: { roundedSize: 'sm' },
+      })
 
       expect(wrapper.classes()).toContain('maz:rounded-xs')
       expect(wrapper.classes()).not.toContain('maz:rounded-full')

@@ -54,7 +54,9 @@ export function checkStyleDeclarations(css: string, offset: number, context: Rev
 
     context.report({
       rule: 'hardcoded-color',
-      severity: inKeyframes || blackOrWhite ? 'info' : 'warning',
+      severity: inKeyframes || blackOrWhite
+        ? 'info'
+        : 'warning',
       message: `\`${property}\` uses a hard-coded color (\`${color[0].replace('(', '')}\`): it ignores the theme and dark mode.`,
       suggestion: `Use a theme variable: \`var(--maz-primary)\`, \`var(--maz-surface)\`, \`var(--maz-foreground)\`, \`var(--maz-muted)\`, \`var(--maz-divider)\`... (\`color-mix(in oklab, var(--maz-primary) 20%, transparent)\` for tints).${blackOrWhite ? ' Keep it if the element is over media (image, video) or a fixed dark background.' : ''}`,
     }, offset + index + prefix.length)
@@ -63,7 +65,9 @@ export function checkStyleDeclarations(css: string, offset: number, context: Rev
 
 export function reviewStyle(source: string, offset: number, context: ReviewContext, { sfc = false } = {}): void {
   const css = blankComments(source)
-  const applies = [...css.matchAll(/@apply\s+([^;]+);/g)]
+  const applies = [
+    ...css.matchAll(/@apply\s+([^;]+);/g),
+  ]
 
   for (const apply of applies) {
     checkClassList(apply[1], offset + (apply.index ?? 0) + apply[0].indexOf(apply[1]), context)

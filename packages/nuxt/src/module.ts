@@ -201,7 +201,7 @@ const defaults = {
   },
   agents: {
     rules: false,
-    mcp: true,
+    mcp: false,
   },
 } satisfies Required<MazUiNuxtOptions>
 
@@ -226,7 +226,9 @@ function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult
 function installedMcpVersion(rootDir: string): string | undefined {
   const mcpDir = findProjectPackage(rootDir, '@maz-ui/mcp')
 
-  return mcpDir ? readPackageVersion(mcpDir) : undefined
+  return mcpDir
+    ? readPackageVersion(mcpDir)
+    : undefined
 }
 
 function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
@@ -235,13 +237,16 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
   }
 
   const logger = useLogger('@maz-ui/mcp')
-  const isExplicit = (nuxt.options as { mazUi?: MazUiNuxtOptions }).mazUi?.agents !== undefined
 
   try {
     const { rootDir, workspaceDir } = nuxt.options
-    const { targets: requestedTargets, rules = true, mcp = true, dir } = typeof agents === 'object' ? agents : {}
+    const { targets: requestedTargets, rules = true, mcp = true, dir, paths } = typeof agents === 'object'
+      ? agents
+      : {}
     // In a monorepo, the agents start at the workspace root, not in the Nuxt app
-    const projectDir = dir ? resolve(rootDir, dir) : (workspaceDir || rootDir)
+    const projectDir = dir
+      ? resolve(rootDir, dir)
+      : (workspaceDir || rootDir)
     const targets = requestedTargets ?? detectAgentTargets(projectDir)
 
     if (targets.length === 0 || (!rules && !mcp))
@@ -253,8 +258,13 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
       targets,
       rules,
       mcp,
+      paths,
       mcpVersion: installedMcpVersion(rootDir),
-      ...(mazUiDir ? { docsDir: join(mazUiDir, 'docs') } : {}),
+      ...(mazUiDir
+        ? {
+            docsDir: join(mazUiDir, 'docs'),
+          }
+        : {}),
     })
     const applied = result.changes.filter(change => ['create', 'update', 'remove'].includes(change.action))
 
@@ -263,12 +273,7 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
     }
   }
   catch (error) {
-    const message = `Could not configure the AI agents for maz-ui: ${getErrorMessage(error)}`
-
-    if (isExplicit)
-      logger.warn(message)
-    else
-      logger.debug(message)
+    logger.warn(`Could not configure the AI agents for maz-ui: ${getErrorMessage(error)}`)
   }
 }
 
@@ -333,7 +338,13 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       const current = typeof postcssPlugins.cssnano === 'object' && postcssPlugins.cssnano !== null
         ? postcssPlugins.cssnano
         : {}
-      postcssPlugins.cssnano = { ...current, preset: ['default', { calc: false }] }
+      postcssPlugins.cssnano = {
+        ...current,
+        preset: [
+          'default',
+          { calc: false },
+        ],
+      }
     }
 
     // Plugins

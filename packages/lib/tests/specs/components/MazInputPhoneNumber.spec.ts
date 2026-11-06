@@ -265,13 +265,17 @@ describe('given a MazUi global default for size', () => {
 
   describe('when no size prop is passed', () => {
     it('then the country select receives the global size', () => {
-      const wrapper = mountWithConfig({ global: { size: 'xl' } })
+      const wrapper = mountWithConfig({
+        global: { size: 'xl' },
+      })
 
       expect(wrapper.findComponent(MazSelectCountry).props('size')).toBe('xl')
     })
 
     it('then the phone input receives the global size', () => {
-      const wrapper = mountWithConfig({ global: { size: 'xl' } })
+      const wrapper = mountWithConfig({
+        global: { size: 'xl' },
+      })
 
       expect(wrapper.findComponent(PhoneInput).props('size')).toBe('xl')
     })
@@ -279,7 +283,10 @@ describe('given a MazUi global default for size', () => {
 
   describe('when a component-scoped default differs from the global default', () => {
     it('then the country select receives the component-scoped size', () => {
-      const wrapper = mountWithConfig({ global: { size: 'mini' }, MazInputPhoneNumber: { size: 'lg' } })
+      const wrapper = mountWithConfig({
+        global: { size: 'mini' },
+        MazInputPhoneNumber: { size: 'lg' },
+      })
 
       expect(wrapper.findComponent(MazSelectCountry).props('size')).toBe('lg')
     })
@@ -287,7 +294,10 @@ describe('given a MazUi global default for size', () => {
 
   describe('when a size prop is passed', () => {
     it('then the instance prop wins over every configured default', () => {
-      const wrapper = mountWithConfig({ global: { size: 'mini' }, MazInputPhoneNumber: { size: 'lg' } }, { size: 'sm' })
+      const wrapper = mountWithConfig({
+        global: { size: 'mini' },
+        MazInputPhoneNumber: { size: 'lg' },
+      }, { size: 'sm' })
 
       expect(wrapper.findComponent(PhoneInput).props('size')).toBe('sm')
     })
@@ -297,7 +307,9 @@ describe('given a MazUi global default for size', () => {
 describe('given the flagSrc prop', () => {
   describe('when it is set', () => {
     it('then the country select receives it', async () => {
-      const wrapper = await getWrapper({ props: { flagSrc: '/flags/{code}.svg' } })
+      const wrapper = await getWrapper({
+        props: { flagSrc: '/flags/{code}.svg' },
+      })
 
       expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBe('/flags/{code}.svg')
     })
@@ -325,7 +337,9 @@ describe('given a global flagSrc in the MazUi defaults', () => {
 
   describe('when no flagSrc prop is passed', () => {
     it('then the country select receives the global source', () => {
-      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } })
+      const wrapper = mountWithDefaults({
+        global: { flagSrc: '/global/{code}.svg' },
+      })
 
       expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBe('/global/{code}.svg')
     })
@@ -333,7 +347,9 @@ describe('given a global flagSrc in the MazUi defaults', () => {
 
   describe('when a flagSrc prop is passed', () => {
     it('then the prop wins over the global source', () => {
-      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } }, { flagSrc: '/prop/{code}.svg' })
+      const wrapper = mountWithDefaults({
+        global: { flagSrc: '/global/{code}.svg' },
+      }, { flagSrc: '/prop/{code}.svg' })
 
       expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBe('/prop/{code}.svg')
     })

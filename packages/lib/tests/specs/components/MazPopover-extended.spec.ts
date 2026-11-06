@@ -349,7 +349,10 @@ describe('MazPopover extended coverage', () => {
 
   describe('when panelStyle is configured', () => {
     it('should apply inline styles to panel as object', () => {
-      const wrapper = getWrapper({ modelValue: true, panelStyle: { backgroundColor: 'red' } })
+      const wrapper = getWrapper({
+        modelValue: true,
+        panelStyle: { backgroundColor: 'red' },
+      })
       expect(wrapper.find('.m-popover-panel').attributes('style')).toContain('background-color: red')
     })
 

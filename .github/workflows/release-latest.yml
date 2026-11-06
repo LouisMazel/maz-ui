@@ -22,9 +22,6 @@ jobs:
       pull-requests: write
       packages: write
 
-    env:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v7

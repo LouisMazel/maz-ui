@@ -117,24 +117,36 @@ const sizeStyle = computed(() => {
     ...(width === false
       ? {}
       : {
-          flex: `0 0 ${typeof width}` === 'number' ? `${width}px` : width,
-          width: typeof width === 'number' ? `${width}px` : width,
+          flex: `0 0 ${typeof width}` === 'number'
+            ? `${width}px`
+            : width,
+          width: typeof width === 'number'
+            ? `${width}px`
+            : width,
         }),
     ...(height === false
       ? {}
       : {
-          height: typeof height === 'number' ? `${height}px` : `${height}`,
-          minHeight: typeof height === 'number' ? `${height}px` : `${height}`,
+          height: typeof height === 'number'
+            ? `${height}px`
+            : `${height}`,
+          minHeight: typeof height === 'number'
+            ? `${height}px`
+            : `${height}`,
         }),
   }
 })
 const imagesCount = computed(() => {
-  return displayedCount <= 5 ? displayedCount : 5
+  return displayedCount <= 5
+    ? displayedCount
+    : 5
 })
 const numberImagesRemaining = computed(() => {
   return (
     images.length
-    - (images.length < imagesCount.value ? images.length : imagesCount.value)
+    - (images.length < imagesCount.value
+      ? images.length
+      : imagesCount.value)
   )
 })
 const imagesNormalized = computed(() => {

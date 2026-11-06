@@ -12,7 +12,9 @@ describe('components/MazStepper.vue', () => {
     wrapper = shallowMount(MazStepper, {
       props: {
         modelValue: 1,
-        steps: [{ success: true, disabled: true }],
+        steps: [
+          { success: true, disabled: true },
+        ],
       },
       slots: {
         'title-1': 'Step 1',
@@ -32,7 +34,9 @@ describe('components/MazStepper.vue', () => {
 
     wrapper.vm.selectStep(2)
     expect(wrapper.vm.localModelValue).toBe(2)
-    expect(wrapper.emitted()['update:model-value']).toStrictEqual([[2]])
+    expect(wrapper.emitted()['update:model-value']).toStrictEqual([
+      [2],
+    ])
   })
 
   it('should returns if title exists', () => {
@@ -73,6 +77,8 @@ describe('components/MazStepper.vue', () => {
   it('should open step if click on it', async () => {
     const buttons = wrapper.findAll('button')
     await buttons[1].trigger('click')
-    expect(wrapper.emitted()['update:model-value']).toStrictEqual([[3]])
+    expect(wrapper.emitted()['update:model-value']).toStrictEqual([
+      [3],
+    ])
   })
 })

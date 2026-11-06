@@ -44,7 +44,10 @@ defineConfig({
     'no-descending-specificity': null,
   },
   overrides: [
-    { files: ['**/*.legacy.css'], rules: { 'color-no-invalid-hex': null } },
+    {
+      files: ['**/*.legacy.css'],
+      rules: { 'color-no-invalid-hex': null }
+    },
   ],
   extends: ['stylelint-config-clean-order'], // layer extra shareable configs
   logLevel: 'default', // 'silent' | 'default' | 'debug' | 'verbose' — see "Logging" below

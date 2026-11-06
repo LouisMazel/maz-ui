@@ -97,7 +97,9 @@ describe('define-preset', () => {
     describe('when base is a ThemePreset object (sync path)', () => {
       it('then it calls mergePresets with the base object and overrides', () => {
         const overrides: ThemePresetOverrides = {
-          colors: { light: { primary: '100 50% 50%' } },
+          colors: {
+            light: { primary: '100 50% 50%' },
+          },
         }
         const mergedResult = { ...mockPreset, name: 'merged' }
         vi.mocked(mergePresets).mockReturnValue(mergedResult)
@@ -121,7 +123,9 @@ describe('define-preset', () => {
     describe('when base is a string preset name (async path)', () => {
       it('then it calls getPreset with the preset name and returns a Promise', async () => {
         const overrides: ThemePresetOverrides = {
-          scales: { rounded: { md: '1rem' } },
+          scales: {
+            rounded: { md: '1rem' },
+          },
         }
         const mergedResult = { ...mockPreset, name: 'merged-async' }
         vi.mocked(getPreset).mockResolvedValue(mockPreset)

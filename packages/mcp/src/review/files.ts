@@ -6,7 +6,19 @@ import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
 import { glob } from 'tinyglobby'
 import { filterBySeverity, reviewCode } from './index'
 
-export const REVIEWABLE_EXTENSIONS = ['vue', 'ts', 'tsx', 'js', 'jsx', 'mjs', 'mts', 'css', 'scss', 'pcss', 'postcss']
+export const REVIEWABLE_EXTENSIONS = [
+  'vue',
+  'ts',
+  'tsx',
+  'js',
+  'jsx',
+  'mjs',
+  'mts',
+  'css',
+  'scss',
+  'pcss',
+  'postcss',
+]
 export const MAX_REVIEWED_FILES = 200
 
 export interface FileReview {
@@ -38,7 +50,9 @@ export async function expandPaths(patterns: string[], cwd: string): Promise<stri
   const globs: string[] = []
 
   for (const pattern of patterns) {
-    const absolute = isAbsolute(pattern) ? pattern : resolve(cwd, pattern)
+    const absolute = isAbsolute(pattern)
+      ? pattern
+      : resolve(cwd, pattern)
 
     if (existsSync(absolute) && statSync(absolute).isFile())
       files.add(absolute)
@@ -49,7 +63,17 @@ export async function expandPaths(patterns: string[], cwd: string): Promise<stri
   }
 
   if (globs.length > 0) {
-    const matches = await glob(globs, { cwd, absolute: true, ignore: ['**/node_modules/**', '**/dist/**', '**/.nuxt/**', '**/.output/**', '**/coverage/**'] })
+    const matches = await glob(globs, {
+      cwd,
+      absolute: true,
+      ignore: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/.nuxt/**',
+        '**/.output/**',
+        '**/coverage/**',
+      ],
+    })
 
     for (const match of matches) files.add(match)
   }
@@ -61,7 +85,9 @@ export async function expandPaths(patterns: string[], cwd: string): Promise<stri
 export function displayPath(cwd: string, file: string): string {
   const path = relative(cwd, file)
 
-  return path && !path.startsWith('..') && !isAbsolute(path) ? path : file
+  return path && !path.startsWith('..') && !isAbsolute(path)
+    ? path
+    : file
 }
 
 export interface ReviewFilesOptions {

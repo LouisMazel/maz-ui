@@ -627,12 +627,16 @@ export interface MazInputPhoneNumberInjectedData {
 }
 
 const countryState = computed(() => ({
-  error: error || (validationError ? !!phoneNumber.value && !selectedCountry.value : false),
+  error: error || (validationError
+    ? !!phoneNumber.value && !selectedCountry.value
+    : false),
   success: success || (validationSuccess ? results.value?.isValid : false),
 }))
 
 const phoneState = computed(() => ({
-  error: error || (validationError ? !!phoneNumber.value && !results.value?.isValid : false),
+  error: error || (validationError
+    ? !!phoneNumber.value && !results.value?.isValid
+    : false),
   success: success || (validationSuccess ? results.value.isValid : false),
 }))
 

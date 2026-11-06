@@ -2,7 +2,10 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { useAos } from '../useAos'
 
-const mockAosHandler = { observe: vi.fn(), unobserve: vi.fn() }
+const mockAosHandler = {
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+}
 
 vi.mock('nuxt/app', () => ({
   useNuxtApp: vi.fn(() => ({

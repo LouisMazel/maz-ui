@@ -5,14 +5,22 @@ import { defineComponent, h, nextTick } from 'vue'
 
 function fireTouch(target: EventTarget, type: string, points: Array<{ x: number, y: number }>) {
   const event = new Event(type, { bubbles: true, cancelable: true })
-  Object.defineProperty(event, 'touches', { value: points.map(({ x, y }) => ({ clientX: x, clientY: y })) })
+  Object.defineProperty(event, 'touches', {
+    value: points.map(({ x, y }) => ({ clientX: x, clientY: y })),
+  })
   target.dispatchEvent(event)
 }
 
 function pull(target: EventTarget, deltaY: number) {
-  fireTouch(target, 'touchstart', [{ x: 0, y: 0 }])
-  fireTouch(target, 'touchmove', [{ x: 0, y: deltaY / 2 }])
-  fireTouch(target, 'touchmove', [{ x: 0, y: deltaY }])
+  fireTouch(target, 'touchstart', [
+    { x: 0, y: 0 },
+  ])
+  fireTouch(target, 'touchmove', [
+    { x: 0, y: deltaY / 2 },
+  ])
+  fireTouch(target, 'touchmove', [
+    { x: 0, y: deltaY },
+  ])
 }
 
 const translations = { pull: 'Pull to refresh', release: 'Release to refresh', refreshing: 'Refreshing…' }
@@ -25,12 +33,18 @@ function mountInScroller(props: Record<string, unknown>) {
   const Host = defineComponent({
     setup() {
       return () => h('div', { class: 'scroller', style: 'overflow-y: auto' }, [
-        h(MazPullToRefresh, props, { default: () => h('p', { class: 'content' }, 'Content') }),
+        h(MazPullToRefresh, props, {
+          default: () => h('p', { class: 'content' }, 'Content'),
+        }),
       ])
     },
   })
   const wrapper = mount(Host, { attachTo: document.body })
-  return { wrapper, scroller: wrapper.find('.scroller').element as HTMLElement, component: wrapper.findComponent(MazPullToRefresh) }
+  return {
+    wrapper,
+    scroller: wrapper.find('.scroller').element as HTMLElement,
+    component: wrapper.findComponent(MazPullToRefresh),
+  }
 }
 
 describe('given the MazPullToRefresh component', () => {
@@ -48,7 +62,9 @@ describe('given the MazPullToRefresh component', () => {
 
   describe('when it is rendered without onRefresh', () => {
     it('then it only renders its content', () => {
-      wrapper = mount(MazPullToRefresh, { slots: { default: 'Content' } })
+      wrapper = mount(MazPullToRefresh, {
+        slots: { default: 'Content' },
+      })
 
       expect(wrapper.text()).toBe('Content')
       expect(wrapper.find('.m-pull-to-refresh__header').exists()).toBe(false)
@@ -76,7 +92,12 @@ describe('given the MazPullToRefresh component', () => {
         await vi.advanceTimersByTimeAsync(400)
 
         expect(onRefresh).toHaveBeenCalledOnce()
-        expect(Object.keys(mounted.component.emitted())).toEqual(expect.arrayContaining(['start', 'loaded', 'response', 'finish']))
+        expect(Object.keys(mounted.component.emitted())).toEqual(expect.arrayContaining([
+          'start',
+          'loaded',
+          'response',
+          'finish',
+        ]))
         expect(mounted.component.emitted('response')?.[0]).toEqual(['data'])
         expect(mounted.component.find('[role="status"]').text()).toBe('')
       })
@@ -100,7 +121,10 @@ describe('given the MazPullToRefresh component', () => {
 
     describe('when the pull is short', () => {
       it('then it shows the pull hint and its progress ring', async () => {
-        const mounted = mountInScroller({ onRefresh: vi.fn(), translations })
+        const mounted = mountInScroller({
+          onRefresh: vi.fn(),
+          translations,
+        })
         wrapper = mounted.wrapper
         await nextTick()
 
@@ -120,7 +144,10 @@ describe('given the MazPullToRefresh component', () => {
       container.id = 'page-scroller'
       document.body.append(container)
       const onRefresh = vi.fn()
-      wrapper = mount(MazPullToRefresh, { props: { onRefresh, containerSelector: '#page-scroller' }, attachTo: document.body })
+      wrapper = mount(MazPullToRefresh, {
+        props: { onRefresh, containerSelector: '#page-scroller' },
+        attachTo: document.body,
+      })
       await nextTick()
 
       pull(container, 200)
@@ -135,7 +162,10 @@ describe('given the MazPullToRefresh component', () => {
 
   describe('when translations are given', () => {
     it('then they replace the default texts', async () => {
-      const mounted = mountInScroller({ onRefresh: vi.fn(), translations: { pull: 'Tirer' } })
+      const mounted = mountInScroller({
+        onRefresh: vi.fn(),
+        translations: { pull: 'Tirer' },
+      })
       wrapper = mounted.wrapper
       await nextTick()
 
@@ -148,9 +178,15 @@ describe('given the MazPullToRefresh component', () => {
 
   describe('when standalone mode is required outside an installed app', () => {
     it('then the pull to refresh is disabled', async () => {
-      Object.defineProperty(globalThis, 'matchMedia', { value: () => ({ matches: false }), configurable: true })
+      Object.defineProperty(globalThis, 'matchMedia', {
+        value: () => ({ matches: false }),
+        configurable: true,
+      })
       const onRefresh = vi.fn()
-      wrapper = mount(MazPullToRefresh, { props: { onRefresh, standaloneMode: true }, attachTo: document.body })
+      wrapper = mount(MazPullToRefresh, {
+        props: { onRefresh, standaloneMode: true },
+        attachTo: document.body,
+      })
       await nextTick()
 
       pull(globalThis, 200)
@@ -164,8 +200,17 @@ describe('given the MazPullToRefresh component', () => {
 
   describe('when standalone mode is required inside an installed app', () => {
     it('then the pull to refresh is enabled', async () => {
-      Object.defineProperty(globalThis, 'matchMedia', { value: () => ({ matches: true }), configurable: true })
-      wrapper = mount(MazPullToRefresh, { props: { onRefresh: vi.fn(), standaloneMode: true }, attachTo: document.body })
+      Object.defineProperty(globalThis, 'matchMedia', {
+        value: () => ({ matches: true }),
+        configurable: true,
+      })
+      wrapper = mount(MazPullToRefresh, {
+        props: {
+          onRefresh: vi.fn(),
+          standaloneMode: true,
+        },
+        attachTo: document.body,
+      })
       await nextTick()
 
       expect(wrapper.find('.m-pull-to-refresh__header').exists()).toBe(true)
@@ -175,7 +220,12 @@ describe('given the MazPullToRefresh component', () => {
   describe('when onRefresh rejects', () => {
     it('then it emits error then finish without throwing', async () => {
       const failure = new Error('offline')
-      wrapper = mount(MazPullToRefresh, { props: { onRefresh: vi.fn().mockRejectedValue(failure) }, attachTo: document.body })
+      wrapper = mount(MazPullToRefresh, {
+        props: {
+          onRefresh: vi.fn().mockRejectedValue(failure),
+        },
+        attachTo: document.body,
+      })
       await nextTick()
 
       const exposed = wrapper.vm as unknown as { refresh: () => Promise<void> }
@@ -192,7 +242,9 @@ describe('given the MazPullToRefresh component', () => {
   describe('when the loading slot is provided', () => {
     it('then it replaces the spinner while refreshing', async () => {
       wrapper = mount(MazPullToRefresh, {
-        props: { onRefresh: () => new Promise(() => {}) },
+        props: {
+          onRefresh: () => new Promise(() => {}),
+        },
         slots: { 'pull-loading': '<span class="custom-loader">Loading</span>' },
         attachTo: document.body,
       })

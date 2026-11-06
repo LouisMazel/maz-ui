@@ -53,7 +53,10 @@ async function main(): Promise<void> {
   }
 
   if (values.site) {
-    writeOutput(resolve(values.site), [...knowledge.bundle, ...knowledge.site], { clean: true })
+    writeOutput(resolve(values.site), [
+      ...knowledge.bundle,
+      ...knowledge.site,
+    ], { clean: true })
     logger.success(`[agent-docs] site files written to ${values.site}`)
   }
 
@@ -81,6 +84,8 @@ async function main(): Promise<void> {
 }
 
 main().catch((error: unknown) => {
-  logger.error(error instanceof Error ? error.message : String(error))
+  logger.error(error instanceof Error
+    ? error.message
+    : String(error))
   process.exit(1)
 })

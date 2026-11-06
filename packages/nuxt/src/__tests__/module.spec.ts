@@ -3,12 +3,21 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import moduleConfig from '../module'
 
 const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion } = vi.hoisted(() => {
-  const logger = { info: vi.fn(), warn: vi.fn(), debug: vi.fn() }
+  const logger = {
+    info: vi.fn(),
+    warn: vi.fn(),
+    debug: vi.fn(),
+  }
 
   return {
     logger,
     useLogger: vi.fn(() => logger),
-    setupAgents: vi.fn(() => ({ targets: [] as string[], version: '5.0.0', changes: [] as Array<{ file: string, action: string }>, localMcpServer: true })),
+    setupAgents: vi.fn(() => ({
+      targets: [] as string[],
+      version: '5.0.0',
+      changes: [] as Array<{ file: string, action: string }>,
+      localMcpServer: true,
+    })),
     detectAgentTargets: vi.fn((): string[] => ['claude']),
     findProjectPackage: vi.fn((_rootDir: string, _name: string): string | undefined => '/project/node_modules/maz-ui'),
     readPackageVersion: vi.fn((): string | undefined => undefined),
@@ -181,13 +190,36 @@ describe('nuxt module', () => {
       const mergedOptions = {
         ...config.defaults,
         ...options,
-        general: { ...config.defaults.general, ...options.general },
-        css: { ...config.defaults.css, ...options.css },
-        components: { ...config.defaults.components, ...options.components },
-        plugins: { ...config.defaults.plugins, ...options.plugins },
-        composables: { ...config.defaults.composables, ...options.composables },
-        directives: { ...config.defaults.directives, ...options.directives },
-        agents: typeof options.agents === 'object' ? { ...config.defaults.agents, ...options.agents } : options.agents ?? config.defaults.agents,
+        general: {
+          ...config.defaults.general,
+          ...options.general,
+        },
+        css: {
+          ...config.defaults.css,
+          ...options.css,
+        },
+        components: {
+          ...config.defaults.components,
+          ...options.components,
+        },
+        plugins: {
+          ...config.defaults.plugins,
+          ...options.plugins,
+        },
+        composables: {
+          ...config.defaults.composables,
+          ...options.composables,
+        },
+        directives: {
+          ...config.defaults.directives,
+          ...options.directives,
+        },
+        agents: typeof options.agents === 'object'
+          ? {
+              ...config.defaults.agents,
+              ...options.agents,
+            }
+          : options.agents ?? config.defaults.agents,
       }
       config.setup(mergedOptions, nuxt)
       return { nuxt }
@@ -207,33 +239,79 @@ describe('nuxt module', () => {
 
     describe('css', () => {
       it('should inject main CSS when injectCss is true', () => {
-        const { nuxt } = callSetup({ css: { injectCss: true } })
+        const { nuxt } = callSetup({
+          css: { injectCss: true },
+        })
         expect(nuxt.options.css).toContain('maz-ui/style.css')
       })
 
       it('should not inject main CSS when injectCss is false', () => {
-        const { nuxt } = callSetup({ css: { injectCss: false } })
+        const { nuxt } = callSetup({
+          css: { injectCss: false },
+        })
         expect(nuxt.options.css).not.toContain('maz-ui/style.css')
       })
 
       it('should disable cssnano calc optimization', () => {
         const { nuxt } = callSetup()
-        expect(nuxt.options.postcss.plugins.cssnano).toEqual({ preset: ['default', { calc: false }] })
+        expect(nuxt.options.postcss.plugins.cssnano).toEqual({
+          preset: [
+            'default',
+            { calc: false },
+          ],
+        })
       })
 
       it('should preserve existing cssnano options when disabling calc', () => {
-        const { nuxt } = callSetup({}, { options: { ...createNuxtMock().options, postcss: { plugins: { cssnano: { comments: false } }, order: [] } } })
-        expect(nuxt.options.postcss.plugins.cssnano).toEqual({ comments: false, preset: ['default', { calc: false }] })
+        const { nuxt } = callSetup({}, {
+          options: {
+            ...createNuxtMock().options,
+            postcss: {
+              plugins: {
+                cssnano: { comments: false },
+              },
+              order: [],
+            },
+          },
+        })
+        expect(nuxt.options.postcss.plugins.cssnano).toEqual({
+          comments: false,
+          preset: [
+            'default',
+            { calc: false },
+          ],
+        })
       })
 
       it('should not touch cssnano when it is explicitly disabled', () => {
-        const { nuxt } = callSetup({}, { options: { ...createNuxtMock().options, postcss: { plugins: { cssnano: false }, order: [] } } })
+        const { nuxt } = callSetup({}, {
+          options: {
+            ...createNuxtMock().options,
+            postcss: {
+              plugins: { cssnano: false },
+              order: [],
+            },
+          },
+        })
         expect(nuxt.options.postcss.plugins.cssnano).toBe(false)
       })
 
       it('should initialize postcss options when absent', () => {
-        const { nuxt } = callSetup({}, { options: { build: { transpile: [] }, runtimeConfig: { public: { mazUi: {} } }, css: [] } })
-        expect(nuxt.options.postcss.plugins.cssnano).toEqual({ preset: ['default', { calc: false }] })
+        const { nuxt } = callSetup({}, {
+          options: {
+            build: { transpile: [] },
+            runtimeConfig: {
+              public: { mazUi: {} },
+            },
+            css: [],
+          },
+        })
+        expect(nuxt.options.postcss.plugins.cssnano).toEqual({
+          preset: [
+            'default',
+            { calc: false },
+          ],
+        })
       })
     })
 
@@ -250,7 +328,11 @@ describe('nuxt module', () => {
       })
 
       it('should add defaults plugin when defaults are set', () => {
-        callSetup({ defaults: { global: { roundedSize: 'lg' } } })
+        callSetup({
+          defaults: {
+            global: { roundedSize: 'lg' },
+          },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('runtime/plugins/defaults'),
         )
@@ -264,14 +346,18 @@ describe('nuxt module', () => {
       })
 
       it('should add aos plugin when aos is enabled', () => {
-        callSetup({ plugins: { aos: true } })
+        callSetup({
+          plugins: { aos: true },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('runtime/plugins/aos'),
         )
       })
 
       it('should add useAos import when aos is enabled', () => {
-        callSetup({ plugins: { aos: true } })
+        callSetup({
+          plugins: { aos: true },
+        })
         expect(addImports).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'useAos',
@@ -281,22 +367,34 @@ describe('nuxt module', () => {
       })
 
       it('should inject AOS CSS by default when aos is enabled', () => {
-        const { nuxt } = callSetup({ plugins: { aos: true } })
+        const { nuxt } = callSetup({
+          plugins: { aos: true },
+        })
         expect(nuxt.options.css).toContain('maz-ui/aos.css')
       })
 
       it('should not inject AOS CSS when injectCss is false', () => {
-        const { nuxt } = callSetup({ plugins: { aos: { injectCss: false } } })
+        const { nuxt } = callSetup({
+          plugins: {
+            aos: { injectCss: false },
+          },
+        })
         expect(nuxt.options.css).not.toContain('maz-ui/aos.css')
       })
 
       it('should inject AOS CSS when aos is object without injectCss', () => {
-        const { nuxt } = callSetup({ plugins: { aos: { delay: 100 } } })
+        const { nuxt } = callSetup({
+          plugins: {
+            aos: { delay: 100 },
+          },
+        })
         expect(nuxt.options.css).toContain('maz-ui/aos.css')
       })
 
       it('should not add aos plugin when aos is disabled', () => {
-        callSetup({ plugins: { aos: false } })
+        callSetup({
+          plugins: { aos: false },
+        })
         const aosCalls = addPlugin.mock.calls.filter(
           ([path]) => path.includes('aos'),
         )
@@ -304,14 +402,18 @@ describe('nuxt module', () => {
       })
 
       it('should add toast plugin when toast is enabled', () => {
-        callSetup({ plugins: { toast: true } })
+        callSetup({
+          plugins: { toast: true },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('runtime/plugins/toast'),
         )
       })
 
       it('should add useToast import when toast is enabled', () => {
-        callSetup({ plugins: { toast: true } })
+        callSetup({
+          plugins: { toast: true },
+        })
         expect(addImports).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'useToast',
@@ -321,14 +423,18 @@ describe('nuxt module', () => {
       })
 
       it('should add dialog plugin when dialog is enabled', () => {
-        callSetup({ plugins: { dialog: true } })
+        callSetup({
+          plugins: { dialog: true },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('runtime/plugins/dialog'),
         )
       })
 
       it('should add useDialog import when dialog is enabled', () => {
-        callSetup({ plugins: { dialog: true } })
+        callSetup({
+          plugins: { dialog: true },
+        })
         expect(addImports).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'useDialog',
@@ -338,14 +444,18 @@ describe('nuxt module', () => {
       })
 
       it('should add wait plugin when wait is enabled', () => {
-        callSetup({ plugins: { wait: true } })
+        callSetup({
+          plugins: { wait: true },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('runtime/plugins/wait'),
         )
       })
 
       it('should add useWait import when wait is enabled', () => {
-        callSetup({ plugins: { wait: true } })
+        callSetup({
+          plugins: { wait: true },
+        })
         expect(addImports).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'useWait',
@@ -357,7 +467,9 @@ describe('nuxt module', () => {
 
     describe('components', () => {
       it('should register all components when autoImport is true', () => {
-        callSetup({ components: { autoImport: true } })
+        callSetup({
+          components: { autoImport: true },
+        })
         const componentCalls = addComponent.mock.calls
         expect(componentCalls.length).toBeGreaterThanOrEqual(60)
         expect(addComponent).toHaveBeenCalledWith(
@@ -369,7 +481,9 @@ describe('nuxt module', () => {
       })
 
       it('should set correct filePath for components', () => {
-        callSetup({ components: { autoImport: true } })
+        callSetup({
+          components: { autoImport: true },
+        })
         expect(addComponent).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'MazBtn',
@@ -379,42 +493,54 @@ describe('nuxt module', () => {
       })
 
       it('should not register components when autoImport is false', () => {
-        callSetup({ components: { autoImport: false } })
+        callSetup({
+          components: { autoImport: false },
+        })
         expect(addComponent).not.toHaveBeenCalled()
       })
     })
 
     describe('directives', () => {
       it('should add v-zoom-img plugin when enabled', () => {
-        callSetup({ directives: { vZoomImg: true } })
+        callSetup({
+          directives: { vZoomImg: true },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('v-zoom-img'),
         )
       })
 
       it('should add v-lazy-img plugin when enabled', () => {
-        callSetup({ directives: { vLazyImg: true } })
+        callSetup({
+          directives: { vLazyImg: true },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('v-lazy-img'),
         )
       })
 
       it('should add v-click-outside plugin when enabled', () => {
-        callSetup({ directives: { vClickOutside: true } })
+        callSetup({
+          directives: { vClickOutside: true },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('v-click-outside'),
         )
       })
 
       it('should add v-fullscreen-img plugin when enabled', () => {
-        callSetup({ directives: { vFullscreenImg: true } })
+        callSetup({
+          directives: { vFullscreenImg: true },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('v-fullscreen-img'),
         )
       })
 
       it('should add v-tooltip plugin when enabled', () => {
-        callSetup({ directives: { vTooltip: true } })
+        callSetup({
+          directives: { vTooltip: true },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('v-tooltip'),
         )
@@ -449,7 +575,9 @@ describe('nuxt module', () => {
       })
 
       it('should register useTheme when enabled', () => {
-        callSetup({ composables: { useTheme: true } })
+        callSetup({
+          composables: { useTheme: true },
+        })
         expect(addImports).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'useTheme',
@@ -460,7 +588,9 @@ describe('nuxt module', () => {
       })
 
       it('should register useTranslations when enabled', () => {
-        callSetup({ composables: { useTranslations: true } })
+        callSetup({
+          composables: { useTranslations: true },
+        })
         expect(addImports).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'useTranslations',
@@ -471,21 +601,27 @@ describe('nuxt module', () => {
       })
 
       it('should not register useTheme when disabled', () => {
-        callSetup({ composables: { useTheme: false } })
+        callSetup({
+          composables: { useTheme: false },
+        })
         expect(addImports).not.toHaveBeenCalledWith(
           expect.objectContaining({ name: 'useTheme', from: '@maz-ui/themes' }),
         )
       })
 
       it('should not register useTranslations when disabled', () => {
-        callSetup({ composables: { useTranslations: false } })
+        callSetup({
+          composables: { useTranslations: false },
+        })
         expect(addImports).not.toHaveBeenCalledWith(
           expect.objectContaining({ name: 'useTranslations', from: '@maz-ui/translations' }),
         )
       })
 
       it('should apply autoImportPrefix to composable names', () => {
-        callSetup({ general: { autoImportPrefix: 'Maz' } })
+        callSetup({
+          general: { autoImportPrefix: 'Maz' },
+        })
         expect(addImports).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'useIdleTimeout',
@@ -523,7 +659,12 @@ describe('nuxt module', () => {
       it('should apply autoImportPrefix to plugin composables', () => {
         callSetup({
           general: { autoImportPrefix: 'Maz' },
-          plugins: { aos: true, toast: true, dialog: true, wait: true },
+          plugins: {
+            aos: true,
+            toast: true,
+            dialog: true,
+            wait: true,
+          },
         })
         expect(addImports).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -554,14 +695,18 @@ describe('nuxt module', () => {
 
     describe('icon path', () => {
       it('should add maz-icon-path plugin when defaultMazIconPath is set', () => {
-        callSetup({ general: { defaultMazIconPath: '/icons' } })
+        callSetup({
+          general: { defaultMazIconPath: '/icons' },
+        })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('maz-icon-path'),
         )
       })
 
       it('should not add maz-icon-path plugin when defaultMazIconPath is empty', () => {
-        callSetup({ general: { defaultMazIconPath: '' } })
+        callSetup({
+          general: { defaultMazIconPath: '' },
+        })
         const iconCalls = addPlugin.mock.calls.filter(
           ([path]) => path.includes('maz-icon-path'),
         )
@@ -572,7 +717,9 @@ describe('nuxt module', () => {
     describe('given the preventIosInputZoom option', () => {
       describe('when it is enabled', () => {
         it('then the client plugin is added', () => {
-          callSetup({ general: { preventIosInputZoom: true } })
+          callSetup({
+            general: { preventIosInputZoom: true },
+          })
 
           expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/prevent-ios-input-zoom.client'))
         })
@@ -600,7 +747,12 @@ describe('nuxt module', () => {
 
       describe('when it is local', () => {
         it('then the local flags plugin replaces the defaults plugin', () => {
-          callSetup({ flags: 'local', defaults: { global: { size: 'lg' } } })
+          callSetup({
+            flags: 'local',
+            defaults: {
+              global: { size: 'lg' },
+            },
+          })
 
           expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
           expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/defaults'))
@@ -609,7 +761,12 @@ describe('nuxt module', () => {
 
       describe('when it is a URL template', () => {
         it('then the template becomes the global flag source through the defaults plugin', () => {
-          const { nuxt } = callSetup({ flags: '/flags/{code}.svg', defaults: { global: { size: 'lg' } } })
+          const { nuxt } = callSetup({
+            flags: '/flags/{code}.svg',
+            defaults: {
+              global: { size: 'lg' },
+            },
+          })
 
           expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global).toEqual({ flagSrc: '/flags/{code}.svg', size: 'lg' })
           expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/defaults'))
@@ -619,7 +776,12 @@ describe('nuxt module', () => {
 
       describe('when a global flag source is also set in defaults', () => {
         it('then the defaults value wins over the template', () => {
-          const { nuxt } = callSetup({ flags: '/flags/{code}.svg', defaults: { global: { flagSrc: '/mine/{CODE}.png' } } })
+          const { nuxt } = callSetup({
+            flags: '/flags/{code}.svg',
+            defaults: {
+              global: { flagSrc: '/mine/{CODE}.png' },
+            },
+          })
 
           expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global.flagSrc).toBe('/mine/{CODE}.png')
         })
@@ -636,11 +798,27 @@ describe('nuxt module', () => {
       })
 
       describe('when it is not set', () => {
-        it('then only the MCP server of the detected agents is configured', () => {
+        it('then the agents are not configured', () => {
           callSetup({}, {}, { dev: true })
 
-          expect(config.defaults.agents).toEqual({ rules: false, mcp: true })
-          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: false, mcp: true, docsDir: '/project/node_modules/maz-ui/docs' })
+          expect(config.defaults.agents).toEqual({ rules: false, mcp: false })
+          expect(setupAgents).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('when only the MCP server is enabled', () => {
+        it('then only the MCP server of the detected agents is configured', () => {
+          callSetup({
+            agents: { mcp: true },
+          }, {}, { dev: true })
+
+          expect(setupAgents).toHaveBeenCalledWith({
+            rootDir: '/project',
+            targets: ['claude'],
+            rules: false,
+            mcp: true,
+            docsDir: '/project/node_modules/maz-ui/docs',
+          })
         })
       })
 
@@ -657,7 +835,13 @@ describe('nuxt module', () => {
           callSetup({ agents: true }, {}, { dev: true })
 
           expect(detectAgentTargets).toHaveBeenCalledWith('/project')
-          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: true, mcp: true, docsDir: '/project/node_modules/maz-ui/docs' })
+          expect(setupAgents).toHaveBeenCalledWith({
+            rootDir: '/project',
+            targets: ['claude'],
+            rules: true,
+            mcp: true,
+            docsDir: '/project/node_modules/maz-ui/docs',
+          })
         })
       })
 
@@ -671,16 +855,30 @@ describe('nuxt module', () => {
 
       describe('when targets, rules and mcp are given', () => {
         it('then they are passed through without detection', () => {
-          callSetup({ agents: { targets: ['cursor', 'agents-md'], rules: true, mcp: false } }, {}, { dev: true })
+          callSetup({
+            agents: {
+              targets: ['cursor', 'agents-md'],
+              rules: true,
+              mcp: false,
+            },
+          }, {}, { dev: true })
 
           expect(detectAgentTargets).not.toHaveBeenCalled()
-          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['cursor', 'agents-md'], rules: true, mcp: false, docsDir: '/project/node_modules/maz-ui/docs' })
+          expect(setupAgents).toHaveBeenCalledWith({
+            rootDir: '/project',
+            targets: ['cursor', 'agents-md'],
+            rules: true,
+            mcp: false,
+            docsDir: '/project/node_modules/maz-ui/docs',
+          })
         })
       })
 
       describe('when the app is part of a monorepo', () => {
         it('then the files are written at the workspace root with the docs of the maz-ui of the app', () => {
-          callSetup({}, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo' })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo' })
 
           expect(detectAgentTargets).toHaveBeenCalledWith('/repo')
           expect(findProjectPackage).toHaveBeenCalledWith('/repo/apps/web', 'maz-ui')
@@ -690,7 +888,9 @@ describe('nuxt module', () => {
 
       describe('when a dir is given', () => {
         it('then the files are written in this folder, relative to the Nuxt root', () => {
-          callSetup({ agents: { dir: '../..' } }, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo/apps/web' })
+          callSetup({
+            agents: { mcp: true, dir: '../..' },
+          }, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo/apps/web' })
 
           expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ rootDir: '/repo' }))
         })
@@ -700,15 +900,24 @@ describe('nuxt module', () => {
         it('then setupAgents resolves the docs by itself', () => {
           findProjectPackage.mockReturnValueOnce(undefined)
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
-          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: false, mcp: true })
+          expect(setupAgents).toHaveBeenCalledWith({
+            rootDir: '/project',
+            targets: ['claude'],
+            rules: false,
+            mcp: true,
+          })
         })
       })
 
       describe('when both rules and mcp are disabled', () => {
         it('then the agents are not configured', () => {
-          callSetup({ agents: { rules: false, mcp: false } }, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: false },
+          }, {}, { dev: true })
 
           expect(setupAgents).not.toHaveBeenCalled()
         })
@@ -773,7 +982,14 @@ describe('nuxt module', () => {
 
       describe('when the rules are written and no agent reading AGENTS.md is detected', () => {
         it('then the log explains how to also write AGENTS.md', () => {
-          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'create' }], localMcpServer: true })
+          setupAgents.mockReturnValueOnce({
+            targets: ['claude'],
+            version: '5.0.0',
+            changes: [
+              { file: '.mcp.json', action: 'create' },
+            ],
+            localMcpServer: true,
+          })
 
           callSetup({ agents: true }, {}, { dev: true })
 
@@ -783,9 +999,18 @@ describe('nuxt module', () => {
 
       describe('when only the MCP server is configured', () => {
         it('then the log does not mention AGENTS.md', () => {
-          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'create' }], localMcpServer: true })
+          setupAgents.mockReturnValueOnce({
+            targets: ['claude'],
+            version: '5.0.0',
+            changes: [
+              { file: '.mcp.json', action: 'create' },
+            ],
+            localMcpServer: true,
+          })
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
           expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create).')
         })
@@ -793,9 +1018,18 @@ describe('nuxt module', () => {
 
       describe('when the MCP server runs through npx', () => {
         it('then the log suggests installing @maz-ui/mcp', () => {
-          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'create' }], localMcpServer: false })
+          setupAgents.mockReturnValueOnce({
+            targets: ['claude'],
+            version: '5.0.0',
+            changes: [
+              { file: '.mcp.json', action: 'create' },
+            ],
+            localMcpServer: false,
+          })
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
           expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create). The MCP server runs through npx: add @maz-ui/mcp to the devDependencies of the project root to start it in about a second, at the version of your lockfile.')
         })
@@ -806,7 +1040,9 @@ describe('nuxt module', () => {
           findProjectPackage.mockImplementation((_: string, name: string) => `/project/node_modules/${name}`)
           readPackageVersion.mockReturnValueOnce('5.2.0')
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
           expect(readPackageVersion).toHaveBeenCalledWith('/project/node_modules/@maz-ui/mcp')
           expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ mcpVersion: '5.2.0' }))
@@ -819,7 +1055,9 @@ describe('nuxt module', () => {
         it('then no version is pinned', () => {
           findProjectPackage.mockReturnValueOnce('/project/node_modules/maz-ui').mockReturnValueOnce(undefined)
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
           expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ mcpVersion: undefined }))
         })
@@ -827,9 +1065,21 @@ describe('nuxt module', () => {
 
       describe('when the targets are given', () => {
         it('then the log does not mention AGENTS.md', () => {
-          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'create' }], localMcpServer: true })
+          setupAgents.mockReturnValueOnce({
+            targets: ['claude'],
+            version: '5.0.0',
+            changes: [
+              { file: '.mcp.json', action: 'create' },
+            ],
+            localMcpServer: true,
+          })
 
-          callSetup({ agents: { targets: ['claude'], rules: true } }, {}, { dev: true })
+          callSetup({
+            agents: {
+              targets: ['claude'],
+              rules: true,
+            },
+          }, {}, { dev: true })
 
           expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create).')
         })
@@ -837,7 +1087,14 @@ describe('nuxt module', () => {
 
       describe('when everything is up to date', () => {
         it('then nothing is logged', () => {
-          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'unchanged' }], localMcpServer: true })
+          setupAgents.mockReturnValueOnce({
+            targets: ['claude'],
+            version: '5.0.0',
+            changes: [
+              { file: '.mcp.json', action: 'unchanged' },
+            ],
+            localMcpServer: true,
+          })
 
           callSetup({ agents: true }, {}, { dev: true })
 
@@ -845,29 +1102,16 @@ describe('nuxt module', () => {
         })
       })
 
-      describe('when the configuration of an explicitly enabled option fails', () => {
+      describe('when the configuration fails', () => {
         it('then a warning is logged and the setup continues', () => {
           setupAgents.mockImplementationOnce(() => {
             throw new Error('maz-ui is not installed')
           })
 
-          callSetup({ agents: true }, {}, { dev: true, mazUi: { agents: true } })
+          callSetup({ agents: true }, {}, { dev: true })
 
           expect(logger.warn).toHaveBeenCalledWith('Could not configure the AI agents for maz-ui: maz-ui is not installed')
           expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/theme'))
-        })
-      })
-
-      describe('when the configuration enabled by default fails', () => {
-        it('then the error is only logged at debug level', () => {
-          setupAgents.mockImplementationOnce(() => {
-            throw new Error('maz-ui is not installed')
-          })
-
-          callSetup({}, {}, { dev: true })
-
-          expect(logger.warn).not.toHaveBeenCalled()
-          expect(logger.debug).toHaveBeenCalledWith('Could not configure the AI agents for maz-ui: maz-ui is not installed')
         })
       })
 
@@ -882,7 +1126,9 @@ describe('nuxt module', () => {
 
     describe('devtools', () => {
       it('should add devtools tab when devtools is true', () => {
-        callSetup({ general: { devtools: true } })
+        callSetup({
+          general: { devtools: true },
+        })
         expect(addCustomTab).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'maz-ui',
@@ -892,7 +1138,9 @@ describe('nuxt module', () => {
       })
 
       it('should not add devtools tab when devtools is false', () => {
-        callSetup({ general: { devtools: false } })
+        callSetup({
+          general: { devtools: false },
+        })
         expect(addCustomTab).not.toHaveBeenCalled()
       })
     })

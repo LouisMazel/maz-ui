@@ -51,7 +51,9 @@ const virtualWindow = computed<MazTableVirtualWindow>(() => {
   return {
     indexes: items.map(item => item.index),
     paddingTop: items[0]?.start ?? 0,
-    paddingBottom: items.length ? virtualizer.value.getTotalSize() - items[items.length - 1].end : 0,
+    paddingBottom: items.length
+      ? virtualizer.value.getTotalSize() - items[items.length - 1].end
+      : 0,
   }
 })
 

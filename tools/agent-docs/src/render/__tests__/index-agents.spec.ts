@@ -26,8 +26,21 @@ function doc(overrides: Partial<DocEntry>): DocEntry {
 
 const docs = [
   doc({}),
-  doc({ id: 'guide/tailwind', category: 'guide', slug: 'tailwind', title: 'Tailwind', file: 'guide/tailwind.md', description: 'x'.repeat(300) }),
-  doc({ id: 'ecosystem/utils/debounce', category: 'util', slug: 'debounce', title: 'debounce', file: 'ecosystem/utils/debounce.md' }),
+  doc({
+    id: 'guide/tailwind',
+    category: 'guide',
+    slug: 'tailwind',
+    title: 'Tailwind',
+    file: 'guide/tailwind.md',
+    description: 'x'.repeat(300),
+  }),
+  doc({
+    id: 'ecosystem/utils/debounce',
+    category: 'util',
+    slug: 'debounce',
+    title: 'debounce',
+    file: 'ecosystem/utils/debounce.md',
+  }),
 ]
 
 describe('given CATEGORY_ORDER', () => {
@@ -74,7 +87,9 @@ describe('given renderLlmsTxt', () => {
 describe('given renderLlmsFullTxt', () => {
   describe('when rendering the full site content', () => {
     it('then puts the rules first and the source of each page', () => {
-      const text = renderLlmsFullTxt([{ doc: docs[0], content: '# MazBtn' }], 'RULES', 'https://maz-ui.com')
+      const text = renderLlmsFullTxt([
+        { doc: docs[0], content: '# MazBtn' },
+      ], 'RULES', 'https://maz-ui.com')
 
       expect(text).toBe('<SYSTEM>Full documentation of maz-ui (https://maz-ui.com). Rules first, then every page.</SYSTEM>\n\nRULES\n\n---\nsource: https://maz-ui.com/components/maz-btn.md\n---\n\n# MazBtn')
     })
@@ -82,7 +97,7 @@ describe('given renderLlmsFullTxt', () => {
 })
 
 describe('given the agent content renderers', () => {
-  const content = { rules: 'Use **maz-ui**.', workflow: '### Workflow\n\n1. Search' }
+  const content = { rules: 'Use **maz-ui**.', rulesCore: 'Core **maz-ui**.', workflow: '### Workflow\n\n1. Search' }
   const versionNote = '> These rules and the docs in `node_modules/maz-ui/docs` match the installed version of maz-ui (`node_modules/maz-ui/package.json`).'
 
   describe('when rendering the rules doc', () => {
@@ -96,8 +111,8 @@ describe('given the agent content renderers', () => {
   })
 
   describe('when rendering the Claude rule and the AGENTS.md section', () => {
-    it('then adds the title without version, setupAgents adds the installed one', () => {
-      expect(renderClaudeRule(content)).toBe('# maz-ui\n\nUse **maz-ui**.\n')
+    it('then adds the title without version, setupAgents adds the installed one, and the Claude rule only holds the core', () => {
+      expect(renderClaudeRule(content)).toBe('# maz-ui\n\nCore **maz-ui**.\n')
       expect(renderAgentsMdSection(content)).toBe('## maz-ui\n\nUse **maz-ui**.\n')
     })
   })
@@ -119,6 +134,17 @@ describe('given the agent content renderers', () => {
       expect(loaded.rules.startsWith('This project is built with **maz-ui**')).toBe(true)
       expect(loaded.rules).not.toContain('{{')
       expect(loaded.workflow.startsWith('### Workflow')).toBe(true)
+    })
+
+    it('then the core of the rules is short and keeps the prohibitions', () => {
+      const { rulesCore } = loadAgentContent(getSourcePaths().content)
+
+      expect(rulesCore.length).toBeLessThan(2600)
+      expect(rulesCore).toContain('default Tailwind palette')
+      expect(rulesCore).toContain('`maz:` prefix')
+      expect(rulesCore).toContain('Deep imports')
+      expect(rulesCore).toContain('never inline SVG')
+      expect(rulesCore).toContain('`review_code`')
     })
   })
 })

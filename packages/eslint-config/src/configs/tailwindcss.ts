@@ -17,10 +17,17 @@ interface NoArbitraryPxResolved {
 }
 
 function resolveNoArbitraryPx(setting: MazTailwindcssOptions['noArbitraryPx']): NoArbitraryPxResolved {
-  if (setting === false)
-    return { severity: 'off', options: { baseFontSize: 16, unit: 'rem' } }
+  if (setting === false) {
+    return {
+      severity: 'off',
+      options: { baseFontSize: 16, unit: 'rem' },
+    }
+  }
   if (setting === undefined || setting === true) {
-    return { severity: 'error', options: { baseFontSize: 16, unit: 'rem' } }
+    return {
+      severity: 'error',
+      options: { baseFontSize: 16, unit: 'rem' },
+    }
   }
   return {
     severity: setting.severity ?? 'error',
@@ -59,22 +66,24 @@ export function tailwindcssConfigs(
 
   const noArbitraryPx = resolveNoArbitraryPx(settings.noArbitraryPx)
 
-  return [{
-    ...presetConfig,
-    files: TAILWINDCSS_FILES,
-    plugins: {
-      ...presetConfig.plugins,
-      maz: mazPlugin,
+  return [
+    {
+      ...presetConfig,
+      files: TAILWINDCSS_FILES,
+      plugins: {
+        ...presetConfig.plugins,
+        maz: mazPlugin,
+      },
+      settings: {
+        'better-tailwindcss': tailwindSettings,
+      },
+      rules: {
+        ...presetConfig.rules,
+        'better-tailwindcss/no-unknown-classes': 'off',
+        'better-tailwindcss/enforce-consistent-line-wrapping': 'off',
+        'better-tailwindcss/no-concatenated-classes': 'off',
+        'maz/tailwind-no-arbitrary-px': [noArbitraryPx.severity, noArbitraryPx.options],
+      },
     },
-    settings: {
-      'better-tailwindcss': tailwindSettings,
-    },
-    rules: {
-      ...presetConfig.rules,
-      'better-tailwindcss/no-unknown-classes': 'off',
-      'better-tailwindcss/enforce-consistent-line-wrapping': 'off',
-      'better-tailwindcss/no-concatenated-classes': 'off',
-      'maz/tailwind-no-arbitrary-px': [noArbitraryPx.severity, noArbitraryPx.options],
-    },
-  }]
+  ]
 }

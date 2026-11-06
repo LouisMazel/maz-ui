@@ -3,7 +3,11 @@ import MazStepper from '@components/MazStepper.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
-const steps = [{ title: 'Account' }, { title: 'Profile' }, { title: 'Done' }]
+const steps = [
+  { title: 'Account' },
+  { title: 'Profile' },
+  { title: 'Done' },
+]
 
 const mountedWrappers: VueWrapper[] = []
 
@@ -77,7 +81,12 @@ describe('given a MazStepper', () => {
 
   describe('when a step has no title', () => {
     it('then its content is not labelled by a missing header', async () => {
-      const wrapper = await mountStepper({ steps: [{ title: 'Account' }, {}] })
+      const wrapper = await mountStepper({
+        steps: [
+          { title: 'Account' },
+          {},
+        ],
+      })
       const labelledContents = wrapper.findAll('.m-stepper__content [aria-labelledby]')
 
       expect(labelledContents).toHaveLength(1)
@@ -87,7 +96,11 @@ describe('given a MazStepper', () => {
   describe('when a step icon is a string', () => {
     it('then it is passed to the icon prop of MazIcon', async () => {
       const icon = '<svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z"/></svg>'
-      const wrapper = await mountStepper({ steps: [{ title: 'Account', icon }] })
+      const wrapper = await mountStepper({
+        steps: [
+          { title: 'Account', icon },
+        ],
+      })
 
       expect(wrapper.findComponent({ name: 'MazIcon' }).props('icon')).toBe(icon)
     })

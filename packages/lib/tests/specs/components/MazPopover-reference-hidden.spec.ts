@@ -11,7 +11,9 @@ vi.mock('@floating-ui/vue', async (importOriginal) => {
       floatingStyles: ref({}),
       placement: ref('bottom'),
       update: vi.fn(),
-      middlewareData: ref({ hide: { referenceHidden: true } }),
+      middlewareData: ref({
+        hide: { referenceHidden: true },
+      }),
     }),
   }
 })

@@ -57,7 +57,9 @@ export function parseColor(value: string): HSLChannels {
   const oklchMatch = trimmed.match(OKLCH_PATTERN)
   if (oklchMatch) {
     const lRaw = Number.parseFloat(oklchMatch[1])
-    const lValue = oklchMatch[2] === '%' ? lRaw / 100 : lRaw
+    const lValue = oklchMatch[2] === '%'
+      ? lRaw / 100
+      : lRaw
     const c = Number.parseFloat(oklchMatch[3])
     const h = Number.parseFloat(oklchMatch[4])
     const { r, g, b } = oklchToRgb(lValue, c, h)
@@ -92,7 +94,9 @@ export function parseColorAsOklch(value: string): OklchChannels {
   if (oklchMatch) {
     const lRaw = Number.parseFloat(oklchMatch[1])
     return {
-      l: oklchMatch[2] === '%' ? lRaw / 100 : lRaw,
+      l: oklchMatch[2] === '%'
+        ? lRaw / 100
+        : lRaw,
       c: Number.parseFloat(oklchMatch[3]),
       h: Number.parseFloat(oklchMatch[4]),
     }
@@ -128,9 +132,13 @@ function rgbToHsl(r: number, g: number, b: number): HSLChannels {
   let s = 0
   if (max !== min) {
     const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    s = l > 0.5
+      ? d / (2 - max - min)
+      : d / (max + min)
     if (max === rNorm) {
-      h = ((gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0)) / 6
+      h = ((gNorm - bNorm) / d + (gNorm < bNorm
+        ? 6
+        : 0)) / 6
     }
     else if (max === gNorm) {
       h = ((bNorm - rNorm) / d + 2) / 6
@@ -184,11 +192,15 @@ function hslToRgb(h: number, s: number, l: number): { r: number, g: number, b: n
 }
 
 function sRGBToLinear(v: number): number {
-  return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4
+  return v <= 0.04045
+    ? v / 12.92
+    : ((v + 0.055) / 1.055) ** 2.4
 }
 
 function linearToSRGB(v: number): number {
-  return v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055
+  return v <= 0.0031308
+    ? 12.92 * v
+    : 1.055 * v ** (1 / 2.4) - 0.055
 }
 
 function rgbToOklch(r: number, g: number, b: number): OklchChannels {
@@ -257,7 +269,9 @@ export function formatAsOklch(channels: OklchChannels): string {
   const l = roundTo(channels.l, 4)
   const c = roundTo(channels.c, 4)
   // Hue is undefined when chroma is zero; canonicalize to 0 to avoid noisy values.
-  const h = c === 0 ? 0 : roundTo(channels.h, 2)
+  const h = c === 0
+    ? 0
+    : roundTo(channels.h, 2)
   return `oklch(${l} ${c} ${h})`
 }
 
@@ -270,7 +284,9 @@ export function colorToHex(value: string): string {
   const { r, g, b } = oklchToRgb(oklch.l, oklch.c, oklch.h)
   const toHex = (n: number) => {
     const v = Math.round(Math.max(0, Math.min(255, n))).toString(16)
-    return v.length === 1 ? `0${v}` : v
+    return v.length === 1
+      ? `0${v}`
+      : v
   }
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`
 }

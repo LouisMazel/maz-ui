@@ -405,7 +405,9 @@ transformDeps(`{ "dependencies": { "maz-ui": "^4.9.3" } }`)
 // → `{ "dependencies": { "maz-ui": "^5.0.0" } }`
 
 // Compose at the file level (extension-aware orchestration):
-transformFile('nuxt.config.ts', source, { groups: ['imports', 'config'] })
+transformFile('nuxt.config.ts', source, {
+  groups: ['imports', 'config']
+})
 // Pass no options to apply ALL_GROUPS.
 transformFile('app.vue', source)
 ```

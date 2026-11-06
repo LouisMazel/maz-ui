@@ -23,7 +23,9 @@ class IntersectionObserverMock {
   observe(target: Element) {
     this.observedElements.push(target)
     this.callback(
-      [{ target, isIntersecting: true, intersectionRatio: 1 } as IntersectionObserverEntry],
+      [
+        { target, isIntersecting: true, intersectionRatio: 1 } as IntersectionObserverEntry,
+      ],
       this as unknown as IntersectionObserver,
     )
   }
@@ -65,11 +67,13 @@ describe('given AosHandler handleIntersect - extended', () => {
       child.setAttribute('data-maz-aos', 'fade')
       document.body.appendChild(child)
 
-      const entries = [{
-        target: parent,
-        isIntersecting: true,
-        intersectionRatio: 1,
-      }] as unknown as IntersectionObserverEntry[]
+      const entries = [
+        {
+          target: parent,
+          isIntersecting: true,
+          intersectionRatio: 1,
+        },
+      ] as unknown as IntersectionObserverEntry[]
 
       // @ts-expect-error - private method
       aosHandler.handleIntersect(entries, observer)
@@ -85,11 +89,13 @@ describe('given AosHandler handleIntersect - extended', () => {
       el.setAttribute('data-maz-aos-duration', '500')
       el.setAttribute('data-maz-aos-delay', '200')
 
-      const entries = [{
-        target: el,
-        isIntersecting: true,
-        intersectionRatio: 1,
-      }] as unknown as IntersectionObserverEntry[]
+      const entries = [
+        {
+          target: el,
+          isIntersecting: true,
+          intersectionRatio: 1,
+        },
+      ] as unknown as IntersectionObserverEntry[]
 
       // @ts-expect-error - private method
       aosHandler.handleIntersect(entries, observer)
@@ -106,11 +112,13 @@ describe('given AosHandler handleIntersect - extended', () => {
       const el = document.createElement('div')
       el.setAttribute('data-maz-aos', 'fade')
 
-      const entries = [{
-        target: el,
-        isIntersecting: true,
-        intersectionRatio: 1,
-      }] as unknown as IntersectionObserverEntry[]
+      const entries = [
+        {
+          target: el,
+          isIntersecting: true,
+          intersectionRatio: 1,
+        },
+      ] as unknown as IntersectionObserverEntry[]
 
       // @ts-expect-error - private method
       aosHandler.handleIntersect(entries, observer)
@@ -127,11 +135,13 @@ describe('given AosHandler handleIntersect - extended', () => {
       el.setAttribute('data-maz-aos-once', 'false')
       el.classList.add('maz-aos-animate')
 
-      const nonIntersectingEntry = [{
-        target: el,
-        isIntersecting: false,
-        intersectionRatio: 0,
-      }] as unknown as IntersectionObserverEntry[]
+      const nonIntersectingEntry = [
+        {
+          target: el,
+          isIntersecting: false,
+          intersectionRatio: 0,
+        },
+      ] as unknown as IntersectionObserverEntry[]
 
       // @ts-expect-error - private method
       aosHandler.handleIntersect(nonIntersectingEntry, observer)
@@ -149,11 +159,13 @@ describe('given AosHandler handleIntersect - extended', () => {
 
       const unobserveSpy = vi.spyOn(observer, 'unobserve')
 
-      const entries = [{
-        target: el,
-        isIntersecting: true,
-        intersectionRatio: 1,
-      }] as unknown as IntersectionObserverEntry[]
+      const entries = [
+        {
+          target: el,
+          isIntersecting: true,
+          intersectionRatio: 1,
+        },
+      ] as unknown as IntersectionObserverEntry[]
 
       // @ts-expect-error - private method
       aosHandler.handleIntersect(entries, observer)
@@ -179,11 +191,13 @@ describe('given AosHandler handleIntersect - extended', () => {
 
       const unobserveSpy = vi.spyOn(observer, 'unobserve')
 
-      const entries = [{
-        target: child,
-        isIntersecting: true,
-        intersectionRatio: 1,
-      }] as unknown as IntersectionObserverEntry[]
+      const entries = [
+        {
+          target: child,
+          isIntersecting: true,
+          intersectionRatio: 1,
+        },
+      ] as unknown as IntersectionObserverEntry[]
 
       // @ts-expect-error - private method
       aosHandler.handleIntersect(entries, observer)

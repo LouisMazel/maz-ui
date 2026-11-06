@@ -16,7 +16,15 @@ export interface CSSOptions {
   lightClass?: string
 }
 
-const ROUNDED_KEYS: readonly RoundedScaleKey[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
+const ROUNDED_KEYS: readonly RoundedScaleKey[] = [
+  'xs',
+  'sm',
+  'md',
+  'lg',
+  'xl',
+  '2xl',
+  '3xl',
+]
 
 export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   const prefix = options.prefix ?? 'maz'
@@ -30,7 +38,9 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   // following the system pref via `light-dark()` and desyncing from the host.
   const colorScheme = mode !== 'both'
     ? `only ${mode}`
-    : options.darkSelectorStrategy === 'class' ? 'light' : 'light dark'
+    : options.darkSelectorStrategy === 'class'
+      ? 'light'
+      : 'light dark'
   lines.push(`    color-scheme: ${colorScheme};`)
 
   appendFoundation(lines, preset.foundation, prefix)
@@ -63,7 +73,9 @@ function appendColorVariables(
       lines.push(`    --${prefix}-${key}: light-dark(${normalizeColor(lightValue)}, ${normalizeColor(dark)});`)
     }
     else {
-      const value = mode === 'dark' ? (colors.dark[key] ?? lightValue) : lightValue
+      const value = mode === 'dark'
+        ? (colors.dark[key] ?? lightValue)
+        : lightValue
       lines.push(`    --${prefix}-${key}: ${normalizeColor(value)};`)
     }
   }
@@ -126,7 +138,9 @@ function appendComponents(lines: string[], preset: ThemePreset, prefix: string, 
         return
       const light = normalizeColor(bg.light ?? fallback)
       const dark = normalizeColor(bg.dark ?? fallback)
-      const value = light === dark ? light : `light-dark(${light}, ${dark})`
+      const value = light === dark
+        ? light
+        : `light-dark(${light}, ${dark})`
       lines.push(`    --${prefix}-${cssKey}: ${value};`)
     }
     else if (bg[mode]) {

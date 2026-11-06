@@ -19,11 +19,27 @@ const salesData = {
   type: 'line',
   plugins: [dataLabels],
   data: {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    labels: [
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+      'Sun',
+    ],
     datasets: [
       {
         label: 'Sales',
-        data: [3100, 4200, 2900, 5600, 4900, 6100, 5900],
+        data: [
+          3100,
+          4200,
+          2900,
+          5600,
+          4900,
+          6100,
+          5900,
+        ],
         borderColor: 'rgb(28 209 161)',
         tension: 0.4,
         fill: false,
@@ -48,11 +64,46 @@ const salesData = {
 
 // Table data
 const orders = ref([
-  { id: 1, customer: 'John Doe', product: 'Premium Headphones', amount: 169.99, status: 'completed', date: '2024-03-18' },
-  { id: 2, customer: 'Jane Smith', product: 'Wireless Speaker', amount: 89.99, status: 'pending', date: '2024-03-18' },
-  { id: 3, customer: 'Mike Johnson', product: 'Smart Watch', amount: 299.99, status: 'processing', date: '2024-03-17' },
-  { id: 4, customer: 'Sarah Wilson', product: 'Laptop Stand', amount: 49.99, status: 'completed', date: '2024-03-17' },
-  { id: 5, customer: 'Tom Brown', product: 'USB-C Hub', amount: 79.99, status: 'completed', date: '2024-03-16' },
+  {
+    id: 1,
+    customer: 'John Doe',
+    product: 'Premium Headphones',
+    amount: 169.99,
+    status: 'completed',
+    date: '2024-03-18',
+  },
+  {
+    id: 2,
+    customer: 'Jane Smith',
+    product: 'Wireless Speaker',
+    amount: 89.99,
+    status: 'pending',
+    date: '2024-03-18',
+  },
+  {
+    id: 3,
+    customer: 'Mike Johnson',
+    product: 'Smart Watch',
+    amount: 299.99,
+    status: 'processing',
+    date: '2024-03-17',
+  },
+  {
+    id: 4,
+    customer: 'Sarah Wilson',
+    product: 'Laptop Stand',
+    amount: 49.99,
+    status: 'completed',
+    date: '2024-03-17',
+  },
+  {
+    id: 5,
+    customer: 'Tom Brown',
+    product: 'USB-C Hub',
+    amount: 79.99,
+    status: 'completed',
+    date: '2024-03-16',
+  },
 ])
 
 const tableHeaders = [

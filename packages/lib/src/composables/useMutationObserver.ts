@@ -16,7 +16,9 @@ export function useMutationObserver(
   options: UseMutationObserverOptions = {},
 ) {
   const {
-    internalWindow = isClient() ? globalThis : undefined,
+    internalWindow = isClient()
+      ? globalThis
+      : undefined,
     ...mutationOptions
   } = options
   let observer: MutationObserver | undefined

@@ -37,7 +37,9 @@ const internalRequire = createRequire(import.meta.url)
 function resolveInternal(name: string): string {
   try {
     const resolved = import.meta.resolve(name)
-    return resolved.startsWith('file:') ? fileURLToPath(resolved) : resolved
+    return resolved.startsWith('file:')
+      ? fileURLToPath(resolved)
+      : resolved
   }
   catch {
     try {
@@ -99,7 +101,10 @@ function resolveTailwind(
   if (typeof option === 'string')
     return { value: option, source: 'explicit' }
   const detected = hasDependency(pkg, 'tailwindcss', '@tailwindcss/vite')
-  return { value: detected ? 'minimal' : false, source: 'auto-detected' }
+  return {
+    value: detected ? 'minimal' : false,
+    source: 'auto-detected',
+  }
 }
 
 function resolveBoolean(
@@ -120,15 +125,25 @@ function formatSourceTag(source: Source): string {
 }
 
 function formatResolutionBox(resolved: Resolution): string {
-  const tailwindLabel = resolved.tailwind === false ? 'off' : resolved.tailwind
-  const orderLabel = resolved.order === false ? 'off' : resolved.order ?? 'recess'
+  const tailwindLabel = resolved.tailwind === false
+    ? 'off'
+    : resolved.tailwind
+  const orderLabel = resolved.order === false
+    ? 'off'
+    : resolved.order ?? 'recess'
   const rows: Array<[string, string]> = [
     ['vue', `${resolved.vue}${formatSourceTag(resolved.vueSource)}`],
     ['html', `${resolved.html}${formatSourceTag(resolved.htmlSource)}`],
     ['tailwind', `${tailwindLabel}${formatSourceTag(resolved.tailwindSource)}`],
     ['scss', `${resolved.scss}${formatSourceTag(resolved.scssSource)}`],
-    ['logical', String(resolved.logical)],
-    ['order', String(orderLabel)],
+    [
+      'logical',
+      String(resolved.logical),
+    ],
+    [
+      'order',
+      String(orderLabel),
+    ],
   ]
   const labelWidth = Math.max(...rows.map(([k]) => k.length))
   return rows.map(([k, v]) => `${k.padEnd(labelWidth)}  ${v}`).join('\n')
@@ -188,10 +203,17 @@ function applyVueAndHtml(resolved: Resolution, ctx: BuildContext): void {
   }
   if (!resolved.vue && !resolved.html)
     return
-  const vueGlobs = resolved.vue ? ['**/*.vue'] : []
-  const htmlGlobs = resolved.html ? ['**/*.html'] : []
+  const vueGlobs = resolved.vue
+    ? ['**/*.vue']
+    : []
+  const htmlGlobs = resolved.html
+    ? ['**/*.html']
+    : []
   ctx.overrides.push({
-    files: [...vueGlobs, ...htmlGlobs],
+    files: [
+      ...vueGlobs,
+      ...htmlGlobs,
+    ],
     customSyntax: resolveInternal('postcss-html'),
   })
 }
@@ -302,7 +324,9 @@ export function defineConfig(options: MazStylelintOptions = {}): StylelintConfig
   })
 
   const ctx: BuildContext = {
-    extends: [resolveInternal('stylelint-config-standard')],
+    extends: [
+      resolveInternal('stylelint-config-standard'),
+    ],
     plugins: [],
     rules: { ...baseRules },
     overrides: [],
@@ -326,16 +350,23 @@ export function defineConfig(options: MazStylelintOptions = {}): StylelintConfig
   applyUserOverrides(options, ctx)
 
   const ignoreFiles = options.ignoresOverride
-    ?? [...GLOBAL_IGNORES, ...(options.ignores ?? [])]
+    ?? [
+      ...GLOBAL_IGNORES,
+      ...(options.ignores ?? []),
+    ]
 
   log.verbose(`${TAG} Final extends (${ctx.extends.length}): ${ctx.extends.join(', ')}`)
   log.verbose(`${TAG} Final plugin count: ${ctx.plugins.length}, rule count: ${Object.keys(ctx.rules).length}, override count: ${ctx.overrides.length}, ignore globs: ${ignoreFiles.length}`)
 
   return {
     extends: ctx.extends,
-    plugins: ctx.plugins.length > 0 ? ctx.plugins : undefined,
+    plugins: ctx.plugins.length > 0
+      ? ctx.plugins
+      : undefined,
     rules: ctx.rules,
-    overrides: ctx.overrides.length > 0 ? ctx.overrides : undefined,
+    overrides: ctx.overrides.length > 0
+      ? ctx.overrides
+      : undefined,
     ignoreFiles,
   }
 }

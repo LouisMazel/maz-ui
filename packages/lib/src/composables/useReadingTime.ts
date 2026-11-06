@@ -40,7 +40,9 @@ function getReadTimeInMinutes(content?: string | null, velocity = 150) {
 
 export function useReadingTime(options: ReadingTimeOptions): ReadingTimeReturn {
   const velocity = computed(() =>
-    typeof options.velocity === 'number' ? options.velocity : options.velocity?.value ?? 150,
+    typeof options.velocity === 'number'
+      ? options.velocity
+      : options.velocity?.value ?? 150,
   )
 
   const selector = computed(() => {
@@ -61,7 +63,9 @@ export function useReadingTime(options: ReadingTimeOptions): ReadingTimeReturn {
       }
     }
 
-    return typeof options.content === 'string' ? options.content : options.content?.value
+    return typeof options.content === 'string'
+      ? options.content
+      : options.content?.value
   })
 
   const duration = computed(() => {

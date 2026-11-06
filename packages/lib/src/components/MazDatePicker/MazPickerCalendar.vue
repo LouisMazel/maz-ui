@@ -45,7 +45,9 @@ const currentValue = computed({
   set: value => emits('update:model-value', value),
 })
 
-const months = computed(() => Array.from({ length: props.double ? 2 : 1 }, (_v, i) => i))
+const months = computed(() => Array.from({
+  length: props.double ? 2 : 1,
+}, (_v, i) => i))
 
 const calendarDate = computed({
   get: () => props.calendarDate,
@@ -72,7 +74,9 @@ function onNavigate(date: string) {
   const target = dayjs(date)
   const firstMonth = dayjs(props.calendarDate)
   const monthDiff = target.startOf('month').diff(firstMonth.startOf('month'), 'month')
-  const shift = monthDiff < 0 ? monthDiff : monthDiff - (months.value.length - 1)
+  const shift = monthDiff < 0
+    ? monthDiff
+    : monthDiff - (months.value.length - 1)
 
   pendingFocusDateKey = target.format('YYYY-MM-DD')
 

@@ -5,14 +5,23 @@ describe('given parseFrontmatter', () => {
     it('then returns the data and the body', () => {
       const result = parseFrontmatter('---\ntitle: MazBtn\ndescription: A button\nhead:\n  - - meta\n---\n\n# Body')
 
-      expect(result.frontmatter).toEqual({ title: 'MazBtn', description: 'A button', head: [['meta']] })
+      expect(result.frontmatter).toEqual({
+        title: 'MazBtn',
+        description: 'A button',
+        head: [
+          ['meta'],
+        ],
+      })
       expect(result.body).toBe('\n# Body')
     })
   })
 
   describe('when the source uses CRLF line endings', () => {
     it('then parses the frontmatter', () => {
-      expect(parseFrontmatter('---\r\ntitle: Win\r\n---\r\nBody')).toEqual({ frontmatter: { title: 'Win' }, body: 'Body' })
+      expect(parseFrontmatter('---\r\ntitle: Win\r\n---\r\nBody')).toEqual({
+        frontmatter: { title: 'Win' },
+        body: 'Body',
+      })
     })
   })
 
@@ -38,7 +47,11 @@ describe('given parseFrontmatter', () => {
 describe('given stringifyFrontmatter', () => {
   describe('when values are strings, arrays and undefined', () => {
     it('then quotes strings, lists arrays and skips undefined values', () => {
-      expect(stringifyFrontmatter({ title: 'It\'s "maz"', paths: ['**/*.vue', 'src/*.ts'], url: undefined })).toBe([
+      expect(stringifyFrontmatter({
+        title: 'It\'s "maz"',
+        paths: ['**/*.vue', 'src/*.ts'],
+        url: undefined,
+      })).toBe([
         '---',
         'title: "It\'s \\"maz\\""',
         'paths:',

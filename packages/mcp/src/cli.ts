@@ -21,6 +21,7 @@ Usage:
 
 init options:
   --targets <list>    Comma separated: ${AGENT_TARGETS.join(', ')} (default: detected, else claude,agents-md)
+  --paths <globs>     Comma separated globs the Claude Code rule is scoped to, or all (default: the workspaces that use maz-ui)
   --no-rules          Only register the MCP server (no rule file, no AGENTS.md section)
   --no-mcp            Do not register the MCP server
   --dry-run           Show the changes without writing them
@@ -58,11 +59,18 @@ function printChanges(changes: SetupAgentsChange[], dryRun: boolean): void {
   }
 
   for (const change of changes) {
-    console.log(`  ${labels[change.action].padEnd(13)} ${change.file}${change.reason ? ` (${change.reason})` : ''}`)
+    console.log(`  ${labels[change.action].padEnd(13)} ${change.file}${change.reason
+      ? ` (${change.reason})`
+      : ''}`)
   }
 }
 
-const INSTALL_DEV_COMMANDS = { pnpm: 'pnpm add -D', yarn: 'yarn add -D', bun: 'bun add -d', npm: 'npm install -D' }
+const INSTALL_DEV_COMMANDS = {
+  pnpm: 'pnpm add -D',
+  yarn: 'yarn add -D',
+  bun: 'bun add -d',
+  npm: 'npm install -D',
+}
 
 /** Targets of `init`: the requested ones, else the detected ones, else Claude Code and AGENTS.md. `undefined` when a requested target is unknown */
 function resolveInitTargets(values: Record<string, unknown>, cwd: string): AgentTarget[] | undefined {
@@ -78,7 +86,20 @@ function resolveInitTargets(values: Record<string, unknown>, cwd: string): Agent
 
   const detected = detectAgentTargets(cwd)
 
-  return (requested as AgentTarget[] | undefined) ?? (detected.length > 0 ? detected : ['claude', 'agents-md'])
+  return (requested as AgentTarget[] | undefined) ?? (detected.length > 0
+    ? detected
+    : ['claude', 'agents-md'])
+}
+
+/** Scope of the Claude Code rule: the `--paths` globs, `all`, or `undefined` for the automatic scope */
+function resolveInitPaths(values: Record<string, unknown>): 'all' | string[] | undefined {
+  const globs = typeof values.paths === 'string'
+    ? values.paths.split(',').map(glob => glob.trim()).filter(Boolean)
+    : undefined
+
+  return globs?.length === 1 && globs[0] === 'all'
+    ? 'all'
+    : globs
 }
 
 export function runInit(values: Record<string, unknown>, cwd: string): number {
@@ -90,7 +111,9 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
   const dryRun = values['dry-run'] === true
   const remove = values.remove === true
   const mcp = values['no-mcp'] !== true
-  const docsDir = typeof values.docs === 'string' ? resolve(values.docs) : undefined
+  const docsDir = typeof values.docs === 'string'
+    ? resolve(values.docs)
+    : undefined
   // The rules document the maz-ui components: a project without maz-ui (@maz-ui/utils only...) only gets the MCP server
   const withoutMazUi = !remove && mcp && values['no-rules'] !== true && !docsDir && !findProjectPackage(cwd, 'maz-ui')
   const rules = values['no-rules'] !== true && !withoutMazUi
@@ -102,12 +125,18 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
     dryRun,
     remove,
     docsDir,
+    paths: resolveInitPaths(values),
     mcpVersion: readOwnVersion(),
   })
   const serverCommand = [result.mcpServer.command, ...result.mcpServer.args].join(' ')
 
-  console.log(`maz-ui ${result.version ? `${result.version} ` : ''}agents setup (${targets.join(', ')})${dryRun ? ' - dry run' : ''}`)
+  console.log(`maz-ui ${result.version
+    ? `${result.version} `
+    : ''}agents setup (${targets.join(', ')})${dryRun ? ' - dry run' : ''}`)
   printChanges(result.changes, dryRun)
+
+  if (!remove && rules && result.claudeRulePaths)
+    console.log(`\nThe Claude Code rule is only loaded for: ${result.claudeRulePaths.join(', ')} (change it with --paths, or --paths all to always load it).`)
 
   if (withoutMazUi)
     console.log(`\nmaz-ui is not installed in this project: only the MCP server is registered, with the docs bundled in @maz-ui/mcp. Install maz-ui and run init again to add the rules.`)
@@ -122,7 +151,12 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
 }
 
 export async function runReview(values: Record<string, unknown>, positionals: string[], cwd: string): Promise<number> {
-  const context = createContext({ cwd, docsDir: typeof values.docs === 'string' ? resolve(values.docs) : undefined })
+  const context = createContext({
+    cwd,
+    docsDir: typeof values.docs === 'string'
+      ? resolve(values.docs)
+      : undefined,
+  })
   const framework = values.framework as Framework | undefined
   const [{ countBySeverity, formatFindings }, { REVIEWABLE_EXTENSIONS, reviewFiles }] = await Promise.all([import('./review'), import('./review/files')])
 
@@ -133,7 +167,12 @@ export async function runReview(values: Record<string, unknown>, positionals: st
     if (!file || !REVIEWABLE_EXTENSIONS.includes(file.split('.').pop() ?? '') || /[\\/](?:node_modules|dist|\.nuxt|\.output)[\\/]/.test(file))
       return 0
 
-    const { reviews } = await reviewFiles([file], { knowledge: context.knowledge, cwd: input.cwd ?? cwd, framework, minSeverity: 'warning' })
+    const { reviews } = await reviewFiles([file], {
+      knowledge: context.knowledge,
+      cwd: input.cwd ?? cwd,
+      framework,
+      minSeverity: 'warning',
+    })
     const findings = reviews.flatMap(review => review.findings)
 
     if (findings.length === 0)
@@ -157,7 +196,12 @@ export async function runReview(values: Record<string, unknown>, positionals: st
   const totals = countBySeverity(reviews.flatMap(review => review.findings))
 
   if (values.format === 'json') {
-    console.log(JSON.stringify({ version: context.knowledge.version, totals, truncated, files: reviews }, null, 2))
+    console.log(JSON.stringify({
+      version: context.knowledge.version,
+      totals,
+      truncated,
+      files: reviews,
+    }, null, 2))
   }
   else {
     for (const review of reviews.filter(entry => entry.findings.length > 0)) console.log(`${formatFindings(review.findings, review.file)}\n`)
@@ -165,9 +209,13 @@ export async function runReview(values: Record<string, unknown>, positionals: st
     console.log(`${reviews.length} file(s) reviewed against maz-ui ${context.knowledge.version}: ${totals.error} error(s), ${totals.warning} warning(s), ${totals.info} info.`)
   }
 
-  const maxWarnings = values['max-warnings'] === undefined ? Number.POSITIVE_INFINITY : Number(values['max-warnings'])
+  const maxWarnings = values['max-warnings'] === undefined
+    ? Number.POSITIVE_INFINITY
+    : Number(values['max-warnings'])
 
-  return totals.error > 0 || totals.warning > maxWarnings ? 1 : 0
+  return totals.error > 0 || totals.warning > maxWarnings
+    ? 1
+    : 0
 }
 
 export async function runCli(argv: string[] = process.argv.slice(2)): Promise<number> {
@@ -179,6 +227,7 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<nu
       'docs': { type: 'string' },
       'cwd': { type: 'string' },
       'targets': { type: 'string' },
+      'paths': { type: 'string' },
       'no-rules': { type: 'boolean' },
       'no-mcp': { type: 'boolean' },
       'dry-run': { type: 'boolean' },
@@ -207,14 +256,24 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<nu
 
   switch (command) {
     case 'serve':
-      await startStdioServer({ cwd, docsDir: values.docs ? resolve(values.docs) : undefined })
+      await startStdioServer({
+        cwd,
+        docsDir: values.docs
+          ? resolve(values.docs)
+          : undefined,
+      })
       return -1
     case 'init':
       return runInit(values, cwd)
     case 'review':
       return runReview(values, rest, cwd)
     case 'search': {
-      const context = createContext({ cwd, docsDir: values.docs ? resolve(values.docs) : undefined })
+      const context = createContext({
+        cwd,
+        docsDir: values.docs
+          ? resolve(values.docs)
+          : undefined,
+      })
       console.log(searchDocs(context, { query: rest.join(' ') || 'button' }))
       return 0
     }

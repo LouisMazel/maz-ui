@@ -50,7 +50,9 @@ export class FullscreenImgHandler {
     binding: VFullscreenImgBinding,
   ): VFullscreenImgBindingOptions {
     const options
-      = typeof binding.value === 'object' ? binding.value : { src: binding.value, alt: undefined }
+      = typeof binding.value === 'object'
+        ? binding.value
+        : { src: binding.value, alt: undefined }
 
     const src = options?.src ?? this.getImgSrc(el)
     const alt = options?.alt ?? this.getImgAlt(el)
@@ -64,7 +66,9 @@ export class FullscreenImgHandler {
   }
 
   get allInstances(): HTMLElement[] {
-    return [...document.querySelectorAll('.m-fullscreen-img-instance')] as HTMLElement[]
+    return [
+      ...document.querySelectorAll('.m-fullscreen-img-instance'),
+    ] as HTMLElement[]
   }
 
   private getImgSrc(el: HTMLElement) {

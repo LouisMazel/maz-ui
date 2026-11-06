@@ -6,5 +6,7 @@ export function formatPhoneNumber(phoneNumber: string): string {
   }
 
   const parsedPhone = parsePhoneNumberFromString(phoneNumber)
-  return parsedPhone ? parsedPhone.formatInternational() : phoneNumber
+  return parsedPhone
+    ? parsedPhone.formatInternational()
+    : phoneNumber
 }

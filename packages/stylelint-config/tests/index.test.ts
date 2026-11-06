@@ -45,7 +45,11 @@ function runStylelint({ fixture, config, syntax = 'css' }: RunOptions): Promise<
   return stylelint.lint({
     code,
     config: { ...config, ignoreFiles: undefined },
-    customSyntax: syntax === 'css' ? undefined : syntax === 'html' ? 'postcss-html' : 'postcss-scss',
+    customSyntax: syntax === 'css'
+      ? undefined
+      : syntax === 'html'
+        ? 'postcss-html'
+        : 'postcss-scss',
   })
 }
 
@@ -132,7 +136,13 @@ describe('defineConfig', () => {
       const config = defineConfig({ tailwind: true })
       const rule = config.rules?.['at-rule-no-unknown']
       expect(rule).toBeDefined()
-      expect((rule as [boolean, { ignoreAtRules: string[] }])[1].ignoreAtRules).toEqual(expect.arrayContaining(['theme', 'apply', 'layer', 'variant', 'reference']))
+      expect((rule as [boolean, { ignoreAtRules: string[] }])[1].ignoreAtRules).toEqual(expect.arrayContaining([
+        'theme',
+        'apply',
+        'layer',
+        'variant',
+        'reference',
+      ]))
     })
 
     it('forces import-notation to string (Tailwind prefix(...) modifier)', () => {
@@ -231,7 +241,12 @@ describe('defineConfig', () => {
     })
 
     it('emits debug logs when feature blocks add plugins or extends', () => {
-      defineConfig({ logLevel: 'debug', vue: true, tailwind: 'recommended', logical: true })
+      defineConfig({
+        logLevel: 'debug',
+        vue: true,
+        tailwind: 'recommended',
+        logical: true,
+      })
       const messages = loggerSpies.debug.mock.calls.map(call => String(call[0]))
       expect(messages.some(m => m.includes('Vue: extended'))).toBe(true)
       expect(messages.some(m => m.includes('Tailwind: loaded'))).toBe(true)
@@ -244,7 +259,12 @@ describe('defineConfig', () => {
         logLevel: 'debug',
         rules: { 'color-no-invalid-hex': null },
         plugins: ['custom-plugin'],
-        overrides: [{ files: ['**/*.legacy.css'], rules: {} }],
+        overrides: [
+          {
+            files: ['**/*.legacy.css'],
+            rules: {},
+          },
+        ],
         extends: ['stylelint-config-clean-order'],
       })
       const messages = loggerSpies.debug.mock.calls.map(call => String(call[0]))
@@ -264,13 +284,17 @@ describe('defineConfig', () => {
 
   describe('option: ignores', () => {
     it('merges with the default ignore list', () => {
-      const config = defineConfig({ ignores: ['custom/**'] })
+      const config = defineConfig({
+        ignores: ['custom/**'],
+      })
       expect(config.ignoreFiles).toContain('custom/**')
       expect(config.ignoreFiles).toContain('**/node_modules/**')
     })
 
     it('replaces the default ignore list when ignoresOverride is set', () => {
-      const config = defineConfig({ ignoresOverride: ['only-this/**'] })
+      const config = defineConfig({
+        ignoresOverride: ['only-this/**'],
+      })
       expect(config.ignoreFiles).toEqual(['only-this/**'])
     })
   })
@@ -288,7 +312,12 @@ describe('defineConfig', () => {
     it('appends user overrides after the built-in ones', () => {
       const config = defineConfig({
         vue: true,
-        overrides: [{ files: ['**/legacy.css'], rules: { 'color-no-invalid-hex': null } }],
+        overrides: [
+          {
+            files: ['**/legacy.css'],
+            rules: { 'color-no-invalid-hex': null },
+          },
+        ],
       })
       expect(config.overrides?.at(-1)).toEqual({
         files: ['**/legacy.css'],
@@ -404,8 +433,12 @@ describe('resolved configuration shape', () => {
       expect(containsPlugin(config.plugins, 'stylelint-use-logical-spec')).toBe(true)
       const ruleNames = (config.plugins as { ruleName?: string }[] ?? []).map(p => p?.ruleName).filter(Boolean)
       expect(ruleNames).toEqual(expect.arrayContaining(['tailwindcss/no-invalid-apply', 'tailwindcss/no-invalid-theme-function', 'tailwindcss/no-atomic-class']))
-      expect(config.overrides).toContainEqual(expect.objectContaining({ files: ['**/*.scss'] }))
-      expect(config.overrides).toContainEqual(expect.objectContaining({ files: expect.arrayContaining(['**/*.vue', '**/*.html']) }))
+      expect(config.overrides).toContainEqual(expect.objectContaining({
+        files: ['**/*.scss'],
+      }))
+      expect(config.overrides).toContainEqual(expect.objectContaining({
+        files: expect.arrayContaining(['**/*.vue', '**/*.html']),
+      }))
     })
   })
 

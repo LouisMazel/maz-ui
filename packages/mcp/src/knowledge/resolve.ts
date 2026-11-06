@@ -1,7 +1,17 @@
 import type { Knowledge } from './load'
 import type { ComponentApi, DocCategory, DocEntry } from './schema'
 
-const CATEGORY_PRIORITY: DocCategory[] = ['component', 'composable', 'directive', 'plugin', 'util', 'guide', 'ecosystem', 'reference', 'node']
+const CATEGORY_PRIORITY: DocCategory[] = [
+  'component',
+  'composable',
+  'directive',
+  'plugin',
+  'util',
+  'guide',
+  'ecosystem',
+  'reference',
+  'node',
+]
 
 export function toKebab(value: string): string {
   return value
@@ -34,7 +44,9 @@ export function resolveDoc(knowledge: Knowledge, query: string, category?: DocCa
   const name = normalizeName(query)
   const lower = name.toLowerCase()
   const kebab = toKebab(name)
-  const candidates = category ? knowledge.docs.filter(doc => doc.category === category) : knowledge.docs
+  const candidates = category
+    ? knowledge.docs.filter(doc => doc.category === category)
+    : knowledge.docs
   const pick = (predicate: (doc: DocEntry) => boolean): DocEntry | undefined => candidates.filter(predicate).sort(byPriority)[0]
 
   const byId = knowledge.docsById.get(name)
@@ -52,7 +64,9 @@ export function resolveDoc(knowledge: Knowledge, query: string, category?: DocCa
     ?? pick(doc => doc.slug === lower || doc.slug === kebab)
     ?? pick(doc => doc.slug === `maz-${kebab}` || doc.slug === kebab.replace(/^v-/, '') || doc.slug === `use-${kebab}`)
     ?? pick(doc => doc.title.toLowerCase() === lower)
-    ?? (lower.includes('/') ? resolveDoc(knowledge, lower.split('/').at(-1) as string, category) : undefined)
+    ?? (lower.includes('/')
+      ? resolveDoc(knowledge, lower.split('/').at(-1) as string, category)
+      : undefined)
 }
 
 /** Resolves a component from `MazBtn`, `maz-btn`, `btn`, `<MazBtn>` */
@@ -85,7 +99,9 @@ export function editDistance(a: string, b: string, max = 3): number {
     let rowMin = i
 
     for (let j = 1; j <= b.length; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1
+      const cost = a[i - 1] === b[j - 1]
+        ? 0
+        : 1
       current[j] = Math.min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + cost)
       rowMin = Math.min(rowMin, current[j])
     }
@@ -104,7 +120,10 @@ export function closest(value: string, candidates: Iterable<string>, { max = 3, 
   const lower = value.toLowerCase()
 
   return [...candidates]
-    .map(candidate => ({ candidate, distance: editDistance(lower, candidate.toLowerCase(), max) }))
+    .map(candidate => ({
+      candidate,
+      distance: editDistance(lower, candidate.toLowerCase(), max),
+    }))
     .filter(({ distance }) => distance <= max)
     .sort((a, b) => a.distance - b.distance || a.candidate.length - b.candidate.length)
     .slice(0, limit)

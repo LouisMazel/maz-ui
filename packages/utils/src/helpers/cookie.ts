@@ -30,7 +30,9 @@ const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365
  *   resolve the value during SSR. Without it, the function returns `null`.
  */
 export function getCookie(key: string, cookieHeader?: string): string | null {
-  const source = isServer() ? cookieHeader : document.cookie
+  const source = isServer()
+    ? cookieHeader
+    : document.cookie
 
   if (!source)
     return null
@@ -38,7 +40,9 @@ export function getCookie(key: string, cookieHeader?: string): string | null {
   const cookies = source.split(';')
   const cookie = cookies.find(c => c.trim().startsWith(`${key}=`))
 
-  return cookie ? decodeURIComponent(cookie.split('=')[1]) : null
+  return cookie
+    ? decodeURIComponent(cookie.split('=')[1])
+    : null
 }
 
 /**

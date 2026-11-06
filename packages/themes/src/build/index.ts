@@ -44,7 +44,9 @@ export function generateThemeBundle(presets: ThemePreset[], options: SharedOptio
 
 export function createThemeStylesheet(css: string, options: { id?: string, media?: string } = {}): string {
   const { id = 'maz-theme', media } = options
-  const mediaAttr = media ? ` media="${media}"` : ''
+  const mediaAttr = media
+    ? ` media="${media}"`
+    : ''
   return `<style id="${id}"${mediaAttr}>\n${css}\n</style>`
 }
 

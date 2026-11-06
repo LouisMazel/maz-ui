@@ -44,14 +44,22 @@ export function useDropzone(
   let isValid = true
 
   if (isClient()) {
-    const _options = typeof options === 'function' ? { onDrop: options } : options
+    const _options = typeof options === 'function'
+      ? { onDrop: options }
+      : options
 
     const multiple = _options.multiple ?? true
     const preventDefaultForUnhandled = _options.preventDefaultForUnhandled ?? false
 
     function getFiles(event: DragEvent) {
-      const list = [...event.dataTransfer?.files ?? []]
-      return list.length === 0 ? null : (multiple ? list : [list[0]])
+      const list = [
+        ...event.dataTransfer?.files ?? [],
+      ]
+      return list.length === 0
+        ? null
+        : (multiple
+            ? list
+            : [list[0]])
     }
 
     function checkDataTypes(types: string[]) {

@@ -17,11 +17,15 @@ export function MazIconsResolver(): ComponentResolver {
       }
 
       const isLazy = name.startsWith('Lazy')
-      const staticName = isLazy ? name.slice(4) : name
+      const staticName = isLazy
+        ? name.slice(4)
+        : name
 
       return {
         name: isLazy ? staticName : name,
-        from: isLazy ? `@maz-ui/icons/lazy/${staticName}` : `@maz-ui/icons/static/${name}`,
+        from: isLazy
+          ? `@maz-ui/icons/lazy/${staticName}`
+          : `@maz-ui/icons/static/${name}`,
       }
     },
   }

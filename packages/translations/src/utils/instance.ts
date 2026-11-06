@@ -19,7 +19,10 @@ export function createMazUiTranslations(options: MazUiTranslationsOptions = {}) 
     globalState.userMessages[loc] = msgs
 
     if (msgs && typeof msgs === 'object') {
-      globalState.messages[loc] = { ...globalState.messages[loc], ...msgs }
+      globalState.messages[loc] = {
+        ...globalState.messages[loc],
+        ...msgs,
+      }
     }
   }
 

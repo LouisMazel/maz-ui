@@ -19,7 +19,9 @@ describe('given useFormField in a non-client (SSR) environment', () => {
 
       withSetup(() => {
         const form = useFormValidator({
-          schema: { name: pipe(string(), minLength(2)) },
+          schema: {
+            name: pipe(string(), minLength(2)),
+          },
           defaultValues: { name: '' },
           options: { mode: 'eager' },
         })

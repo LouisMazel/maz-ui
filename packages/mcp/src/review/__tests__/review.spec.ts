@@ -6,7 +6,10 @@ import { detectFramework, displayPath, expandPaths, MAX_REVIEWED_FILES, reviewFi
 import { countBySeverity, detectKind, filterBySeverity, formatFindings, reviewCode } from '../index'
 
 function review(code: string, filename?: string): Finding[] {
-  return reviewCode(code, { knowledge: getKnowledge(), filename })
+  return reviewCode(code, {
+    knowledge: getKnowledge(),
+    filename,
+  })
 }
 
 describe('given detectKind', () => {
@@ -123,10 +126,35 @@ describe('given ignore comments', () => {
 
 describe('given the finding helpers', () => {
   const findings: Finding[] = [
-    { rule: 'unknown-prop', severity: 'warning', message: 'w', line: 2, column: 1, suggestion: 'fix it' },
-    { rule: 'unknown-slot', severity: 'error', message: 'e', line: 1, column: 1 },
-    { rule: 'nuxt-auto-import', severity: 'info', message: 'i', line: 3, column: 1 },
-    { rule: 'nuxt-auto-import', severity: 'info', message: 'i2', line: 4, column: 1 },
+    {
+      rule: 'unknown-prop',
+      severity: 'warning',
+      message: 'w',
+      line: 2,
+      column: 1,
+      suggestion: 'fix it',
+    },
+    {
+      rule: 'unknown-slot',
+      severity: 'error',
+      message: 'e',
+      line: 1,
+      column: 1,
+    },
+    {
+      rule: 'nuxt-auto-import',
+      severity: 'info',
+      message: 'i',
+      line: 3,
+      column: 1,
+    },
+    {
+      rule: 'nuxt-auto-import',
+      severity: 'info',
+      message: 'i2',
+      line: 4,
+      column: 1,
+    },
   ]
 
   describe('when counting by severity', () => {
@@ -190,16 +218,27 @@ describe('given the file helpers', () => {
       writeFile(project, 'src/node_modules/c.ts', '')
       writeFile(project, 'styles/main.css', '')
 
-      const files = await expandPaths(['src', 'styles/*.css', join(project, 'src/b.ts'), 'missing/**/*.vue'], project)
+      const files = await expandPaths([
+        'src',
+        'styles/*.css',
+        join(project, 'src/b.ts'),
+        'missing/**/*.vue',
+      ], project)
 
-      expect(files).toEqual([join(project, 'src/A.vue'), join(project, 'src/b.ts'), join(project, 'styles/main.css')])
+      expect(files).toEqual([
+        join(project, 'src/A.vue'),
+        join(project, 'src/b.ts'),
+        join(project, 'styles/main.css'),
+      ])
     })
 
     it('then the project root itself can be expanded', async () => {
       const project = createTempDir()
       writeFile(project, 'A.vue', '')
 
-      expect(await expandPaths(['.'], project)).toEqual([join(project, 'A.vue')])
+      expect(await expandPaths(['.'], project)).toEqual([
+        join(project, 'A.vue'),
+      ])
     })
   })
 
@@ -210,10 +249,17 @@ describe('given the file helpers', () => {
       writeFile(project, 'src/A.vue', '<template><button>b</button><table /></template>')
       writeFile(project, 'src/b.ts', 'import MazBtn from \'maz-ui/components/MazBtn\'')
 
-      const { reviews, truncated } = await reviewFiles(['src'], { knowledge: getKnowledge(), cwd: project, minSeverity: 'warning' })
+      const { reviews, truncated } = await reviewFiles(['src'], {
+        knowledge: getKnowledge(),
+        cwd: project,
+        minSeverity: 'warning',
+      })
 
       expect(truncated).toBe(false)
-      expect(reviews.map(entry => entry.file)).toEqual([join('src', 'A.vue'), join('src', 'b.ts')])
+      expect(reviews.map(entry => entry.file)).toEqual([
+        join('src', 'A.vue'),
+        join('src', 'b.ts'),
+      ])
       expect(reviews[0].findings.map(finding => finding.rule)).toEqual(['prefer-maz-component'])
       expect(reviews[1].findings).toEqual([])
     })
@@ -223,7 +269,10 @@ describe('given the file helpers', () => {
       writeFile(project, 'nuxt.config.ts', '')
       writeFile(project, 'b.ts', 'import MazBtn from \'maz-ui/components/MazBtn\'')
 
-      const { reviews } = await reviewFiles(['b.ts'], { knowledge: getKnowledge(), cwd: project })
+      const { reviews } = await reviewFiles(['b.ts'], {
+        knowledge: getKnowledge(),
+        cwd: project,
+      })
 
       expect(reviews[0].findings.map(finding => finding.rule)).toEqual(['nuxt-auto-import'])
     })
@@ -233,7 +282,10 @@ describe('given the file helpers', () => {
 
       for (let index = 0; index <= MAX_REVIEWED_FILES; index++) writeFile(project, `src/f${String(index).padStart(3, '0')}.ts`, '')
 
-      const { reviews, truncated } = await reviewFiles(['src'], { knowledge: getKnowledge(), cwd: project })
+      const { reviews, truncated } = await reviewFiles(['src'], {
+        knowledge: getKnowledge(),
+        cwd: project,
+      })
 
       expect(truncated).toBe(true)
       expect(reviews).toHaveLength(MAX_REVIEWED_FILES)

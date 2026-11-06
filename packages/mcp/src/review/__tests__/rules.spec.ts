@@ -6,7 +6,11 @@ import { reviewCode } from '../index'
 import { propSuggestions } from '../template'
 
 function review(code: string, filename = 'Test.vue', framework?: Framework): Finding[] {
-  return reviewCode(code, { knowledge: getKnowledge(), filename, framework })
+  return reviewCode(code, {
+    knowledge: getKnowledge(),
+    filename,
+    framework,
+  })
 }
 
 function rulesOf(code: string, filename = 'Test.vue', framework?: Framework): string[] {
@@ -58,7 +62,14 @@ describe('given the unknown-component rule', () => {
 })
 
 describe('given propSuggestions', () => {
-  const component = { name: 'MazFake', props: [{ name: 'iconPosition' }, { name: 'leftIcon' }, { name: 'modelValue' }] } as ComponentApi
+  const component = {
+    name: 'MazFake',
+    props: [
+      { name: 'iconPosition' },
+      { name: 'leftIcon' },
+      { name: 'modelValue' },
+    ],
+  } as ComponentApi
 
   describe('when several props contain the words of the unknown name', () => {
     it('then the shortest come first', () => {

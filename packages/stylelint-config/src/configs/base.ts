@@ -27,9 +27,12 @@ export const baseRules: StylelintRules = {
    * Allow author-time use of Vue's `v-bind()` and the (now widely supported)
    * native `light-dark()` color function.
    */
-  'function-no-unknown': [true, {
-    ignoreFunctions: ['v-bind', 'light-dark'],
-  }],
+  'function-no-unknown': [
+    true,
+    {
+      ignoreFunctions: ['v-bind', 'light-dark'],
+    },
+  ],
 
   /**
    * Native CSS nesting now allows scoping inside another at-rule without an
@@ -42,9 +45,12 @@ export const baseRules: StylelintRules = {
    * Allow `:deep()` (Vue scoped-style descent) and `:global()` (CSS Modules)
    * out of the box.
    */
-  'selector-pseudo-class-no-unknown': [true, {
-    ignorePseudoClasses: ['deep', 'global', 'slotted', 'where'],
-  }],
+  'selector-pseudo-class-no-unknown': [
+    true,
+    {
+      ignorePseudoClasses: ['deep', 'global', 'slotted', 'where'],
+    },
+  ],
 
   /**
    * Custom property names follow kebab-case in our public CSS APIs
@@ -62,7 +68,10 @@ export const baseRules: StylelintRules = {
    * Be lenient on shorthand collapsing — `grid-template`/`grid-template-areas`
    * and the `inset` longhands are routinely written long-form for readability.
    */
-  'declaration-block-no-redundant-longhand-properties': [true, {
-    ignoreShorthands: ['grid-template', 'inset'],
-  }],
+  'declaration-block-no-redundant-longhand-properties': [
+    true,
+    {
+      ignoreShorthands: ['grid-template', 'inset'],
+    },
+  ],
 }

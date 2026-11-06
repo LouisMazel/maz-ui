@@ -8,14 +8,20 @@ vi.mock('@maz-ui/icons/lazy/MazBars3', () => ({
 }))
 
 beforeEach(() => {
-  vi.mocked(useTranslations).mockReturnValue({ t: (key: string) => key, locale: { value: 'en' } } as unknown as ReturnType<typeof useTranslations>)
+  vi.mocked(useTranslations).mockReturnValue({
+    t: (key: string) => key,
+    locale: { value: 'en' },
+  } as unknown as ReturnType<typeof useTranslations>)
 })
 
 function mountWithSidebar(sidebarProps: Record<string, unknown> = { open: true }) {
   return mount(MazSidebar, {
     props: sidebarProps,
     slots: {
-      default: { template: '<MazSidebarTrigger />', components: { MazSidebarTrigger } },
+      default: {
+        template: '<MazSidebarTrigger />',
+        components: { MazSidebarTrigger },
+      },
     },
   })
 }
@@ -56,7 +62,9 @@ describe('given MazSidebarTrigger component', () => {
     it('then update:open is emitted with the inverted value', async () => {
       const wrapper = mountWithSidebar({ open: true })
       await wrapper.find('button.m-sidebar-trigger').trigger('click')
-      expect(wrapper.emitted('update:open')).toEqual([[false]])
+      expect(wrapper.emitted('update:open')).toEqual([
+        [false],
+      ])
     })
   })
 

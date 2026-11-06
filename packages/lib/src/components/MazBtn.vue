@@ -150,7 +150,9 @@ const resolvedColor = computed(() => getColor(color))
 const isDisabled = computed(
   () => (loading || disabled) && component.value === 'button',
 )
-const btnType = computed(() => (component.value === 'button' ? type : undefined))
+const btnType = computed(() => (component.value === 'button'
+  ? type
+  : undefined))
 
 type IconSize = NonNullable<import('./MazIcon.vue').MazIconProps['size']>
 

@@ -85,7 +85,9 @@ function pullDistance(delta: number, { threshold, max, resistance }: { threshold
 }
 
 function scrollTopOf(target: HTMLElement | Window): number {
-  return 'scrollY' in target ? target.scrollY : target.scrollTop
+  return 'scrollY' in target
+    ? target.scrollY
+    : target.scrollTop
 }
 
 export function usePullToRefresh(options: UsePullToRefreshOptions = {}): UsePullToRefreshReturn {
@@ -152,8 +154,11 @@ export function usePullToRefresh(options: UsePullToRefreshOptions = {}): UsePull
   }
 
   function lockDirection(deltaX: number, deltaY: number) {
-    if (!direction && (Math.abs(deltaX) >= 4 || Math.abs(deltaY) >= 4))
-      direction = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical'
+    if (!direction && (Math.abs(deltaX) >= 4 || Math.abs(deltaY) >= 4)) {
+      direction = Math.abs(deltaX) > Math.abs(deltaY)
+        ? 'horizontal'
+        : 'vertical'
+    }
     return direction
   }
 

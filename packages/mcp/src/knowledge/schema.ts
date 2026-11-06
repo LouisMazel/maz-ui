@@ -7,11 +7,24 @@ import { z } from 'zod'
  */
 export const SUPPORTED_SCHEMA_VERSION = 1
 
-export const docCategories = ['guide', 'component', 'composable', 'directive', 'plugin', 'ecosystem', 'util', 'node', 'reference'] as const
+export const docCategories = [
+  'guide',
+  'component',
+  'composable',
+  'directive',
+  'plugin',
+  'ecosystem',
+  'util',
+  'node',
+  'reference',
+] as const
 
 export type DocCategory = typeof docCategories[number]
 
-const namedTokenSchema = z.object({ name: z.string(), value: z.string() })
+const namedTokenSchema = z.object({
+  name: z.string(),
+  value: z.string(),
+})
 
 export const docEntrySchema = z.object({
   id: z.string(),
@@ -48,17 +61,31 @@ export const componentApiSchema = z.object({
   import: z.string(),
   parent: z.string().optional(),
   props: z.array(propApiSchema),
-  events: z.array(z.object({ name: z.string(), description: z.string().optional(), payload: z.string().optional() })),
+  events: z.array(z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    payload: z.string().optional(),
+  })),
   slots: z.array(z.object({
     name: z.string(),
     description: z.string().optional(),
-    bindings: z.array(z.object({ name: z.string(), type: z.string().optional(), description: z.string().optional() })),
+    bindings: z.array(z.object({
+      name: z.string(),
+      type: z.string().optional(),
+      description: z.string().optional(),
+    })),
   })),
-  expose: z.array(z.object({ name: z.string(), description: z.string().optional() })),
+  expose: z.array(z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  })),
 })
 
 export const tailwindSchema = z.object({
-  entries: z.array(z.object({ path: z.string(), description: z.string() })),
+  entries: z.array(z.object({
+    path: z.string(),
+    description: z.string(),
+  })),
   colors: z.array(z.object({
     name: z.string(),
     variable: z.string(),
@@ -74,7 +101,10 @@ export const tailwindSchema = z.object({
   durations: z.array(namedTokenSchema),
   easings: z.array(namedTokenSchema),
   spacing: z.array(namedTokenSchema),
-  utilities: z.array(z.object({ name: z.string(), css: z.string() })),
+  utilities: z.array(z.object({
+    name: z.string(),
+    css: z.string(),
+  })),
   variants: z.array(namedTokenSchema),
   containerVariables: z.array(namedTokenSchema),
   transitions: z.array(z.string()),
@@ -85,10 +115,17 @@ export const manifestSchema = z.object({
   name: z.literal('maz-ui'),
   version: z.string(),
   homepage: z.string(),
-  packages: z.array(z.object({ name: z.string(), description: z.string(), docId: z.string() })),
+  packages: z.array(z.object({
+    name: z.string(),
+    description: z.string(),
+    docId: z.string(),
+  })),
   docs: z.array(docEntrySchema),
   components: z.array(componentApiSchema),
-  icons: z.object({ package: z.string(), names: z.array(z.string()) }),
+  icons: z.object({
+    package: z.string(),
+    names: z.array(z.string()),
+  }),
   tailwind: tailwindSchema,
 })
 

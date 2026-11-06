@@ -70,7 +70,11 @@ export interface MazLazyImgProps {
 }
 
 const sources = computed(() => {
-  return typeof src === 'string' ? [{ srcset: src }] : src?.sources
+  return typeof src === 'string'
+    ? [
+        { srcset: src },
+      ]
+    : src?.sources
 })
 
 function onIntersecting(el: Element) {
@@ -89,7 +93,12 @@ function onError(el: Element) {
   emits('error', el)
 }
 
-defineExpose({ onIntersecting, onLoading, onLoaded, onError })
+defineExpose({
+  onIntersecting,
+  onLoading,
+  onLoaded,
+  onError,
+})
 </script>
 
 <template>

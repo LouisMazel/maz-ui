@@ -16,11 +16,22 @@ function prop(overrides: Partial<PropertyMeta> = {}): PropertyMeta {
 }
 
 function event(overrides: Partial<EventMeta> = {}): EventMeta {
-  return { name: 'close', type: '[]', signature: '', tags: [], ...overrides } as unknown as EventMeta
+  return {
+    name: 'close',
+    type: '[]',
+    signature: '',
+    tags: [],
+    ...overrides,
+  } as unknown as EventMeta
 }
 
 function slot(overrides: Partial<SlotMeta> = {}): SlotMeta {
-  return { name: 'default', type: '{}', description: '', ...overrides } as unknown as SlotMeta
+  return {
+    name: 'default',
+    type: '{}',
+    description: '',
+    ...overrides,
+  } as unknown as SlotMeta
 }
 
 describe('given unionMembers', () => {
@@ -88,25 +99,37 @@ describe('given cleanType', () => {
 describe('given propValues', () => {
   describe('when the type is a union of string literals', () => {
     it('then returns strict values', () => {
-      expect(propValues('"sm" | "md" | null | undefined', undefined)).toEqual({ values: ['sm', 'md'], strict: true })
+      expect(propValues('"sm" | "md" | null | undefined', undefined)).toEqual({
+        values: ['sm', 'md'],
+        strict: true,
+      })
     })
   })
 
   describe('when the type is an open type documented by a values tag', () => {
     it('then returns non strict values without filler words', () => {
-      expect(propValues('MazSize | MazSizeUnit', '`\'mini\' | \'xs\'` or a CSS unit like `\'2rem\'`')).toEqual({ values: ['mini', 'xs', '2rem'], strict: false })
+      expect(propValues('MazSize | MazSizeUnit', '`\'mini\' | \'xs\'` or a CSS unit like `\'2rem\'`')).toEqual({
+        values: ['mini', 'xs', '2rem'],
+        strict: false,
+      })
     })
   })
 
   describe('when literals are mixed with an open type', () => {
     it('then merges literals and tag values as non strict', () => {
-      expect(propValues('"auto" | number', '`\'auto\'` or `\'16\'`')).toEqual({ values: ['auto', '16'], strict: false })
+      expect(propValues('"auto" | number', '`\'auto\'` or `\'16\'`')).toEqual({
+        values: ['auto', '16'],
+        strict: false,
+      })
     })
   })
 
   describe('when a single literal is accepted', () => {
     it('then returns it as non strict', () => {
-      expect(propValues('"only"', undefined)).toEqual({ values: ['only'], strict: false })
+      expect(propValues('"only"', undefined)).toEqual({
+        values: ['only'],
+        strict: false,
+      })
     })
   })
 
@@ -137,7 +160,9 @@ describe('given slotBindings', () => {
 
   describe('when a member cannot be parsed', () => {
     it('then skips it', () => {
-      expect(slotBindings('{ [key: string]; valid: string }')).toEqual([{ name: 'valid', type: 'string' }])
+      expect(slotBindings('{ [key: string]; valid: string }')).toEqual([
+        { name: 'valid', type: 'string' },
+      ])
     })
   })
 })
@@ -149,7 +174,9 @@ describe('given toPropApi', () => {
         name: 'modelValue',
         type: '"a" | "b" | undefined',
         description: 'The value',
-        tags: [{ name: 'description', text: 'More details' }],
+        tags: [
+          { name: 'description', text: 'More details' },
+        ],
         default: '"a"',
         required: true,
       }), new Set(['modelValue']))
@@ -172,22 +199,41 @@ describe('given toPropApi', () => {
       const result = toPropApi(prop({
         name: 'open',
         type: 'boolean',
-        tags: [{ name: 'model', text: 'Open state' }, { name: 'default', text: 'false' }],
+        tags: [
+          { name: 'model', text: 'Open state' },
+          { name: 'default', text: 'false' },
+        ],
       }), new Set())
 
-      expect(result).toEqual({ name: 'open', type: 'boolean', description: 'Open state', required: false, default: 'false', strictValues: false })
+      expect(result).toEqual({
+        name: 'open',
+        type: 'boolean',
+        description: 'Open state',
+        required: false,
+        default: 'false',
+        strictValues: false,
+      })
     })
   })
 
   describe('when the default is undefined', () => {
     it('then omits it', () => {
-      expect(toPropApi(prop({ default: 'undefined', tags: [{ name: 'default', text: 'undefined' }] }), new Set())).not.toHaveProperty('default')
+      expect(toPropApi(prop({
+        default: 'undefined',
+        tags: [
+          { name: 'default', text: 'undefined' },
+        ],
+      }), new Set())).not.toHaveProperty('default')
     })
   })
 
   describe('when a tag has no text', () => {
     it('then ignores it', () => {
-      expect(toPropApi(prop({ tags: [{ name: 'description' }] as PropertyMeta['tags'] }), new Set())).not.toHaveProperty('description')
+      expect(toPropApi(prop({
+        tags: [
+          { name: 'description' },
+        ] as PropertyMeta['tags'],
+      }), new Set())).not.toHaveProperty('description')
     })
   })
 })
@@ -195,7 +241,10 @@ describe('given toPropApi', () => {
 describe('given toEventApi', () => {
   describe('when the event has a payload and a description', () => {
     it('then returns both', () => {
-      const result = toEventApi({ ...event({ name: 'update:model-value', type: '[value: string | undefined]' }), description: 'Emitted\non change' } as EventMeta)
+      const result = toEventApi({
+        ...event({ name: 'update:model-value', type: '[value: string | undefined]' }),
+        description: 'Emitted\non change',
+      } as EventMeta)
 
       expect(result).toEqual({ name: 'update:model-value', description: 'Emitted on change', payload: 'value: string | undefined' })
     })
@@ -214,7 +263,9 @@ describe('given toSlotApi', () => {
       expect(toSlotApi(slot({ name: 'header', description: 'Header\nslot', type: '{ close: () => void; }' }))).toEqual({
         name: 'header',
         description: 'Header slot',
-        bindings: [{ name: 'close', type: '() => void' }],
+        bindings: [
+          { name: 'close', type: '() => void' },
+        ],
       })
     })
   })
@@ -239,7 +290,9 @@ describe('given toComponentApi', () => {
         event({ name: 'update:is-open', type: '[value: boolean]' }),
         event({ name: 'update:unknown', type: '[value: boolean]' }),
       ],
-      slots: [slot({ name: 'default' })],
+      slots: [
+        slot({ name: 'default' }),
+      ],
       exposed: [
         { name: 'focus', description: 'Focus the input', type: '() => void' },
         { name: 'blur', description: '', type: '() => void' },
@@ -254,10 +307,19 @@ describe('given toComponentApi', () => {
       expect(api.name).toBe('MazInputPhoneNumber')
       expect(api.docId).toBe('components/maz-input-phone-number')
       expect(api.import).toBe('import MazInputPhoneNumber from \'maz-ui/components/MazInputPhoneNumber\'')
-      expect(api.props.map(entry => [entry.name, entry.model])).toEqual([['modelValue', 'modelValue'], ['isOpen', 'isOpen'], ['unknown', 'unknown']])
+      expect(api.props.map(entry => [entry.name, entry.model])).toEqual([
+        ['modelValue', 'modelValue'],
+        ['isOpen', 'isOpen'],
+        ['unknown', 'unknown'],
+      ])
       expect(api.events.map(entry => entry.name)).toEqual(['update:model-value', 'update:is-open', 'update:unknown'])
-      expect(api.slots).toEqual([{ name: 'default', bindings: [] }])
-      expect(api.expose).toEqual([{ name: 'focus', description: 'Focus the input' }, { name: 'blur' }])
+      expect(api.slots).toEqual([
+        { name: 'default', bindings: [] },
+      ])
+      expect(api.expose).toEqual([
+        { name: 'focus', description: 'Focus the input' },
+        { name: 'blur' },
+      ])
     })
   })
 })
@@ -276,8 +338,22 @@ describe('given a component that emits a model without declaring its prop', () =
       } as unknown as ComponentMeta
 
       expect(toComponentApi(meta, 'MazDrawer').props).toEqual([
-        { name: 'modelValue', type: 'boolean', description: 'Value of `v-model`, forwarded to the inner component', required: false, strictValues: false, model: 'modelValue' },
-        { name: 'openState', type: 'unknown', description: 'Value of `v-model:open-state`, forwarded to the inner component', required: false, strictValues: false, model: 'openState' },
+        {
+          name: 'modelValue',
+          type: 'boolean',
+          description: 'Value of `v-model`, forwarded to the inner component',
+          required: false,
+          strictValues: false,
+          model: 'modelValue',
+        },
+        {
+          name: 'openState',
+          type: 'unknown',
+          description: 'Value of `v-model:open-state`, forwarded to the inner component',
+          required: false,
+          strictValues: false,
+          model: 'openState',
+        },
       ])
     })
   })
@@ -288,8 +364,22 @@ describe('given dynamicSlots', () => {
     const source = `<slot name="cell" :row="row" /><slot :name="\`cell-\${key}\`" :row="row" /><slot :name="\`title-\${step.id}-label\`" />`
 
     it('then each one gets a pattern name and the bindings of its base slot', () => {
-      expect(dynamicSlots(source, [{ name: 'cell', description: 'Replace the cells', bindings: [{ name: 'row', type: 'T' }] }])).toEqual([
-        { name: 'cell-{key}', description: 'One slot per `key`: `#cell-<key>`. Replace the cells', bindings: [{ name: 'row', type: 'T' }] },
+      expect(dynamicSlots(source, [
+        {
+          name: 'cell',
+          description: 'Replace the cells',
+          bindings: [
+            { name: 'row', type: 'T' },
+          ],
+        },
+      ])).toEqual([
+        {
+          name: 'cell-{key}',
+          description: 'One slot per `key`: `#cell-<key>`. Replace the cells',
+          bindings: [
+            { name: 'row', type: 'T' },
+          ],
+        },
         { name: 'title-{id}-label', description: 'One slot per `id`: `#title-<id>-label`.', bindings: [] },
       ])
     })
@@ -305,9 +395,20 @@ describe('given dynamicSlots', () => {
 describe('given attributeProps', () => {
   describe('when the component reads attributes with useAttrs', () => {
     it('then they are documented like props, except the declared ones', () => {
-      const props = attributeProps('const { href, to, target: linkTarget, size } = useAttrs()', [{ name: 'size', type: 'string', required: false, strictValues: false }])
+      const props = attributeProps('const { href, to, target: linkTarget, size } = useAttrs()', [
+        {
+          name: 'size',
+          type: 'string',
+          required: false,
+          strictValues: false,
+        },
+      ])
 
-      expect(props.map(prop => [prop.name, prop.type])).toEqual([['href', 'string'], ['to', 'RouteLocationRaw'], ['target', 'string']])
+      expect(props.map(prop => [prop.name, prop.type])).toEqual([
+        ['href', 'string'],
+        ['to', 'RouteLocationRaw'],
+        ['target', 'string'],
+      ])
       expect(props[1].description).toContain('`RouterLink`')
       expect(props[2].description).toBe('HTML attribute handled by the component')
     })

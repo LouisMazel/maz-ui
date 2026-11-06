@@ -21,7 +21,13 @@ function getEntries(pattern: string) {
 
 const entries = Object.fromEntries(
   glob.sync('src/**/*.ts', {
-    ignore: ['**/*/index.ts', '**/*/types.ts', '**/*/__tests__/**/*', '**/*/*.spec.ts', '**/*/*.test.ts'],
+    ignore: [
+      '**/*/index.ts',
+      '**/*/types.ts',
+      '**/*/__tests__/**/*',
+      '**/*/*.spec.ts',
+      '**/*/*.test.ts',
+    ],
   })
     .map(getEntries),
 )
@@ -65,14 +71,19 @@ export default defineConfig((option) => {
           moduleSideEffects: false,
           propertyReadSideEffects: false,
           unknownGlobalSideEffects: false,
-          manualPureFunctions: isProduction ? ['console.log', 'console.debug'] : [],
+          manualPureFunctions: isProduction
+            ? ['console.log', 'console.debug']
+            : [],
         },
         external: getExternalDependencies(pkg),
         output: {
           format: 'es',
           comments: { legal: false },
           minify: isProduction
-            ? { compress: { dropDebugger: true, dropConsole: false, joinVars: false }, mangle: false }
+            ? {
+                compress: { dropDebugger: true, dropConsole: false, joinVars: false },
+                mangle: false,
+              }
             : false,
           chunkFileNames: 'chunks/[name].[hash].js',
           assetFileNames: 'assets/[name].[hash][extname]',

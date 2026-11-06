@@ -157,7 +157,9 @@ describe('given MazWindowMockup component', () => {
 
     it('then it writes the url to the clipboard when the button is clicked', async () => {
       const writeText = vi.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { writeText } })
+      Object.assign(navigator, {
+        clipboard: { writeText },
+      })
 
       const wrapper = mount(MazWindowMockup, {
         props: { url: 'https://maz-ui.com' },
@@ -190,7 +192,9 @@ describe('given MazWindowMockup component', () => {
     it('then the url copy button reverts after the timeout', async () => {
       vi.useFakeTimers({ shouldAdvanceTime: true })
       const writeText = vi.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { writeText } })
+      Object.assign(navigator, {
+        clipboard: { writeText },
+      })
 
       const wrapper = mount(MazWindowMockup, {
         props: {
@@ -213,7 +217,9 @@ describe('given MazWindowMockup component', () => {
 
     it('then clicking with no url does not call clipboard', async () => {
       const writeText = vi.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { writeText } })
+      Object.assign(navigator, {
+        clipboard: { writeText },
+      })
 
       const wrapper = mount(MazWindowMockup, {
         props: { url: '' },
@@ -229,7 +235,9 @@ describe('given MazWindowMockup component', () => {
   describe('when the component is unmounted', () => {
     it('then it clears the url copy timer without throwing', async () => {
       const writeText = vi.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { writeText } })
+      Object.assign(navigator, {
+        clipboard: { writeText },
+      })
 
       const wrapper = mount(MazWindowMockup, {
         props: { url: 'https://maz-ui.com' },

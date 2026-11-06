@@ -13,7 +13,10 @@ function mountWithSidebar(
   return mount(MazSidebar, {
     props: sidebarProps,
     slots: {
-      default: { template, components: { MazSidebarMenuSub } },
+      default: {
+        template,
+        components: { MazSidebarMenuSub },
+      },
     },
   })
 }
@@ -169,7 +172,9 @@ describe('given MazSidebarMenuSub component', () => {
   describe('when rendered outside MazSidebar', () => {
     it('then it throws an error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      expect(() => mount(MazSidebarMenuSub, { props: { label: 'Sub' } })).toThrow()
+      expect(() => mount(MazSidebarMenuSub, {
+        props: { label: 'Sub' },
+      })).toThrow()
       consoleSpy.mockRestore()
     })
   })

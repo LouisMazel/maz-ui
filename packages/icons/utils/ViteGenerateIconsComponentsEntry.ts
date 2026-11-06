@@ -69,7 +69,127 @@ function replaceValuesInSvg(files: { file: string, name: string, path: string, d
 
 function getReservedNames() {
   const componentNameList = getComponentList().map(({ name }) => name)
-  return [...componentNameList, 'Map', 'Object', 'String', 'Number', 'Boolean', 'Array', 'Date', 'RegExp', 'Error', 'Function', 'Promise', 'Set', 'WeakMap', 'WeakSet', 'Symbol', 'Proxy', 'Reflect', 'Math', 'JSON', 'Intl', 'Console', 'Window', 'Document', 'Element', 'HTMLElement', 'Node', 'Event', 'EventTarget', 'Location', 'History', 'Navigator', 'Screen', 'Storage', 'URL', 'URLSearchParams', 'FormData', 'File', 'Blob', 'FileReader', 'XMLHttpRequest', 'WebSocket', 'Worker', 'SharedWorker', 'ServiceWorker', 'Cache', 'Request', 'Response', 'Headers', 'Body', 'ReadableStream', 'WritableStream', 'TransformStream', 'ByteLengthQueuingStrategy', 'CountQueuingStrategy', 'TextEncoder', 'TextDecoder', 'Image', 'ImageData', 'Canvas', 'CanvasRenderingContext2D', 'WebGLRenderingContext', 'WebGL2RenderingContext', 'Audio', 'AudioContext', 'AudioBuffer', 'AudioBufferSourceNode', 'GainNode', 'OscillatorNode', 'AnalyserNode', 'BiquadFilterNode', 'ChannelMergerNode', 'ChannelSplitterNode', 'ConvolverNode', 'DelayNode', 'DynamicsCompressorNode', 'IIRFilterNode', 'MediaElementAudioSourceNode', 'MediaStreamAudioDestinationNode', 'MediaStreamAudioSourceNode', 'PannerNode', 'StereoPannerNode', 'WaveShaperNode', 'MediaStream', 'MediaStreamTrack', 'MediaRecorder', 'MediaDevices', 'MediaQueryList', 'MutationObserver', 'IntersectionObserver', 'ResizeObserver', 'Performance', 'PerformanceEntry', 'PerformanceMark', 'PerformanceMeasure', 'PerformanceNavigation', 'PerformanceResourceTiming', 'PerformanceTiming', 'PerformanceObserver', 'PerformanceObserverEntryList', 'PerformancePaintTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming', 'PerformanceResourceTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformancePaintTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming']
+  return [
+    ...componentNameList,
+    'Map',
+    'Object',
+    'String',
+    'Number',
+    'Boolean',
+    'Array',
+    'Date',
+    'RegExp',
+    'Error',
+    'Function',
+    'Promise',
+    'Set',
+    'WeakMap',
+    'WeakSet',
+    'Symbol',
+    'Proxy',
+    'Reflect',
+    'Math',
+    'JSON',
+    'Intl',
+    'Console',
+    'Window',
+    'Document',
+    'Element',
+    'HTMLElement',
+    'Node',
+    'Event',
+    'EventTarget',
+    'Location',
+    'History',
+    'Navigator',
+    'Screen',
+    'Storage',
+    'URL',
+    'URLSearchParams',
+    'FormData',
+    'File',
+    'Blob',
+    'FileReader',
+    'XMLHttpRequest',
+    'WebSocket',
+    'Worker',
+    'SharedWorker',
+    'ServiceWorker',
+    'Cache',
+    'Request',
+    'Response',
+    'Headers',
+    'Body',
+    'ReadableStream',
+    'WritableStream',
+    'TransformStream',
+    'ByteLengthQueuingStrategy',
+    'CountQueuingStrategy',
+    'TextEncoder',
+    'TextDecoder',
+    'Image',
+    'ImageData',
+    'Canvas',
+    'CanvasRenderingContext2D',
+    'WebGLRenderingContext',
+    'WebGL2RenderingContext',
+    'Audio',
+    'AudioContext',
+    'AudioBuffer',
+    'AudioBufferSourceNode',
+    'GainNode',
+    'OscillatorNode',
+    'AnalyserNode',
+    'BiquadFilterNode',
+    'ChannelMergerNode',
+    'ChannelSplitterNode',
+    'ConvolverNode',
+    'DelayNode',
+    'DynamicsCompressorNode',
+    'IIRFilterNode',
+    'MediaElementAudioSourceNode',
+    'MediaStreamAudioDestinationNode',
+    'MediaStreamAudioSourceNode',
+    'PannerNode',
+    'StereoPannerNode',
+    'WaveShaperNode',
+    'MediaStream',
+    'MediaStreamTrack',
+    'MediaRecorder',
+    'MediaDevices',
+    'MediaQueryList',
+    'MutationObserver',
+    'IntersectionObserver',
+    'ResizeObserver',
+    'Performance',
+    'PerformanceEntry',
+    'PerformanceMark',
+    'PerformanceMeasure',
+    'PerformanceNavigation',
+    'PerformanceResourceTiming',
+    'PerformanceTiming',
+    'PerformanceObserver',
+    'PerformanceObserverEntryList',
+    'PerformancePaintTiming',
+    'PerformanceServerTiming',
+    'PerformanceNavigationTiming',
+    'PerformanceLongTaskTiming',
+    'PerformanceEventTiming',
+    'PerformanceLayoutShift',
+    'PerformanceFirstInput',
+    'PerformanceLargestContentfulPaint',
+    'PerformanceElementTiming',
+    'PerformanceResourceTiming',
+    'PerformanceServerTiming',
+    'PerformanceNavigationTiming',
+    'PerformancePaintTiming',
+    'PerformanceLongTaskTiming',
+    'PerformanceEventTiming',
+    'PerformanceLayoutShift',
+    'PerformanceFirstInput',
+    'PerformanceLargestContentfulPaint',
+    'PerformanceElementTiming',
+  ]
 }
 
 function generateStaticIconFiles(files: { file: string, name: string, path: string }[]) {
@@ -82,11 +202,15 @@ function generateStaticIconFiles(files: { file: string, name: string, path: stri
 
     for (const { file, name, path } of files) {
       const iconName = toPascalCase(name)
-      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`)
+        ? `${iconName}Icon`
+        : iconName
       const componentName = `Maz${finalName}`
 
       // path already contains '../', so we only need one '../' to go from static/ to src/ then use path
-      const relativePath = path.startsWith('../') ? `../${path}` : `../../${path}`
+      const relativePath = path.startsWith('../')
+        ? `../${path}`
+        : `../../${path}`
 
       const content = `/// <reference types="vite-svg-loader" />
 
@@ -117,7 +241,9 @@ function generateStaticIndex(files: { file: string, name: string, path: string }
     const reservedNames = getReservedNames()
     const exports = files.map(({ name }) => {
       const iconName = toPascalCase(name)
-      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`)
+        ? `${iconName}Icon`
+        : iconName
       const componentName = `Maz${finalName}`
       return `export { ${componentName} } from './${componentName}'`
     }).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join('\n')
@@ -153,11 +279,15 @@ function generateLazyIconFiles(files: { file: string, name: string, path: string
 
     for (const { file, name, path } of files) {
       const iconName = toPascalCase(name)
-      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`)
+        ? `${iconName}Icon`
+        : iconName
       const componentName = `Maz${finalName}`
 
       // path already contains '../', so we only need one '../' to go from lazy/ to src/ then use path
-      const relativePath = path.startsWith('../') ? `../${path}` : `../../${path}`
+      const relativePath = path.startsWith('../')
+        ? `../${path}`
+        : `../../${path}`
 
       const content = `/// <reference types="vite-svg-loader" />
 
@@ -188,7 +318,9 @@ function generateLazyIndex(files: { file: string, name: string, path: string }[]
     const reservedNames = getReservedNames()
     const exports = files.map(({ name }) => {
       const iconName = toPascalCase(name)
-      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`)
+        ? `${iconName}Icon`
+        : iconName
       const componentName = `Maz${finalName}`
       return `export { ${componentName} } from './${componentName}'`
     }).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join('\n')
@@ -222,10 +354,14 @@ function generateRawIconFiles(files: { file: string, name: string, path: string 
 
     for (const { file, name, path } of files) {
       const iconName = toPascalCase(name)
-      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`)
+        ? `${iconName}Icon`
+        : iconName
       const componentName = `Maz${finalName}`
 
-      const relativePath = path.startsWith('../') ? `../${path}` : `../../${path}`
+      const relativePath = path.startsWith('../')
+        ? `../${path}`
+        : `../../${path}`
 
       const content = `/// <reference types="vite-svg-loader" />
 
@@ -256,7 +392,9 @@ function generateRawIndex(files: { file: string, name: string, path: string }[])
     const reservedNames = getReservedNames()
     const exports = files.map(({ name }) => {
       const iconName = toPascalCase(name)
-      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`)
+        ? `${iconName}Icon`
+        : iconName
       const componentName = `Maz${finalName}`
       return `export { ${componentName} } from './${componentName}'`
     }).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join('\n')
@@ -285,7 +423,9 @@ function generateIconsComponentsEntry(files: { file: string, name: string, path:
     const reservedNames = getReservedNames()
     const lazyExports = files.map(({ name }) => {
       const iconName = toPascalCase(name)
-      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`)
+        ? `${iconName}Icon`
+        : iconName
       const componentName = `Maz${finalName}`
       return `export { ${componentName} as Lazy${componentName} } from './lazy/${componentName}'`
     }).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join('\n')
@@ -324,7 +464,9 @@ function generateIconList(files: { file: string, name: string }[]) {
       .filter(({ file }) => file.endsWith('.svg'))
       .map(({ name }) => {
         const iconName = toPascalCase(name)
-        const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+        const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`)
+          ? `${iconName}Icon`
+          : iconName
         return `Maz${finalName}`
       })
 
@@ -385,7 +527,12 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
           })),
         ]
 
-        const files = [...svgFiles, ...flags1x1Files, ...flags3x2Files, ...logos].filter(({ file }) => file.endsWith('.svg') && !file.endsWith('.DS_Store'))
+        const files = [
+          ...svgFiles,
+          ...flags1x1Files,
+          ...flags3x2Files,
+          ...logos,
+        ].filter(({ file }) => file.endsWith('.svg') && !file.endsWith('.DS_Store'))
 
         replaceValuesInSvg(svgFiles)
         generateStaticIconFiles(files)
@@ -400,7 +547,9 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
         logger.success('[ViteGenerateIconsComponentsEntry] ✅ icons components entry generated')
       }
       catch (error) {
-        logger.error('[ViteGenerateIconsComponentsEntry] 🔴 error while generating icons components entry', error instanceof Error ? error.message : String(error))
+        logger.error('[ViteGenerateIconsComponentsEntry] 🔴 error while generating icons components entry', error instanceof Error
+          ? error.message
+          : String(error))
 
         throw error
       }

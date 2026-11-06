@@ -6,7 +6,10 @@ function mountInsideSidebar() {
   return mount(MazSidebar, {
     props: { open: true },
     slots: {
-      default: { template: '<MazSidebarSeparator />', components: { MazSidebarSeparator } },
+      default: {
+        template: '<MazSidebarSeparator />',
+        components: { MazSidebarSeparator },
+      },
     },
   })
 }

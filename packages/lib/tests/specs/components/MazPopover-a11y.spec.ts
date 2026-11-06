@@ -282,7 +282,10 @@ describe('given a MazPopover without interactive element in the trigger slot', (
       await trigger.trigger('keydown', { key: ' ' })
       await trigger.trigger('keydown', { key: ' ' })
 
-      expect(wrapper.emitted('update:modelValue')).toEqual([[true], [false]])
+      expect(wrapper.emitted('update:modelValue')).toEqual([
+        [true],
+        [false],
+      ])
 
       wrapper.unmount()
     })

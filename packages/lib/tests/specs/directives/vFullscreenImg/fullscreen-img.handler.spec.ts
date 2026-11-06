@@ -57,11 +57,15 @@ describe('fullscreenImgHandler', () => {
     const buildOptionsSpy = vi.spyOn(handler, 'buildOptions')
 
     handler.create(el, binding)
-    handler.update(el, { value: { scaleOnHover: true } } as VFullscreenImgBinding)
+    handler.update(el, {
+      value: { scaleOnHover: true },
+    } as VFullscreenImgBinding)
 
     expect(buildOptionsSpy).toHaveBeenCalledTimes(2)
     expect(buildOptionsSpy).toHaveBeenCalledWith(el, binding)
-    expect(buildOptionsSpy).toHaveBeenCalledWith(el, { value: { scaleOnHover: true } })
+    expect(buildOptionsSpy).toHaveBeenCalledWith(el, {
+      value: { scaleOnHover: true },
+    })
   })
 
   it('should add mouse event listeners to the element', () => {

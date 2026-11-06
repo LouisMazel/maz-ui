@@ -24,7 +24,9 @@ describe('maz-link-component plugin', () => {
   describe('When defineNuxtLink is called', () => {
     it('Then it is called with an empty options object', async () => {
       const { defineNuxtLink } = await import('#imports')
-      const vueApp = { provide: vi.fn() }
+      const vueApp = {
+        provide: vi.fn(),
+      }
 
       ;(mazLinkComponentPlugin as (...args: any[]) => any)({ vueApp })
 

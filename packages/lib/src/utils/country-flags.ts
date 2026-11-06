@@ -278,7 +278,11 @@ export const countryFlagCodes = Object.keys(flagLoaders)
  * @returns the flag as a `data:image/svg+xml` URL, or `undefined` when no flag exists for this code
  */
 export async function loadCountryFlag(code: string): Promise<string | undefined> {
-  const flagCode = [code, code.slice(0, 2), code.slice(3, 5)]
+  const flagCode = [
+    code,
+    code.slice(0, 2),
+    code.slice(3, 5),
+  ]
     .map(candidate => candidate.toUpperCase())
     .find(candidate => Object.hasOwn(flagLoaders, candidate))
 
@@ -289,5 +293,7 @@ export async function loadCountryFlag(code: string): Promise<string | undefined>
   const flagModule = await flagLoaders[flagCode]()
   const svg = flagModule[`MazFlagSquare${flagCode.replace('-', '')}`]
 
-  return typeof svg === 'string' ? `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}` : undefined
+  return typeof svg === 'string'
+    ? `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
+    : undefined
 }

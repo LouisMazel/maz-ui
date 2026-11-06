@@ -4,7 +4,12 @@ import { mount } from '@vue/test-utils'
 import { defineComponent, h, ref } from 'vue'
 
 function firePointer(element: Element, type: string, clientX: number, clientY: number, init: { pointerType?: string, cancelable?: boolean } = {}) {
-  const event = new MouseEvent(type, { clientX, clientY, bubbles: true, cancelable: init.cancelable })
+  const event = new MouseEvent(type, {
+    clientX,
+    clientY,
+    bubbles: true,
+    cancelable: init.cancelable,
+  })
   if (init.pointerType !== undefined) {
     Object.defineProperty(event, 'pointerType', { value: init.pointerType, configurable: true })
   }
@@ -184,7 +189,9 @@ describe('given the useDrag composable', () => {
 
   describe('when an allowed pointer type is used', () => {
     it('then it tracks the drag', async () => {
-      const { wrapper, api, target } = mountDrag({ pointerTypes: ['touch'] })
+      const { wrapper, api, target } = mountDrag({
+        pointerTypes: ['touch'],
+      })
 
       firePointer(target, 'pointerdown', 0, 0, { pointerType: 'touch' })
       firePointer(target, 'pointermove', 0, 80, { pointerType: 'touch' })
@@ -198,7 +205,9 @@ describe('given the useDrag composable', () => {
 
   describe('when a disallowed pointer type is used', () => {
     it('then it ignores the drag', async () => {
-      const { wrapper, api, target } = mountDrag({ pointerTypes: ['touch'] })
+      const { wrapper, api, target } = mountDrag({
+        pointerTypes: ['touch'],
+      })
 
       firePointer(target, 'pointerdown', 0, 0, { pointerType: 'mouse' })
       firePointer(target, 'pointermove', 0, 80, { pointerType: 'mouse' })
@@ -215,7 +224,12 @@ describe('given the useDrag composable', () => {
       const { wrapper, target } = mountDrag({ preventDefault: true, stopPropagation: true })
 
       firePointer(target, 'pointerdown', 0, 0)
-      const move = new MouseEvent('pointermove', { clientX: 0, clientY: 80, bubbles: true, cancelable: true })
+      const move = new MouseEvent('pointermove', {
+        clientX: 0,
+        clientY: 80,
+        bubbles: true,
+        cancelable: true,
+      })
       const preventSpy = vi.spyOn(move, 'preventDefault')
       const stopSpy = vi.spyOn(move, 'stopPropagation')
       target.dispatchEvent(move)

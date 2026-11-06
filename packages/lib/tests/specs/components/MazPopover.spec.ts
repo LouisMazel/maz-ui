@@ -37,7 +37,14 @@ describe('given MazPopover component', () => {
 
   describe('when rendered with different positions', () => {
     it('then it should apply the correct position classes', () => {
-      const positions: MazPopoverProps['position'][] = ['top', 'bottom', 'left', 'right', 'top-start', 'bottom-end']
+      const positions: MazPopoverProps['position'][] = [
+        'top',
+        'bottom',
+        'left',
+        'right',
+        'top-start',
+        'bottom-end',
+      ]
 
       positions.forEach((position) => {
         const wrapper = mount(MazPopover, {
@@ -58,7 +65,17 @@ describe('given MazPopover component', () => {
 
   describe('when rendered with different colors', () => {
     it.each(
-      ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'surface'] as MazColor[],
+      [
+        'primary',
+        'secondary',
+        'accent',
+        'info',
+        'success',
+        'warning',
+        'destructive',
+        'contrast',
+        'surface',
+      ] as MazColor[],
     )('then it should apply the correct color classes', (color) => {
       const wrapper = mount(MazPopover, {
         props: {

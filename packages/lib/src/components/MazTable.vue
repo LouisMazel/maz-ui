@@ -539,7 +539,10 @@ const searchByOptions = computed<MazSelectOption[]>(() => {
     label,
     value: key,
   }))
-  return [{ label: messages.value.searchByInput.all, value: null }, ...headerOptions]
+  return [
+    { label: messages.value.searchByInput.all, value: null },
+    ...headerOptions,
+  ]
 })
 
 const searchQueryModelInternal = ref(searchQuery)
@@ -572,7 +575,9 @@ function getSortedRows(rows: T[]) {
         : bValue.localeCompare(aValue)
     }
     else {
-      return sortType.value === 'ASC' ? aValue - bValue : bValue - aValue
+      return sortType.value === 'ASC'
+        ? aValue - bValue
+        : bValue - aValue
     }
   })
 }
@@ -610,7 +615,9 @@ const hasHeader = computed<boolean>((): boolean => !!(search || title || slots.t
 const hasFooter = computed<boolean>(() => !!pagination)
 
 const totalColumns = computed<number>(
-  () => headersNormalized.value.length + (isSelectable.value ? 1 : 0) + (hasSlotContent(slots.actions) ? 1 : 0),
+  () => headersNormalized.value.length + (isSelectable.value ? 1 : 0) + (hasSlotContent(slots.actions)
+    ? 1
+    : 0),
 )
 
 const tableWrapper = useTemplateRef<HTMLElement>('tableWrapper')
@@ -672,14 +679,18 @@ function getNormalizedRows(): T[] {
 }
 
 function getRowKey(row: T, index: number): string | number {
-  return rowKey && row[rowKey] != null ? row[rowKey] : index
+  return rowKey && row[rowKey] != null
+    ? row[rowKey]
+    : index
 }
 
 function getAriaSort(columnIndex: number): 'ascending' | 'descending' | 'none' {
   if (columnIndex !== sortedColumnIndex.value || sortType.value === undefined)
     return 'none'
 
-  return sortType.value === 'ASC' ? 'ascending' : 'descending'
+  return sortType.value === 'ASC'
+    ? 'ascending'
+    : 'descending'
 }
 
 /**
@@ -696,14 +707,20 @@ function onSortableHeaderKeydown(event: KeyboardEvent, columnIndex: number) {
 
 function sortColumn(columnIndex: number) {
   if (columnIndex === sortedColumnIndex.value) {
-    const sortTypeValue = sortType.value === 'DESC' ? 'ASC' : undefined
+    const sortTypeValue = sortType.value === 'DESC'
+      ? 'ASC'
+      : undefined
     sortType.value
-      = sortType.value === undefined ? 'DESC' : sortTypeValue
+      = sortType.value === undefined
+        ? 'DESC'
+        : sortTypeValue
   }
   else {
     sortType.value = 'DESC'
   }
-  sortedColumnIndex.value = sortType.value === undefined ? undefined : columnIndex
+  sortedColumnIndex.value = sortType.value === undefined
+    ? undefined
+    : columnIndex
 }
 
 const allSelected = computed<boolean>({

@@ -70,7 +70,9 @@ describe('MazLink component', () => {
     const inheritWrapper = shallowMount(MazLink, {
       props: { color: 'inherit' },
       slots: { default: 'Link' },
-      global: { stubs: { RouterLink: true } },
+      global: {
+        stubs: { RouterLink: true },
+      },
     })
 
     expect(inheritWrapper.classes('--inherit')).toBe(true)
@@ -81,7 +83,9 @@ describe('MazLink component', () => {
     const hoverWrapper = shallowMount(MazLink, {
       props: { underline: false, underlineHover: true },
       slots: { default: 'Link' },
-      global: { stubs: { RouterLink: true } },
+      global: {
+        stubs: { RouterLink: true },
+      },
     })
 
     expect(hoverWrapper.classes('--underline-hover')).toBe(true)
@@ -94,7 +98,9 @@ describe('MazLink component', () => {
         startIcon: { icon: '/star.svg', size: 'lg', title: 'Star' },
       },
       slots: { default: 'Link' },
-      global: { stubs: { RouterLink: true } },
+      global: {
+        stubs: { RouterLink: true },
+      },
     })
 
     await vi.dynamicImportSettled()
