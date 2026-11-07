@@ -369,6 +369,42 @@ describe('given MazUiProvider component', () => {
     })
   })
 
+  describe('when translations messages prop changes', () => {
+    it('adds the new object messages to the instance', async () => {
+      const setLocaleMessage = vi.fn()
+      mockCreateMazUiTranslations.mockReturnValue(createMockTranslationsInstance({ setLocaleMessage }))
+      const wrapper = mount(MazUiProvider, {
+        props: {
+          theme: { colorMode: 'auto', preset: mockPreset },
+          translations: {
+            locale: 'en',
+            messages: { en: {} },
+          },
+        },
+        slots: {
+          default: () => h('div'),
+        },
+      })
+
+      await wrapper.setProps({
+        translations: {
+          locale: 'en',
+          messages: {
+            en: {
+              pagination: { navAriaLabel: 'Pages' },
+            },
+            fr: () => Promise.resolve({}),
+          },
+        },
+      })
+
+      expect(setLocaleMessage).toHaveBeenCalledWith('en', {
+        pagination: { navAriaLabel: 'Pages' },
+      })
+      expect(setLocaleMessage).toHaveBeenCalledTimes(1)
+    })
+  })
+
   describe('when unmounted', () => {
     it('calls the theme cleanup function', () => {
       const wrapper = mount(MazUiProvider, {
