@@ -1,0 +1,86 @@
+@reference '../../.vitepress/theme/main.css';
+
+/*
+ * Home page: every chapter carries its own theme preset (`data-preset`, scoped by home.data.ts).
+ * Motion language, defined once: one easing for the scroll-driven animations.
+ * Only transform and opacity are animated, never a color nor a size.
+ * Layout and colors live in the templates (Tailwind), this file only keeps what utilities cannot express.
+ */
+
+.home {
+  --home-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --home-radius: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.home [data-scheme='dark'],
+.home .home-chapter--night {
+  color-scheme: only dark;
+}
+
+.home [data-scheme='light'] {
+  color-scheme: only light;
+}
+
+.home-display {
+  @apply maz:font-display maz:leading-[1.02] maz:tracking-[-0.03em] maz:text-balance;
+}
+
+.home-eyebrow {
+  @apply maz:m-0 maz:font-mono maz:text-xs maz:tracking-[0.08em] maz:text-muted maz:uppercase;
+}
+
+.home-lead {
+  @apply maz:max-w-2xl maz:text-[clamp(1.05rem,1.6vw,1.25rem)] maz:leading-relaxed maz:text-pretty maz:text-muted;
+}
+
+.home a:focus-visible {
+  @apply maz:rounded-sm maz:outline-2 maz:outline-offset-3 maz:outline-primary;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .home-chapter:not(:last-child) > .home-chapter__inner {
+      animation: home-recede linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    .home-reveal {
+      animation: home-reveal var(--home-ease) both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 70%;
+    }
+  }
+}
+
+@keyframes home-twinkle {
+  50% {
+    opacity: 0.72;
+    scale: 0.92;
+  }
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateZ(var(--hero-z, 0px)) translateY(0);
+  }
+
+  50% {
+    transform: translateZ(var(--hero-z, 0px)) translateY(-0.75rem);
+  }
+}
+
+@keyframes home-recede {
+  to {
+    transform: translateY(18%) scale(0.94);
+    opacity: 0.25;
+  }
+}
+
+@keyframes home-reveal {
+  from {
+    transform: translateY(1.25rem);
+    opacity: 0;
+  }
+}

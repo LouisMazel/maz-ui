@@ -109,7 +109,7 @@ export const components = {
         { text: 'Skeleton', link: '/components/maz-skeleton' },
         { text: 'LoadingBar', link: '/components/maz-loading-bar' },
         { text: 'FullscreenLoader', link: '/components/maz-fullscreen-loader' },
-        { text: 'CircularProggstressBar', link: '/components/maz-circular-progress-bar' },
+        { text: 'CircularProgressBar', link: '/components/maz-circular-progress-bar' },
         { text: 'Badge', link: '/components/maz-badge' },
       ],
     },

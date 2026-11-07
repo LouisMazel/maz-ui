@@ -56,6 +56,7 @@
     "tailwindcss": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
+    "unplugin-vue-components": "catalog:",
     "vite": "catalog:",
     "vite-svg-loader": "catalog:",
     "vitepress": "2.0.0-alpha.21",

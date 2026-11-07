@@ -23,8 +23,10 @@
 
 :root {
   --vp-layout-top-height: 4.2rem;
+  --vp-nav-home-bg-color: var(--vp-nav-bg-color);
   /* --vp-nav-logo-height: 42px; */
   --vp-font-family-base: var(--maz-font-family);
+  --vp-font-family-mono: var(--maz-font-mono-stack);
   --vp-c-bg: var(--maz-color-surface);
   --vp-c-brand: var(--maz-color-primary);
   --vp-c-brand-1: var(--maz-color-primary);
@@ -73,7 +75,9 @@ html {
 }
 
 html.dark {
-  --vp-c-bg-elv: hsl(235deg 16% 12%);
+  /* presets with a deep primary (white text on buttons) need a lighter step for the links to stay readable (AA) on the dark surface */
+  --vp-c-brand-1: var(--maz-color-primary-300);
+  --vp-c-bg-elv: var(--maz-color-surface-400);
   --vp-c-bg-elv-mute: var(--maz-color-surface);
   --vp-c-gutter: var(--maz-color-divider);
   /* Attention --vp-c-bg-soft est aussi le background du docsearch (algolia) */
@@ -86,6 +90,11 @@ html.dark {
 
 .vp-doc blockquote > p:not(:where(.vp-raw, .vp-raw *)) {
   @apply maz:text-base!;
+}
+
+.vp-doc :is(h1, h2, h3):not(:where(.vp-raw, .vp-raw *)) {
+  font-family: var(--maz-font-display-stack, var(--maz-font-family));
+  letter-spacing: -0.01em;
 }
 
 .vp-doc strong:not(:where(.vp-raw, .vp-raw *)) {
