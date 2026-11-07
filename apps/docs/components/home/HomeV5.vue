@@ -25,6 +25,22 @@ const STEPS = [
 
 const SCALES = [
   {
+    role: 'primary',
+    classes: [
+      'maz:bg-primary-50',
+      'maz:bg-primary-100',
+      'maz:bg-primary-200',
+      'maz:bg-primary-300',
+      'maz:bg-primary-400',
+      'maz:bg-primary-500',
+      'maz:bg-primary-600',
+      'maz:bg-primary-700',
+      'maz:bg-primary-800',
+      'maz:bg-primary-900',
+      'maz:bg-primary-950',
+    ],
+  },
+  {
     role: 'secondary',
     classes: [
       'maz:bg-secondary-50',
@@ -54,6 +70,22 @@ const SCALES = [
       'maz:bg-accent-800',
       'maz:bg-accent-900',
       'maz:bg-accent-950',
+    ],
+  },
+  {
+    role: 'info',
+    classes: [
+      'maz:bg-info-50',
+      'maz:bg-info-100',
+      'maz:bg-info-200',
+      'maz:bg-info-300',
+      'maz:bg-info-400',
+      'maz:bg-info-500',
+      'maz:bg-info-600',
+      'maz:bg-info-700',
+      'maz:bg-info-800',
+      'maz:bg-info-900',
+      'maz:bg-info-950',
     ],
   },
   {

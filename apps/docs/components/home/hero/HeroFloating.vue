@@ -158,7 +158,7 @@ const LAYER = 'maz:absolute maz:[transform:translateZ(var(--hero-z,0rem))] maz:m
         </MazCard>
       </div>
 
-      <div :class="LAYER" class="maz:inset-s-[30%] maz:bottom-[2%] maz:flex maz:gap-2 maz:[--hero-z:15.714286rem] maz:[animation-delay:-3s]">
+      <div :class="LAYER" class="maz:inset-s-[30%] maz:bottom-[15%] maz:flex maz:gap-2 maz:[--hero-z:15.714286rem] maz:[animation-delay:-3s]">
         <MazBadge color="primary" rounded-size="full">
           Vue 3
         </MazBadge>
