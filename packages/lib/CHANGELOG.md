@@ -1,5 +1,28 @@
 # Change Log
 
+## v5.4.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)
+
+### 🩹 Fixes
+
+- **maz-ui:** Declarations no longer import @vue/reactivity ([fd6e42c61](https://github.com/LouisMazel/maz-ui/commit/fd6e42c61))
+- **lib:** Render the animated components on the server without layout shift ([60d22ac69](https://github.com/LouisMazel/maz-ui/commit/60d22ac69))
+
+  MazAnimatedText, MazAnimatedElement and MazAnimatedCounter render the same markup on the server and on the client, and animate with CSS only: the content keeps its layout on hydration, and the animation starts on the first paint when the element is already in the viewport. With prefers-reduced-motion, the content is shown without animation.
+
+- **lib:** Render the code of MazCodeHighlight on the server ([3f42592ca](https://github.com/LouisMazel/maz-ui/commit/3f42592ca))
+
+  The code is in the server markup as plain text until shiki highlights it, so the block keeps its size on hydration and the code is readable without JavaScript.
+
+- **lib:** Expose MazIcon to screen readers when it has a title ([ff2b9466d](https://github.com/LouisMazel/maz-ui/commit/ff2b9466d))
+
+  An icon with a `title` is no longer hidden with `aria-hidden`: it gets the `img` role and the title as its accessible name.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.1-beta.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.3.1-beta.0)

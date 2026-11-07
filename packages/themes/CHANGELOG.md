@@ -1,5 +1,43 @@
 # Change Log
 
+## v5.4.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)
+
+### 🚀 Features
+
+- **themes:** Add the folio preset ([65bef26c3](https://github.com/LouisMazel/maz-ui/commit/65bef26c3))
+
+  Folio is an electric preset: an electric blue `primary`, a magenta `secondary` and a cyan `accent`, a violet-tinted ink and night, with Inter for the text and Fraunces for the titles. Use it with `preset: 'folio'` or `import { folio } from '@maz-ui/themes/presets/folio'`.
+
+- **themes:** Add an opt-in perceptual color scale ([a424aebc5](https://github.com/LouisMazel/maz-ui/commit/a424aebc5))
+
+  The `-50` to `-950` steps of the brand colors can keep their order and their hue with a very dark or very light base color, where the default scale collapses to black or white. Opt in from a preset:
+
+  ```ts
+  import { definePreset } from '@maz-ui/themes'
+  import { mazUi } from '@maz-ui/themes/presets/mazUi'
+
+  export const brand = definePreset({
+    base: mazUi,
+    overrides: {
+      scales: { color: 'perceptual' },
+    },
+  })
+  ```
+
+  The default stays `relative` and the classes do not change. See [Color scales](https://maz-ui.com/ecosystem/themes#color-scales).
+
+### 🩹 Fixes
+
+- **themes:** Raise the contrast of the presets to WCAG AA ([13ae6abef](https://github.com/LouisMazel/maz-ui/commit/13ae6abef))
+
+  The colors of the presets meet the WCAG AA contrast (4.5:1) against their foreground and against the surface, in light and dark mode. `primary`, `accent`, `info`, `destructive` and `muted` are a bit darker in some presets: if you override them, your values are unchanged.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.1-beta.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.3.1-beta.0)

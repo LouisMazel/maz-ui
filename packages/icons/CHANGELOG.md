@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.4.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/icons:** Stop publishing the declarations of the build utilities ([1c56e33d8](https://github.com/LouisMazel/maz-ui/commit/1c56e33d8))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.1-beta.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.3.1-beta.0)

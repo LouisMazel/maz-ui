@@ -1,5 +1,86 @@
 # Change Log
 
+## v5.4.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)
+
+### 🚀 Features
+
+- **themes:** Add the folio preset ([65bef26c3](https://github.com/LouisMazel/maz-ui/commit/65bef26c3))
+
+  Folio is an electric preset: an electric blue `primary`, a magenta `secondary` and a cyan `accent`, a violet-tinted ink and night, with Inter for the text and Fraunces for the titles. Use it with `preset: 'folio'` or `import { folio } from '@maz-ui/themes/presets/folio'`.
+
+- **themes:** Add an opt-in perceptual color scale ([a424aebc5](https://github.com/LouisMazel/maz-ui/commit/a424aebc5))
+
+  The `-50` to `-950` steps of the brand colors can keep their order and their hue with a very dark or very light base color, where the default scale collapses to black or white. Opt in from a preset:
+
+  ```ts
+  import { definePreset } from '@maz-ui/themes'
+  import { mazUi } from '@maz-ui/themes/presets/mazUi'
+
+  export const brand = definePreset({
+    base: mazUi,
+    overrides: {
+      scales: { color: 'perceptual' },
+    },
+  })
+  ```
+
+  The default stays `relative` and the classes do not change. See [Color scales](https://maz-ui.com/ecosystem/themes#color-scales).
+
+- **@maz-ui/mcp:** Show the color scale mode of the project preset in `get_theme_tokens` ([1777f8781](https://github.com/LouisMazel/maz-ui/commit/1777f8781))
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Label the bundled docs with the maz-ui version they document ([3df0ec36c](https://github.com/LouisMazel/maz-ui/commit/3df0ec36c))
+- **maz-ui:** Declarations no longer import @vue/reactivity ([fd6e42c61](https://github.com/LouisMazel/maz-ui/commit/fd6e42c61))
+- **@maz-ui/utils:** Declare vue as an optional peer dependency for the types of its helpers ([494987166](https://github.com/LouisMazel/maz-ui/commit/494987166))
+- **@maz-ui/icons:** Stop publishing the declarations of the build utilities ([1c56e33d8](https://github.com/LouisMazel/maz-ui/commit/1c56e33d8))
+- **@maz-ui/nuxt:** Declare the packages imported by its declarations ([51f1d144e](https://github.com/LouisMazel/maz-ui/commit/51f1d144e))
+- **@maz-ui/nuxt:** Warn when the app and the module load two versions of maz-ui ([5d7841682](https://github.com/LouisMazel/maz-ui/commit/5d7841682))
+- **lib:** Render the animated components on the server without layout shift ([60d22ac69](https://github.com/LouisMazel/maz-ui/commit/60d22ac69))
+
+  MazAnimatedText, MazAnimatedElement and MazAnimatedCounter render the same markup on the server and on the client, and animate with CSS only: the content keeps its layout on hydration, and the animation starts on the first paint when the element is already in the viewport. With prefers-reduced-motion, the content is shown without animation.
+
+- **lib:** Render the code of MazCodeHighlight on the server ([3f42592ca](https://github.com/LouisMazel/maz-ui/commit/3f42592ca))
+
+  The code is in the server markup as plain text until shiki highlights it, so the block keeps its size on hydration and the code is readable without JavaScript.
+
+- **lib:** Expose MazIcon to screen readers when it has a title ([ff2b9466d](https://github.com/LouisMazel/maz-ui/commit/ff2b9466d))
+
+  An icon with a `title` is no longer hidden with `aria-hidden`: it gets the `img` role and the title as its accessible name.
+
+- **themes:** Raise the contrast of the presets to WCAG AA ([13ae6abef](https://github.com/LouisMazel/maz-ui/commit/13ae6abef))
+
+  The colors of the presets meet the WCAG AA contrast (4.5:1) against their foreground and against the surface, in light and dark mode. `primary`, `accent`, `info`, `destructive` and `muted` are a bit darker in some presets: if you override them, your values are unchanged.
+
+### 📖 Documentation
+
+- **docs:** Document the pnpm option of @maz-ui/eslint-config ([7766bbfa7](https://github.com/LouisMazel/maz-ui/commit/7766bbfa7))
+- **docs:** Explain how to keep the maz-ui packages on the same version ([77c79ecdd](https://github.com/LouisMazel/maz-ui/commit/77c79ecdd))
+- **nuxt:** List the folio preset ([e952ca789](https://github.com/LouisMazel/maz-ui/commit/e952ca789))
+- Document the folio preset ([1ed5002f2](https://github.com/LouisMazel/maz-ui/commit/1ed5002f2))
+- Redesign the home page ([fa6cf2407](https://github.com/LouisMazel/maz-ui/commit/fa6cf2407))
+
+  A new home page for Maz-UI v5: every chapter is rendered with a different theme preset, the docs use the new folio preset with self-hosted fonts and the logos take its colors. The components of the docs are resolved on demand with unplugin-vue-components instead of being registered globally.
+
+- **docs:** Document the perceptual color scales and use them on the site ([6e4387cad](https://github.com/LouisMazel/maz-ui/commit/6e4387cad))
+- **docs:** Add the primary and info scales to the v5 chapter of the home page ([bb11725a4](https://github.com/LouisMazel/maz-ui/commit/bb11725a4))
+
+### 📦 Build
+
+- **@maz-ui/vite-config:** Only externalize the dependencies of the built package ([7200c437e](https://github.com/LouisMazel/maz-ui/commit/7200c437e))
+- **@maz-ui/mcp:** Bundle @maz-ui/node and @maz-ui/utils without declaring them as optional peers ([2443858ef](https://github.com/LouisMazel/maz-ui/commit/2443858ef))
+- Load the Node.js types in the root typecheck ([b4bfb923f](https://github.com/LouisMazel/maz-ui/commit/b4bfb923f))
+
+### 💄 Styles
+
+- **nuxt-app:** Format with @antfu/eslint-config v10 ([bab04ccdd](https://github.com/LouisMazel/maz-ui/commit/bab04ccdd))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.1-beta.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.3.1-beta.0)
