@@ -1,680 +1,410 @@
-import type { ThemePresetOverrides, ThemeState } from '../../types'
-import { setCookie } from '@maz-ui/utils/helpers/cookie'
-import { getCurrentInstance, inject } from 'vue'
+import type { Ref } from 'vue'
+import type { ThemePreset, ThemePresetOverrides, ThemeState } from '../../types'
+import { createApp, defineComponent, ref } from 'vue'
 import { mazUi } from '../../presets'
-import { mergePresets } from '../../utils'
-import { generateCSS, injectCSS } from '../../utils/css-generator'
-import { getSystemColorMode, saveResolvedColorMode } from '../../utils/get-color-mode'
-import { getPreset } from '../../utils/get-preset'
 import { useTheme } from '../useTheme'
 
-const mockThemeState: ThemeState = {
-  preset: mazUi,
-  colorMode: 'light',
-  darkClass: 'dark',
-  lightClass: 'light',
-  strategy: 'runtime',
-  darkModeStrategy: 'class',
-  mode: 'both',
-  isDark: false,
-  persistPreset: true,
-}
-
-const mockRefThemeState = { value: mockThemeState }
-
-vi.mock('vue', async (importOriginal) => {
-  const original = await importOriginal<typeof import('vue')>()
-
-  return {
-    ...original,
-    ref: vi.fn(value => ({ value })),
-    computed: vi.fn((getter) => {
-      if (typeof getter === 'function') {
-        return {
-          value: getter(),
-        }
-      }
-      return {
-        get value() {
-          return getter.get()
-        },
-        set value(val) {
-          getter.set(val)
-        },
-      }
-    }),
-    inject: vi.fn(),
-    getCurrentInstance: vi.fn(),
-    watch: vi.fn(() => vi.fn()),
-  }
-})
+const { generateCSS, getActiveThemeState, getPreset, injectCSS, isServer, mergePresets, readPresetPreference, runViewTransition, saveColorModeChoice, savePresetPreference, setActiveThemeState } = vi.hoisted(() => ({
+  generateCSS: vi.fn(() => 'full-css'),
+  getActiveThemeState: vi.fn((): Ref<ThemeState | undefined> | undefined => undefined),
+  getPreset: vi.fn(),
+  injectCSS: vi.fn(),
+  isServer: vi.fn(() => false),
+  mergePresets: vi.fn((base: ThemePreset, overrides: ThemePresetOverrides) => ({
+    ...base,
+    ...overrides,
+    name: base.name,
+  })),
+  readPresetPreference: vi.fn((): { base: string, active: string } | null => null),
+  runViewTransition: vi.fn((apply: () => void) => {
+    apply()
+    return Promise.resolve()
+  }),
+  saveColorModeChoice: vi.fn(),
+  savePresetPreference: vi.fn(),
+  setActiveThemeState: vi.fn(),
+}))
 
 vi.mock('../../utils/css-generator', () => ({
-  generateCSS: vi.fn(() => 'full-css'),
-  injectCSS: vi.fn(),
   CSS_ID: 'maz-theme-css',
+  generateCSS,
+  injectCSS,
 }))
 
-vi.mock('../../utils/get-color-mode', () => ({
-  getColorMode: vi.fn(),
-  isSystemPrefersDark: vi.fn(),
-  getSystemColorMode: vi.fn(() => 'light'),
-  saveResolvedColorMode: vi.fn(),
+vi.mock('../../utils/get-preset', () => ({ getPreset }))
+
+vi.mock('../../utils/preset-merger', () => ({ mergePresets }))
+
+vi.mock('../../utils/no-transition', () => ({
+  noTransition: (fn: (...args: any[]) => any, ...args: any[]) => fn(...args),
 }))
 
-vi.mock('../../utils/get-preset', () => ({
-  getPreset: vi.fn(),
+vi.mock('../../utils/theme-preferences', () => ({
+  readPresetPreference,
+  saveColorModeChoice,
+  savePresetPreference,
 }))
 
-vi.mock('../../utils/preset-merger', () => ({
-  mergePresets: vi.fn(),
+vi.mock('../../utils/theme-state-registry', () => ({
+  getActiveThemeState,
+  setActiveThemeState,
 }))
 
-vi.mock('../../utils/cookie-storage', () => ({
-  savePreset: vi.fn(),
-  getSavedPreset: vi.fn(() => null),
-  clearSavedPresetName: vi.fn(),
-}))
+vi.mock('../../utils/view-transition', () => ({ runViewTransition }))
 
-vi.mock('@maz-ui/utils/helpers/cookie', () => ({
-  setCookie: vi.fn(),
-  getCookie: vi.fn(),
-  deleteCookie: vi.fn(),
-}))
+vi.mock('@maz-ui/utils/helpers/isServer', () => ({ isServer }))
 
-vi.mock('@maz-ui/utils/helpers/isServer', () => ({
-  isServer: vi.fn(() => false),
-}))
+function createState(overrides: Partial<ThemeState> = {}): ThemeState {
+  return {
+    preset: mazUi,
+    colorMode: 'light',
+    darkClass: 'dark',
+    lightClass: 'light',
+    strategy: 'runtime',
+    darkModeStrategy: 'class',
+    mode: 'both',
+    isDark: false,
+    persistPreset: true,
+    ...overrides,
+  }
+}
+
+function withThemeState<T>(state: Ref<ThemeState | undefined>, fn: () => T): T {
+  const app = createApp({})
+  app.provide('mazThemeState', state)
+  return app.runWithContext(fn)
+}
 
 describe('useTheme', () => {
-  beforeEach(() => {
-    vi.stubGlobal('document', {
-      documentElement: {
-        classList: {
-          add: vi.fn(),
-          remove: vi.fn(),
-        },
-      },
-      head: {
-        appendChild: vi.fn(),
-      },
-      createElement: vi.fn(() => ({
-        remove: vi.fn(),
-        textContent: '',
-      })),
-      cookie: '',
-    })
-
-    vi.stubGlobal('matchMedia', vi.fn(() => ({
-      matches: false,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      media: '(prefers-color-scheme: dark)',
-      onchange: null,
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    })))
-  })
-
   afterEach(() => {
     vi.clearAllMocks()
-    vi.unstubAllGlobals()
+    isServer.mockReturnValue(false)
+    getActiveThemeState.mockReturnValue(undefined)
+    readPresetPreference.mockReturnValue(null)
   })
 
-  describe('given useTheme composable initialization', () => {
-    describe('when theme state is not available', () => {
-      it('then it throws error', () => {
-        vi.mocked(inject).mockReturnValue(undefined)
-        vi.mocked(getCurrentInstance).mockReturnValue(null)
+  describe('given no theme state', () => {
+    describe('when useTheme is called', () => {
+      it('then it throws an installation error', () => {
+        expect(() => useTheme()).toThrow('useTheme requires the MazUi/MazUiTheme plugin or a MazUiProvider wrapper')
+      })
+    })
+  })
 
-        expect(() => useTheme()).toThrowError(
-          '[@maz-ui/themes] useTheme requires the MazUi/MazUiTheme plugin or a MazUiProvider wrapper',
-        )
+  describe('given a provided theme state', () => {
+    describe('when useTheme is called', () => {
+      it('then it exposes the state', () => {
+        const state = ref(createState({ colorMode: 'dark', isDark: true }))
+
+        const theme = withThemeState(state, () => useTheme())
+
+        expect(theme.colorMode.value).toBe('dark')
+        expect(theme.isDark.value).toBe(true)
+        expect(theme.preset.value).toStrictEqual(mazUi)
+        expect(theme.presetName.value).toBe('maz-ui')
+        expect(theme.currentPreset.value).toStrictEqual(mazUi)
+        expect(theme.strategy.value).toBe('runtime')
+        expect(theme.mode.value).toBe('both')
+        expect(theme.darkModeStrategy.value).toBe('class')
+      })
+
+      it('then the state becomes the fallback of the calls made outside a component', () => {
+        const state = ref(createState())
+
+        withThemeState(state, () => useTheme())
+
+        expect(setActiveThemeState).toHaveBeenCalledWith(state)
       })
     })
 
-    describe('when state is injected', () => {
-      it('then it returns theme interface', () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+    describe('when the state changes after the call', () => {
+      it('then the computed values follow it', () => {
+        const state = ref(createState())
+        const theme = withThemeState(state, () => useTheme())
 
-        const result = useTheme()
+        state.value.isDark = true
+        state.value.colorMode = 'dark'
 
-        expect(result).toHaveProperty('presetName')
-        expect(result).toHaveProperty('colorMode')
-        expect(result).toHaveProperty('isDark')
-        expect(result).toHaveProperty('strategy')
-        expect(result).toHaveProperty('updateTheme')
-        expect(result).toHaveProperty('setColorMode')
-        expect(result).toHaveProperty('toggleDarkMode')
-        expect(result).toHaveProperty('mode')
-        expect(result).toHaveProperty('darkModeStrategy')
-        expect(result).toHaveProperty('preset')
+        expect(theme.isDark.value).toBe(true)
+        expect(theme.colorMode.value).toBe('dark')
       })
     })
+  })
 
-    describe('when inject fails', () => {
-      it('then it falls back to global properties', () => {
-        vi.mocked(inject).mockImplementation(() => {
-          throw new Error('inject failed')
-        })
-
-        vi.mocked(getCurrentInstance).mockReturnValue({
-          appContext: {
-            app: {
-              config: {
-                globalProperties: {
-                  $mazThemeState: mockRefThemeState,
-                },
-              },
-            },
+  describe('given a theme state on the global properties only', () => {
+    describe('when useTheme is called', () => {
+      it('then it uses it', () => {
+        const state = ref(createState({ colorMode: 'auto' }))
+        let theme: ReturnType<typeof useTheme> | undefined
+        const app = createApp(defineComponent({
+          setup() {
+            theme = useTheme()
+            return () => null
           },
-        } as never)
+        }))
+        app.config.globalProperties.$mazThemeState = state as Ref<ThemeState>
 
-        const result = useTheme()
+        app.mount(document.createElement('div'))
 
-        expect(result).toHaveProperty('presetName')
-      })
-    })
-
-    describe('when running on server side', () => {
-      it('then it resets theme state', async () => {
-        const { isServer } = await import('@maz-ui/utils/helpers/isServer')
-        vi.mocked(isServer).mockReturnValue(true)
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const result = useTheme()
-
-        expect(result).toHaveProperty('presetName')
-      })
-    })
-
-    describe('when injected state is updated', () => {
-      it('then the watch callback runs without throwing for a valid newState', async () => {
-        const { watch } = await import('vue')
-        let watchCallback: ((newState: any) => void) | undefined
-        vi.mocked(watch).mockImplementation(((_source: any, cb: any) => {
-          watchCallback = cb
-          return vi.fn()
-        }) as unknown as typeof watch)
-
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        useTheme()
-
-        expect(() => watchCallback?.({
-          ...mockRefThemeState.value,
-          preset: { ...mazUi, name: 'rotated' },
-        })).not.toThrow()
-      })
-
-      it('then the watch callback ignores a falsy newState', async () => {
-        const { watch } = await import('vue')
-        let watchCallback: ((newState: any) => void) | undefined
-        vi.mocked(watch).mockImplementation(((_source: any, cb: any) => {
-          watchCallback = cb
-          return vi.fn()
-        }) as unknown as typeof watch)
-
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        useTheme()
-
-        expect(() => watchCallback?.(undefined)).not.toThrow()
+        expect(theme?.colorMode.value).toBe('auto')
+        app.unmount()
       })
     })
   })
 
-  describe('given updateTheme function', () => {
-    describe('when called with partial preset', () => {
-      it('then it merges partial preset with current preset', async () => {
-        const mergedPreset = { ...mazUi, name: 'merged' }
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-        vi.mocked(mergePresets).mockReturnValue(mergedPreset)
+  describe('given two apps with their own theme state', () => {
+    describe('when useTheme is called in each of them', () => {
+      it('then each call reads the state of its own app', () => {
+        const first = ref(createState({ colorMode: 'light' }))
+        const second = ref(createState({ colorMode: 'dark' }))
 
-        const { updateTheme } = useTheme()
-        const partialPreset = {
-          foundation: { 'border-width': '2px' },
-        } as ThemePresetOverrides
+        const firstTheme = withThemeState(first, () => useTheme())
+        const secondTheme = withThemeState(second, () => useTheme())
 
-        await updateTheme(partialPreset)
+        expect(firstTheme.colorMode.value).toBe('light')
+        expect(secondTheme.colorMode.value).toBe('dark')
+      })
+    })
+  })
 
-        expect(mergePresets).toHaveBeenCalled()
+  describe('given a provided theme state not resolved yet', () => {
+    describe('when useTheme is called', () => {
+      it('then it uses the installed state', () => {
+        getActiveThemeState.mockReturnValue(ref(createState({ colorMode: 'dark' })))
+
+        const theme = withThemeState(ref(undefined), () => useTheme())
+
+        expect(theme.colorMode.value).toBe('dark')
+        expect(setActiveThemeState).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('given a call outside a component in the browser', () => {
+    describe('when a theme state was installed before', () => {
+      it('then it uses the installed state', () => {
+        getActiveThemeState.mockReturnValue(ref(createState({ colorMode: 'dark' })))
+
+        expect(useTheme().colorMode.value).toBe('dark')
+      })
+    })
+  })
+
+  describe('given a call outside a component on the server', () => {
+    describe('when a theme state was installed before', () => {
+      it('then it never reuses it', () => {
+        isServer.mockReturnValue(true)
+        getActiveThemeState.mockReturnValue(ref(createState()))
+
+        expect(() => useTheme()).toThrow()
       })
     })
 
-    describe('when called with string name', () => {
-      it('then it loads preset by string name', async () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-        vi.mocked(getPreset).mockResolvedValue(mazUi)
+    describe('when the state is provided', () => {
+      it('then it is not kept for the next requests', () => {
+        isServer.mockReturnValue(true)
 
-        const { updateTheme } = useTheme()
+        withThemeState(ref(createState()), () => useTheme())
+
+        expect(setActiveThemeState).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('given updateTheme', () => {
+    describe('when called with overrides', () => {
+      it('then it merges them in the current preset and injects the CSS', async () => {
+        const state = ref(createState())
+        const { updateTheme } = withThemeState(state, () => useTheme())
+
+        await updateTheme({
+          foundation: { 'border-width': '2px' },
+        } as ThemePresetOverrides)
+
+        expect(mergePresets).toHaveBeenCalledWith(mazUi, {
+          foundation: { 'border-width': '2px' },
+        })
+        expect(injectCSS).toHaveBeenCalledWith('maz-theme-css', 'full-css')
+      })
+    })
+
+    describe('when called with the name of another preset', () => {
+      it('then it loads and applies it', async () => {
+        const ocean = { ...mazUi, name: 'ocean' }
+        getPreset.mockResolvedValue(ocean)
+        const state = ref(createState())
+        const { updateTheme } = withThemeState(state, () => useTheme())
 
         await updateTheme('ocean')
 
         expect(getPreset).toHaveBeenCalledWith('ocean')
-        expect(generateCSS).toHaveBeenCalledTimes(1)
-        expect(injectCSS).toHaveBeenCalledTimes(1)
+        expect(state.value.preset).toEqual(ocean)
+        expect(mergePresets).not.toHaveBeenCalled()
       })
     })
 
-    describe('when called with preset having different name', () => {
-      it('then it replaces preset completely', async () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+    describe('when the strategy is buildtime', () => {
+      it('then it does not inject CSS', async () => {
+        const state = ref(createState({ strategy: 'buildtime' }))
+        const { updateTheme } = withThemeState(state, () => useTheme())
 
-        const newPreset = { ...mazUi, name: 'different-preset' }
-        const { updateTheme } = useTheme()
-
-        await updateTheme(newPreset)
-
-        expect(() => updateTheme(newPreset)).not.toThrow()
-      })
-    })
-
-    describe('when theme state is not available', () => {
-      it('then it returns early without error', async () => {
-        vi.mocked(inject).mockReturnValue({ value: undefined })
-
-        const { updateTheme } = useTheme()
-        const partialPreset = {
-          foundation: { 'border-width': '2px' },
-        } as ThemePresetOverrides
-
-        await expect(updateTheme(partialPreset)).resolves.toBeUndefined()
-      })
-    })
-
-    describe('when strategy is buildtime', () => {
-      it('then it does not call injectCSS after updateTheme', async () => {
-        const buildtimeState: ThemeState = {
-          ...mockThemeState,
-          strategy: 'buildtime',
-        }
-        vi.mocked(inject).mockReturnValue({ value: buildtimeState })
-        vi.mocked(mergePresets).mockReturnValue({ ...mazUi, name: 'merged' })
-
-        const { updateTheme } = useTheme()
         await updateTheme({
-          foundation: { space: '0.25rem' },
+          foundation: { 'border-width': '2px' },
         } as ThemePresetOverrides)
 
         expect(injectCSS).not.toHaveBeenCalled()
       })
     })
 
-    describe('when preset is not found', () => {
-      it('then it logs error and returns', async () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-        vi.mocked(getPreset).mockResolvedValue(null as any)
+    describe('when the preset is not found', () => {
+      it('then it logs an error and keeps the preset', async () => {
+        getPreset.mockResolvedValue(null)
         const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+        const state = ref(createState())
+        const { updateTheme } = withThemeState(state, () => useTheme())
 
-        const { updateTheme } = useTheme()
-
-        await updateTheme('maz-ui')
+        await updateTheme('unknown' as never)
 
         expect(consoleSpy).toHaveBeenCalledWith('[@maz-ui/themes] No preset found — with buildtime strategy you must pass a full preset')
+        expect(state.value.preset).toStrictEqual(mazUi)
         consoleSpy.mockRestore()
       })
     })
 
-    describe('when persistPreset is false on the state', () => {
-      it('then updateTheme does not write the preset cookie', async () => {
-        const { savePreset } = await import('../../utils/cookie-storage')
-        vi.mocked(savePreset).mockClear()
-        vi.mocked(inject).mockReturnValue({
-          value: { ...mockThemeState, persistPreset: false },
-        })
-        vi.mocked(mergePresets).mockReturnValue(mazUi)
+    describe('when persistPreset is false', () => {
+      it('then it does not write the preset cookie', async () => {
+        const state = ref(createState({ persistPreset: false }))
+        const { updateTheme } = withThemeState(state, () => useTheme())
 
-        const { updateTheme } = useTheme()
         await updateTheme({
           foundation: { 'border-width': '2px' },
         } as ThemePresetOverrides)
 
-        expect(savePreset).not.toHaveBeenCalled()
+        expect(savePresetPreference).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('when the state knows the configured preset', () => {
+      it('then the cookie keeps it as the base', async () => {
+        getPreset.mockResolvedValue({ ...mazUi, name: 'ocean' })
+        const state = ref(createState({ presetBase: 'folio' }))
+        const { updateTheme } = withThemeState(state, () => useTheme())
+
+        await updateTheme('ocean')
+
+        expect(savePresetPreference).toHaveBeenCalledWith('folio', 'ocean')
+      })
+    })
+
+    describe('when only the cookie knows the configured preset', () => {
+      it('then the cookie keeps its base', async () => {
+        getPreset.mockResolvedValue({ ...mazUi, name: 'ocean' })
+        readPresetPreference.mockReturnValue({ base: 'nova', active: 'nova' })
+        const state = ref(createState())
+        const { updateTheme } = withThemeState(state, () => useTheme())
+
+        await updateTheme('ocean')
+
+        expect(savePresetPreference).toHaveBeenCalledWith('nova', 'ocean')
+      })
+    })
+
+    describe('when nothing knows the configured preset', () => {
+      it('then the new preset becomes the base', async () => {
+        getPreset.mockResolvedValue({ ...mazUi, name: 'ocean' })
+        const state = ref(createState())
+        const { updateTheme } = withThemeState(state, () => useTheme())
+
+        await updateTheme('ocean')
+
+        expect(savePresetPreference).toHaveBeenCalledWith('ocean', 'ocean')
+      })
+    })
+
+    describe('when the state is gone', () => {
+      it('then it does nothing', async () => {
+        const state = ref<ThemeState | undefined>(createState())
+        const { updateTheme } = withThemeState(state, () => useTheme())
+        state.value = undefined
+
+        await updateTheme('ocean')
+
+        expect(getPreset).not.toHaveBeenCalled()
       })
     })
   })
 
-  describe('given setColorMode function', () => {
-    describe('when called with dark mode', () => {
-      it('then it sets cookie with dark value', () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { setColorMode } = useTheme()
-
-        setColorMode('dark')
-
-        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
-      })
-    })
-
-    describe('when called with light mode', () => {
-      it('then it sets cookie with light value', () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { setColorMode } = useTheme()
-
-        setColorMode('light')
-
-        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'light')
-      })
-    })
-
-    describe('when called with auto mode', () => {
-      it('then it sets cookie with auto value', () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { setColorMode } = useTheme()
-
-        setColorMode('auto')
-
-        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'auto')
-      })
-
-      it('then it saves resolved color mode', () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { setColorMode } = useTheme()
-
-        setColorMode('auto')
-
-        expect(saveResolvedColorMode).toHaveBeenCalledWith('light')
-      })
-
-      it('then it saves resolved color mode as dark when system prefers dark', () => {
-        vi.mocked(getSystemColorMode).mockReturnValueOnce('dark')
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { setColorMode } = useTheme()
-
-        setColorMode('auto')
-
-        expect(saveResolvedColorMode).toHaveBeenCalledWith('dark')
-      })
-    })
-  })
-
-  describe('given toggleDarkMode function', () => {
+  describe('given setColorMode', () => {
     describe('when called', () => {
-      it('then it calls setColorMode', async () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+      it('then it updates the state and saves the choice of the user', async () => {
+        const state = ref(createState())
+        const { setColorMode } = withThemeState(state, () => useTheme())
 
-        const { toggleDarkMode } = useTheme()
+        await setColorMode('auto')
 
-        await toggleDarkMode()
-
-        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
+        expect(state.value.colorMode).toBe('auto')
+        expect(saveColorModeChoice).toHaveBeenCalledWith('auto')
       })
     })
 
-    describe('when called with animate: true', () => {
-      it('then it wraps the toggle in a View Transition', async () => {
-        const startViewTransition = vi.fn((cb: () => void) => {
-          cb()
-          return {
-            finished: Promise.resolve(),
-          }
-        })
-
-        vi.stubGlobal('document', {
-          startViewTransition,
-          documentElement: {
-            classList: {
-              add: vi.fn(),
-              remove: vi.fn(),
-            },
-          },
-          head: {
-            appendChild: vi.fn(),
-          },
-          createElement: vi.fn(() => ({
-            remove: vi.fn(),
-            textContent: '',
-          })),
-          cookie: '',
-        })
-
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { toggleDarkMode } = useTheme()
-
-        await toggleDarkMode({ animate: true })
-
-        expect(startViewTransition).toHaveBeenCalledOnce()
-        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
-      })
-    })
-  })
-
-  describe('given setColorMode with animate option', () => {
-    describe('when animate is true and startViewTransition is supported', () => {
-      it('then it lazy-loads view-transition and wraps the apply in a View Transition', async () => {
-        const startViewTransition = vi.fn((cb: () => void) => {
-          cb()
-          return {
-            finished: Promise.resolve(),
-          }
-        })
-
-        vi.stubGlobal('document', {
-          startViewTransition,
-          documentElement: {
-            classList: {
-              add: vi.fn(),
-              remove: vi.fn(),
-            },
-          },
-          head: {
-            appendChild: vi.fn(),
-          },
-          createElement: vi.fn(() => ({
-            remove: vi.fn(),
-            textContent: '',
-          })),
-          cookie: '',
-        })
-
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { setColorMode } = useTheme()
+    describe('when called with the animate option', () => {
+      it('then it applies the change in a view transition', async () => {
+        const state = ref(createState())
+        const { setColorMode } = withThemeState(state, () => useTheme())
 
         await setColorMode('dark', { animate: true })
 
-        expect(startViewTransition).toHaveBeenCalledOnce()
-        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
+        expect(runViewTransition).toHaveBeenCalledOnce()
+        expect(state.value.colorMode).toBe('dark')
       })
     })
 
-    describe('when animate is true and startViewTransition is unsupported', () => {
-      it('then it falls back to applying the change synchronously', async () => {
-        vi.stubGlobal('document', {
-          documentElement: {
-            classList: {
-              add: vi.fn(),
-              remove: vi.fn(),
-            },
-          },
-          head: {
-            appendChild: vi.fn(),
-          },
-          createElement: vi.fn(() => ({
-            remove: vi.fn(),
-            textContent: '',
-          })),
-          cookie: '',
-        })
-
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { setColorMode } = useTheme()
-
-        await setColorMode('dark', { animate: true })
-
-        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
-      })
-    })
-  })
-
-  describe('given computed properties', () => {
-    describe('when theme interface is accessed', () => {
-      it('then it returns all computed values', () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const result = useTheme()
-
-        expect(result.presetName).toBeDefined()
-        expect(result.colorMode).toBeDefined()
-        expect(result.isDark).toBeDefined()
-        expect(result.strategy).toBeDefined()
-        expect(result.mode).toBeDefined()
-        expect(result.darkModeStrategy).toBeDefined()
-        expect(result.preset).toBeDefined()
-      })
-    })
-
-    describe('when isDark is accessed', () => {
-      it('then it returns dark mode status', () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { isDark } = useTheme()
-
-        expect(isDark.value).toBe(false)
-      })
-    })
-  })
-
-  describe('given error handling scenarios', () => {
-    describe('when inject throws error', () => {
-      it('then it falls back to global properties', () => {
-        vi.mocked(inject).mockImplementation(() => {
-          throw new Error('inject failed')
-        })
-        vi.mocked(getCurrentInstance).mockReturnValue({
-          appContext: {
-            app: {
-              config: {
-                globalProperties: {
-                  $mazThemeState: mockRefThemeState,
-                },
-              },
-            },
-          },
-        } as never)
-
-        const result = useTheme()
-
-        expect(result).toHaveProperty('presetName')
-      })
-    })
-
-    describe('when global properties are not available', () => {
-      it('then it throws installation error', () => {
-        vi.mocked(inject).mockImplementation(() => {
-          throw new Error('inject failed')
-        })
-        vi.mocked(getCurrentInstance).mockReturnValue(null)
-
-        expect(() => useTheme()).toThrowError(
-          '[@maz-ui/themes] useTheme requires the MazUi/MazUiTheme plugin or a MazUiProvider wrapper',
-        )
-      })
-    })
-
-    describe('when getCurrentInstance returns incomplete context', () => {
-      it('then it throws installation error', () => {
-        vi.mocked(inject).mockImplementation(() => {
-          throw new Error('inject failed')
-        })
-        vi.mocked(getCurrentInstance).mockReturnValue({
-          appContext: {
-            app: {
-              config: {
-                globalProperties: undefined,
-              },
-            },
-          },
-        } as never)
-
-        expect(() => useTheme()).toThrowError(
-          '[@maz-ui/themes] useTheme requires the MazUi/MazUiTheme plugin or a MazUiProvider wrapper',
-        )
-      })
-    })
-  })
-
-  describe('given setColorMode guard clause', () => {
-    describe('when theme state becomes unavailable', () => {
-      it('then it returns early without setting cookie', async () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-        const { setColorMode } = useTheme()
-
-        const { isServer } = await import('@maz-ui/utils/helpers/isServer')
-        vi.mocked(isServer).mockReturnValue(true)
-        vi.mocked(inject).mockReturnValue({ value: undefined })
-        vi.mocked(getCurrentInstance).mockReturnValue(null)
-
-        try {
-          useTheme()
-        }
-        catch {}
-
-        vi.mocked(isServer).mockReturnValue(false)
-        vi.clearAllMocks()
-
-        setColorMode('dark')
-
-        expect(setCookie).not.toHaveBeenCalled()
-      })
-    })
-  })
-
-  describe('given updateTheme guard clause', () => {
-    describe('when theme state becomes unavailable', () => {
-      it('then it returns early without updating', async () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-        const { updateTheme } = useTheme()
-
-        const { isServer } = await import('@maz-ui/utils/helpers/isServer')
-        vi.mocked(isServer).mockReturnValue(true)
-        vi.mocked(inject).mockReturnValue({ value: undefined })
-        vi.mocked(getCurrentInstance).mockReturnValue(null)
-
-        try {
-          useTheme()
-        }
-        catch {}
-
-        vi.mocked(isServer).mockReturnValue(false)
-
-        await expect(updateTheme({
-          foundation: { space: '0.25rem' },
-        } as ThemePresetOverrides)).resolves.toBeUndefined()
-        expect(mergePresets).not.toHaveBeenCalled()
-      })
-    })
-  })
-
-  describe('given colorMode computed setter', () => {
-    describe('when colorMode value is set', () => {
-      it('then it calls setColorMode via the setter', () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
-
-        const { colorMode } = useTheme()
+    describe('when the colorMode computed is set', () => {
+      it('then it calls setColorMode', () => {
+        const state = ref(createState())
+        const { colorMode } = withThemeState(state, () => useTheme())
 
         colorMode.value = 'dark'
 
-        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
+        expect(state.value.colorMode).toBe('dark')
+        expect(saveColorModeChoice).toHaveBeenCalledWith('dark')
       })
     })
 
-    describe('when colorMode value is read', () => {
-      it('then the getter returns the active color mode from theme state', () => {
-        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+    describe('when the state is gone', () => {
+      it('then it does nothing', async () => {
+        const state = ref<ThemeState | undefined>(createState())
+        const { setColorMode } = withThemeState(state, () => useTheme())
+        state.value = undefined
 
-        const { colorMode } = useTheme()
+        await setColorMode('dark')
 
-        expect(colorMode.value).toBe(mockRefThemeState.value.colorMode)
+        expect(saveColorModeChoice).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('given toggleDarkMode', () => {
+    describe('when the light mode is active', () => {
+      it('then it switches to dark', async () => {
+        const state = ref(createState())
+        const { toggleDarkMode } = withThemeState(state, () => useTheme())
+
+        await toggleDarkMode()
+
+        expect(state.value.colorMode).toBe('dark')
+      })
+    })
+
+    describe('when the dark mode is active', () => {
+      it('then it switches to light in a view transition', async () => {
+        const state = ref(createState({ colorMode: 'dark', isDark: true }))
+        const { toggleDarkMode } = withThemeState(state, () => useTheme())
+
+        await toggleDarkMode({ animate: true })
+
+        expect(state.value.colorMode).toBe('light')
+        expect(runViewTransition).toHaveBeenCalledOnce()
       })
     })
   })

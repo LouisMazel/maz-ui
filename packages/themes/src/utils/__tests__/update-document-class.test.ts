@@ -5,11 +5,11 @@ vi.mock('../no-transition', () => ({
   noTransition: vi.fn((fn: () => void) => fn()),
 }))
 
-vi.mock('../get-color-mode', () => ({
+vi.mock('../theme-preferences', () => ({
   getSystemColorMode: vi.fn(() => 'light'),
 }))
 
-const { getSystemColorMode } = await import('../get-color-mode')
+const { getSystemColorMode } = await import('../theme-preferences')
 
 function createThemeState(overrides: Partial<ThemeState> = {}): ThemeState {
   return {

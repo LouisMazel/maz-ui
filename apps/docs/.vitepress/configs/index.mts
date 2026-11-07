@@ -1,3 +1,4 @@
 export { head } from './head.mjs'
 export { nav } from './navbar.mjs'
+export { getHtaccess, redirectMiddleware } from './redirects.mjs'
 export { sidebar } from './sidebar.mjs'

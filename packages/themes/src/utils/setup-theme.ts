@@ -1,70 +1,29 @@
 import type { Ref } from 'vue'
 import type { MazUiThemeOptions } from '../plugin'
-import type { ThemePreset, ThemePresetName, ThemeState } from '../types'
+import type { ColorMode, ThemePreset, ThemePresetName, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
 import { injectColorSchemeMeta, resolveColorSchemeContent } from './color-scheme-meta'
-import { getSavedPreset, savePreset } from './cookie-storage'
-import { getColorMode, getSavedColorMode, getSystemColorMode, saveResolvedColorMode } from './get-color-mode'
 import { getPreset } from './get-preset'
 import { injectThemeCSS } from './inject-theme-css'
 import { mergePresets } from './preset-merger'
+import { DEFAULT_PRESET_NAME, resolveThemePresets } from './theme-head'
+import {
+  COLOR_MODE_COOKIE,
+  getDefaultColorMode,
+  getSystemColorMode,
+  PRESET_COOKIE,
+  readColorModePreference,
+  readPresetPreference,
+  resolveActivePresetName,
+  resolveIsDark,
+  savePresetPreference,
+  saveSystemColorMode,
+} from './theme-preferences'
 import { updateDocumentClass } from './update-document-class'
 import { useMutationObserver } from './use-mutation-observer'
 
 function noop() {}
-
-function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
-  if (isServer())
-    return noop
-
-  const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
-  const onChange = () => {
-    if (themeState.value.colorMode !== 'auto')
-      return
-    const next = mediaQuery.matches ? 'dark' : 'light'
-    updateDocumentClass('auto', themeState.value)
-    themeState.value.isDark = next === 'dark'
-    saveResolvedColorMode(next)
-  }
-  mediaQuery.addEventListener('change', onChange)
-
-  const stopWatch = watch(() => themeState.value.colorMode, (colorMode) => {
-    const isDark = colorMode === 'auto'
-      ? getSystemColorMode() === 'dark'
-      : colorMode === 'dark'
-    updateDocumentClass(colorMode, themeState.value)
-    injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, colorMode))
-    if (colorMode === 'auto')
-      saveResolvedColorMode(isDark ? 'dark' : 'light')
-  })
-
-  return () => {
-    mediaQuery.removeEventListener('change', onChange)
-    stopWatch()
-  }
-}
-
-function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>): () => void {
-  if (isServer())
-    return noop
-
-  return useMutationObserver(
-    document.documentElement,
-    () => {
-      if (isServer() || !themeState.value)
-        return
-      const active = document.documentElement.classList.contains(themeState.value.darkClass)
-        ? 'dark'
-        : 'light'
-      themeState.value.isDark = active === 'dark'
-      if (themeState.value.colorMode !== active && themeState.value.colorMode !== 'auto') {
-        themeState.value.colorMode = active
-      }
-    },
-    { attributes: true },
-  ).stop
-}
 
 export const defaultOptions = {
   strategy: 'runtime',
@@ -83,28 +42,99 @@ export interface SetupThemeReturn {
   cleanup: () => void
 }
 
-type ResolvedConfig = Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
-type ThemeStateRef = Ref<Required<Omit<ThemeState, 'preset'>> & Pick<ThemeState, 'preset'>>
+type ResolvedConfig = Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'> & {
+  /** Color mode of the config, used when the user has no choice (no or deleted cookie) */
+  defaultColorMode: ColorMode
+}
+type ThemeStateRef = Ref<Required<Omit<ThemeState, 'preset' | 'presetBase'>> & Pick<ThemeState, 'preset' | 'presetBase'>>
 
 function resolveConfig(options: MazUiThemeOptions): ResolvedConfig {
+  const defaultColorMode = getDefaultColorMode(options)
+
   return {
     ...defaultOptions,
     ...options,
-    colorMode: getSavedColorMode() ?? options.colorMode ?? (options.mode === 'dark'
-      ? 'dark'
-      : 'auto'),
+    // @ts-expect-error _colorMode is a private property: the choice of the user read by the host from the request (SSR)
+    colorMode: options._colorMode ?? readColorModePreference().colorMode ?? defaultColorMode,
+    defaultColorMode,
   } satisfies ResolvedConfig
 }
 
-function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): ThemeStateRef {
-  const isDark = config.colorMode === 'auto' && config.mode === 'both'
-    ? getSystemColorMode() === 'dark' || getColorMode(config.colorMode) === 'dark'
-    : getColorMode(config.colorMode) === 'dark' || config.mode === 'dark'
+function usesThemeClasses(state: Pick<ThemeState, 'darkModeStrategy' | 'mode'>): boolean {
+  return state.darkModeStrategy === 'class' && state.mode === 'both'
+}
 
-  if (!isServer() && config.colorMode === 'auto') {
-    saveResolvedColorMode(isDark ? 'dark' : 'light')
+/**
+ * A theme class that differs from the resolved color mode is a choice of the host:
+ * it becomes the color mode, so a later change of the system preference does not override it.
+ */
+function syncColorModeWithClass(state: ThemeState, active: 'light' | 'dark'): void {
+  state.isDark = active === 'dark'
+  const resolved = state.colorMode === 'auto'
+    ? getSystemColorMode()
+    : state.colorMode
+  if (resolved !== active)
+    state.colorMode = active
+}
+
+function watchColorMode(themeState: ThemeStateRef): () => void {
+  if (isServer())
+    return noop
+
+  const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
+  const onSystemChange = () => {
+    const system = mediaQuery.matches
+      ? 'dark'
+      : 'light'
+    saveSystemColorMode(system)
+    if (themeState.value.colorMode !== 'auto')
+      return
+    updateDocumentClass('auto', themeState.value)
+    themeState.value.isDark = resolveIsDark(themeState.value, system)
   }
+  mediaQuery.addEventListener('change', onSystemChange)
 
+  const stopWatch = watch(() => themeState.value.colorMode, (colorMode) => {
+    updateDocumentClass(colorMode, themeState.value)
+    injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, colorMode))
+  })
+
+  return () => {
+    mediaQuery.removeEventListener('change', onSystemChange)
+    stopWatch()
+  }
+}
+
+function watchMutationClassOnHtmlElement(themeState: ThemeStateRef): () => void {
+  // Without the class strategy, the classes of <html> say nothing about the color mode
+  if (isServer() || !usesThemeClasses(themeState.value))
+    return noop
+
+  return useMutationObserver(
+    document.documentElement,
+    () => {
+      if (isServer() || !themeState.value)
+        return
+      const { classList } = document.documentElement
+      const { darkClass, lightClass } = themeState.value
+      const active = classList.contains(darkClass)
+        ? 'dark'
+        : 'light'
+      // A host (VitePress...) toggling only the dark class must not leave the light class behind
+      if (active === 'dark' && classList.contains(lightClass))
+        classList.remove(lightClass)
+      else if (active === 'light' && !classList.contains(lightClass))
+        classList.add(lightClass)
+      syncColorModeWithClass(themeState.value, active)
+    },
+    {
+      attributes: true,
+      attributeFilter: ['class'],
+    },
+  ).stop
+}
+
+function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): ThemeStateRef {
   const themeState: ThemeStateRef = ref({
     strategy: config.strategy,
     darkClass: config.darkClass,
@@ -115,80 +145,124 @@ function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): T
     preset: undefined,
     persistPreset: config.persistPreset,
     // @ts-expect-error _isDark is a private property
-    isDark: options._isDark || isDark,
+    isDark: options._isDark || resolveIsDark(config, getSystemColorMode()),
   })
 
-  // Hybrid: only impose the class at init when no host (VitePress, Nuxt blocking
+  if (isServer())
+    return themeState
+
+  if (config.mode === 'both')
+    saveSystemColorMode(getSystemColorMode())
+
+  // Hybrid: only impose the class at init when no host (VitePress, SSR, blocking
   // script, Tailwind toggle…) has already set one. If a theme class is present,
-  // respect it — host stays in charge. The mutation observer keeps isDark in sync.
-  if (!isServer() && config.darkModeStrategy === 'class' && config.mode === 'both') {
-    const html = document.documentElement
-    const hasExistingThemeClass = html.classList.contains(config.darkClass) || html.classList.contains(config.lightClass)
-    if (!hasExistingThemeClass) {
-      updateDocumentClass(themeState.value.colorMode, themeState.value)
+  // respect it — host stays in charge, and the state starts from it. The mutation
+  // observer keeps it in sync afterwards.
+  if (usesThemeClasses(config)) {
+    const { classList } = document.documentElement
+    if (classList.contains(config.darkClass) || classList.contains(config.lightClass)) {
+      syncColorModeWithClass(themeState.value, classList.contains(config.darkClass)
+        ? 'dark'
+        : 'light')
+      return themeState
     }
   }
-  else {
-    updateDocumentClass(themeState.value.colorMode, themeState.value)
-  }
+
+  updateDocumentClass(themeState.value.colorMode, themeState.value)
   return themeState
 }
 
-function finalizeTheme(
-  themeState: ThemeStateRef,
-  preset: ThemePreset | undefined,
-  config: ResolvedConfig,
-  baseName: string,
-): SetupThemeReturn {
-  const finalPreset = preset && Object.keys(config.overrides).length > 0
+function withOverrides(preset: ThemePreset, config: ResolvedConfig): ThemePreset {
+  return Object.keys(config.overrides).length > 0
     ? mergePresets(preset, config.overrides)
     : preset
-
-  if (finalPreset) {
-    themeState.value.preset = finalPreset
-    if (config.persistPreset)
-      savePreset(baseName, finalPreset.name)
-  }
-
-  if (config.strategy === 'buildtime' || !finalPreset) {
-    return { themeState: themeState as Ref<ThemeState>, cleanup: noop }
-  }
-
-  injectThemeCSS(finalPreset, config)
-
-  const stopMedia = watchColorSchemeFromMedia(themeState)
-  const stopMutation = watchMutationClassOnHtmlElement(themeState)
-
-  return {
-    themeState: themeState as Ref<ThemeState>,
-    cleanup: () => {
-      stopMedia()
-      stopMutation()
-    },
-  }
 }
 
 function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: ResolvedConfig, baseName: string): void {
   // Caller guarantees `persistPreset` is on and `strategy !== 'buildtime'`.
-  const final = Object.keys(config.overrides).length > 0
-    ? mergePresets(preset, config.overrides)
-    : preset
+  const final = withOverrides(preset, config)
   themeState.value.preset = final
-  savePreset(baseName, final.name)
+  savePresetPreference(baseName, final.name)
   injectThemeCSS(final, config)
 }
 
-/** Default preset identity used when the app declares no preset. */
-const DEFAULT_PRESET_NAME = 'maz-ui'
+function applySavedColorMode(themeState: ThemeStateRef, config: ResolvedConfig): void {
+  const colorMode = readColorModePreference().colorMode ?? config.defaultColorMode
+  if (colorMode === themeState.value.colorMode)
+    return
+
+  themeState.value.colorMode = colorMode
+  themeState.value.isDark = resolveIsDark({ mode: themeState.value.mode, colorMode }, getSystemColorMode())
+}
+
+function applySavedPreset(themeState: ThemeStateRef, config: ResolvedConfig, baseName: string, basePreset: ThemePreset): void {
+  const name = resolveActivePresetName(baseName, readPresetPreference())
+  if (name === themeState.value.preset?.name)
+    return
+
+  if (name === basePreset.name) {
+    swapPreset(themeState, basePreset, config, baseName)
+    return
+  }
+
+  getPreset(name as ThemePresetName)
+    .then(preset => swapPreset(themeState, preset, config, baseName))
+    .catch(() => savePresetPreference(baseName, themeState.value.preset?.name as string))
+}
 
 /**
- * Configured preset identity (the "base") used on the non-object paths.
- * A string preset is its own identity; an absent one falls back to the default.
+ * Follows the `maz-color-mode` and `maz-preset` cookies written outside the app
+ * (another tab, the server, the devtools...). A deleted cookie restores the config.
+ * Browsers without the Cookie Store API keep the values read at setup.
  */
-function getConfiguredPresetName(preset: MazUiThemeOptions['preset']): string {
-  return typeof preset === 'string'
-    ? preset
-    : DEFAULT_PRESET_NAME
+function watchThemeCookies(themeState: ThemeStateRef, config: ResolvedConfig, baseName: string, basePreset: ThemePreset | undefined): () => void {
+  if (isServer() || !globalThis.cookieStore)
+    return noop
+
+  const onChange = (event: CookieChangeEvent) => {
+    const names = new Set([
+      ...event.changed,
+      ...event.deleted,
+    ].map(cookie => cookie.name))
+    if (names.has(COLOR_MODE_COOKIE))
+      applySavedColorMode(themeState, config)
+    if (names.has(PRESET_COOKIE) && config.persistPreset && basePreset)
+      applySavedPreset(themeState, config, baseName, basePreset)
+  }
+
+  globalThis.cookieStore.addEventListener('change', onChange)
+  return () => globalThis.cookieStore.removeEventListener('change', onChange)
+}
+
+/** `basePreset` is the configured preset without the overrides (restored when the `maz-preset` cookie is deleted), `activePreset` the one to apply. */
+function finalizeTheme(
+  themeState: ThemeStateRef,
+  config: ResolvedConfig,
+  baseName: string,
+  basePreset: ThemePreset | undefined,
+  activePreset: ThemePreset | undefined,
+): () => void {
+  themeState.value.presetBase = baseName
+  if (activePreset) {
+    themeState.value.preset = activePreset
+    if (config.persistPreset)
+      savePresetPreference(baseName, activePreset.name)
+  }
+
+  // The color mode works with every strategy: only the CSS of the preset depends on it
+  const runtime = config.strategy !== 'buildtime' && !!activePreset
+  if (runtime)
+    injectThemeCSS(activePreset, config)
+
+  const stops = [
+    watchColorMode(themeState),
+    watchMutationClassOnHtmlElement(themeState),
+    watchThemeCookies(themeState, config, baseName, runtime
+      ? basePreset
+      : undefined),
+  ]
+
+  return () => stops.forEach(stop => stop())
 }
 
 /**
@@ -203,60 +277,50 @@ export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
   const config = resolveConfig(options)
   const themeState = createThemeState(options, config)
   injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, themeState.value.colorMode))
-  const saved = config.persistPreset
-    ? getSavedPreset()
-    : null
   const presetObject = config.preset && typeof config.preset !== 'string'
     ? config.preset
-    : null
+    : undefined
 
   // Fast path — no FOUC. Buildtime also flows here (CSS is pre-built).
   if (presetObject || config.strategy === 'buildtime') {
-    const baseName = presetObject
-      ? presetObject.name
-      : getConfiguredPresetName(config.preset)
-    const setup = finalizeTheme(themeState, presetObject ?? config.preset, config, baseName)
+    // @ts-expect-error _presetBase is a private property: the configured preset when the host (Nuxt) already resolved the active one
+    const baseName: string = options._presetBase ?? presetObject?.name ?? (typeof config.preset === 'string'
+      ? config.preset
+      : DEFAULT_PRESET_NAME)
+    const cleanup = finalizeTheme(themeState, config, baseName, presetObject, presetObject && withOverrides(presetObject, config))
 
-    // Honor a persisted runtime switch only when it belongs to THIS app's
-    // configured preset. A foreign/stale cookie never overrides the config.
-    const activeOverride = saved && saved.base === baseName && saved.active !== baseName
-      ? saved.active
-      : null
-    if (activeOverride && config.strategy !== 'buildtime') {
-      getPreset(activeOverride as ThemePresetName)
+    // Honor a persisted runtime switch only when it belongs to THIS app's configured preset
+    const activeName = config.persistPreset && config.strategy !== 'buildtime'
+      ? resolveActivePresetName(baseName, readPresetPreference())
+      : baseName
+    if (activeName !== baseName && activeName !== presetObject?.name) {
+      getPreset(activeName as ThemePresetName)
         .then(preset => swapPreset(themeState, preset, config, baseName))
-        .catch(() => savePreset(baseName, baseName))
+        .catch(() => savePresetPreference(baseName, baseName))
     }
-    return setup
+    return { themeState: themeState as Ref<ThemeState>, cleanup }
   }
 
-  // No object preset → resolve the configured base first (it defines the app
-  // identity), then restore a persisted switch scoped to that base.
-  const resolve = (async (): Promise<{ preset?: ThemePreset, baseName: string }> => {
-    const basePreset = await getPreset(config.preset)
-    const baseName = basePreset.name
-
-    if (saved && saved.base === baseName && saved.active !== baseName) {
-      try {
-        return { preset: await getPreset(saved.active as ThemePresetName), baseName }
-      }
-      catch {
-        // Stale active name → fall back to the configured base (cookie healed on write).
-      }
-    }
-
-    return { preset: basePreset, baseName }
-  })()
-
-  resolve
-    .catch((error): { preset?: ThemePreset, baseName: string } => {
+  // No object preset → resolve the configured preset first (it defines the app
+  // identity), then restore a persisted switch scoped to it.
+  let cleanup = noop
+  resolveThemePresets(config)
+    .catch((error) => {
       console.error('[@maz-ui/themes] Failed to resolve preset', error)
       return {
+        presetBase: typeof config.preset === 'string'
+          ? config.preset
+          : DEFAULT_PRESET_NAME,
+        basePreset: undefined,
         preset: undefined,
-        baseName: getConfiguredPresetName(config.preset),
       }
     })
-    .then(({ preset, baseName }) => finalizeTheme(themeState, preset, config, baseName))
+    .then(({ presetBase, basePreset, preset }) => {
+      cleanup = finalizeTheme(themeState, config, presetBase, basePreset, preset)
+    })
 
-  return { themeState: themeState as Ref<ThemeState>, cleanup: noop }
+  return {
+    themeState: themeState as Ref<ThemeState>,
+    cleanup: () => cleanup(),
+  }
 }

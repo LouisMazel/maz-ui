@@ -37,12 +37,19 @@ export function getCookie(key: string, cookieHeader?: string): string | null {
   if (!source)
     return null
 
-  const cookies = source.split(';')
-  const cookie = cookies.find(c => c.trim().startsWith(`${key}=`))
+  const prefix = `${key}=`
+  const cookie = source.split(';').map(c => c.trim()).find(c => c.startsWith(prefix))
+  if (cookie === undefined)
+    return null
 
-  return cookie
-    ? decodeURIComponent(cookie.split('=')[1])
-    : null
+  const value = cookie.slice(prefix.length)
+  try {
+    return decodeURIComponent(value)
+  }
+  catch {
+    // Malformed percent-encoding (written by another tool): the raw value is returned
+    return value
+  }
 }
 
 /**

@@ -1,47 +1,27 @@
 import type { ColorMode } from '../types'
-import { getCookie, setCookie } from '@maz-ui/utils/helpers/cookie'
-import { isServer } from '@maz-ui/utils/helpers/isServer'
+import type { SystemColorMode } from './theme-preferences'
+import { readColorModePreference, saveSystemColorMode } from './theme-preferences'
 
+export { COLOR_MODE_COOKIE, getSystemColorMode } from './theme-preferences'
+
+/** Color mode chosen by the user, from the `maz-color-mode` cookie. */
 export function getSavedColorMode(): ColorMode | undefined {
-  const savedMode = getCookie('maz-color-mode') as ColorMode | null
-  if (savedMode && ['light', 'dark', 'auto'].includes(savedMode)) {
-    return savedMode
-  }
-
-  return undefined
+  return readColorModePreference().colorMode
 }
 
 export function getColorMode(colorMode?: ColorMode): ColorMode {
-  if (colorMode && ['light', 'dark'].includes(colorMode)) {
+  if (colorMode === 'light' || colorMode === 'dark')
     return colorMode
-  }
 
-  const savedMode = getSavedColorMode()
-  if (savedMode) {
-    return savedMode
-  }
-
-  return 'auto'
+  return getSavedColorMode() ?? 'auto'
 }
 
-export function getSystemColorMode() {
-  if (isServer() || typeof globalThis.matchMedia !== 'function') {
-    return 'light'
-  }
-
-  return globalThis.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light'
+/** @deprecated The system preference is saved in the `maz-color-mode` cookie: use `saveSystemColorMode` */
+export function saveResolvedColorMode(resolvedMode: SystemColorMode): void {
+  saveSystemColorMode(resolvedMode)
 }
 
-export function saveResolvedColorMode(resolvedMode: 'light' | 'dark'): void {
-  setCookie('maz-resolved-color-mode', resolvedMode)
-}
-
-export function getSavedResolvedColorMode(): 'light' | 'dark' | undefined {
-  const saved = getCookie('maz-resolved-color-mode') as 'light' | 'dark' | null
-  if (saved && ['light', 'dark'].includes(saved)) {
-    return saved
-  }
-  return undefined
+/** @deprecated The system preference is read from the `maz-color-mode` cookie: use `readColorModePreference().system` */
+export function getSavedResolvedColorMode(): SystemColorMode | undefined {
+  return readColorModePreference().system
 }

@@ -45,9 +45,11 @@ app.use(MazUiTheme, {
 })
 ```
 
-### Preset persistence
+### Persistence of the user preferences
 
-The active preset is stored in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`) as a `base:active` pair, where `base` is the identity of the preset declared in `options.preset` and `active` is the one currently applied. The configured `options.preset` is always authoritative: a runtime switch made via `useTheme().updateTheme()` is only restored on reload when its `base` matches the configured preset, so a stale cookie - or a cookie written by another app on the same host - can never override the preset your app declares. A foreign or legacy (plain-name) cookie is ignored and healed on the next resolution. Set `persistPreset: false` to opt out - no cookie is read or written.
+The preferences of the user live in two cookies (1-year TTL, `SameSite=Lax`): `maz-color-mode` (`<choice>:<system>`, for example `dark`, `auto:light` or `:dark`) and `maz-preset` (`<configured>:<active>`, for example `folio:ocean`). A preset switch is only restored when its configured part matches `options.preset`, so a cookie of another app on the same host never wins. With the Cookie Store API, a change of a cookie is applied without a reload. Set `persistPreset: false` to never read nor write `maz-preset`.
+
+For SSR and SSG, `getThemeHead()` and `renderThemeHead()` render the theme of the user in the `<head>`: see the [themes documentation](https://maz-ui.com/ecosystem/themes#server-rendering-ssr-and-ssg).
 
 ### 2. Usage in components
 
@@ -78,9 +80,9 @@ const { toggleDarkMode, isDark } = useTheme()
 
 - `setColorMode('dark')` → adds `darkClass` (default `.dark`) to `<html>` → CSS applies `color-scheme: only dark`.
 - `setColorMode('light')` → adds `lightClass` (default `.light`) to `<html>` → CSS applies `color-scheme: only light`.
-- `setColorMode('auto')` → removes both classes, leaving only `color-scheme: light dark` on `:root` so the browser follows the system `prefers-color-scheme`.
+- `setColorMode('auto')` → adds the class of the system preference and follows its changes.
 
-Forcing both classes (light/dark) on the root ensures the browser-native widgets (scrollbars, native `<select>`, date pickers, autofill backgrounds, …) match the explicit user choice rather than the OS preference.
+Forcing the class on the root ensures the browser-native widgets (scrollbars, native `<select>`, date pickers, autofill backgrounds, …) match the color mode of the page.
 
 ### `darkModeStrategy: 'media'`
 

@@ -9,7 +9,6 @@ const resolveAliases = {
   '@maz-ui/translations/plugin': resolve(import.meta.dirname, '../translations/src/plugin.ts'),
   '@maz-ui/translations': resolve(import.meta.dirname, '../translations/src/index.ts'),
   '@maz-ui/themes/plugin': resolve(import.meta.dirname, '../themes/src/plugin.ts'),
-  '@maz-ui/themes/utils/get-color-mode': resolve(import.meta.dirname, '../themes/src/utils/get-color-mode.ts'),
   '@maz-ui/themes/utils': resolve(import.meta.dirname, '../themes/src/utils/index.ts'),
   '@maz-ui/themes': resolve(import.meta.dirname, '../themes/src/index.ts'),
 }

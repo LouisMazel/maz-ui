@@ -1,9 +1,6 @@
-import type { MazUiThemeOptions } from '@maz-ui/themes'
-
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { MazUiOptions } from 'maz-ui/plugins'
 import type { Theme } from 'vitepress'
-import { folio } from '@maz-ui/themes/presets/folio'
 
 import en from '@maz-ui/translations/locales/en'
 import { MazUi } from 'maz-ui/plugins'
@@ -13,24 +10,19 @@ import { DialogPlugin } from 'maz-ui/plugins/dialog'
 import { ToastPlugin } from 'maz-ui/plugins/toast'
 import { WaitPlugin } from 'maz-ui/plugins/wait'
 
-import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-import { h, watch } from 'vue'
-import { DOCS_COLOR_SCALE } from './color-scale'
+import { watch } from 'vue'
 import ComponentDemo from './components/ComponentDemo.vue'
 import Layout from './components/Layout.vue'
 import NpmBadge from './components/NpmBadge.vue'
 import UtilsCatalogue from './components/UtilsCatalogue.vue'
+import { DOCS_THEME } from './theme-options'
 import './fonts.css'
 import './main.css'
 
 export default {
   extends: DefaultTheme,
-  Layout: () => {
-    return h(Layout, null, {
-      // https://vitepress.dev/guide/extending-default-theme#layout-slots
-    })
-  },
+  Layout,
   enhanceApp({ app, router: { route } }) {
     app.use(MazUi, {
       defaults: {
@@ -39,17 +31,7 @@ export default {
           // size: 'sm'
         },
       } satisfies MazUiOptions['defaults'],
-      theme: {
-        preset: folio,
-        darkModeStrategy: 'class',
-        strategy: 'runtime',
-        persistPreset: true,
-        overrides: {
-          scales: {
-            color: DOCS_COLOR_SCALE,
-          },
-        },
-      } satisfies MazUiThemeOptions,
+      theme: DOCS_THEME,
       translations: {
         locale: 'en',
         fallbackLocale: 'fr',
@@ -84,11 +66,8 @@ export default {
 
     watch(
       () => route.path,
-      (path, oldPath) => {
-        if (inBrowser && path !== oldPath) {
-          app.config.globalProperties.$mazAos.runAnimations()
-        }
-      },
+      () => app.config.globalProperties.$mazAos?.runAnimations(),
+      { flush: 'post' },
     )
   },
 } satisfies Theme
