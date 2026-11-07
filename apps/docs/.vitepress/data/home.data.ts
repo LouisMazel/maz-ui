@@ -11,7 +11,7 @@ import { components } from '../configs/components.mjs'
 import { composables } from '../configs/composables.mjs'
 import { directives } from '../configs/directives.mjs'
 import { plugins } from '../configs/plugins.mjs'
-import { DOCS_COLOR_SCALE } from '../theme/color-scale'
+import { DOCS_COLOR_SCALE } from '../theme/color-scale.ts'
 
 export interface HomeCategory {
   name: string

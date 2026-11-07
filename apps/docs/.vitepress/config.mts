@@ -1,5 +1,5 @@
 import type { Plugin } from 'postcss'
-import type { DefaultTheme, HeadConfig, UserConfig } from 'vitepress'
+import type { DefaultTheme, HeadConfig } from 'vitepress'
 import { existsSync } from 'node:fs'
 import { cp, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
@@ -7,15 +7,18 @@ import { dirname, join } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
+import { CSS_ID, generateCSS, mergePresets } from '@maz-ui/themes/utils'
 import { VitePreNestedCss } from '@maz-ui/vite-config'
 import tailwindcss from '@tailwindcss/vite'
 import { MazComponentsResolver } from 'maz-ui/resolvers'
 import postcssUrl from 'postcss-url'
 import Components from 'unplugin-vue-components/vite'
+import { defaultClientConditions } from 'vite'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
-import { head, nav, sidebar } from './configs/index.mjs'
+import { getHtaccess, head, nav, redirectMiddleware, sidebar } from './configs/index.mjs'
 import { getOgImage } from './og-image.tsx'
+import { DOCS_THEME } from './theme/theme-options.ts'
 
 // VitePress sets NODE_ENV=development for `vitepress dev` and =production
 // for `vitepress build`. Use that to toggle the `monorepo:dev` resolve
@@ -83,14 +86,14 @@ export default defineConfig<DefaultTheme.Config>({
   titleTemplate: ':title | Maz-UI',
   description: 'Library of standalone components and tools for Vue & Nuxt',
 
-  appearance: true,
   lastUpdated: true,
   cleanUrls: true,
-  ignoreDeadLinks: true,
-
-  base: '/',
 
   markdown: {
+    image: {
+      lazyLoad: true,
+    },
+    // Dark in both modes on purpose: the code blocks stay dark on the light site (`--vp-code-block-bg` in theme/main.css)
     theme: {
       light: 'github-dark',
       dark: 'tokyo-night',
@@ -125,6 +128,10 @@ export default defineConfig<DefaultTheme.Config>({
       await writeFile(join(siteConfig.outDir, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
     }
 
+    if (!isNextEnv) {
+      await writeFile(join(siteConfig.outDir, '.htaccess'), getHtaccess())
+    }
+
     if (existsSync(agentDocs)) {
       await cp(agentDocs, siteConfig.outDir, { recursive: true })
     }
@@ -132,8 +139,18 @@ export default defineConfig<DefaultTheme.Config>({
 
   head: [
     ...head,
-    // ['style', { id: CSS_ID, type: 'text/css' }, full],
-  ] satisfies HeadConfig[],
+    // The CSS of the preset is in the static HTML: no flash before the app injects it at runtime (same `id`, so it reuses this tag)
+    [
+      'style',
+      { id: CSS_ID },
+      generateCSS(mergePresets(DOCS_THEME.preset, DOCS_THEME.overrides), {
+        mode: 'both',
+        darkSelectorStrategy: DOCS_THEME.darkModeStrategy,
+        darkClass: 'dark',
+        lightClass: 'light',
+      }),
+    ],
+  ],
 
   themeConfig: {
     siteTitle: 'Maz-UI',
@@ -146,11 +163,15 @@ export default defineConfig<DefaultTheme.Config>({
       { icon: 'twitter', link: 'https://twitter.com/maz__ui' },
       { icon: 'npm', link: 'https://www.npmjs.com/package/maz-ui' },
     ],
-    // footer: {
-    //   // message: 'Released under the MIT License.',
-    //   copyright: 'Made by LouisMazel with 🖤',
-    // },
-
+    outline: {
+      level: [2, 3],
+    },
+    externalLinkIcon: true,
+    lastUpdated: {
+      formatOptions: {
+        dateStyle: 'medium',
+      },
+    },
     editLink: {
       pattern: 'https://github.com/LouisMazel/maz-ui/edit/master/apps/docs/src/:path',
       text: 'Edit this page on GitHub',
@@ -164,36 +185,21 @@ export default defineConfig<DefaultTheme.Config>({
         indexName: 'maz-ui-3',
       },
     },
-  } satisfies DefaultTheme.Config,
+  },
 
   vite: {
     // Resolve `monorepo:dev` first when developing so we consume maz-ui's
-    // raw src/ (with HMR), and fall back to the published dist for prod
-    // builds. Same trick as accor-core-library.
+    // raw src/ (with HMR), and fall back to the published dist for prod builds.
     resolve: {
       conditions: isDev
-        ? [
-            'monorepo:dev',
-            'import',
-            'browser',
-            'module',
-            'default',
-            'require',
-          ]
-        : [
-            'import',
-            'browser',
-            'module',
-            'default',
-            'require',
-          ],
+        ? ['monorepo:dev', ...defaultClientConditions]
+        : [...defaultClientConditions],
     },
     build: {
-      rollupOptions: {
+      rolldownOptions: {
         external: ['node:child_process', 'colorette'],
       },
       target: 'esnext',
-      minify: 'esbuild',
       chunkSizeWarningLimit: 1000,
     },
     ssr: {
@@ -230,60 +236,9 @@ export default defineConfig<DefaultTheme.Config>({
         dts: false,
       }),
       {
-        name: 'redirect-plugin',
+        name: 'docs:redirects',
         configureServer(server) {
-          server.middlewares.use('/components/maz-phone-number-input', (_req, res) => {
-            res.writeHead(301, { Location: '/components/maz-input-phone-number' })
-            res.end()
-          })
-          server.middlewares.use('/components/maz-picker', (_req, res) => {
-            res.writeHead(301, { Location: '/components/maz-date-picker' })
-            res.end()
-          })
-          server.middlewares.use('/composables/use-language-display-names', (_req, res) => {
-            res.writeHead(301, { Location: '/composables/use-display-names' })
-            res.end()
-          })
-          server.middlewares.use('/plugins/toaster', (_req, res) => {
-            res.writeHead(301, { Location: '/plugins/toast' })
-            res.end()
-          })
-          server.middlewares.use('/components/maz-dialog-promise', (_req, res) => {
-            res.writeHead(301, { Location: '/components/maz-dialog-confirm' })
-            res.end()
-          })
-          server.middlewares.use('/helpers', (req, res) => {
-            res.writeHead(301, { Location: `/ecosystem/utils${req.url ?? '/'}` })
-            res.end()
-          })
-          server.middlewares.use('/utils', (req, res) => {
-            res.writeHead(301, { Location: `/ecosystem/utils${req.url ?? '/'}` })
-            res.end()
-          })
-          server.middlewares.use('/guide/icon-set', (_req, res) => {
-            res.writeHead(301, { Location: '/ecosystem/icons/icon-set' })
-            res.end()
-          })
-          server.middlewares.use('/guide/icons', (_req, res) => {
-            res.writeHead(301, { Location: '/ecosystem/icons/' })
-            res.end()
-          })
-          server.middlewares.use('/guide/themes', (_req, res) => {
-            res.writeHead(301, { Location: '/ecosystem/themes' })
-            res.end()
-          })
-          server.middlewares.use('/guide/nuxt', (_req, res) => {
-            res.writeHead(301, { Location: '/ecosystem/nuxt' })
-            res.end()
-          })
-          server.middlewares.use('/guide/translations', (_req, res) => {
-            res.writeHead(301, { Location: '/ecosystem/translations' })
-            res.end()
-          })
-          server.middlewares.use('/guide/mcp', (_req, res) => {
-            res.writeHead(301, { Location: '/ecosystem/mcp' })
-            res.end()
-          })
+          server.middlewares.use(redirectMiddleware)
         },
       },
     ],
@@ -300,14 +255,10 @@ export default defineConfig<DefaultTheme.Config>({
   },
 
   transformHead: async ({ siteData, pageData, title, description, head }) => {
-    // const baseUrl = 'https://maz-ui.com'
-
     const currentTitle = title ?? pageData.title ?? pageData.frontmatter.title ?? siteData.title
     const currentDescription = description ?? pageData.frontmatter.description ?? pageData.description ?? siteData.description
 
-    const currentUrl = getAssetBaseUrl(`/${pageData.relativePath.replace('.md', '') === 'index'
-      ? ''
-      : pageData.relativePath.replace('.md', '')}`)
+    const currentUrl = getAssetBaseUrl(`/${pageData.relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')}`)
 
     const ogImageFilename = pascalCaseToKebabCase(currentTitle.split(' ')[0].replace(' | Maz-UI', '').replaceAll(' ', '').replace('/', '-'))
     const outputDistFolder = '/og-images'
@@ -394,7 +345,7 @@ export default defineConfig<DefaultTheme.Config>({
       [
         'meta',
         {
-          name: 'article:modified_time',
+          property: 'article:modified_time',
           content: pageData.lastUpdated
             ? new Date(pageData.lastUpdated).toISOString()
             : new Date().toISOString(),
@@ -432,4 +383,4 @@ export default defineConfig<DefaultTheme.Config>({
       ...pageHead,
     ]
   },
-} as UserConfig)
+})

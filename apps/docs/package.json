@@ -35,7 +35,6 @@
     "maz-ui": "workspace:^",
     "shiki": "catalog:",
     "valibot": "catalog:",
-    "vitepress-plugin-google-analytics": "^1.0.2",
     "zod": "catalog:"
   },
   "devDependencies": {
