@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { MazColor } from './types'
-import { checkAvailability } from '@maz-ui/utils/helpers/checkAvailability'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export interface MazAnimatedTextProps {
   /**
@@ -96,65 +95,52 @@ const words = computed(() => text.split(' '))
 
 const wordCount = computed(() => words.value.length)
 
-const isVisible = ref(false)
-const isClient = ref(false)
-const animatedWords = ref<boolean[]>([])
+const animationClass = computed(() => `maz-animate-slide-${direction}-blur`)
 
-const element = ref<HTMLDivElement>()
+const isPending = ref(false)
+
+const element = ref<HTMLElement>()
 
 let observer: IntersectionObserver | null = null
-let animationFrameId: NodeJS.Timeout | null = null
 
-function triggerWordAnimations() {
-  const totalWords = words.value.length + (lastWord ? 1 : 0)
-  // eslint-disable-next-line e18e/prefer-array-fill
-  animatedWords.value = Array.from({ length: totalWords }, () => false)
-
-  let currentIndex = 0
-
-  const animateNextWord = () => {
-    if (currentIndex < totalWords) {
-      requestAnimationFrame(() => {
-        animatedWords.value[currentIndex] = true
-        currentIndex++
-
-        if (currentIndex < totalWords) {
-          animationFrameId = setTimeout(animateNextWord, wordDelay)
-        }
-      })
-    }
+function getAnimationStyle(index: number) {
+  return {
+    animationDuration: `${duration}ms`,
+    animationDelay: `${delay + index * wordDelay}ms`,
   }
+}
 
-  setTimeout(animateNextWord, delay)
+function isInViewport(el: HTMLElement) {
+  const { top, bottom } = el.getBoundingClientRect()
+
+  return top < globalThis.innerHeight && bottom > 0
 }
 
 onMounted(() => {
-  isClient.value = true
+  if (!element.value || globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    return
+  }
+
+  isPending.value = !isInViewport(element.value)
 
   observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting && !isVisible.value) {
-      isVisible.value = true
+    if (entry.isIntersecting) {
+      isPending.value = false
 
-      nextTick(() => {
-        triggerWordAnimations()
-      })
-
-      if (once && element.value) {
-        observer?.unobserve(element.value)
+      if (once) {
+        observer?.unobserve(entry.target)
       }
+    }
+    else if (!once) {
+      isPending.value = true
     }
   })
 
-  checkAvailability(() => element.value, (element) => {
-    observer?.observe(element)
-  })
+  observer.observe(element.value)
 })
 
 onBeforeUnmount(() => {
   observer?.disconnect()
-  if (animationFrameId) {
-    clearTimeout(animationFrameId)
-  }
 })
 
 const gradientStyle = computed(() => {
@@ -175,51 +161,34 @@ const gradientStyle = computed(() => {
 </script>
 
 <template>
-  <div class="m-reset-css m-animated-text" :style="{ '--maz-gradient-style': gradientStyle }">
+  <div class="m-reset-css m-animated-text" :class="{ 'm-animated-text--pending': isPending }" :style="{ '--maz-gradient-style': gradientStyle }">
     <!-- eslint-disable better-tailwindcss/no-deprecated-classes -->
-    <template v-if="isClient">
-      <component :is="tag" ref="element" v-bind="$attrs" class="m-animated-text__root maz:inline-flex maz:flex-wrap" :style="{ columnGap: `${columnGap}rem`, rowGap: `${rowGap}rem` }">
+    <component :is="tag" ref="element" v-bind="$attrs" class="m-animated-text__root maz:inline-flex maz:flex-wrap" :style="{ columnGap: `${columnGap}rem`, rowGap: `${rowGap}rem` }">
+      <span
+        v-for="(word, index) in words"
+        :key="word + index"
+        class="m-animated-text__word maz:inline-flex"
+      >
         <span
-          v-for="(word, index) in words"
-          :key="word + index"
-          class="m-animated-text__word maz:inline-flex"
+          class="m-animated-text__word-inner maz:inline-flex"
+          :class="animationClass"
+          :style="getAnimationStyle(index)"
         >
-          <span
-            class="m-animated-text__word-inner maz:inline-flex"
-            :class="animatedWords[index] ? `maz-animate-slide-${direction}-blur` : 'maz:invisible'"
-            :style="{
-              animationDuration: `${duration}ms`,
-            }"
-          >
-            {{ word }}
-          </span>
-
+          {{ word }}
         </span>
+      </span>
 
-        <span
-          v-if="lastWord"
-          class="m-animated-text__last-word maz:inline-flex"
-          :class="animatedWords[wordCount] ? `maz-animate-slide-${direction}-blur` : 'maz:invisible'"
-          :style="{
-            animationDuration: `${duration}ms`,
-          }"
-        >
-          <span class="m-animated-text__last-word-inner maz:relative maz:inline-flex">
-            <span class="m-animated-text__last-word-inner-text maz:relative">{{ lastWord }}</span>
-          </span>
+      <span
+        v-if="lastWord"
+        class="m-animated-text__last-word maz:inline-flex"
+        :class="animationClass"
+        :style="getAnimationStyle(wordCount)"
+      >
+        <span class="m-animated-text__last-word-inner maz:relative maz:inline-flex">
+          <span class="m-animated-text__last-word-inner-text maz:relative">{{ lastWord }}</span>
         </span>
-      </component>
-    </template>
-
-    <template v-else>
-      <component :is="tag" v-bind="$attrs" class="maz:invisible maz:inline-flex">
-        {{ text }}
-
-        <template v-if="lastWord">
-          {{ lastWord }}
-        </template>
-      </component>
-    </template>
+      </span>
+    </component>
   </div>
 </template>
 
@@ -240,10 +209,9 @@ const gradientStyle = computed(() => {
   filter: blur(16px);
 }
 
-.m-animated-text__word-inner,
-.m-animated-text__last-word {
-  will-change: transform, opacity, filter;
-  transform: translateZ(0);
+.m-animated-text--pending .m-animated-text__word-inner,
+.m-animated-text--pending .m-animated-text__last-word {
+  animation: none;
 }
 
 @keyframes slide-up-blur {
@@ -323,5 +291,13 @@ const gradientStyle = computed(() => {
 .maz-animate-slide-left-blur,
 .maz-animate-slide-right-blur {
   opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-animated-text__word-inner,
+  .m-animated-text__last-word {
+    animation: none;
+    opacity: 1;
+  }
 }
 </style>

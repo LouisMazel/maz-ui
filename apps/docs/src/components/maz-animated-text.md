@@ -12,7 +12,7 @@ description: MazAnimatedText is a standalone component that animates text with a
 ## Basic usage
 
 ::: tip
-This component is SSR friendly. It will display the brut text on the server side with the chosen tag, and the animated text on the client side.
+This component is SSR friendly: the server renders the same markup as the client, so the text keeps its layout on hydration (no layout shift). The animation is pure CSS and starts on the first paint when the text is in the viewport, without waiting for JavaScript; below the viewport, it plays when the text enters it. With `prefers-reduced-motion: reduce`, the text is displayed without animation.
 :::
 
 <ComponentDemo expanded>

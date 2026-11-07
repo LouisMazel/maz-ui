@@ -7,7 +7,20 @@ function getLastIntersectionCallback(): IntersectionObserverCallback {
   return calls.at(-1)![0]
 }
 
-describe('mazAnimatedElement', () => {
+function intersect(element: Element, isIntersecting: boolean) {
+  getLastIntersectionCallback()(
+    [
+      { target: element, isIntersecting } as IntersectionObserverEntry,
+    ],
+    IntersectionObserverMock as unknown as IntersectionObserver,
+  )
+}
+
+function mockRect(top: number, bottom: number) {
+  return vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ top, bottom } as DOMRect)
+}
+
+describe('given a MazAnimatedElement', () => {
   beforeEach(() => {
     vi.mocked(IntersectionObserver).mockClear()
     vi.mocked(IntersectionObserverMock.observe).mockClear()
@@ -15,148 +28,113 @@ describe('mazAnimatedElement', () => {
     vi.mocked(IntersectionObserverMock.disconnect).mockClear()
   })
 
-  it('renders the component', () => {
-    const wrapper = shallowMount(MazAnimatedElement)
-    expect(wrapper.exists()).toBe(true)
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  it('applies correct animation class based on direction prop', async () => {
-    const wrapper = shallowMount(MazAnimatedElement, {
-      props: {
-        direction: 'down',
-      },
+  describe('when it is rendered with a direction, a duration and a delay', () => {
+    it('then the animation class and the timing styles are set on the first render', () => {
+      const wrapper = shallowMount(MazAnimatedElement, {
+        props: { direction: 'down', duration: 1000, delay: 500 },
+      })
+
+      expect(wrapper.classes()).toContain('animate-slide-down-blur')
+      expect(wrapper.attributes('style')).toContain('animation-duration: 1000ms')
+      expect(wrapper.attributes('style')).toContain('animation-delay: 500ms')
     })
-    const element = wrapper.element
-    const intersectionCallback = getLastIntersectionCallback()
-
-    expect(element.classList.contains('maz:invisible')).toBe(true)
-
-    intersectionCallback(
-      [
-        { target: element, isIntersecting: true } as IntersectionObserverEntry,
-      ],
-      IntersectionObserverMock as unknown as IntersectionObserver,
-    )
-
-    await wrapper.vm.$nextTick()
-    await new Promise(resolve => setTimeout(resolve, 50))
-
-    expect(element.classList.contains('animate-slide-down-blur')).toBe(true)
-    expect(element.classList.contains('maz:invisible')).toBe(false)
   })
 
-  it('applies custom duration and delay', () => {
-    const wrapper = shallowMount(MazAnimatedElement, {
-      props: {
-        duration: 1000,
-        delay: 500,
-      },
+  describe('when it is mounted inside the viewport', () => {
+    it('then the animation plays without waiting for the observer', () => {
+      mockRect(10, 100)
+      const wrapper = shallowMount(MazAnimatedElement)
+
+      expect(wrapper.classes()).toContain('animate-slide-up-blur')
+      expect(wrapper.classes()).not.toContain('m-animated-element--pending')
     })
-    expect(wrapper.attributes('style')).toContain('animation-duration: 1000ms')
   })
 
-  it('adds animation class when intersecting', async () => {
-    const wrapper = shallowMount(MazAnimatedElement)
-    const element = wrapper.element
-    const intersectionCallback = getLastIntersectionCallback()
+  describe('when it is mounted below the viewport', () => {
+    it('then the animation waits for the element to enter the viewport', async () => {
+      mockRect(2000, 2100)
+      const wrapper = shallowMount(MazAnimatedElement)
+      await wrapper.vm.$nextTick()
 
-    expect(element.classList.contains('maz:invisible')).toBe(true)
-
-    intersectionCallback(
-      [
-        { target: element, isIntersecting: true } as IntersectionObserverEntry,
-      ],
-      IntersectionObserverMock as unknown as IntersectionObserver,
-    )
-
-    await wrapper.vm.$nextTick()
-    await new Promise(resolve => setTimeout(resolve, 50))
-
-    expect(element.classList.contains('animate-slide-up-blur')).toBe(true)
-    expect(element.classList.contains('maz:invisible')).toBe(false)
-  })
-
-  it('unobserves the element after the first intersection when once is true', async () => {
-    const wrapper = shallowMount(MazAnimatedElement, {
-      props: { once: true },
+      expect(wrapper.classes()).toContain('m-animated-element--pending')
+      expect(IntersectionObserverMock.observe).toHaveBeenCalledWith(wrapper.element)
     })
-    const element = wrapper.element
-    const intersectionCallback = getLastIntersectionCallback()
-
-    intersectionCallback(
-      [
-        { target: element, isIntersecting: true } as IntersectionObserverEntry,
-      ],
-      IntersectionObserverMock as unknown as IntersectionObserver,
-    )
-    await wrapper.vm.$nextTick()
-
-    expect(IntersectionObserverMock.unobserve).toHaveBeenCalledWith(element)
   })
 
-  it('resets the animation when leaving the viewport with once=false', async () => {
-    const wrapper = shallowMount(MazAnimatedElement, {
-      props: { once: false },
+  describe('when the element enters the viewport with once', () => {
+    it('then the animation plays and the element is no longer observed', async () => {
+      mockRect(2000, 2100)
+      const wrapper = shallowMount(MazAnimatedElement, {
+        props: { once: true },
+      })
+      await wrapper.vm.$nextTick()
+
+      intersect(wrapper.element, true)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.classes()).not.toContain('m-animated-element--pending')
+      expect(IntersectionObserverMock.unobserve).toHaveBeenCalledWith(wrapper.element)
     })
-    const element = wrapper.element
-    const intersectionCallback = getLastIntersectionCallback()
-
-    // First, animate it in
-    intersectionCallback(
-      [
-        { target: element, isIntersecting: true } as IntersectionObserverEntry,
-      ],
-      IntersectionObserverMock as unknown as IntersectionObserver,
-    )
-    await wrapper.vm.$nextTick()
-    await new Promise(resolve => setTimeout(resolve, 50))
-    expect(element.classList.contains('animate-slide-up-blur')).toBe(true)
-    expect(element.classList.contains('maz:invisible')).toBe(false)
-
-    // Then, intersect out
-    intersectionCallback(
-      [
-        { target: element, isIntersecting: false } as IntersectionObserverEntry,
-      ],
-      IntersectionObserverMock as unknown as IntersectionObserver,
-    )
-    await wrapper.vm.$nextTick()
-
-    expect(element.classList.contains('animate-slide-up-blur')).toBe(false)
-    expect(element.classList.contains('maz:invisible')).toBe(true)
-    expect(IntersectionObserverMock.unobserve).not.toHaveBeenCalled()
   })
 
-  it('disconnects the observer on unmount', () => {
-    const wrapper = shallowMount(MazAnimatedElement)
-    wrapper.unmount()
-    expect(IntersectionObserverMock.disconnect).toHaveBeenCalledOnce()
+  describe('when the element leaves the viewport without once', () => {
+    it('then the animation is reset and the element stays observed', async () => {
+      mockRect(2000, 2100)
+      const wrapper = shallowMount(MazAnimatedElement, {
+        props: { once: false },
+      })
+      await wrapper.vm.$nextTick()
+
+      intersect(wrapper.element, true)
+      await wrapper.vm.$nextTick()
+      expect(wrapper.classes()).not.toContain('m-animated-element--pending')
+
+      intersect(wrapper.element, false)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.classes()).toContain('m-animated-element--pending')
+      expect(IntersectionObserverMock.unobserve).not.toHaveBeenCalled()
+    })
   })
 
-  it('does nothing when intersecting and already animated', async () => {
-    const wrapper = shallowMount(MazAnimatedElement)
-    const element = wrapper.element
-    const intersectionCallback = getLastIntersectionCallback()
+  describe('when the element leaves the viewport with once', () => {
+    it('then the animation is kept', async () => {
+      mockRect(10, 100)
+      const wrapper = shallowMount(MazAnimatedElement, {
+        props: { once: true },
+      })
 
-    intersectionCallback(
-      [
-        { target: element, isIntersecting: true } as IntersectionObserverEntry,
-      ],
-      IntersectionObserverMock as unknown as IntersectionObserver,
-    )
-    await wrapper.vm.$nextTick()
-    await new Promise(resolve => setTimeout(resolve, 50))
-    vi.mocked(IntersectionObserverMock.unobserve).mockClear()
+      intersect(wrapper.element, false)
+      await wrapper.vm.$nextTick()
 
-    // Re-trigger — branch where isAnimated is already true
-    intersectionCallback(
-      [
-        { target: element, isIntersecting: true } as IntersectionObserverEntry,
-      ],
-      IntersectionObserverMock as unknown as IntersectionObserver,
-    )
-    await wrapper.vm.$nextTick()
+      expect(wrapper.classes()).not.toContain('m-animated-element--pending')
+    })
+  })
 
-    expect(IntersectionObserverMock.unobserve).not.toHaveBeenCalled()
+  describe('when the user prefers reduced motion', () => {
+    it('then no observer is created', () => {
+      Object.defineProperty(globalThis, 'matchMedia', {
+        configurable: true,
+        value: vi.fn().mockReturnValue({ matches: true }),
+      })
+      const wrapper = shallowMount(MazAnimatedElement)
+
+      expect(IntersectionObserver).not.toHaveBeenCalled()
+      expect(wrapper.classes()).not.toContain('m-animated-element--pending')
+      Reflect.deleteProperty(globalThis, 'matchMedia')
+    })
+  })
+
+  describe('when it is unmounted', () => {
+    it('then the observer is disconnected', () => {
+      const wrapper = shallowMount(MazAnimatedElement)
+      wrapper.unmount()
+
+      expect(IntersectionObserverMock.disconnect).toHaveBeenCalledOnce()
+    })
   })
 })
