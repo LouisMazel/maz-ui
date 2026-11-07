@@ -148,7 +148,7 @@ async function changeToOceanTheme() {
 </template>
 ```
 
-**Built-in themes**: `mazUi`, `ocean`, `pristine`, `obsidian` + create your own!
+**Built-in themes**: `mazUi`, `ocean`, `pristine`, `obsidian`, `nova`, `folio` + create your own!
 
 ## Configuration Options
 
@@ -166,7 +166,7 @@ export default defineNuxtConfig({
 
     // Theme System
     theme: {
-      preset: 'ocean', // Choose: 'mazUi', 'ocean', 'pristine', 'obsidian'
+      preset: 'ocean', // Choose: 'mazUi', 'ocean', 'pristine', 'obsidian', 'nova', 'folio'
       strategy: 'runtime', // 'runtime' | 'buildtime'
       darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
     },
