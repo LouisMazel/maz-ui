@@ -103,46 +103,76 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 - `lightClass` (optional, default `'light'`): Class added to `<html>` when `colorMode === 'light'` — mirror of `darkClass`
 - `persistPreset` (optional, default `true`): Persist the active preset name in the `maz-preset` cookie so it is restored on reload.
 
-### Preset persistence
+### Persistence of the user preferences
 
-When `persistPreset` is enabled (default), `@maz-ui/themes` stores the resolved preset name in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`) — exactly like `maz-color-mode` for the dark/light state. The cookie is:
+`@maz-ui/themes` stores the preferences of the user in two cookies (1-year TTL, `SameSite=Lax`), so the server can render them:
 
-- **Read at boot** and used to resolve the active preset — even when `options.preset` is provided. `options.preset` (string name **or** preset object) is treated as the *default* the app boots with, while the cookie carries the user's last explicit choice. The cookie wins.
-- **Written** after every successful preset resolution and after every `useTheme().updateTheme()` call (idempotent — no write if the value already matches).
-- **Auto-cleared** when the saved name no longer resolves (e.g. typo, preset removed in a downgrade) — the runtime falls back to `options.preset` (or default) and clears the cookie silently.
+| Cookie | Value | Example |
+| --- | --- | --- |
+| `maz-color-mode` | `<choice>:<system>`, each part optional: the color mode chosen with `setColorMode()` and the last system preference seen by the browser | `dark`, `auto:light`, `:dark` |
+| `maz-preset` | `<configured>:<active>`: the preset declared in `options.preset` and the one applied with `updateTheme()` | `folio:ocean` |
 
-Custom preset names are stored exactly like bundled ones: `@maz-ui/themes` does not maintain a whitelist. Switch the option off to disable any cookie read/write:
+- The configured preset always wins over a foreign cookie: a switch is only restored when the `configured` part matches `options.preset`, so a cookie written by another app on the same host (or by a previous config) is ignored. A switch to a preset that no longer exists falls back to the configured one.
+- The cookies are only written when their value changes.
+- **Reactive**: in the browsers that support the [Cookie Store API](https://developer.mozilla.org/docs/Web/API/Cookie_Store_API), a change of a cookie (another tab, the server, the devtools) is applied without a reload, and a deleted cookie restores the config. The other browsers keep the values read at boot.
+
+Set `persistPreset: false` to never read nor write the `maz-preset` cookie:
 
 ```typescript
 app.use(MazUi, {
   theme: {
     preset: mazUi,
-    persistPreset: false, // never write or read the maz-preset cookie
+    persistPreset: false,
   },
 })
 ```
 
-Useful when:
-- You want zero theme-related cookies (privacy / regulatory).
-- The active preset is fully driven by the consumer app and no end-user switching is exposed.
+Useful when the active preset is fully driven by the app and no end-user switching is exposed.
 
 ## Color modes and class toggling
 
-`darkClass` and `lightClass` interact with `darkModeStrategy` to control how `<html>` is decorated when the user picks an explicit mode.
+`darkClass` and `lightClass` interact with `darkModeStrategy` to control how `<html>` is decorated.
 
 ### `darkModeStrategy: 'class'` (default)
 
 - `setColorMode('dark')` adds `darkClass` (default `.dark`) to `<html>` → `color-scheme: only dark`.
 - `setColorMode('light')` adds `lightClass` (default `.light`) to `<html>` → `color-scheme: only light`.
-- `setColorMode('auto')` removes both classes → `color-scheme: light dark` lets the browser follow the system `prefers-color-scheme`.
+- `setColorMode('auto')` adds the class of the system preference, and follows its changes.
 
-Forcing both classes on the root ensures native widgets (scrollbars, native `<select>`, date pickers, autofill backgrounds, …) match the explicit user choice rather than the OS preference.
+Forcing the class on the root ensures native widgets (scrollbars, native `<select>`, date pickers, autofill backgrounds, …) match the color mode of the page.
+
+A host that toggles the classes itself (VitePress, a Tailwind toggle, a blocking script) stays in charge: at boot, a class already on `<html>` is kept and becomes the state of `useTheme()`, and a later change of the class updates the state. A host that only toggles `darkClass` gets `lightClass` added back in light mode.
 
 ### `darkModeStrategy: 'media'`
 
 - No class is ever added to `<html>`.
 - The browser always follows `prefers-color-scheme` via `color-scheme: light dark`.
 - `setColorMode()` still updates the persisted cookie but does **not** force a visual override.
+
+## Server rendering (SSR and SSG)
+
+`@maz-ui/nuxt` does it for you. With another server, render the theme of the user in the `<head>` so the first paint has it, then install the plugin as usual:
+
+```typescript
+import { getRequestThemeContext, getThemeHead, renderThemeHead } from '@maz-ui/themes'
+
+export async function renderHead(request: Request) {
+  const head = await getThemeHead(themeOptions, getRequestThemeContext({
+    'cookie': request.headers.get('cookie') ?? undefined,
+    'sec-ch-prefers-color-scheme': request.headers.get('sec-ch-prefers-color-scheme') ?? undefined,
+  }))
+
+  return {
+    htmlClass: head.htmlClass,
+    head: renderThemeHead(head),
+  }
+}
+```
+
+- `getThemeHead(options, context)` resolves the preset and the color mode of the user from the cookies and the `Sec-CH-Prefers-Color-Scheme` client hint. It returns the class of `<html>` (undefined when the server cannot know it), the CSS of the preset, the `color-scheme` meta and a blocking script that applies the live system preference before the first paint.
+- `renderThemeHead(head)` renders these tags as HTML. `getThemeHeadTags(head)` returns them in the format of unhead (`useHead`).
+- `resolveThemeContext(options)` returns the same context without the tags, in the browser or on the server.
+- `options.preset` accepts the name of a built-in preset or a preset object. A name loads the preset on demand: pass the object to the client plugin to avoid a flash before it is loaded.
 
 ## Animated theme switch
 

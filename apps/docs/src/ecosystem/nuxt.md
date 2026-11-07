@@ -280,6 +280,8 @@ const theme = {
 }
 ```
 
+The server renders the theme of the user: the preset and the color mode come from the `maz-color-mode` and `maz-preset` cookies, and the system preference from the `Sec-CH-Prefers-Color-Scheme` client hint (or the cookie of the previous visit). A blocking script applies the live system preference before the first paint. See the [persistence of the user preferences](/ecosystem/themes#persistence-of-the-user-preferences).
+
 ### Global Component Defaults
 
 Set default prop values once for every component. Resolution priority, per prop: instance prop > `defaults[Component]` > `defaults.global` > library default. A global default never overrides a prop set on the instance.
