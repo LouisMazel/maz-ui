@@ -11,6 +11,11 @@ on:
       - .github/workflows/doc-deploy.yml
   workflow_dispatch:
 
+# One deploy at a time per branch, never cancelled: two uploads to the same server directory conflict
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   doc-build-and-deploy:
     runs-on: ubuntu-latest
