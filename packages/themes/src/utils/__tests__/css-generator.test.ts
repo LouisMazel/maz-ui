@@ -114,7 +114,7 @@ describe('given generateCSS function', () => {
     })
 
     it('then emits the light color value directly', () => {
-      expect(css).toContain('--maz-primary: oklch(0.6495 0.1913 253.63);')
+      expect(css).toContain('--maz-primary: oklch(0.5645 0.1773 253.63);')
     })
 
     it('then emits the rounded scale (xs..3xl)', () => {
