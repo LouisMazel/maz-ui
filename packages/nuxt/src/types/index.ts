@@ -1,9 +1,15 @@
 import type { AgentTarget } from '@maz-ui/node'
 import type { MazUiThemeOptions, ThemePreset, ThemePresetName } from '@maz-ui/themes'
-import type { MazUiTranslationsOptions } from '@maz-ui/translations'
+import type { MazUiTranslationsOptions, MazUiTranslationsSchema } from '@maz-ui/translations'
 import type { MazUiDefaultsOptions } from 'maz-ui/composables/useGlobalConfig'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
+
+/**
+ * Messages of each locale: the path of a file that exports them by default (loaded when the locale
+ * is used, resolved like the other paths of the Nuxt config: `~/locales/fr.ts`), or the messages.
+ */
+export type MazUiNuxtTranslationsMessages = Record<string, string | MazUiTranslationsSchema>
 
 export interface MazUiNuxtOptions {
   /**
@@ -68,7 +74,13 @@ export interface MazUiNuxtOptions {
    *   locale: 'en',
    * }
    */
-  translations?: MazUiTranslationsOptions
+  translations?: Omit<MazUiTranslationsOptions, 'messages'> & {
+    /**
+     * Modify existing or add new languages
+     * @example { fr: '~/locales/maz-ui/fr.ts', de: { pagination: { navAriaLabel: 'Seiten' } } }
+     */
+    messages?: MazUiNuxtTranslationsMessages
+  }
 
   /**
    * Global default prop values for components

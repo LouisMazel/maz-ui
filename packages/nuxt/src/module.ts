@@ -13,11 +13,14 @@ import {
   addComponent,
   addImports,
   addPlugin,
+  addTemplate,
   createResolver,
   defineNuxtModule,
+  resolvePath,
   useLogger,
 } from '@nuxt/kit'
 import { defu } from 'defu'
+import { renderTranslationsMessages, TRANSLATIONS_MESSAGES_TEMPLATE } from './translations-messages'
 
 type MazUiComposables = keyof typeof import('maz-ui/composables')
 
@@ -343,7 +346,20 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       defaults,
     )
 
+    // The messages go through a template, not the runtime config (serialized in the payload of every page)
+    const { messages: translationsMessages, ...translationsOptions } = moduleOptions.translations ?? {}
+    moduleOptions.translations = translationsOptions
+
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
+
+    addTemplate({
+      filename: TRANSLATIONS_MESSAGES_TEMPLATE,
+      getContents: () => renderTranslationsMessages(
+        translationsMessages,
+        path => resolvePath(path),
+        message => useLogger('maz-ui').warn(message),
+      ),
+    })
 
     // AI agents
 

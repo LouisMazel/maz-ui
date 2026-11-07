@@ -1,33 +1,16 @@
 import type { MazUiTranslationsInstance } from '@maz-ui/translations'
 import { MazUiTranslations } from '@maz-ui/translations/plugin'
 import { defineNuxtPlugin } from 'nuxt/app'
+import messages from '#build/maz-ui-translations.mjs'
 
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
-  const translationsOptions = $config.public.mazUi.translations || {}
+  const i18n: MazUiTranslationsInstance = MazUiTranslations.install?.(vueApp, {
+    ...$config.public.mazUi.translations,
+    messages,
+  })
 
-  const i18n = MazUiTranslations.install?.(vueApp, translationsOptions)
-
-  if (import.meta.server) {
-    const locale = translationsOptions.locale || 'en'
-    const fallbackLocale = translationsOptions.fallbackLocale || 'en'
-
-    try {
-      await i18n.setLocale(locale)
-
-      // Preload fallback locale if different and preloadFallback is enabled
-      if (
-        locale !== fallbackLocale
-        && translationsOptions.preloadFallback !== false
-      ) {
-        await i18n.setLocale(fallbackLocale)
-        // Switch back to the main locale
-        await i18n.setLocale(locale)
-      }
-    }
-    catch (error) {
-      console.warn('Failed to preload locale:', error)
-    }
-  }
+  // The server renders with the messages, and the client hydrates with the same ones
+  await i18n.ready
 })
 
 declare module 'nuxt/app' {
