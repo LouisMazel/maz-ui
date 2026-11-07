@@ -13,8 +13,8 @@ describe('given built bundles generated before the version bump', () => {
 
   beforeEach(() => {
     root = mkdtempSync(join(tmpdir(), 'agent-docs-sync-'))
-    write(root, 'packages/lib/package.json', { name: 'maz-ui', version: '5.1.0-beta.1' })
-    write(root, 'packages/lib/docs/manifest.json', { schemaVersion: 1, version: '5.1.0-beta.0', docs: [] })
+    write(root, 'packages/maz-ui/package.json', { name: 'maz-ui', version: '5.1.0-beta.1' })
+    write(root, 'packages/maz-ui/docs/manifest.json', { schemaVersion: 1, version: '5.1.0-beta.0', docs: [] })
   })
 
   afterEach(() => {
@@ -24,9 +24,9 @@ describe('given built bundles generated before the version bump', () => {
   describe('when the versions are synced', () => {
     it('then the manifests get the bumped maz-ui version and keep their content', () => {
       expect(syncBundleVersions(root)).toEqual([
-        join(root, 'packages/lib/docs/manifest.json'),
+        join(root, 'packages/maz-ui/docs/manifest.json'),
       ])
-      expect(JSON.parse(readFileSync(join(root, 'packages/lib/docs/manifest.json'), 'utf8'))).toEqual({ schemaVersion: 1, version: '5.1.0-beta.1', docs: [] })
+      expect(JSON.parse(readFileSync(join(root, 'packages/maz-ui/docs/manifest.json'), 'utf8'))).toEqual({ schemaVersion: 1, version: '5.1.0-beta.1', docs: [] })
     })
 
     it('then the manifests already up to date are left untouched', () => {

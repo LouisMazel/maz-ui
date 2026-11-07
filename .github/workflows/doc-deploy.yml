@@ -7,7 +7,7 @@ on:
       - develop
     paths:
       - 'apps/docs/**'
-      - 'packages/lib/**'
+      - 'packages/maz-ui/**'
       - .github/workflows/doc-deploy.yml
   workflow_dispatch:
 

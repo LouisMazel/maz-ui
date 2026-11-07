@@ -10,7 +10,7 @@
       "path": "./tsconfig.vitest.json"
     },
     {
-      "path": "../../packages/lib"
+      "path": "../../packages/maz-ui"
     }
   ],
   "files": []

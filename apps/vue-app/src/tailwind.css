@@ -12,7 +12,7 @@
 
 @source "./**/*.vue";
 @source "./**/*.ts";
-@source "../../../packages/lib/src/**/*.{vue,ts,css,scss}";
+@source "../../../packages/maz-ui/src/**/*.{vue,ts,css,scss}";
 
 @layer base {
   *,

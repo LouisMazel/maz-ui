@@ -31,6 +31,10 @@ export default defineConfig({
     twitterMessage: '🚀 {{releaseTitle}}\n\n{{changelog}}\n\n{{changelogUrl}}\n{{releaseUrl}}',
   },
 
+  scopeMap: {
+    lib: 'maz-ui',
+  },
+
   monorepo: {
     // Explicit lists: a new published package must be put in a group
     groups: [
@@ -42,7 +46,7 @@ export default defineConfig({
         versionMode: 'unified',
         packages: [
           'packages/icons',
-          'packages/lib',
+          'packages/maz-ui',
           'packages/mcp',
           'packages/node',
           'packages/nuxt',

@@ -369,7 +369,7 @@ importers:
         version: 1.13.15
       maz-ui:
         specifier: workspace:^
-        version: link:../../packages/lib
+        version: link:../../packages/maz-ui
       shiki:
         specifier: 'catalog:'
         version: 4.6.0
@@ -463,7 +463,7 @@ importers:
         version: link:../../packages/utils
       maz-ui:
         specifier: workspace:^
-        version: link:../../packages/lib
+        version: link:../../packages/maz-ui
       valibot:
         specifier: 'catalog:'
         version: 1.5.0(typescript@6.0.3)
@@ -567,7 +567,7 @@ importers:
         version: 10.14.0(jiti@2.7.0)(supports-color@10.2.2)
       maz-ui:
         specifier: workspace:^
-        version: link:../../packages/lib
+        version: link:../../packages/maz-ui
       npm-run-all2:
         specifier: ^9.0.4
         version: 9.0.4
@@ -705,7 +705,53 @@ importers:
         specifier: 'catalog:'
         version: 3.5.44(typescript@6.0.3)
 
-  packages/lib:
+  packages/maz-cli:
+    dependencies:
+      '@clack/prompts':
+        specifier: 'catalog:'
+        version: 1.8.1
+      '@maz-ui/node':
+        specifier: workspace:^
+        version: link:../node
+      colorette:
+        specifier: 'catalog:'
+        version: 2.0.20
+      commander:
+        specifier: 'catalog:'
+        version: 15.0.0
+      cosmiconfig:
+        specifier: ^10.0.1
+        version: 10.0.1
+      figlet:
+        specifier: 'catalog:'
+        version: 1.12.0
+      tinycolor2:
+        specifier: ^1.6.0
+        version: 1.6.0
+    devDependencies:
+      '@maz-ui/eslint-config':
+        specifier: workspace:^
+        version: link:../eslint-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.6
+      '@types/tinycolor2':
+        specifier: ^1.4.6
+        version: 1.4.6
+      cross-env:
+        specifier: 'catalog:'
+        version: 10.1.0
+      eslint:
+        specifier: 'catalog:'
+        version: 10.14.0(jiti@2.7.0)(supports-color@10.2.2)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      unbuild:
+        specifier: 'catalog:'
+        version: 3.6.1(sass@1.107.1)(typescript@6.0.3)(vue-sfc-transformer@0.2.5(@volar/typescript@2.4.30(typescript@6.0.3))(@vue/compiler-core@3.5.44)(@vue/language-core@3.3.14)(esbuild@0.28.2)(rolldown@1.2.16)(typescript@6.0.3)(vue@3.5.44(typescript@6.0.3)))(vue-tsc@3.3.14(typescript@6.0.3))(vue@3.5.44(typescript@6.0.3))
+
+  packages/maz-ui:
     dependencies:
       '@floating-ui/vue':
         specifier: ^2.0.1
@@ -865,52 +911,6 @@ importers:
         specifier: 'catalog:'
         version: 4.6.7
 
-  packages/maz-cli:
-    dependencies:
-      '@clack/prompts':
-        specifier: 'catalog:'
-        version: 1.8.1
-      '@maz-ui/node':
-        specifier: workspace:^
-        version: link:../node
-      colorette:
-        specifier: 'catalog:'
-        version: 2.0.20
-      commander:
-        specifier: 'catalog:'
-        version: 15.0.0
-      cosmiconfig:
-        specifier: ^10.0.1
-        version: 10.0.1
-      figlet:
-        specifier: 'catalog:'
-        version: 1.12.0
-      tinycolor2:
-        specifier: ^1.6.0
-        version: 1.6.0
-    devDependencies:
-      '@maz-ui/eslint-config':
-        specifier: workspace:^
-        version: link:../eslint-config
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.6
-      '@types/tinycolor2':
-        specifier: ^1.4.6
-        version: 1.4.6
-      cross-env:
-        specifier: 'catalog:'
-        version: 10.1.0
-      eslint:
-        specifier: 'catalog:'
-        version: 10.14.0(jiti@2.7.0)(supports-color@10.2.2)
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-      unbuild:
-        specifier: 'catalog:'
-        version: 3.6.1(sass@1.107.1)(typescript@6.0.3)(vue-sfc-transformer@0.2.5(@volar/typescript@2.4.30(typescript@6.0.3))(@vue/compiler-core@3.5.44)(@vue/language-core@3.3.14)(esbuild@0.28.2)(rolldown@1.2.16)(typescript@6.0.3)(vue@3.5.44(typescript@6.0.3)))(vue-tsc@3.3.14(typescript@6.0.3))(vue@3.5.44(typescript@6.0.3))
-
   packages/mcp:
     devDependencies:
       '@babel/parser':
@@ -1042,7 +1042,7 @@ importers:
         version: 6.1.7
       maz-ui:
         specifier: workspace:^
-        version: link:../lib
+        version: link:../maz-ui
     devDependencies:
       '@maz-ui/eslint-config':
         specifier: workspace:^

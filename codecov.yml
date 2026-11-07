@@ -43,7 +43,7 @@ component_management:
     - component_id: lib
       name: maz-ui
       paths:
-        - packages/lib/**
+        - packages/maz-ui/**
 
     - component_id: eslint-config
       name: '@maz-ui/eslint-config'

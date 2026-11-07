@@ -22,7 +22,7 @@ Maz UI is a comprehensive Vue 3/Nuxt 3 component library featuring 50+ UI compon
 
 ### Package-Specific Commands
 
-Within individual packages (e.g., `packages/lib/`):
+Within individual packages (e.g., `packages/maz-ui/`):
 
 - `pnpm build` - Build the package (includes typecheck)
 - `pnpm lint` - Lint JavaScript and styles
@@ -44,7 +44,7 @@ Within individual packages (e.g., `packages/lib/`):
 
 ### Monorepo Structure
 
-- `packages/lib/` - Main Maz UI library (Vue components, composables, directives)
+- `packages/maz-ui/` - Main Maz UI library (Vue components, composables, directives)
 - `packages/icons/` - Icon package (@maz-ui/icons) based on Heroicons
 - `packages/themes/` - Theme management package (@maz-ui/themes)
 - `packages/translations/` - i18n support package (@maz-ui/translations)
@@ -61,7 +61,7 @@ Within individual packages (e.g., `packages/lib/`):
 - `tools/agent-docs/` - Generator of the agent knowledge bundle (see below)
 - `plugins/claude-code/` - Claude Code plugin (skill, MCP server, review hook), exposed by `.claude-plugin/marketplace.json`
 
-### Main Library Structure (`packages/lib/src/`)
+### Main Library Structure (`packages/maz-ui/src/`)
 
 - `components/` - Vue 3 components with TypeScript props and emit definitions
 - `composables/` - Reusable composition functions (e.g., useFormValidator, useToast)
@@ -82,7 +82,7 @@ Within individual packages (e.g., `packages/lib/`):
 ### Testing
 
 - Uses Vitest with Vue Test Utils and jsdom
-- Tests located in `packages/lib/tests/specs/`
+- Tests located in `packages/maz-ui/tests/specs/`
 - Coverage configured to exclude certain files (types, index files, some composables)
 - Global test setup in `tests/vitest-global.setup.ts`
 
@@ -107,7 +107,7 @@ Within individual packages (e.g., `packages/lib/`):
 ### Agent knowledge bundle (`tools/agent-docs`)
 
 - Single source of the docs for AI agents: it reads `apps/docs/src`, the component sources (vue-component-meta + vue-docgen-api), the Tailwind CSS of the lib and the icon list, and writes:
-  - `packages/lib/docs/` (shipped in `maz-ui`, read by agents in `node_modules/maz-ui/docs`) and `packages/mcp/docs/`, both at build time and gitignored
+  - `packages/maz-ui/docs/` (shipped in `maz-ui`, read by agents in `node_modules/maz-ui/docs`) and `packages/mcp/docs/`, both at build time and gitignored
   - `apps/docs/.vitepress/generated-docs/*.doc.md` (API tables of the component pages) and `llms.txt` / `llms-full.txt` / one `.md` per page on maz-ui.com
   - `plugins/claude-code/skills/maz-ui/SKILL.md` (committed: run `pnpm -F agent-docs generate:plugin` after changing `tools/agent-docs/content`, a test fails otherwise)
 - The agent rules live in `tools/agent-docs/content/rules.md` (also included in `apps/docs/src/guide/ai-agents.md`).
@@ -159,7 +159,7 @@ Within individual packages (e.g., `packages/lib/`):
 
 ### Coverage Requirements
 
-- **ALWAYS run `pnpm test:unit:coverage` (or `CI=1 pnpm vitest run --coverage` from `packages/lib`) before opening a PR that touches `packages/lib/src/**`**. Plain `pnpm test:unit` does not enforce the thresholds.
-- The coverage thresholds are defined in `packages/lib/vitest.config.ts`. They are enforced in CI (`CI=1` disables `autoUpdate`). A run that drops below any threshold fails.
+- **ALWAYS run `pnpm test:unit:coverage` (or `CI=1 pnpm vitest run --coverage` from `packages/maz-ui`) before opening a PR that touches `packages/maz-ui/src/**`**. Plain `pnpm test:unit` does not enforce the thresholds.
+- The coverage thresholds are defined in `packages/maz-ui/vitest.config.ts`. They are enforced in CI (`CI=1` disables `autoUpdate`). A run that drops below any threshold fails.
 - New code must keep the global thresholds for **statements / branches / functions / lines** green. Per-file 100% is not enough — adding many covered functions can still shift the global ratio.
 - `autoUpdate` only **raises** thresholds locally — it never lowers them. If a real coverage drift forces the threshold down, update `vitest.config.ts` manually and commit it with the PR.

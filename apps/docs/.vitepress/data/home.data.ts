@@ -63,7 +63,7 @@ const _dirname = dirname(fileURLToPath(import.meta.url))
 const require = createRequire(import.meta.url)
 const REPO = 'LouisMazel/maz-ui'
 const IGNORED_CONTRIBUTORS = new Set(['dependabot[bot]', 'renovate[bot]', 'github-actions[bot]'])
-const THEME_COLORS_CSS = join(_dirname, '../../../../packages/lib/src/tailwindcss/theme-colors.css')
+const THEME_COLORS_CSS = join(_dirname, '../../../../packages/maz-ui/src/tailwindcss/theme-colors.css')
 const PRESETS: { preset: ThemePreset, label: string }[] = [
   { preset: folio, label: 'Folio' },
   { preset: mazUi, label: 'Maz-UI' },
