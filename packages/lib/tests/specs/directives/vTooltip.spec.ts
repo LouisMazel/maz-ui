@@ -1,6 +1,6 @@
 import { vTooltip } from '@directives/vTooltip'
 import { mount } from '@vue/test-utils'
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 
 describe('given vTooltip directive', () => {
   let wrapper: ReturnType<typeof mount>
@@ -46,13 +46,15 @@ describe('given vTooltip directive', () => {
   })
 
   describe('when using tooltip with options', () => {
-    it('then it should render with object options', () => {
+    it('then it should render with object options', async () => {
       wrapper = mount({
         template: `<div v-tooltip="{ text: 'Tooltip text', open: true }">Content</div>`,
         directives: {
           tooltip: vTooltip,
         },
       })
+
+      await nextTick()
 
       expect(wrapper.exists()).toBe(true)
       expect(wrapper.text()).toContain('Content')
@@ -62,7 +64,7 @@ describe('given vTooltip directive', () => {
   })
 
   describe('when using tooltip with color', () => {
-    it('then it should render with color options', () => {
+    it('then it should render with color options', async () => {
       wrapper = mount({
         template: `<div v-tooltip="{ text: 'Tooltip text', color: 'destructive', open: true }">Content</div>`,
         directives: {
@@ -70,6 +72,8 @@ describe('given vTooltip directive', () => {
         },
 
       })
+
+      await nextTick()
 
       expect(wrapper.exists()).toBe(true)
       expect(wrapper.text()).toContain('Content')

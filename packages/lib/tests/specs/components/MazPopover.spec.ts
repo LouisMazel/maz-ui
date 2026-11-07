@@ -2,12 +2,19 @@ import type { MazPopoverProps } from '@components/MazPopover.vue'
 import type { MazColor } from '@/components/types'
 import MazPopover from '@components/MazPopover.vue'
 import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import { getColor } from '@/components/types'
+
+async function mountPopover(...args: Parameters<typeof mount<typeof MazPopover>>) {
+  const wrapper = mount(...args)
+  await nextTick()
+  return wrapper
+}
 
 describe('given MazPopover component', () => {
   describe('when rendered with default props', () => {
-    it('then it should render with default configuration', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should render with default configuration', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         slots: {
           trigger: '<button>Click me</button>',
           default: '<div>Popover content</div>',
@@ -21,8 +28,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with modelValue true', () => {
-    it('then it should show the popover panel', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should show the popover panel', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: { modelValue: true },
         slots: {
           trigger: '<button>Click me</button>',
@@ -36,7 +43,7 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with different positions', () => {
-    it('then it should apply the correct position classes', () => {
+    it('then it should apply the correct position classes', async () => {
       const positions: MazPopoverProps['position'][] = [
         'top',
         'bottom',
@@ -46,8 +53,8 @@ describe('given MazPopover component', () => {
         'bottom-end',
       ]
 
-      positions.forEach((position) => {
-        const wrapper = mount(MazPopover, {
+      for (const position of positions) {
+        const wrapper = await mountPopover(MazPopover, {
           props: {
             modelValue: true,
             position,
@@ -59,7 +66,7 @@ describe('given MazPopover component', () => {
         })
 
         expect(wrapper.find('.m-popover-panel').classes()).toContain(`--position-${position}`)
-      })
+      }
     })
   })
 
@@ -76,8 +83,8 @@ describe('given MazPopover component', () => {
         'contrast',
         'surface',
       ] as MazColor[],
-    )('then it should apply the correct color classes', (color) => {
-      const wrapper = mount(MazPopover, {
+    )('then it should apply the correct color classes', async (color) => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           color,
@@ -99,8 +106,8 @@ describe('given MazPopover component', () => {
       ['click', '<button>Click me</button>'],
       ['hover', '<button>Hover me</button>'],
       ['manual', '<button>Manual</button>'],
-    ])('then it handles the %s trigger', (trigger, triggerSlot) => {
-      const wrapper = mount(MazPopover, {
+    ])('then it handles the %s trigger', async (trigger, triggerSlot) => {
+      const wrapper = await mountPopover(MazPopover, {
         props: { trigger },
         slots: {
           trigger: triggerSlot,
@@ -114,8 +121,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with different roles', () => {
-    it.each(['dialog', 'tooltip', 'menu'] as MazPopoverProps['role'][])('then it should apply the correct role attribute', (role) => {
-      const wrapper = mount(MazPopover, {
+    it.each(['dialog', 'tooltip', 'menu'] as MazPopoverProps['role'][])('then it should apply the correct role attribute', async (role) => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           role,
@@ -131,8 +138,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with disabled prop', () => {
-    it('then it should apply disabled class', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should apply disabled class', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: { disabled: true },
         slots: {
           trigger: '<button>Click me</button>',
@@ -145,8 +152,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with block prop', () => {
-    it('then it should apply block class', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should apply block class', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: { block: true },
         slots: {
           trigger: '<button>Click me</button>',
@@ -159,8 +166,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with custom aria attributes', () => {
-    it('then it should apply aria-label', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should apply aria-label', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           ariaLabel: 'Custom aria label',
@@ -174,8 +181,8 @@ describe('given MazPopover component', () => {
       expect(wrapper.find('.m-popover-panel').attributes('aria-label')).toBe('Custom aria label')
     })
 
-    it('then it should apply aria-labelledby', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should apply aria-labelledby', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           ariaLabelledby: 'custom-label',
@@ -189,8 +196,8 @@ describe('given MazPopover component', () => {
       expect(wrapper.find('.m-popover-panel').attributes('aria-labelledby')).toContain('custom-label')
     })
 
-    it('then it should apply aria-describedby', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should apply aria-describedby', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           ariaDescribedby: 'custom-description',
@@ -206,8 +213,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with custom offset', () => {
-    it('then it should accept custom offset value', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should accept custom offset value', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           offset: 16,
@@ -223,8 +230,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with custom delay', () => {
-    it('then it should accept custom delay value', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should accept custom delay value', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           delay: 500,
         },
@@ -239,8 +246,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with custom transition', () => {
-    it('then it should use custom transition name', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should use custom transition name', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           transition: 'custom-transition',
@@ -262,8 +269,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with custom teleport target', () => {
-    it('then it should use custom teleport target', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should use custom teleport target', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           teleportTo: '#custom-target',
@@ -281,8 +288,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with custom panel classes', () => {
-    it('then it should apply custom panel classes', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should apply custom panel classes', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           panelClass: 'custom-panel-class',
@@ -296,8 +303,8 @@ describe('given MazPopover component', () => {
       expect(wrapper.find('.m-popover-panel').classes()).toContain('custom-panel-class')
     })
 
-    it('then it should apply custom overlay classes', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should apply custom overlay classes', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           overlayClass: 'custom-overlay-class',
@@ -313,8 +320,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with custom panel style', () => {
-    it('then it should apply custom panel style', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should apply custom panel style', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           panelStyle: { backgroundColor: 'red' },
@@ -328,8 +335,8 @@ describe('given MazPopover component', () => {
       expect(wrapper.find('.m-popover-panel').attributes('style')).toContain('background-color: red')
     })
 
-    it('then it should apply custom panel style when passed as string', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should apply custom panel style when passed as string', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           panelStyle: 'background-color: blue; color: white;',
@@ -347,8 +354,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when closed', () => {
-    it('then it should not render the panel', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should not render the panel', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: { modelValue: false },
         slots: {
           trigger: '<button>Click me</button>',
@@ -361,8 +368,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when trigger slot provides scope', () => {
-    it('then it should provide helper functions to trigger slot', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should provide helper functions to trigger slot', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         slots: {
           trigger: '<button>Click me</button>',
           default: '<div>Content</div>',
@@ -375,8 +382,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when default slot provides scope', () => {
-    it('then it should provide helper functions to default slot', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should provide helper functions to default slot', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: { modelValue: true },
         slots: {
           trigger: '<button>Click me</button>',
@@ -390,8 +397,8 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with announceChanges', () => {
-    it('then it should set aria-live attribute', () => {
-      const wrapper = mount(MazPopover, {
+    it('then it should set aria-live attribute', async () => {
+      const wrapper = await mountPopover(MazPopover, {
         props: {
           modelValue: true,
           announceChanges: true,
