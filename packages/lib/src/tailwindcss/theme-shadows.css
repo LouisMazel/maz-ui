@@ -6,12 +6,12 @@
  * `--maz-shadow-style-{sm,md,lg,xl,elevation}`; the bridge wires them
  * into the matching Tailwind utilities.
  *
- * `xs` is intentionally not part of the runtime scale — it stays as a
- * lightweight color-mixed variant on top of `--color-elevation` so
- * `shadow-xs` still tints with the theme shadow color.
+ * `xs` is intentionally not part of the runtime scale: it stays as a
+ * lightweight color-mixed variant on top of `--maz-shadow` (the preset
+ * shadow color, not `--color-elevation`, which `prefix(maz)` renames).
  */
 @theme inline {
-  --shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--color-elevation) 5%, transparent);
+  --shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--maz-shadow) 5%, transparent);
   --shadow-sm: var(--maz-shadow-style-sm);
   --shadow-md: var(--maz-shadow-style-md);
   --shadow-lg: var(--maz-shadow-style-lg);
