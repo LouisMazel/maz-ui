@@ -169,7 +169,7 @@ app.use(MazUi, {
 - ✅ **Optimization** - Loading only on demand
 
 **Disadvantages:**
-- ❌ **Possible delay** - May temporarily display translation keys
+- ❌ **Possible delay** - May temporarily display the English text of a key missing in your locale
 - ❌ **Complexity** - Requires finer loading state management
 
 ### Recommendation
@@ -178,6 +178,27 @@ app.use(MazUi, {
 - You have very strict performance constraints
 - Your application is very large
 - You manually manage loading states
+
+## Loading and server rendering
+
+- **English is bundled**: it is the default locale and the last fallback, so the first render never shows translation keys. The other languages are loaded on demand, one chunk each.
+- **`ready`**: the instance (`useTranslations().ready`) resolves once the locale and the fallback locale (with `preloadFallback`) are loaded. Until then, a missing message falls back to English.
+- **One state per instance**: the plugin and each [`MazUiProvider`](../guide/maz-ui-provider.md) have their own locale and messages. On the server, every request gets its own instance, so two requests never share their locale.
+- **SSR**: await `ready` before rendering, on the server and before the hydration, so both render the same text. [`@maz-ui/nuxt`](./nuxt.md) does it for you.
+
+```typescript
+import { createSSRApp } from 'vue'
+import { MazUiTranslations } from '@maz-ui/translations/plugin'
+import App from './App.vue'
+
+export async function createApp() {
+  const app = createSSRApp(App)
+  app.use(MazUiTranslations, { locale: 'fr' })
+  await app.config.globalProperties.$mazTranslations.ready
+
+  return app
+}
+```
 
 ## Enhanced Lazy Loading
 
@@ -1152,9 +1173,13 @@ export default {
 
 8. **preloadFallback option** - By default (`preloadFallback: true`), the fallback language is preloaded at startup for a smoother experience. Set to `false` to optimize initial loading.
 
-9. **8 ready-to-use languages** - Maz-UI includes complete translations for 8 languages that are automatically loaded with lazy loading.
+9. **8 ready-to-use languages** - Maz-UI includes complete translations for 8 languages. English is bundled, the others are loaded on demand.
 
-10. **Partial translations** - You can provide partial translations. Maz-UI will automatically use default translations for missing keys.
+10. **Partial translations** - You can provide partial translations. Maz-UI will automatically use default translations for missing keys, even for the other keys of a group you customize.
+
+11. **`setLocaleMessage()`** - Adds messages over the default ones: the default messages of the locale are still loaded when it is used.
+
+12. **The last `setLocale()` wins** - Calling `setLocale('ja')` then `setLocale('en')` ends on `en`, even if Japanese loads slower.
 
 ## That's it! 🎉
 

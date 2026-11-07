@@ -1342,10 +1342,15 @@ function onToggle(isOpen) {
 MazPopover follows WAI-ARIA guidelines:
 
 - **Focus management**: Automatically manages focus when opening/closing
-- **Keyboard navigation**: Supports Escape key and Tab navigation
+- **Keyboard navigation**: Supports Escape key and Tab navigation. With nested popovers (a select inside a dropdown), Escape closes the last opened one first, and a click in an inner popover keeps the outer one open
+- **Tooltips on focus**: with `trigger="hover"` and `role="tooltip"`, the tooltip also shows when the trigger gets the keyboard focus
 - **ARIA attributes**: Proper `role`, `aria-modal`, `aria-labelledby`, etc.
 - **Screen reader support**: Appropriate roles for different use cases
 - **Trigger ARIA on the real control**: `aria-expanded`, `aria-haspopup` and `aria-controls` are set on the interactive element of the `trigger` slot (your button, link...), never on a wrapper around it. ARIA attributes you set yourself on that element are kept, and a `combobox` keeps managing its own state. When the slot has no interactive element, the wrapper becomes a focusable `button` (<kbd>Enter</kbd> / <kbd>Space</kbd> toggle the popover).
+
+### Server rendering
+
+The panel is only rendered in the browser, once the component is mounted: its position needs the DOM, and a teleported content rendered on the server breaks the hydration. A popover open by default (`v-model` set to `true`) renders its trigger on the server and opens right after the hydration. Content that has to be indexed by search engines belongs to the page, not to a popover.
 
 ### Best practices
 

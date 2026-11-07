@@ -141,10 +141,14 @@ export default defineNuxtConfig({
 
     // Translations
     translations: {
-      locales: 'fr',
+      locale: 'fr',
       fallbackLocale: 'en',
       messages: {
-        // override default messages or add new languages
+        // override default messages or add new languages:
+        // the path of a file that exports the messages (loaded when the locale is used)
+        fr: '~/locales/maz-ui/fr.ts',
+        // or the messages
+        nl: { pagination: { navAriaLabel: 'Paginanavigatie' } },
       },
     },
 
