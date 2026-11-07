@@ -1,138 +1,187 @@
-import type { MazUiTranslationsSchema } from '../types'
-import { globalState, locale } from '../states'
+import type { TranslationsStore } from '../states'
+import type { MazUiTranslationsMessages, MazUiTranslationsSchema } from '../types'
+import en from '../locales/en'
+import { legacyStore } from '../states'
 import { mergeMessages } from './messages'
 
-const defaultLocalesLoaders: Record<string, () => Promise<{ default: MazUiTranslationsSchema }>> = {
-  './locales/en.ts': () => import('./../locales/en').then(m => ({ default: m.default })),
-  './locales/de.ts': () => import('./../locales/de').then(m => ({ default: m.default })),
-  './locales/es.ts': () => import('./../locales/es').then(m => ({ default: m.default })),
-  './locales/fr.ts': () => import('./../locales/fr').then(m => ({ default: m.default })),
-  './locales/it.ts': () => import('./../locales/it').then(m => ({ default: m.default })),
-  './locales/ja.ts': () => import('./../locales/ja').then(m => ({ default: m.default })),
-  './locales/pt.ts': () => import('./../locales/pt').then(m => ({ default: m.default })),
-  './locales/zh-CN.ts': () => import('./../locales/zh-CN').then(m => ({ default: m.default })),
+/** Default messages loaded on demand. English is bundled: it is the default locale and the last fallback, so the first render never shows keys. */
+const lazyDefaultLocales: Record<string, () => Promise<{ default: MazUiTranslationsSchema }>> = {
+  'de': () => import('./../locales/de'),
+  'es': () => import('./../locales/es'),
+  'fr': () => import('./../locales/fr'),
+  'it': () => import('./../locales/it'),
+  'ja': () => import('./../locales/ja'),
+  'pt': () => import('./../locales/pt'),
+  'zh-CN': () => import('./../locales/zh-CN'),
 }
 
-const defaultMessagesCache = new Map<string, MazUiTranslationsSchema>()
+/** Default messages are static: the cache is shared by every instance and every server request. */
+const defaultMessagesCache = new Map<string, MazUiTranslationsSchema>([
+  ['en', en],
+])
+
+function hasDefaultMessages(locale: string): boolean {
+  return locale === 'en' || locale in lazyDefaultLocales
+}
+
+/** Default messages available without waiting: cached, or empty for a locale without default messages. */
+function getCachedDefaultMessages(locale: string): MazUiTranslationsSchema | undefined {
+  if (defaultMessagesCache.has(locale))
+    return defaultMessagesCache.get(locale)
+
+  return hasDefaultMessages(locale)
+    ? undefined
+    : {}
+}
+
+async function importDefaultMessages(locale: string): Promise<MazUiTranslationsSchema> {
+  const { default: messages } = await lazyDefaultLocales[locale]()
+  defaultMessagesCache.set(locale, messages)
+  return messages
+}
 
 export async function loadDefaultMessages(locale: string): Promise<MazUiTranslationsSchema> {
-  if (defaultMessagesCache.has(locale)) {
-    return defaultMessagesCache.get(locale)!
-  }
-
-  const loaderPath = `./locales/${locale}.ts`
-  const loader = defaultLocalesLoaders[loaderPath]
-
-  if (!loader) {
-    return {}
-  }
+  const cached = getCachedDefaultMessages(locale)
+  if (cached)
+    return cached
 
   try {
-    const module = await loader()
-    const messages = module.default
-    defaultMessagesCache.set(locale, messages)
-    return messages
+    return await importDefaultMessages(locale)
   }
   catch (error) {
-    console.error(`Failed to load default messages for locale "${locale}":`, error)
+    console.error(`[@maz-ui/translations] Failed to load default messages for locale "${locale}":`, error)
     return {}
   }
 }
 
-export function getAvailableLocales() {
+async function resolveUserMessages(userMessages: MazUiTranslationsMessages[string] | undefined): Promise<Partial<MazUiTranslationsSchema>> {
+  if (typeof userMessages !== 'function')
+    return userMessages ?? {}
+
+  const resolved = await userMessages()
+  return 'default' in resolved
+    ? resolved.default
+    : resolved
+}
+
+function applyLocaleMessages(store: TranslationsStore, targetLocale: string, defaultMessages: MazUiTranslationsSchema, userMessages: Partial<MazUiTranslationsSchema>): void {
+  store.state.messages[targetLocale] = mergeMessages(
+    mergeMessages(defaultMessages, userMessages),
+    store.overrides[targetLocale] ?? {},
+  )
+}
+
+export function getAvailableLocales(store: TranslationsStore = legacyStore) {
   const locales = new Set<string>()
 
-  for (const [path, loader] of Object.entries(defaultLocalesLoaders)) {
-    if (loader && typeof loader === 'function') {
-      locales.add(path.replace('./locales/', '').replace('.ts', ''))
-    }
+  for (const defaultLocale of [
+    'en',
+    ...Object.keys(lazyDefaultLocales),
+  ]) {
+    locales.add(defaultLocale)
   }
 
-  for (const path of Object.keys(globalState.userMessages)) {
+  for (const path of Object.keys(store.state.userMessages)) {
     locales.add(path)
   }
 
   return [...locales]
 }
 
-export function loadLocale(targetLocale: string): Promise<void> {
-  if (globalState.loadedLocales.has(targetLocale)) {
+/**
+ * Loads the default and user messages of a locale. Applied synchronously when they are already
+ * available (English, a cached locale, object messages). Never rejects: a failure is logged, the
+ * locale stays not loaded and the next explicit call retries.
+ */
+export function loadLocale(targetLocale: string, store: TranslationsStore = legacyStore): Promise<void> {
+  const { state } = store
+
+  if (state.loadedLocales.has(targetLocale)) {
     return Promise.resolve()
   }
 
-  if (globalState.loadingPromises.has(targetLocale)) {
-    return globalState.loadingPromises.get(targetLocale)!
+  const pending = state.loadingPromises.get(targetLocale)
+  if (pending) {
+    return pending
+  }
+
+  store.failedLocales.delete(targetLocale)
+  const userLoader = state.userMessages[targetLocale]
+  const cachedDefaultMessages = getCachedDefaultMessages(targetLocale)
+
+  if (cachedDefaultMessages && typeof userLoader !== 'function') {
+    applyLocaleMessages(store, targetLocale, cachedDefaultMessages, userLoader ?? {})
+    state.loadedLocales.add(targetLocale)
+    return Promise.resolve()
   }
 
   const loadingPromise = (async () => {
     try {
-      const localeDefaultMessages = await loadDefaultMessages(targetLocale)
-      let localeUserMessages: Partial<MazUiTranslationsSchema> = {}
+      const defaultMessages = cachedDefaultMessages ?? await importDefaultMessages(targetLocale)
 
-      const userLoader = globalState.userMessages[targetLocale]
-      if (userLoader) {
-        if (typeof userLoader === 'function') {
-          try {
-            const userMessages = await userLoader()
-            localeUserMessages = 'default' in userMessages
-              ? userMessages.default
-              : userMessages
-          }
-          catch (error) {
-            console.error(`Failed to load user translations for locale "${targetLocale}":`, error)
-            localeUserMessages = {}
-          }
-        }
-        else {
-          localeUserMessages = userLoader
-        }
+      try {
+        applyLocaleMessages(store, targetLocale, defaultMessages, await resolveUserMessages(userLoader))
+        state.loadedLocales.add(targetLocale)
       }
-
-      globalState.messages[targetLocale] = mergeMessages(localeDefaultMessages, localeUserMessages)
-      globalState.loadedLocales.add(targetLocale)
+      catch (error) {
+        console.error(`[@maz-ui/translations] Failed to load user translations for locale "${targetLocale}":`, error)
+        applyLocaleMessages(store, targetLocale, defaultMessages, {})
+        store.failedLocales.add(targetLocale)
+      }
     }
     catch (error) {
-      console.error(`Failed to load translations for locale "${targetLocale}":`, error)
-      globalState.messages[targetLocale] = {}
-      globalState.loadedLocales.add(targetLocale)
+      console.error(`[@maz-ui/translations] Failed to load translations for locale "${targetLocale}":`, error)
+      store.failedLocales.add(targetLocale)
     }
     finally {
-      globalState.loadingPromises.delete(targetLocale)
+      state.loadingPromises.delete(targetLocale)
     }
   })()
 
-  globalState.loadingPromises.set(targetLocale, loadingPromise)
+  state.loadingPromises.set(targetLocale, loadingPromise)
   return loadingPromise
 }
 
-export function getMessages() {
-  return globalState.messages
+export function getMessages(store: TranslationsStore = legacyStore) {
+  return store.state.messages
 }
 
-export function isLocaleLoaded(localeToCheck: string) {
-  return globalState.loadedLocales.has(localeToCheck)
+export function isLocaleLoaded(localeToCheck: string, store: TranslationsStore = legacyStore) {
+  return store.state.loadedLocales.has(localeToCheck)
 }
 
-export function isLocaleLoading(localeToCheck: string) {
-  return globalState.loadingPromises.has(localeToCheck)
+export function isLocaleLoading(localeToCheck: string, store: TranslationsStore = legacyStore) {
+  return store.state.loadingPromises.has(localeToCheck)
 }
 
-export function setLocaleMessage(targetLocale: string, messages: Partial<MazUiTranslationsSchema>) {
-  if (!globalState.messages[targetLocale]) {
-    globalState.messages[targetLocale] = {}
+/**
+ * Adds messages to a locale, over its default and user messages. The default messages of the
+ * locale are still loaded when it is used.
+ */
+export function setLocaleMessage(targetLocale: string, messages: Partial<MazUiTranslationsSchema>, store: TranslationsStore = legacyStore) {
+  const { state } = store
+  store.overrides[targetLocale] = mergeMessages(store.overrides[targetLocale] ?? {}, messages)
+  state.messages[targetLocale] = mergeMessages(state.messages[targetLocale] ?? {}, messages)
+
+  // Nothing else to load for a locale without default nor user messages
+  if (!hasDefaultMessages(targetLocale) && state.userMessages[targetLocale] === undefined) {
+    state.loadedLocales.add(targetLocale)
   }
-  globalState.messages[targetLocale] = mergeMessages(globalState.messages[targetLocale], messages)
-  globalState.loadedLocales.add(targetLocale)
 }
 
-export async function setLocale(newLocale: string) {
-  if (!globalState.loadedLocales.has(newLocale)) {
-    await loadLocale(newLocale)
+/** Switches the locale once its messages are loaded. The last call wins over a slower previous one. */
+export async function setLocale(newLocale: string, store: TranslationsStore = legacyStore) {
+  const request = ++store.localeRequest
+
+  if (!store.state.loadedLocales.has(newLocale)) {
+    await loadLocale(newLocale, store)
   }
 
-  locale.value = newLocale
+  if (request === store.localeRequest) {
+    store.locale.value = newLocale
+  }
 }
 
-export function getLoadedLocales() {
-  return Object.keys(globalState.messages)
+export function getLoadedLocales(store: TranslationsStore = legacyStore) {
+  return [...store.state.loadedLocales]
 }

@@ -1,6 +1,13 @@
 import type { App } from 'vue'
 import type { MazUiTranslationsInstance } from '../../types'
+import { getActiveTranslations, setActiveTranslations } from '../active-instance'
 import { injectTranslations } from '../inject'
+
+const { isServer } = vi.hoisted(() => ({
+  isServer: vi.fn(() => false),
+}))
+
+vi.mock('@maz-ui/utils/helpers/isServer', () => ({ isServer }))
 
 function createMockApp(): App {
   return {
@@ -27,6 +34,7 @@ function createMockI18n(): MazUiTranslationsInstance {
 
 describe('inject', () => {
   afterEach(() => {
+    isServer.mockReturnValue(false)
     vi.clearAllMocks()
   })
 
@@ -70,6 +78,36 @@ describe('inject', () => {
 
         expect(app.provide).toHaveBeenCalledWith('mazTranslations', i18n)
         expect(app.config.globalProperties.$mazTranslations).toBe(i18n)
+      })
+    })
+  })
+
+  describe('given the environment', () => {
+    describe('when the instance is injected in the browser', () => {
+      it('then it becomes the active instance', () => {
+        const i18n = createMockI18n()
+
+        injectTranslations({
+          app: createMockApp(),
+          i18n,
+        })
+
+        expect(getActiveTranslations()).toBe(i18n)
+      })
+    })
+
+    describe('when the instance is injected on the server', () => {
+      it('then it is not kept for the next requests', () => {
+        isServer.mockReturnValue(true)
+        const previous = createMockI18n()
+        setActiveTranslations(previous)
+
+        injectTranslations({
+          app: createMockApp(),
+          i18n: createMockI18n(),
+        })
+
+        expect(getActiveTranslations()).toBe(previous)
       })
     })
   })

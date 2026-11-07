@@ -1,185 +1,167 @@
-import { globalState, locale } from '../../states'
-
-vi.mock('../locales', () => ({
-  loadLocale: vi.fn(() => Promise.resolve()),
-  getAvailableLocales: vi.fn(() => ['en', 'fr']),
-  getLoadedLocales: vi.fn(() => ['en']),
-  getMessages: vi.fn(() => ({})),
-  isLocaleLoaded: vi.fn(() => false),
-  isLocaleLoading: vi.fn(() => false),
-  setLocale: vi.fn(),
-  setLocaleMessage: vi.fn(),
-}))
-
-vi.mock('../messages', () => ({
-  t: vi.fn(() => 'translated'),
-}))
-
-const { loadLocale } = await import('../locales')
-const { t } = await import('../messages')
-const { createMazUiTranslations } = await import('../instance')
+import { createTranslationsStore, legacyStore, locale } from '../../states'
+import { createMazUiTranslations } from '../instance'
 
 describe('instance', () => {
   beforeEach(() => {
-    vi.useFakeTimers()
-    locale.value = 'en'
-    globalState.loadedLocales = new Set()
-    globalState.messages = {}
-    globalState.userMessages = {}
-    globalState.loadingPromises = new Map()
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
   })
 
   afterEach(() => {
-    vi.clearAllMocks()
-    vi.useRealTimers()
+    vi.restoreAllMocks()
   })
 
-  describe('given createMazUiTranslations function', () => {
+  describe('given createMazUiTranslations', () => {
     describe('when called with no options', () => {
-      it('then it sets locale to en by default', () => {
-        createMazUiTranslations()
+      it('then the English messages are available at once', () => {
+        const i18n = createMazUiTranslations()
 
+        expect(i18n.locale.value).toBe('en')
+        expect(i18n.t('pagination.navAriaLabel')).toBe('page navigation')
+        expect(i18n.isLocaleLoaded('en')).toBe(true)
+      })
+
+      it('then it exposes the instance API', () => {
+        const i18n = createMazUiTranslations()
+
+        expect(i18n.getAvailableLocales()).toContain('fr')
+        expect(i18n.getLoadedLocales()).toEqual(['en'])
+        expect(i18n.getMessages().en).toHaveProperty('pagination')
+        expect(i18n.isLocaleLoading('en')).toBe(false)
+      })
+    })
+
+    describe('when called with another locale', () => {
+      it('then ready resolves once the locale and the fallback are loaded', async () => {
+        const i18n = createMazUiTranslations({ locale: 'fr' })
+
+        expect(i18n.isLocaleLoading('fr')).toBe(true)
+        await i18n.ready
+
+        expect(i18n.isLocaleLoaded('fr')).toBe(true)
+        expect(i18n.isLocaleLoaded('en')).toBe(true)
+        expect(i18n.t('pagination.navAriaLabel')).not.toBe('page navigation')
+      })
+    })
+
+    describe('when the locale is not loaded yet', () => {
+      it('then the English message is shown instead of the key', () => {
+        const i18n = createMazUiTranslations({ locale: 'pt' })
+
+        expect(i18n.t('pagination.navAriaLabel')).toBe('page navigation')
+      })
+    })
+
+    describe('when preloadFallback is disabled', () => {
+      it('then only the locale is loaded', async () => {
+        const i18n = createMazUiTranslations({ locale: 'fr', fallbackLocale: 'de', preloadFallback: false })
+
+        await i18n.ready
+
+        expect(i18n.isLocaleLoaded('de')).toBe(false)
+      })
+    })
+
+    describe('when called with object and lazy user messages', () => {
+      it('then they are merged over the default messages', async () => {
+        const i18n = createMazUiTranslations({
+          locale: 'en',
+          fallbackLocale: 'fr',
+          messages: {
+            en: {
+              pagination: { navAriaLabel: 'Custom nav' },
+            },
+            fr: () => Promise.resolve({
+              default: {
+                pagination: { navAriaLabel: 'Navigation perso' },
+              },
+            }),
+          },
+        })
+
+        await i18n.ready
+
+        expect(i18n.t('pagination.navAriaLabel')).toBe('Custom nav')
+        expect(i18n.t('pagination.screenReader.firstPage', { page: 1 })).toBe('First Page, page 1')
+        await i18n.setLocale('fr')
+        expect(i18n.t('pagination.navAriaLabel')).toBe('Navigation perso')
+      })
+    })
+
+    describe('when two instances are created', () => {
+      it('then each one keeps its own locale and messages', async () => {
+        const first = createMazUiTranslations({
+          locale: 'en',
+          messages: {
+            en: {
+              pagination: { navAriaLabel: 'First' },
+            },
+          },
+        })
+        const second = createMazUiTranslations({ locale: 'de' })
+
+        await second.ready
+
+        expect(first.locale.value).toBe('en')
+        expect(first.t('pagination.navAriaLabel')).toBe('First')
+        expect(second.t('pagination.navAriaLabel')).not.toBe('First')
         expect(locale.value).toBe('en')
       })
+    })
 
-      it('then it populates userMessages with default en entry', () => {
-        createMazUiTranslations()
+    describe('when an instance is created again on the same store', () => {
+      it('then the default messages of a customized group are kept', async () => {
+        const store = createTranslationsStore()
+        const options = {
+          messages: {
+            en: {
+              pagination: { navAriaLabel: 'Custom nav' },
+            },
+          },
+        }
 
-        expect(globalState.userMessages).toHaveProperty('en')
-      })
+        await createMazUiTranslations(options, { store }).ready
+        const again = createMazUiTranslations(options, { store })
+        await again.ready
 
-      it('then it populates messages with default en entry', () => {
-        createMazUiTranslations()
-
-        expect(globalState.messages).toHaveProperty('en')
+        expect(again.t('pagination.navAriaLabel')).toBe('Custom nav')
+        expect(again.t('pagination.screenReader.firstPage', { page: 1 })).toBe('First Page, page 1')
       })
     })
 
-    describe('when called with a custom locale', () => {
-      it('then it sets locale to the provided value', () => {
-        createMazUiTranslations({ locale: 'fr' })
+    describe('when an instance is created again with new messages', () => {
+      it('then the locale is loaded again with them', async () => {
+        const store = createTranslationsStore()
 
-        expect(locale.value).toBe('fr')
+        await createMazUiTranslations({
+          messages: {
+            en: {
+              pagination: { navAriaLabel: 'Old' },
+            },
+          },
+        }, { store }).ready
+        const again = createMazUiTranslations({
+          messages: {
+            en: {
+              pagination: { navAriaLabel: 'New' },
+            },
+          },
+        }, { store })
+        await again.ready
+
+        expect(again.t('pagination.navAriaLabel')).toBe('New')
       })
     })
 
-    describe('when called with user messages', () => {
-      it('then it stores object messages in both userMessages and messages', () => {
-        const customMessages = { greeting: 'Bonjour' } as any
+    describe('when setLocaleMessage is called on the instance', () => {
+      it('then the messages are added to its store only', () => {
+        const i18n = createMazUiTranslations()
 
-        createMazUiTranslations({
-          locale: 'fr',
-          messages: { fr: customMessages },
+        i18n.setLocaleMessage('en', {
+          pagination: { navAriaLabel: 'Added' },
         })
 
-        expect(globalState.userMessages.fr).toStrictEqual(customMessages)
-        expect((globalState.messages.fr as any).greeting).toBe('Bonjour')
-      })
-
-      it('then it stores function messages in userMessages only', () => {
-        const loader = () => Promise.resolve({ greeting: 'Hola' })
-
-        createMazUiTranslations({
-          locale: 'es',
-          messages: { es: loader as any },
-        })
-
-        expect(globalState.userMessages.es).toBe(loader)
-      })
-    })
-
-    describe('when preloadFallback is true (default) and fallback differs from locale', () => {
-      it('then it loads both the initial locale and the fallback after setTimeout', () => {
-        createMazUiTranslations({ locale: 'fr', fallbackLocale: 'en' })
-
-        vi.runAllTimers()
-
-        expect(loadLocale).toHaveBeenCalledWith('fr')
-        expect(loadLocale).toHaveBeenCalledWith('en')
-      })
-    })
-
-    describe('when preloadFallback is false', () => {
-      it('then it loads only the initial locale after setTimeout', () => {
-        createMazUiTranslations({ locale: 'fr', fallbackLocale: 'en', preloadFallback: false })
-
-        vi.runAllTimers()
-
-        expect(loadLocale).toHaveBeenCalledWith('fr')
-        expect(loadLocale).not.toHaveBeenCalledWith('en')
-      })
-    })
-
-    describe('when fallback locale equals the initial locale', () => {
-      it('then it loads only the initial locale after setTimeout', () => {
-        createMazUiTranslations({ locale: 'en', fallbackLocale: 'en' })
-
-        vi.runAllTimers()
-
-        expect(loadLocale).toHaveBeenCalledTimes(1)
-        expect(loadLocale).toHaveBeenCalledWith('en')
-      })
-    })
-
-    describe('when the returned instance is examined', () => {
-      it('then it exposes all required methods and properties', () => {
-        const instance = createMazUiTranslations()
-
-        expect(instance).toHaveProperty('locale')
-        expect(instance).toHaveProperty('t')
-        expect(instance).toHaveProperty('setLocale')
-        expect(instance).toHaveProperty('isLocaleLoaded')
-        expect(instance).toHaveProperty('isLocaleLoading')
-        expect(instance).toHaveProperty('setLocaleMessage')
-        expect(instance).toHaveProperty('getMessages')
-        expect(instance).toHaveProperty('getLoadedLocales')
-        expect(instance).toHaveProperty('getAvailableLocales')
-      })
-    })
-
-    describe('when calling t on the returned instance', () => {
-      it('then it delegates to the t function with the fallback locale', () => {
-        const instance = createMazUiTranslations({ fallbackLocale: 'de' })
-
-        instance.t('some.key' as any, { count: 5 })
-
-        expect(t).toHaveBeenCalledWith('some.key', { count: 5 }, 'de')
-      })
-    })
-
-    describe('when calling t on the returned instance without variables', () => {
-      it('then it passes undefined for variables', () => {
-        const instance = createMazUiTranslations({ fallbackLocale: 'en' })
-
-        instance.t('greeting' as any)
-
-        expect(t).toHaveBeenCalledWith('greeting', undefined, 'en')
-      })
-    })
-
-    describe('when loadLocale rejects during setTimeout', () => {
-      it('then it catches the error without throwing', () => {
-        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-        vi.mocked(loadLocale).mockRejectedValueOnce(new Error('load failed'))
-
-        createMazUiTranslations({ locale: 'xx' })
-
-        expect(() => vi.runAllTimers()).not.toThrow()
-        errorSpy.mockRestore()
-      })
-    })
-
-    describe('when fallback loadLocale rejects during setTimeout', () => {
-      it('then it catches the fallback error without throwing', () => {
-        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-        vi.mocked(loadLocale)
-          .mockResolvedValueOnce(undefined)
-          .mockRejectedValueOnce(new Error('fallback load failed'))
-
-        createMazUiTranslations({ locale: 'fr', fallbackLocale: 'en' })
-
-        expect(() => vi.runAllTimers()).not.toThrow()
-        errorSpy.mockRestore()
+        expect(i18n.t('pagination.navAriaLabel')).toBe('Added')
+        expect(legacyStore.state.messages.en).toBeUndefined()
       })
     })
   })

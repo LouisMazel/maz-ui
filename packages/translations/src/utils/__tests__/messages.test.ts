@@ -312,7 +312,7 @@ describe('messages', () => {
 
         t('missing.key' as any, undefined, 'de')
 
-        expect(loadLocale).toHaveBeenCalledWith('de')
+        expect(loadLocale).toHaveBeenCalledWith('de', expect.anything())
       })
     })
 
@@ -324,7 +324,7 @@ describe('messages', () => {
 
         const result = t('missing.key' as any, undefined, 'de')
 
-        expect(loadLocale).toHaveBeenCalledWith('en')
+        expect(loadLocale).toHaveBeenCalledWith('en', expect.anything())
         expect(result).toBe('missing.key')
       })
     })
@@ -380,7 +380,7 @@ describe('messages', () => {
       })
     })
 
-    describe('when the message value is not a string', () => {
+    describe('when the message value is a number', () => {
       it('then it converts the value to a string', () => {
         globalState.messages = {
           en: { count: 42 },
@@ -390,6 +390,68 @@ describe('messages', () => {
         const result = t('count' as any)
 
         expect(result).toBe('42')
+      })
+    })
+
+    describe('when the key points to a group of messages', () => {
+      it('then the key is returned instead of the group', () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+        globalState.messages = {
+          en: {
+            pagination: { next: 'Next' },
+          },
+        } as any
+        globalState.loadedLocales = new Set(['en'])
+        locale.value = 'en'
+
+        expect(t('pagination' as any)).toBe('pagination')
+        warnSpy.mockRestore()
+      })
+    })
+
+    describe('when the message is empty in the current locale', () => {
+      it('then the fallback locale message is returned', () => {
+        globalState.messages = {
+          fr: { greeting: '' },
+          en: { greeting: 'Hello' },
+        } as any
+        globalState.loadedLocales = new Set(['fr', 'en'])
+        locale.value = 'fr'
+
+        expect(t('greeting' as any, undefined, 'en')).toBe('Hello')
+      })
+    })
+
+    describe('when the current locale is still loading', () => {
+      it('then no warning is logged for a missing key', () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+        globalState.messages = { en: {} }
+        globalState.loadingPromises = new Map([
+          [
+            'fr',
+            Promise.resolve(),
+          ],
+        ])
+        locale.value = 'fr'
+
+        expect(t('missing.key' as any, undefined, 'en')).toBe('missing.key')
+        expect(warnSpy).not.toHaveBeenCalled()
+        warnSpy.mockRestore()
+      })
+    })
+
+    describe('when the fallback locale failed to load', () => {
+      it('then it is not loaded again by t', async () => {
+        const { legacyStore } = await import('../../states')
+        legacyStore.failedLocales.add('de')
+        globalState.messages = { fr: {} }
+        globalState.loadedLocales = new Set(['fr', 'en'])
+        locale.value = 'fr'
+
+        t('missing.key' as any, undefined, 'de')
+
+        expect(loadLocale).not.toHaveBeenCalledWith('de', expect.anything())
+        legacyStore.failedLocales.clear()
       })
     })
   })
