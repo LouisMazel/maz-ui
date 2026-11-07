@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.5.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.4.0...v5.5.0)
+
+### 🩹 Fixes
+
+- **utils:** Handle the equal sign and invalid encodings in getCookie ([f5e680306](https://github.com/LouisMazel/maz-ui/commit/f5e680306))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.4.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)

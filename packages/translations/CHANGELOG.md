@@ -1,5 +1,21 @@
 # Change Log
 
+## v5.5.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.4.0...v5.5.0)
+
+### 🚀 Features
+
+- **translations:** Load the messages before the first render and give every instance its own state ([27b3cc503](https://github.com/LouisMazel/maz-ui/commit/27b3cc503))
+
+  English is now bundled, so the first render (and the server rendering) never shows translation keys. Every `createMazUiTranslations()` has its own locale and messages: a `MazUiProvider` or a server request no longer changes the locale of the whole app. The instance exposes a `ready` promise to wait for the messages of the locale before rendering.
+
+  `setLocaleMessage` no longer prevents the default messages of a locale from loading, the last `setLocale` call wins, and a failed load is retried on the next explicit call.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.4.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)

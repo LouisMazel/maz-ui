@@ -1,5 +1,65 @@
 # Change Log
 
+## v5.5.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.4.0...v5.5.0)
+
+### 🚀 Features
+
+- **themes:** Render the theme of the user on the server and follow the theme cookies ([c26bc8cfd](https://github.com/LouisMazel/maz-ui/commit/c26bc8cfd))
+
+  `getThemeHead()` resolves the preset and the color mode of the user from the request (cookies and `Sec-CH-Prefers-Color-Scheme` client hint) and returns the class of `<html>`, the CSS, the `color-scheme` meta and a blocking script, for any SSR or SSG server. See [server rendering](https://maz-ui.com/ecosystem/themes#server-rendering-ssr-and-ssg).
+
+  With the Cookie Store API, a change of the `maz-color-mode` or `maz-preset` cookie (another tab, the server) applies without a reload. The color mode now lives in a single `maz-color-mode` cookie: the saved color mode is reset once.
+
+  Also fixes the color mode when a host toggles the classes (VitePress), with the `buildtime` and `media` strategies, and `useTheme()` sharing its state between SSR requests.
+
+- **translations:** Load the messages before the first render and give every instance its own state ([27b3cc503](https://github.com/LouisMazel/maz-ui/commit/27b3cc503))
+
+  English is now bundled, so the first render (and the server rendering) never shows translation keys. Every `createMazUiTranslations()` has its own locale and messages: a `MazUiProvider` or a server request no longer changes the locale of the whole app. The instance exposes a `ready` promise to wait for the messages of the locale before rendering.
+
+  `setLocaleMessage` no longer prevents the default messages of a locale from loading, the last `setLocale` call wins, and a failed load is retried on the next explicit call.
+
+- **nuxt:** Load the translation messages from files ([92a536b60](https://github.com/LouisMazel/maz-ui/commit/92a536b60))
+
+  The `translations.messages` option now accepts a file path per locale (aliases allowed, so it works from a layer). The file is loaded on demand, the messages no longer go into the payload of every page, and the server renders the page in the right language.
+
+  ```ts
+  export default defineNuxtConfig({
+    mazUi: {
+      translations: {
+        locale: 'fr',
+        messages: { fr: '~/locales/fr.ts' },
+      },
+    },
+  })
+  ```
+
+### 🩹 Fixes
+
+- **utils:** Handle the equal sign and invalid encodings in getCookie ([f5e680306](https://github.com/LouisMazel/maz-ui/commit/f5e680306))
+- **nuxt:** Keep the preset and the color mode of the user across reloads ([892e52640](https://github.com/LouisMazel/maz-ui/commit/892e52640))
+
+  A preset switched with `updateTheme()` no longer goes back to the configured one on the second reload, the first paint follows the live system preference, and deleting the `maz-color-mode` cookie restores the configured `colorMode`.
+
+- **maz-ui:** Tint shadow-xs with the shadow color of the preset ([5a8bb955e](https://github.com/LouisMazel/maz-ui/commit/5a8bb955e))
+- **maz-ui:** Apply the new messages of MazUiProvider after the mount ([5ed3c94fd](https://github.com/LouisMazel/maz-ui/commit/5ed3c94fd))
+- **maz-ui:** Render the panel of MazPopover in the browser only and fix the nested popovers ([638fc7a86](https://github.com/LouisMazel/maz-ui/commit/638fc7a86))
+
+  The panel of `MazPopover` (and so of `MazSelect`, `MazSelectCountry`, `MazDropdown`, `MazDatePicker` and `v-tooltip`) is no longer rendered on the server, which caused hydration mismatches in Nuxt, even when closed. A popover open by default opens right after the hydration.
+
+  With nested popovers (a select inside a dropdown), a click in the inner one keeps the outer one open and Escape closes the last opened one first. The `open` and `close` events are emitted once, the focus trap handles every field and skips the disabled ones, a hover tooltip also shows on keyboard focus, and a disabled popover never shows its panel.
+
+### 📖 Documentation
+
+- **docs:** Document the theme cookies and the server rendering ([726b5fa15](https://github.com/LouisMazel/maz-ui/commit/726b5fa15))
+- **docs:** Follow the active preset in the VitePress theme and fix the dead links ([3d52c2ed9](https://github.com/LouisMazel/maz-ui/commit/3d52c2ed9))
+- **docs:** Document the loading of the translations, the server rendering and the nested popovers ([be54bd708](https://github.com/LouisMazel/maz-ui/commit/be54bd708))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.4.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)

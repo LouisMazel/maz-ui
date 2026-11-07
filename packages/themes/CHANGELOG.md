@@ -1,5 +1,23 @@
 # Change Log
 
+## v5.5.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.4.0...v5.5.0)
+
+### 🚀 Features
+
+- **themes:** Render the theme of the user on the server and follow the theme cookies ([c26bc8cfd](https://github.com/LouisMazel/maz-ui/commit/c26bc8cfd))
+
+  `getThemeHead()` resolves the preset and the color mode of the user from the request (cookies and `Sec-CH-Prefers-Color-Scheme` client hint) and returns the class of `<html>`, the CSS, the `color-scheme` meta and a blocking script, for any SSR or SSG server. See [server rendering](https://maz-ui.com/ecosystem/themes#server-rendering-ssr-and-ssg).
+
+  With the Cookie Store API, a change of the `maz-color-mode` or `maz-preset` cookie (another tab, the server) applies without a reload. The color mode now lives in a single `maz-color-mode` cookie: the saved color mode is reset once.
+
+  Also fixes the color mode when a host toggles the classes (VitePress), with the `buildtime` and `media` strategies, and `useTheme()` sharing its state between SSR requests.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.4.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)
