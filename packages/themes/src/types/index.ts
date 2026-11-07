@@ -103,6 +103,20 @@ export interface ThemeFoundation {
  */
 export type RoundedScaleKey = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
 
+/**
+ * Derivation of the 50..950 steps of the brand colors (`primary`, `secondary`,
+ * `accent`, `info`, `success`, `warning`, `destructive`).
+ *
+ * - `relative`: fixed lightness offsets from the base. Collapses to white or
+ *   black with a very light or very dark base.
+ * - `perceptual`: each step travels a share of the way between the base and a
+ *   light or dark bound, with a lower chroma at the ends. The scale keeps its
+ *   order and its hue whatever the base.
+ *
+ * `surface`, `foreground`, `contrast` and `divider` always use `relative`.
+ */
+export type ColorScaleMode = 'relative' | 'perceptual'
+
 export interface ThemeScales {
   /**
    * Border-radius scale. Maps to Tailwind utilities `rounded-{key}` and is
@@ -122,6 +136,11 @@ export interface ThemeScales {
    * MazContainer, MazPopover, etc.
    */
   shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', string>
+  /**
+   * Derivation of the 50..950 steps of the brand colors.
+   * @default 'relative'
+   */
+  color?: ColorScaleMode
 }
 
 /**
@@ -207,12 +226,13 @@ export interface ThemePresetOverrides {
   foundation?: Partial<ThemeFoundation>
 
   /**
-   * Theme scales (rounded, shadow)
+   * Theme scales (rounded, shadow, color)
    * @default undefined
    */
   scales?: {
     rounded?: Partial<ThemeScales['rounded']>
     shadow?: Partial<ThemeScales['shadow']>
+    color?: ColorScaleMode
   }
 
   /**
