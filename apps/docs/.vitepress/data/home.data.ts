@@ -5,12 +5,13 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { iconList } from '@maz-ui/icons/icon-list'
 import { folio, mazUi, nova, obsidian, ocean, pristine } from '@maz-ui/themes/presets'
-import { generateCSS } from '@maz-ui/themes/utils/css-generator'
+import { BRAND_COLOR_ROLES, generateCSS, getPerceptualColorScale } from '@maz-ui/themes/utils/css-generator'
 import { defineLoader } from 'vitepress'
 import { components } from '../configs/components.mjs'
 import { composables } from '../configs/composables.mjs'
 import { directives } from '../configs/directives.mjs'
 import { plugins } from '../configs/plugins.mjs'
+import { DOCS_COLOR_SCALE } from '../theme/color-scale'
 
 export interface HomeCategory {
   name: string
@@ -205,6 +206,11 @@ function getScopedCss(): string {
   ]
     .map(([, name, value]) => `--maz-color-${name}: ${value};`)
     .join('')
+  const perceptualScales = DOCS_COLOR_SCALE === 'perceptual'
+    ? BRAND_COLOR_ROLES.flatMap(role => Object.entries(getPerceptualColorScale(`var(--maz-${role})`))
+        .map(([step, value]) => `--maz-color-${role}-${step}: ${value};`))
+        .join('')
+    : ''
 
   const presets = PRESETS.map(({ preset }) => {
     const css = generateCSS(preset, { mode: 'both', darkSelectorStrategy: 'class', darkClass: 'dark' })
@@ -218,7 +224,7 @@ function getScopedCss(): string {
     return `[data-preset="${preset.name}"]{${variables}}`
   })
 
-  return `${presets.join('')}[data-preset]{${bridge}}`
+  return `${presets.join('')}[data-preset]{${bridge}${perceptualScales}}`
 }
 
 export default defineLoader({
