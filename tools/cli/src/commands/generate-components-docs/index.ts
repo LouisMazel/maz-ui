@@ -6,7 +6,7 @@ import { execPromise, logger } from '@maz-ui/node'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
 import { Command } from 'commander'
 
-const COMPONENTS_DIR = fileURLToPath(new URL('../../../../../packages/lib/src/components', import.meta.url))
+const COMPONENTS_DIR = fileURLToPath(new URL('../../../../../packages/maz-ui/src/components', import.meta.url))
 
 async function generate(): Promise<void> {
   await execPromise('pnpm -F docs generate:components-docs')

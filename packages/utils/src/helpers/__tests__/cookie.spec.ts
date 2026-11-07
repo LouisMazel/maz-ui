@@ -87,6 +87,22 @@ describe('cookie', () => {
       })
     })
 
+    describe('when cookie value has a malformed encoding', () => {
+      it('then it returns the raw value', () => {
+        mockDocumentCookie('test-key=100%')
+
+        expect(getCookie('test-key')).toBe('100%')
+      })
+    })
+
+    describe('when cookie value contains an equal sign', () => {
+      it('then it returns the whole value', () => {
+        mockDocumentCookie('other=1; test-key=a=b')
+
+        expect(getCookie('test-key')).toBe('a=b')
+      })
+    })
+
     describe('when a cookieHeader is provided on the server', () => {
       it('then it parses the value from the header', () => {
         vi.stubGlobal('window', undefined)

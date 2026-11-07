@@ -65,6 +65,11 @@ export interface MazUiTranslationsInstance {
    * The function to get the messages
    */
   getMessages: () => Record<string, Partial<MazUiTranslationsSchema>>
+  /**
+   * Resolves once the locale and the fallback locale (with `preloadFallback`) are loaded.
+   * Await it before rendering on the server (SSR) or before the hydration.
+   */
+  ready?: Promise<void>
 }
 
 export type MazUiTranslationsFlattenSchema = Record<FlattenObjectKeys<typeof defaultMessages>, string>

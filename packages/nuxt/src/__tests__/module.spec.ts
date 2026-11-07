@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion, createRequire } = vi.hoisted(() => {
+const { addComponent, addPlugin, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion, createRequire } = vi.hoisted(() => {
   const logger = {
     info: vi.fn(),
     warn: vi.fn(),
@@ -23,6 +23,8 @@ const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, a
     readPackageVersion: vi.fn((): string | undefined => undefined),
     addComponent: vi.fn(),
     addPlugin: vi.fn(),
+    addTemplate: vi.fn(),
+    resolvePath: vi.fn((path: string) => Promise.resolve(`/project/${path.replace('~/', '')}`)),
     addImports: vi.fn(),
     createResolver: vi.fn(() => ({
       resolve: (...args: string[]) => args.join('/'),
@@ -46,6 +48,8 @@ vi.mock('@nuxt/kit', () => ({
   addComponent,
   addPlugin,
   addImports,
+  addTemplate,
+  resolvePath,
   createResolver,
   defineNuxtModule,
   useLogger,
@@ -245,6 +249,52 @@ describe('nuxt module', () => {
     it('should set runtimeConfig public mazUi', () => {
       const { nuxt } = callSetup()
       expect(nuxt.options.runtimeConfig.public.mazUi).toBeDefined()
+    })
+
+    describe('given translations messages', () => {
+      describe('when the module is set up', () => {
+        it('then they are rendered in the template instead of the runtime config', async () => {
+          const { nuxt } = callSetup({
+            translations: {
+              locale: 'fr',
+              messages: {
+                fr: '~/locales/fr.ts',
+                de: { greeting: 'Hallo' },
+              },
+            },
+          })
+
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).translations).toEqual({ locale: 'fr' })
+          const template = (addTemplate.mock.lastCall as any[])[0]
+          expect(template.filename).toBe('maz-ui-translations.mjs')
+          expect(await template.getContents()).toBe('export default {\n  "fr": () => import("/project/locales/fr.ts"),\n  "de": {"greeting":"Hallo"},\n}\n')
+        })
+      })
+
+      describe('when a locale is a function', () => {
+        it('then it is skipped with a warning', async () => {
+          callSetup({
+            translations: {
+              messages: {
+                fr: () => ({}),
+              },
+            },
+          })
+
+          expect(await (addTemplate.mock.lastCall as any[])[0].getContents()).toBe('export default {\n\n}\n')
+          expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('translations.messages.fr is a function'))
+        })
+      })
+    })
+
+    describe('given no translations config', () => {
+      describe('when the module is set up', () => {
+        it('then the template exports no messages', async () => {
+          callSetup({ translations: undefined })
+
+          expect(await (addTemplate.mock.lastCall as any[])[0].getContents()).toBe('export default {\n\n}\n')
+        })
+      })
     })
 
     describe('css', () => {

@@ -1,3 +1,4 @@
+export * from './active-instance'
 export * from './inject'
 export * from './instance'
 export * from './locales'

@@ -2,6 +2,13 @@ import type { App, Ref } from 'vue'
 import type { ThemeState } from '../../types'
 import { ref } from 'vue'
 import { injectThemeState } from '../inject'
+import { getActiveThemeState, setActiveThemeState } from '../theme-state-registry'
+
+const { isServer } = vi.hoisted(() => ({
+  isServer: vi.fn(() => false),
+}))
+
+vi.mock('@maz-ui/utils/helpers/isServer', () => ({ isServer }))
 
 function createMockApp(): App {
   return {
@@ -28,6 +35,7 @@ function createMockThemeState(): Ref<ThemeState> {
 describe('inject', () => {
   afterEach(() => {
     vi.clearAllMocks()
+    isServer.mockReturnValue(false)
   })
 
   describe('given injectThemeState function', () => {
@@ -72,6 +80,34 @@ describe('inject', () => {
 
         expect(app.provide).toHaveBeenCalledWith('mazThemeState', themeState)
         expect(app.config.globalProperties.$mazThemeState).toBe(themeState)
+      })
+    })
+
+    describe('when running in the browser', () => {
+      it('then the state becomes the active one', () => {
+        const themeState = createMockThemeState()
+
+        injectThemeState({
+          app: createMockApp(),
+          themeState,
+        })
+
+        expect(getActiveThemeState()).toBe(themeState)
+      })
+    })
+
+    describe('when running on the server', () => {
+      it('then the state is not kept for the next requests', () => {
+        isServer.mockReturnValue(true)
+        setActiveThemeState(ref(undefined))
+        const themeState = createMockThemeState()
+
+        injectThemeState({
+          app: createMockApp(),
+          themeState,
+        })
+
+        expect(getActiveThemeState()?.value).toBeUndefined()
       })
     })
   })

@@ -14,6 +14,7 @@ const require = createRequire(import.meta.url)
 const packageJson = require('maz-ui/package.json')
 
 export const nav = [
+  { text: 'Themes', link: '/theme-editor' },
   guide,
   components,
   {
@@ -22,7 +23,6 @@ export const nav = [
     items: [plugins, composables, directives],
   },
   ecosystem,
-  { text: 'Themes', link: '/theme-editor' },
   {
     text: `v${packageJson.version}`,
     items: [

@@ -141,10 +141,14 @@ export default defineNuxtConfig({
 
     // Translations
     translations: {
-      locales: 'fr',
+      locale: 'fr',
       fallbackLocale: 'en',
       messages: {
-        // override default messages or add new languages
+        // override default messages or add new languages:
+        // the path of a file that exports the messages (loaded when the locale is used)
+        fr: '~/locales/maz-ui/fr.ts',
+        // or the messages
+        nl: { pagination: { navAriaLabel: 'Paginanavigatie' } },
       },
     },
 
@@ -279,6 +283,8 @@ const theme = {
   persistPreset: true,
 }
 ```
+
+The server renders the theme of the user: the preset and the color mode come from the `maz-color-mode` and `maz-preset` cookies, and the system preference from the `Sec-CH-Prefers-Color-Scheme` client hint (or the cookie of the previous visit). A blocking script applies the live system preference before the first paint. See the [persistence of the user preferences](/ecosystem/themes#persistence-of-the-user-preferences).
 
 ### Global Component Defaults
 

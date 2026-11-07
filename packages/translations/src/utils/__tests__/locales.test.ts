@@ -1,4 +1,4 @@
-import { globalState, locale } from '../../states'
+import { createTranslationsStore, globalState, legacyStore, locale } from '../../states'
 import {
   getAvailableLocales,
   getLoadedLocales,
@@ -18,6 +18,8 @@ describe('locales', () => {
     globalState.messages = {}
     globalState.userMessages = {}
     globalState.loadingPromises = new Map()
+    legacyStore.overrides = {}
+    legacyStore.failedLocales.clear()
   })
 
   afterEach(() => {
@@ -193,7 +195,7 @@ describe('locales', () => {
     })
 
     describe('when user message async loader throws an error', () => {
-      it('then it logs the error and falls back to empty user messages', async () => {
+      it('then it applies the default messages and keeps the locale not loaded to retry it', async () => {
         const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
         globalState.userMessages = {
           en: (() => Promise.reject(new Error('load failed'))) as any,
@@ -202,10 +204,31 @@ describe('locales', () => {
         await loadLocale('en')
 
         expect(errorSpy).toHaveBeenCalledWith(
-          'Failed to load user translations for locale "en":',
+          '[@maz-ui/translations] Failed to load user translations for locale "en":',
           expect.any(Error),
         )
+        expect(globalState.messages.en).toHaveProperty('inputPhoneNumber')
+        expect(globalState.loadedLocales.has('en')).toBe(false)
+        expect(legacyStore.failedLocales.has('en')).toBe(true)
+        errorSpy.mockRestore()
+      })
+    })
+
+    describe('when the user loader succeeds after a failure', () => {
+      it('then the next call loads the locale', async () => {
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+        const loader = vi.fn()
+          .mockRejectedValueOnce(new Error('offline'))
+          .mockResolvedValueOnce({ greeting: 'Hello again' })
+        globalState.userMessages = { en: loader as any }
+
+        await loadLocale('en')
+        await loadLocale('en')
+
+        expect(loader).toHaveBeenCalledTimes(2)
+        expect((globalState.messages.en as any).greeting).toBe('Hello again')
         expect(globalState.loadedLocales.has('en')).toBe(true)
+        expect(legacyStore.failedLocales.has('en')).toBe(false)
         errorSpy.mockRestore()
       })
     })
@@ -338,15 +361,120 @@ describe('locales', () => {
       })
     })
 
-    describe('when some locales have messages', () => {
-      it('then it returns the keys of the messages object', () => {
+    describe('when a locale only has messages but is not loaded', () => {
+      it('then it only returns the loaded locales', () => {
         globalState.messages = { en: {} as any, fr: {} as any }
+        globalState.loadedLocales = new Set(['en'])
 
-        const result = getLoadedLocales()
+        expect(getLoadedLocales()).toEqual(['en'])
+      })
+    })
+  })
 
-        expect(result).toContain('en')
-        expect(result).toContain('fr')
-        expect(result).toHaveLength(2)
+  describe('given English', () => {
+    describe('when it is loaded', () => {
+      it('then its messages are applied synchronously', () => {
+        void loadLocale('en')
+
+        expect(globalState.loadedLocales.has('en')).toBe(true)
+        expect(globalState.messages.en).toHaveProperty('inputPhoneNumber')
+      })
+    })
+  })
+
+  describe('given a locale whose default messages fail to load', () => {
+    describe('when it is loaded', () => {
+      it('then it is not marked as loaded', async () => {
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+        vi.doMock('../../locales/de', () => {
+          throw new Error('chunk failed')
+        })
+        vi.resetModules()
+        const states = await import('../../states')
+        const { loadLocale: freshLoadLocale } = await import('../locales')
+        const store = states.createTranslationsStore()
+
+        await freshLoadLocale('de', store)
+
+        expect(store.state.loadedLocales.has('de')).toBe(false)
+        expect(store.failedLocales.has('de')).toBe(true)
+        expect(errorSpy).toHaveBeenCalledWith('[@maz-ui/translations] Failed to load translations for locale "de":', expect.any(Error))
+        vi.doUnmock('../../locales/de')
+        errorSpy.mockRestore()
+      })
+    })
+  })
+
+  describe('given default messages that fail to load', () => {
+    describe('when loadDefaultMessages is called', () => {
+      it('then it logs the error and returns empty messages', async () => {
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+        vi.doMock('../../locales/es', () => {
+          throw new Error('chunk failed')
+        })
+        vi.resetModules()
+        const { loadDefaultMessages: freshLoadDefaultMessages } = await import('../locales')
+
+        expect(await freshLoadDefaultMessages('es')).toEqual({})
+        expect(errorSpy).toHaveBeenCalledWith('[@maz-ui/translations] Failed to load default messages for locale "es":', expect.any(Error))
+        vi.doUnmock('../../locales/es')
+        errorSpy.mockRestore()
+      })
+    })
+  })
+
+  describe('given setLocaleMessage before the locale is loaded', () => {
+    describe('when the locale is loaded', () => {
+      it('then the default messages are loaded and the added messages win', async () => {
+        setLocaleMessage('fr', {
+          pagination: { navAriaLabel: 'Perso' },
+        } as any)
+
+        await setLocale('fr')
+
+        expect((globalState.messages.fr as any).pagination.navAriaLabel).toBe('Perso')
+        expect((globalState.messages.fr as any).inputPhoneNumber).toBeDefined()
+        expect(locale.value).toBe('fr')
+      })
+    })
+  })
+
+  describe('given setLocaleMessage for a locale without default messages', () => {
+    describe('when it is called', () => {
+      it('then the locale is loaded at once', () => {
+        setLocaleMessage('ko', { greeting: 'Annyeong' } as any)
+
+        expect(isLocaleLoaded('ko')).toBe(true)
+      })
+    })
+  })
+
+  describe('given two setLocale calls', () => {
+    describe('when the first locale loads slower than the second', () => {
+      it('then the last requested locale wins', async () => {
+        const first = setLocale('ja')
+        const second = setLocale('en')
+
+        await Promise.all([first, second])
+
+        expect(locale.value).toBe('en')
+      })
+    })
+  })
+
+  describe('given two stores', () => {
+    describe('when the locale of one of them changes', () => {
+      it('then the other one keeps its locale and its messages', async () => {
+        const first = createTranslationsStore('en')
+        const second = createTranslationsStore('en')
+        setLocaleMessage('en', { greeting: 'First' } as any, first)
+
+        await setLocale('fr', first)
+
+        expect(first.locale.value).toBe('fr')
+        expect(second.locale.value).toBe('en')
+        expect(getMessages(second)).toEqual({})
+        expect(locale.value).toBe('en')
       })
     })
   })

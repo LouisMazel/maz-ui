@@ -4,12 +4,12 @@
 @import 'maz-ui/tailwindcss/theme.css';
 @import 'maz-ui/tailwindcss/utilities.css';
 /* Base styles of maz-ui/style.css (reset, container vars, animations): the docs build their own Tailwind, so the full stylesheet is not imported */
-@import '../../../../packages/lib/src/css/index.css';
+@import '../../../../packages/maz-ui/src/css/index.css';
 
 @source "./../../src/**/*.{md,vue,ts,js,css,scss}";
 @source "./../../components/**/*.vue";
 @source "./../components/**/*.vue";
-@source "../../../../packages/lib/src/**/*.{vue,ts,css,scss}";
+@source "../../../../packages/maz-ui/src/**/*.{vue,ts,css,scss}";
 
 @layer base {
   *,
@@ -21,71 +21,146 @@
   }
 }
 
-:root {
-  --vp-layout-top-height: 4.2rem;
-  --vp-nav-home-bg-color: var(--vp-nav-bg-color);
-  /* --vp-nav-logo-height: 42px; */
-  --vp-font-family-base: var(--maz-font-family);
-  --vp-font-family-mono: var(--maz-font-mono-stack);
-  --vp-c-bg: var(--maz-color-surface);
-  --vp-c-brand: var(--maz-color-primary);
-  --vp-c-brand-1: var(--maz-color-primary);
-  --vp-c-gutter: var(--maz-color-surface-600);
-  --vp-c-brand-light: var(--maz-color-primary-400);
-  --vp-c-brand-lighter: var(--maz-color-primary-300);
-  --vp-c-brand-dark: var(--maz-color-primary-600);
-  --vp-c-brand-darker: var(--maz-color-primary-700);
-  --vp-home-hero-name-color: var(--maz-color-primary);
-  --vp-button-brand-bg: var(--maz-color-primary);
-  --vp-button-brand-border: var(--maz-color-primary-600);
-  --vp-button-brand-text: var(--maz-color-primary-foreground);
-  --vp-button-brand-hover-border: var(--maz-color-primary-700);
-  --vp-button-brand-hover-text: var(--maz-color-primary-foreground);
-  --vp-button-brand-hover-bg: var(--maz-color-primary-600);
-  --vp-button-brand-active-border: var(--maz-color-primary-700);
-  --vp-button-brand-active-text: var(--maz-color-primary-foreground);
-  --vp-button-brand-active-bg: var(--maz-color-primary-600);
+/*
+ * The VitePress palette follows the active @maz-ui/themes preset.
+ * Only the base tokens of the default theme (vitepress/theme-default/styles/vars.css) are mapped: the others derive from them.
+ * The maz-ui tokens switch with `color-scheme` (light-dark()), so one block serves both modes.
+ * `:root:root` wins over the `.dark` blocks of VitePress whatever the order of the stylesheets.
+ */
+:root:root {
+  --vp-c-neutral: --theme(--color-foreground);
+  --vp-c-neutral-inverse: --theme(--color-surface);
 
+  --vp-c-bg: --theme(--color-surface);
+  --vp-c-bg-alt: color-mix(in oklch, --theme(--color-surface), --theme(--color-foreground) 3%);
+  --vp-c-bg-elv: --theme(--color-container);
+  --vp-c-bg-soft: color-mix(in oklch, --theme(--color-surface), --theme(--color-foreground) 5%);
+
+  --vp-c-border: color-mix(in oklch, --theme(--color-divider), --theme(--color-foreground) 15%);
+  --vp-c-divider: --theme(--color-divider);
+  --vp-c-gutter: --theme(--color-divider);
+
+  --vp-c-text-1: --theme(--color-foreground);
+  --vp-c-text-2: --theme(--color-muted);
+  --vp-c-text-3: color-mix(in oklch, --theme(--color-muted) 75%, --theme(--color-surface));
+
+  --vp-c-default-1: color-mix(in oklch, --theme(--color-muted) 30%, --theme(--color-surface));
+  --vp-c-default-2: color-mix(in oklch, --theme(--color-muted) 22%, --theme(--color-surface));
+  --vp-c-default-3: color-mix(in oklch, --theme(--color-muted) 14%, --theme(--color-surface));
+  --vp-c-default-soft: --alpha(--theme(--color-muted) / 14%);
+
+  /* -1: text and links (lightness clamped to stay readable on the surface), -2: hover, -3: solid background, -soft: tinted background */
+  --vp-c-brand-1: light-dark(
+    oklch(from --theme(--color-primary) min(l, 0.55) c h),
+    oklch(from --theme(--color-primary) max(l, 0.7) c h)
+  );
+  --vp-c-brand-2: --theme(--color-primary-600);
+  --vp-c-brand-3: --theme(--color-primary);
+  --vp-c-brand-soft: --alpha(--theme(--color-primary) / 14%);
+
+  --vp-c-note-1: light-dark(
+    oklch(from --theme(--color-info) min(l, 0.5) c h),
+    oklch(from --theme(--color-info) max(l, 0.75) c h)
+  );
+  --vp-c-note-2: --theme(--color-info-600);
+  --vp-c-note-3: --theme(--color-info);
+  --vp-c-note-soft: --alpha(--theme(--color-info) / 14%);
+
+  --vp-c-success-1: light-dark(
+    oklch(from --theme(--color-success) min(l, 0.5) c h),
+    oklch(from --theme(--color-success) max(l, 0.75) c h)
+  );
+  --vp-c-success-2: --theme(--color-success-600);
+  --vp-c-success-3: --theme(--color-success);
+  --vp-c-success-soft: --alpha(--theme(--color-success) / 14%);
+
+  --vp-c-important-1: light-dark(
+    oklch(from --theme(--color-secondary) min(l, 0.5) c h),
+    oklch(from --theme(--color-secondary) max(l, 0.75) c h)
+  );
+  --vp-c-important-2: --theme(--color-secondary-600);
+  --vp-c-important-3: --theme(--color-secondary);
+  --vp-c-important-soft: --alpha(--theme(--color-secondary) / 14%);
+
+  --vp-c-warning-1: light-dark(
+    oklch(from --theme(--color-warning) min(l, 0.5) c h),
+    oklch(from --theme(--color-warning) max(l, 0.75) c h)
+  );
+  --vp-c-warning-2: --theme(--color-warning-600);
+  --vp-c-warning-3: --theme(--color-warning);
+  --vp-c-warning-soft: --alpha(--theme(--color-warning) / 14%);
+
+  --vp-c-danger-1: light-dark(
+    oklch(from --theme(--color-destructive) min(l, 0.5) c h),
+    oklch(from --theme(--color-destructive) max(l, 0.75) c h)
+  );
+  --vp-c-danger-2: --theme(--color-destructive-600);
+  --vp-c-danger-3: --theme(--color-destructive);
+  --vp-c-danger-soft: --alpha(--theme(--color-destructive) / 14%);
+
+  --vp-c-caution-1: var(--vp-c-danger-1);
+  --vp-c-caution-2: var(--vp-c-danger-2);
+  --vp-c-caution-3: var(--vp-c-danger-3);
+  --vp-c-caution-soft: var(--vp-c-danger-soft);
+
+  --vp-c-sponsor: --theme(--color-secondary);
+
+  --vp-font-family-base: --theme(--font-sans);
+  --vp-font-family-mono: --theme(--font-mono);
+
+  --vp-shadow-1: --theme(--shadow-sm);
+  --vp-shadow-2: --theme(--shadow-md);
+  --vp-shadow-3: --theme(--shadow-elevation);
+  --vp-shadow-4: --theme(--shadow-lg);
+  --vp-shadow-5: --theme(--shadow-xl);
+
+  --vp-backdrop-bg-color: --alpha(--theme(--color-overlay) / 60%);
+
+  --vp-button-brand-text: --theme(--color-primary-foreground);
+  --vp-button-brand-hover-text: --theme(--color-primary-foreground);
+  --vp-button-brand-hover-bg: --theme(--color-primary-600);
+  --vp-button-brand-active-text: --theme(--color-primary-foreground);
+  --vp-button-brand-active-bg: --theme(--color-primary-700);
+
+  --vp-input-bg-color: --theme(--color-input);
+
+  --vp-local-search-highlight-text: --theme(--color-primary-foreground);
+
+  /* The Shiki themes are dark in both modes (config `markdown.theme`): the code blocks stay dark */
   --vp-code-font-size: calc(var(--maz-base-font-size) - 2px);
+  --vp-code-block-bg: light-dark(--theme(--color-contrast), --theme(--color-surface-600));
+  --vp-code-block-color: light-dark(--theme(--color-contrast-foreground), --theme(--color-foreground));
+  --vp-code-block-divider-color: color-mix(in oklch, var(--vp-code-block-bg), var(--vp-code-block-color) 15%);
+  --vp-code-lang-color: color-mix(in oklch, var(--vp-code-block-color) 60%, var(--vp-code-block-bg));
+  --vp-code-line-number-color: color-mix(in oklch, var(--vp-code-block-color) 45%, var(--vp-code-block-bg));
+  --vp-code-line-highlight-color: color-mix(in oklch, var(--vp-code-block-bg), var(--vp-code-block-color) 10%);
+  --vp-code-copy-code-border-color: var(--vp-code-block-divider-color);
+  --vp-code-copy-code-bg: color-mix(in oklch, var(--vp-code-block-bg), var(--vp-code-block-color) 8%);
+  --vp-code-copy-code-hover-border-color: var(--vp-code-block-divider-color);
+  --vp-code-copy-code-hover-bg: var(--vp-code-block-bg);
+  --vp-code-copy-code-active-text: var(--vp-code-lang-color);
+  --vp-code-tab-text-color: var(--vp-code-lang-color);
+  --vp-code-tab-hover-text-color: var(--vp-code-block-color);
+  --vp-code-tab-active-text-color: var(--vp-code-block-color);
 
-  --vp-code-block-bg: color-mix(in srgb, var(--maz-contrast) 90%, transparent);
-  --vp-code-tab-text-color: var(--maz-color-muted);
-  --vp-code-tab-hover-text-color: var(--maz-color-contrast-foreground);
-  --vp-code-tab-active-text-color: var(--maz-color-primary);
-  --vp-code-tab-divider: var(--maz-color-contrast-200);
-  --vp-code-block-color: var(--maz-color-contrast-foreground);
-  /* --vp-code-tab-bg: var(--maz-contrast-600); */
-}
+  --vp-nav-home-bg-color: var(--vp-nav-bg-color);
+  --vp-home-hero-name-color: var(--vp-c-brand-3);
 
-@media (min-width: 440px) {
-  :root {
+  --vp-layout-top-height: 4.2rem;
+
+  @media (width >= 440px) {
     --vp-layout-top-height: 2.2rem;
   }
 }
 
 html {
   font-size: var(--maz-base-font-size);
-  font-family: var(--maz-font-family);
 
-  @apply maz:text-foreground;
+  @apply maz:font-sans maz:text-foreground;
 
   body {
     font-size: var(--maz-base-font-size);
   }
-}
-
-html.dark {
-  /* presets with a deep primary (white text on buttons) need a lighter step for the links to stay readable (AA) on the dark surface */
-  --vp-c-brand-1: var(--maz-color-primary-300);
-  --vp-c-bg-elv: var(--maz-color-surface-400);
-  --vp-c-bg-elv-mute: var(--maz-color-surface);
-  --vp-c-gutter: var(--maz-color-divider);
-  /* Attention --vp-c-bg-soft est aussi le background du docsearch (algolia) */
-  --vp-c-bg-soft: var(--maz-color-surface);
-  --vp-code-block-bg: var(--maz-color-surface-600);
-  --vp-code-tab-divider: var(--maz-color-surface-300);
-  --vp-code-tab-hover-text-color: var(--maz-color-foreground);
-  --vp-code-block-color: var(--maz-color-foreground);
 }
 
 .vp-doc blockquote > p:not(:where(.vp-raw, .vp-raw *)) {
@@ -93,8 +168,7 @@ html.dark {
 }
 
 .vp-doc :is(h1, h2, h3):not(:where(.vp-raw, .vp-raw *)) {
-  font-family: var(--maz-font-display-stack, var(--maz-font-family));
-  letter-spacing: -0.01em;
+  @apply maz:font-display maz:tracking-[-0.01em];
 }
 
 .vp-doc strong:not(:where(.vp-raw, .vp-raw *)) {
@@ -102,56 +176,56 @@ html.dark {
 }
 
 .text {
-  font-weight: 600 !important;
+  @apply maz:font-semibold!;
 }
 
+/* Layout helpers of the live demos written in Markdown (plain class names, without the `maz:` prefix) */
 .flex {
-  display: flex;
+  @apply maz:flex;
 }
 
 .flex-1 {
-  flex: 1;
+  @apply maz:flex-1;
 }
 
 .flex-wrap {
-  flex-wrap: wrap;
+  @apply maz:flex-wrap;
 }
 
 .flex-col {
-  flex-direction: column;
+  @apply maz:flex-col;
 }
 
 .justify-start {
-  justify-content: start;
+  @apply maz:justify-start;
 }
 
 .items-start {
-  align-items: flex-start;
+  @apply maz:items-start;
 }
 
 .justify-center {
-  justify-content: center;
+  @apply maz:justify-center;
 }
 
 .space-between {
-  justify-content: space-between;
+  @apply maz:justify-between;
 }
 
 .items-center {
-  align-items: center;
+  @apply maz:items-center;
 }
 
 .flex-center {
-  align-items: center;
-  justify-content: center;
+  @apply maz:flex-center;
 }
 
 .gap-05 {
-  gap: 0.5rem;
+  @apply maz:gap-2;
 }
 
 .rounded {
-  border-radius: 0.5rem;
+  @apply maz:rounded-lg;
 }
 
 .docs-new-badge {

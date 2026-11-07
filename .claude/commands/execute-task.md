@@ -132,7 +132,7 @@ Discipline :
 
 Même si la tâche ne le spec pas explicitement, applique le **minimum vital** de chaque aspect pertinent.
 
-- **Tests** : tout nouveau code que tu écris doit avoir au moins 1 test (happy path + 1 cas limite). Tests dans `packages/lib/tests/specs/` (ou équivalent du package modifié).
+- **Tests** : tout nouveau code que tu écris doit avoir au moins 1 test (happy path + 1 cas limite). Tests dans `packages/maz-ui/tests/specs/` (ou équivalent du package modifié).
   - Tests **en anglais**, **sans commentaires**, méthode **Gherkin** (Given/When dans des `describe` séparés, Then dans un `it`)
   - Pas de langage conditionnel ("should", "must")
   - Utilitaires vitest pas besoin d'import
@@ -179,7 +179,7 @@ maz-ui est une **librairie publique**. La doc consommateur a le même statut que
 
 **README des packages** (point d'entrée npm) :
 
-- `packages/lib/README.md`
+- `packages/maz-ui/README.md`
 - `packages/nuxt/README.md`
 - `packages/icons/README.md`, `packages/themes/README.md`, `packages/translations/README.md`, `packages/utils/README.md`, `packages/node/README.md`, `packages/maz-cli/README.md`
 - Tout README de package que tu touches doit refléter l'API publique réelle (install, usage minimal, lien vers la doc complète).
@@ -220,13 +220,13 @@ Dans l'ordre, depuis la racine du worktree :
 pnpm lint:fix:all
 ```
 
-**Si le diff touche `packages/lib/src/**`\**, lance la couverture*avant\* le health check global pour valider les thresholds (CI les enforce) :
+**Si le diff touche `packages/maz-ui/src/**`\**, lance la couverture*avant\* le health check global pour valider les thresholds (CI les enforce) :
 
 ```bash
-cd packages/lib && CI=1 pnpm vitest run --coverage && cd -
+cd packages/maz-ui && CI=1 pnpm vitest run --coverage && cd -
 ```
 
-- Les thresholds (statements / branches / functions / lines) sont définis dans `packages/lib/vitest.config.ts`. `CI=1` désactive `autoUpdate` → un drop fait échouer.
+- Les thresholds (statements / branches / functions / lines) sont définis dans `packages/maz-ui/vitest.config.ts`. `CI=1` désactive `autoUpdate` → un drop fait échouer.
 - Si un drift réel force à baisser un threshold → update `vitest.config.ts` manuellement et commit-le dans la PR (et flag-le dans le body de PR).
 - Per-file 100% ne suffit pas : c'est le ratio global qui compte.
 

@@ -3,7 +3,7 @@
 ## Tips
 
 ::: tip
-This component use [MazInput](./maz-input.md#props-events-emitted), so it inherits all his props
+This component use [MazInput](/components/maz-input#props), so it inherits all his props
 :::
 
 </div>

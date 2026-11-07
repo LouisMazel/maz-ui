@@ -71,6 +71,11 @@ export default defineNuxtConfig({
       preset: 'maz-ui',
       mode: 'both',
       colorMode: 'auto',
+      overrides: {
+        scales: {
+          color: 'perceptual',
+        },
+      },
     },
     translations: {
       locale: 'fr',

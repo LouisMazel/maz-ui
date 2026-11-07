@@ -50,6 +50,12 @@ watch(() => theme, (newThemeOptions) => {
 }, { deep: true })
 
 watch(() => translations, (newTranslationsOptions) => {
+  for (const [targetLocale, localeMessages] of Object.entries(newTranslationsOptions?.messages ?? {})) {
+    if (typeof localeMessages === 'object') {
+      i18n.setLocaleMessage(targetLocale, localeMessages)
+    }
+  }
+
   if (newTranslationsOptions?.locale) {
     i18n.setLocale(newTranslationsOptions.locale)
   }

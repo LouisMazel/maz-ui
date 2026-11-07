@@ -169,14 +169,22 @@ Returns an object with:
 
 - **`setLocale(locale)`** - Change current locale
   - `locale`: New locale string
+  - Returns a Promise resolved once the locale is loaded; the last call wins
   - Triggers reactivity for all components using translations
+
+- **`ready`** - Promise resolved once the locale and the fallback locale are loaded
+  - Await it before rendering on the server (SSR) or before the hydration
+
+Each instance (plugin, `MazUiProvider`, server request) has its own locale and messages. English is bundled, so the first render never shows keys; the other languages are loaded on demand.
 
 ### Plugin Options
 
 ```typescript
 interface MazUiTranslationsOptions {
   locale?: string // Default locale (default: 'en')
-  translations?: Record<string, Partial<MazUiTranslations>> // Custom translations
+  fallbackLocale?: string // Fallback locale (default: 'en')
+  preloadFallback?: boolean // Load the fallback locale at startup (default: true)
+  messages?: Record<string, Partial<MazUiTranslations> | (() => Promise<Partial<MazUiTranslations>>)> // Custom translations
 }
 ```
 
@@ -186,7 +194,8 @@ interface MazUiTranslationsOptions {
 interface MazUiTranslationsInstance {
   locale: Ref<string>
   t: (key: string, variables?: Record<string, any>) => string
-  setLocale: (locale: string) => void
+  setLocale: (locale: string) => Promise<void>
+  ready?: Promise<void>
 }
 
 interface MazUiTranslations {

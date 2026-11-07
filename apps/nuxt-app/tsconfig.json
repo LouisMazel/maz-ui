@@ -2,8 +2,8 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "../../../../packages/lib/dist/composables/index": [
-        "../../packages/lib/dist/composables/index.d.ts"
+      "../../../../packages/maz-ui/dist/composables/index": [
+        "../../packages/maz-ui/dist/composables/index.d.ts"
       ]
     },
     "allowImportingTsExtensions": true

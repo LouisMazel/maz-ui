@@ -433,4 +433,9 @@ export interface ThemeState {
    * Whether the active preset name is persisted in the `maz-preset` cookie.
    */
   persistPreset: boolean
+  /**
+   * Name of the preset configured in the app, the identity of the `maz-preset` cookie (`<presetBase>:<active>`)
+   * @internal
+   */
+  presetBase?: string
 }

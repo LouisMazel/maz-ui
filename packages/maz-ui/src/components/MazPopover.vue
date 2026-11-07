@@ -19,6 +19,7 @@ import {
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { hasSlotContent } from '../utils/hasSlotContent'
+import { addPopoverLayer, isInUpperPopoverLayer, isTopPopoverLayer, removePopoverLayer } from '../utils/popoverLayers'
 import { getColor } from './types'
 
 defineOptions({
@@ -343,6 +344,13 @@ const computedPosition = computed(() => placement.value ?? floatingPosition.valu
 
 const isOpen = defineModel<boolean>({ default: false })
 
+/**
+ * The panel is only rendered in the browser: its position needs the DOM, and a teleported content
+ * rendered on the server breaks the hydration (Nuxt only renders the teleports to `#teleports`).
+ */
+const isMounted = ref(false)
+const isPanelRendered = computed(() => isMounted.value && isOpen.value && !disabled)
+
 let openTimeout: NodeJS.Timeout | null = null
 let closeTimeout: NodeJS.Timeout | null = null
 let initialFocusElement: HTMLElement | null = null
@@ -364,11 +372,14 @@ interface TriggerEventHandlers {
   onClick?: () => void
   onMouseenter?: () => void
   onMouseleave?: () => void
+  onFocusin?: () => void
+  onFocusout?: () => void
   onKeydown?: (event: KeyboardEvent) => void
 }
 
+// Read after the mount: the server renders the hover trigger, the hydration has to match it
 const isTouchDevice = computed(() => {
-  if (!isClient())
+  if (!isMounted.value)
     return false
   return 'ontouchstart' in globalThis || navigator.maxTouchPoints > 0
 })
@@ -398,11 +409,11 @@ const triggerAria = computed<Record<string, string | undefined>>(() => ({
   'aria-haspopup': role === 'dialog' || role === 'menu'
     ? role
     : undefined,
-  'aria-describedby': role === 'tooltip' && isOpen.value
+  'aria-describedby': role === 'tooltip' && isPanelRendered.value
     ? panelId.value
     : ariaDescribedby,
   'aria-labelledby': ariaLabelledby,
-  'aria-controls': isOpen.value ? panelId.value : undefined,
+  'aria-controls': isPanelRendered.value ? panelId.value : undefined,
 }))
 
 const NON_TEXT_INPUT_TYPES = new Set([
@@ -519,6 +530,12 @@ const triggerEvents = computed(() => {
       open()
     }
     events.onMouseleave = close
+
+    // A tooltip also shows on keyboard focus (WAI-ARIA tooltip pattern)
+    if (role === 'tooltip') {
+      events.onFocusin = events.onMouseenter
+      events.onFocusout = close
+    }
   }
 
   if (effectiveTrigger.value === 'click') {
@@ -563,14 +580,23 @@ const panelClasses = computed(() => [
   `--${getColor(color)}`,
 ])
 
-function cleanup() {
-  clearOpenTimeout()
-  clearCloseTimeout()
+const layer = {
+  contains: (target: Node) => !!panelRef.value?.contains(target) || !!triggerRef.value?.contains(target),
+}
+
+function removeDocumentListeners() {
+  removePopoverLayer(layer)
 
   if (isClient()) {
     document.removeEventListener('keydown', onKeydown)
     document.removeEventListener('pointerdown', onDocumentPointerDown, true)
   }
+}
+
+function cleanup() {
+  clearOpenTimeout()
+  clearCloseTimeout()
+  removeDocumentListeners()
 }
 
 function open() {
@@ -616,13 +642,28 @@ function toggle() {
   }
 }
 
+/** State whose side effects (events, listeners, focus) ran: the model watcher calls `setOpen` again with the same value */
+let appliedOpenState = false
+
 function setOpen(value: boolean) {
   isOpen.value = value
+
+  if (value === appliedOpenState)
+    return
+
+  appliedOpenState = value
+
   if (value) {
     emits('open')
     emits('toggle', value)
 
+    if (role !== 'tooltip')
+      addPopoverLayer(layer)
+
     nextTick(() => {
+      if (!appliedOpenState)
+        return
+
       update()
       setupFocusTrap()
       // Dismiss au clic/tap exterieur gere imperativement (et non via une directive
@@ -630,6 +671,7 @@ function setOpen(value: boolean) {
       // pour couvrir souris + tactile sur tous les elements. Ajoute APRES l'ouverture
       // pour ne pas capter l'interaction qui vient d'ouvrir.
       if (isClient()) {
+        document.addEventListener('keydown', onKeydown)
         document.addEventListener('pointerdown', onDocumentPointerDown, true)
       }
     })
@@ -638,9 +680,7 @@ function setOpen(value: boolean) {
     isPanelFocused.value = false
     emits('toggle', value)
     emits('close')
-
-    if (isClient())
-      document.removeEventListener('pointerdown', onDocumentPointerDown, true)
+    removeDocumentListeners()
 
     if (trapFocus) {
       restoreFocus()
@@ -693,6 +733,8 @@ function getTransformOrigin(position: Omit<MazPopoverPosition, 'auto'>): string 
   }
 }
 
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
+
 function setupFocusTrap() {
   if (role === 'tooltip' || effectiveTrigger.value === 'hover' || !trapFocus || !isClient())
     return
@@ -700,9 +742,7 @@ function setupFocusTrap() {
   initialFocusElement = document.activeElement as HTMLElement
 
   nextTick(() => {
-    const focusableElements = panelRef.value?.querySelectorAll<HTMLElement>(
-      'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])',
-    )
+    const focusableElements = panelRef.value?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
 
     if (focusableElements && focusableElements.length > 0) {
       focusableElements[0].focus({ preventScroll: true })
@@ -723,7 +763,8 @@ function restoreFocus() {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (!isOpen.value)
+  // A popover opened from this panel handles the keys first
+  if (!isOpen.value || (role !== 'tooltip' && !isTopPopoverLayer(layer)))
     return
 
   if (event.key === 'Escape' && closeOnEscape && !persistent) {
@@ -740,9 +781,7 @@ function handleTrapFocus(event: KeyboardEvent) {
   if (!panelRef.value || !isClient())
     return
 
-  const focusableElements = panelRef.value.querySelectorAll(
-    'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])',
-  )
+  const focusableElements = panelRef.value.querySelectorAll(FOCUSABLE_SELECTOR)
 
   if (focusableElements.length === 0)
     return
@@ -773,8 +812,8 @@ function onDocumentPointerDown(event: PointerEvent) {
   if (!target)
     return
 
-  // Clic/tap a l'interieur du panel ou du trigger -> on ne ferme pas.
-  if (panelRef.value?.contains(target) || triggerRef.value?.contains(target))
+  // Inside the panel, the trigger or a popover opened from the panel: not outside
+  if (layer.contains(target) || isInUpperPopoverLayer(layer, target))
     return
 
   close()
@@ -790,7 +829,12 @@ watch(isOpen, (value, oldValue) => {
   else if (oldValue && !value) {
     close()
   }
-}, { immediate: true })
+})
+
+watch(() => disabled, (isDisabled) => {
+  if (isDisabled && isOpen.value)
+    setOpen(false)
+})
 
 watch(() => position, () => {
   if (isOpen.value) {
@@ -801,7 +845,11 @@ watch(() => position, () => {
 watch(triggerAria, syncTriggerAria, { flush: 'post' })
 
 onMounted(() => {
-  document.addEventListener('keydown', onKeydown)
+  isMounted.value = true
+
+  if (isOpen.value)
+    open()
+
   syncTriggerAria()
 
   // The slot content can render later (async components): only the children are watched,
@@ -899,17 +947,17 @@ defineExpose({
     </div>
   </div>
 
-  <Teleport :to="teleportTo">
+  <Teleport v-if="isMounted" :to="teleportTo">
     <Transition :name="transitionName" appear @after-leave="onTransitionAfterLeave">
       <div
-        v-if="isOpen"
+        v-if="isPanelRendered"
         :id="panelId"
         ref="panel"
         :role
         :aria-label="ariaLabel"
         :aria-labelledby="role === 'dialog' || role === 'menu' ? ariaLabelledby || triggerId : undefined"
         :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
-        :aria-modal="role === 'dialog' ? 'true' : undefined"
+        :aria-modal="role === 'dialog' && trapFocus ? 'true' : undefined"
         :tabindex="role === 'dialog' ? '-1' : undefined"
         class="m-popover-panel maz:fixed maz:z-default-backdrop maz:rounded-md maz:shadow-elevation maz:outline-hidden maz:drop-shadow-md"
         :aria-live="announceChanges ? 'polite' : undefined"

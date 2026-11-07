@@ -1,5 +1,6 @@
+import type { TranslationsStore } from '../states'
 import type { MazUiTranslationsSchema, TranslationKey } from '../types'
-import { globalState, locale } from '../states'
+import { legacyStore } from '../states'
 import { loadLocale } from './locales'
 
 export function getMessage(obj: any, path: string): any {
@@ -68,28 +69,51 @@ export function interpolate(message: string, variables?: Record<string, unknown>
   })
 }
 
-export function t(key: TranslationKey, variables?: Record<string, unknown>, fallbackLocale?: string) {
-  let message = getMessage(globalState.messages[locale.value], key)
+function findMessage(store: TranslationsStore, targetLocale: string, key: string): string | undefined {
+  const message = getMessage(store.state.messages[targetLocale], key)
+  // A key of a group of messages (an object) is missing, not `[object Object]`
+  return (typeof message === 'string' && message !== '') || typeof message === 'number'
+    ? String(message)
+    : undefined
+}
 
-  if (!message && fallbackLocale && locale.value !== fallbackLocale) {
-    if (!globalState.loadedLocales.has(fallbackLocale)) {
-      loadLocale(fallbackLocale).catch(error => console.error(`[@maz-ui/translations] Failed to load fallback locale: "${fallbackLocale}"`, error))
-    }
-    message = getMessage(globalState.messages[fallbackLocale], key)
+/** Whether `t()` loads a fallback locale by itself: not loaded, loading nor failed (an explicit call retries it). */
+function shouldAutoLoadLocale(targetLocale: string, store: TranslationsStore): boolean {
+  return !store.state.loadedLocales.has(targetLocale)
+    && !store.state.loadingPromises.has(targetLocale)
+    && !store.failedLocales.has(targetLocale)
+}
+
+function findFallbackMessage(store: TranslationsStore, targetLocale: string, key: string): string | undefined {
+  if (shouldAutoLoadLocale(targetLocale, store)) {
+    loadLocale(targetLocale, store)
+  }
+  return findMessage(store, targetLocale, key)
+}
+
+/**
+ * Message of `key` in the current locale, then in `fallbackLocale`, then in English. A fallback
+ * locale not loaded yet starts loading (the message follows once it is loaded).
+ */
+export function t(key: TranslationKey, variables?: Record<string, unknown>, fallbackLocale?: string, store: TranslationsStore = legacyStore) {
+  const current = store.locale.value
+  let message = findMessage(store, current, key)
+
+  if (message === undefined && fallbackLocale && current !== fallbackLocale) {
+    message = findFallbackMessage(store, fallbackLocale, key)
   }
 
-  if (!message && fallbackLocale !== 'en' && locale.value !== 'en') {
-    if (!globalState.loadedLocales.has('en')) {
-      loadLocale('en').catch(error => console.error(`[@maz-ui/translations] Failed to load en locale: "en"`, error))
-      return key
-    }
-    message = getMessage(globalState.messages.en, key)
+  if (message === undefined && fallbackLocale !== 'en' && current !== 'en') {
+    message = findFallbackMessage(store, 'en', key)
   }
 
-  if (!message) {
-    console.warn(`[@maz-ui/translations] Translation not found for key: "${key}"`)
+  if (message === undefined) {
+    // While a locale loads, a missing message is expected: only warn once everything is loaded
+    if (store.state.loadedLocales.has(current) && store.state.loadingPromises.size === 0) {
+      console.warn(`[@maz-ui/translations] Translation not found for key: "${key}"`)
+    }
     return key
   }
 
-  return interpolate(String(message), variables)
+  return interpolate(message, variables)
 }

@@ -1,94 +1,58 @@
-import type { App } from 'vue'
-import type { MazUiTranslationsInstance } from '../types'
+import { createApp } from 'vue'
+import { MazUiTranslations } from '../plugin'
+import { globalState, locale } from '../states'
+import { getActiveTranslations } from '../utils/active-instance'
 
-vi.mock('../utils/instance', () => ({
-  createMazUiTranslations: vi.fn(),
+const { isServer } = vi.hoisted(() => ({
+  isServer: vi.fn(() => false),
 }))
 
-vi.mock('../utils/inject', () => ({
-  injectTranslations: vi.fn(),
-}))
-
-const { createMazUiTranslations } = await import('../utils/instance')
-const { injectTranslations } = await import('../utils/inject')
-const { MazUiTranslations } = await import('../plugin')
-
-const mockInstance: MazUiTranslationsInstance = {
-  locale: { value: 'en' },
-  t: vi.fn(),
-  setLocale: vi.fn(),
-  isLocaleLoaded: vi.fn(),
-  isLocaleLoading: vi.fn(),
-  setLocaleMessage: vi.fn(),
-  getMessages: vi.fn(),
-  getLoadedLocales: vi.fn(),
-  getAvailableLocales: vi.fn(),
-} as unknown as MazUiTranslationsInstance
-
-function createMockApp(): App {
-  return {
-    provide: vi.fn(),
-    config: {
-      globalProperties: {} as Record<string, unknown>,
-    },
-  } as unknown as App
-}
+vi.mock('@maz-ui/utils/helpers/isServer', () => ({ isServer }))
 
 describe('plugin', () => {
   afterEach(() => {
-    vi.clearAllMocks()
+    isServer.mockReturnValue(false)
+    locale.value = 'en'
   })
 
-  describe('given MazUiTranslations plugin', () => {
-    describe('when install is called with default options', () => {
-      it('then it calls createMazUiTranslations with an empty options object', () => {
-        const app = createMockApp()
-        vi.mocked(createMazUiTranslations).mockReturnValue(mockInstance)
+  describe('given MazUiTranslations', () => {
+    describe('when it is installed in the browser', () => {
+      it('then it provides the instance and keeps the deprecated exports in sync', async () => {
+        const app = createApp({})
 
-        MazUiTranslations.install!(app, {})
+        app.use(MazUiTranslations, { locale: 'fr' })
+        const i18n = app.config.globalProperties.$mazTranslations
+        await i18n.ready
 
-        expect(createMazUiTranslations).toHaveBeenCalledWith({})
-      })
-
-      it('then it calls injectTranslations with the app and the created instance', () => {
-        const app = createMockApp()
-        vi.mocked(createMazUiTranslations).mockReturnValue(mockInstance)
-
-        MazUiTranslations.install!(app, {})
-
-        expect(injectTranslations).toHaveBeenCalledWith({ app, i18n: mockInstance })
-      })
-
-      it('then it returns the created instance', () => {
-        const app = createMockApp()
-        vi.mocked(createMazUiTranslations).mockReturnValue(mockInstance)
-
-        const result = MazUiTranslations.install!(app, {})
-
-        expect(result).toBe(mockInstance)
+        expect(getActiveTranslations()).toBe(i18n)
+        expect(i18n.locale).toBe(locale)
+        expect(locale.value).toBe('fr')
+        expect(globalState.loadedLocales.has('fr')).toBe(true)
       })
     })
 
-    describe('when install is called with custom options', () => {
-      it('then it passes the custom options to createMazUiTranslations', () => {
-        const app = createMockApp()
-        const options = { locale: 'fr', fallbackLocale: 'en', preloadFallback: false }
-        vi.mocked(createMazUiTranslations).mockReturnValue(mockInstance)
+    describe('when it is installed without options', () => {
+      it('then the locale is English', () => {
+        const app = createApp({})
 
-        MazUiTranslations.install!(app, options)
+        app.use(MazUiTranslations)
 
-        expect(createMazUiTranslations).toHaveBeenCalledWith(options)
+        expect(app.config.globalProperties.$mazTranslations.locale.value).toBe('en')
       })
     })
 
-    describe('when install is called without explicit options', () => {
-      it('then it defaults to an empty options object', () => {
-        const app = createMockApp()
-        vi.mocked(createMazUiTranslations).mockReturnValue(mockInstance)
+    describe('when it is installed on the server', () => {
+      it('then every request gets its own state', () => {
+        isServer.mockReturnValue(true)
+        const first = createApp({})
+        const second = createApp({})
 
-        MazUiTranslations.install!(app)
+        first.use(MazUiTranslations, { locale: 'fr' })
+        second.use(MazUiTranslations, { locale: 'de' })
 
-        expect(createMazUiTranslations).toHaveBeenCalledWith({})
+        expect(first.config.globalProperties.$mazTranslations.locale.value).toBe('fr')
+        expect(second.config.globalProperties.$mazTranslations.locale.value).toBe('de')
+        expect(first.config.globalProperties.$mazTranslations.locale).not.toBe(locale)
       })
     })
   })

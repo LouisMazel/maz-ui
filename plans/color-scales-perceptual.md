@@ -4,7 +4,7 @@ Issue : [#1682](https://github.com/LouisMazel/maz-ui/issues/1682). Sujet lié, n
 
 ## Problème
 
-Les nuances `-50` à `-950` sont dérivées dans `packages/lib/src/tailwindcss/theme-colors.css` avec un décalage fixe de luminosité (`clamp(0, calc(l + 0.13), 1)`). Avec une base très sombre ou très claire, l'échelle s'effondre :
+Les nuances `-50` à `-950` sont dérivées dans `packages/maz-ui/src/tailwindcss/theme-colors.css` avec un décalage fixe de luminosité (`clamp(0, calc(l + 0.13), 1)`). Avec une base très sombre ou très claire, l'échelle s'effondre :
 
 - base marine : `secondary-50` est un gris moyen, et la moitié sombre est entièrement noire ;
 - base or : la moitié claire est entièrement blanche, et l'or vire au citron.

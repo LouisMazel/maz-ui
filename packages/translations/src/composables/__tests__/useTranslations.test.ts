@@ -1,114 +1,102 @@
 import type { MazUiTranslationsInstance } from '../../types'
-import { getCurrentInstance, inject } from 'vue'
+import { createApp, defineComponent } from 'vue'
+import { getActiveTranslations, setActiveTranslations } from '../../utils/active-instance'
+import { createMazUiTranslations } from '../../utils/instance'
 import { useTranslations } from '../useTranslations'
 
-const mockInstance: MazUiTranslationsInstance = {
-  locale: { value: 'en' },
-  t: vi.fn(),
-  setLocale: vi.fn(),
-  isLocaleLoaded: vi.fn(),
-  isLocaleLoading: vi.fn(),
-  setLocaleMessage: vi.fn(),
-  getMessages: vi.fn(),
-  getLoadedLocales: vi.fn(),
-  getAvailableLocales: vi.fn(),
-} as unknown as MazUiTranslationsInstance
+const { isServer } = vi.hoisted(() => ({
+  isServer: vi.fn(() => false),
+}))
 
-vi.mock('vue', async (importOriginal) => {
-  const original = await importOriginal<typeof import('vue')>()
+vi.mock('@maz-ui/utils/helpers/isServer', () => ({ isServer }))
 
+vi.mock('../../utils/active-instance', () => {
+  let active: MazUiTranslationsInstance | undefined
   return {
-    ...original,
-    inject: vi.fn(),
-    getCurrentInstance: vi.fn(),
+    getActiveTranslations: vi.fn(() => active),
+    setActiveTranslations: vi.fn((i18n: MazUiTranslationsInstance | undefined) => {
+      active = i18n
+    }),
   }
 })
 
 describe('useTranslations', () => {
   afterEach(() => {
-    vi.clearAllMocks()
+    isServer.mockReturnValue(false)
+    setActiveTranslations(undefined as never)
   })
 
-  describe('given useTranslations composable', () => {
-    describe('when translations instance is available via inject', () => {
-      it('then it returns the injected instance', () => {
-        vi.mocked(inject).mockReturnValue(mockInstance)
+  describe('given a provided instance', () => {
+    describe('when useTranslations is called', () => {
+      it('then it returns it', () => {
+        const i18n = createMazUiTranslations()
+        const app = createApp({})
+        app.provide('mazTranslations', i18n)
 
-        const result = useTranslations()
-
-        expect(result).toBe(mockInstance)
+        expect(app.runWithContext(() => useTranslations())).toBe(i18n)
       })
     })
+  })
 
-    describe('when inject returns undefined', () => {
-      describe('when globalProperties has $mazTranslations', () => {
-        it('then it returns the instance from globalProperties', () => {
-          vi.mocked(inject).mockReturnValue(undefined)
-          vi.mocked(getCurrentInstance).mockReturnValue({
-            appContext: {
-              app: {
-                config: {
-                  globalProperties: {
-                    $mazTranslations: mockInstance,
-                  },
-                },
-              },
-            },
-          } as never)
+  describe('given an instance on the global properties only', () => {
+    describe('when useTranslations is called in a component', () => {
+      it('then it returns it', () => {
+        const i18n = createMazUiTranslations()
+        let result: MazUiTranslationsInstance | undefined
+        const app = createApp(defineComponent({
+          setup() {
+            result = useTranslations()
+            return () => null
+          },
+        }))
+        app.config.globalProperties.$mazTranslations = i18n
 
-          const result = useTranslations()
+        app.mount(document.createElement('div'))
 
-          expect(result).toBe(mockInstance)
-        })
+        expect(result).toBe(i18n)
+        app.unmount()
       })
+    })
+  })
 
-      describe('when getCurrentInstance returns null', () => {
-        it('then it throws an error with the installation message', () => {
-          vi.mocked(inject).mockReturnValue(undefined)
-          vi.mocked(getCurrentInstance).mockReturnValue(null)
+  describe('given a call outside a component in the browser', () => {
+    describe('when an instance was installed before', () => {
+      it('then it returns the installed instance', () => {
+        const i18n = createMazUiTranslations()
+        setActiveTranslations(i18n)
 
-          expect(() => useTranslations()).toThrowError(
-            '[@maz-ui/translations] You must install the MazUi or MazUiTranslations plugin, or wrap your components in a MazUiProvider, before using useTranslations composable',
-          )
-        })
+        expect(useTranslations()).toBe(i18n)
+        expect(getActiveTranslations).toHaveBeenCalled()
       })
+    })
+  })
 
-      describe('when getCurrentInstance returns incomplete context', () => {
-        it('then it throws an error with the installation message', () => {
-          vi.mocked(inject).mockReturnValue(undefined)
-          vi.mocked(getCurrentInstance).mockReturnValue({
-            appContext: {
-              app: {
-                config: {
-                  globalProperties: {},
-                },
-              },
-            },
-          } as never)
+  describe('given an injection context without instance', () => {
+    describe('when an instance was installed before', () => {
+      it('then it returns the installed instance', () => {
+        const i18n = createMazUiTranslations()
+        setActiveTranslations(i18n)
 
-          expect(() => useTranslations()).toThrowError(
-            '[@maz-ui/translations] You must install the MazUi or MazUiTranslations plugin, or wrap your components in a MazUiProvider, before using useTranslations composable',
-          )
-        })
+        expect(createApp({}).runWithContext(() => useTranslations())).toBe(i18n)
       })
+    })
+  })
 
-      describe('when getCurrentInstance returns context with undefined globalProperties', () => {
-        it('then it throws an error with the installation message', () => {
-          vi.mocked(inject).mockReturnValue(undefined)
-          vi.mocked(getCurrentInstance).mockReturnValue({
-            appContext: {
-              app: {
-                config: {
-                  globalProperties: undefined,
-                },
-              },
-            },
-          } as never)
+  describe('given a call outside a component on the server', () => {
+    describe('when an instance was installed before', () => {
+      it('then it never reuses it', () => {
+        isServer.mockReturnValue(true)
+        setActiveTranslations(createMazUiTranslations())
 
-          expect(() => useTranslations()).toThrowError(
-            '[@maz-ui/translations] You must install the MazUi or MazUiTranslations plugin, or wrap your components in a MazUiProvider, before using useTranslations composable',
-          )
-        })
+        expect(() => useTranslations()).toThrow('[@maz-ui/translations] You must install the MazUi or MazUiTranslations plugin')
+      })
+    })
+  })
+
+  describe('given no instance', () => {
+    describe('when useTranslations is called', () => {
+      it('then it throws an installation error', () => {
+        expect(() => useTranslations()).toThrow('[@maz-ui/translations] You must install the MazUi or MazUiTranslations plugin')
       })
     })
   })
