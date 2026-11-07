@@ -1,5 +1,25 @@
 # Changelog
 
+## v5.4.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)
+
+### 🚀 Features
+
+- **@maz-ui/mcp:** Show the color scale mode of the project preset in `get_theme_tokens` ([1777f8781](https://github.com/LouisMazel/maz-ui/commit/1777f8781))
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Label the bundled docs with the maz-ui version they document ([3df0ec36c](https://github.com/LouisMazel/maz-ui/commit/3df0ec36c))
+
+### 📦 Build
+
+- **@maz-ui/mcp:** Bundle @maz-ui/node and @maz-ui/utils without declaring them as optional peers ([2443858ef](https://github.com/LouisMazel/maz-ui/commit/2443858ef))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.1-beta.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.3.1-beta.0)

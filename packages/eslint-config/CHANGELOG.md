@@ -1,5 +1,11 @@
 # Change Log
 
+## @maz-ui/eslint-config@5.4.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/eslint-config@5.4.0-beta.0...@maz-ui/eslint-config@5.4.0)
+
+No relevant changes since last release
+
 ## @maz-ui/eslint-config@5.4.0-beta.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...@maz-ui/eslint-config@5.4.0-beta.0)
