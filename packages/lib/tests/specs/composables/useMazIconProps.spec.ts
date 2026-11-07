@@ -31,6 +31,17 @@ describe('useMazIconProps', () => {
     })
   })
 
+  describe('given an icon with a title', () => {
+    describe('when the props are resolved', () => {
+      it('then the icon is not hidden from assistive technologies', () => {
+        const { iconProps } = useMazIconProps(() => ({ icon: RAW_SVG, title: 'Close' }))
+
+        expect(iconProps.value?.['aria-hidden']).toBeUndefined()
+        expect(iconProps.value?.title).toBe('Close')
+      })
+    })
+  })
+
   describe('when called with a bare icon value', () => {
     it('wraps a raw SVG string into a props object with default a11y', () => {
       const { iconProps } = useMazIconProps(() => RAW_SVG)
@@ -60,12 +71,11 @@ describe('useMazIconProps', () => {
       }))
 
       expect(iconProps.value).toMatchObject({
-        'aria-hidden': true,
-        'icon': RAW_SVG,
-        'size': 'lg',
-        'title': 'Star',
-        'svgAttributes': { 'data-testid': 'x' },
-        'flipIconForRtl': true,
+        icon: RAW_SVG,
+        size: 'lg',
+        title: 'Star',
+        svgAttributes: { 'data-testid': 'x' },
+        flipIconForRtl: true,
       })
     })
 

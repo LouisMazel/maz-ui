@@ -18,7 +18,7 @@ export type MazIconLike = MazIconValue | MazIconProps | undefined
 export interface UseMazIconPropsOptions {
   /**
    * When `true` (default), the resolved icon is treated as decorative and
-   * gets `aria-hidden="true"`. Set to `false` for icons that convey meaning
+   * gets `aria-hidden="true"`, unless it has a `title`. Set to `false` for icons that convey meaning
    * without a visible label (e.g. solo navigation arrows).
    * @default true
    */
@@ -90,7 +90,7 @@ export function useMazIconProps(
       ...extra,
       icon: inner,
     } as ResolvedMazIconProps
-    if (decorative && result['aria-hidden'] === undefined)
+    if (decorative && !result.title && result['aria-hidden'] === undefined)
       result['aria-hidden'] = true
     return result
   })
