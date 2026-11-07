@@ -84,7 +84,7 @@ app.use(MazUi, {
    * @see https://maz-ui.com/ecosystem/themes
    */
   theme: {
-    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian' | 'nova'
+    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian' | 'nova' | 'folio'
     overrides: {
       foundation: {
         'space': '0.25rem',

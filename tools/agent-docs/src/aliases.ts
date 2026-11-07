@@ -740,6 +740,7 @@ export const ECOSYSTEM_SYMBOLS: Record<string, { symbols: string[], imports: str
       'ocean',
       'obsidian',
       'nova',
+      'folio',
       'buildThemeCSS',
     ],
     imports: [

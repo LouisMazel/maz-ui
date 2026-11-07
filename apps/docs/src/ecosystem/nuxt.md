@@ -125,7 +125,7 @@ export default defineNuxtConfig({
 
     // Theming System
     theme: {
-      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | custom object
+      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | 'folio' | custom object
       strategy: 'runtime', // 'runtime' | 'buildtime'
       darkModeStrategy: 'class', // 'class' | 'media'
       darkClass: 'dark', // class on <html> when colorMode === 'dark' (default: 'dark')

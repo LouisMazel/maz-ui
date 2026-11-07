@@ -41,7 +41,7 @@ const app = createApp(App)
 
 app.use(MazUi, {
   theme: {
-    preset: mazUi, // pristine | ocean | obsidian | nova
+    preset: mazUi, // pristine | ocean | obsidian | nova | folio
     strategy: 'runtime', // 'runtime' | 'buildtime'
     darkModeStrategy: 'class', // 'class' | 'media' (only if mode is `both`)
     mode: 'both', // 'light' | 'dark' | 'both' (supported color modes)
@@ -369,6 +369,18 @@ A modern startup / AI / creative preset — electric violet primary, hot coral s
 ```typescript
 import { nova } from '@maz-ui/themes/presets'
 ```
+
+### Folio
+
+An electric and modern preset made for long reading, and the one of this documentation: an electric blue primary, an electric magenta secondary and a cyan accent that blend into a plasma gradient, on faintly violet surfaces (almost white in light mode, violet-black in dark mode). Fraunces (serif) for the headings, Inter for the text, Geist Mono for the code, soft 0.625rem `md` radius. In dark mode the color roles turn into bright tones carrying dark text, so they stay readable as text on the surface too. Every text pair reaches WCAG AA.
+
+```typescript
+import { folio } from '@maz-ui/themes/presets'
+```
+
+::: tip Fonts
+Like the other presets, Folio only declares font stacks: load Fraunces, Inter and Geist Mono yourself (self-hosted or from a font service), the stacks fall back to system fonts otherwise.
+:::
 
 ## Rendering Strategies
 

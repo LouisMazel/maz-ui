@@ -299,6 +299,9 @@ function formatColorName(colorName: string): string {
               }, {
                 label: 'Nova',
                 value: 'nova',
+              }, {
+                label: 'Folio',
+                value: 'folio',
               },
             ]"
             @update:model-value="updateTheme($event)"
