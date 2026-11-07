@@ -9,19 +9,6 @@ vi.mock('../../utils/css-generator', () => ({
   CSS_ID: 'maz-theme-css',
 }))
 
-vi.mock('../../utils/get-color-mode', () => ({
-  getColorMode: vi.fn(),
-  isSystemPrefersDark: vi.fn(),
-  getSystemColorMode: vi.fn(() => 'light'),
-  saveResolvedColorMode: vi.fn(),
-}))
-
-vi.mock('../../utils/cookie-storage', () => ({
-  savePreset: vi.fn(),
-  getSavedPreset: vi.fn(() => null),
-  clearSavedPresetName: vi.fn(),
-}))
-
 vi.mock('@maz-ui/utils/helpers/cookie', () => ({
   setCookie: vi.fn(),
   getCookie: vi.fn(),

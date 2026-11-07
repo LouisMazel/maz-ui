@@ -1,87 +1,79 @@
 import type { Ref } from 'vue'
 import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
-import type { CSSOptions } from '../utils/css-generator'
-import { setCookie } from '@maz-ui/utils/helpers/cookie'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { computed, getCurrentInstance, inject, ref, watch } from 'vue'
+import { computed, getCurrentInstance, hasInjectionContext, inject } from 'vue'
 
-import { noTransition } from '../utils'
-import { getSavedPreset, savePreset } from '../utils/cookie-storage'
 import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
-import { getSystemColorMode, saveResolvedColorMode } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'
+import { noTransition } from '../utils/no-transition'
 import { mergePresets } from '../utils/preset-merger'
+import { readPresetPreference, saveColorModeChoice, savePresetPreference } from '../utils/theme-preferences'
+import { getActiveThemeState, setActiveThemeState } from '../utils/theme-state-registry'
 
-const themeState = ref<ThemeState>()
+type ThemeStateRef = Ref<ThemeState | undefined>
 
-const colorMode = computed<ColorMode>({
-  get: () => themeState.value?.colorMode as ColorMode,
-  /**
-   * Setter fires `setColorMode(mode)` synchronously (Promise<void> is discarded).
-   * If you need to await the change (e.g., when `animate: true` is used), call
-   * `setColorMode(mode)` directly to receive the Promise.
-   */
-  set: mode => void setColorMode(mode),
-})
+/**
+ * Theme state of the current component tree (plugin or `MazUiProvider`), resolved on every call:
+ * a module cache would mix the apps (nested providers) and, on the server, the requests.
+ */
+function resolveThemeState(): ThemeStateRef | undefined {
+  if (hasInjectionContext()) {
+    const state = inject<ThemeStateRef | undefined>('mazThemeState', undefined)
+      ?? getCurrentInstance()?.appContext.config.globalProperties.$mazThemeState
+    if (state?.value) {
+      if (!isServer())
+        setActiveThemeState(state)
+      return state
+    }
+  }
 
-const isDark = computed(() => themeState.value?.isDark || false)
-const strategy = computed(() => themeState.value?.strategy as Required<ThemeState>['strategy'])
-const mode = computed(() => themeState.value?.mode as Required<ThemeState>['mode'])
-const darkModeStrategy = computed(() => themeState.value?.darkModeStrategy as Required<ThemeState>['darkModeStrategy'])
-const preset = computed(() => themeState.value?.preset as Required<ThemeState>['preset'])
-const presetName = computed(() => preset.value?.name as string)
+  return isServer()
+    ? undefined
+    : getActiveThemeState()
+}
 
-async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePresetName) {
-  if (!themeState.value)
+async function updateTheme(themeState: ThemeStateRef, preset: ThemePreset | ThemePresetOverrides | ThemePresetName) {
+  const state = themeState.value
+  if (!state)
     return
 
   const _preset = typeof preset === 'string'
     ? await getPreset(preset)
     : preset
 
-  if (!_preset || !themeState.value.preset) {
+  if (!_preset || !state.preset) {
     console.error('[@maz-ui/themes] No preset found — with buildtime strategy you must pass a full preset')
     return
   }
 
-  const newPreset = 'name' in _preset && _preset.name !== themeState.value.preset.name
+  const newPreset = 'name' in _preset && _preset.name !== state.preset.name
     ? _preset as ThemePreset
-    : mergePresets(themeState.value.preset, _preset)
+    : mergePresets(state.preset, _preset)
 
-  themeState.value.preset = newPreset
-  if (themeState.value.persistPreset) {
-    // Preserve the configured base identity written at setup so the switch
-    // stays scoped to this app; fall back to the new name on a fresh cookie.
-    const base = getSavedPreset()?.base ?? newPreset.name
-    savePreset(base, newPreset.name)
+  state.preset = newPreset
+  if (state.persistPreset) {
+    // The configured preset scopes the cookie to this app, even when the cookie was deleted
+    savePresetPreference(state.presetBase ?? readPresetPreference()?.base ?? newPreset.name, newPreset.name)
   }
 
-  if (themeState.value.strategy === 'runtime') {
-    const cssOptions: CSSOptions = {
-      mode: themeState.value.mode,
-      darkSelectorStrategy: themeState.value.darkModeStrategy,
+  if (state.strategy === 'runtime') {
+    injectCSS(CSS_ID, generateCSS(newPreset, {
+      mode: state.mode,
+      darkSelectorStrategy: state.darkModeStrategy,
       prefix: 'maz',
-      darkClass: themeState.value.darkClass,
-      lightClass: themeState.value.lightClass,
-    }
-
-    const fullCSS = generateCSS(newPreset, cssOptions)
-    injectCSS(CSS_ID, fullCSS)
+      darkClass: state.darkClass,
+      lightClass: state.lightClass,
+    }))
   }
 }
 
-async function setColorMode(colorMode: ColorMode, options: { animate?: boolean } = {}): Promise<void> {
+async function setColorMode(themeState: ThemeStateRef, colorMode: ColorMode, options: { animate?: boolean } = {}): Promise<void> {
   if (!themeState.value)
     return
 
   const apply = () => {
     themeState.value!.colorMode = colorMode
-    setCookie('maz-color-mode', colorMode)
-    if (colorMode === 'auto') {
-      saveResolvedColorMode(getSystemColorMode() === 'dark'
-        ? 'dark'
-        : 'light')
-    }
+    saveColorModeChoice(colorMode)
   }
 
   if (options.animate) {
@@ -93,57 +85,16 @@ async function setColorMode(colorMode: ColorMode, options: { animate?: boolean }
   }
 }
 
-function toggleDarkMode(options: { animate?: boolean } = {}): Promise<void> {
-  return setColorMode(isDark.value ? 'light' : 'dark', options)
-}
-
-let stopInjectedWatch: (() => void) | undefined
-
-function setThemeStateFromGlobalProperties() {
-  themeState.value = undefined
-  stopInjectedWatch?.()
-  stopInjectedWatch = undefined
-
-  try {
-    const injectedState = inject<Ref<ThemeState> | undefined>('mazThemeState', undefined)
-    themeState.value = injectedState?.value
-
-    if (injectedState) {
-      stopInjectedWatch = watch(injectedState, (newState) => {
-        if (newState) {
-          themeState.value = newState
-        }
-      }, { deep: true })
-    }
-
-    if (!themeState.value) {
-      throw new Error('mazThemeState not found')
-    }
-  }
-  catch {
-    const instance = getCurrentInstance()
-    if (instance?.appContext?.app?.config?.globalProperties) {
-      themeState.value = instance.appContext.app.config.globalProperties.$mazThemeState.value
-    }
-  }
-}
-
 export function useTheme() {
-  if (isServer()) {
-    themeState.value = undefined
-  }
-  try {
-    if (!themeState.value) {
-      setThemeStateFromGlobalProperties()
-    }
-
-    if (!themeState.value) {
-      throw new Error('[@maz-ui/themes] no theme state found')
-    }
-  }
-  catch {
+  const themeState = resolveThemeState()
+  if (!themeState?.value) {
     throw new Error('[@maz-ui/themes] useTheme requires the MazUi/MazUiTheme plugin or a MazUiProvider wrapper')
   }
+
+  const isDark = computed(() => themeState.value?.isDark || false)
+  const preset = computed(() => themeState.value?.preset as Required<ThemeState>['preset'])
+
+  const _setColorMode = (colorMode: ColorMode, options?: { animate?: boolean }) => setColorMode(themeState, colorMode, options)
 
   return {
     /**
@@ -153,12 +104,20 @@ export function useTheme() {
     /**
      * Current theme name
      */
-    presetName,
+    presetName: computed(() => preset.value?.name as string),
     /**
      * Current color mode
      * @description The color mode - Can be 'auto', 'dark' or 'light'
      */
-    colorMode,
+    colorMode: computed<ColorMode>({
+      get: () => themeState.value?.colorMode as ColorMode,
+      /**
+       * Setter fires `setColorMode(mode)` synchronously (Promise<void> is discarded).
+       * If you need to await the change (e.g., when `animate: true` is used), call
+       * `setColorMode(mode)` directly to receive the Promise.
+       */
+      set: mode => void _setColorMode(mode),
+    }),
     /**
      * Whether the current color mode is dark
      */
@@ -166,14 +125,14 @@ export function useTheme() {
     /**
      * Strategy used to apply the theme
      */
-    strategy,
+    strategy: computed(() => themeState.value?.strategy as Required<ThemeState>['strategy']),
     /**
      * Update the theme
      * @param preset The new theme preset
      * @description Update the theme with a new preset or override some tokens
      */
     updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePresetName): ReturnType<typeof updateTheme> {
-      return noTransition(updateTheme, preset)
+      return noTransition(updateTheme, themeState, preset)
     },
     /**
      * Set the color mode
@@ -182,24 +141,27 @@ export function useTheme() {
      * @param options.animate When `true`, wrap the change in a View Transition for a smooth full-page animation. Lazy-imports the helper so unused code stays out of the boot bundle.
      * @returns A `Promise<void>` that resolves once the change (and optional transition) is applied. Callers may ignore the return.
      */
-    setColorMode,
+    setColorMode: _setColorMode,
     /**
      * Toggle the dark mode
      * @description Toggle the dark mode
+     * @param options Options of the toggle
      * @param options.animate When `true`, wrap the toggle in a View Transition.
      * @returns A `Promise<void>` that resolves once the change (and optional transition) is applied.
      */
-    toggleDarkMode,
+    toggleDarkMode: (options: { animate?: boolean } = {}): Promise<void> => _setColorMode(isDark.value
+      ? 'light'
+      : 'dark', options),
     /**
      * Mode
      * @description Supported themes - Can be 'both', 'light' or 'dark'
      */
-    mode,
+    mode: computed(() => themeState.value?.mode as Required<ThemeState>['mode']),
     /**
      * Dark mode strategy
      * @description Strategy used to apply the dark mode - Can be 'class' or 'media'
      */
-    darkModeStrategy,
+    darkModeStrategy: computed(() => themeState.value?.darkModeStrategy as Required<ThemeState>['darkModeStrategy']),
     /**
      * @deprecated use `preset` instead
      */

@@ -177,7 +177,7 @@ describe('get-color-mode', () => {
     })
 
     describe('when called with dark', () => {
-      it('then it sets the maz-resolved-color-mode cookie to dark', () => {
+      it('then it saves dark as the system part of the maz-color-mode cookie', () => {
         let cookieValue = ''
         Object.defineProperty(document, 'cookie', {
           get: () => cookieValue,
@@ -187,12 +187,12 @@ describe('get-color-mode', () => {
 
         saveResolvedColorMode('dark')
 
-        expect(cookieValue).toContain('maz-resolved-color-mode=dark')
+        expect(cookieValue).toContain('maz-color-mode=%3Adark')
       })
     })
 
     describe('when called with light', () => {
-      it('then it sets the maz-resolved-color-mode cookie to light', () => {
+      it('then it saves light as the system part of the maz-color-mode cookie', () => {
         let cookieValue = ''
         Object.defineProperty(document, 'cookie', {
           get: () => cookieValue,
@@ -202,7 +202,7 @@ describe('get-color-mode', () => {
 
         saveResolvedColorMode('light')
 
-        expect(cookieValue).toContain('maz-resolved-color-mode=light')
+        expect(cookieValue).toContain('maz-color-mode=%3Alight')
       })
     })
   })
@@ -212,9 +212,9 @@ describe('get-color-mode', () => {
       vi.unstubAllGlobals()
     })
 
-    describe('when resolved cookie is dark', () => {
+    describe('when the system part of the cookie is dark', () => {
       it('then it returns dark', () => {
-        mockDocumentCookie('maz-resolved-color-mode=dark')
+        mockDocumentCookie('maz-color-mode=auto%3Adark')
 
         const result = getSavedResolvedColorMode()
 
@@ -222,9 +222,9 @@ describe('get-color-mode', () => {
       })
     })
 
-    describe('when resolved cookie is light', () => {
+    describe('when the system part of the cookie is light', () => {
       it('then it returns light', () => {
-        mockDocumentCookie('maz-resolved-color-mode=light')
+        mockDocumentCookie('maz-color-mode=%3Alight')
 
         const result = getSavedResolvedColorMode()
 
