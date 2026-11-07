@@ -187,6 +187,14 @@ function presetColors(preset: ProjectPreset): string[] {
   ]
 }
 
+function presetColorScale(preset: ProjectPreset): string[] {
+  const mode = asRecord(preset.overrides.scales).color
+
+  return typeof mode === 'string'
+    ? [`Color scales: \`${mode}\` (\`scales.color\`), the derivation of the \`-50\`..\`-950\` steps of the brand colors (\`bg-primary-100\`, \`text-accent-700\`...). \`perceptual\` keeps their order and hue with very light or very dark brand colors.`]
+    : []
+}
+
 function presetFoundation(preset: ProjectPreset, wanted: (topic: ThemeTopic) => boolean): string[] {
   const rows = Object.entries(asRecord(preset.overrides.foundation))
     .filter(([key]) => wanted(FOUNDATION_USAGE[key]?.topic ?? 'css-variables'))
@@ -246,6 +254,9 @@ function renderPreset(preset: ProjectPreset, wanted: (topic: ThemeTopic) => bool
   const tables = [
     wanted('colors')
       ? presetColors(preset)
+      : [],
+    wanted('colors')
+      ? presetColorScale(preset)
       : [],
     presetFoundation(preset, wanted),
     presetScales(preset, wanted),
