@@ -55,7 +55,6 @@ const copyLabel = computed(() => translations?.copyToClipboard ?? t('codeHighlig
 const copiedLabel = computed(() => translations?.copiedToClipboard ?? t('codeHighlight.copiedToClipboard'))
 
 const slots = useSlots()
-const highlightedHtml = ref('')
 const isDark = ref(typeof document !== 'undefined' && document.documentElement.classList.contains('dark'))
 const copied = ref(false)
 let copyResetTimer: ReturnType<typeof setTimeout> | undefined
@@ -67,6 +66,10 @@ function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;')
+}
+
+function plainHtml(value: string): string {
+  return `<pre class="shiki"><code>${escapeHtml(value)}</code></pre>`
 }
 
 function extractSlotText(vnodes: VNode[]): string {
@@ -92,6 +95,10 @@ const resolvedCode = computed(() => {
   catch {}
   return ''
 })
+
+const highlightedHtml = ref(resolvedCode.value
+  ? plainHtml(resolvedCode.value)
+  : '')
 
 const resolvedTheme = computed(() => {
   if (theme)
@@ -122,7 +129,7 @@ async function highlight() {
   }
   catch {
     if (seq === highlightSeq)
-      highlightedHtml.value = `<pre><code>${escapeHtml(src)}</code></pre>`
+      highlightedHtml.value = plainHtml(src)
   }
 }
 
