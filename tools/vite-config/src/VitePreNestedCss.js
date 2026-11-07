@@ -16,7 +16,9 @@ import postcssNested from 'postcss-nested'
  * generate hook.
  */
 export function VitePreNestedCss() {
-  const processor = postcss([postcssNested()])
+  const processor = postcss([
+    postcssNested(),
+  ])
   return {
     name: 'pre-nested-css',
     enforce: 'pre',

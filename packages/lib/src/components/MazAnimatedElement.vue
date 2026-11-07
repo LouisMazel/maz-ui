@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export interface MazAnimatedElementProps {
   /**
@@ -30,76 +30,52 @@ const { direction = 'up', delay = 0, duration = 2000, once = true } = defineProp
 const animatedClass = computed(() => `animate-slide-${direction}-blur`)
 
 const element = ref<HTMLDivElement>()
-const isAnimated = ref(false)
+const isPending = ref(false)
 
 let observer: IntersectionObserver | null = null
-let animationFrameId: number | null = null
 
-function triggerAnimation() {
-  animationFrameId = requestAnimationFrame(() => {
-    if (element.value) {
-      element.value.classList.remove('maz:invisible')
-      element.value.classList.add(animatedClass.value)
-      isAnimated.value = true
-    }
-  })
+function isInViewport(el: HTMLElement) {
+  const { top, bottom } = el.getBoundingClientRect()
+
+  return top < globalThis.innerHeight && bottom > 0
 }
-
-function resetAnimation() {
-  if (element.value) {
-    element.value.classList.add('maz:invisible')
-    element.value.classList.remove(animatedClass.value)
-    isAnimated.value = false
-  }
-}
-
-const prefersReducedMotion = typeof globalThis.window !== 'undefined'
-  && typeof globalThis.matchMedia === 'function'
-  && globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 onMounted(() => {
-  // Accessibilité : si l'utilisateur préfère réduire les animations, on affiche
-  // immédiatement le contenu sans jouer l'animation (et sans observer).
-  if (prefersReducedMotion) {
-    element.value?.classList.remove('maz:invisible')
-    isAnimated.value = true
+  if (!element.value || globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
     return
   }
 
-  observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting && !isAnimated.value) {
-      nextTick(() => {
-        setTimeout(triggerAnimation, delay)
-      })
+  isPending.value = !isInViewport(element.value)
 
-      if (once === true) {
+  observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      isPending.value = false
+
+      if (once) {
         observer?.unobserve(entry.target)
       }
     }
-    else if (once === false && !entry.isIntersecting) {
-      resetAnimation()
+    else if (!once) {
+      isPending.value = true
     }
   })
 
-  if (element.value) {
-    observer.observe(element.value)
-  }
+  observer.observe(element.value)
 })
 
 onBeforeUnmount(() => {
   observer?.disconnect()
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId)
-  }
 })
 </script>
 
 <template>
   <div
     ref="element"
-    class="m-animated-element m-reset-css maz:invisible"
+    class="m-animated-element m-reset-css"
+    :class="[animatedClass, { 'm-animated-element--pending': isPending }]"
     :style="{
       animationDuration: `${duration}ms`,
+      animationDelay: `${delay}ms`,
     }"
   >
     <slot />
@@ -109,9 +85,8 @@ onBeforeUnmount(() => {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-animated-element {
-  will-change: transform, opacity, filter;
-  transform: translateZ(0);
+.m-animated-element.m-animated-element--pending {
+  animation: none;
 }
 
 @keyframes slide-up-blur {
@@ -191,5 +166,12 @@ onBeforeUnmount(() => {
 .animate-slide-left-blur,
 .animate-slide-right-blur {
   opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-animated-element {
+    animation: none;
+    opacity: 1;
+  }
 }
 </style>

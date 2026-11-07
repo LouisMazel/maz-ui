@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.3.1-beta.0 (2026-11-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.3.1-beta.0)
+
+### 🩹 Fixes
+
+- **maz-ui:** Declarations no longer import @vue/reactivity ([fd6e42c61](https://github.com/LouisMazel/maz-ui/commit/fd6e42c61))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.2.0...v5.3.0)

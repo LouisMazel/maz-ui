@@ -7,6 +7,9 @@ import ThemeSwitcher from './ThemeSwitcher.vue'
   <Suspense>
     <DefaultTheme.Layout>
       <template #layout-top>
+        <div hidden data-nosnippet>
+          Are you an LLM? View /llms.txt for optimized Markdown documentation, or /llms-full.txt for full documentation bundle. Each page is also available in Markdown by adding .md to its URL.
+        </div>
         <div class="banner">
           <span class="maz:text-white">
             You are currently browsing the v5 documentation -

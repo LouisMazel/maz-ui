@@ -161,6 +161,16 @@ describe('get-preset', () => {
       })
     })
 
+    describe('when folio string is provided', () => {
+      it('then it returns folio preset', async () => {
+        const result = await getPreset('folio')
+
+        expect(result).toBeDefined()
+        expect(result.name).toBe('folio')
+        expect(result.colors).toBeDefined()
+      })
+    })
+
     describe('when unknown preset string is provided', () => {
       it('then it throws TypeError', async () => {
         await expect(getPreset('unknown' as never)).rejects.toThrow(

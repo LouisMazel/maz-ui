@@ -252,6 +252,72 @@ describe('preset-merger', () => {
       })
     })
 
+    describe('when overrides set the color scale mode', () => {
+      it('then mergeScales applies it', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: {
+            rounded: { md: '0.5rem' },
+            shadow: {},
+          },
+        } as unknown as ThemePreset
+
+        const result = mergePresets(basePreset, {
+          scales: { color: 'perceptual' },
+        })
+
+        expect(result.scales.color).toBe('perceptual')
+        expect(result.scales.rounded).toEqual({ md: '0.5rem' })
+      })
+    })
+
+    describe('when the base sets the color scale mode and overrides omit it', () => {
+      it('then mergeScales keeps the base mode', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: {
+            rounded: { md: '0.5rem' },
+            shadow: {},
+            color: 'perceptual',
+          },
+        } as unknown as ThemePreset
+
+        const result = mergePresets(basePreset, {
+          scales: {
+            rounded: { md: '1rem' },
+          },
+        })
+
+        expect(result.scales.color).toBe('perceptual')
+      })
+    })
+
+    describe('when neither base nor overrides set the color scale mode', () => {
+      it('then mergeScales adds no color key', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: {
+            rounded: { md: '0.5rem' },
+            shadow: {},
+          },
+        } as unknown as ThemePreset
+
+        const result = mergePresets(basePreset, {
+          scales: {
+            rounded: { md: '1rem' },
+          },
+        })
+
+        expect(result.scales).not.toHaveProperty('color')
+      })
+    })
+
     describe('when neither base nor overrides declare components', () => {
       it('then mergeComponents returns undefined', () => {
         const basePreset = {

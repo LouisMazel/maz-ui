@@ -125,7 +125,7 @@ const sizeClass = computed<string | undefined>(() => {
 })
 
 const hasAriaLabel = computed(() =>
-  Boolean(attrs['aria-label'] || attrs['aria-labelledby'] || svgAttributes?.['aria-label'] || svgAttributes?.['aria-labelledby']),
+  Boolean(title || attrs['aria-label'] || attrs['aria-labelledby'] || svgAttributes?.['aria-label'] || svgAttributes?.['aria-labelledby']),
 )
 
 const ariaHidden = computed<'true' | 'false' | undefined>(() => {
@@ -139,6 +139,10 @@ const ariaHidden = computed<'true' | 'false' | undefined>(() => {
 })
 
 const role = computed(() => (hasAriaLabel.value ? 'img' : undefined))
+
+const ariaLabel = computed(() => (attrs['aria-label'] || attrs['aria-labelledby']
+  ? undefined
+  : title))
 
 const flipClass = computed(() => (flipIconForRtl ? 'm-icon--flip-for-rtl' : undefined))
 
@@ -261,6 +265,7 @@ watch(
     :class="[sizeClass, flipClass]"
     :style="svgStyle"
     :aria-hidden="ariaHidden"
+    :aria-label="ariaLabel"
     :role="role"
     v-html="rawSvgContent"
   />
@@ -270,6 +275,7 @@ watch(
     :class="[sizeClass, flipClass]"
     :style="svgStyle"
     :aria-hidden="ariaHidden"
+    :aria-label="ariaLabel"
     :role="role"
   />
   <component
@@ -279,6 +285,7 @@ watch(
     :class="[sizeClass, flipClass]"
     :style="svgStyle"
     :aria-hidden="ariaHidden"
+    :aria-label="ariaLabel"
     :role="role"
   />
 </template>

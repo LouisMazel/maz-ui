@@ -1,16 +1,22 @@
 <script lang="ts" setup>
+import type { ThemePresetName } from '@maz-ui/themes'
 import { MazSwatch } from '@maz-ui/icons/raw/MazSwatch'
 import { useTheme } from '@maz-ui/themes/composables/useTheme'
 
 const { presetName, updateTheme } = useTheme()
 
 const presets = [
+  { label: 'Folio', value: 'folio' },
   { label: 'Maz UI', value: 'maz-ui' },
   { label: 'Ocean', value: 'ocean' },
   { label: 'Obsidian', value: 'obsidian' },
   { label: 'Pristine', value: 'pristine' },
   { label: 'Nova', value: 'nova' },
 ]
+
+function selectPreset(name: string) {
+  updateTheme(name as ThemePresetName)
+}
 </script>
 
 <template>
@@ -36,7 +42,7 @@ const presets = [
           :model-value="presetName"
           orientation="vertical"
           :options="presets"
-          @update:model-value="updateTheme($event)"
+          @update:model-value="selectPreset"
         />
       </div>
     </template>

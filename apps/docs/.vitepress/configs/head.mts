@@ -12,36 +12,25 @@ export function getAssetBaseUrl(path: string): string {
 export const head = [
   [
     'meta',
-    { name: 'theme-color', content: '#1d90ff' },
+    { name: 'theme-color', content: '#1c58fc' },
   ],
   [
     'link',
     {
-      rel: 'preconnect',
-      href: 'https://fonts.googleapis.com',
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'preconnect',
-      href: 'https://fonts.gstatic.com',
+      rel: 'preload',
+      href: '/fonts/inter-latin-var.woff2',
+      as: 'font',
+      type: 'font/woff2',
       crossorigin: 'anonymous',
     },
   ],
   [
     'link',
     {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;800&display=swap',
-      crossorigin: 'anonymous',
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;800&display=swap',
+      rel: 'preload',
+      href: '/fonts/fraunces-latin-var.woff2',
+      as: 'font',
+      type: 'font/woff2',
       crossorigin: 'anonymous',
     },
   ],
@@ -118,11 +107,7 @@ export const head = [
   ],
   [
     'meta',
-    { name: 'msapplication-TileColor', content: '#2d89ef' },
-  ],
-  [
-    'meta',
-    { name: 'theme-color', content: '#ffffff' },
+    { name: 'msapplication-TileColor', content: '#1c58fc' },
   ],
   [
     'meta',
@@ -133,15 +118,15 @@ export const head = [
   ],
   [
     'meta',
-    { name: 'og:site_name', content: 'Maz-UI' },
+    { property: 'og:site_name', content: 'Maz-UI' },
   ],
   [
     'meta',
-    { name: 'og:locale', content: 'en-US' },
+    { property: 'og:locale', content: 'en_US' },
   ],
   [
     'meta',
-    { name: 'article:author', content: 'Loïc Mazuel' },
+    { property: 'article:author', content: 'Loïc Mazuel' },
   ],
   [
     'script',

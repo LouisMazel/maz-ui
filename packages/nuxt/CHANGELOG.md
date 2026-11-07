@@ -1,5 +1,18 @@
 # Change Log
 
+## v5.3.1-beta.0 (2026-11-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.3.1-beta.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Declare the packages imported by its declarations ([51f1d144e](https://github.com/LouisMazel/maz-ui/commit/51f1d144e))
+- **@maz-ui/nuxt:** Warn when the app and the module load two versions of maz-ui ([5d7841682](https://github.com/LouisMazel/maz-ui/commit/5d7841682))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.2.0...v5.3.0)

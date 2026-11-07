@@ -2,9 +2,6 @@ name: 'Setup Node.js, pnpm and Nx cache'
 description: Setup Node.js with pnpm and configure Nx cache for faster builds
 
 inputs:
-  registry-url:
-    description: npm registry URL
-    required: false
   install-flags:
     description: Additional flags for pnpm install
     required: false
@@ -13,8 +10,8 @@ inputs:
 runs:
   using: composite
   steps:
-    # pnpm and the store cache only: Node.js comes from actions/setup-node (npm auth of the
-    # releases via registry-url) and the install runs below with the flags of this action
+    # pnpm and the store cache only: Node.js comes from actions/setup-node and the install runs
+    # below with the flags of this action
     - name: Setup pnpm
       uses: pnpm/setup@v3
       with:
@@ -26,7 +23,6 @@ runs:
       uses: actions/setup-node@v7
       with:
         node-version-file: .nvmrc
-        registry-url: ${{ inputs.registry-url }}
 
     - name: Setup Nx cache
       uses: actions/cache@v6

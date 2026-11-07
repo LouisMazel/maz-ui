@@ -15,11 +15,11 @@
     "src/index.js"
   ],
   "dependencies": {
-    "postcss": "^8.5.32",
-    "postcss-nested": "^9.0.1"
+    "postcss": "catalog:",
+    "postcss-nested": "catalog:"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
-    "vite": "^8.3.5"
+    "vite": "catalog:"
   }
 }

@@ -16,6 +16,64 @@ export interface CSSOptions {
   lightClass?: string
 }
 
+export const BRAND_COLOR_ROLES = [
+  'primary',
+  'secondary',
+  'accent',
+  'info',
+  'success',
+  'warning',
+  'destructive',
+] as const
+
+export const PERCEPTUAL_LIGHT_BOUND = 0.985
+
+/**
+ * `mix` is the share of the way from the base to the light bound (tints) or to
+ * the dark bound (shades). The chroma is the base chroma times `chroma`,
+ * capped at `maxChroma`: the sRGB gamut narrows near white and black, and the
+ * browsers clip an out-of-gamut color channel by channel, which shifts its hue.
+ * Calibrated on every hue and lightness of the sRGB gamut: the hue shift of
+ * the clipped step stays under one just-noticeable difference for 95% of the
+ * colors, and under 0.03 in OKLab for the most saturated blues and yellows.
+ */
+export const PERCEPTUAL_COLOR_SCALE = {
+  tints: {
+    50: { mix: 0.95, chroma: 0.35, maxChroma: 0.03 },
+    100: { mix: 0.86, chroma: 0.5, maxChroma: 0.05 },
+    200: { mix: 0.7, chroma: 0.62, maxChroma: 0.085 },
+    300: { mix: 0.5, chroma: 0.78, maxChroma: 0.14 },
+    400: { mix: 0.25, chroma: 0.92, maxChroma: 0.21 },
+  },
+  shades: {
+    600: { mix: 0.18, chroma: 0.95, maxChroma: 0.27 },
+    700: { mix: 0.35, chroma: 0.88, maxChroma: 0.23 },
+    800: { mix: 0.52, chroma: 0.8, maxChroma: 0.17 },
+    900: { mix: 0.68, chroma: 0.7, maxChroma: 0.12 },
+    950: { mix: 0.82, chroma: 0.6, maxChroma: 0.08 },
+  },
+} as const
+
+/** Dark bound of the shades, always below the base lightness. */
+export function getPerceptualDarkBound(lightness: number): number {
+  return Math.min(0.2, lightness * 0.5)
+}
+
+/**
+ * CSS values of the 50..950 perceptual steps (500 excluded: it is the base).
+ * @param base - any CSS color, usually a variable (`var(--maz-primary)`)
+ */
+export function getPerceptualColorScale(base: string): Record<string, string> {
+  const scale: Record<string, string> = {}
+  for (const [step, { mix, chroma, maxChroma }] of Object.entries(PERCEPTUAL_COLOR_SCALE.tints)) {
+    scale[step] = `oklch(from ${base} calc(l + (max(${PERCEPTUAL_LIGHT_BOUND}, l) - l) * ${mix}) min(c * ${chroma}, ${maxChroma}) h)`
+  }
+  for (const [step, { mix, chroma, maxChroma }] of Object.entries(PERCEPTUAL_COLOR_SCALE.shades)) {
+    scale[step] = `oklch(from ${base} calc(l - (l - min(0.2, l * 0.5)) * ${mix}) min(c * ${chroma}, ${maxChroma}) h)`
+  }
+  return scale
+}
+
 const ROUNDED_KEYS: readonly RoundedScaleKey[] = [
   'xs',
   'sm',
@@ -49,6 +107,8 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   appendColorVariables(lines, preset.colors, mode, prefix)
 
   lines.push('  }')
+
+  appendPerceptualColorScale(lines, preset.scales, prefix)
 
   if (options.darkSelectorStrategy === 'class' && mode === 'both') {
     lines.push(`  .${options.darkClass} { color-scheme: only dark; }`)
@@ -106,6 +166,26 @@ function appendScales(lines: string[], scales: ThemePreset['scales'] | undefined
     if (value)
       lines.push(`    --${prefix}-shadow-style-${key}: ${value};`)
   }
+}
+
+/**
+ * Redefines the 50..950 steps that Tailwind declares in `:root, :host`: the
+ * doubled `:root` wins on specificity whatever the order of the stylesheets.
+ * Both names are emitted: `--maz-color-*` (maz-ui components, `prefix(maz)`)
+ * and `--color-*` (the Tailwind classes of the project).
+ */
+function appendPerceptualColorScale(lines: string[], scales: ThemePreset['scales'] | undefined, prefix: string): void {
+  if (scales?.color !== 'perceptual')
+    return
+
+  lines.push('  :root:root {')
+  for (const role of BRAND_COLOR_ROLES) {
+    for (const [step, value] of Object.entries(getPerceptualColorScale(`var(--${prefix}-${role})`))) {
+      lines.push(`    --${prefix}-color-${role}-${step}: ${value};`)
+      lines.push(`    --color-${role}-${step}: ${value};`)
+    }
+  }
+  lines.push('  }')
 }
 
 /**

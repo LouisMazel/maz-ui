@@ -1,5 +1,7 @@
 import MazCodeHighlight from '@components/MazCodeHighlight.vue'
 import { flushPromises, mount } from '@vue/test-utils'
+import { createSSRApp } from 'vue'
+import { renderToString } from 'vue/server-renderer'
 
 vi.mock('shiki', () => ({
   codeToHtml: vi.fn().mockResolvedValue('<pre class="shiki github-light"><code>highlighted code</code></pre>'),
@@ -139,6 +141,24 @@ describe('given MazCodeHighlight component', () => {
     })
   })
 
+  describe('when rendered before shiki resolves', () => {
+    it('then it renders the escaped code with the shiki block styles', () => {
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: 'const x = <div>' },
+      })
+
+      expect(wrapper.html()).toContain('<pre class="shiki"><code>const x = &lt;div&gt;</code></pre>')
+    })
+  })
+
+  describe('when rendered on the server', () => {
+    it('then the html contains the code', async () => {
+      const html = await renderToString(createSSRApp(MazCodeHighlight, { code: 'const x = 1' }))
+
+      expect(html).toContain('<pre class="shiki"><code>const x = 1</code></pre>')
+    })
+  })
+
   describe('when shiki fails to load', () => {
     it('then it falls back to plain pre/code', async () => {
       const { codeToHtml } = await import('shiki')
@@ -149,7 +169,7 @@ describe('given MazCodeHighlight component', () => {
       })
       await flushPromises()
 
-      expect(wrapper.html()).toContain('<pre><code>fallback code</code></pre>')
+      expect(wrapper.html()).toContain('<pre class="shiki"><code>fallback code</code></pre>')
     })
 
     it('then it escapes html entities in the fallback to prevent xss', async () => {

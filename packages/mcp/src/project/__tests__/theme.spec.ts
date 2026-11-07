@@ -46,7 +46,7 @@ export const brandPreset = definePreset({
   overrides: {
     name: 'brand',
     foundation: { 'font-display-stack': 'Barlow, sans-serif', 'space': '0.3rem', 'unknown-key': 'x' },
-    scales: { rounded: { md: '4px' }, shadow: { elevation: '0 1px 2px black' } },
+    scales: { rounded: { md: '4px' }, shadow: { elevation: '0 1px 2px black' }, color: 'perceptual' },
     colors: {
       light: { 'primary': '#C7330F', 'primary-foreground': '#FFFFFF', 'shadow': '#000' },
       dark: { primary: '#FF5A36' },
@@ -172,6 +172,7 @@ describe('given renderProjectTheme', () => {
       expect(output).toContain('| `unknown-key` | `--maz-unknown-key` | - | `x` |')
       expect(output).toContain('| `rounded-md` | `4px` |')
       expect(output).toContain('| `shadow-elevation` | `0 1px 2px black` |')
+      expect(output).toContain('Color scales: `perceptual` (`scales.color`)')
       expect(output).toContain('| `components.container.bg` | `bg-container`: MazCard')
       expect(output).toContain('`{"light":"#FFFFFF","dark":"#141B5E"}`')
       expect(output).toContain('| `components.custom.size` | - | `2px` |')

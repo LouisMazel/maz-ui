@@ -26,21 +26,21 @@
     "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@clack/prompts": "^1.8.1",
+    "@clack/prompts": "catalog:",
     "@maz-ui/node": "workspace:^",
     "@maz-ui/utils": "workspace:^",
-    "colorette": "^2.0.20",
-    "commander": "^15.0.0",
-    "figlet": "^1.12.0"
+    "colorette": "catalog:",
+    "commander": "catalog:",
+    "figlet": "catalog:"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
-    "@types/node": "^26.6.6",
-    "cross-env": "^10.1.0",
-    "eslint": "^10.14.0",
-    "tsx": "^4.23.15",
-    "typescript": "^6.0.3",
-    "unbuild": "^3.6.1"
+    "@types/node": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

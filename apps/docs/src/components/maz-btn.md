@@ -220,27 +220,31 @@ Choose the size of the rounded with the attribute `rounded-size` and value `none
 
 The button can be a fab button with the attribute `fab`
 
+::: tip Accessible name
+A button that only shows an icon has no text for screen readers: give it an `aria-label` describing the action (`aria-label="Light mode"`), or a `title` on the icon (`:icon="{ icon: MazSun, title: 'Light mode' }"`), which names the icon and so the button.
+:::
+
 <ComponentDemo>
   <div class="maz:flex maz:gap-5 maz:items-center">
-    <MazBtn fab icon="/sun.svg" size="mini" />
-    <MazBtn fab icon="/sun.svg" size="xs" />
-    <MazBtn fab icon="/sun.svg" size="sm" />
+    <MazBtn fab icon="/sun.svg" aria-label="Light mode" size="mini" />
+    <MazBtn fab icon="/sun.svg" aria-label="Light mode" size="xs" />
+    <MazBtn fab icon="/sun.svg" aria-label="Light mode" size="sm" />
     <MazBtn fab>
       fab
     </MazBtn>
-    <MazBtn fab icon="/sun.svg" size="lg" />
-    <MazBtn fab icon="/sun.svg" size="xl" />
+    <MazBtn fab icon="/sun.svg" aria-label="Light mode" size="lg" />
+    <MazBtn fab icon="/sun.svg" aria-label="Light mode" size="xl" />
   </div>
 
 <template #code>
 
 ```html
-<MazBtn fab icon="/sun.svg" size="mini" />
-<MazBtn fab icon="/sun.svg" size="xs" />
-<MazBtn fab icon="/sun.svg" size="sm" />
+<MazBtn fab icon="/sun.svg" aria-label="Light mode" size="mini" />
+<MazBtn fab icon="/sun.svg" aria-label="Light mode" size="xs" />
+<MazBtn fab icon="/sun.svg" aria-label="Light mode" size="sm" />
 <MazBtn fab> fab </MazBtn>
-<MazBtn fab icon="/sun.svg" size="lg" />
-<MazBtn fab icon="/sun.svg" size="xl" />
+<MazBtn fab icon="/sun.svg" aria-label="Light mode" size="lg" />
+<MazBtn fab icon="/sun.svg" aria-label="Light mode" size="xl" />
 ```
 
   </template>

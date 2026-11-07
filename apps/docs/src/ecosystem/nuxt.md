@@ -125,7 +125,7 @@ export default defineNuxtConfig({
 
     // Theming System
     theme: {
-      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | custom object
+      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | 'folio' | custom object
       strategy: 'runtime', // 'runtime' | 'buildtime'
       darkModeStrategy: 'class', // 'class' | 'media'
       darkClass: 'dark', // class on <html> when colorMode === 'dark' (default: 'dark')
@@ -525,6 +525,16 @@ You can use [`MazUiProvider`](../guide/maz-ui-provider.md) within a Nuxt app to 
 :::
 
 ## Troubleshooting
+
+### Two versions of maz-ui
+
+If the module warns `The app installs maz-ui X and @maz-ui/nuxt uses maz-ui Y`, your app and the module load two copies of `maz-ui`: the options of the module (`mazUi.general`, `mazUi.plugins`...) may not apply to the components. Install the same version of `maz-ui` and `@maz-ui/nuxt`, they are released together:
+
+```bash
+npm install maz-ui@latest @maz-ui/nuxt@latest
+```
+
+See [Keep the packages on the same version](../guide/getting-started.md#keep-the-packages-on-the-same-version).
 
 ### Theme System Issues
 

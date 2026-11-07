@@ -31,8 +31,6 @@ jobs:
 
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
-        with:
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Build Packages
         run: pnpm build:packages
@@ -40,23 +38,17 @@ jobs:
       - name: Typecheck packages
         run: pnpm typecheck:all
 
-      - name: Setup Git User
-        run: |
-          git config --global user.name "LouisMazel"
-          git config --global user.email "12446546+LouisMazel@users.noreply.github.com"
-
-      - name: Install Claude binary
-        run: npm install -g @anthropic-ai/claude-code
-
+      # The project is set up above: the action runs `relizy release --yes` and installs the claude CLI
       - name: Version Packages (Latest)
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          RELIZY_TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
-          RELIZY_TWITTER_API_KEY_SECRET: ${{ secrets.TWITTER_API_KEY_SECRET }}
-          RELIZY_TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
-          RELIZY_TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
-          RELIZY_CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.YOLO_PROVIDER_API_KEY }}
-        run: |
-          pnpm relizy release --tag latest --yes
+        id: release
+        uses: relizy/action@v2
+        with:
+          setup: false
+          args: --tag latest
+          github-token: ${{ secrets.RELEASE_TOKEN }}
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          claude-code-oauth-token: ${{ secrets.YOLO_PROVIDER_API_KEY }}
+          twitter-api-key: ${{ secrets.TWITTER_API_KEY }}
+          twitter-api-key-secret: ${{ secrets.TWITTER_API_KEY_SECRET }}
+          twitter-access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          twitter-access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}

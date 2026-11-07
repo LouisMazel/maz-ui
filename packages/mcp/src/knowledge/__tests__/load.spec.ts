@@ -82,6 +82,20 @@ describe('given the knowledge loader', () => {
     })
   })
 
+  describe('when the bundled docs are used', () => {
+    it('then their version is the maz-ui version of their manifest', () => {
+      const bundledDir = writeFakeBundle(createTempDir())
+
+      const knowledge = loadKnowledge({
+        cwd: createTempDir(),
+        bundledDir,
+      })
+
+      expect(knowledge.source.kind).toBe('bundled')
+      expect(knowledge.version).toBe('9.9.9')
+    })
+  })
+
   describe('when the bundled docs are missing', () => {
     it('then it throws a reinstall hint', () => {
       const bundledDir = createTempDir()

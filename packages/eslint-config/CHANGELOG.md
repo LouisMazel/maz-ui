@@ -1,5 +1,19 @@
 # Change Log
 
+## @maz-ui/eslint-config@5.4.0-beta.0 (2026-11-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...@maz-ui/eslint-config@5.4.0-beta.0)
+
+### 🚀 Features
+
+- **@maz-ui/eslint-config:** Stop enforcing the pnpm catalog for every dependency ([1114ae5e8](https://github.com/LouisMazel/maz-ui/commit/1114ae5e8))
+
+  In a pnpm workspace, the pnpm rules no longer include `pnpm/json-enforce-catalog`: a dependency moves to the catalog only when you decide it. Set `pnpm: { catalogs: true }` to enforce the catalog for every dependency again.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.2.0...v5.3.0)

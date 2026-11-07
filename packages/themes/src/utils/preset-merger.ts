@@ -20,6 +20,8 @@ function mergeScales(base: ThemeScales, overrides?: ThemePresetOverrides['scales
   if (!overrides)
     return base
 
+  const color = overrides.color ?? base.color
+
   return {
     rounded: {
       ...base.rounded,
@@ -29,6 +31,7 @@ function mergeScales(base: ThemeScales, overrides?: ThemePresetOverrides['scales
       ...base.shadow,
       ...overrides.shadow,
     },
+    ...(color && { color }),
   }
 }
 

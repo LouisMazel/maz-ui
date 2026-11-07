@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/upgrade",
   "type": "module",
-  "version": "5.3.0",
+  "version": "5.3.1-beta.0",
   "description": "Automated source rewrites for migrating a project from Maz-UI v4 to v5.",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -56,13 +56,13 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
-    "@types/node": "^26.6.6",
-    "@vitest/coverage-v8": "^5.1.0",
-    "cross-env": "^10.1.0",
-    "eslint": "^10.14.0",
-    "typescript": "^6.0.3",
-    "unbuild": "^3.6.1",
-    "vitest": "5.1.0"
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

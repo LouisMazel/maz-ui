@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 export interface MazAnimatedCounterProps {
@@ -45,97 +44,96 @@ const currentCount = ref(0)
 
 const elementRef = ref<HTMLElement | null>(null)
 
-function getRequestAnimationFrame() {
-  /* Polyfill for server-side rendering */
-  if (!isClient() || !globalThis.requestAnimationFrame) {
-    return (callback: FrameRequestCallback): number => {
-      setTimeout(callback, 1000 / 60)
-      return 0
-    }
-  }
+let observer: IntersectionObserver | null = null
+let timeoutId: ReturnType<typeof setTimeout> | undefined
+let frameId: number | undefined
+let hasPlayed = false
 
-  return globalThis.requestAnimationFrame.bind(globalThis)
+function cancelAnimation() {
+  clearTimeout(timeoutId)
+
+  if (frameId !== undefined) {
+    cancelAnimationFrame(frameId)
+  }
 }
 
-function animate(start: number, end: number, duration: number, delay: number) {
-  const requestAnim = getRequestAnimationFrame()
+function animate(start: number, end: number) {
+  cancelAnimation()
+
+  if (globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    currentCount.value = end
+    return
+  }
 
   currentCount.value = start
 
-  if (!isClient()) {
-    return
-  }
-
-  setTimeout(() => {
+  timeoutId = setTimeout(() => {
     const startTime = performance.now()
 
-    const updateCount = (currentTime: number = performance.now()) => {
-      const elapsed = currentTime - startTime
-      const progress = Math.min(elapsed / duration, 1)
+    const updateCount = (currentTime: number) => {
+      const progress = Math.min(Math.max(currentTime - startTime, 0) / duration, 1)
 
-      const easeOutQuad = (t: number) => t * (2 - t)
-
-      currentCount.value = Math.round(
-        start + (end - start) * easeOutQuad(progress),
-      )
+      currentCount.value = Math.round(start + (end - start) * progress * (2 - progress))
 
       if (progress < 1) {
-        requestAnim(updateCount)
+        frameId = requestAnimationFrame(updateCount)
       }
     }
 
-    requestAnim(updateCount)
+    frameId = requestAnimationFrame(updateCount)
   }, delay)
 }
 
-function startAnimation(start: number, end: number) {
-  animate(start, end, duration, delay)
-}
-
-let observer: IntersectionObserver | null = null
-
 onMounted(() => {
-  if (once)
+  if (!elementRef.value) {
     return
+  }
 
   observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) {
-      startAnimation(0, count)
+    if (!entry.isIntersecting) {
+      return
+    }
 
-      if (once) {
-        observer?.unobserve(entry.target)
-      }
+    hasPlayed = true
+    animate(0, count)
+
+    if (once) {
+      observer?.unobserve(entry.target)
     }
   })
 
-  if (elementRef.value) {
-    observer.observe(elementRef.value)
-  }
+  observer.observe(elementRef.value)
 })
 
-onBeforeUnmount(() => observer?.disconnect())
+onBeforeUnmount(() => {
+  observer?.disconnect()
+  cancelAnimation()
+})
 
 watch(
   () => count,
   (newCount, oldCount) => {
-    if (newCount === oldCount) {
-      return
+    if (hasPlayed && newCount !== oldCount) {
+      animate(oldCount, newCount)
     }
-
-    const startValue = oldCount ?? 0
-    startAnimation(startValue, newCount)
   },
-  { immediate: true },
 )
 </script>
 
 <template>
-  <span ref="elementRef" class="m-animated-counter m-reset-css maz:whitespace-nowrap maz:tabular-nums">
+  <span ref="elementRef" class="m-animated-counter m-reset-css maz:inline-grid maz:whitespace-nowrap maz:tabular-nums">
     <span class="maz:sr-only">
       <slot name="prefix">{{ prefix }}</slot>{{ count }}<slot name="suffix">{{ suffix }}</slot>
     </span>
 
-    <!-- Keep this on one line to avoid spacing issues (space between elements) -->
-    <slot name="prefix">{{ prefix }}</slot>{{ currentCount }}<slot name="suffix">{{ suffix }}</slot>
+    <!-- Keep these on one line to avoid spacing issues (space between elements) -->
+    <span class="m-animated-counter__value" aria-hidden="true"><slot name="prefix">{{ prefix }}</slot>{{ currentCount }}<slot name="suffix">{{ suffix }}</slot></span>
+    <span class="m-animated-counter__value maz:invisible" aria-hidden="true"><slot name="prefix">{{ prefix }}</slot>{{ count }}<slot name="suffix">{{ suffix }}</slot></span>
   </span>
 </template>
+
+<style scoped>
+.m-animated-counter__value {
+  grid-area: 1 / 1;
+}
+</style>

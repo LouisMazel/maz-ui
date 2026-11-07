@@ -1,23 +1,27 @@
-import type { Theme } from 'vitepress'
+import type { MazUiThemeOptions } from '@maz-ui/themes'
 
-import { mazUi } from '@maz-ui/themes/presets/mazUi'
+import type { MazUiTranslationsOptions } from '@maz-ui/translations'
+import type { MazUiOptions } from 'maz-ui/plugins'
+import type { Theme } from 'vitepress'
+import { folio } from '@maz-ui/themes/presets/folio'
+
 import en from '@maz-ui/translations/locales/en'
-import * as components from 'maz-ui/components'
 import { MazUi } from 'maz-ui/plugins'
 import { AosPlugin } from 'maz-ui/plugins/aos'
-import { DialogPlugin } from 'maz-ui/plugins/dialog'
 
+import { DialogPlugin } from 'maz-ui/plugins/dialog'
 import { ToastPlugin } from 'maz-ui/plugins/toast'
 import { WaitPlugin } from 'maz-ui/plugins/wait'
 
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import { h, watch } from 'vue'
-
+import { DOCS_COLOR_SCALE } from './color-scale'
 import ComponentDemo from './components/ComponentDemo.vue'
 import Layout from './components/Layout.vue'
 import NpmBadge from './components/NpmBadge.vue'
 import UtilsCatalogue from './components/UtilsCatalogue.vue'
+import './fonts.css'
 import './main.css'
 
 export default {
@@ -34,13 +38,18 @@ export default {
           // roundedSize: 'xl',
           // size: 'sm'
         },
-      },
+      } satisfies MazUiOptions['defaults'],
       theme: {
-        preset: mazUi,
+        preset: folio,
         darkModeStrategy: 'class',
         strategy: 'runtime',
         persistPreset: true,
-      },
+        overrides: {
+          scales: {
+            color: DOCS_COLOR_SCALE,
+          },
+        },
+      } satisfies MazUiThemeOptions,
       translations: {
         locale: 'en',
         fallbackLocale: 'fr',
@@ -48,7 +57,7 @@ export default {
         messages: {
           en,
         },
-      },
+      } satisfies MazUiTranslationsOptions,
     })
 
     app.use(DialogPlugin)
@@ -72,10 +81,6 @@ export default {
     app.component('NpmBadge', NpmBadge)
     app.component('ComponentDemo', ComponentDemo)
     app.component('UtilsCatalogue', UtilsCatalogue)
-
-    Object.entries(components).forEach(([componentName, component]) => {
-      app.component(componentName, component)
-    })
 
     watch(
       () => route.path,

@@ -15,7 +15,7 @@ Modern and performant theme system for Maz-UI built on native CSS features (`lig
 - **Native widget theming** - `color-scheme` makes scrollbars, native `<select>`, date pickers and autofill follow the active mode automatically
 - **Animated theme switch** - Optional full-page View Transitions via `setColorMode(..., { animate: true })`
 - **Anti-FART** - `<meta name="color-scheme">` injected at boot to prevent any Flash of inAccurate coloR Theme (no setup needed)
-- **Automatic color scales** - `--maz-X-50` through `--maz-X-950` derived via OKLCh relative color syntax — perceptually uniform and chroma-preserving
+- **Automatic color scales** - the `-50` to `-950` steps are derived via OKLCh relative color syntax, with an opt-in [`perceptual` mode](#color-scales) that keeps their order and hue with any base color
 - **Performance Strategies** - Runtime injection or build-time generation according to your needs
 - **Strict TypeScript** - Complete types for perfect DX
 - **Zero FOUC** - Pass the preset object up front; the full CSS is injected synchronously on first paint
@@ -41,7 +41,7 @@ const app = createApp(App)
 
 app.use(MazUi, {
   theme: {
-    preset: mazUi, // pristine | ocean | obsidian | nova
+    preset: mazUi, // pristine | ocean | obsidian | nova | folio
     strategy: 'runtime', // 'runtime' | 'buildtime'
     darkModeStrategy: 'class', // 'class' | 'media' (only if mode is `both`)
     mode: 'both', // 'light' | 'dark' | 'both' (supported color modes)
@@ -370,6 +370,18 @@ A modern startup / AI / creative preset — electric violet primary, hot coral s
 import { nova } from '@maz-ui/themes/presets'
 ```
 
+### Folio
+
+An electric and modern preset made for long reading, and the one of this documentation: an electric blue primary, an electric magenta secondary and a cyan accent that blend into a plasma gradient, on faintly violet surfaces (almost white in light mode, violet-black in dark mode). Fraunces (serif) for the headings, Inter for the text, Geist Mono for the code, soft 0.625rem `md` radius. In dark mode the color roles turn into bright tones carrying dark text, so they stay readable as text on the surface too. Every text pair reaches WCAG AA.
+
+```typescript
+import { folio } from '@maz-ui/themes/presets'
+```
+
+::: tip Fonts
+Like the other presets, Folio only declares font stacks: load Fraunces, Inter and Geist Mono yourself (self-hosted or from a font service), the stacks fall back to system fonts otherwise.
+:::
+
 ## Rendering Strategies
 
 ### ⚡ Runtime (Recommended)
@@ -563,6 +575,34 @@ const codeTheme = definePreset({
   },
 })
 ```
+
+### Color scales
+
+The steps `-50` to `-950` of the brand colors (`primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`) are derived from the base color, which is the `500` step. `scales.color` picks the derivation:
+
+- `relative` (default): a fixed lightness offset per step. With a very dark or very light base, the scale collapses: half of a navy scale is black, half of a gold scale is white.
+- `perceptual`: each step travels a share of the way between the base and a light or a dark bound, with a chroma capped near white and black. The steps keep their order and their hue whatever the base, and the classes do not change (`bg-accent-300`, `text-primary-700`...).
+
+```typescript
+const brandTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    colors: {
+      light: { secondary: '#0E1450', accent: '#FFC93C' },
+    },
+    scales: {
+      color: 'perceptual',
+    },
+  },
+})
+```
+
+<ColorScaleComparison />
+
+- The scales stay dynamic: they follow `updateTheme()` and the light and dark values of the base. A step is relative to the base of each mode: `accent-300` gives two colors in light and dark when the two bases differ.
+- `surface`, `foreground`, `contrast` and `divider` keep the relative scale: the components use it as "one notch darker or lighter" (`bg-surface-600`).
+- The steps are redefined for the maz-ui components (`--maz-color-<role>-<step>`) and for the Tailwind classes of your project (`--color-<role>-<step>`). They take precedence over a step you redefine in your own `@theme`.
+- The browsers clip an out-of-gamut color channel by channel, which can shift its hue: the chroma cap keeps this shift under the visible threshold for almost every color, the most saturated blues and yellows excepted.
 
 ### Per-component overrides
 
@@ -966,6 +1006,7 @@ Multi-step scales under `scales.<key>`.
 | --- | --- | --- |
 | `rounded.xs..3xl` | `--maz-rounded-xs..3xl` | `rounded-{key}` (bridged to `--radius-{key}`) |
 | `shadow.{sm, md, lg, xl, elevation}` | `--maz-shadow-style-{key}` | `shadow-{key}` (bridged to `--shadow-{key}`) |
+| `color` (`'relative'` \| `'perceptual'`) | `--maz-color-<role>-50..950`, `--color-<role>-50..950` | `bg-primary-300`... (see [Color scales](#color-scales)) |
 
 > Same naming-collision avoidance as foundation: `rounded.*` (instead of `radius.*`) and `shadow-style-*` (instead of plain `shadow-*`) keep the bridge cycle-free under `prefix(maz)`.
 
@@ -1067,6 +1108,7 @@ app.use(MazUiTheme, { preset: myTheme })
 The new system offers much more flexibility and performance!
 
 <script setup>
+import ColorScaleComparison from '../../components/ColorScaleComparison.vue'
 import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import { definePreset } from '@maz-ui/themes'
 import { ref } from 'vue'

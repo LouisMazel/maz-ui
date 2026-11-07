@@ -137,6 +137,12 @@ import { obsidian } from '@maz-ui/themes/presets/obsidian'
 import { nova } from '@maz-ui/themes/presets/nova'
 ```
 
+### Folio
+
+```typescript
+import { folio } from '@maz-ui/themes/presets/folio'
+```
+
 ## Creating custom presets
 
 ```typescript

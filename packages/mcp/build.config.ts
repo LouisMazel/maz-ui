@@ -16,13 +16,6 @@ export default defineBuildConfig({
     },
   },
   hooks: {
-    'build:before': (ctx) => {
-      // Optional peers so that releasing them releases this package, but bundled like every other dependency
-      const bundledPeers = ['@maz-ui/node', '@maz-ui/utils']
-
-      ctx.options.peerDependencies = ctx.options.peerDependencies.filter(name => !bundledPeers.includes(name))
-      ctx.options.externals = ctx.options.externals.filter(external => typeof external !== 'string' || !bundledPeers.includes(external))
-    },
     'rollup:dts:options': (_ctx, options) => {
       // esbuild would strip the `export type` of the inlined `.d.ts` files: rollup-plugin-dts reads them as they are
       options.plugins = [options.plugins].flat().filter(plugin => !(plugin && 'name' in plugin && plugin.name === 'esbuild'))

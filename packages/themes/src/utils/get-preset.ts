@@ -34,5 +34,10 @@ export async function getPreset(preset?: ThemePresetName | ThemePreset) {
     return nova
   }
 
+  if (preset === 'folio') {
+    const { folio } = await import('../presets/folio')
+    return folio
+  }
+
   throw new TypeError(`[@maz-ui/themes] Preset ${preset} not found`)
 }

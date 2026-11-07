@@ -241,6 +241,52 @@ describe('MazIcon', () => {
       await nextTick()
       expect(wrapper.html()).toContain('&lt;bad&gt; &amp; "co"')
     })
+
+    describe('given a title on a raw SVG', () => {
+      describe('when the icon is rendered', () => {
+        it('then the icon is exposed as an image named by the title', async () => {
+          const wrapper = mount(MazIcon, {
+            props: { icon: RAW_SVG, title: 'Toggle dark mode' },
+          })
+          await nextTick()
+
+          expect(wrapper.attributes('role')).toBe('img')
+          expect(wrapper.attributes('aria-label')).toBe('Toggle dark mode')
+          expect(wrapper.attributes('aria-hidden')).toBeUndefined()
+        })
+      })
+    })
+
+    describe('given a title on a component icon', () => {
+      describe('when the icon is rendered', () => {
+        it('then the component is exposed as an image named by the title', async () => {
+          const wrapper = mount(MazIcon, {
+            props: { icon: ComponentIcon, title: 'Delete' },
+          })
+          await nextTick()
+
+          const svg = wrapper.find('[data-testid="component-icon"]')
+
+          expect(svg.attributes('role')).toBe('img')
+          expect(svg.attributes('aria-label')).toBe('Delete')
+          expect(svg.attributes('aria-hidden')).toBeUndefined()
+        })
+      })
+    })
+
+    describe('given a title and an aria-label', () => {
+      describe('when the icon is rendered', () => {
+        it('then the aria-label is kept', async () => {
+          const wrapper = mount(MazIcon, {
+            props: { icon: ComponentIcon, title: 'Delete' },
+            attrs: { 'aria-label': 'Remove the row' },
+          })
+          await nextTick()
+
+          expect(wrapper.find('[data-testid="component-icon"]').attributes('aria-label')).toBe('Remove the row')
+        })
+      })
+    })
   })
 
   describe('svgAttributes prop', () => {

@@ -32,7 +32,6 @@
     "dist"
   ],
   "scripts": {
-    "commit": "cz",
     "lint": "cross-env NODE_ENV=production eslint src",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit --skipLibCheck",
@@ -42,22 +41,22 @@
     "start": "node --es-module-specifier-resolution=node dist/cli.mjs"
   },
   "dependencies": {
-    "@clack/prompts": "^1.8.1",
+    "@clack/prompts": "catalog:",
     "@maz-ui/node": "workspace:^",
-    "colorette": "^2.0.20",
-    "commander": "^15.0.0",
+    "colorette": "catalog:",
+    "commander": "catalog:",
     "cosmiconfig": "^10.0.1",
-    "figlet": "^1.12.0",
+    "figlet": "catalog:",
     "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
-    "@types/node": "^26.6.6",
+    "@types/node": "catalog:",
     "@types/tinycolor2": "^1.4.6",
-    "cross-env": "^10.1.0",
-    "eslint": "^10.14.0",
-    "typescript": "^6.0.3",
-    "unbuild": "^3.6.1"
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
