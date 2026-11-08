@@ -61,7 +61,7 @@ setupAgents({
   dryRun: false,
   // Remove everything setupAgents added
   remove: false,
-  // Folder of the maz-ui agent docs, default: node_modules/maz-ui/docs
+  // Folder of the maz-ui agent docs, default: node_modules/maz-ui/agent-docs
   docsDir: undefined,
   // Version pinned in the npx command when the project does not install @maz-ui/mcp, default: latest
   mcpVersion: '5.1.0',
