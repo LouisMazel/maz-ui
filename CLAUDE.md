@@ -107,11 +107,12 @@ Within individual packages (e.g., `packages/maz-ui/`):
 ### Agent knowledge bundle (`tools/agent-docs`)
 
 - Single source of the docs for AI agents: it reads `apps/docs/src`, the component sources (vue-component-meta + vue-docgen-api), the Tailwind CSS of the lib and the icon list, and writes:
-  - `packages/maz-ui/docs/` (shipped in `maz-ui`, read by agents in `node_modules/maz-ui/docs`) and `packages/mcp/docs/`, both at build time and gitignored
-  - `apps/docs/.vitepress/generated-docs/*.doc.md` (API tables of the component pages) and `llms.txt` / `llms-full.txt` / one `.md` per page on maz-ui.com
+  - `packages/<dir>/agent-docs/` per published package (its fragment: the docs whose `DocEntry.package` is it, built with the package, gitignored) and `packages/mcp/agent-docs/` (every fragment in `<short>/` + `index.json`)
+  - `apps/docs/.vitepress/generated-docs/*.doc.md` (API tables of the component pages) and `llms.txt` / `llms-full.txt` / one flat `.md` per page on maz-ui.com
   - `plugins/claude-code/skills/maz-ui/SKILL.md` (committed: run `pnpm -F agent-docs generate:plugin` after changing `tools/agent-docs/content`, a test fails otherwise)
+- A new published package needs an entry in `tools/agent-docs/src/packages.ts` and a `generate:agent-docs` script in its `build`.
 - The agent rules live in `tools/agent-docs/content/rules.md` (also included in `apps/docs/src/guide/ai-agents.md`).
-- The generator warns about broken internal links and unknown alias ids: keep `pnpm -F agent-docs generate --out /tmp/x --strict` clean.
+- The generator warns about broken internal links and unknown alias ids: keep `pnpm -F agent-docs generate --bundle /tmp/x --strict` clean.
 - Docs examples (code fences) must use plain Tailwind classes, never the internal `maz:` prefix (only live demos rendered by the docs site use it).
 
 ### Branch Strategy

@@ -29,6 +29,7 @@
       ],
       "outputs": [
         "{projectRoot}/dist",
+        "{projectRoot}/agent-docs",
         "{projectRoot}/lib",
         "{projectRoot}/types"
       ]
