@@ -27,6 +27,7 @@ import {
   readAgentDocs,
   readManagedVersion,
   readWorkspacePatterns,
+  resolveAgentDocsDir,
   resolveRulePaths,
   setupAgents,
   writeFileAtomic,
@@ -202,6 +203,18 @@ describe('given readAgentDocs', () => {
         version: '5.2.0',
         exports: { './package.json': './package.json' },
       }))
+      createDocs(join(rootDir, 'node_modules/maz-ui/agent-docs'), { version: '5.2.0' })
+
+      const docs = readAgentDocs(rootDir)
+
+      expect(docs.version).toBe('5.2.0')
+      expect(docs.directory).toContain(join('node_modules', 'maz-ui', 'agent-docs'))
+    })
+  })
+
+  describe('when the installed maz-ui only ships the legacy docs folder', () => {
+    it('then it reads the docs folder', () => {
+      writeProjectFile('node_modules/maz-ui/package.json', JSON.stringify({ name: 'maz-ui', version: '5.2.0' }))
       createDocs(join(rootDir, 'node_modules/maz-ui/docs'), { version: '5.2.0' })
 
       const docs = readAgentDocs(rootDir)
@@ -216,7 +229,7 @@ describe('given readAgentDocs', () => {
       const appDir = join(rootDir, 'apps/web')
       mkdirSync(appDir, { recursive: true })
       writeProjectFile('node_modules/maz-ui/package.json', JSON.stringify({ name: 'maz-ui', version: '5.3.0' }))
-      createDocs(join(rootDir, 'node_modules/maz-ui/docs'), { version: '5.3.0' })
+      createDocs(join(rootDir, 'node_modules/maz-ui/agent-docs'), { version: '5.3.0' })
 
       expect(readAgentDocs(appDir).version).toBe('5.3.0')
     })
@@ -233,6 +246,12 @@ describe('given readAgentDocs', () => {
       writeProjectFile('node_modules/maz-ui/package.json', JSON.stringify({ name: 'maz-ui', version: '5.0.0' }))
 
       expect(() => readAgentDocs(rootDir)).toThrow('upgrade maz-ui to the latest version')
+    })
+
+    it('then the error mentions the docs folder of older versions', () => {
+      writeProjectFile('node_modules/maz-ui/package.json', JSON.stringify({ name: 'maz-ui', version: '5.0.0' }))
+
+      expect(() => readAgentDocs(rootDir)).toThrow('older versions ship them in a docs folder')
     })
   })
 
@@ -279,7 +298,7 @@ describe('given setupAgents with the claude target', () => {
 
       expect(rule).toContain(MANAGED_MARKER)
       expect(rule).toContain('5.1.0')
-      expect(rule).toContain('# maz-ui\n\n> These rules and the docs in `node_modules/maz-ui/docs` match the installed maz-ui')
+      expect(rule).toContain('# maz-ui\n\n> These rules and the docs in `node_modules/maz-ui/agent-docs` match the installed maz-ui')
       expect(rule).toContain('Use maz-ui components.')
       expect(changeOf(result, '.claude/rules/maz-ui.md')).toEqual({ file: '.claude/rules/maz-ui.md', action: 'create' })
     })
@@ -1006,9 +1025,36 @@ describe('given readAgentDocs in a monorepo', () => {
       const packageDir = join(rootDir, 'apps/web/node_modules/maz-ui')
 
       writeProjectFile('apps/web/node_modules/maz-ui/package.json', '{ "version": "5.2.0" }')
-      createDocs(join(packageDir, 'docs'), { version: '5.1.0' })
+      createDocs(join(packageDir, 'agent-docs'), { version: '5.1.0' })
 
       expect(readAgentDocs(rootDir).version).toBe('5.2.0')
+    })
+  })
+})
+
+describe('given resolveAgentDocsDir', () => {
+  describe('when the package ships agent-docs', () => {
+    it('then it returns agent-docs even if a docs folder exists', () => {
+      createDocs(join(rootDir, 'pkg/agent-docs'))
+      createDocs(join(rootDir, 'pkg/docs'))
+
+      expect(resolveAgentDocsDir(join(rootDir, 'pkg'))).toBe(join(rootDir, 'pkg/agent-docs'))
+    })
+  })
+
+  describe('when the package only ships the legacy docs folder', () => {
+    it('then it returns the docs folder', () => {
+      createDocs(join(rootDir, 'pkg/docs'))
+
+      expect(resolveAgentDocsDir(join(rootDir, 'pkg'))).toBe(join(rootDir, 'pkg/docs'))
+    })
+  })
+
+  describe('when a folder has no manifest', () => {
+    it('then it returns undefined', () => {
+      mkdirSync(join(rootDir, 'pkg/agent-docs'), { recursive: true })
+
+      expect(resolveAgentDocsDir(join(rootDir, 'pkg'))).toBeUndefined()
     })
   })
 })
@@ -2166,7 +2212,7 @@ describe('given setupAgents with the rules of maz-ui passed with agentDocs', () 
         },
       })
 
-      expect(readProjectFile('.claude/rules/maz-ui.md')).toContain('# maz-ui\n\n> These rules and the docs in `node_modules/maz-ui/docs` match the installed maz-ui.\n\nGiven rules.')
+      expect(readProjectFile('.claude/rules/maz-ui.md')).toContain('# maz-ui\n\n> These rules and the docs in `node_modules/maz-ui/agent-docs` match the installed maz-ui.\n\nGiven rules.')
       expect(result.version).toBe('5.4.0')
     })
   })
