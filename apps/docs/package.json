@@ -75,6 +75,7 @@
           "{workspaceRoot}/apps/docs/.vitepress/mixins/**/*",
           "{workspaceRoot}/tools/agent-docs/src/**/*",
           "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/plugins/claude-code/skills/**/*",
           "{workspaceRoot}/packages/maz-ui/src/**/*",
           "{workspaceRoot}/packages/icons/src/icon-list.ts",
           "{workspaceRoot}/packages/nuxt/src/module.ts",
