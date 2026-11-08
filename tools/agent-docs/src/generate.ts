@@ -1,21 +1,23 @@
 import type { CleanMarkdownContext } from './markdown/clean'
+import type { PackageDefinition } from './packages'
 import type { SourcePaths } from './paths'
 import type { NuxtAutoImports } from './sources/nuxt'
 import type { SourcePage } from './sources/pages'
-import type { AgentDocsManifest, ComponentApi, DocEntry, OutputFile, TailwindManifest } from './types'
+import type { AgentDocsFragment, ComponentApi, DocEntry, OutputFile, TailwindManifest } from './types'
 
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join, posix, resolve } from 'node:path'
 import { COMPONENT_DESCRIPTIONS, DOC_ALIASES, ECOSYSTEM_SYMBOLS, RELATED_DOCS } from './aliases'
 import { cleanMarkdown, extractHeadings, normalizeDashes, stripLeadingTitle } from './markdown/clean'
 import { stringifyFrontmatter } from './markdown/frontmatter'
+import { findPackageDefinition, PACKAGE_DEFINITIONS } from './packages'
 import { getSourcePaths } from './paths'
 import { loadAgentContent, renderAgentsMdSection, renderClaudeRule, renderRulesDoc, renderSkill } from './render/agents'
 import { renderComponentApi } from './render/api'
-import { CATEGORY_ORDER, renderBundleIndex, renderLlmsFullTxt, renderLlmsTxt } from './render/index'
+import { CATEGORY_ORDER, renderBundleIndex, renderFragmentIndex, renderLlmsFullTxt, renderLlmsTxt } from './render/index'
 import { renderIconsReference, renderTailwindReference } from './render/references'
 import { renderVitepressApis } from './render/vitepress'
-import { collectComponentApis } from './sources/components'
+import { listComponentFiles } from './sources/component-files'
 import { collectIconNames, groupIcons } from './sources/icons'
 import { collectNuxtAutoImports } from './sources/nuxt'
 import { collectSourcePages, sourcePathToId } from './sources/pages'
@@ -26,13 +28,21 @@ import { kebabToPascal, pascalToKebab, splitWords, unique } from './utils/string
 
 export const HOMEPAGE = 'https://maz-ui.com'
 
-const REFERENCE_IDS = ['reference/tailwind-tokens', 'reference/icons']
+const REFERENCE_IDS = [
+  { id: 'reference/tailwind-tokens', package: 'maz-ui' },
+  { id: 'reference/icons', package: '@maz-ui/icons' },
+]
+
+export interface GeneratedFragment {
+  fragment: AgentDocsFragment
+  /** Files of the `agent-docs` folder of the package: markdown pages, `README.md`, `manifest.json` (+ rules and agent files for maz-ui) */
+  files: OutputFile[]
+}
 
 export interface GeneratedKnowledge {
-  manifest: AgentDocsManifest
-  /** Bundle files: markdown pages, references, rules, agent files and `manifest.json` */
-  bundle: OutputFile[]
-  /** Extra files published on maz-ui.com (`llms.txt`, `llms-full.txt`) */
+  /** One fragment per requested package */
+  fragments: GeneratedFragment[]
+  /** Flat files published on maz-ui.com: every page, `README.md`, rules, agent files, `llms.txt`, `llms-full.txt` */
   site: OutputFile[]
   /** Claude Code plugin skill */
   skill: OutputFile[]
@@ -41,13 +51,22 @@ export interface GeneratedKnowledge {
   warnings: string[]
 }
 
+export interface GenerateOptions {
+  /** Packages whose fragment is built, default: every published package */
+  packages?: string[]
+  /** Build the files of maz-ui.com (needs every page), default: true */
+  site?: boolean
+  /** Build the API tables of the component pages, default: true */
+  vitepress?: boolean
+}
+
 interface PageDraft {
   entry: DocEntry
   content: string
 }
 
-function readVersion(paths: SourcePaths): string {
-  return (JSON.parse(readFileSync(join(paths.libRoot, 'package.json'), 'utf8')) as { version: string }).version
+function readVersion(paths: SourcePaths, definition: PackageDefinition): string {
+  return (JSON.parse(readFileSync(join(paths.root, 'packages', definition.dir, 'package.json'), 'utf8')) as { version: string }).version
 }
 
 function relativeLink(fromFile: string, toFile: string, anchor: string): string {
@@ -156,27 +175,32 @@ function relatedMap(): Map<string, Set<string>> {
 
 interface GenerationContext {
   paths: SourcePaths
-  version: string
   warnings: string[]
+  /** Empty when no output needs the component APIs */
   components: ComponentApi[]
   componentsByKebab: Map<string, ComponentApi>
   pages: SourcePage[]
   autoImports: NuxtAutoImports
   knownIds: Set<string>
+  /** Doc id to the package that owns the doc */
+  ownerOf: Map<string, string>
   titles: Map<string, string>
   /** Sub-component name to parent component name, filled while reading the pages */
   parentOf: Map<string, string>
   fileOf: (id: string) => string
 }
 
-async function createGenerationContext(paths: SourcePaths): Promise<GenerationContext> {
-  const components = await collectComponentApis(paths.libComponents, join(paths.libRoot, 'tsconfig.json'))
+async function createGenerationContext(paths: SourcePaths, withComponents: boolean): Promise<GenerationContext> {
+  const componentNames = listComponentFiles(paths.libComponents).map(file => file.replace(/\.vue$/, ''))
+  const components = withComponents
+    ? await (await import('./sources/components')).collectComponentApis(paths.libComponents, join(paths.libRoot, 'tsconfig.json'))
+    : []
   const pages = collectSourcePages(paths.docsSrc)
   const indexPages = new Set(pages.filter(page => page.sourcePath.endsWith('/index.md')).map(page => page.id))
+  const componentIds = componentNames.map(name => `components/${pascalToKebab(name)}`)
 
   return {
     paths,
-    version: readVersion(paths),
     warnings: [],
     components,
     componentsByKebab: new Map(components.map(api => [
@@ -187,12 +211,17 @@ async function createGenerationContext(paths: SourcePaths): Promise<GenerationCo
     autoImports: collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts')),
     knownIds: new Set([
       ...pages.map(page => page.id),
-      ...components.map(api => api.docId),
-      ...REFERENCE_IDS,
+      ...componentIds,
+      ...REFERENCE_IDS.map(reference => reference.id),
+    ]),
+    ownerOf: new Map([
+      ...pages.map(page => [page.id, page.package] as [string, string]),
+      ...componentIds.map(id => [id, 'maz-ui'] as [string, string]),
+      ...REFERENCE_IDS.map(reference => [reference.id, reference.package] as [string, string]),
     ]),
     titles: new Map([
       ...pages.map(page => [page.id, page.frontmatter.title ?? kebabToPascal(page.slug)] as [string, string]),
-      ...components.map(api => [api.docId, api.name] as [string, string]),
+      ...componentNames.map((name, index) => [componentIds[index], name] as [string, string]),
     ]),
     parentOf: new Map(),
     fileOf: id => (indexPages.has(id)
@@ -244,8 +273,11 @@ function createCleanContext(context: GenerationContext, page: SourcePage, title:
 
       const target = resolveHrefToId(sitePath, page.sourcePath, context.knownIds)
 
-      if (target)
-        return relativeLink(file, context.fileOf(target.id), target.anchor)
+      if (target) {
+        return context.ownerOf.get(target.id) === page.package
+          ? relativeLink(file, context.fileOf(target.id), target.anchor)
+          : `${HOMEPAGE}/${context.fileOf(target.id)}${target.anchor}`
+      }
 
       if (sitePath !== href && /\.(?:txt|json|xml)$/.test(sitePath))
         return href
@@ -368,16 +400,24 @@ function referenceEntry(id: string, title: string, description: string, packageN
   }
 }
 
-function referenceDrafts(tailwind: TailwindManifest, iconNames: string[]): PageDraft[] {
+function referenceDrafts(tailwind: TailwindManifest | undefined, iconNames: string[] | undefined): PageDraft[] {
   return [
-    {
-      entry: referenceEntry('reference/tailwind-tokens', 'Tailwind CSS theme reference', 'Every Tailwind class, variant and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints, typography, z-index, custom utilities.', 'maz-ui'),
-      content: renderTailwindReference(tailwind),
-    },
-    {
-      entry: referenceEntry('reference/icons', 'Icons reference', `The ${iconNames.length} icon names of @maz-ui/icons (interface icons, logos, country flags) and how to import them.`, '@maz-ui/icons', [`import { MazTrash } from '@maz-ui/icons/static/MazTrash'`]),
-      content: renderIconsReference(groupIcons(iconNames), iconNames.length),
-    },
+    ...(tailwind
+      ? [
+          {
+            entry: referenceEntry('reference/tailwind-tokens', 'Tailwind CSS theme reference', 'Every Tailwind class, variant and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints, typography, z-index, custom utilities.', 'maz-ui'),
+            content: renderTailwindReference(tailwind),
+          },
+        ]
+      : []),
+    ...(iconNames
+      ? [
+          {
+            entry: referenceEntry('reference/icons', 'Icons reference', `The ${iconNames.length} icon names of @maz-ui/icons (interface icons, logos, country flags) and how to import them.`, '@maz-ui/icons', [`import { MazTrash } from '@maz-ui/icons/static/MazTrash'`]),
+            content: renderIconsReference(groupIcons(iconNames), iconNames.length),
+          },
+        ]
+      : []),
   ]
 }
 
@@ -450,6 +490,11 @@ function validate(context: GenerationContext, drafts: PageDraft[]): void {
       context.warnings.push(...descriptionProblems(entry))
   }
 
+  for (const definition of PACKAGE_DEFINITIONS) {
+    if (!context.knownIds.has(definition.mainDocId))
+      context.warnings.push(`${definition.name}: the main doc "${definition.mainDocId}" does not exist`)
+  }
+
   for (const id of [
     ...Object.keys(DOC_ALIASES),
     ...Object.keys(ECOSYSTEM_SYMBOLS),
@@ -460,13 +505,34 @@ function validate(context: GenerationContext, drafts: PageDraft[]): void {
   }
 }
 
-export async function generateKnowledge(paths: SourcePaths = getSourcePaths()): Promise<GeneratedKnowledge> {
-  const context = await createGenerationContext(paths)
-  const { version, components } = context
-  const tailwind = collectTailwindTokens(paths.libTailwind, paths.libCss)
-  const iconNames = collectIconNames(paths.iconList)
+function resolveDefinitions(names: string[] | undefined): PackageDefinition[] {
+  return (names ?? PACKAGE_DEFINITIONS.map(definition => definition.name)).map((name) => {
+    const definition = findPackageDefinition(name)
+
+    if (!definition)
+      throw new Error(`Unknown package "${name}", expected one of: ${PACKAGE_DEFINITIONS.map(item => item.name).join(', ')}`)
+
+    return definition
+  })
+}
+
+export async function generateKnowledge(paths: SourcePaths = getSourcePaths(), options: GenerateOptions = {}): Promise<GeneratedKnowledge> {
+  const requested = resolveDefinitions(options.packages)
+  const withSite = options.site ?? true
+  const withVitepress = options.vitepress ?? true
+  const built = new Set((withSite
+    ? PACKAGE_DEFINITIONS
+    : requested).map(definition => definition.name))
+  const context = await createGenerationContext(paths, built.has('maz-ui') || withVitepress)
+  const { components } = context
+  const tailwind = built.has('maz-ui')
+    ? collectTailwindTokens(paths.libTailwind, paths.libCss)
+    : undefined
+  const iconNames = built.has('@maz-ui/icons')
+    ? collectIconNames(paths.iconList)
+    : undefined
   const agentContent = loadAgentContent(paths.content)
-  const pageDrafts = context.pages.map(page => pageDraft(context, page))
+  const pageDrafts = context.pages.filter(page => built.has(page.package)).map(page => pageDraft(context, page))
 
   for (const api of components) {
     const parent = context.parentOf.get(api.name)
@@ -475,9 +541,11 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths()): 
       api.parent = parent
   }
 
-  const componentDrafts = components
-    .filter(api => !pageDrafts.some(draft => draft.entry.id === api.docId))
-    .map(api => componentOnlyDraft(context, api))
+  const componentDrafts = built.has('maz-ui')
+    ? components
+        .filter(api => !pageDrafts.some(draft => draft.entry.id === api.docId))
+        .map(api => componentOnlyDraft(context, api))
+    : []
   const all = finalizeDrafts(context, [
     ...pageDrafts,
     ...componentDrafts,
@@ -486,58 +554,101 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths()): 
 
   validate(context, all)
 
-  const docs = all.map(item => item.entry)
-  const manifest: AgentDocsManifest = {
-    schemaVersion: AGENT_DOCS_SCHEMA_VERSION,
-    name: 'maz-ui',
-    version,
-    homepage: HOMEPAGE,
-    packages: docs
-      .filter(doc => doc.category === 'ecosystem' && !doc.id.includes('/icons/'))
-      .map(doc => ({ name: doc.package, description: doc.description, docId: doc.id })),
-    docs,
-    components,
-    icons: { package: '@maz-ui/icons', names: iconNames },
-    tailwind,
+  for (const { entry } of all) {
+    if (!findPackageDefinition(entry.package))
+      throw new Error(`${entry.id}: the package "${entry.package}" has no definition in packages.ts`)
   }
+
+  const docs = all.map(item => item.entry)
+  const pageFiles = (items: PageDraft[]): OutputFile[] => items.map(item => ({ path: item.entry.file, content: item.content }))
   const rulesDoc = renderRulesDoc(agentContent)
+  const agentFiles: OutputFile[] = [
+    { path: 'rules.md', content: rulesDoc },
+    {
+      path: 'agents/claude-rule.md',
+      content: renderClaudeRule(agentContent),
+    },
+    {
+      path: 'agents/agents-md.md',
+      content: renderAgentsMdSection(agentContent),
+    },
+  ]
+
+  const fragments = requested.map((definition): GeneratedFragment => {
+    const drafts = all.filter(item => item.entry.package === definition.name)
+    const fragmentDocs = drafts.map(item => item.entry)
+    const isLibrary = definition.name === 'maz-ui'
+    const fragment: AgentDocsFragment = {
+      schemaVersion: AGENT_DOCS_SCHEMA_VERSION,
+      package: definition.name,
+      version: readVersion(paths, definition),
+      description: definition.description,
+      homepage: `${HOMEPAGE}/${definition.mainDocId}`,
+      group: definition.group,
+      docs: fragmentDocs,
+      components: isLibrary
+        ? components
+        : [],
+      ...(isLibrary && tailwind
+        ? { tailwind }
+        : {}),
+      ...(iconNames && definition.name === '@maz-ui/icons'
+        ? {
+            icons: { names: iconNames },
+          }
+        : {}),
+    }
+
+    return {
+      fragment,
+      files: [
+        ...pageFiles(drafts),
+        {
+          path: 'README.md',
+          content: renderFragmentIndex({
+            definition,
+            docs: fragmentDocs,
+            packages: PACKAGE_DEFINITIONS,
+            homepage: HOMEPAGE,
+          }),
+        },
+        ...(isLibrary
+          ? agentFiles
+          : []),
+        { path: 'manifest.json', content: `${JSON.stringify(fragment)}\n` },
+      ],
+    }
+  })
 
   return {
-    manifest,
-    bundle: [
-      ...all.map(item => ({ path: item.entry.file, content: item.content })),
-      {
-        path: 'README.md',
-        content: renderBundleIndex(docs),
-      },
-      { path: 'rules.md', content: rulesDoc },
-      {
-        path: 'agents/claude-rule.md',
-        content: renderClaudeRule(agentContent),
-      },
-      {
-        path: 'agents/agents-md.md',
-        content: renderAgentsMdSection(agentContent),
-      },
-      { path: 'manifest.json', content: `${JSON.stringify(manifest)}\n` },
-    ],
-    site: [
-      {
-        path: 'llms.txt',
-        content: renderLlmsTxt(docs, HOMEPAGE),
-      },
-      {
-        path: 'llms-full.txt',
-        content: renderLlmsFullTxt(all.map(item => ({ doc: item.entry, content: item.content })), rulesDoc, HOMEPAGE),
-      },
-    ],
+    fragments,
+    site: withSite
+      ? [
+          ...pageFiles(all),
+          {
+            path: 'README.md',
+            content: renderBundleIndex(docs),
+          },
+          ...agentFiles,
+          {
+            path: 'llms.txt',
+            content: renderLlmsTxt(docs, HOMEPAGE),
+          },
+          {
+            path: 'llms-full.txt',
+            content: renderLlmsFullTxt(all.map(item => ({ doc: item.entry, content: item.content })), rulesDoc, HOMEPAGE),
+          },
+        ]
+      : [],
     skill: [
       {
         path: 'skills/maz-ui/SKILL.md',
         content: renderSkill(agentContent),
       },
     ],
-    vitepress: renderVitepressApis(components),
+    vitepress: withVitepress
+      ? renderVitepressApis(components)
+      : [],
     warnings: context.warnings,
   }
 }

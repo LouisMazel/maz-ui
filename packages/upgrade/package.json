@@ -35,13 +35,15 @@
   "files": [
     "LICENSE",
     "README.md",
+    "agent-docs",
     "dist"
   ],
   "engines": {
     "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
   },
   "scripts": {
-    "build": "unbuild",
+    "build": "unbuild && pnpm generate:agent-docs",
+    "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/upgrade",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "test:unit": "vitest run",
@@ -66,5 +68,22 @@
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "inputs": [
+          "production",
+          "^production",
+          "{workspaceRoot}/tools/agent-docs/src/**/*",
+          "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/apps/docs/src/**/*"
+        ],
+        "outputs": [
+          "{projectRoot}/dist",
+          "{projectRoot}/agent-docs"
+        ]
+      }
+    }
   }
 }

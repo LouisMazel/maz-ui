@@ -48,7 +48,6 @@ export default defineConfig({
           'packages/icons',
           'packages/maz-ui',
           'packages/mcp',
-          'packages/node',
           'packages/nuxt',
           'packages/themes',
           'packages/translations',
@@ -62,6 +61,7 @@ export default defineConfig({
         versionMode: 'independent',
         packages: [
           'packages/eslint-config',
+          'packages/node',
           'packages/stylelint-config',
           'packages/upgrade',
         ],

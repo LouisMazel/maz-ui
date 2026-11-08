@@ -7,4 +7,4 @@
 5. **Write the code** with deep imports, or rely on the auto-imports of `@maz-ui/nuxt`.
 6. **Review**: `review_code({ paths: ["src/components/MyForm.vue"] })` and fix every finding (unknown props, invalid values, native elements, default palette colors, `maz:` prefix, duplicated helpers).
 
-Without the MCP server, read `node_modules/maz-ui/docs/README.md` (index of the docs of the installed version), then the relevant pages, `reference/tailwind-tokens.md` and `reference/icons.md`.
+Without the MCP server, read `node_modules/maz-ui/agent-docs/README.md` (index of the docs of the installed version, and of the other packages of the ecosystem), then the relevant pages, `reference/tailwind-tokens.md` and `node_modules/@maz-ui/icons/agent-docs/reference/icons.md`.

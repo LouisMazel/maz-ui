@@ -38,6 +38,7 @@ const ECOSYSTEM_PACKAGES: Record<string, string> = {
   'ecosystem/mcp': '@maz-ui/mcp',
   'ecosystem/eslint-config': '@maz-ui/eslint-config',
   'ecosystem/stylelint-config': '@maz-ui/stylelint-config',
+  'ecosystem/upgrade': '@maz-ui/upgrade',
 }
 
 function walk(directory: string): string[] {

@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { resolveDoc } from '../knowledge/resolve'
 import { findSection, linksToDocIds, listSections, outline, sectionContent, stripFrontmatter } from './markdown'
 import { formatDocLine } from './search-docs'
+import { sourceNote } from './source-note'
 import { defineTool, ToolInputError } from './types'
 
 /** Pages above this size are returned as an outline plus their beginning, unless `full` is set */
@@ -44,12 +45,21 @@ export interface GetDocArgs {
   full?: boolean
 }
 
-export function getDoc(context: ServerContext, { id, sections, full = false }: GetDocArgs): string {
-  const doc = resolveDoc(context.knowledge, id)
+export function getDoc(context: ServerContext, args: GetDocArgs): string {
+  const doc = resolveDoc(context.knowledge, args.id)
 
   if (!doc)
-    throw new ToolInputError(notFoundMessage(context, id))
+    throw new ToolInputError(notFoundMessage(context, args.id))
 
+  const page = renderDoc(context, doc, args)
+  const note = sourceNote(context.knowledge, doc.id)
+
+  return note
+    ? `${page}\n\n${note}`
+    : page
+}
+
+function renderDoc(context: ServerContext, doc: DocEntry, { sections, full = false }: GetDocArgs): string {
   const markdown = linksToDocIds(stripFrontmatter(context.knowledge.readDoc(doc.id)), doc)
 
   if (sections?.length) {

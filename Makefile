@@ -6,7 +6,7 @@ clean:
 	find . -name '.nx' -type d -prune -exec rm -rf {} +
 	find . -name '.nuxt' -type d -prune -exec rm -rf {} +
 	find . -name '.output' -type d -prune -exec rm -rf {} +
-	find . -name './packages/mcp/docs' -type d -prune -exec rm -rf {} +
+	find ./packages -maxdepth 2 -name 'agent-docs' -type d -prune -exec rm -rf {} +
 	find . -name '.DS_Store' -type f -delete
 	find . -name '*.log' -type f -delete
 	find . -name '*.tsbuildinfo' -type f -delete
@@ -20,7 +20,7 @@ clean-output:
 	find . -name '.nx' -type d -prune -exec rm -rf {} +
 	find . -name '.nuxt' -type d -prune -exec rm -rf {} +
 	find . -name '.output' -type d -prune -exec rm -rf {} +
-	find . -name './packages/mcp/docs' -type d -prune -exec rm -rf {} +
+	find ./packages -maxdepth 2 -name 'agent-docs' -type d -prune -exec rm -rf {} +
 	find . -name '.DS_Store' -type f -delete
 	find . -name '*.log' -type f -delete
 	find . -name '*.tsbuildinfo' -type f -delete

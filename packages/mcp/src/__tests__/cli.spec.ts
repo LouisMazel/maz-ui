@@ -267,7 +267,7 @@ describe('given the maz-ui-mcp CLI', () => {
     it('then it configures the detected agents from the installed maz-ui', async () => {
       const cwd = createTempDir()
       const packageDir = writeFakeMazUi(cwd, { version: '5.0.0', withDocs: false })
-      cpSync(BUNDLE_DIR, join(packageDir, 'docs'), { recursive: true })
+      cpSync(join(BUNDLE_DIR, 'maz-ui'), join(packageDir, 'agent-docs'), { recursive: true })
       writeFile(cwd, '.cursor/rules/x.mdc', '')
       writeFile(cwd, 'CLAUDE.md', '# Project')
 

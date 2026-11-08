@@ -35,7 +35,7 @@ To use it without writing anything in your projects, register the server once fo
 | `get_setup_guide`   | Install maz-ui in a Vue or Nuxt app, with or without Tailwind                                                                                                         |
 | `review_code`       | Review files against the installed maz-ui (unknown props or values, unknown icons, native elements, duplicated libraries, default Tailwind palette, `maz:` prefix...) |
 
-Prompts: `build`, `audit`, `setup`. The server serves the docs shipped in the maz-ui package installed in your project (`node_modules/maz-ui/docs`), so agents read the docs of **your** version. Without maz-ui installed, it serves the docs bundled in this package.
+Prompts: `build`, `audit`, `setup`. The server serves the docs shipped by each package installed in your project (`node_modules/maz-ui/agent-docs`, `node_modules/@maz-ui/<package>/agent-docs`), so agents read the docs of **your** versions. A package that is not installed is served from the docs bundled in this package.
 
 ## Manual configuration
 

@@ -42,7 +42,7 @@ export async function runTool(context: ServerContext, tool: ToolDefinition, args
   catch (error) {
     const message = error instanceof ToolInputError
       ? error.message
-      : `Unexpected error in ${tool.name}: ${getErrorMessage(error)}. Retry with other arguments or fall back to the docs in ${context.knowledge.source.directory}.`
+      : `Unexpected error in ${tool.name}: ${getErrorMessage(error)}. Retry with other arguments or fall back to the docs of the installed packages (node_modules/maz-ui/agent-docs, node_modules/@maz-ui/<package>/agent-docs).`
 
     return {
       content: [

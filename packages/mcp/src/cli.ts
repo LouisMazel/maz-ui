@@ -2,7 +2,8 @@ import type { AgentTarget, SetupAgentsChange } from '@maz-ui/node'
 import type { Framework, Severity } from './review'
 
 import { Buffer } from 'node:buffer'
-import { resolve } from 'node:path'
+import { existsSync } from 'node:fs'
+import { join, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 import { AGENT_TARGETS, detectAgentTargets, detectPackageManager, findProjectPackage, setupAgents } from '@maz-ui/node'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
@@ -35,7 +36,7 @@ review options:
   --hook              Claude Code PostToolUse hook mode (reads the edited file from stdin)
 
 Common options:
-  --docs <dir>        Use this docs bundle instead of the maz-ui installed in the project
+  --docs <dir>        Use this docs folder (bundle with index.json, or the agent-docs of a package) instead of the installed packages
   --cwd <dir>         Project root (default: current directory)
   -v, --version
   -h, --help
@@ -102,6 +103,13 @@ function resolveInitPaths(values: Record<string, unknown>): 'all' | string[] | u
     : globs
 }
 
+/** The rules are the ones of maz-ui: in a bundle folder (`index.json`), its `maz-ui` fragment */
+function setupDocsDir(docsDir: string): string {
+  return existsSync(join(docsDir, 'index.json'))
+    ? join(docsDir, 'maz-ui')
+    : docsDir
+}
+
 export function runInit(values: Record<string, unknown>, cwd: string): number {
   const targets = resolveInitTargets(values, cwd)
 
@@ -112,7 +120,7 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
   const remove = values.remove === true
   const mcp = values['no-mcp'] !== true
   const docsDir = typeof values.docs === 'string'
-    ? resolve(values.docs)
+    ? setupDocsDir(resolve(values.docs))
     : undefined
   // The rules document the maz-ui components: a project without maz-ui (@maz-ui/utils only...) only gets the MCP server
   const withoutMazUi = !remove && mcp && values['no-rules'] !== true && !docsDir && !findProjectPackage(cwd, 'maz-ui')

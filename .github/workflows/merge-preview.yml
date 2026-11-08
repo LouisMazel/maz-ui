@@ -1,0 +1,39 @@
+name: Merge Preview
+
+on:
+  pull_request:
+    branches:
+      - master
+    # edited: a new title (the commit of a squash merge) or a new base
+    types: [opened, synchronize, reopened, edited]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  merge-preview:
+    name: Merge Preview
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      statuses: write
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js, pnpm and Nx cache
+        uses: ./.github/actions/setup
+
+      # The options of the release job (release-latest.yml): the preview computes the release of the merge into master
+      - name: Preview the release of the merge
+        uses: relizy/action@v2
+        with:
+          setup: false
+          merge-preview: true
+          args: --tag latest

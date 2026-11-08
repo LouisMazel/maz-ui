@@ -481,7 +481,7 @@ Tailwind v4 processes each SFC `<style>` block in isolation: a block that uses `
 
 ## AI agents
 
-Every class and variable of this page is available to AI coding agents, generated from the sources of the installed version: the `get_theme_tokens` tool of the [maz-ui MCP server](./../ecosystem/mcp.md), and `node_modules/maz-ui/docs/reference/tailwind-tokens.md`. See [AI agents](./ai-agents.md).
+Every class and variable of this page is available to AI coding agents, generated from the sources of the installed version: the `get_theme_tokens` tool of the [maz-ui MCP server](./../ecosystem/mcp.md), and `node_modules/maz-ui/agent-docs/reference/tailwind-tokens.md`. See [AI agents](./ai-agents.md).
 
 `get_theme_tokens` also reads **your** theme: the Tailwind entries of the project (CSS files with `@theme`, `@custom-variant`, `@utility` or a `tailwindcss` import) and the `definePreset` calls, in every app of a monorepo. Agents get your preset values, your tokens with their comments (`animate-rise`, `font-display`, `short:`...), the tokens that redefine a maz-ui one and the setup problems (missing maz-ui import). A comment above a token in your `@theme` is a good place to say when to use it.
 

@@ -44,9 +44,9 @@ In Claude Code, they are available as `/maz-ui:build`, `/maz-ui:audit` and `/maz
 
 ## Version-matched docs
 
-The server serves the documentation of the **maz-ui version installed in your project** (`node_modules/maz-ui/docs`), found from the directory it is started in (monorepos: the root, then the workspaces of `pnpm-workspace.yaml` or of the `workspaces` field of `package.json`, `apps/*` and `packages/*` by default). Without maz-ui installed, it serves the docs bundled with `@maz-ui/mcp` (latest release).
+The server serves the documentation of **each package at the version installed in your project** (`node_modules/maz-ui/agent-docs`, `node_modules/@maz-ui/<package>/agent-docs`), found from the directory it is started in (monorepos: the root, then the workspaces of `pnpm-workspace.yaml` or of the `workspaces` field of `package.json`, `apps/*` and `packages/*` by default). A package that is not installed, or that does not ship its docs, is served from the docs bundled with `@maz-ui/mcp` (latest release), with a note on the page. `list_docs` shows where the docs of each package come from.
 
-To force a folder, pass `--docs <dir>` or set `MAZ_UI_DOCS_DIR`.
+To force a folder, pass `--docs <dir>` or set `MAZ_UI_DOCS_DIR`: a bundle (folder with an `index.json`) replaces every source, the `agent-docs` folder of a package pins this package.
 
 In a monorepo whose apps install different maz-ui versions, the first maz-ui found wins: an agent working on one app can get the docs of another app. Align the versions, or choose the app whose docs are served:
 
@@ -56,7 +56,7 @@ In a monorepo whose apps install different maz-ui versions, the first maz-ui fou
     "maz-ui": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@maz-ui/mcp@latest", "--docs", "apps/web/node_modules/maz-ui/docs"]
+      "args": ["-y", "@maz-ui/mcp@latest", "--docs", "apps/web/node_modules/maz-ui/agent-docs"]
     }
   }
 }

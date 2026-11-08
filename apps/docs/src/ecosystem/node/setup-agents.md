@@ -42,7 +42,7 @@ Guarantees:
 - In a monorepo, rules written by a newer maz-ui and a newer pinned `@maz-ui/mcp` are never downgraded by an app with an older version. Files are written atomically: apps started together never read a half-written file.
 - The Claude rule is scoped with a `paths:` frontmatter, so that Claude Code only loads it when it reads or edits a file of the workspaces that depend on maz-ui (see [Scope of the Claude rule](#scope-of-the-claude-rule)), instead of at every session.
 - Without `CLAUDE.md` in the project, Claude Code reads `AGENTS.md`: the Claude rule is then skipped to avoid loading the rules twice.
-- Running it again is idempotent: unchanged files are reported as `unchanged`.
+- Running it again is idempotent: unchanged files are reported as `unchanged`. A managed file is only rewritten when its rules change: after a release of the tool that keeps the same rules, it stays as is, its header keeps the version that last changed them.
 
 ## Options
 
@@ -61,7 +61,7 @@ setupAgents({
   dryRun: false,
   // Remove everything setupAgents added
   remove: false,
-  // Folder of the maz-ui agent docs, default: node_modules/maz-ui/docs
+  // Folder of the maz-ui agent docs, default: node_modules/maz-ui/agent-docs
   docsDir: undefined,
   // Version pinned in the npx command when the project does not install @maz-ui/mcp, default: latest
   mcpVersion: '5.1.0',
@@ -111,9 +111,9 @@ const tool: AgentsTool = {
   generatedBy: '`relizy mcp init`',
   // Marker written in the header of the generated content, default: `Managed by relizy` (`Managed by <name>`)
   marker: 'Managed by relizy',
-  // Line under the title of the rules, default: `> relizy <version> is installed: these rules match this version.`
-  // Use `false` to write no note
-  versionNote: version => `> relizy ${version} is installed: these rules match this version.`,
+  // Line under the title of the rules, default: `> These rules match the installed relizy.`
+  // Use `false` to write no note. Keep the version out of it: it would rewrite the rules at every release
+  versionNote: () => '> These rules and the docs in `node_modules/relizy/agent-docs` match the installed relizy.',
   // Packages (or bins) of former MCP servers: an entry that references one of them is replaced by the entry of the tool, default: none
   legacyMcpPackages: ['relizy-legacy-mcp'],
   // Scope of the Claude rule: the workspaces that depend on these packages, and the files of the rule inside them

@@ -16,7 +16,7 @@ maz-ui gives them four things:
 | | What | Where |
 | --- | --- | --- |
 | **Rules** | How to use maz-ui in your project, loaded automatically by the agent | `.claude/rules/maz-ui.md`, `AGENTS.md` |
-| **Version-matched docs** | Agent-ready markdown of the installed version: guides, component APIs, icons, Tailwind tokens | `node_modules/maz-ui/docs/` |
+| **Version-matched docs** | Agent-ready markdown of the installed version: guides, component APIs, icons, Tailwind tokens | `node_modules/maz-ui/agent-docs/`, `node_modules/@maz-ui/<package>/agent-docs/` |
 | **MCP server** | Search by need, exact component APIs, icons, theme tokens, setup guides, code review | `npx @maz-ui/mcp` |
 | **Code review** | Static checks against the real maz-ui APIs, in the agent loop and in CI | `review_code` tool, `npx @maz-ui/mcp review` |
 
@@ -108,19 +108,19 @@ Write the project files (`init`, the Nuxt option) when your whole team, or agent
 
 ## Version-matched docs
 
-Each `maz-ui` release ships its documentation for agents in `node_modules/maz-ui/docs/`:
+Every package of the ecosystem ships the documentation of its own version for agents in its `agent-docs/` folder, so a package released on its own (`@maz-ui/eslint-config`, `@maz-ui/stylelint-config`, `@maz-ui/upgrade`) is never documented by another version. `maz-ui` also lists the other packages in its index:
 
 ```txt
-node_modules/maz-ui/docs/
-├── README.md                     # index of every page, start here
+node_modules/maz-ui/agent-docs/
+├── README.md                     # index of its pages and of the other packages, start here
 ├── rules.md                      # the rules below
-├── manifest.json                 # machine-readable index, component APIs, icons, tokens
+├── manifest.json                 # machine-readable index, component APIs, tokens
 ├── components/maz-btn.md         # usage, examples and full API of each component
 ├── composables/  directives/  plugins/  guide/
-├── ecosystem/                    # themes, translations, icons, nuxt, utils, node...
-└── reference/
-    ├── tailwind-tokens.md        # every Tailwind class and CSS variable of the theme
-    └── icons.md                  # the 860+ icon names
+└── reference/tailwind-tokens.md  # every Tailwind class and CSS variable of the theme
+
+node_modules/@maz-ui/icons/agent-docs/    # ecosystem/icons.md, reference/icons.md (the 860+ icon names)
+node_modules/@maz-ui/themes/agent-docs/   # same layout for each package: README.md, manifest.json, pages
 ```
 
 The pages are the ones of this website, cleaned for agents: no live demos, every example as code, and the full API of each component (props with their accepted values, `v-model`, events, slots) generated from the TypeScript sources.
