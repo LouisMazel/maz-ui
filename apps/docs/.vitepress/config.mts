@@ -16,7 +16,7 @@ import Components from 'unplugin-vue-components/vite'
 import { defaultClientConditions } from 'vite'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
-import { getHtaccess, head, nav, redirectMiddleware, sidebar } from './configs/index.mjs'
+import { getHtaccess, head, nav, redirectMiddleware, sidebar, writeAgentSkills, writeHomeMarkdown } from './configs/index.mjs'
 import { getOgImage } from './og-image.tsx'
 import { DOCS_THEME } from './theme/theme-options.ts'
 
@@ -135,6 +135,9 @@ export default defineConfig<DefaultTheme.Config>({
     if (existsSync(agentDocs)) {
       await cp(agentDocs, siteConfig.outDir, { recursive: true })
     }
+
+    await writeHomeMarkdown(siteConfig.outDir)
+    await writeAgentSkills(siteConfig.outDir)
   },
 
   head: [
