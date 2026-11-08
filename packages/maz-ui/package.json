@@ -153,8 +153,8 @@
   "files": [
     "LICENSE",
     "README.md",
+    "agent-docs",
     "dist",
-    "docs",
     "src/tailwindcss",
     "svg",
     "tailwindcss"
@@ -178,7 +178,7 @@
     "test:unit:coverage:watch": "vitest watch --coverage",
     "test:unit:coverage:master": "vitest run --coverage --changed master",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
-    "generate:agent-docs": "tsx ../../tools/agent-docs/src/cli.ts --out ./docs"
+    "generate:agent-docs": "pnpm -F agent-docs generate --package maz-ui"
   },
   "peerDependencies": {
     "arktype": ">=2.0.0 <3.0.0",
@@ -295,7 +295,7 @@
         ],
         "outputs": [
           "{projectRoot}/dist",
-          "{projectRoot}/docs"
+          "{projectRoot}/agent-docs"
         ]
       }
     }
