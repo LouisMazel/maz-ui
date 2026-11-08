@@ -1,5 +1,36 @@
 # Change Log
 
+## v5.5.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.4.0...v5.5.0)
+
+### 🚀 Features
+
+- **nuxt:** Load the translation messages from files ([92a536b60](https://github.com/LouisMazel/maz-ui/commit/92a536b60))
+
+  The `translations.messages` option now accepts a file path per locale (aliases allowed, so it works from a layer). The file is loaded on demand, the messages no longer go into the payload of every page, and the server renders the page in the right language.
+
+  ```ts
+  export default defineNuxtConfig({
+    mazUi: {
+      translations: {
+        locale: 'fr',
+        messages: { fr: '~/locales/fr.ts' },
+      },
+    },
+  })
+  ```
+
+### 🩹 Fixes
+
+- **nuxt:** Keep the preset and the color mode of the user across reloads ([892e52640](https://github.com/LouisMazel/maz-ui/commit/892e52640))
+
+  A preset switched with `updateTheme()` no longer goes back to the configured one on the second reload, the first paint follows the live system preference, and deleting the `maz-color-mode` cookie restores the configured `colorMode`.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.4.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)

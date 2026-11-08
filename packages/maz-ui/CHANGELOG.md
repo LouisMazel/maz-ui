@@ -1,5 +1,23 @@
 # Change Log
 
+## v5.5.0 (2026-11-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.4.0...v5.5.0)
+
+### 🩹 Fixes
+
+- **maz-ui:** Tint shadow-xs with the shadow color of the preset ([5a8bb955e](https://github.com/LouisMazel/maz-ui/commit/5a8bb955e))
+- **maz-ui:** Apply the new messages of MazUiProvider after the mount ([5ed3c94fd](https://github.com/LouisMazel/maz-ui/commit/5ed3c94fd))
+- **maz-ui:** Render the panel of MazPopover in the browser only and fix the nested popovers ([638fc7a86](https://github.com/LouisMazel/maz-ui/commit/638fc7a86))
+
+  The panel of `MazPopover` (and so of `MazSelect`, `MazSelectCountry`, `MazDropdown`, `MazDatePicker` and `v-tooltip`) is no longer rendered on the server, which caused hydration mismatches in Nuxt, even when closed. A popover open by default opens right after the hydration.
+
+  With nested popovers (a select inside a dropdown), a click in the inner one keeps the outer one open and Escape closes the last opened one first. The `open` and `close` events are emitted once, the focus trap handles every field and skips the disabled ones, a hover tooltip also shows on keyboard focus, and a disabled popover never shows its panel.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.4.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.4.0)
