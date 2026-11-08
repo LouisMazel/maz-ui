@@ -79,7 +79,7 @@ export function resolveComponent(knowledge: Knowledge, query: string): Component
 
   const kebab = toKebab(name).replace(/^maz-/, '')
 
-  for (const component of knowledge.manifest.components) {
+  for (const component of knowledge.components) {
     if (toKebab(component.name).replace(/^maz-/, '') === kebab)
       return component
   }

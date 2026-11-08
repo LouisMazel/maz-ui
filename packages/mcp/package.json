@@ -43,15 +43,15 @@
   "files": [
     "LICENSE",
     "README.md",
+    "agent-docs",
     "bin",
-    "dist",
-    "docs"
+    "dist"
   ],
   "engines": {
     "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
   },
   "scripts": {
-    "generate:docs": "tsx ../../tools/agent-docs/src/cli.ts --out ./docs",
+    "generate:docs": "pnpm -F agent-docs generate --bundle ../../packages/mcp/agent-docs",
     "build": "pnpm generate:docs && unbuild",
     "build:watch": "pnpm generate:docs && unbuild --watch",
     "dev": "tsx scripts/dev.ts",
@@ -107,7 +107,7 @@
         ],
         "outputs": [
           "{projectRoot}/dist",
-          "{projectRoot}/docs"
+          "{projectRoot}/agent-docs"
         ]
       },
       "test:unit": {

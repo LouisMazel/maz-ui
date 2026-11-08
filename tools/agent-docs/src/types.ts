@@ -1,13 +1,15 @@
 /**
- * Format of the maz-ui agent knowledge bundle.
+ * Format of the maz-ui agent knowledge.
  *
- * The bundle is a folder of agent-ready markdown files plus a `manifest.json`
- * describing them. It is shipped in `maz-ui` (`node_modules/maz-ui/docs`, so
- * agents always read the docs of the installed version) and in `@maz-ui/mcp`
- * (fallback when maz-ui is not installed). Bump `AGENT_DOCS_SCHEMA_VERSION`
- * on any breaking change of this contract: the MCP server validates it.
+ * Every published package ships its own fragment: a folder of agent-ready
+ * markdown files plus a `manifest.json` describing them (`agent-docs/` of the
+ * package, so agents always read the docs of the installed version).
+ * `@maz-ui/mcp` also ships every fragment (fallback when a package is not
+ * installed) with an `index.json` listing them. Bump
+ * `AGENT_DOCS_SCHEMA_VERSION` on any breaking change of this contract: the MCP
+ * server validates it.
  */
-export const AGENT_DOCS_SCHEMA_VERSION = 1
+export const AGENT_DOCS_SCHEMA_VERSION = 2
 
 export type DocCategory
   = | 'component'
@@ -144,25 +146,33 @@ export interface TailwindManifest {
   transitions: string[]
 }
 
-export interface EcosystemPackage {
-  name: string
+export type PackageGroup = 'ecosystem' | 'tooling'
+
+/** `manifest.json` of the `agent-docs` folder of a package */
+export interface AgentDocsFragment {
+  schemaVersion: typeof AGENT_DOCS_SCHEMA_VERSION
+  /** npm package name: `maz-ui`, `@maz-ui/themes`... */
+  package: string
+  version: string
   description: string
-  docId: string
+  /** Main page of the package on maz-ui.com */
+  homepage: string
+  group: PackageGroup
+  docs: DocEntry[]
+  /** Component APIs, only in the fragment of maz-ui */
+  components: ComponentApi[]
+  /** Only in the fragment of maz-ui */
+  tailwind?: TailwindManifest
+  /** Only in the fragment of @maz-ui/icons */
+  icons?: { names: string[] }
 }
 
-export interface AgentDocsManifest {
+/** `index.json` of the `agent-docs` folder of `@maz-ui/mcp`: one subfolder per fragment */
+export interface AgentDocsBundle {
   schemaVersion: typeof AGENT_DOCS_SCHEMA_VERSION
   name: 'maz-ui'
-  version: string
-  homepage: string
-  packages: EcosystemPackage[]
-  docs: DocEntry[]
-  components: ComponentApi[]
-  icons: {
-    package: '@maz-ui/icons'
-    names: string[]
-  }
-  tailwind: TailwindManifest
+  /** Paths of the `manifest.json` of the fragments, relative to the bundle folder */
+  fragments: string[]
 }
 
 /** A file produced by the generator, relative to the output directory */

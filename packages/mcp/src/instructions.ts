@@ -6,7 +6,7 @@ import { describeSource } from './tools/list-docs'
 export const MAX_INSTRUCTIONS_LENGTH = 4096
 
 export function buildInstructions(context: ServerContext): string {
-  return `maz-ui ${context.knowledge.version}: docs, component APIs, icons, Tailwind theme tokens and code review for the maz-ui ecosystem (Vue 3 and Nuxt UI library: components, composables, directives, plugins, @maz-ui/themes, @maz-ui/icons, @maz-ui/utils, @maz-ui/translations, @maz-ui/nuxt). ${describeSource(context)}
+  return `maz-ui ${context.knowledge.version}: docs, component APIs, icons, Tailwind theme tokens and code review for the maz-ui ecosystem (Vue 3 and Nuxt UI library: components, composables, directives, plugins, @maz-ui/themes, @maz-ui/icons, @maz-ui/utils, @maz-ui/translations, @maz-ui/nuxt; tooling: @maz-ui/node, @maz-ui/eslint-config, @maz-ui/stylelint-config, @maz-ui/upgrade). ${describeSource(context)}
 
 Use these tools whenever you write, refactor or review Vue/Nuxt UI code, styles or helpers in a project that uses maz-ui. Most UI elements, helpers and icons already exist: reuse them instead of re-implementing them.
 

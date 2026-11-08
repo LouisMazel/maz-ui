@@ -53,6 +53,15 @@ describe('given linksToDocIds', () => {
       expect(linksToDocIds(markdown, doc)).toBe('[Vue](guide/vue#install), [Icons](ecosystem/icons), [Self](components/maz-avatar), [Web](https://maz-ui.com)')
     })
   })
+
+  describe('when the doc contains absolute links to other packages', () => {
+    it('then they become doc ids, anchors kept, and other urls are left alone', () => {
+      const doc = fakeDoc({ file: 'guide/vue.md' })
+      const markdown = '[Themes](https://maz-ui.com/ecosystem/themes.md#presets), [Icons](https://maz-ui.com/ecosystem/icons/index.md), [Web](https://maz-ui.com/ecosystem/themes), [Llms](https://maz-ui.com/llms.txt)'
+
+      expect(linksToDocIds(markdown, doc)).toBe('[Themes](ecosystem/themes#presets), [Icons](ecosystem/icons), [Web](https://maz-ui.com/ecosystem/themes), [Llms](https://maz-ui.com/llms.txt)')
+    })
+  })
 })
 
 describe('given the section helpers', () => {

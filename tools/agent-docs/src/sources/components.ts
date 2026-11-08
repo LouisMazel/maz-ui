@@ -2,12 +2,13 @@ import type { ComponentMeta, EventMeta, ExposeMeta, PropertyMeta, SlotMeta } fro
 import type { ComponentDoc } from 'vue-docgen-api'
 import type { ComponentApi, EventApi, PropApi, SlotApi } from '../types'
 
-import { readdirSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { createChecker } from 'vue-component-meta'
 import { parseMulti } from 'vue-docgen-api'
 import { normalizeDashes } from '../markdown/clean'
 import { pascalToKebab } from '../utils/strings'
+import { listComponentFiles } from './component-files'
 
 const MAX_TYPE_LENGTH = 240
 
@@ -419,9 +420,7 @@ export function collectComponentApis(componentsDir: string, tsconfig: string): P
     schema: false,
     printer: { newLine: 1 },
   })
-  const files = readdirSync(componentsDir)
-    .filter(file => /^[A-Z]\w*\.vue$/.test(file))
-    .sort()
+  const files = listComponentFiles(componentsDir)
 
   return Promise.all(files.map(async (file) => {
     const path = join(componentsDir, file)

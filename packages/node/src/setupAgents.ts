@@ -35,7 +35,7 @@ export interface SetupAgentsOptions {
   dryRun?: boolean
   /** Remove everything `setupAgents` added */
   remove?: boolean
-  /** Folder of the maz-ui agent docs. Default: `docs/` of the maz-ui package installed in `rootDir` */
+  /** Folder of the maz-ui agent docs. Default: `agent-docs/` (`docs/` for older versions) of the maz-ui package installed in `rootDir` */
   docsDir?: string
   /** Command used to start the MCP server. Default: `mcpServerCommand(rootDir, mcpVersion, tool)` */
   mcpServer?: McpServerCommand
@@ -138,7 +138,7 @@ export const MAZ_UI_AGENTS_TOOL: AgentsTool = {
   mcpPackage: '@maz-ui/mcp',
   mcpBin: 'maz-ui-mcp',
   generatedBy: '`npx @maz-ui/mcp init` (or the `mazUi.agents` Nuxt option)',
-  versionNote: () => '> These rules and the docs in `node_modules/maz-ui/docs` match the installed maz-ui.',
+  versionNote: () => '> These rules and the docs in `node_modules/maz-ui/agent-docs` match the installed maz-ui.',
   packages: [
     'maz-ui',
     '@maz-ui/nuxt',
@@ -532,7 +532,14 @@ export function findProjectPackage(rootDir: string, name: string): string | unde
     ?? findInstalledPackage(rootDir, name)
 }
 
-/** Reads the agent files shipped in `maz-ui/docs/agents` */
+/** Folder of the agent docs of an installed package: `agent-docs`, else `docs` (older maz-ui versions), else undefined */
+export function resolveAgentDocsDir(packageDir: string): string | undefined {
+  return ['agent-docs', 'docs']
+    .map(folder => join(packageDir, folder))
+    .find(directory => existsSync(join(directory, 'manifest.json')))
+}
+
+/** Reads the agent files shipped in `maz-ui/agent-docs/agents` */
 export function readAgentDocs(rootDir: string, docsDir?: string): AgentDocs {
   let directory = docsDir
 
@@ -542,7 +549,7 @@ export function readAgentDocs(rootDir: string, docsDir?: string): AgentDocs {
     if (!packageDir)
       throw new Error(`maz-ui is not installed in ${rootDir}: install it first (\`npm install maz-ui\`).`)
 
-    directory = join(packageDir, 'docs')
+    directory = resolveAgentDocsDir(packageDir) ?? join(packageDir, 'agent-docs')
   }
 
   const manifestFile = join(directory, 'manifest.json')
@@ -550,7 +557,7 @@ export function readAgentDocs(rootDir: string, docsDir?: string): AgentDocs {
   const agentsMdFile = join(directory, 'agents/agents-md.md')
 
   if (!existsSync(manifestFile) || !existsSync(claudeRuleFile) || !existsSync(agentsMdFile)) {
-    throw new Error(`The installed maz-ui does not ship the agent docs (${directory}): upgrade maz-ui to the latest version.`)
+    throw new Error(`The installed maz-ui does not ship the agent docs (no manifest and agent files in ${directory}; older versions ship them in a docs folder): upgrade maz-ui to the latest version.`)
   }
 
   // The docs are generated before the release bumps the version: the package.json of maz-ui is the source of truth

@@ -39,7 +39,7 @@ describe('given createContext', () => {
         bundledDir: BUNDLE_DIR,
       })
 
-      expect(context.knowledge.source.kind).toBe('bundled')
+      expect(context.knowledge.fragmentsByPackage.get('maz-ui')?.source.kind).toBe('bundled')
       expect(context.cwd).toBe(getEmptyCwd())
       expect(context.search.search('MazBtn')[0].doc.id).toBe('components/maz-btn')
     })

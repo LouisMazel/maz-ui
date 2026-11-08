@@ -3,7 +3,7 @@
   "type": "module",
   "version": "5.0.0",
   "private": true,
-  "description": "Builds the AI-agent knowledge bundle of the maz-ui ecosystem (docs, component APIs, icons, Tailwind tokens, agent rules)",
+  "description": "Builds the AI-agent knowledge fragments (one per package) of the maz-ui ecosystem (docs, component APIs, icons, Tailwind tokens, agent rules)",
   "exports": {
     ".": "./src/index.ts"
   },
@@ -19,7 +19,6 @@
     "check:plugin": "tsx src/cli.ts --skill ../../plugins/claude-code --check"
   },
   "dependencies": {
-    "@maz-ui/node": "workspace:^",
     "typescript": "catalog:",
     "vue-component-meta": "3.3.14",
     "vue-docgen-api": "^4.79.2",

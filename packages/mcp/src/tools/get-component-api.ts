@@ -3,6 +3,7 @@ import type { ServerContext } from '../context'
 import { z } from 'zod'
 import { closest, resolveComponent } from '../knowledge/resolve'
 import { findSection, linksToDocIds, sectionContent, stripFrontmatter } from './markdown'
+import { sourceNote } from './source-note'
 import { defineTool, ToolInputError } from './types'
 
 export interface GetComponentApiArgs {
@@ -12,6 +13,7 @@ export interface GetComponentApiArgs {
 export function getComponentApi(context: ServerContext, { names }: GetComponentApiArgs): string {
   const blocks: string[] = []
   const unknown: string[] = []
+  const docIds: string[] = []
 
   for (const name of [
     ...new Set(names),
@@ -35,6 +37,7 @@ export function getComponentApi(context: ServerContext, { names }: GetComponentA
       ? `\n\nBuilding block of \`${component.parent}\`: see \`get_doc({ id: "${context.knowledge.componentsByName.get(component.parent)?.docId}" })\` for complete examples.`
       : ''
 
+    docIds.push(component.docId)
     blocks.push(`${api}${parent}\n\nExamples: \`get_doc({ id: "${component.docId}" })\``)
   }
 
@@ -64,10 +67,14 @@ export function getComponentApi(context: ServerContext, { names }: GetComponentA
       : ''}`)
   }
 
+  const note = sourceNote(context.knowledge, docIds[0])
+
   return [
     `Props are listed in kebab-case (use \`:prop\` for dynamic values). Values marked "non exhaustive" accept other values. Never use undocumented props, events or slots.`,
     ...blocks,
-  ].join('\n\n---\n\n')
+  ].join('\n\n---\n\n') + (note
+    ? `\n\n${note}`
+    : '')
 }
 
 export const getComponentApiTool = defineTool({

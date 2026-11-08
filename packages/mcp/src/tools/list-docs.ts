@@ -1,4 +1,5 @@
 import type { ServerContext } from '../context'
+import type { LoadedFragment } from '../knowledge/load'
 import type { DocCategory } from '../knowledge/schema'
 
 import { z } from 'zod'
@@ -22,19 +23,52 @@ export interface ListDocsArgs {
   category?: DocCategory
 }
 
-export function describeSource(context: ServerContext): string {
-  const { source, version } = context.knowledge
+export function describeFragment({ fragment, source, version }: LoadedFragment): string {
+  const name = fragment.package
 
   if (source.kind === 'project')
-    return `Docs of maz-ui ${version}, read from the project (node_modules/maz-ui/docs).`
+    return `Docs of ${name} ${version}, read from the project (node_modules/${name}/agent-docs).`
+
+  if (source.kind === 'legacy')
+    return `Docs of ${name} ${version}, read from the project (node_modules/maz-ui/docs, the layout of the older maz-ui versions).`
 
   if (source.kind === 'custom')
-    return `Docs of maz-ui ${version}, read from ${source.directory}.`
+    return `Docs of ${name} ${version}, read from ${source.directory}.`
 
-  if (source.projectVersion && source.projectVersion !== version)
-    return `The project uses maz-ui ${source.projectVersion}, which does not ship its docs: these are the docs of maz-ui ${version} (bundled with @maz-ui/mcp). Double check APIs that may differ.`
+  if (source.installedVersion && source.installedVersion !== version)
+    return `The project uses ${name} ${source.installedVersion}, which does not ship its docs: these are the docs of ${name} ${version} (bundled with @maz-ui/mcp). Double check APIs that may differ.`
 
-  return `Docs of maz-ui ${version} (bundled with @maz-ui/mcp).`
+  return `Docs of ${name} ${version} (bundled with @maz-ui/mcp).`
+}
+
+/** Where the docs of maz-ui come from */
+export function describeSource(context: ServerContext): string {
+  return describeFragment(context.knowledge.fragmentsByPackage.get('maz-ui') as LoadedFragment)
+}
+
+function describeInstallation({ fragment, source }: LoadedFragment): string {
+  if (source.kind === 'project' || source.kind === 'legacy')
+    return 'installed'
+
+  if (source.kind === 'custom')
+    return `docs read from ${source.directory}`
+
+  if (source.installedVersion)
+    return `installed ${source.installedVersion}, docs bundled with @maz-ui/mcp`
+
+  return `not installed, docs bundled with @maz-ui/mcp: \`npm install ${fragment.group === 'tooling'
+    ? '-D '
+    : ''}${fragment.package}\``
+}
+
+function renderPackages(context: ServerContext): string {
+  const lines = context.knowledge.fragments.map((loaded) => {
+    const { fragment, version } = loaded
+
+    return `- \`${fragment.package}\` ${version} (${fragment.group}, ${describeInstallation(loaded)}): ${truncateText(fragment.description, 120)}`
+  })
+
+  return `## Packages (${lines.length})\n\nDocs of each package match its installed version, else the version bundled with @maz-ui/mcp.\n\n${lines.join('\n')}`
 }
 
 export function listDocs(context: ServerContext, { category }: ListDocsArgs): string {
@@ -60,6 +94,12 @@ export function listDocs(context: ServerContext, { category }: ListDocsArgs): st
     describeSource(context),
     '',
     ...sections.flatMap(section => [section, '']),
+    ...(category
+      ? []
+      : [
+          renderPackages(context),
+          '',
+        ]),
     'Read a page with `get_doc({ id })`, a component API with `get_component_api({ names })`.',
   ].join('\n')
 }

@@ -1,3 +1,4 @@
+import type { PackageDefinition } from '../packages'
 import type { DocCategory, DocEntry } from '../types'
 
 import { truncate } from '../utils/strings'
@@ -71,18 +72,57 @@ function renderSections(docs: DocEntry[], href: (doc: DocEntry) => string): stri
 
 const SUMMARY = 'Vue 3 and Nuxt UI library: components, composables, directives and plugins, with an ecosystem of packages for theming (@maz-ui/themes), icons (@maz-ui/icons), helpers (@maz-ui/utils), translations (@maz-ui/translations), Nuxt (@maz-ui/nuxt) and AI agents (@maz-ui/mcp). Styling is powered by Tailwind CSS v4 theme tokens.'
 
-/** `README.md` of the bundle (`node_modules/maz-ui/docs/README.md`) */
+/** `README.md` of maz-ui.com: every page of the ecosystem */
 export function renderBundleIndex(docs: DocEntry[]): string {
   return `# maz-ui documentation for AI agents
 
 > ${SUMMARY}
 
-These files document the **installed** version of maz-ui. Prefer them over what you remember from training data: APIs change between versions.
-
-- Read [rules.md](rules.md) first: how this project must use maz-ui.
-- \`manifest.json\` describes every page (symbols, imports, aliases) and holds the full component APIs, the icon names and the Tailwind tokens in JSON.
+Read [rules.md](rules.md) first: how a project must use maz-ui. In a project, prefer the files of the **installed** versions (\`node_modules/maz-ui/agent-docs\`, \`node_modules/@maz-ui/<package>/agent-docs\`) over what you remember from training data: APIs change between versions.
 
 ${renderSections(docs, doc => doc.file)}
+`
+}
+
+interface FragmentIndexOptions {
+  definition: PackageDefinition
+  docs: DocEntry[]
+  /** Every package of the ecosystem, listed in the index of maz-ui to discover the others without the MCP server */
+  packages?: PackageDefinition[]
+  homepage: string
+}
+
+function renderOtherPackages(options: Required<Pick<FragmentIndexOptions, 'packages' | 'homepage'>>): string {
+  const lines = options.packages.map(({ name, description, mainDocId }) => `- \`${name}\`: ${description} Docs: \`node_modules/${name}/agent-docs/README.md\` when installed, else ${options.homepage}/${mainDocId} or the MCP server.`)
+
+  return `## Other packages of the ecosystem\n\nEach package ships its own docs, matching its installed version. When a package is not installed, read its page on maz-ui.com or use the MCP server (\`npx @maz-ui/mcp\`).\n\n${lines.join('\n')}`
+}
+
+/** `README.md` of a package fragment (`node_modules/<package>/agent-docs/README.md`) */
+export function renderFragmentIndex({ definition, docs, packages, homepage }: FragmentIndexOptions): string {
+  const isLibrary = definition.name === 'maz-ui'
+  const intro = isLibrary
+    ? '- Read [rules.md](rules.md) first: how this project must use maz-ui.'
+    : '- Rules for the whole ecosystem: `node_modules/maz-ui/agent-docs/rules.md` when maz-ui is installed.'
+  const others = isLibrary && packages
+    ? `\n\n${renderOtherPackages({
+      packages: packages.filter(other => other.name !== definition.name),
+      homepage,
+    })}`
+    : ''
+
+  return `# ${definition.name} documentation for AI agents
+
+> ${definition.description}
+
+These files document the **installed** version of ${definition.name}. Prefer them over what you remember from training data: APIs change between versions.
+
+${intro}
+- \`manifest.json\` describes every page (symbols, imports, aliases)${isLibrary
+  ? ', and holds the full component APIs and the Tailwind tokens in JSON'
+  : ''}.
+
+${renderSections(docs, doc => doc.file)}${others}
 `
 }
 
@@ -92,7 +132,7 @@ export function renderLlmsTxt(docs: DocEntry[], homepage: string): string {
 
 > ${SUMMARY}
 
-Documentation of the latest maz-ui release. Each link points to the markdown version of a page. The same files ship in the npm package (\`node_modules/maz-ui/docs/\`), matching the installed version, and through the MCP server \`npx @maz-ui/mcp\`.
+Documentation of the latest maz-ui release. Each link points to the markdown version of a page. The same files ship in the npm packages (\`node_modules/maz-ui/agent-docs/\`, \`node_modules/@maz-ui/<package>/agent-docs/\`), matching the installed versions, and through the MCP server \`npx @maz-ui/mcp\`.
 
 - [Rules for AI agents](${homepage}/rules.md): how to use maz-ui and its ecosystem instead of re-implementing it.
 

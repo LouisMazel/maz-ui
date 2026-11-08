@@ -1,11 +1,13 @@
 import { z } from 'zod'
 
 /**
- * Contract of the agent knowledge bundle produced by `tools/agent-docs`.
- * The bundle may come from the user's `node_modules/maz-ui/docs` (any
- * maz-ui version), so it is validated at runtime.
+ * Contract of the agent knowledge produced by `tools/agent-docs`: one fragment
+ * per package (`agent-docs/manifest.json`) and, in @maz-ui/mcp, an
+ * `index.json` listing them. The fragments may come from the packages
+ * installed in the user's project (any version), so they are validated at
+ * runtime.
  */
-export const SUPPORTED_SCHEMA_VERSION = 1
+export const SUPPORTED_SCHEMA_VERSION = 2
 
 export const docCategories = [
   'guide',
@@ -110,8 +112,32 @@ export const tailwindSchema = z.object({
   transitions: z.array(z.string()),
 })
 
-export const manifestSchema = z.object({
+export const packageGroups = ['ecosystem', 'tooling'] as const
+
+export const fragmentSchema = z.object({
   schemaVersion: z.literal(SUPPORTED_SCHEMA_VERSION),
+  package: z.string(),
+  version: z.string(),
+  description: z.string(),
+  homepage: z.string(),
+  group: z.enum(packageGroups),
+  docs: z.array(docEntrySchema),
+  components: z.array(componentApiSchema),
+  tailwind: tailwindSchema.optional(),
+  icons: z.object({
+    names: z.array(z.string()),
+  }).optional(),
+})
+
+export const bundleIndexSchema = z.object({
+  schemaVersion: z.literal(SUPPORTED_SCHEMA_VERSION),
+  name: z.literal('maz-ui'),
+  fragments: z.array(z.string()),
+})
+
+/** `docs/manifest.json` of the maz-ui versions that shipped a single bundle for the whole ecosystem */
+export const legacyManifestSchema = z.object({
+  schemaVersion: z.literal(1),
   name: z.literal('maz-ui'),
   version: z.string(),
   homepage: z.string(),
@@ -133,4 +159,6 @@ export type DocEntry = z.infer<typeof docEntrySchema>
 export type PropApi = z.infer<typeof propApiSchema>
 export type ComponentApi = z.infer<typeof componentApiSchema>
 export type TailwindTokens = z.infer<typeof tailwindSchema>
-export type Manifest = z.infer<typeof manifestSchema>
+export type Fragment = z.infer<typeof fragmentSchema>
+export type PackageGroup = typeof packageGroups[number]
+export type LegacyManifest = z.infer<typeof legacyManifestSchema>
