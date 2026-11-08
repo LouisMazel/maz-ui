@@ -5,7 +5,7 @@ import { createRequire } from 'node:module'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { detectAgentTargets, findProjectPackage, readPackageVersion, setupAgents } from '@maz-ui/node'
+import { detectAgentTargets, findProjectPackage, readPackageVersion, resolveAgentDocsDir, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { addCustomTab } from '@nuxt/devtools-kit'
@@ -292,7 +292,7 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
       mcpVersion: installedMcpVersion(rootDir),
       ...(mazUiDir
         ? {
-            docsDir: join(mazUiDir, 'docs'),
+            docsDir: resolveAgentDocsDir(mazUiDir),
           }
         : {}),
     })

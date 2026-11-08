@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion, createRequire } = vi.hoisted(() => {
+const { addComponent, addPlugin, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion, resolveAgentDocsDir, createRequire } = vi.hoisted(() => {
   const logger = {
     info: vi.fn(),
     warn: vi.fn(),
@@ -21,6 +21,7 @@ const { addComponent, addPlugin, addImports, addTemplate, resolvePath, createRes
     detectAgentTargets: vi.fn((): string[] => ['claude']),
     findProjectPackage: vi.fn((_rootDir: string, _name: string): string | undefined => '/project/node_modules/maz-ui'),
     readPackageVersion: vi.fn((): string | undefined => undefined),
+    resolveAgentDocsDir: vi.fn((packageDir: string): string | undefined => `${packageDir}/agent-docs`),
     addComponent: vi.fn(),
     addPlugin: vi.fn(),
     addTemplate: vi.fn(),
@@ -60,6 +61,7 @@ vi.mock('@maz-ui/node', () => ({
   detectAgentTargets,
   findProjectPackage,
   readPackageVersion,
+  resolveAgentDocsDir,
 }))
 
 vi.mock('@nuxt/devtools-kit', () => ({
@@ -877,7 +879,7 @@ describe('nuxt module', () => {
             targets: ['claude'],
             rules: false,
             mcp: true,
-            docsDir: '/project/node_modules/maz-ui/docs',
+            docsDir: '/project/node_modules/maz-ui/agent-docs',
           })
         })
       })
@@ -900,7 +902,7 @@ describe('nuxt module', () => {
             targets: ['claude'],
             rules: true,
             mcp: true,
-            docsDir: '/project/node_modules/maz-ui/docs',
+            docsDir: '/project/node_modules/maz-ui/agent-docs',
           })
         })
       })
@@ -929,7 +931,7 @@ describe('nuxt module', () => {
             targets: ['cursor', 'agents-md'],
             rules: true,
             mcp: false,
-            docsDir: '/project/node_modules/maz-ui/docs',
+            docsDir: '/project/node_modules/maz-ui/agent-docs',
           })
         })
       })
@@ -953,6 +955,19 @@ describe('nuxt module', () => {
           }, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo/apps/web' })
 
           expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ rootDir: '/repo' }))
+        })
+      })
+
+      describe('when the installed maz-ui only ships the legacy docs folder', () => {
+        it('then the docs folder of the installed package is passed', () => {
+          resolveAgentDocsDir.mockReturnValueOnce('/project/node_modules/maz-ui/docs')
+
+          callSetup({
+            agents: { rules: true, mcp: true },
+          }, {}, { dev: true })
+
+          expect(resolveAgentDocsDir).toHaveBeenCalledWith('/project/node_modules/maz-ui')
+          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ docsDir: '/project/node_modules/maz-ui/docs' }))
         })
       })
 

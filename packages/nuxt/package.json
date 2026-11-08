@@ -42,6 +42,7 @@
   "files": [
     "LICENSE",
     "README.md",
+    "agent-docs",
     "dist"
   ],
   "engines": {
@@ -49,7 +50,8 @@
   },
   "scripts": {
     "prepack": "nuxt-module-build build",
-    "build": "pnpm dev && pnpm prepack",
+    "build": "pnpm dev && pnpm prepack && pnpm generate:agent-docs",
+    "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/nuxt",
     "dev": "pnpm prepack --stub && nuxt-module-build prepare",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
@@ -97,5 +99,22 @@
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "inputs": [
+          "production",
+          "^production",
+          "{workspaceRoot}/tools/agent-docs/src/**/*",
+          "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/apps/docs/src/**/*"
+        ],
+        "outputs": [
+          "{projectRoot}/dist",
+          "{projectRoot}/agent-docs"
+        ]
+      }
+    }
   }
 }
