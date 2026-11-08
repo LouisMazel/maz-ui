@@ -36,6 +36,8 @@ export default defineConfig({
   },
 
   monorepo: {
+    // The apps are never published: a commit changing only an app and tooling packages does not bump the ecosystem
+    ignored: ['apps/*'],
     // Explicit lists: a new published package must be put in a group
     groups: [
       {
