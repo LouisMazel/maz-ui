@@ -29,6 +29,7 @@ interface BoxOptions {
 export interface Logger {
   setLevel: (level: LogLevel) => void
   info: (message: string) => void
+  warn: (message: string) => void
   debug: (message: string) => void
   verbose: (message: string) => void
   box: (options: BoxOptions) => void
@@ -41,6 +42,7 @@ export function createLogger(): Logger {
       consola.level = LEVELS[level]
     },
     info: msg => consola.info(msg),
+    warn: msg => consola.warn(msg),
     debug: msg => consola.debug(msg),
     verbose: msg => consola.verbose(msg),
     box: opts => consola.box(opts),

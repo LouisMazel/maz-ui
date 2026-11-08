@@ -38,13 +38,13 @@ export default defineConfig({
   vue: true, // auto-detected
   sonarjs: true, // default
   tailwindcss: false, // see "Tailwind support" below
-  vueAccessibility: false, // optional
+  vueAccessibility: false, // deprecated, prefer `vue: { a11y: true }`
   formatters: true, // CSS/HTML/JSON/YAML/Markdown formatting via dprint
 
   // 'production' downgrades console.log to error, 'development' keeps it warning.
   env: 'production',
 
-  // Extra ignore globs (merged with sensible defaults).
+  // Extra ignore globs (merged with the antfu defaults, CHANGELOG files stay linted).
   ignores: ['**/*.generated.ts'],
 
   // Direct rule overrides applied on top of the resolved config.
@@ -247,7 +247,7 @@ export default [{
 - **Tailwind plugin** (opt-in) — class ordering, duplicate / deprecated / unknown / conflicting class detection — see [Tailwind support](#tailwind-support).
 - **`maz/*` custom rules** — namespaced ESLint plugin shipped with the preset; see [Custom rules](#custom-rules).
 - **Markdown** — prose linting baseline.
-- **vueAccessibility** (opt-in) — `eslint-plugin-vuejs-accessibility` rules with the AudioWorklet globals fix.
+- **vueAccessibility** (opt-in, deprecated) - `eslint-plugin-vuejs-accessibility` rules (`vuejs-accessibility/*`) with the AudioWorklet globals fix. Prefer `vue: { a11y: true }` of antfu: its rules are named `vue-a11y/*`, rename your overrides and `eslint-disable` comments when you switch. Do not enable both.
 
 ## Advanced
 
