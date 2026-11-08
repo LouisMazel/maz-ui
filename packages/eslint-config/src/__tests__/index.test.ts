@@ -477,3 +477,107 @@ describe('pnpm rules', () => {
     })
   })
 })
+
+interface Block { files?: unknown, ignores?: string[], rules?: Record<string, unknown> }
+
+async function getBlocks(config: ReturnType<typeof import('../index').defineConfig>): Promise<Block[]> {
+  return (await config) as Block[]
+}
+
+function hasMazVueRules(blocks: Block[]): boolean {
+  return blocks.some(block => JSON.stringify(block?.rules?.['vue/custom-event-name-casing']) === JSON.stringify(['error', 'kebab-case']))
+}
+
+describe('vue option', () => {
+  describe('given a project without Vue in its package.json', () => {
+    describe('when `vue` is an object', () => {
+      it('applies the maz-ui Vue rules', async () => {
+        stubPackageJson({})
+        const defineConfig = await loadDefineConfig()
+        const blocks = await getBlocks(defineConfig({
+          vue: { sfcBlocks: true },
+          logLevel: 'silent',
+        }))
+        expect(hasMazVueRules(blocks)).toBe(true)
+      })
+    })
+
+    describe('when `vue` is not set', () => {
+      it('does not apply the maz-ui Vue rules', async () => {
+        stubPackageJson({})
+        const defineConfig = await loadDefineConfig()
+        const blocks = await getBlocks(defineConfig({ logLevel: 'silent' }))
+        expect(hasMazVueRules(blocks)).toBe(false)
+      })
+    })
+  })
+
+  describe('given a VitePress project', () => {
+    describe('when `vue` is not set', () => {
+      it('applies the maz-ui Vue rules', async () => {
+        stubPackageJson({
+          devDependencies: { vitepress: '^1.0.0' },
+        })
+        const defineConfig = await loadDefineConfig()
+        const blocks = await getBlocks(defineConfig({ logLevel: 'silent' }))
+        expect(hasMazVueRules(blocks)).toBe(true)
+      })
+    })
+  })
+})
+
+describe('vueAccessibility option', () => {
+  describe('given `vue.a11y` is enabled', () => {
+    describe('when `vueAccessibility` is enabled too', () => {
+      it('warns that the accessibility rules run twice', async () => {
+        stubPackageJson({})
+        const defineConfig = await loadDefineConfig()
+        await defineConfig({
+          vue: { a11y: true },
+          vueAccessibility: true,
+          logLevel: 'default',
+        })
+        const output = [
+          ...stdoutSpy.mock.calls,
+          ...stderrSpy.mock.calls,
+        ].map(call => String(call[0])).join('')
+        expect(output).toContain('run twice')
+      })
+    })
+
+    describe('when `vueAccessibility` is not set', () => {
+      it('does not warn', async () => {
+        stubPackageJson({})
+        const defineConfig = await loadDefineConfig()
+        await defineConfig({
+          vue: { a11y: true },
+          logLevel: 'default',
+        })
+        const output = [
+          ...stdoutSpy.mock.calls,
+          ...stderrSpy.mock.calls,
+        ].map(call => String(call[0])).join('')
+        expect(output).not.toContain('run twice')
+      })
+    })
+  })
+})
+
+describe('ignores option', () => {
+  describe('given custom ignores', () => {
+    describe('when the config is built', () => {
+      it('keeps the antfu default ignores, adds the custom ones and lints the CHANGELOG files', async () => {
+        stubPackageJson({})
+        const defineConfig = await loadDefineConfig()
+        const blocks = await getBlocks(defineConfig({
+          ignores: ['custom-dist/**'],
+          logLevel: 'silent',
+        }))
+        const ignores = blocks.find(block => block?.ignores?.includes('custom-dist/**'))?.ignores
+        expect(ignores).toContain('**/node_modules')
+        expect(ignores).toContain('**/.claude')
+        expect(ignores).not.toContain('**/CHANGELOG*.md')
+      })
+    })
+  })
+})

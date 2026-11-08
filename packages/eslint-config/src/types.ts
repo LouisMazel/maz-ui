@@ -119,8 +119,9 @@ export interface MazESLintOptions extends OptionsConfig {
   sonarjs?: boolean
 
   /**
-   * Enable Vue Accessibility plugin
+   * Enable the recommended config of `eslint-plugin-vuejs-accessibility` (rules `vuejs-accessibility/*`)
    * @default false
+   * @deprecated Use `vue: { a11y: true }` of `@antfu/eslint-config`: its rules are named `vue-a11y/*`, rename your overrides and `eslint-disable` comments when you switch
    */
   vueAccessibility?: boolean
 
@@ -131,8 +132,7 @@ export interface MazESLintOptions extends OptionsConfig {
   env?: 'development' | 'production'
 
   /**
-   * Files to ignore
-   * @default ['dist/**', 'node_modules/**']
+   * Files to ignore, added to the default ignores of `@antfu/eslint-config` (the `CHANGELOG*.md` files stay linted)
    */
   ignores?: string[]
 

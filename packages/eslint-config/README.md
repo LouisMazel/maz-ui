@@ -46,7 +46,7 @@ export default defineConfig({
 
   // Maz-UI options
   sonarjs: true,
-  vueAccessibility: false,
+  vueAccessibility: false, // deprecated, prefer `vue: { a11y: true }`
   tailwindcss: 'recommended', // see "Tailwind support" below
 
   // Extra ignore globs (merged with defaults)

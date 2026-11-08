@@ -8,7 +8,6 @@ import { configs as sonarConfigs } from 'eslint-plugin-sonarjs'
 
 import vueA11y from 'eslint-plugin-vuejs-accessibility'
 import { baseRules } from './configs/base'
-import { GLOBAL_IGNORES } from './configs/global'
 import { createLogger } from './configs/logger'
 import { markdown } from './configs/markdown'
 import { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
@@ -35,7 +34,6 @@ const defaultOptions: MazESLintOptions = {
   sonarjs: true,
   tailwindcss: false,
   unicorn: true,
-  ignores: GLOBAL_IGNORES,
   rules: {},
 }
 
@@ -95,15 +93,34 @@ interface Resolution {
   env: 'development' | 'production'
 }
 
+/**
+ * Same packages as the Vue detection of `@antfu/eslint-config`
+ */
+const VUE_PACKAGES = [
+  'vue',
+  'nuxt',
+  'vitepress',
+  '@slidev/cli',
+]
+
+/**
+ * The CHANGELOG files are linted, unlike in `@antfu/eslint-config`
+ * @see https://github.com/antfu/eslint-config/issues/776
+ */
+const LINTED_BY_DEFAULT = new Set(['**/CHANGELOG*.md'])
+
 function resolveVue(option: MazESLintOptions['vue']): { value: boolean, source: Source } {
-  if (option === true)
-    return { value: true, source: 'explicit' }
-  if (option === false)
-    return { value: false, source: 'explicit' }
-  return {
-    value: hasDependency(getPackageJson(), 'vue', 'nuxt'),
-    source: 'auto-detected',
+  if (option === undefined) {
+    return {
+      value: hasDependency(getPackageJson(), ...VUE_PACKAGES),
+      source: 'auto-detected',
+    }
   }
+  return { value: option !== false, source: 'explicit' }
+}
+
+function hasVueA11y(option: MazESLintOptions['vue']): boolean {
+  return typeof option === 'object' && !!option.a11y
 }
 
 function resolveTailwindcss(
@@ -146,6 +163,36 @@ function resolveOptions(opts: MazESLintOptions, env: 'development' | 'production
     tailwindcssSource: tailwind.source,
     env,
   }
+}
+
+function vueAccessibilityConfigs(): MazESLintUserConfig[] {
+  const vueA11yConfigs = vueA11y.configs['flat/recommended']
+  const configsArray = Array.isArray(vueA11yConfigs)
+    ? vueA11yConfigs
+    : [vueA11yConfigs]
+
+  /**
+   * Should fix the issue with the globals.
+   * @see https://github.com/vue-a11y/eslint-plugin-vuejs-accessibility/issues/1269
+   */
+  return configsArray.map((config: any) => {
+    if (config && config.languageOptions && config.languageOptions.globals) {
+      const fixedGlobals = { ...config.languageOptions.globals }
+      if ('AudioWorkletGlobalScope ' in fixedGlobals) {
+        fixedGlobals.AudioWorkletGlobalScope = fixedGlobals['AudioWorkletGlobalScope ']
+        delete fixedGlobals['AudioWorkletGlobalScope ']
+      }
+
+      return {
+        ...config,
+        languageOptions: {
+          ...config.languageOptions,
+          globals: fixedGlobals,
+        },
+      }
+    }
+    return config
+  })
 }
 
 function formatSourceTag(source: Source): string {
@@ -218,11 +265,8 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   const opts = {
     ...defaultOptions,
     ...options,
-    ignores: [
-      ...GLOBAL_IGNORES,
-      ...(options.ignores || []),
-    ],
   }
+  const userIgnores = options.ignores ?? []
   const env = (opts.env || process.env.NODE_ENV || 'production') as 'development' | 'production'
   const resolved = resolveOptions(opts, env)
 
@@ -280,36 +324,12 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   }
 
   if (resolved.vueAccessibility) {
-    const vueA11yConfigs = vueA11y.configs['flat/recommended']
-    const configsArray = Array.isArray(vueA11yConfigs)
-      ? vueA11yConfigs
-      : [vueA11yConfigs]
+    const a11yConfigs = vueAccessibilityConfigs()
+    additionalConfigs.push(...a11yConfigs)
+    log.debug(`${TAG} Vue a11y: applied ${a11yConfigs.length} flat-config block(s) from eslint-plugin-vuejs-accessibility`)
 
-    /**
-     * Should fix the issue with the globals.
-     * @see https://github.com/vue-a11y/eslint-plugin-vuejs-accessibility/issues/1269
-     */
-    const fixedConfigs = configsArray.map((config: any) => {
-      if (config && config.languageOptions && config.languageOptions.globals) {
-        const fixedGlobals = { ...config.languageOptions.globals }
-        if ('AudioWorkletGlobalScope ' in fixedGlobals) {
-          fixedGlobals.AudioWorkletGlobalScope = fixedGlobals['AudioWorkletGlobalScope ']
-          delete fixedGlobals['AudioWorkletGlobalScope ']
-        }
-
-        return {
-          ...config,
-          languageOptions: {
-            ...config.languageOptions,
-            globals: fixedGlobals,
-          },
-        }
-      }
-      return config
-    })
-
-    additionalConfigs.push(...fixedConfigs)
-    log.debug(`${TAG} Vue a11y: applied ${fixedConfigs.length} flat-config block(s) from eslint-plugin-vuejs-accessibility`)
+    if (hasVueA11y(opts.vue))
+      log.warn(`${TAG} \`vueAccessibility\` and \`vue.a11y\` are both enabled: the accessibility rules run twice (\`vuejs-accessibility/*\` and \`vue-a11y/*\`), keep only one of them`)
   }
 
   if (resolved.tailwindcss) {
@@ -339,7 +359,7 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
     log.debug(`${TAG} User: appended ${userConfigs.length} flat-config argument(s)`)
 
   log.verbose(`${TAG} Final config block count: ${additionalConfigs.length + userConfigs.length + 1} (additional: ${additionalConfigs.length}, user: ${userConfigs.length}, +markdown)`)
-  log.verbose(`${TAG} Ignore globs: ${opts.ignores.length}`)
+  log.verbose(`${TAG} User ignore globs: ${userIgnores.length}`)
 
   // User rule overrides go in a *trailing* block so they win over any
   // additionalConfigs (vue/sonarjs/tailwindcss/…) that also set the same
@@ -351,13 +371,13 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
     : undefined
 
   return antfu({
-    formatters: opts.formatters,
     ...opts,
     pnpm: resolvePnpm(opts.pnpm),
     rules: baseRules(env === 'production'),
-    ignores: (() => {
-      return opts.ignores
-    }) as any,
+    ignores: defaults => [
+      ...defaults.filter(glob => !LINTED_BY_DEFAULT.has(glob)),
+      ...userIgnores,
+    ],
   }, ...additionalConfigs, ...userConfigs, ...(userRulesBlock
     ? [userRulesBlock]
     : []), markdown) as MazESLintConfig

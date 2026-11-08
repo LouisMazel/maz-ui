@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { baseRules } from '../base'
-import { GLOBAL_IGNORES } from '../global'
 import { markdown } from '../markdown'
 import { sonarjsRules, sonarjsTestRules } from '../sonarjs'
 import { testRules } from '../test'
@@ -28,15 +27,6 @@ describe('baseRules', () => {
       { max: 20 },
     ])
     expect(rules['no-useless-assignment']).toBe('error')
-  })
-})
-
-describe('GLOBAL_IGNORES', () => {
-  it('includes the common build / dependency folders', () => {
-    expect(GLOBAL_IGNORES).toContain('**/node_modules')
-    expect(GLOBAL_IGNORES).toContain('**/dist')
-    expect(GLOBAL_IGNORES).toContain('**/coverage')
-    expect(GLOBAL_IGNORES).toContain('**/.nuxt')
   })
 })
 
