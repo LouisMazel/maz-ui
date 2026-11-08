@@ -1,5 +1,29 @@
 # Change Log
 
+## v5.6.0 (2026-11-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...v5.6.0)
+
+### 🚀 Features
+
+- **mcp:** Serve the docs of each package at its installed version ([e93188c13](https://github.com/LouisMazel/maz-ui/commit/e93188c13))
+
+  - Each installed maz-ui package now serves its own docs, at its installed version: the docs of `@maz-ui/eslint-config` or `@maz-ui/stylelint-config` no longer follow the version of maz-ui.
+  - The docs of the packages that are not installed still come from the bundle of @maz-ui/mcp, with a note when the installed version differs.
+  - `list_docs` lists every package of the ecosystem, installed or not.
+  - An older maz-ui that ships its docs in `docs/` is still read.
+
+- **nuxt:** Read the agent docs from agent-docs and ship its own ([13cd2209b](https://github.com/LouisMazel/maz-ui/commit/13cd2209b))
+- **maz-ui:** Ship the agent docs in agent-docs ([2687042b5](https://github.com/LouisMazel/maz-ui/commit/2687042b5))
+- **icons:** Ship the agent docs of the package ([b9defd833](https://github.com/LouisMazel/maz-ui/commit/b9defd833))
+- **themes:** Ship the agent docs of the package ([5e88e378c](https://github.com/LouisMazel/maz-ui/commit/5e88e378c))
+- **translations:** Ship the agent docs of the package ([8360e1f05](https://github.com/LouisMazel/maz-ui/commit/8360e1f05))
+- **utils:** Ship the agent docs of the package ([26a85217c](https://github.com/LouisMazel/maz-ui/commit/26a85217c))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.5.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.4.0...v5.5.0)

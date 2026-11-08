@@ -1,5 +1,26 @@
 # Change Log
 
+## @maz-ui/eslint-config@5.5.0 (2026-11-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/eslint-config@5.4.0...@maz-ui/eslint-config@5.5.0)
+
+### 🚀 Features
+
+- **eslint-config:** Ship the agent docs of the package ([0d454119b](https://github.com/LouisMazel/maz-ui/commit/0d454119b))
+
+### 🩹 Fixes
+
+- **eslint-config:** Apply the Vue rules with `vue: { ... }` and keep the antfu default ignores ([c6678ef29](https://github.com/LouisMazel/maz-ui/commit/c6678ef29))
+
+  - Passing an object to `vue` (`vue: { a11y: true }`) now enables the maz-ui Vue rules, even when vue is not listed in your package.json.
+  - VitePress and Slidev projects now get the maz-ui Vue rules automatically, like the antfu Vue rules.
+  - The default ignores of @antfu/eslint-config are kept, including the new ones (`.claude`, `.agents`, `.context`...). Your `ignores` are still added on top, and the CHANGELOG files are still linted.
+  - `vueAccessibility` is deprecated: use `vue: { a11y: true }` instead. Its rules are named `vue-a11y/*`, so rename your overrides and `eslint-disable` comments when you switch. Enabling both now shows a warning, as every accessibility rule would run twice.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## @maz-ui/eslint-config@5.4.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/eslint-config@5.4.0-beta.0...@maz-ui/eslint-config@5.4.0)

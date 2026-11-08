@@ -1,5 +1,18 @@
 # Changelog
 
+## @maz-ui/node@5.6.0 (2026-11-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...@maz-ui/node@5.6.0)
+
+### 🚀 Features
+
+- **node:** Only rewrite the managed rules when they change ([3f69191d4](https://github.com/LouisMazel/maz-ui/commit/3f69191d4))
+- **node:** Read the agent docs from agent-docs ([43558b5e2](https://github.com/LouisMazel/maz-ui/commit/43558b5e2))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.5.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.4.0...v5.5.0)

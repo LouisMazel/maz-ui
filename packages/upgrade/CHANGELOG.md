@@ -1,5 +1,17 @@
 # Changelog
 
+## @maz-ui/upgrade@5.4.0 (2026-11-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/upgrade@5.3.1...@maz-ui/upgrade@5.4.0)
+
+### 🚀 Features
+
+- **upgrade:** Ship the agent docs of the package ([8738a09a9](https://github.com/LouisMazel/maz-ui/commit/8738a09a9))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## @maz-ui/upgrade@5.3.1 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/upgrade@5.3.1-beta.0...@maz-ui/upgrade@5.3.1)
