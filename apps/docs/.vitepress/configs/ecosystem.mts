@@ -29,6 +29,10 @@ export const ecosystem = {
       text: withNewBadge('@maz-ui/mcp'),
       link: '/ecosystem/mcp',
     },
+    {
+      text: withNewBadge('@maz-ui/upgrade'),
+      link: '/ecosystem/upgrade',
+    },
     { text: '@maz-ui/nuxt', link: '/ecosystem/nuxt' },
     { text: '@maz-ui/translations', link: '/ecosystem/translations' },
     { text: '@maz-ui/themes', link: '/ecosystem/themes' },
