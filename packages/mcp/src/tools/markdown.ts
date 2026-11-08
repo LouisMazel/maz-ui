@@ -13,11 +13,13 @@ export function stripFrontmatter(markdown: string): string {
   return markdown.replace(/^---\n[\s\S]*?\n---\n+/, '')
 }
 
-/** Rewrites relative links between bundle files (`../guide/vue.md#x`) to doc ids (`guide/vue#x`) */
+/** Rewrites the links between pages to doc ids: relative ones (`../guide/vue.md#x`) and absolute maz-ui.com ones (`https://maz-ui.com/ecosystem/themes.md#x`) */
 export function linksToDocIds(markdown: string, doc: DocEntry): string {
   const base = doc.file.split('/').slice(0, -1)
 
-  return markdown.replaceAll(/\]\((\.{1,2}\/[^)\s]+?\.md)(#[^)\s]*)?\)/g, (_, path: string, anchor = '') => {
+  const withAbsoluteIds = markdown.replaceAll(/\]\(https:\/\/maz-ui\.com\/([^)\s#]+?)\.md(#[^)\s]*)?\)/g, (_, path: string, anchor = '') => `](${path.replace(/\/index$/, '')}${anchor})`)
+
+  return withAbsoluteIds.replaceAll(/\]\((\.{1,2}\/[^)\s]+?\.md)(#[^)\s]*)?\)/g, (_, path: string, anchor = '') => {
     const parts = [...base]
 
     for (const segment of path.split('/')) {

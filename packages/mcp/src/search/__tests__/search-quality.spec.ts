@@ -7,7 +7,7 @@ import { DocSearch } from '../engine'
 import { HELD_OUT_CASES, NOISE_CASES, SEARCH_CASES } from './search-cases'
 
 const knowledge = loadKnowledge({
-  bundledDir: resolve(__dirname, '../../../docs'),
+  bundledDir: resolve(__dirname, '../../../agent-docs'),
   cwd: tmpdir(),
 })
 const search = new DocSearch(knowledge)

@@ -1,7 +1,8 @@
 import type { ServerContext } from '../../context'
+import type { FragmentSource, LoadedFragment } from '../../knowledge/load'
 import type { DocSearch } from '../../search/engine'
 
-import { cleanTempDirs, createContextFor, createTempDir, fakeDoc, fakeManifest, getContext, getKnowledge, writeFakeBundle, writeFile } from '../../__tests__/helpers'
+import { cleanTempDirs, createContextFor, createTempDir, fakeDoc, fakeFragment, fakeKnowledge, getContext, getKnowledge, writeFakeFragment, writeFile } from '../../__tests__/helpers'
 import { createContext } from '../../context'
 import { Knowledge } from '../../knowledge/load'
 import { findIcons } from '../find-icons'
@@ -29,7 +30,7 @@ function contextWithSearch(hits: Array<{ id: string, score: number }>): ServerCo
 function longDocContext(): ServerContext {
   const directory = createTempDir()
   const body = `# MazLong\n\nIntro of the long page\n\n## First section\n\n${'a'.repeat(MAX_FULL_DOC_CHARS)}\n\n## Second section\n\nEnd\n`
-  const manifest = fakeManifest({
+  const manifest = fakeFragment({
     docs: [
       fakeDoc({
         id: 'components/maz-long',
@@ -50,10 +51,10 @@ function longDocContext(): ServerContext {
     ],
   })
 
-  writeFakeBundle(directory, manifest, { 'components/maz-long.md': body, 'guide/other.md': '# Other\n\nShort' })
+  writeFakeFragment(directory, manifest, { 'components/maz-long.md': body, 'guide/other.md': '# Other\n\nShort' })
 
   return createContext({
-    knowledge: new Knowledge(manifest, { kind: 'custom', directory }),
+    knowledge: fakeKnowledge(manifest, directory),
     cwd: directory,
   })
 }
@@ -181,7 +182,7 @@ describe('given get_doc', () => {
   describe('when a long non component doc has no section', () => {
     it('then it previews the beginning without the API hint', () => {
       const directory = createTempDir()
-      const manifest = fakeManifest({
+      const manifest = fakeFragment({
         docs: [
           fakeDoc({
             id: 'guide/long',
@@ -194,12 +195,12 @@ describe('given get_doc', () => {
         ],
       })
 
-      writeFakeBundle(directory, manifest, {
+      writeFakeFragment(directory, manifest, {
         'guide/long.md': 'b'.repeat(MAX_FULL_DOC_CHARS + 10),
       })
 
       const context = createContext({
-        knowledge: new Knowledge(manifest, { kind: 'custom', directory }),
+        knowledge: fakeKnowledge(manifest, directory),
         cwd: directory,
       })
       const output = getDoc(context, { id: 'guide/long' })
@@ -272,7 +273,7 @@ describe('given get_component_api', () => {
   describe('when the doc has no API section', () => {
     it('then it falls back to the import', () => {
       const directory = createTempDir()
-      const manifest = fakeManifest({
+      const manifest = fakeFragment({
         components: [
           {
             name: 'MazFake',
@@ -286,10 +287,10 @@ describe('given get_component_api', () => {
         ],
       })
 
-      writeFakeBundle(directory, manifest)
+      writeFakeFragment(directory, manifest)
 
       const context = createContext({
-        knowledge: new Knowledge(manifest, { kind: 'custom', directory }),
+        knowledge: fakeKnowledge(manifest, directory),
         cwd: directory,
       })
 
@@ -392,12 +393,12 @@ describe('given get_theme_tokens', () => {
   describe('when the bundle has no Tailwind reference', () => {
     it('then it throws', async () => {
       const directory = createTempDir()
-      const manifest = fakeManifest()
+      const manifest = fakeFragment()
 
-      writeFakeBundle(directory, manifest)
+      writeFakeFragment(directory, manifest)
 
       const context = createContext({
-        knowledge: new Knowledge(manifest, { kind: 'custom', directory }),
+        knowledge: fakeKnowledge(manifest, directory),
         cwd: directory,
       })
 
@@ -409,16 +410,16 @@ describe('given get_theme_tokens', () => {
   describe('when a topic has no section', () => {
     it('then it is skipped', async () => {
       const directory = createTempDir()
-      const manifest = fakeManifest({
+      const manifest = fakeFragment({
         docs: [
           fakeDoc({ id: 'reference/tailwind-tokens', category: 'reference', file: 'reference/tailwind-tokens.md' }),
         ],
       })
 
-      writeFakeBundle(directory, manifest, { 'reference/tailwind-tokens.md': '# Tokens\n\n## Colors\n\nred\n' })
+      writeFakeFragment(directory, manifest, { 'reference/tailwind-tokens.md': '# Tokens\n\n## Colors\n\nred\n' })
 
       const context = createContext({
-        knowledge: new Knowledge(manifest, { kind: 'custom', directory }),
+        knowledge: fakeKnowledge(manifest, directory),
         cwd: directory,
       })
       const output = await getThemeTokens(context, {
@@ -456,12 +457,12 @@ describe('given list_docs', () => {
   describe('when a category has no doc', () => {
     it('then it is omitted', () => {
       const directory = createTempDir()
-      const manifest = fakeManifest()
+      const manifest = fakeFragment()
 
-      writeFakeBundle(directory, manifest)
+      writeFakeFragment(directory, manifest)
 
       const context = createContext({
-        knowledge: new Knowledge(manifest, { kind: 'custom', directory }),
+        knowledge: fakeKnowledge(manifest, directory),
         cwd: directory,
       })
 
@@ -472,15 +473,21 @@ describe('given list_docs', () => {
 })
 
 describe('given describeSource', () => {
-  function sourceContext(source: Knowledge['source'], version = '5.0.0'): ServerContext {
+  function sourceContext(source: Partial<FragmentSource>, version = '5.0.0'): ServerContext {
     return {
-      knowledge: new Knowledge(fakeManifest({ version }), source),
+      knowledge: fakeKnowledge(fakeFragment({ version }), '/d', source),
     } as ServerContext
   }
 
   describe('when the docs come from the project', () => {
     it('then it says so', () => {
-      expect(describeSource(sourceContext({ kind: 'project', directory: '/p' }))).toContain('read from the project')
+      expect(describeSource(sourceContext({ kind: 'project' }))).toBe('Docs of maz-ui 5.0.0, read from the project (node_modules/maz-ui/agent-docs).')
+    })
+  })
+
+  describe('when the docs come from the legacy folder of the project', () => {
+    it('then it mentions the older layout', () => {
+      expect(describeSource(sourceContext({ kind: 'legacy' }))).toContain('node_modules/maz-ui/docs, the layout of the older maz-ui versions')
     })
   })
 
@@ -492,14 +499,156 @@ describe('given describeSource', () => {
 
   describe('when the bundled docs differ from the project version', () => {
     it('then it warns about the mismatch', () => {
-      expect(describeSource(sourceContext({ kind: 'bundled', directory: '/b', projectVersion: '4.0.0' }))).toContain('The project uses maz-ui 4.0.0')
+      expect(describeSource(sourceContext({ kind: 'bundled', installedVersion: '4.0.0' }))).toContain('The project uses maz-ui 4.0.0')
     })
   })
 
   describe('when the bundled docs are used without mismatch', () => {
     it('then it mentions the bundle', () => {
-      expect(describeSource(sourceContext({ kind: 'bundled', directory: '/b', projectVersion: '5.0.0' }))).toBe('Docs of maz-ui 5.0.0 (bundled with @maz-ui/mcp).')
-      expect(describeSource(sourceContext({ kind: 'bundled', directory: '/b' }))).toBe('Docs of maz-ui 5.0.0 (bundled with @maz-ui/mcp).')
+      expect(describeSource(sourceContext({ kind: 'bundled', installedVersion: '5.0.0' }))).toBe('Docs of maz-ui 5.0.0 (bundled with @maz-ui/mcp).')
+      expect(describeSource(sourceContext({ kind: 'bundled' }))).toBe('Docs of maz-ui 5.0.0 (bundled with @maz-ui/mcp).')
+    })
+  })
+})
+
+describe('given the packages section of list_docs', () => {
+  function packagesContext(): ServerContext {
+    const themes = fakeFragment({
+      package: '@maz-ui/themes',
+      version: '5.0.0',
+      docs: [],
+      icons: undefined,
+      tailwind: undefined,
+    })
+    const eslint = fakeFragment({
+      package: '@maz-ui/eslint-config',
+      version: '5.0.0',
+      group: 'tooling',
+      docs: [],
+      icons: undefined,
+      tailwind: undefined,
+    })
+    const translations = fakeFragment({
+      package: '@maz-ui/translations',
+      version: '5.0.0',
+      docs: [],
+      icons: undefined,
+      tailwind: undefined,
+    })
+    const utils = fakeFragment({
+      package: '@maz-ui/utils',
+      version: '5.0.0',
+      docs: [],
+      icons: undefined,
+      tailwind: undefined,
+    })
+    const source = (kind: FragmentSource['kind'], installedVersion?: string): LoadedFragment['source'] => ({ kind, directory: '/d', installedVersion })
+
+    return {
+      knowledge: new Knowledge([
+        {
+          fragment: fakeFragment(),
+          version: '9.9.9',
+          source: source('project'),
+        },
+        {
+          fragment: themes,
+          version: '5.0.0',
+          source: source('legacy'),
+        },
+        {
+          fragment: eslint,
+          version: '5.0.0',
+          source: source('bundled'),
+        },
+        {
+          fragment: translations,
+          version: '5.0.0',
+          source: source('bundled', '4.0.0'),
+        },
+        {
+          fragment: utils,
+          version: '5.0.0',
+          source: source('custom'),
+        },
+      ]),
+    } as ServerContext
+  }
+
+  describe('when listing the whole catalog', () => {
+    it('then every package is listed with its version, group and installation', () => {
+      const output = listDocs(packagesContext(), {})
+
+      expect(output).toContain('## Packages (5)')
+      expect(output).toContain('- `maz-ui` 9.9.9 (ecosystem, installed): A fake package')
+      expect(output).toContain('- `@maz-ui/themes` 5.0.0 (ecosystem, installed)')
+      expect(output).toContain('- `@maz-ui/eslint-config` 5.0.0 (tooling, not installed, docs bundled with @maz-ui/mcp: `npm install -D @maz-ui/eslint-config`)')
+      expect(output).toContain('- `@maz-ui/translations` 5.0.0 (ecosystem, installed 4.0.0, docs bundled with @maz-ui/mcp)')
+      expect(output).toContain('- `@maz-ui/utils` 5.0.0 (ecosystem, docs read from /d)')
+    })
+  })
+
+  describe('when listing one category', () => {
+    it('then the packages section is left out', () => {
+      expect(listDocs(packagesContext(), { category: 'component' })).not.toContain('## Packages')
+    })
+  })
+})
+
+describe('given the source note of get_doc and get_component_api', () => {
+  function noteContext(source: Partial<FragmentSource>): ServerContext {
+    const fragment = fakeFragment({
+      components: [
+        {
+          name: 'MazFake',
+          docId: 'components/maz-fake',
+          import: 'import MazFake from \'maz-ui/components/MazFake\'',
+          props: [],
+          events: [],
+          slots: [],
+          expose: [],
+        },
+      ],
+    })
+    const directory = createTempDir()
+
+    writeFakeFragment(directory, fragment)
+
+    return createContext({
+      knowledge: fakeKnowledge(fragment, directory, source),
+      cwd: directory,
+    })
+  }
+
+  describe('when the docs are bundled and the package is not installed', () => {
+    it('then a note says so', () => {
+      const context = noteContext({ kind: 'bundled' })
+
+      expect(getDoc(context, { id: 'components/maz-fake' })).toContain('Note: maz-ui is not installed in the project: this page documents maz-ui 9.9.9 (bundled with @maz-ui/mcp).')
+      expect(getComponentApi(context, {
+        names: ['MazFake'],
+      })).toContain('Note: maz-ui is not installed in the project')
+    })
+  })
+
+  describe('when the docs are bundled and another version is installed', () => {
+    it('then a note warns about the mismatch', () => {
+      expect(getDoc(noteContext({ kind: 'bundled', installedVersion: '4.0.0' }), { id: 'components/maz-fake' })).toContain('Note: the project uses maz-ui 4.0.0, this page documents maz-ui 9.9.9')
+    })
+  })
+
+  describe('when the docs are bundled and the same version is installed', () => {
+    it('then no note is added', () => {
+      expect(getDoc(noteContext({ kind: 'bundled', installedVersion: '9.9.9' }), { id: 'components/maz-fake' })).not.toContain('Note:')
+    })
+  })
+
+  describe('when the docs come from the project', () => {
+    it('then no note is added', () => {
+      expect(getDoc(noteContext({ kind: 'project' }), { id: 'components/maz-fake' })).not.toContain('Note:')
+      expect(getComponentApi(noteContext({ kind: 'project' }), {
+        names: ['MazFake'],
+      })).not.toContain('Note:')
     })
   })
 })
@@ -536,12 +685,12 @@ describe('given get_setup_guide', () => {
   describe('when the source docs are missing', () => {
     it('then it still returns the generic steps', () => {
       const directory = createTempDir()
-      const manifest = fakeManifest()
+      const manifest = fakeFragment()
 
-      writeFakeBundle(directory, manifest)
+      writeFakeFragment(directory, manifest)
 
       const context = createContext({
-        knowledge: new Knowledge(manifest, { kind: 'custom', directory }),
+        knowledge: fakeKnowledge(manifest, directory),
         cwd: directory,
       })
 

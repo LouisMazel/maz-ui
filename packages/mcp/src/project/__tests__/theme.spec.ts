@@ -137,7 +137,7 @@ describe('given readProjectTheme', () => {
 })
 
 describe('given renderProjectTheme', () => {
-  const tailwind = getKnowledge().manifest.tailwind
+  const tailwind = getKnowledge().tailwind!
 
   function projectTheme(): ProjectTheme {
     const directory = createTempDir()
@@ -259,7 +259,7 @@ describe('given stylesheetProblems', () => {
           readStylesheet('a.css', '@import \'tailwindcss\';'),
         ],
         presets: [],
-      }, getKnowledge().manifest.tailwind)
+      }, getKnowledge().tailwind!)
 
       expect(output).toContain('> The maz-ui theme is not imported')
     })
@@ -269,7 +269,7 @@ describe('given stylesheetProblems', () => {
 describe('given mazUiThemeVariables', () => {
   describe('when the maz-ui tokens are mapped to their Tailwind variables', () => {
     it('then each namespace has its variable', () => {
-      const variables = mazUiThemeVariables(getKnowledge().manifest.tailwind)
+      const variables = mazUiThemeVariables(getKnowledge().tailwind!)
 
       expect(variables.get('--color-primary')).toBe('var(--maz-primary)')
       expect(variables.get('--font-display')).toBe('var(--maz-font-display-stack)')
