@@ -74,7 +74,7 @@ describe('given a documentation folder with mistakes', () => {
     })
 
     it('then unclassified pages are left out of the bundle', () => {
-      expect(knowledge.manifest.docs.some(doc => doc.id.startsWith('random/'))).toBe(false)
+      expect(knowledge.fragments.flatMap(item => item.fragment.docs).some(doc => doc.id.startsWith('random/'))).toBe(false)
     })
 
     it('then a vague description is reported', () => {
@@ -82,7 +82,7 @@ describe('given a documentation folder with mistakes', () => {
     })
 
     it('then a page without frontmatter gets a title from its file and is reported', () => {
-      expect(knowledge.manifest.docs.find(doc => doc.id === 'ecosystem/utils/no-frontmatter')?.title).toBe('NoFrontmatter')
+      expect(knowledge.fragments.flatMap(item => item.fragment.docs).find(doc => doc.id === 'ecosystem/utils/no-frontmatter')?.title).toBe('NoFrontmatter')
       expect(knowledge.warnings).toContain('ecosystem/utils/no-frontmatter: vague description ""')
     })
 
@@ -91,7 +91,7 @@ describe('given a documentation folder with mistakes', () => {
     })
 
     it('then components without page still get a generated page', () => {
-      expect(knowledge.manifest.docs.some(doc => doc.id === 'components/maz-select')).toBe(true)
+      expect(knowledge.fragments.flatMap(item => item.fragment.docs).some(doc => doc.id === 'components/maz-select')).toBe(true)
     })
   })
 })

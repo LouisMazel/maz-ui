@@ -21,7 +21,7 @@ export function loadAgentContent(contentDir: string): AgentContent {
 }
 
 /** No version number: the docs are generated before the release bumps the version (see setupAgents for the installed one) */
-const VERSION_NOTE = '> These rules and the docs in `node_modules/maz-ui/docs` match the installed version of maz-ui (`node_modules/maz-ui/package.json`).'
+const VERSION_NOTE = '> These rules and the docs in `node_modules/maz-ui/agent-docs` and `node_modules/@maz-ui/<package>/agent-docs` match the installed versions of the packages (their `package.json`).'
 
 /** `rules.md` at the root of the bundle */
 export function renderRulesDoc(content: AgentContent): string {

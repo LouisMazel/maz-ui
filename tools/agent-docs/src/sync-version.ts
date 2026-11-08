@@ -1,20 +1,29 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { PACKAGE_DEFINITIONS } from './packages'
 import { getSourcePaths } from './paths'
 
-/** Bundles built with the packages, published with them */
-const BUNDLE_DIRS = ['packages/maz-ui/docs', 'packages/mcp/docs']
+function readVersion(file: string): string {
+  return (JSON.parse(readFileSync(file, 'utf8')) as { version: string }).version
+}
 
 /**
- * The release bumps the versions after the build: writes the bumped maz-ui version in the manifests
- * of the built bundles (run by the `success:bump` hook of relizy). Returns the updated manifests.
+ * The release bumps the versions after the build: writes the bumped version of each package in the manifest of its
+ * fragment and of the fragment bundled in `@maz-ui/mcp` (run by the `success:bump` hook of relizy).
+ * Returns the updated manifests.
  */
 export function syncBundleVersions(root = getSourcePaths().root): string[] {
-  const { version } = JSON.parse(readFileSync(resolve(root, 'packages/maz-ui/package.json'), 'utf8')) as { version: string }
+  return PACKAGE_DEFINITIONS
+    .filter(({ dir }) => existsSync(resolve(root, 'packages', dir, 'package.json')))
+    .flatMap(({ dir, short }) => {
+      const version = readVersion(resolve(root, 'packages', dir, 'package.json'))
 
-  return BUNDLE_DIRS
-    .map(directory => resolve(root, directory, 'manifest.json'))
-    .filter((file) => {
+      return [
+        resolve(root, 'packages', dir, 'agent-docs/manifest.json'),
+        resolve(root, 'packages/mcp/agent-docs', short, 'manifest.json'),
+      ].map(file => ({ file, version }))
+    })
+    .filter(({ file, version }) => {
       if (!existsSync(file))
         return false
 
@@ -27,4 +36,5 @@ export function syncBundleVersions(root = getSourcePaths().root): string[] {
 
       return true
     })
+    .map(({ file }) => file)
 }

@@ -1,9 +1,10 @@
+import type { PackageDefinition } from '../../packages'
 import type { DocEntry } from '../../types'
 
 import { parseFrontmatter } from '../../markdown/frontmatter'
 import { getSourcePaths } from '../../paths'
 import { loadAgentContent, renderAgentsMdSection, renderClaudeRule, renderRulesDoc, renderSkill, SKILL_DESCRIPTION } from '../agents'
-import { CATEGORY_ORDER, renderBundleIndex, renderLlmsFullTxt, renderLlmsTxt } from '../index'
+import { CATEGORY_ORDER, renderBundleIndex, renderFragmentIndex, renderLlmsFullTxt, renderLlmsTxt } from '../index'
 
 function doc(overrides: Partial<DocEntry>): DocEntry {
   return {
@@ -53,7 +54,7 @@ describe('given CATEGORY_ORDER', () => {
 })
 
 describe('given renderBundleIndex', () => {
-  describe('when rendering the bundle README', () => {
+  describe('when rendering the site README', () => {
     const markdown = renderBundleIndex(docs)
 
     it('then links the rules and every doc with relative paths in section order', () => {
@@ -67,6 +68,66 @@ describe('given renderBundleIndex', () => {
 
     it('then truncates long descriptions', () => {
       expect(markdown).toContain(`${'x'.repeat(177)}...`)
+    })
+  })
+})
+
+describe('given renderFragmentIndex', () => {
+  const library: PackageDefinition = {
+    name: 'maz-ui',
+    dir: 'maz-ui',
+    short: 'maz-ui',
+    description: 'The library.',
+    group: 'ecosystem',
+    mainDocId: 'guide/getting-started',
+  }
+  const themes: PackageDefinition = {
+    name: '@maz-ui/themes',
+    dir: 'themes',
+    short: 'themes',
+    description: 'The themes.',
+    group: 'ecosystem',
+    mainDocId: 'ecosystem/themes',
+  }
+  const packages = [library, themes]
+
+  describe('when rendering the README of maz-ui', () => {
+    const markdown = renderFragmentIndex({
+      definition: library,
+      docs,
+      packages,
+      homepage: 'https://maz-ui.com',
+    })
+
+    it('then links the rules and the pages with relative paths', () => {
+      expect(markdown).toContain('# maz-ui documentation for AI agents')
+      expect(markdown).toContain('> The library.')
+      expect(markdown).toContain('[rules.md](rules.md)')
+      expect(markdown).toContain('holds the full component APIs')
+      expect(markdown).toContain('- [MazBtn](components/maz-btn.md): A button')
+    })
+
+    it('then lists the other packages with their installed docs and their page', () => {
+      expect(markdown).toContain('## Other packages of the ecosystem')
+      expect(markdown).toContain('`@maz-ui/themes`: The themes. Docs: `node_modules/@maz-ui/themes/agent-docs/README.md` when installed, else https://maz-ui.com/ecosystem/themes or the MCP server.')
+      expect(markdown).not.toContain('`maz-ui`: The library.')
+    })
+  })
+
+  describe('when rendering the README of another package', () => {
+    const markdown = renderFragmentIndex({ definition: themes, docs, homepage: 'https://maz-ui.com' })
+
+    it('then points to the rules of maz-ui and lists no other package', () => {
+      expect(markdown).toContain('# @maz-ui/themes documentation for AI agents')
+      expect(markdown).toContain('`node_modules/maz-ui/agent-docs/rules.md`')
+      expect(markdown).not.toContain('Other packages')
+      expect(markdown).not.toContain('holds the full component APIs')
+    })
+  })
+
+  describe('when rendering the README of maz-ui without the list of packages', () => {
+    it('then omits the other packages', () => {
+      expect(renderFragmentIndex({ definition: library, docs, homepage: 'https://maz-ui.com' })).not.toContain('Other packages')
     })
   })
 })
@@ -98,7 +159,7 @@ describe('given renderLlmsFullTxt', () => {
 
 describe('given the agent content renderers', () => {
   const content = { rules: 'Use **maz-ui**.', rulesCore: 'Core **maz-ui**.', workflow: '### Workflow\n\n1. Search' }
-  const versionNote = '> These rules and the docs in `node_modules/maz-ui/docs` match the installed version of maz-ui (`node_modules/maz-ui/package.json`).'
+  const versionNote = '> These rules and the docs in `node_modules/maz-ui/agent-docs` and `node_modules/@maz-ui/<package>/agent-docs` match the installed versions of the packages (their `package.json`).'
 
   describe('when rendering the rules doc', () => {
     it('then adds a frontmatter, a title and the version note without version number', () => {

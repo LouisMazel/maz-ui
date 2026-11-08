@@ -10,7 +10,7 @@ This project is built with **maz-ui** and its ecosystem. Reuse what it provides 
 ### Look it up before you write it
 
 - **MCP server `maz-ui`** (when available): `search_docs` (describe the need: "confirm before delete"), `get_component_api`, `find_icons`, `get_theme_tokens`, `get_doc`, `review_code`.
-- **Version-matched docs** in `node_modules/maz-ui/docs/` (start with `README.md`; in a monorepo, the `maz-ui` of the app).
+- **Version-matched docs** in `node_modules/maz-ui/agent-docs/` and `node_modules/@maz-ui/<package>/agent-docs/` (start with `node_modules/maz-ui/agent-docs/README.md`, which lists the other packages; in a monorepo, the packages of the app).
 
 Never guess an API: only use documented props, events, slots and imports.
 
@@ -80,4 +80,4 @@ Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <fi
 5. **Write the code** with deep imports, or rely on the auto-imports of `@maz-ui/nuxt`.
 6. **Review**: `review_code({ paths: ["src/components/MyForm.vue"] })` and fix every finding (unknown props, invalid values, native elements, default palette colors, `maz:` prefix, duplicated helpers).
 
-Without the MCP server, read `node_modules/maz-ui/docs/README.md` (index of the docs of the installed version), then the relevant pages, `reference/tailwind-tokens.md` and `reference/icons.md`.
+Without the MCP server, read `node_modules/maz-ui/agent-docs/README.md` (index of the docs of the installed version, and of the other packages of the ecosystem), then the relevant pages, `reference/tailwind-tokens.md` and `node_modules/@maz-ui/icons/agent-docs/reference/icons.md`.

@@ -3,7 +3,7 @@ This project is built with **maz-ui** and its ecosystem. Reuse what it provides 
 ### Look it up before you write it
 
 - **MCP server `maz-ui`** (when available): `search_docs` (describe the need: "confirm before delete"), `get_component_api`, `find_icons`, `get_theme_tokens`, `get_doc` (icons, helpers, themes, translations, plugins, forms), `review_code`.
-- Otherwise the version-matched docs in `node_modules/maz-ui/docs/` (start with `README.md`; in a monorepo, the `maz-ui` of the app).
+- Otherwise the version-matched docs in `node_modules/maz-ui/agent-docs/` and `node_modules/@maz-ui/<package>/agent-docs/` (start with `node_modules/maz-ui/agent-docs/README.md`; in a monorepo, the packages of the app).
 
 Never guess an API: only use documented props, events, slots and imports.
 

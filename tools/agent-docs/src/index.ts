@@ -1,5 +1,7 @@
 export { generateKnowledge, HOMEPAGE } from './generate'
-export type { GeneratedKnowledge } from './generate'
+export type { GeneratedFragment, GeneratedKnowledge, GenerateOptions } from './generate'
+export { findPackageDefinition, PACKAGE_DEFINITIONS } from './packages'
+export type { PackageDefinition } from './packages'
 export { getSourcePaths } from './paths'
 export { syncBundleVersions } from './sync-version'
 export * from './types'
