@@ -110,7 +110,9 @@ export interface AgentsTool {
   marker?: string
   /**
    * Line written under the title of the rules, `false` to write none.
-   * Default: `> <name> <version> is installed: these rules match this version.`
+   * Default: `> These rules match the installed <name>.`
+   * Keep the version out of the note: a managed file is only rewritten when its content changes, a note that
+   * contains the version would rewrite it at every release of the tool.
    */
   versionNote?: ((version: string) => string) | false
   /**
@@ -136,7 +138,7 @@ export const MAZ_UI_AGENTS_TOOL: AgentsTool = {
   mcpPackage: '@maz-ui/mcp',
   mcpBin: 'maz-ui-mcp',
   generatedBy: '`npx @maz-ui/mcp init` (or the `mazUi.agents` Nuxt option)',
-  versionNote: version => `> maz-ui ${version} is installed: these rules and the docs in \`node_modules/maz-ui/docs\` match this version.`,
+  versionNote: () => '> These rules and the docs in `node_modules/maz-ui/docs` match the installed maz-ui.',
   packages: [
     'maz-ui',
     '@maz-ui/nuxt',
@@ -295,12 +297,12 @@ function isGeneratedMcpCommand(server: Partial<McpServerCommand>, tool: AgentsTo
 
 const CLAUDE_MEMORY_FILES = ['CLAUDE.md', '.claude/CLAUDE.md', 'CLAUDE.local.md']
 
-/** Adds the installed version under the title of a generated rule */
+/** Adds the note (version-free by default) under the title of a generated rule */
 function withVersion(content: string, version: string, tool: AgentsTool): string {
   if (tool.versionNote === false)
     return content
 
-  const note = tool.versionNote?.(version) ?? `> ${tool.name} ${version} is installed: these rules match this version.`
+  const note = tool.versionNote?.(version) ?? `> These rules match the installed ${tool.name}.`
 
   return content.replace(/^(#{1,2} .+)\n/, (_, title: string) => `${title}\n\n${note}\n`)
 }
@@ -317,6 +319,7 @@ function ruleChecksum(frontmatter: string, body: string): string {
 
 /**
  * Generated rules: the frontmatter (it must be the first thing of the file), a header with the version of the tool
+ * that last changed the rules (a release that does not change them keeps the version already written)
  * and the checksum of the frontmatter and of the body, then the body
  */
 function managedContent(version: string, body: string, setup: ToolSetup, frontmatter = ''): string {
@@ -373,6 +376,7 @@ export function detectAgentTargets(rootDir: string): AgentTarget[] {
 
 export interface AgentDocs {
   directory: string
+  /** Installed version of the tool: written in the header of the rules only when they change, so it is the version that last changed them */
   version: string
   claudeRule: string
   agentsMdSection: string
@@ -637,6 +641,26 @@ export function readManagedVersion(content: string | undefined, tool: AgentsTool
 }
 
 /**
+ * `true` when a managed content already holds the rules about to be written (same recorded checksum): it is kept
+ * as is, with the version of the tool that last changed the rules, instead of being rewritten at every release.
+ */
+function hasSameManagedRules(current: string | undefined, next: string, tool: AgentsTool): boolean {
+  const { managedHeader } = resolveTool(tool)
+  const sha = (content: string | undefined): string | undefined => {
+    const header = content === undefined
+      ? null
+      : managedHeader.exec(content)
+
+    return header
+      ? /\(sha256:([\da-f]+)\)/.exec(header[0])?.[1]
+      : undefined
+  }
+  const recorded = sha(current)
+
+  return recorded !== undefined && recorded === sha(next)
+}
+
+/**
  * Rules written by a newer version of the tool are kept: in a monorepo whose
  * apps install different versions, each app would otherwise rewrite them in turn.
  */
@@ -739,6 +763,11 @@ function syncOwnedFile(changes: ChangeSet, file: string, content: string | undef
     return
   }
 
+  if (current !== content && hasSameManagedRules(current, content, tool)) {
+    changes.unchanged(file, 'rules unchanged: left as written')
+    return
+  }
+
   changes.write(file, content, current)
 }
 
@@ -775,6 +804,11 @@ function syncAgentsMd(changes: ChangeSet, section: string | undefined, version: 
 
   if (isEditedManagedContent(block, tool)) {
     changes.skip(file, `the ${tool.name} section was edited since it was generated: left untouched, delete the section to get the rules of ${tool.name} ${version}`)
+    return
+  }
+
+  if (block !== undefined && hasSameManagedRules(block, section, tool)) {
+    changes.unchanged(file, 'rules unchanged: left as written')
     return
   }
 
