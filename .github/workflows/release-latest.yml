@@ -32,13 +32,8 @@ jobs:
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
 
-      - name: Build Packages
-        run: pnpm build:packages
-
-      - name: Typecheck packages
-        run: pnpm typecheck:all
-
-      # The project is set up above: the action runs `relizy release --yes` and installs the claude CLI
+      # The project is set up above: the action runs `relizy release --yes` and installs the claude CLI. The packages
+      # are built by the `before:publish` hook of relizy.config.ts: the published ones only, after the bump
       - name: Version Packages (Latest)
         id: release
         uses: relizy/action@v2
