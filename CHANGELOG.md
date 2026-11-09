@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.7.0-beta.0 (2026-11-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)
+
+### 🚀 Features
+
+- **utils:** Add the formatRelativeTime and getRelativeTime helpers ([3706c9942](https://github.com/LouisMazel/maz-ui/commit/3706c9942))
+
+  Localized relative time (3 minutes ago, in 2 days, yesterday) built on Intl.RelativeTimeFormat, with a compact form (3 min) from Intl.NumberFormat, configurable unit thresholds, an optional switch to an absolute date and the delay before the text changes.
+
+- **maz-ui:** Add the useRelativeTime composable ([21eabc6d5](https://github.com/LouisMazel/maz-ui/commit/21eabc6d5))
+
+  Reactive localized relative time refreshed with a single timer scheduled at the next change, paused while the page is hidden and never started on the server.
+
+- **nuxt:** Auto-import the useRelativeTime composable ([f636e114c](https://github.com/LouisMazel/maz-ui/commit/f636e114c))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.6.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...v5.6.0)

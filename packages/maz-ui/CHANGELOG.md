@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.7.0-beta.0 (2026-11-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)
+
+### 🚀 Features
+
+- **maz-ui:** Add the useRelativeTime composable ([21eabc6d5](https://github.com/LouisMazel/maz-ui/commit/21eabc6d5))
+
+  Reactive localized relative time refreshed with a single timer scheduled at the next change, paused while the page is hidden and never started on the server.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.6.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...v5.6.0)
