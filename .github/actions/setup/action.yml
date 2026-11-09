@@ -7,6 +7,14 @@ inputs:
     required: false
     default: --frozen-lockfile --ignore-scripts
 
+outputs:
+  nx-scope:
+    description: >-
+      The nx command selecting the projects of the job (`pnpm exec nx <scope> -t build`): `affected` compared with the base
+      branch in a pull request (checked out with `fetch-depth: 0`), `run-many` otherwise or when a change concerns every
+      project (`.github`, `pnpm-workspace.yaml`)
+    value: ${{ steps.scope.outputs.nx-scope }}
+
 runs:
   using: composite
   steps:
@@ -24,19 +32,34 @@ runs:
       with:
         node-version-file: .nvmrc
 
-    # One cache per run (the sha), restored from the latest one with the same config and lockfile,
-    # then from any previous one: an existing key is never overwritten by actions/cache
+    # One cache per job and run (the sha), restored from the latest one of the job with the same config and lockfile,
+    # then from any job: an existing key is never overwritten by actions/cache, the jobs of a commit would lose their
+    # tasks with a shared key
     - name: Setup Nx cache
       uses: actions/cache@v6
       with:
         path: |
           .nx/cache
           .nx/workspace-data
-        key: ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}-${{ github.sha }}
+        key: ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}-${{ github.job }}-${{ github.sha }}
         restore-keys: |
+          ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}-${{ github.job }}-
           ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}-
           ${{ runner.os }}-nx-
 
     - name: Install dependencies
       shell: bash
       run: pnpm install ${{ inputs.install-flags }}
+
+    # These files belong to the root project for nx, not to the projects they concern: every project then
+    - name: Select the projects
+      id: scope
+      shell: bash
+      env:
+        BASE: ${{ github.base_ref }}
+      run: |
+        if [ -n "$BASE" ] && git rev-parse --verify --quiet "origin/$BASE" > /dev/null && git diff --quiet "origin/$BASE...HEAD" -- .github pnpm-workspace.yaml; then
+          echo "nx-scope=affected --base=origin/$BASE" >> "$GITHUB_OUTPUT"
+        else
+          echo "nx-scope=run-many" >> "$GITHUB_OUTPUT"
+        fi
