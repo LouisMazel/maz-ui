@@ -253,7 +253,7 @@
     "nuxt": "catalog:",
     "postcss": "catalog:",
     "postcss-nested": "catalog:",
-    "sass": "^1.107.1",
+    "sass": "^1.108.0",
     "shiki": "catalog:",
     "stylelint": "catalog:",
     "tailwindcss": "catalog:",
