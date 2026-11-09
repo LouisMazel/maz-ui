@@ -1,5 +1,5 @@
 import { defineConfig } from 'relizy'
-import { syncBundleVersions } from './tools/agent-docs/src/sync-version'
+import { buildPublishedPackages } from './scripts/release'
 
 export default defineConfig({
   projectName: 'maz-ui',
@@ -72,15 +72,10 @@ export default defineConfig({
 
   publish: {
     access: 'public',
-    buildCmd: process.env.CI ? undefined : 'pnpm build:packages',
   },
 
   hooks: {
-    // The packages are built before the bump: the docs bundled for AI agents get the released version
-    'success:bump': (_config, dryRun) => {
-      if (!dryRun)
-        syncBundleVersions()
-    },
+    'before:publish': (config, dryRun, context) => buildPublishedPackages(config.cwd, dryRun, context),
   },
 
   commitlint: {
