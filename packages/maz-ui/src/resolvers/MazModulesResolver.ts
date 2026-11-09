@@ -13,6 +13,7 @@ const composablesMap: Record<Composables, true> = {
   useIdleTimeout: true,
   useInstanceUniqId: true,
   useReadingTime: true,
+  useRelativeTime: true,
   useStringMatching: true,
   usePullToRefresh: true,
   useSwipe: true,
@@ -72,6 +73,8 @@ const modulesMap: Record<Modules, true> = {
   formatJson: true,
   fetchLocaleIp: true,
   formatPhoneNumber: true,
+  formatRelativeTime: true,
+  getRelativeTime: true,
   getBrowserLocale: true,
 }
 
