@@ -476,6 +476,13 @@ export const DOC_ALIASES: Record<string, string[]> = {
   ],
   'composables/use-pull-to-refresh': ['pull to refresh', 'refresh gesture'],
   'composables/use-reading-time': ['reading time', 'minutes to read', 'word count'],
+  'composables/use-relative-time': [
+    'relative time',
+    'time ago',
+    'timeago',
+    'ago',
+    'live relative date',
+  ],
   'composables/use-string-matching': ['fuzzy match', 'string similarity', 'search matching'],
   'composables/use-swipe': ['swipe', 'swipe gesture', 'touch gesture'],
   'composables/use-timer': [
@@ -537,6 +544,12 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'date format',
     'intl date format',
     'localized date',
+  ],
+  'ecosystem/utils/relative-time': [
+    'format relative time',
+    'time ago',
+    'relative date',
+    'intl relative time format',
   ],
   'ecosystem/utils/debounce': ['debounce', 'delay function', 'debounced search'],
   'ecosystem/utils/debounce-callback': ['debounce callback'],

@@ -30,6 +30,7 @@ export const utils = {
       collapsed: false,
       items: [
         { text: 'formatDate', link: '/ecosystem/utils/date' },
+        { text: 'formatRelativeTime', link: '/ecosystem/utils/relative-time' },
       ],
     },
     {
