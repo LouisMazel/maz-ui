@@ -24,15 +24,18 @@ runs:
       with:
         node-version-file: .nvmrc
 
+    # One cache per run (the sha), restored from the latest one with the same config and lockfile,
+    # then from any previous one: an existing key is never overwritten by actions/cache
     - name: Setup Nx cache
       uses: actions/cache@v6
       with:
         path: |
           .nx/cache
           .nx/workspace-data
-        key: ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}
+        key: ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}
+          ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}-
+          ${{ runner.os }}-nx-
 
     - name: Install dependencies
       shell: bash

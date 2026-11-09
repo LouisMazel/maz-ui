@@ -212,6 +212,13 @@ export interface MazUiNuxtOptions {
     useReadingTime?: boolean
 
     /**
+     * Enable auto-import of useRelativeTime composable
+     * @description Reactive localized relative time (`3 minutes ago`) refreshed at the right moment
+     * @default true
+     */
+    useRelativeTime?: boolean
+
+    /**
      * Enable auto-import of useWindowSize composable
      * @description Reactive window dimensions tracking
      * @default true

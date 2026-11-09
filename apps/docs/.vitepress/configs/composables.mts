@@ -20,6 +20,10 @@ export const composables = {
       link: '/composables/use-pull-to-refresh',
     },
     { text: 'useReadingTime', link: '/composables/use-reading-time' },
+    {
+      text: withNewBadge('useRelativeTime'),
+      link: '/composables/use-relative-time',
+    },
     { text: 'useStringMatching', link: '/composables/use-string-matching' },
     { text: 'useSwipe', link: '/composables/use-swipe' },
     { text: 'useTimer', link: '/composables/use-timer' },
