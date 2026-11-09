@@ -1,5 +1,17 @@
 # Changelog
 
+## @maz-ui/stylelint-config@5.4.0 (2026-11-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...@maz-ui/stylelint-config@5.4.0)
+
+### 🚀 Features
+
+- **stylelint-config:** Ship the agent docs of the package ([2b76a104b](https://github.com/LouisMazel/maz-ui/commit/2b76a104b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.2.0...v5.3.0)

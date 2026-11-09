@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.6.0 (2026-11-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...v5.6.0)
+
+### 🚀 Features
+
+- **maz-ui:** Ship the agent docs in agent-docs ([2687042b5](https://github.com/LouisMazel/maz-ui/commit/2687042b5))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.5.0 (2026-11-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.4.0...v5.5.0)
