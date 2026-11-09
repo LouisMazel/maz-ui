@@ -140,6 +140,7 @@ const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDial
   useIdleTimeout: true,
   useDrag: true,
   useReadingTime: true,
+  useRelativeTime: true,
   useFormField: true,
   useWindowSize: true,
   useBreakpoints: true,

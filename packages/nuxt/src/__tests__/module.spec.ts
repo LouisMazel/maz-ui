@@ -162,6 +162,7 @@ describe('nuxt module', () => {
       expect(composables.useTranslations).toBe(true)
       expect(composables.useIdleTimeout).toBe(true)
       expect(composables.useReadingTime).toBe(true)
+      expect(composables.useRelativeTime).toBe(true)
       expect(composables.useFormField).toBe(true)
       expect(composables.useWindowSize).toBe(true)
       expect(composables.useBreakpoints).toBe(true)
