@@ -70,6 +70,7 @@ function getPhoneNumberResults({
       rfc3966: parsedNumber?.format('RFC3966'),
       possibleCountries: parsedNumber?.getPossibleCountries(),
       phoneNumber,
+      ext: parsedNumber?.ext,
     }
   }
   catch (error) {
