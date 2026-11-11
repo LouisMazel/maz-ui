@@ -100,7 +100,8 @@ export interface MazTableProps<T extends MazTableRow<T>> {
    */
   hoverable?: boolean
   /**
-   * Enable search feature in table header
+   * Enable search feature in table header: a fuzzy search (prefixes, words in any order, typos, accents) in the cells
+   * of the rows, which keep their order
    * @type {boolean}
    * @default false
    */
@@ -314,6 +315,7 @@ import {
   onMounted,
   provide,
   ref,
+  shallowRef,
   toRef,
   TransitionGroup,
   useSlots,
@@ -582,9 +584,55 @@ function getSortedRows(rows: T[]) {
   })
 }
 
+type FuzzySearchModule = typeof import('@maz-ui/utils/helpers/fuzzySearch')
+
+/** The search engine is loaded with the search: the rows are filtered by substrings meanwhile */
+const fuzzySearchModule = shallowRef<FuzzySearchModule>()
+
+watch(() => !hideSearchInRow && (search || typeof searchQueryModel.value === 'string'), async (enabled) => {
+  if (enabled && !fuzzySearchModule.value) {
+    fuzzySearchModule.value = await import('@maz-ui/utils/helpers/fuzzySearch')
+  }
+}, { immediate: true })
+
+function getSearchableValue(value: unknown) {
+  return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean'
+    ? value
+    : undefined
+}
+
+/** Every key of the rows, or the column chosen in "search by" */
+const searchedKeys = computed(() => {
+  if (searchByKey.value) {
+    return [searchByKey.value]
+  }
+
+  const keys = new Set<string>()
+
+  for (const row of rowsOfPage.value) {
+    for (const key of Object.keys(row)) {
+      keys.add(key)
+    }
+  }
+
+  return [...keys]
+})
+
+const rowsSearch = computed(() => fuzzySearchModule.value?.createFuzzySearch(rowsOfPage.value as T[], {
+  keys: searchedKeys.value.map(key => ({
+    key: (row: T) => getSearchableValue(row[key]),
+    name: key,
+  })),
+  sort: 'original',
+}))
+
 function getFilteredRows(rows: T[]) {
   if (hideSearchInRow || typeof searchQueryModel.value !== 'string')
     return rowsOfPage.value
+
+  if (rowsSearch.value) {
+    return rowsSearch.value.search(searchQueryModel.value).map(result => result.item)
+  }
 
   const query = searchQueryModel.value.toLowerCase()
 
@@ -773,7 +821,7 @@ onBeforeMount(() => {
           @slot Replace the title of the table
         -->
         <slot name="title">
-          <span class="m-table-header-title maz:font-semibold">
+          <span class="m-table-header-title maz:type-label">
             {{ title }}
           </span>
         </slot>
@@ -804,7 +852,7 @@ onBeforeMount(() => {
     <div
       ref="tableWrapper"
       class="m-table-wrapper maz:border maz:border-solid maz:border-divider" :class="[`--rounded-${roundedSize}`, {
-        '--scrollable maz:overflow-auto': scrollable || isVirtualized,
+        '--scrollable maz:scrollbar-themed maz:overflow-auto': scrollable || isVirtualized,
         '--virtualized': isVirtualized,
         'maz:overflow-hidden': !scrollable && !isVirtualized,
       }]"
@@ -1007,7 +1055,7 @@ onBeforeMount(() => {
     <div v-if="hasFooter" class="m-table-footer maz:flex maz:max-w-full maz:justify-end maz:gap-2 maz:py-2">
       <div v-if="pagination" class="m-table-footer-pagination maz:flex maz:items-center maz:gap-4">
         <div class="m-table-footer-pagination-items-per-page maz:flex maz:items-center maz:gap-1">
-          <span class="maz:hidden maz:text-sm maz:tab-s:block"> {{ messages.pagination.rowsPerPage }} </span>
+          <span class="maz:hidden maz:text-body-sm maz:tab-s:block"> {{ messages.pagination.rowsPerPage }} </span>
           <MazSelect
             v-model="pageSizeModel"
             :options="pageSizeOptions"
@@ -1019,7 +1067,7 @@ onBeforeMount(() => {
           />
         </div>
 
-        <span v-if="totalPagesInternal" class="maz:text-sm maz:whitespace-nowrap">
+        <span v-if="totalPagesInternal" class="maz:text-body-sm maz:whitespace-nowrap">
           {{ rowsFromTo.from }} - {{ rowsFromTo.to }} {{ messages.pagination.of }} {{ totalItemsInternal }}
         </span>
 
@@ -1115,7 +1163,7 @@ onBeforeMount(() => {
         }
 
         &.--sortable {
-          @apply maz:cursor-pointer maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400;
+          @apply maz:cursor-interactive maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400;
         }
 
         &.--xl {

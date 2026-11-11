@@ -10,7 +10,6 @@ import type { MazInputValue } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import { MazMagnifyingGlass } from '@maz-ui/icons/lazy/MazMagnifyingGlass'
-import { MazNoSymbol } from '@maz-ui/icons/lazy/MazNoSymbol'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { debounceCallback } from '@maz-ui/utils/helpers/debounceCallback'
@@ -18,21 +17,21 @@ import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { normalizeString } from '@maz-ui/utils/helpers/normalizeString'
 import {
   computed,
-  defineAsyncComponent,
   nextTick,
   onBeforeUnmount,
   ref,
+  shallowRef,
   useTemplateRef,
   watch,
 } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { useStringMatching } from '../composables/useStringMatching'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 import MazPopover from './MazPopover.vue'
+import SelectListbox from './MazSelect/SelectListbox.vue'
 
 export interface MazSelectNormalizedOption {
   [key: string]: MazInputValue
@@ -149,7 +148,8 @@ export interface MazSelectProps<Value extends MazInputValue, Option extends MazS
    */
   searchFunction?: (query: string, options: Option[]) => Option[] | undefined
   /**
-   * The threshold for the search input where 1 is a perfect match and 0 is a match with any character
+   * Tolerance of the search to typos: the minimal similarity (from 0 to 1) of a whole option with the query, for the
+   * options that do not contain it. `1` disables the typo tolerance, `0` matches any option.
    * @default 0.75
    */
   searchThreshold?: number
@@ -271,16 +271,15 @@ interface MazSelectEmits {
   'selected-option': [value: Option]
 }
 
-const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
-
 const popoverComponent = useTemplateRef('popover')
 const inputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('input')
 const searchInputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('searchInput')
-const optionListElement = useTemplateRef('optionListRef')
-const optionListWrapperRef = useTemplateRef('optionListWrapper')
+const listboxRef = useTemplateRef('listbox')
 
-const selectedTextColor = computed(() => `var(--maz-${color})`)
-const selectedBgColor = computed(() => `color-mix(in srgb, var(--maz-${color}) 10%, transparent)`)
+// Readable for every color: a neutral one (no chroma, e.g. a very light preset `secondary`) goes near the text color, a vivid one keeps its tone
+const selectedTextColor = computed(() => `light-dark(oklch(from var(--maz-${color}) min(l, calc(0.25 + c * 2)) c h), oklch(from var(--maz-${color}) max(l, calc(0.92 - c * 2)) c h))`)
+// Tinted from the text color: a neutral color stays visible (its own 10% would vanish on the surface)
+const selectedBgColor = 'color-mix(in srgb, var(--selected-text-color) 12%, transparent)'
 
 const { t } = useTranslations()
 const messages = computed(() => ({
@@ -411,8 +410,61 @@ const inputValue = computed(() => {
 const searchQuery = ref<string>()
 const query = ref<string>('')
 
-function searchInValue(value?: MazInputValue, query?: string) {
-  return query && value && normalizeString(value).includes(normalizeString(query))
+type FuzzySearchModule = typeof import('@maz-ui/utils/helpers/fuzzySearch')
+
+/** The search engine is loaded with the search input: the keyboard search of a closed select only needs substrings */
+const fuzzySearchModule = shallowRef<FuzzySearchModule>()
+
+watch(() => search, async (enabled) => {
+  if (enabled && !fuzzySearchModule.value) {
+    fuzzySearchModule.value = await import('@maz-ui/utils/helpers/fuzzySearch')
+  }
+}, { immediate: true })
+
+const searchableOptions = computed(() => optionsNormalized.value.filter(option => !option.isOptGroup))
+const hasOptGroups = computed(() => searchableOptions.value.length !== optionsNormalized.value.length)
+
+const optionsSearch = computed(() => fuzzySearchModule.value?.createFuzzySearch(searchableOptions.value, {
+  keys: [
+    option => option[optionLabelKey],
+    {
+      key: option => option[optionInputValueKey],
+      weight: 0.9,
+    },
+    {
+      key: option => option[optionValueKey],
+      weight: 0.8,
+    },
+  ],
+  typoThreshold: searchThreshold,
+  sort: hasOptGroups.value ? 'original' : 'relevance',
+}))
+
+function searchInValue(value: unknown, query: string) {
+  return (typeof value === 'string' || typeof value === 'number') && normalizeString(value).includes(normalizeString(query))
+}
+
+/** The matched options under the headers of their groups, in the order of the list */
+function withOptGroups(matchedOptions: MazSelectNormalizedOption[]) {
+  const matched = new Set(matchedOptions)
+  const result: MazSelectNormalizedOption[] = []
+  let group: MazSelectNormalizedOption | undefined
+
+  for (const option of optionsNormalized.value) {
+    if (option.isOptGroup) {
+      group = option
+    }
+    else if (matched.has(option)) {
+      if (group) {
+        result.push(group)
+        group = undefined
+      }
+
+      result.push(option)
+    }
+  }
+
+  return result
 }
 
 function getFilteredOptionWithQuery(query?: string) {
@@ -420,25 +472,12 @@ function getFilteredOptionWithQuery(query?: string) {
     return optionsNormalized.value
   }
 
-  return optionsNormalized.value?.filter((option) => {
-    const searchValue = option[optionLabelKey]
-    const searchValue3 = option[optionValueKey]
-    const searchValue2 = option[optionInputValueKey]
+  const matchedOptions = optionsSearch.value?.search(query).map(result => result.item)
+    ?? searchableOptions.value.filter(option => [option[optionLabelKey], option[optionInputValueKey], option[optionValueKey]].some(value => searchInValue(value, query)))
 
-    const threshold = searchThreshold
-
-    return (
-      searchInValue(searchValue, query)
-      || searchInValue(searchValue2, query)
-      || searchInValue(searchValue3, query)
-      || (typeof searchValue === 'string'
-        && useStringMatching(searchValue, query, threshold).isMatching.value)
-      || (typeof searchValue2 === 'string'
-        && useStringMatching(searchValue2, query, threshold).isMatching.value)
-      || (typeof searchValue3 === 'string'
-        && useStringMatching(searchValue3, query, threshold).isMatching.value)
-    )
-  })
+  return hasOptGroups.value
+    ? withOptGroups(matchedOptions)
+    : matchedOptions
 }
 
 const optionList = computed(() => {
@@ -538,22 +577,10 @@ async function scrollToOptionIndex(index?: number) {
     return
   }
 
-  const item = optionListElement.value?.querySelector<HTMLButtonElement>(`.m-select-list-item:nth-child(${index + 1})`)
-
-  if (item && optionListWrapperRef.value) {
-    const wrapperRect = optionListWrapperRef.value.getBoundingClientRect()
-    const itemRect = item.getBoundingClientRect()
-    const scrollTop = item.offsetTop - wrapperRect.height / 2 - itemRect.height
-
-    optionListWrapperRef.value.scrollTo?.({
-      top: scrollTop,
-      behavior: 'auto',
-    })
-
-    setTimeout(() => {
-      item.focus({ preventScroll: true })
-    }, 100)
-  }
+  listboxRef.value?.scrollToIndex(index, {
+    center: true,
+    focus: true,
+  })
 }
 
 function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = true) {
@@ -773,7 +800,6 @@ defineExpose({
     <template #default="{ close, open: openPicker, toggle: togglePopover }">
       <div
         :id="`${instanceId}-option-list`"
-        ref="optionListRef"
         class="m-select-list"
         :class="[`--${size}`, SIZE_TEXT_CLASS[size]]"
         :style="[{
@@ -802,87 +828,59 @@ defineExpose({
             @update:model-value="updateListPosition"
           />
         </div>
-        <!--
-            @slot No results slot - Displayed when no results corresponding with search query
-          -->
-        <slot v-if="!optionList || optionList.length <= 0" name="no-results">
-          <span class="m-select-list__no-results" role="status">
-            <MazNoSymbol class="maz:size-6 maz:text-foreground" aria-hidden="true" />
-            <span class="maz:sr-only">{{ t('aria.noResults') }}</span>
-          </span>
-        </slot>
-
-        <div
-          v-else
+        <SelectListbox
           :id="listboxId"
-          ref="optionListWrapper"
-          class="m-select-list__scroll-wrapper"
-          tabindex="-1"
-          role="listbox"
-          :aria-label="listboxLabel"
-          :aria-multiselectable="multiple ? 'true' : undefined"
+          ref="listbox"
+          :options="optionList ?? []"
+          :label="listboxLabel"
+          :get-option-id="getOptionId"
+          :is-selected="isSelectedOption"
+          :is-empty-value="option => isNullOrUndefined(option[optionValueKey])"
+          :label-key="optionLabelKey"
+          :multiple
+          :color
+          :item-height
+          @select="option => updateValue(option, true)"
         >
-          <template v-for="(option, i) in optionList" :key="i">
+          <template v-if="$slots['no-results']" #no-results>
             <!--
-                @slot Custom optgroup label
-                  @binding {String} label - the label of the optgroup
-              -->
-            <slot v-if="option.label && option.isOptGroup" name="optgroup" :label="option.label">
-              <span class="m-select-list-optgroup" role="presentation">
-                {{ option.label }}
+              @slot No results slot - Displayed when no results corresponding with search query
+            -->
+            <slot name="no-results" />
+          </template>
+
+          <template v-if="$slots.optgroup" #optgroup="{ label: optgroupLabel }">
+            <!--
+              @slot Custom optgroup label
+                @binding {String} label - the label of the optgroup
+            -->
+            <slot name="optgroup" :label="optgroupLabel" />
+          </template>
+
+          <template #default="{ option, isSelected }">
+            <!--
+              @slot Custom option
+                @binding {Object} option - the option object
+                @binding {Boolean} is-selected - if the option is selected
+                @binding {Boolean} is-open - if the popover is open
+                @binding {function} close - function to close the popover
+                @binding {function} open - function to open the popover
+                @binding {function} toggle - function to toggle the popover
+            -->
+            <slot
+              :option="(option as Option)"
+              :is-selected="isSelected"
+              :is-open="isOpen"
+              :close="close"
+              :open="openPicker"
+              :toggle="togglePopover"
+            >
+              <span>
+                {{ option[optionLabelKey] }}
               </span>
             </slot>
-
-            <button
-              v-else
-              :id="getOptionId(i)"
-              type="button"
-              role="option"
-              :aria-selected="isSelectedOption(option) ? 'true' : 'false'"
-              :tabindex="multiple ? -1 : 0"
-              class="m-select-list-item maz-custom maz:flex-none"
-              :class="[
-                {
-                  '--is-selected': isSelectedOption(option),
-                  '--is-none-value': isNullOrUndefined(option[optionValueKey]),
-                },
-              ]"
-              :style="itemHeight ? { height: `${itemHeight}px` } : undefined"
-              @click.prevent.stop="updateValue(option, true)"
-            >
-              <!-- Visual only: the state is aria-selected, a control nested in an option is not allowed -->
-              <span v-if="multiple" class="m-select-list-item__checkbox maz:contents" inert>
-                <MazCheckbox
-                  :model-value="isSelectedOption(option)"
-                  size="sm"
-                  :color
-                  tabindex="-1"
-                />
-              </span>
-              <!--
-                @slot Custom option
-                  @binding {Object} option - the option object
-                  @binding {Boolean} is-selected - if the option is selected
-                  @binding {Boolean} is-open - if the popover is open
-                  @binding {function} close - function to close the popover
-                  @binding {function} open - function to open the popover
-                  @binding {function} toggle - function to toggle the popover
-              -->
-              <slot
-                :option="(option as Option)"
-                :is-selected="isSelectedOption(option)"
-                :is-open="isOpen"
-                :close="close"
-                :open="openPicker"
-                :toggle="togglePopover"
-              >
-                <span>
-                  {{ option[optionLabelKey] }}
-                </span>
-              </slot>
-            </button>
           </template>
-        </div>
+        </SelectListbox>
       </div>
     </template>
   </MazPopover>
@@ -899,7 +897,7 @@ defineExpose({
   }
 
   &:not(.--disabled):deep(.m-input-input) {
-    @apply maz:cursor-pointer;
+    @apply maz:cursor-interactive;
   }
 
   &.--is-open {
@@ -909,7 +907,7 @@ defineExpose({
   }
 
   & button.maz-custom {
-    @apply maz:cursor-pointer maz:appearance-none maz:border-none;
+    @apply maz:cursor-interactive maz:appearance-none maz:border-none;
 
     &:disabled {
       @apply maz:disabled-cursor;
@@ -922,8 +920,8 @@ defineExpose({
 }
 
 .m-select-input {
-  @apply maz:size-full;
-  @apply maz:cursor-pointer;
+  @apply maz:w-full;
+  @apply maz:cursor-interactive;
 
   &:deep(input) {
     @apply maz:caret-transparent;
@@ -940,63 +938,7 @@ defineExpose({
   min-inline-size: 3.5rem;
 }
 
-.m-select-list-item {
-  @apply maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-3 maz:truncate maz:rounded-md maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus-within:bg-surface-600 maz:dark:focus-within:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:outline-hidden maz:border maz:border-solid maz:border-transparent;
-
-  span {
-    @apply maz:truncate;
-  }
-
-  &.--is-none-value {
-    @apply maz:text-muted;
-  }
-
-  &.--is-selected {
-    color: var(--selected-text-color);
-    background-color: var(--selected-bg-color);
-
-    &:focus-within {
-      outline: var(--selected-text-color) solid var(--maz-border-width);
-      outline-offset: 2px;
-    }
-
-    &.--transparent {
-      @apply maz:bg-surface;
-    }
-  }
-}
-
-.m-select-list__no-results {
-  @apply maz:flex maz:p-4 maz:flex-center;
-}
-
-.m-select-list__scroll-wrapper {
-  @apply maz:flex maz:flex-1 maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2;
-
-  /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
-  &::-webkit-scrollbar {
-    inline-size: 0.1875rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    @apply maz:bg-surface-600 maz:dark:bg-surface-400;
-
-    border-radius: 1000px;
-  }
-
-  /* Modern CSS for all browsers (fallback) */
-  @apply maz:scrollbar-thin maz:scrollbar-track-transparent maz:scrollbar-thumb-surface-600;
-}
-
 .m-select-list__search-wrapper {
   @apply maz:px-2 maz:pt-2;
-}
-
-.m-select-list-optgroup {
-  @apply maz:flex-none maz:p-0.5 maz:text-start maz:text-[0.875em] maz:text-muted;
 }
 </style>
