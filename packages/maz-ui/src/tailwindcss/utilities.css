@@ -607,7 +607,10 @@
 
 /* Translucent material (sidebars, popovers, toolbars): `components.glass` of the preset, blurred backdrop, opaque when the user reduces transparency (system setting or `reduce-transparency` class on an ancestor) */
 @utility glass {
-  background-color: var(--maz-glass-bg, color-mix(in srgb, var(--maz-container-bg, var(--maz-surface)) 72%, transparent));
+  background-color: var(
+    --maz-glass-bg,
+    color-mix(in srgb, var(--maz-container-bg, var(--maz-surface)) 72%, transparent)
+  );
   box-shadow: inset 0 0 0 0.5px var(--maz-glass-border, var(--maz-divider));
   backdrop-filter: blur(var(--maz-glass-blur, 24px)) saturate(var(--maz-glass-saturate, 1.4));
 
