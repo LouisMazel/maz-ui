@@ -59,7 +59,7 @@
     "eslint": "catalog:",
     "husky": "^9.1.7",
     "lint-staged": "17.6.0",
-    "nx": "^24.0.4",
+    "nx": "^24.0.6",
     "relizy": "2.2.0",
     "semver": "^7.8.6",
     "twitter-api-v2": "^1.31.0",
