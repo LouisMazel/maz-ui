@@ -128,6 +128,7 @@
     "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",
     "./tailwindcss/theme-spacing.css": "./src/tailwindcss/theme-spacing.css",
     "./tailwindcss/theme-breakpoints.css": "./src/tailwindcss/theme-breakpoints.css",
+    "./tailwindcss/theme-containers.css": "./src/tailwindcss/theme-containers.css",
     "./tailwindcss/theme-shadows.css": "./src/tailwindcss/theme-shadows.css",
     "./tailwindcss/theme-z-index.css": "./src/tailwindcss/theme-z-index.css",
     "./tailwindcss/theme-typography.css": "./src/tailwindcss/theme-typography.css",
@@ -144,6 +145,8 @@
       "monorepo:dev": "./src/tailwindcss/tailwind.css",
       "default": "./dist/css/main.css"
     },
+    "./utilities.css": "./dist/css/utilities.css",
+    "./purge-manifest.json": "./dist/css/purge-manifest.json",
     "./aos.css": {
       "monorepo:dev": "./src/plugins/aos/scss/index.scss",
       "default": "./dist/css/aos.css"
@@ -236,6 +239,7 @@
     "@maz-ui/node": "workspace:^",
     "@maz-ui/stylelint-config": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
+    "@maz-ui/vite-plugin": "workspace:^",
     "@tailwindcss/cli": "^4.3.4",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/vite": "catalog:",
