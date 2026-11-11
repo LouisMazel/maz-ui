@@ -6,7 +6,16 @@ import { MazHome } from '@maz-ui/icons/lazy/MazHome'
 import { MazUser } from '@maz-ui/icons/lazy/MazUser'
 import { ref } from 'vue'
 
-const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast'] as const
+const colors = [
+  'primary',
+  'secondary',
+  'accent',
+  'info',
+  'success',
+  'warning',
+  'destructive',
+  'contrast',
+] as const
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', 'full'] as const
 
@@ -32,6 +41,9 @@ const dateValue = ref('2026-03-20')
 const expandOpen = ref(true)
 const btnGroupValue = ref('center')
 const radioBtnValue = ref('b')
+const segmentedValue = ref('b')
+const colorPickerValue = ref('#3b82f6')
+const listSwitch = ref(true)
 const checklistValue = ref(['vue'])
 const dialogOpen = ref(false)
 const bottomSheetOpen = ref(false)
@@ -63,10 +75,30 @@ const tableHeaders = [
   { label: 'Status', key: 'status' },
 ]
 const tableRows = [
-  { name: 'Alice Martin', email: 'alice@example.com', role: 'Admin', status: 'Active' },
-  { name: 'Bob Smith', email: 'bob@example.com', role: 'Editor', status: 'Active' },
-  { name: 'Carol White', email: 'carol@example.com', role: 'Viewer', status: 'Inactive' },
-  { name: 'David Lee', email: 'david@example.com', role: 'Admin', status: 'Active' },
+  {
+    name: 'Alice Martin',
+    email: 'alice@example.com',
+    role: 'Admin',
+    status: 'Active',
+  },
+  {
+    name: 'Bob Smith',
+    email: 'bob@example.com',
+    role: 'Editor',
+    status: 'Active',
+  },
+  {
+    name: 'Carol White',
+    email: 'carol@example.com',
+    role: 'Viewer',
+    status: 'Inactive',
+  },
+  {
+    name: 'David Lee',
+    email: 'david@example.com',
+    role: 'Admin',
+    status: 'Active',
+  },
 ]
 
 const timelineSteps: MazTimelineProps['steps'] = [
@@ -97,11 +129,26 @@ function makePlaceholder(color: string, label: string): string {
 }
 
 const galleryImages: MazGalleryImage[] = [
-  { src: makePlaceholder('#6366f1', 'Image 1'), alt: 'Placeholder 1' },
-  { src: makePlaceholder('#8b5cf6', 'Image 2'), alt: 'Placeholder 2' },
-  { src: makePlaceholder('#0ea5e9', 'Image 3'), alt: 'Placeholder 3' },
-  { src: makePlaceholder('#10b981', 'Image 4'), alt: 'Placeholder 4' },
-  { src: makePlaceholder('#f59e0b', 'Image 5'), alt: 'Placeholder 5' },
+  {
+    src: makePlaceholder('#6366f1', 'Image 1'),
+    alt: 'Placeholder 1',
+  },
+  {
+    src: makePlaceholder('#8b5cf6', 'Image 2'),
+    alt: 'Placeholder 2',
+  },
+  {
+    src: makePlaceholder('#0ea5e9', 'Image 3'),
+    alt: 'Placeholder 3',
+  },
+  {
+    src: makePlaceholder('#10b981', 'Image 4'),
+    alt: 'Placeholder 4',
+  },
+  {
+    src: makePlaceholder('#f59e0b', 'Image 5'),
+    alt: 'Placeholder 5',
+  },
 ]
 
 const avatarPlaceholder = makePlaceholder('#6366f1', 'JD')
@@ -785,7 +832,7 @@ const checklistItems = [
       </h2>
 
       <MazTabs v-model="tabValue">
-        <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features' }, { label: 'Pricing' }]" />
+        <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features', badge: { content: 3, color: 'primary', pastel: true, roundedSize: 'full' } }, { label: 'Pricing', indicator: { color: 'destructive', label: 'New prices' } }]" />
 
         <MazTabsContent>
           <MazTabsContentItem :tab="1" class="maz-py-4">
@@ -1359,6 +1406,74 @@ const checklistItems = [
             </template>
           </MazCard>
         </MazAnimatedElement>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazList
+      </h2>
+      <div class="maz:grid maz:gap-4 maz:md:grid-cols-2 maz:mb-4">
+        <MazList title="Settings" footer="Changes apply immediately.">
+          <MazListItem title="Wi-Fi" subtitle="Home network" clickable>
+            <template #end>
+              On
+            </template>
+          </MazListItem>
+          <MazListItem title="Notifications">
+            <template #actions>
+              <MazSwitch v-model="listSwitch" aria-label="Notifications" />
+            </template>
+          </MazListItem>
+          <MazListItem title="Advanced" collapsible>
+            Collapsible content
+          </MazListItem>
+        </MazList>
+        <MazList size="lg" :bordered="false">
+          <MazListItem title="Inbox" active />
+          <MazListItem title="Drafts" disabled clickable />
+        </MazList>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazColorPicker
+      </h2>
+      <div class="maz:flex maz:flex-col maz:items-start maz:gap-4 maz:mb-4">
+        <MazColorPicker v-model="colorPickerValue" label="Color" />
+        <MazColorPicker v-model="colorPickerValue" format="rgb" :alpha="false" :swatches="['#3b82f6', '#10b981', '#ef4444']" label="RGB with swatches" />
+        <MazColorPicker v-model="colorPickerValue" inline />
+        <MazColorPicker v-model="colorPickerValue" disabled label="Disabled" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazSegmented
+      </h2>
+      <div class="maz:flex maz:flex-col maz:items-start maz:gap-4 maz:mb-4">
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" aria-label="Segmented" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" color="primary" size="sm" aria-label="Segmented primary" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" rounded-size="full" block aria-label="Segmented block" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" disabled aria-label="Segmented disabled" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazIndicator
+      </h2>
+      <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-6 maz:mb-4">
+        <MazIndicator color="success" />
+        <MazIndicator :content="3" color="destructive" />
+        <MazIndicator :content="128" color="destructive" />
+        <MazIndicator :content="3" color="destructive">
+          <MazBtn>Inbox</MazBtn>
+        </MazIndicator>
+        <MazIndicator color="success" position="bottom-end" overlap="circular" pulse>
+          <MazAvatar caption="Louis Mazel" rounded-size="full" />
+        </MazIndicator>
       </div>
     </section>
 
