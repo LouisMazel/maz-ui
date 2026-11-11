@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion, resolveAgentDocsDir, createRequire } = vi.hoisted(() => {
+const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion, resolveAgentDocsDir, createRequire } = vi.hoisted(() => {
   const logger = {
     info: vi.fn(),
     warn: vi.fn(),
@@ -24,6 +24,8 @@ const { addComponent, addPlugin, addImports, addTemplate, resolvePath, createRes
     resolveAgentDocsDir: vi.fn((packageDir: string): string | undefined => `${packageDir}/agent-docs`),
     addComponent: vi.fn(),
     addPlugin: vi.fn(),
+    addVitePlugin: vi.fn(),
+    MazUiPurgeCss: vi.fn((options: Record<string, unknown>) => ({ name: 'maz-ui:purge-css', options })),
     addTemplate: vi.fn(),
     resolvePath: vi.fn((path: string) => Promise.resolve(`/project/${path.replace('~/', '')}`)),
     addImports: vi.fn(),
@@ -48,12 +50,17 @@ vi.mock('node:module', async importOriginal => ({
 vi.mock('@nuxt/kit', () => ({
   addComponent,
   addPlugin,
+  addVitePlugin,
   addImports,
   addTemplate,
   resolvePath,
   createResolver,
   defineNuxtModule,
   useLogger,
+}))
+
+vi.mock('@maz-ui/vite-plugin', () => ({
+  MazUiPurgeCss,
 }))
 
 vi.mock('@maz-ui/node', () => ({
@@ -110,6 +117,8 @@ describe('nuxt module', () => {
     it('should have correct css defaults', () => {
       expect(config.defaults.css).toEqual({
         injectCss: true,
+        injectUtilities: false,
+        purge: true,
       })
     })
 
@@ -313,6 +322,84 @@ describe('nuxt module', () => {
           css: { injectCss: false },
         })
         expect(nuxt.options.css).not.toContain('maz-ui/style.css')
+      })
+
+      describe('given the utilities option', () => {
+        describe('when injectUtilities is enabled', () => {
+          it('then maz-ui/utilities.css is injected after maz-ui/style.css', () => {
+            const { nuxt } = callSetup({
+              css: { injectUtilities: true },
+            })
+
+            expect(nuxt.options.css).toEqual(['maz-ui/style.css', 'maz-ui/utilities.css'])
+          })
+        })
+
+        describe('when injectUtilities keeps its default', () => {
+          it('then maz-ui/utilities.css is not injected', () => {
+            const { nuxt } = callSetup()
+
+            expect(nuxt.options.css).not.toContain('maz-ui/utilities.css')
+          })
+        })
+      })
+
+      describe('given the purge option', () => {
+        describe('when the app is built with the defaults', () => {
+          it('then the purge plugin is added with the entries of the enabled plugins and directives', () => {
+            callSetup({
+              plugins: { toast: true, dialog: false },
+              directives: { vTooltip: true },
+            })
+
+            expect(MazUiPurgeCss).toHaveBeenCalledWith({
+              entries: ['plugins/toast', 'directives/vTooltip'],
+            })
+            expect(addVitePlugin).toHaveBeenCalledWith({
+              name: 'maz-ui:purge-css',
+              options: {
+                entries: ['plugins/toast', 'directives/vTooltip'],
+              },
+            })
+          })
+        })
+
+        describe('when purge is an object', () => {
+          it('then its options are passed and its entries are merged', () => {
+            callSetup({
+              css: {
+                purge: {
+                  safelist: ['maz:p-2'],
+                  entries: ['MazBtn'],
+                },
+              },
+              plugins: { wait: true },
+            })
+
+            expect(MazUiPurgeCss).toHaveBeenCalledWith({
+              safelist: ['maz:p-2'],
+              entries: ['plugins/wait', 'MazBtn'],
+            })
+          })
+        })
+
+        describe('when purge is false', () => {
+          it('then the purge plugin is not added', () => {
+            callSetup({
+              css: { purge: false },
+            })
+
+            expect(addVitePlugin).not.toHaveBeenCalled()
+          })
+        })
+
+        describe('when the app runs in dev', () => {
+          it('then the purge plugin is not added', () => {
+            callSetup({}, {}, { dev: true })
+
+            expect(addVitePlugin).not.toHaveBeenCalled()
+          })
+        })
       })
 
       it('should disable cssnano calc optimization', () => {
