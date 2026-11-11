@@ -1,6 +1,7 @@
 import { useMazInputPhoneNumber } from '@components/MazInputPhoneNumber/useMazInputPhoneNumber'
+import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
-const { fetchCountryCode, getBrowserLocale } = useMazInputPhoneNumber()
+const { fetchCountryCode, getBrowserLocale, getCountryList, sanitizePhoneNumber } = useMazInputPhoneNumber()
 
 vi.mock('libphonenumber-js', () => ({
   parsePhoneNumberFromString: vi.fn(),
@@ -70,6 +71,75 @@ describe('unit Tests for useMazInputPhoneNumber.ts', () => {
 
         const result = getBrowserLocale()
         expect(result).toEqual({ locale: 'JP', browserLocale: 'ja' })
+      })
+    })
+    describe.each([
+      { language: 'zh', locale: 'CN' },
+      { language: 'ca', locale: 'ES' },
+      { language: 'ar', locale: 'EG' },
+      { language: 'ko', locale: 'KR' },
+    ])('when navigator language is $language without region', ({ language, locale }) => {
+      it(`returns ${locale} as locale`, () => {
+        Object.defineProperty(globalThis.navigator, 'language', {
+          value: language,
+          configurable: true,
+        })
+
+        expect(getBrowserLocale()).toEqual({ locale, browserLocale: language })
+      })
+    })
+
+    describe('when navigator language has a numeric region (es-419)', () => {
+      it('returns no locale', () => {
+        Object.defineProperty(globalThis.navigator, 'language', {
+          value: 'es-419',
+          configurable: true,
+        })
+
+        expect(getBrowserLocale()).toEqual({ locale: undefined, browserLocale: 'es-419' })
+      })
+    })
+
+    describe('when navigator language is not a valid language tag', () => {
+      it('returns no locale', () => {
+        Object.defineProperty(globalThis.navigator, 'language', {
+          value: 'not a locale',
+          configurable: true,
+        })
+
+        expect(getBrowserLocale()).toEqual({ locale: undefined, browserLocale: 'not a locale' })
+      })
+    })
+  })
+
+  describe('sanitizePhoneNumber', () => {
+    describe.each([
+      { label: 'full-width digits', input: '０９０１２３４５６７８', expected: '09012345678' },
+      { label: 'arabic-indic digits', input: '٠٦٥٨', expected: '0658' },
+      { label: 'extended arabic-indic digits', input: '۰۶۵۸', expected: '0658' },
+      { label: 'letters and dots', input: '+33 6.58-ab(58)', expected: '+33 658-(58)' },
+    ])('when the input contains $label', ({ input, expected }) => {
+      it(`returns ${expected}`, () => {
+        expect(sanitizePhoneNumber(input)).toBe(expected)
+      })
+    })
+  })
+
+  describe('getCountryList', () => {
+    describe('when it is called twice with the same locale', () => {
+      it('then it builds the list once and returns independent copies', () => {
+        vi.mocked(getCountries).mockReturnValue(['FR', 'BE'])
+        vi.mocked(getCountryCallingCode).mockImplementation(code => (code === 'FR'
+          ? '33'
+          : '32') as never)
+
+        const first = getCountryList('de-DE')
+        first.reverse()
+        const second = getCountryList('de-DE')
+
+        expect(second.map(country => country.code)).toEqual(['FR', 'BE'])
+        expect(second).not.toBe(first)
+        expect(getCountries).toHaveBeenCalledTimes(1)
       })
     })
   })

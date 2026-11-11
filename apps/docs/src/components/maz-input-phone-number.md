@@ -306,6 +306,8 @@ Let the component automatically detect the user's country.
 </template>
 </ComponentDemo>
 
+The detected country is only selected when it belongs to the offered countries (`only-countries`, `ignored-countries`). The browser locale is resolved to its region (`fr` gives `FR`, `ca` gives `ES`). With `fetch-country`, the country of the IP address replaces the one of the browser locale, unless the user or the parent changes the country or the phone number during the request.
+
 ## Phone Number Formatting
 
 Control how phone numbers are automatically formatted as users type.
@@ -845,7 +847,7 @@ function handlePhoneData(results) {
   // - formatNational: string
   // - formatInternational: string
   // - e164: string
-  // - type: 'mobile' | 'fixedLine' | etc.
+  // - ext: string (extension of the phone number)
   // - and more...
 }
 </script>
@@ -861,6 +863,32 @@ function handlePhoneData(results) {
 
 </template>
 </ComponentDemo>
+
+The `v-model` receives the E.164 format (`+33612345678`) when the phone number is valid, and the typed value while it is incomplete or invalid. A valid value with an extension set by the parent (`+33612345678 ext. 123`) is kept as is, the extension is available in the `ext` field of the results.
+
+## Focus the input
+
+The component exposes `focus()` (focuses the phone number input) and `results` (the metadata of the current phone number, as emitted by `@data`).
+
+```vue
+<script setup lang="ts">
+import { useTemplateRef } from 'vue'
+
+const phoneInput = useTemplateRef('phoneInput')
+
+function onSubmitError() {
+  phoneInput.value?.focus()
+}
+</script>
+
+<template>
+  <MazInputPhoneNumber ref="phoneInput" />
+</template>
+```
+
+## Accessibility
+
+The phone number input gets `aria-invalid` when the phone number is invalid (with `validation-error`, the default) and `aria-describedby` pointing to the `assistive-text`, merged with your own `aria-describedby`. The assistive text is announced when it changes (`aria-live="polite"`).
 
 ## Troubleshooting
 
@@ -889,6 +917,20 @@ Make sure to enable the right detection method:
 <MazInputPhoneNumber country-code="US" />
 ```
 
+### 🖥️ Server-side rendering (Nuxt)
+
+Without `country-locale`, the country names use the browser locale: the list of countries is then built on the client only, to avoid a hydration mismatch. Set `country-locale` to render the list on the server too:
+
+```vue
+<MazInputPhoneNumber country-locale="fr-FR" />
+```
+
+A country detected from the browser locale or the IP address is only known on the client.
+
+### 🏷️ The `type` field is undefined
+
+The component uses the `min` metadata of `libphonenumber-js`, which does not include the number types: `type` is usually `undefined`. Use `isValid` and `possibleCountries` instead.
+
 ## Types
 
 **Results object emitted by `@data` event:**
@@ -897,7 +939,8 @@ Make sure to enable the right detection method:
 interface MazInputPhoneNumberData {
   isValid: boolean
   isPossible?: boolean
-  countryCode?: CountryCode
+  countryCode?: CountryCode | null
+  parsedCountryCode?: CountryCode | null
   countryCallingCode?: CountryCallingCode
   nationalNumber?: NationalNumber
   type?: NumberType
@@ -907,7 +950,8 @@ interface MazInputPhoneNumberData {
   e164?: string
   rfc3966?: string
   possibleCountries?: CountryCode[]
-  phoneNumber?: string
+  phoneNumber?: string | null
+  ext?: string
 }
 ```
 
