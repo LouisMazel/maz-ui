@@ -61,6 +61,36 @@ describe('given the maz-ui-mcp CLI', () => {
     })
   })
 
+  describe('when the colors command is run', () => {
+    it('then it prints the effective colors of the project presets', async () => {
+      const cwd = createTempDir()
+
+      writeFile(cwd, 'package.json', '{}')
+      writeFile(cwd, 'src/preset.ts', 'export const brand = definePreset({ base: \'ocean\', overrides: { name: \'brand\' } })')
+
+      expect(await runCli(['colors', '--cwd', cwd])).toBe(0)
+      expect(logged()).toContain('### Effective colors of `brand` (`src/preset.ts`)')
+    })
+
+    it('then it prints a bundled preset with the given colors and steps', async () => {
+      expect(await runCli([
+        'colors',
+        'nova',
+        '--colors',
+        'primary, accent',
+        '--steps',
+        '100,900',
+      ])).toBe(0)
+      expect(logged()).toContain('| `accent-900` |')
+      expect(logged()).not.toContain('| `accent-500` |')
+    })
+
+    it('then an unknown preset is an error', async () => {
+      expect(await runCli(['colors', 'nope'])).toBe(1)
+      expect(errored()).toContain('Unknown preset "nope"')
+    })
+  })
+
   describe('when no command is given', () => {
     it('then it starts the stdio server and keeps the process alive', async () => {
       const cwd = createTempDir()

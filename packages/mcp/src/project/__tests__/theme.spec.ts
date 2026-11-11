@@ -51,6 +51,7 @@ export const brandPreset = definePreset({
       light: { 'primary': '#C7330F', 'primary-foreground': '#FFFFFF', 'shadow': '#000' },
       dark: { primary: '#FF5A36' },
     },
+    typography: { 'title-1': { size: '2.25rem', tracking: '-0.03em' } },
     components: {
       container: { bg: { light: '#FFFFFF', dark: '#141B5E' } },
       btn: { 'font-weight': '700' },
@@ -212,6 +213,13 @@ describe('given renderProjectTheme', () => {
   })
 
   describe('when topics are given', () => {
+    it('then the type-scale topic lists the typography of the preset', () => {
+      const output = renderProjectTheme(projectTheme(), tailwind, ['type-scale']) as string
+
+      expect(output).toContain('| `text-title-1` | `size` | `--maz-typography-title-1-size` | `2.25rem` |')
+      expect(output).toContain('| `text-title-1` | `tracking` | `--maz-typography-title-1-tracking` | `-0.03em` |')
+    })
+
     it('then only the matching parts of the project theme are rendered', () => {
       const output = renderProjectTheme(projectTheme(), tailwind, ['radius']) as string
 

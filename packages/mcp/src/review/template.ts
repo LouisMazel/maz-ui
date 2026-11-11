@@ -574,8 +574,56 @@ function checkMazTag(element: ElementNode, mazName: string, source: string, cont
   }, element.loc.start.offset)
 }
 
+function hasProp(element: ElementNode, name: string): boolean {
+  return element.props.some(prop => prop.type === NodeTypes.ATTRIBUTE
+    ? toCamel(prop.name) === name
+    : prop.name === 'bind' && directiveArg(prop) !== undefined && toCamel(directiveArg(prop)!) === name)
+}
+
+/** A `MazBtn` with the solid primary look: the default color (or `primary`), not outlined nor pastel */
+function isSolidPrimaryButton(element: ElementNode): boolean {
+  const color = staticAttribute(element, 'color')?.value?.content
+
+  return (color === undefined || color === 'primary')
+    && ![
+      'color',
+      'outlined',
+      'pastel',
+      'fab',
+    ].some(name => (name === 'color'
+      ? element.props.some(prop => prop.type === NodeTypes.DIRECTIVE && prop.name === 'bind' && directiveArg(prop) === 'color')
+      : hasProp(element, name)))
+}
+
+/** Several solid primary buttons side by side: one main action per group */
+function checkActionHierarchy(buttons: ElementNode[], context: ReviewContext): void {
+  const solid = buttons.filter(isSolidPrimaryButton)
+
+  if (solid.length < 2)
+    return
+
+  context.report({
+    rule: 'multiple-primary-actions',
+    severity: 'info',
+    message: `${solid.length} solid primary \`MazBtn\` side by side: the main action does not stand out.`,
+    suggestion: 'Keep one solid `color="primary"` button for the main action; make the others `outlined`, `pastel` or `color="contrast" outlined`, and use a `MazLink` for cancel or back.',
+  }, solid[1].loc.start.offset)
+}
+
+/** A raw icon is an SVG string: used as a tag it renders nothing */
+function checkRawIconTag(element: ElementNode, name: string, context: ReviewContext): void {
+  context.report({
+    rule: 'raw-icon-tag',
+    severity: 'error',
+    message: `\`${name}\` is imported from \`@maz-ui/icons/raw\` (an SVG string, for \`icon\` props): used as a tag it renders nothing.`,
+    suggestion: `In a template, import the component from \`@maz-ui/icons/static/${name}\`, or keep the raw import and pass it to a prop: \`<MazBtn :icon="${name}" />\`.`,
+  }, element.loc.start.offset)
+}
+
 /** Walks the template; `background` is the closest background set by a parent (for `text-white` on `bg-overlay`) */
 function walk(node: ElementNode | RootNode, source: string, context: ReviewContext, background?: Background): void {
+  const buttons: ElementNode[] = []
+
   for (const child of node.children) {
     if (!isElement(child))
       continue
@@ -587,14 +635,21 @@ function walk(node: ElementNode | RootNode, source: string, context: ReviewConte
       ? mazTagName(context.localComponents.get(pascal) ?? '')
       : mazTagName(child.tag)
 
-    if (mazName)
+    if (pascal && context.rawIcons?.has(pascal))
+      checkRawIconTag(child, pascal, context)
+    else if (mazName)
       checkMazTag(child, mazName, source, context)
     else
       checkNativeElement(child, context)
 
+    if (mazName === 'MazBtn')
+      buttons.push(child)
+
     checkClassBindings(child, source, context, background)
     walk(child, source, context, backgroundOf(staticAttribute(child, 'class')?.value?.content ?? '') ?? background)
   }
+
+  checkActionHierarchy(buttons, context)
 }
 
 export function reviewTemplate(root: ElementNode | RootNode, source: string, context: ReviewContext): void {

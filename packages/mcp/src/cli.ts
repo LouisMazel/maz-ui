@@ -1,4 +1,5 @@
 import type { AgentTarget, SetupAgentsChange } from '@maz-ui/node'
+import type { ColorScaleStep } from '@maz-ui/themes/utils/resolve-preset'
 import type { Framework, Severity } from './review'
 
 import { Buffer } from 'node:buffer'
@@ -19,6 +20,7 @@ Usage:
   maz-ui-mcp init [options]           Configure the AI agents of this project for maz-ui
   maz-ui-mcp review <paths...>        Review files against maz-ui (CI friendly)
   maz-ui-mcp search <query>           Search the maz-ui docs from the terminal
+  maz-ui-mcp colors [preset]          Effective colors of the project presets (or of a bundled preset), with their contrasts
 
 init options:
   --targets <list>    Comma separated: ${AGENT_TARGETS.join(', ')} (default: detected, else claude,agents-md)
@@ -27,6 +29,10 @@ init options:
   --no-mcp            Do not register the MCP server
   --dry-run           Show the changes without writing them
   --remove            Remove what init added
+
+colors options:
+  --colors <list>     Comma separated colors to detail (oklch and contrasts of every step), e.g. accent,primary
+  --steps <list>      Comma separated steps, e.g. 100,500,900
 
 review options:
   --min-severity <s>  error | warning | info (default info)
@@ -226,6 +232,25 @@ export async function runReview(values: Record<string, unknown>, positionals: st
     : 0
 }
 
+async function runColors(values: { colors?: string, steps?: string }, [preset]: string[], cwd: string): Promise<number> {
+  const [{ readProjectTheme }, { BUNDLED_PRESETS, renderEffectiveColors }] = await Promise.all([import('./project/theme'), import('./project/resolved-theme')])
+  const list = (value?: string): string[] | undefined => value?.split(',').map(item => item.trim()).filter(Boolean)
+
+  if (preset && !Object.hasOwn(BUNDLED_PRESETS, preset)) {
+    console.error(`Unknown preset "${preset}": ${Object.keys(BUNDLED_PRESETS).join(', ')}.`)
+    return 1
+  }
+
+  console.log(renderEffectiveColors(preset
+    ? []
+    : readProjectTheme(cwd).presets, {
+    preset: preset as keyof typeof BUNDLED_PRESETS | undefined,
+    colors: list(values.colors),
+    steps: list(values.steps) as ColorScaleStep[] | undefined,
+  }))
+  return 0
+}
+
 export async function runCli(argv: string[] = process.argv.slice(2)): Promise<number> {
   const { values, positionals } = parseArgs({
     args: argv,
@@ -245,6 +270,8 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<nu
       'format': { type: 'string' },
       'max-warnings': { type: 'string' },
       'hook': { type: 'boolean' },
+      'colors': { type: 'string' },
+      'steps': { type: 'string' },
       'version': { type: 'boolean', short: 'v' },
       'help': { type: 'boolean', short: 'h' },
     },
@@ -285,6 +312,8 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<nu
       console.log(searchDocs(context, { query: rest.join(' ') || 'button' }))
       return 0
     }
+    case 'colors':
+      return runColors(values, rest, cwd)
     default:
       console.error(`Unknown command "${command}".\n\n${HELP}`)
       return 1
