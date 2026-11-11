@@ -58,7 +58,7 @@ function onKeyDown(event: KeyboardEvent) {
   <div class="m-sidebar-menu-sub m-reset-css">
     <button
       type="button"
-      class="m-sidebar-menu-sub__trigger maz:relative maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-2 maz:rounded-md maz:bg-transparent maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:py-2 maz:font-medium maz:text-foreground maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:bg-surface-600 maz:focus-visible:outline-2 maz:focus-visible:outline-offset-1 maz:focus-visible:outline-primary maz:motion-reduce:transition-none maz:dark:hover:bg-surface-800/20"
+      class="m-sidebar-menu-sub__trigger maz:relative maz:flex maz:w-full maz:cursor-interactive maz:items-center maz:gap-2 maz:rounded-md maz:bg-transparent maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:py-2 maz:font-medium maz:text-foreground maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:bg-surface-600 maz:focus-visible:outline-2 maz:focus-visible:outline-offset-1 maz:focus-visible:outline-primary maz:motion-reduce:transition-none maz:dark:hover:bg-surface-800/20"
       :aria-expanded="isOpen"
       :aria-controls="subMenuId"
       :aria-label="label"

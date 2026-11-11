@@ -2,11 +2,14 @@
 import { useInjectStrict } from '../composables/useInjectStrict'
 import { mazSidebarKey } from './MazSidebar.vue'
 
-useInjectStrict(mazSidebarKey, undefined, '[maz-ui](MazSidebarHeader) Must be used inside MazSidebar')
+const sidebar = useInjectStrict(mazSidebarKey, undefined, '[maz-ui](MazSidebarHeader) Must be used inside MazSidebar')
 </script>
 
 <template>
-  <header class="m-sidebar-header m-reset-css maz:shrink-0 maz:border-b maz:border-divider">
+  <header
+    class="m-sidebar-header m-reset-css maz:shrink-0"
+    :class="{ 'maz:border-b maz:border-divider': sidebar.variant.value !== 'floating' }"
+  >
     <slot />
   </header>
 </template>

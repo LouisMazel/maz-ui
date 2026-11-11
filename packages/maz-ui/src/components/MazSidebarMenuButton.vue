@@ -20,7 +20,8 @@ export interface MazSidebarMenuButtonProps {
   /** Label text */
   label?: string
   /**
-   * Badge content. Pass a `string`/`number` for a simple primary badge, or a full
+   * Badge content. Pass a `string`/`number` for a simple primary badge (a plain
+   * secondary count in the `floating` variant, like the sidebars of macOS), or a full
    * `MazBadgeProps` object (with optional `text`) to customise color, size, outlined, …
    */
   badge?: MazSidebarMenuButtonBadge
@@ -60,6 +61,7 @@ defineEmits<{
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
+const MazIndicator = defineAsyncComponent(() => import('./MazIndicator.vue'))
 
 const sidebar = useInjectStrict(
   mazSidebarKey,
@@ -107,6 +109,14 @@ const badgeBindings = computed<Partial<MazBadgeProps>>(() => {
   return { size: 'sm', roundedSize: 'full', ...rest }
 })
 
+/** Collapsed to its icon, the badge leaves a dot of its color on the icon */
+const collapsedIndicatorColor = computed(() => {
+  const badgeColor = badgeBindings.value.color
+  return badgeColor && badgeColor !== 'surface' && badgeColor !== 'container' && badgeColor !== 'transparent'
+    ? badgeColor
+    : 'primary'
+})
+
 const effectiveTooltipMode = computed<MazSidebarTooltipMode>(
   () => tooltipMode ?? sidebar.tooltipMode.value,
 )
@@ -143,16 +153,29 @@ const routerActiveClass = computed(() => {
 })
 
 const isActive = computed(() => active === true)
+
+/** The floating variant follows the native sidebars: neutral selection, no hover fill, accent-colored icons. */
+const stateClass = computed(() => {
+  if (sidebar.variant.value === 'floating') {
+    return [
+      'maz:font-normal maz:text-foreground',
+      isActive.value ? 'maz:cursor-auto maz:bg-foreground/9' : 'maz:cursor-interactive maz:bg-transparent',
+    ]
+  }
+  return isActive.value
+    ? 'maz:cursor-auto maz:bg-primary/10 maz:font-semibold maz:text-primary'
+    : 'maz:cursor-interactive maz:bg-transparent maz:font-medium maz:text-foreground maz:hover:not-disabled:bg-surface-600 maz:dark:not-disabled:hover:bg-surface-400'
+})
 </script>
 
 <template>
   <component
     :is="tag"
     v-tooltip="tooltipBinding"
-    class="m-sidebar-menu-btn m-reset-css maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:rounded-md maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:no-underline maz:transition-colors maz:duration-150 maz:ease-in-out maz:focus-visible:outline-2 maz:focus-visible:outline-offset-1 maz:focus-visible:outline-primary maz:disabled:cursor-not-allowed maz:disabled:opacity-50 maz:motion-reduce:transition-none"
+    class="m-sidebar-menu-btn m-reset-css maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:rounded-md maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-var(--maz-sidebar-inset,0rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:no-underline maz:transition-colors maz:duration-150 maz:ease-in-out maz:focus-visible:outline-2 maz:focus-visible:outline-offset-1 maz:focus-visible:outline-primary maz:disabled:cursor-not-allowed maz:disabled:opacity-50 maz:motion-reduce:transition-none"
     :class="[
       SIZE_CLASS[size],
-      isActive ? 'maz:cursor-auto maz:bg-primary/10 maz:font-semibold maz:text-primary' : 'maz:cursor-pointer maz:bg-transparent maz:font-medium maz:text-foreground maz:hover:not-disabled:bg-surface-600 maz:dark:not-disabled:hover:bg-surface-400',
+      stateClass,
       routerActiveClass,
       {
         '--active': isActive,
@@ -167,10 +190,17 @@ const isActive = computed(() => active === true)
     v-bind="linkProps"
     @click="!disabled && $emit('click', $event)"
   >
-    <span v-if="iconProps || hasSlotContent($slots.icon)" class="m-sidebar-menu-btn__icon maz:flex maz:shrink-0 maz:flex-center">
+    <span v-if="iconProps || hasSlotContent($slots.icon)" class="m-sidebar-menu-btn__icon maz:relative maz:flex maz:shrink-0 maz:flex-center" :class="{ 'maz:text-primary': sidebar.variant.value === 'floating' }">
       <slot name="icon">
         <MazIcon v-if="iconProps" v-bind="iconProps" />
       </slot>
+      <MazIndicator
+        v-if="isIconCollapsed && badgeText !== undefined && badgeText !== '' && badgeText !== 0"
+        attached
+        :color="collapsedIndicatorColor"
+        size="xs"
+        :bordered="false"
+      />
     </span>
 
     <span
@@ -185,7 +215,8 @@ const isActive = computed(() => active === true)
       v-if="!isIconCollapsed && badgeText !== undefined"
       class="m-sidebar-menu-btn__badge maz:ml-auto maz:shrink-0"
     >
-      <MazBadge v-bind="badgeBindings">{{ badgeText }}</MazBadge>
+      <span v-if="sidebar.variant.value === 'floating' && typeof badge !== 'object'" class="maz:text-xs maz:text-muted maz:tabular-nums">{{ badgeText }}</span>
+      <MazBadge v-else v-bind="badgeBindings">{{ badgeText }}</MazBadge>
     </span>
   </component>
 </template>
