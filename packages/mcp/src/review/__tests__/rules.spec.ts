@@ -2,8 +2,16 @@ import type { ComponentApi } from '../../knowledge/schema'
 import type { Finding, Framework } from '../index'
 
 import { getKnowledge } from '../../__tests__/helpers'
+import { Knowledge } from '../../knowledge/load'
 import { reviewCode } from '../index'
 import { propSuggestions } from '../template'
+
+function withoutTailwind(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: { ...loaded.fragment, tailwind: undefined },
+  })))
+}
 
 function review(code: string, filename = 'Test.vue', framework?: Framework): Finding[] {
   return reviewCode(code, {
@@ -772,10 +780,9 @@ describe('given the type-scale rule', () => {
 
   describe('when the installed maz-ui has no type scale', () => {
     it('then nothing is reported', () => {
-      const knowledge = getKnowledge()
       const findings = reviewCode(template('<p class="text-xs text-muted">a</p>'), {
         filename: 'Test.vue',
-        knowledge: { ...knowledge, tailwind: undefined },
+        knowledge: withoutTailwind(),
       })
 
       expect(findings).toEqual([])
@@ -793,10 +800,9 @@ describe('given the arbitrary-font-size rule', () => {
     })
 
     it('then without type scale it suggests the Tailwind sizes', () => {
-      const knowledge = getKnowledge()
       const [finding] = reviewCode(template('<p class="text-[13px]">a</p>'), {
         filename: 'Test.vue',
-        knowledge: { ...knowledge, tailwind: undefined },
+        knowledge: withoutTailwind(),
       })
 
       expect(finding.suggestion).toContain('`text-xs` to `text-9xl`')
