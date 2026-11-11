@@ -1,5 +1,25 @@
 # Changelog
 
+## v5.7.0-beta.1 (2026-11-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.0...v5.7.0-beta.1)
+
+### 🚀 Features
+
+- **mcp:** Show the effective theme colors and review brand colors, type scale and raw icons ([8f4074c9f](https://github.com/LouisMazel/maz-ui/commit/8f4074c9f))
+
+  - `get_theme_tokens` shows the effective colors of the project preset, or of a bundled one with `preset`: every color and step in light and dark, with the WCAG contrasts and what to check. `colors` and `steps` narrow the output
+  - New `maz-ui-mcp colors [preset]` command
+  - New `get_theme_tokens` topics: `container-queries`, `layout`, `type-scale` and `rich-text`
+  - New review rules: `pale-brand-color`, `type-scale`, `arbitrary-font-size`, `multiple-primary-actions` and `raw-icon-tag` (a `@maz-ui/icons/raw` import used as a tag renders nothing)
+  - `theme-colors` flags `bg-background` and suggests `surface`
+  - More search synonyms, and the `base-font-size` hint points to `noArbitraryPx.baseFontSize` of `@maz-ui/eslint-config`
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+
 ## v5.7.0-beta.0 (2026-11-09)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)

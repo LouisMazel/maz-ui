@@ -1,5 +1,23 @@
 # Change Log
 
+## v5.7.0-beta.1 (2026-11-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.0...v5.7.0-beta.1)
+
+### 🚀 Features
+
+- **utils:** Add fuzzy search and string similarity helpers ([b6dc2c8ca](https://github.com/LouisMazel/maz-ui/commit/b6dc2c8ca))
+
+  - `fuzzySearch(items, query, options)` and `createFuzzySearch(items, options)`: tolerant search in a list, by relevance or in the original order (`sort: 'original'`), on several weighted keys, accents and case ignored, with a tolerance to typos (`typoThreshold`)
+  - `highlightMatches(text, indexes)` splits a result into highlighted and plain parts
+  - `levenshteinDistance`, `getMatchingScore` and `isStringMatching` in `@maz-ui/utils/helpers/stringMatching`
+  - `normalizeString` removes the accents of the letters without decomposition (`ø`, `ł`, `đ`, `æ`, `ß`...)
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+
 ## v5.7.0-beta.0 (2026-11-09)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)

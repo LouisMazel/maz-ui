@@ -1,5 +1,22 @@
 # Change Log
 
+## v5.7.0-beta.1 (2026-11-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.0...v5.7.0-beta.1)
+
+### 🚀 Features
+
+- **nuxt:** Purge the unused CSS of maz-ui and auto-import the new components ([3278e4bd7](https://github.com/LouisMazel/maz-ui/commit/3278e4bd7))
+
+  - `css.purge` (default `true`) adds `MazUiPurgeCss` of `@maz-ui/vite-plugin` to the production builds, with the enabled plugins and directives as entries. Set `false` to disable it, or an object for its options (`safelist`, `entries`) when components are resolved at runtime from strings
+  - `css.injectUtilities` (default `false`) injects `maz-ui/utilities.css`
+  - Auto-import of `MazInputAutocomplete`, `MazColorPicker`, `MazIndicator`, `MazList`, `MazListItem`, `MazProgressBar`, `MazSegmented` and `useFuzzySearch`
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+
 ## v5.7.0-beta.0 (2026-11-09)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)
