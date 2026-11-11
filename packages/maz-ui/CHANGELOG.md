@@ -57,7 +57,6 @@
   - `MazTabsBar`: `indicator` per item, a `true` badge renders a dot and `false` hides it. `MazCodeHighlight`: `colorMode` prop (`auto` follows the closest `.dark` ancestor)
   - Titles, labels and hints use the type scale of the theme, `MazMarkdownEditor` previews with `rich-text`, controls use the themable cursor and scroll areas the themed scrollbar
 
-
 ### 🩹 Fixes
 
 - **maz-ui:** MazInputPhoneNumber applies the v-model set right after mount ([ab5a90025](https://github.com/LouisMazel/maz-ui/commit/ab5a90025))
@@ -99,7 +98,6 @@
 ### ❤️ Contributors
 
 - LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
-
 
 ## v5.7.0-beta.0 (2026-11-09)
 

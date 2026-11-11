@@ -17,7 +17,6 @@
 
 - LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
 
-
 ## @maz-ui/eslint-config@5.5.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/eslint-config@5.4.0...@maz-ui/eslint-config@5.5.0)

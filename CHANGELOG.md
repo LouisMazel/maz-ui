@@ -106,7 +106,6 @@
   - `theme-colors` flags `bg-background` and suggests `surface`
   - More search synonyms, and the `base-font-size` hint points to `noArbitraryPx.baseFontSize` of `@maz-ui/eslint-config`
 
-
 ### 🩹 Fixes
 
 - **maz-ui:** MazInputPhoneNumber applies the v-model set right after mount ([ab5a90025](https://github.com/LouisMazel/maz-ui/commit/ab5a90025))
@@ -148,7 +147,6 @@
 ### ❤️ Contributors
 
 - LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
-
 
 ## v5.7.0-beta.0 (2026-11-09)
 
