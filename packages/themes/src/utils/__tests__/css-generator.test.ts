@@ -435,6 +435,26 @@ describe('given generateCSS function', () => {
         expect(css).not.toContain('@supports')
       })
     })
+
+    describe('when a role has no keyword', () => {
+      it('then only the roles with a keyword are emitted', () => {
+        const css = generateCSS({
+          ...mazUi,
+          systemColors: {
+            primary: undefined,
+            foreground: '-apple-system-label',
+          },
+        }, {
+          prefix: 'maz',
+          mode: 'both',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).toContain('@supports (color: -apple-system-label) {\n    :root {\n      --maz-foreground: -apple-system-label;\n    }\n  }')
+        expect(css).not.toContain('--maz-primary: undefined')
+      })
+    })
   })
 
   describe('given the glass material', () => {
@@ -1139,6 +1159,19 @@ describe('given a preset typography', () => {
       expect(css).toContain('--maz-typography-caption-color: var(--maz-foreground);')
       expect(css).not.toContain('--maz-typography-title-1-leading')
       expect(css).not.toContain('--maz-typography-body-')
+    })
+  })
+
+  describe('when the preset has no typography', () => {
+    it('then no typography variable is emitted', () => {
+      const css = generateCSS({ ...mazUi, typography: undefined }, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      expect(css).not.toContain('--maz-typography-')
     })
   })
 })
