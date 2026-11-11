@@ -87,6 +87,12 @@ export const PACKAGES: { name: string, description: string, link: string, snippe
     link: '/ecosystem/nuxt',
   },
   {
+    name: '@maz-ui/vite-plugin',
+    description: 'Vite plugin that removes the CSS of the components and utilities your app does not use: up to half of the CSS on a small app. Built into the Nuxt module.',
+    link: '/ecosystem/vite-plugin',
+    snippet: 'vitePlugin',
+  },
+  {
     name: '@maz-ui/themes',
     description: 'Theme presets, definePreset and useTheme: the OKLCH theme engine that styles this page.',
     link: '/ecosystem/themes',
@@ -208,6 +214,30 @@ export const NEW_MODULES: HomeModule[] = [
     kind: 'Component',
     description: 'Step and progress timeline, horizontal, vertical or responsive.',
     link: '/components/maz-timeline',
+  },
+  {
+    name: 'MazList',
+    kind: 'Component',
+    description: 'Grouped rows in a rounded block: settings, navigation, collapsible lists.',
+    link: '/components/maz-list',
+  },
+  {
+    name: 'MazSegmented',
+    kind: 'Component',
+    description: 'Segmented control with a sliding indicator and keyboard navigation.',
+    link: '/components/maz-segmented',
+  },
+  {
+    name: 'MazColorPicker',
+    kind: 'Component',
+    description: 'Color field with a picker panel: saturation, hue, opacity, eye dropper and swatches.',
+    link: '/components/maz-color-picker',
+  },
+  {
+    name: 'MazIndicator',
+    kind: 'Component',
+    description: 'Status dot or counter, inline or on the corner of an avatar, a button or an icon.',
+    link: '/components/maz-indicator',
   },
   {
     name: 'MazSidebar',

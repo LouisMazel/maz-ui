@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getPerceptualColorScale } from '@maz-ui/themes/utils/css-generator'
+import { getPerceptualColorScale, getRelativeColorScale } from '@maz-ui/themes/utils/css-generator'
 
 const STEPS = [
   '50',
@@ -15,32 +15,16 @@ const STEPS = [
   '950',
 ] as const
 
-// Same offsets as the relative scale of maz-ui/tailwindcss/theme-colors.css
-const RELATIVE_SCALE: Record<string, { lightness: number, chroma: number }> = {
-  50: { lightness: 0.4, chroma: 0.1 },
-  100: { lightness: 0.32, chroma: 0.35 },
-  200: { lightness: 0.22, chroma: 0.7 },
-  300: { lightness: 0.13, chroma: 1 },
-  400: { lightness: 0.06, chroma: 1 },
-  600: { lightness: -0.05, chroma: 1 },
-  700: { lightness: -0.1, chroma: 1 },
-  800: { lightness: -0.16, chroma: 0.9 },
-  900: { lightness: -0.22, chroma: 0.7 },
-  950: { lightness: -0.3, chroma: 0.5 },
-}
-
 const bases = [
   { name: 'Navy', value: '#0E1450' },
   { name: 'Gold', value: '#FFC93C' },
 ]
 
 function relativeScale(base: string): string[] {
-  return STEPS.map((step) => {
-    if (step === '500')
-      return base
-    const { lightness, chroma } = RELATIVE_SCALE[step]
-    return `oklch(from ${base} clamp(0, calc(l + ${lightness}), 1) calc(c * ${chroma}) h)`
-  })
+  const scale = getRelativeColorScale(base)
+  return STEPS.map(step => step === '500'
+    ? base
+    : scale[step])
 }
 
 function perceptualScale(base: string): string[] {

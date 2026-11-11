@@ -66,6 +66,7 @@ export default defineNuxtConfig({
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
   <div class="maz:flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
     <MazAvatar
@@ -102,6 +103,7 @@ export default defineNuxtConfig({
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   </p>
 </MazCard>
+</div>
 
 ```html{1,13}
 <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">

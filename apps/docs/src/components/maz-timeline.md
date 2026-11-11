@@ -13,6 +13,7 @@ description: MazTimeline is a step/progress timeline component for Vue 3 with su
 
 Control the current step:
 
+<div class="vp-raw">
 <MazRadioButtons
   :model-value="currentStep"
   size="sm"
@@ -23,6 +24,7 @@ Control the current step:
   ]"
   @update:model-value="currentStep = $event"
 />
+</div>
 
 ## Basic usage
 

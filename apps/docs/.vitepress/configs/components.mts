@@ -13,8 +13,16 @@ export const components = {
         { text: 'BtnGroup', link: '/components/maz-btn-group' },
         { text: 'Checkbox', link: '/components/maz-checkbox' },
         { text: 'Checklist', link: '/components/maz-checklist' },
+        {
+          text: withNewBadge('ColorPicker'),
+          link: '/components/maz-color-picker',
+        },
         { text: 'DatePicker (time, range)', link: '/components/maz-date-picker' },
         { text: 'Input', link: '/components/maz-input' },
+        {
+          text: withNewBadge('InputAutocomplete'),
+          link: '/components/maz-input-autocomplete',
+        },
         { text: 'InputCode', link: '/components/maz-input-code' },
         { text: 'InputNumber', link: '/components/maz-input-number' },
         { text: 'InputPrice', link: '/components/maz-input-price' },
@@ -26,6 +34,10 @@ export const components = {
         },
         { text: 'Radio', link: '/components/maz-radio' },
         { text: 'RadioButtons', link: '/components/maz-radio-buttons' },
+        {
+          text: withNewBadge('Segmented'),
+          link: '/components/maz-segmented',
+        },
         { text: 'Select (multiple)', link: '/components/maz-select' },
         { text: 'SelectCountry', link: '/components/maz-select-country' },
         { text: 'Slider', link: '/components/maz-slider' },
@@ -41,6 +53,10 @@ export const components = {
         { text: 'Card', link: '/components/maz-card' },
         { text: 'CardSpotlight', link: '/components/maz-card-spotlight' },
         { text: 'Container', link: '/components/maz-container' },
+        {
+          text: withNewBadge('List'),
+          link: '/components/maz-list',
+        },
         { text: 'ReadMore', link: '/components/maz-read-more' },
       ],
     },
@@ -95,6 +111,10 @@ export const components = {
           link: '/components/maz-code-highlight',
         },
         {
+          text: withNewBadge('Indicator'),
+          link: '/components/maz-indicator',
+        },
+        {
           text: withNewBadge('WindowMockup'),
           link: '/components/maz-window-mockup',
         },
@@ -110,6 +130,10 @@ export const components = {
         { text: 'LoadingBar', link: '/components/maz-loading-bar' },
         { text: 'FullscreenLoader', link: '/components/maz-fullscreen-loader' },
         { text: 'CircularProgressBar', link: '/components/maz-circular-progress-bar' },
+        {
+          text: withNewBadge('ProgressBar'),
+          link: '/components/maz-progress-bar',
+        },
         { text: 'Badge', link: '/components/maz-badge' },
       ],
     },

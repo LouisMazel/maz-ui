@@ -13,7 +13,9 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 
 `v-model="{{checked}}"`
 
+<div class="vp-raw">
 <MazCheckbox v-model="checked" :label="checked ? 'Checked' : 'Unchecked'" />
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -32,7 +34,7 @@ const checked = ref(false)
 
 `v-model="{{chosenColors}}"`
 
-<div class="maz:flex maz:flex-col maz:gap-2">
+<div class="vp-raw maz:flex maz:flex-col maz:gap-2">
   <MazCheckbox
     v-for="color in colors"
     :key="color"
@@ -89,7 +91,7 @@ const colors: Color[] = [
 
 `v-model="{{chosenSizes}}"`
 
-<div class="maz:flex maz:flex-col maz:gap-2">
+<div class="vp-raw maz:flex maz:flex-col maz:gap-2">
   <MazCheckbox
     v-for="size in sizes"
     :key="size"
@@ -133,7 +135,7 @@ const sizes: MazSize[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 ## Disabled
 
-<div class="maz:flex maz:flex-col maz:gap-2">
+<div class="vp-raw maz:flex maz:flex-col maz:gap-2">
   <MazCheckbox :model-value="false" disabled name="disabled">
     disabled
   </MazCheckbox>

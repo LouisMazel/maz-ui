@@ -1,6 +1,6 @@
 ---
 title: Tailwind CSS
-description: Use and extend the maz-ui theme in your own Tailwind CSS v4 setup - theme colors, radius, shadows, spacing, breakpoints, custom utilities, dark mode, and how to add your own tokens, fonts, animations and variants.
+description: Use and extend the maz-ui theme in your own Tailwind CSS v4 setup - theme colors, radius, shadows, spacing, breakpoints and container queries, page layout (padded-container), type scale and rich text, custom utilities, dark mode, and how to add your own tokens, fonts, animations and variants.
 ---
 
 # {{ $frontmatter.title }}
@@ -8,7 +8,7 @@ description: Use and extend the maz-ui theme in your own Tailwind CSS v4 setup -
 {{ $frontmatter.description }}
 
 ::: tip This page is optional
-maz-ui works without Tailwind: install the package, import `maz-ui/style.css` and the components render with the theme preset you chose.
+maz-ui works without Tailwind: install the package, import `maz-ui/style.css` and the components render with the theme preset you chose. For the maz-ui utilities (`text-title-1`, `rich-text`, `padded-container`, `flex-center`...) without Tailwind, also import `maz-ui/utilities.css` (without variants such as `hover:` or `tab-m:`), and never together with `maz-ui/tailwindcss/utilities.css`. [`@maz-ui/vite-plugin`](./../ecosystem/vite-plugin.md#projects-without-tailwind) purges the unused rules of both.
 
 This page is for apps that **have their own Tailwind v4 setup** and want their utilities (`bg-primary`, `rounded-md`, `tab-m:flex`...) to follow the active maz-ui theme, preset and color mode.
 :::
@@ -88,13 +88,13 @@ Each one has a paired `-foreground` color for text on top of it, and an 11-step 
 
 | Color | Use for |
 | --- | --- |
-| `primary` | Main actions, links, focus |
-| `secondary` | Secondary brand color |
-| `accent` | Highlights |
-| `info` | Informational state |
-| `success` | Success state |
-| `warning` | Warning state |
-| `destructive` | Errors, destructive actions |
+| `primary` | Main brand color: main actions, links, focus rings, selected states |
+| `secondary` | Second strong brand color, not a muted surface (use `surface`, `container`, `muted` or the `-50`/`-100` steps for discreet backgrounds) |
+| `accent` | Highlights and tertiary emphasis |
+| `info` | Informational state (alerts, badges, hints) |
+| `success` | Success state (confirmations, valid fields) |
+| `warning` | Warning state (caution, pending attention) |
+| `destructive` | Errors, invalid fields, destructive actions |
 | `contrast` | Neutral high-contrast color (near black in light mode, near white in dark mode) |
 
 ```html
@@ -113,9 +113,9 @@ They also have an 11-step scale, but no `-foreground`.
 
 | Color | Use for |
 | --- | --- |
-| `surface` | Page and container backgrounds |
-| `foreground` | Body text |
-| `muted` | Secondary text, placeholders, disabled content |
+| `surface` | Page background |
+| `foreground` | Body text on `surface` |
+| `muted` | Secondary text, placeholders, disabled content, discreet backgrounds (`bg-muted/10`) |
 | `divider` | Borders and separators |
 | `overlay` | Backdrops behind dialogs (`bg-overlay/60`) |
 | `shadow` | Shadow tint (`shadow-shadow/20`) |
@@ -133,6 +133,8 @@ Two colors follow the `components` block of the preset, to match the maz-ui comp
 
 - `bg-container`: background of `MazCard`, `MazContainer`, `MazDialog`, `MazPopover`, `MazDrawer`...
 - `bg-input`: background of `MazInput`, `MazSelect`, `MazTextarea`... (different from the surface in dark mode by default)
+
+The `MazNeutralColor` type (`'surface' | 'container'`, exported by `maz-ui`) is the `color` value of components such as `MazBtn`, `MazBadge` and `MazRadioButtons` for these two backgrounds: `container` gives a white button on a grey page with presets like macOS.
 
 ### Light and dark modes
 
@@ -166,26 +168,204 @@ The `rounded-*` scale follows the `scales.rounded` of the preset:
 
 ## Breakpoints
 
-maz-ui adds mobile-first breakpoints **on top of** the Tailwind ones (`sm:` to `2xl:` keep working):
+maz-ui adds mobile-first breakpoints **on top of** the Tailwind ones (`sm:` to `2xl:` keep working). Prefer them in a maz-ui project: the components and the [useBreakpoints](./../composables/use-breakpoints.md) composable use the same scale.
 
-| Variant | Min width | Variant | Min width |
-| --- | --- | --- | --- |
-| `mob-s:` | 320px | `lap-s:` | 1024px |
-| `mob-m:` | 425px | `lap-m:` | 1280px |
-| `mob-l:` | 576px | `lap-l:` | 1366px |
-| `tab-s:` | 640px | `lap-xl:` | 1440px |
-| `tab-m:` | 768px | `lap-2xl:` | 1680px |
-| `tab-l:` | 992px | `lap-3xl:` | 1920px |
+| Variant | Min width | Typical target |
+| --- | --- | --- |
+| `mob-s:` | 320px | Small phones |
+| `mob-m:` | 425px | Phones |
+| `mob-l:` | 576px | Large phones |
+| `tab-s:` | 640px | Small tablets (Tailwind `sm`) |
+| `tab-m:` | 768px | Tablets portrait (Tailwind `md`) |
+| `tab-l:` | 992px | Tablets landscape |
+| `lap-s:` | 1024px | Small laptops (Tailwind `lg`) |
+| `lap-m:` | 1280px | Laptops (Tailwind `xl`) |
+| `lap-l:` | 1366px | Laptops |
+| `lap-xl:` | 1440px | Desktops (Tailwind `2xl`) |
+| `lap-2xl:` | 1680px | Large desktops |
+| `lap-3xl:` | 1920px | Full HD and wider |
 
-Prefix them with `max-` for max-width queries: `max-tab-m:hidden`.
+Prefix them with `max-` for max-width queries (`max-tab-m:hidden`), and combine both for a range (`tab-m:max-lap-s:grid-cols-2`).
 
 ```html
 <div class="grid gap-4 tab-m:grid-cols-2 lap-m:grid-cols-3">...</div>
+<aside class="hidden lap-s:block">...</aside>
+<MazBtn class="w-full tab-s:w-auto">Save</MazBtn>
 ```
 
-The same values are available in TypeScript with `import { screens } from 'maz-ui/tailwindcss'` and the [useBreakpoints](./../composables/use-breakpoints.md) composable.
+The same values are available in TypeScript: `screens` (the scale, in `px` strings) and `getNumericScreensFromTailwind` (converts a scale to numbers) are exported by `maz-ui/tailwindcss`. Pass `screens` to [useBreakpoints](./../composables/use-breakpoints.md) to use the same thresholds as the CSS variants:
 
-## Typography and motion
+```ts
+import { useBreakpoints } from 'maz-ui/composables/useBreakpoints'
+import { screens } from 'maz-ui/tailwindcss'
+
+const { isSmallScreen, isLargeScreen } = useBreakpoints({
+  breakpoints: screens,
+  mediumBreakPoint: 'tab-m',
+  largeBreakPoint: 'lap-s',
+})
+```
+
+## Container queries
+
+The breakpoint names also exist as **container sizes** (`maz-ui/tailwindcss/theme-containers.css`, included in `theme.css`). Mark a parent with the Tailwind `@container` class: `@tab-m:` then applies when **that parent** is at least 768px wide, whatever the viewport. Use them for blocks that live in places of different widths: a card list in a sidebar and in the main column, dashboard widgets, split views.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <div v-for="width in ['maz:w-full', 'maz:w-1/2']" :key="width" class="maz:@container maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:p-2" :class="width">
+      <div class="maz:grid maz:gap-2 maz:@mob-m:grid-cols-3">
+        <div v-for="n in 3" :key="n" class="maz:rounded-md maz:bg-primary-100 maz:p-3 maz:text-center maz:text-primary-900 maz:dark:bg-primary-900 maz:dark:text-primary-100">
+          Item {{ n }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+<template #code>
+
+```html
+<!-- 3 columns when the parent is at least 425px wide, 1 otherwise -->
+<section class="@container">
+  <div class="grid gap-2 @mob-m:grid-cols-3">
+    <div>Item 1</div>
+    <div>Item 2</div>
+    <div>Item 3</div>
+  </div>
+</section>
+```
+
+  </template>
+</ComponentDemo>
+
+| Variant | Min container width | Variant | Min container width |
+| --- | --- | --- | --- |
+| `@mob-s:` | 320px | `@lap-s:` | 1024px |
+| `@mob-m:` | 425px | `@lap-m:` | 1280px |
+| `@mob-l:` | 576px | `@lap-l:` | 1366px |
+| `@tab-s:` | 640px | `@lap-xl:` | 1440px |
+| `@tab-m:` | 768px | `@lap-2xl:` | 1680px |
+| `@tab-l:` | 992px | `@lap-3xl:` | 1920px |
+
+- `@max-tab-m:` for a max-width query, `@container/sidebar` with `@tab-m/sidebar:` to target a named container.
+- The Tailwind container sizes (`@md:`, `@3xl:`...) keep working.
+- The sizes also give width utilities: `max-w-tab-m`, `w-lap-s`.
+
+## Layout
+
+### Page gutter: `padded-container`
+
+`padded-container` is the page gutter of maz-ui. Put it on every full-width band of a page (header, sections, footer) instead of `container mx-auto px-4`:
+
+- the band stays full width, so its background goes edge to edge;
+- the content gets a responsive side padding: `1rem` on mobile, `2rem` from `mob-l`, `2.5rem` from `lap-s`;
+- the content stops growing at `--maz-container-max-width` (`1440px`) and stays centered.
+
+```html
+<header class="padded-container border-b border-divider py-4">
+  <nav class="flex items-center justify-between">...</nav>
+</header>
+
+<main class="padded-container flex flex-col gap-12 py-12">
+  <h1 class="text-title-1">Projects</h1>
+  ...
+</main>
+
+<section class="bg-surface-600 padded-container py-16">
+  <!-- full-width background, centered content -->
+</section>
+```
+
+`padded-container-no-p` centers the content on the same column without the minimum side padding: for full-bleed children (a carousel, an image) aligned with the rest of the page.
+
+**Inside a container**: the side padding follows the viewport by default. Inside an `@container` ancestor, it follows the width of that container instead, so a layout with a sidebar keeps the right gutter:
+
+```html
+<div class="flex">
+  <MazSidebar>...</MazSidebar>
+  <div class="@container flex-1">
+    <main class="padded-container py-8">...</main>
+  </div>
+</div>
+```
+
+#### Layout variables
+
+`padded-container` reads CSS variables that you can override:
+
+| Variable | Default |
+| --- | --- |
+| `--maz-container-max-width` | `1440px` |
+| `--maz-container-padding-mobile` | `1rem` |
+| `--maz-container-padding-tablet` | `2rem` (from `mob-l`) |
+| `--maz-container-padding-desktop` | `2.5rem` (from `lap-s`) |
+
+```css
+:root {
+  --maz-container-max-width: 1200px;
+  --maz-container-padding-desktop: 3rem;
+}
+```
+
+The utilities follow, no media query to update.
+
+### Layout patterns
+
+Recurring blocks of an app screen, with the maz-ui classes and components:
+
+```html
+<!-- Page header: title on one side, actions on the other -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+  <div>
+    <h1 class="text-title-1">Invoices</h1>
+    <p class="text-caption">128 invoices this year</p>
+  </div>
+  <MazBtn>New invoice</MazBtn>
+</div>
+
+<!-- Section: space the sections with a gap on their parent, not with margins -->
+<section class="flex flex-col gap-4">
+  <h2 class="text-title-2">Recent activity</h2>
+  ...
+</section>
+
+<!-- Form row: a field and its button. Without shrink-0, the block input squeezes the button -->
+<div class="flex items-end gap-2">
+  <MazInput v-model="email" label="Email" block class="flex-1" />
+  <MazBtn class="shrink-0">Invite</MazBtn>
+</div>
+
+<!-- Empty state -->
+<div class="flex flex-col items-center gap-3 py-12 text-center">
+  <MazInboxStack class="size-10 text-muted" />
+  <h3 class="text-title-3">No message yet</h3>
+  <p class="text-body-sm text-muted">Messages from your customers show up here.</p>
+  <MazBtn>Write a message</MazBtn>
+</div>
+
+<!-- Actions bar (form or dialog footer): low emphasis first, main action last -->
+<div class="flex flex-wrap justify-end gap-2">
+  <MazBtn color="contrast" outlined>Cancel</MazBtn>
+  <MazBtn>Save</MazBtn>
+</div>
+
+<!-- Cards grid -->
+<div class="grid gap-4 tab-m:grid-cols-2 lap-m:grid-cols-3">
+  <MazCard v-for="item in items" :key="item.id">...</MazCard>
+</div>
+```
+
+### Action hierarchy
+
+- **One main action per view or group**: a solid `MazBtn` (`color="primary"`, the default). The other actions are `outlined`, `pastel`, or `color="contrast" outlined`.
+- **Low emphasis** for cancel, back and "learn more": an outlined button or a `MazLink`, placed before the main action.
+- **Destructive actions** use `color="destructive"` and ask for a confirmation (`useDialog`, `MazDialogConfirm`).
+- **Same size** for neighbouring buttons.
+
+The `review_code` tool of the [MCP server](./../ecosystem/mcp.md) reports solid primary buttons side by side (`multiple-primary-actions`).
+
+## Typography
+
+### Fonts and motion
 
 | Utility | Source |
 | --- | --- |
@@ -197,9 +377,11 @@ The same values are available in TypeScript with `import { screens } from 'maz-u
 
 The default border width and the default transition duration and easing follow the preset too. Durations are theme variables, not named utilities: write `transition-colors duration-(--duration-fast)`.
 
-## z-index
+### Type scale and rich text
 
-`z-1` to `z-5`, `z-15`, `z-25`, `z-35`, `z-45`, `z-75`, `z-100`, and `z-default-backdrop` (`1050`, the layer of `MazDialog` and the toasts).
+Each `text-<level>` class (`text-display`, `text-title-1` to `text-title-4`, `text-body-lg`, `text-body`, `text-body-sm`, `text-label`, `text-caption`, `text-overline`, `text-code`) sets the font, size, weight, line height and letter spacing together. `type-<level>` applies a level without its font size (`type-label text-sm`). `rich-text` styles raw HTML (Markdown, CMS) with the same scale, like Tailwind `prose`. The levels are set in the `typography` block of the preset and follow the theme.
+
+Prefer them to `text-2xl font-semibold` or `text-xs text-muted`. See [Typography](./typography.md) for the scale, the semantic usage, `rich-text`, the components and how to customize it.
 
 ## maz-ui utilities
 
@@ -207,46 +389,30 @@ The default border width and the default transition duration and easing follow t
 
 | Utility | Effect |
 | --- | --- |
-| `flex-center` | `align-items: center; justify-content: center` (combine with `flex`) |
-| `padded-container` | Full width with responsive horizontal padding, content centered within `--maz-container-max-width` |
-| `padded-container-no-p` | Same centering without the minimum padding |
+| `padded-container` | Page gutter: full width, responsive side padding, content centered within `--maz-container-max-width` (see [Layout](#layout)) |
+| `padded-container-no-p` | Same centering without the minimum side padding |
+| `flex-center` | `align-items: center; justify-content: center` (combine with `flex` or `grid`) |
+| `text-display`, `text-title-1` ... `text-code` | [Type scale](./typography.md#type-scale) |
+| `type-display`, `type-title-1` ... `type-code` | A level of the [type scale](./typography.md#type-scale) without its font size |
+| `rich-text`, `rich-text-sm`, `rich-text-lg` | [Rich text](./typography.md#rich-text) |
 | `cap-f` | Capitalizes the first letter |
+| `scrollbar-themed` | Thin scrollbar tinted from the text color, for scrollable areas (lists, panels, code). The scrollable parts of the components already use it, the page scrollbar stays native |
 | `disabled-state`, `disabled-opacity`, `disabled-cursor` | The disabled look of the preset |
-| `z-default-backdrop` | `z-index: 1050` |
+| `cursor-interactive` | Cursor of the interactive controls of the preset (`pointer`, `default` on the macOS, Windows and Linux presets) |
+| `glass` | Translucent material of the preset: `bg-glass` background, blurred backdrop and hairline `border-glass` edge. See [Glass material](./../ecosystem/themes.md#glass-material) |
+| `z-default-backdrop` | `z-index: 1050`, the layer of `MazDialog`, `MazDrawer` and the toasts |
+
+### Glass and transparency
+
+`bg-glass` and `border-glass` are theme colors (`components.glass` of the preset), usable with every color utility (`bg-glass/50`, `border-glass`). The `transparency-reduce:` variant applies when the user reduces transparency: the system setting (`prefers-reduced-transparency`) or a `reduce-transparency` class on an ancestor, for an "opaque" setting in your app.
 
 ```html
-<section class="padded-container py-12">
-  <div class="flex flex-center gap-2">...</div>
-</section>
+<header class="glass transparency-reduce:bg-container transparency-reduce:backdrop-blur-none">...</header>
 ```
 
-### Container width
+### z-index
 
-`padded-container` reads CSS variables that you can override:
-
-| Variable | Default |
-| --- | --- |
-| `--maz-container-max-width` | `1440px` |
-| `--maz-container-padding-mobile` | `1rem` |
-| `--maz-container-padding-tablet` | `2rem` (from `mob-l`) |
-| `--maz-container-padding-desktop` | `2.5rem` (from `lap-s`) |
-
-The content stops growing at `--maz-container-max-width` once the viewport is wider than the max width plus twice the desktop padding. When you change the max width, update that threshold too:
-
-```css
-@layer base {
-  html {
-    --maz-container-max-width: 1024px;
-  }
-
-  /* 1024px + 2 * 2.5rem */
-  @media (width >= 1104px) {
-    :root {
-      --maz-container-width: var(--maz-container-max-width);
-    }
-  }
-}
-```
+`z-1` to `z-5`, `z-15`, `z-25`, `z-35`, `z-45`, `z-75`, `z-100`, and `z-default-backdrop` (`1050`, the layer of `MazDialog` and the toasts).
 
 ### Vue transitions
 

@@ -21,9 +21,11 @@ When `data` or `options` change after the initial render, `chart.update()` is ca
 
 ## Bar chart
 
+<div class="vp-raw">
 <MazChart
   v-bind="{ ...barChart }"
 />
+</div>
 
 ::: details View code
 
@@ -77,11 +79,13 @@ const barChart = {
 
 <br/>
 
+<div class="vp-raw">
 <MazChart
   :type="pieChart.type"
   :data="pieChart.data"
   :options="pieChart.options"
 />
+</div>
 
 ::: details View code
 
@@ -127,7 +131,9 @@ const pieChart = {
 
 <br/>
 
+<div class="vp-raw">
 <MazChart v-bind="lineChart" />
+</div>
 
 ::: details View code
 

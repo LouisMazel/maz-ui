@@ -143,6 +143,7 @@ const inputValue = ref()
 
 ## Icons
 
+<div class="vp-raw">
 <MazInput
   v-model="inputValue"
   label="label icons"
@@ -150,6 +151,7 @@ const inputValue = ref()
   end-icon="/user.svg"
   autocomplete="off"
 />
+</div>
 
 ### Use icon name
 

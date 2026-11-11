@@ -57,6 +57,10 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 ## Colors
 
+::: tip Surface vs container
+`surface` is the background of the page and `container` the background of cards, panels and fields. With presets like macOS the surface is light grey and the container is white in light mode: use `container` for a white button on a grey page. Both are neutral colors (`MazNeutralColor`): text uses the foreground color, hover and active states tint the background with the foreground, and `container` has a divider border by default. Outlined neutral buttons are transparent with a divider border, and pastel neutral buttons fall back to the solid rendering.
+:::
+
 <ComponentDemo>
   <div class="flex items-start gap-05 flex-wrap">
     <MazBtn v-for="color of colors" :key="color" :color="color">{{ color }}</MazBtn>
@@ -74,6 +78,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 <MazBtn color="contrast">contrast</MazBtn>
 <MazBtn color="accent">accent</MazBtn>
 <MazBtn color="surface">surface</MazBtn>
+<MazBtn color="container">container</MazBtn>
 <MazBtn color="transparent">transparent</MazBtn>
 ```
 
@@ -101,6 +106,7 @@ Transform the button into an outlined button with the attribute `outlined`
 <MazBtn color="contrast" outlined>contrast</MazBtn>
 <MazBtn color="accent" outlined>accent</MazBtn>
 <MazBtn color="surface" outlined>surface</MazBtn>
+<MazBtn color="container" outlined>container</MazBtn>
 <MazBtn color="transparent" outlined>transparent</MazBtn>
 ```
 
@@ -142,6 +148,7 @@ const colors = [
   'accent',
   'transparent',
   'surface',
+  'container',
 ]
 </script>
 
@@ -186,6 +193,7 @@ Better in light mode
 <MazBtn color="contrast" pastel>contrast</MazBtn>
 <MazBtn color="accent" pastel>accent</MazBtn>
 <MazBtn color="surface" pastel>surface</MazBtn>
+<MazBtn color="container" pastel>container</MazBtn>
 <MazBtn color="transparent" pastel>transparent</MazBtn>
 ```
 
@@ -306,6 +314,46 @@ By default, the justify is `center`
 
 ```html
 <MazBtn disabled>disabled</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
+## Active
+
+`active` applies the pressed look (same background as `:active`, `--active` class) permanently. Use it for the current item of a group, like a tab bar of transparent buttons.
+
+<ComponentDemo>
+  <div class="maz:flex maz:gap-2">
+    <MazBtn color="transparent" active>Overview</MazBtn>
+    <MazBtn color="transparent">Activity</MazBtn>
+    <MazBtn color="transparent">Settings</MazBtn>
+  </div>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBtn from 'maz-ui/components/MazBtn'
+import { ref } from 'vue'
+
+const tabs = ['Overview', 'Activity', 'Settings']
+const current = ref('Overview')
+</script>
+
+<template>
+  <div class="flex gap-2">
+    <MazBtn
+      v-for="tab in tabs"
+      :key="tab"
+      color="transparent"
+      :active="current === tab"
+      @click="current = tab"
+    >
+      {{ tab }}
+    </MazBtn>
+  </div>
+</template>
 ```
 
   </template>
@@ -567,7 +615,9 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 When `href` attribute is provided, the component automatically becomes a `<a href="..." />`
 :::
 
+<div class="vp-raw">
 <MazBtn class="vp-raw" href="https://www.google.com" target="_blank">Is Button Link</MazBtn>
+</div>
 
 ```html
 <MazBtn href="https://www.google.com" target="_blank"> Is Button Link </MazBtn>
@@ -579,7 +629,9 @@ When `href` attribute is provided, the component automatically becomes a `<a hre
 When `to` attribute is provided, the component automatically becomes a `<RouterLink to="..." />`
 :::
 
+<div class="vp-raw">
 <MazBtn class="vp-raw" :to="{ path: '/made-with-maz-ui.html' }">Is Router Link</MazBtn>
+</div>
 
 ```html
 <MazBtn :to="{ path: '/made-with-maz-ui.html' }"> Is RouterLink </MazBtn>
@@ -602,6 +654,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
     'destructive',
     'contrast',
     'surface',
+    'container',
     'transparent',
   ]
 

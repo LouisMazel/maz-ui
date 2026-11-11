@@ -9,7 +9,7 @@ description: The useRelativeTime composable returns a reactive, localized relati
 
 ## Usage
 
-<div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
+<div class="vp-raw maz:flex maz:flex-col maz:gap-4 maz:items-start">
   <MazSelect
     v-model="locale"
     label="Locale"

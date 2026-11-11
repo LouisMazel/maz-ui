@@ -49,6 +49,7 @@ description: Convert country code in unicode flag
   <span class="maz:text-7xl">{{ flag }}</span>
 </div>
 
+<div class="vp-raw">
 <MazSelect
   v-model="countryCode"
   :options="countryOptions"
@@ -78,6 +79,7 @@ description: Convert country code in unicode flag
     </div>
   </template>
 </MazSelect>
+</div>
 
 <script lang="ts" setup>
   import { computed, ref, onMounted } from 'vue'

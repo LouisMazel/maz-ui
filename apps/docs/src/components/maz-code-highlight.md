@@ -126,6 +126,55 @@ Override the auto-detected theme with any [shiki built-in theme](https://shiki.s
   </template>
 </ComponentDemo>
 
+## Color mode
+
+By default (`color-mode="auto"`) the block follows the color mode of your app. The mode is resolved in this order:
+
+1. the `color-mode` prop, when it is not `auto`
+2. the closest `.dark` ancestor (including `<html>`), observed for changes
+3. the color mode of [`@maz-ui/themes`](/ecosystem/themes) when the theme plugin is installed (known at render time, so it is consistent with SSR and Nuxt)
+4. the `dark` class of `<html>`
+
+The `theme` prop (shiki theme name) always wins over the theme chosen from the color mode.
+
+### Force the color mode
+
+Set `color-mode` to `light` or `dark` to force the mode of a single block. The `dark` or `light` class is added on the root element, so the language badge, the copy button and the tooltip follow the forced mode.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazCodeHighlight code="const mode = 'dark'" language="ts" color-mode="dark" />
+    <MazCodeHighlight code="const mode = 'light'" language="ts" color-mode="light" />
+  </div>
+
+  <template #code>
+
+```vue
+<template>
+  <MazCodeHighlight code="const mode = 'dark'" language="ts" color-mode="dark" />
+  <MazCodeHighlight code="const mode = 'light'" language="ts" color-mode="light" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+### Dark ancestor
+
+A `.dark` class on any ancestor is enough, without any prop:
+
+```vue
+<template>
+  <div class="dark">
+    <MazCodeHighlight code="const dark = true" language="ts" />
+  </div>
+</template>
+```
+
+### Nuxt and SSR
+
+With `@maz-ui/nuxt` (or the `MazUi` plugin / `MazUiProvider`), the block reads the color mode from `useTheme()`, so the server and the client render the same theme. Without a theme plugin, the component falls back to the `dark` class of `<html>` on the client and renders the light theme on the server.
+
 ## Copy to clipboard
 
 A copy button is displayed in the top-right corner on hover (or when focused via keyboard). Clicking it writes the resolved code to the clipboard and shows a check icon for ~1.5s.

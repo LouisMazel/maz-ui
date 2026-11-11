@@ -19,6 +19,7 @@ export const sidebar: DefaultTheme.Sidebar = {
   '/ecosystem/nuxt': [ecosystem],
   '/ecosystem/themes': [ecosystem],
   '/ecosystem/translations': [ecosystem],
+  '/ecosystem/vite-plugin': [ecosystem],
   '/': [
     guide,
     components,

@@ -84,7 +84,7 @@ app.use(MazUi, {
    * @see https://maz-ui.com/ecosystem/themes
    */
   theme: {
-    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian' | 'nova' | 'folio'
+    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian' | 'nova' | 'folio' | 'macos' | 'windows' | 'linux'
     overrides: {
       foundation: {
         'space': '0.25rem',
@@ -120,6 +120,25 @@ app.mount('#app')
 ::: tip Alternative: MazUiProvider
 If Maz-UI is only used on specific pages, you can use the [`MazUiProvider`](./maz-ui-provider.md) component instead of the plugin to keep Maz-UI out of your entry bundle.
 :::
+
+## Reduce the CSS
+
+`maz-ui/style.css` holds the styles of every component. [`@maz-ui/vite-plugin`](./../ecosystem/vite-plugin.md) removes at build time the ones your app does not use (-23% to -52% of CSS on the demo apps, depending on the components you use):
+
+```bash
+npm install -D @maz-ui/vite-plugin
+```
+
+```ts
+// vite.config.ts
+import { MazUiPurgeCss } from '@maz-ui/vite-plugin'
+
+export default defineConfig({
+  plugins: [vue(), MazUiPurgeCss()],
+})
+```
+
+Without Tailwind CSS, import `maz-ui/utilities.css` for the maz-ui utilities (`text-title-1`, `rich-text`, `padded-container`, `flex-center`...), the plugin purges it too. With Tailwind CSS, keep `@import 'maz-ui/tailwindcss/utilities.css'` in your Tailwind entry instead.
 
 ## Using your first component
 

@@ -11,7 +11,9 @@ description: This component creates a customizable input code field with feature
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazInputCode v-model="code" />
+</div>
 
 `v-model="{{code}}"`
 
@@ -29,7 +31,7 @@ const code = ref()
 
 ## Size
 
-<div class="maz:flex maz:flex-col maz:gap-2">
+<div class="vp-raw maz:flex maz:flex-col maz:gap-2">
   <MazInputCode v-model="code" size="mini" />
   <MazInputCode v-model="code" size="xs" />
   <MazInputCode v-model="code" size="sm" />
@@ -47,7 +49,9 @@ const code = ref()
 
 ## Disabled
 
+<div class="vp-raw">
 <MazInputCode v-model="code" disabled />
+</div>
 
 ```html
 <MazInputCode v-model="code" disabled />
