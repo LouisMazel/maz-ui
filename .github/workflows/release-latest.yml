@@ -32,6 +32,10 @@ jobs:
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
 
+      # The changelogs are formatted with ESLint before the packages are built: its config must exist
+      - name: Build the ESLint config
+        run: pnpm -F @maz-ui/eslint-config build
+
       # The project is set up above: the action runs `relizy release --yes` and installs the claude CLI. The packages
       # are built by the `before:publish` hook of relizy.config.ts: the published ones only, after the bump
       - name: Version Packages (Latest)
