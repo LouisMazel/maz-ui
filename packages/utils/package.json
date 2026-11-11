@@ -85,6 +85,9 @@
       "optional": true
     }
   },
+  "dependencies": {
+    "fuzzysort": "^4.0.2"
+  },
   "devDependencies": {
     "@codecov/vite-plugin": "catalog:",
     "@maz-ui/eslint-config": "workspace:^",
