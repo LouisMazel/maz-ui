@@ -229,7 +229,7 @@
     "dayjs": "catalog:",
     "dompurify": "^3.4.17",
     "libphonenumber-js": "catalog:",
-    "marked": "^18.1.3"
+    "marked": "^18.2.0"
   },
   "devDependencies": {
     "@codecov/vite-plugin": "catalog:",
@@ -238,7 +238,7 @@
     "@maz-ui/stylelint-config": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
     "@maz-ui/vite-plugin": "workspace:^",
-    "@tailwindcss/cli": "^4.3.4",
+    "@tailwindcss/cli": "^4.3.5",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@types/node": "catalog:",
@@ -255,7 +255,7 @@
     "nuxt": "catalog:",
     "postcss": "catalog:",
     "postcss-nested": "catalog:",
-    "sass": "^1.107.1",
+    "sass": "^1.108.1",
     "shiki": "catalog:",
     "stylelint": "catalog:",
     "tailwindcss": "catalog:",

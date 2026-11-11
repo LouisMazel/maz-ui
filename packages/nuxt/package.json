@@ -89,7 +89,7 @@
     "@nuxt/devtools": "catalog:",
     "@nuxt/module-builder": "^1.0.3",
     "@nuxt/schema": "^4.6.4",
-    "@nuxt/test-utils": "^4.3.4",
+    "@nuxt/test-utils": "^4.4.0",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",
