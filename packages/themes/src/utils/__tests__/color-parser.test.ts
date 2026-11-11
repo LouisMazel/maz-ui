@@ -27,6 +27,29 @@ describe('isCompleteCSSColor', () => {
     })
   })
 
+  describe('Given a color keyword or a color function', () => {
+    describe('When testing', () => {
+      it.each([
+        'transparent',
+        'currentColor',
+        'AccentColor',
+        'Canvas',
+        '-apple-system-control-accent',
+        'color-mix(in srgb, red 20%, transparent)',
+        'light-dark(#fff, #000)',
+        'hwb(200 10% 20%)',
+      ])('returns true for %s', (value) => {
+        expect(isCompleteCSSColor(value)).toBe(true)
+      })
+    })
+
+    describe('When normalizing', () => {
+      it('returns a system keyword unchanged', () => {
+        expect(normalizeColor('-apple-system-label')).toBe('-apple-system-label')
+      })
+    })
+  })
+
   describe('Given a legacy raw HSL string', () => {
     describe('When testing', () => {
       it('returns false', () => {
@@ -72,7 +95,7 @@ describe('normalizeColor', () => {
   describe('Given an unrecognised value', () => {
     describe('When normalizing', () => {
       it('throws a descriptive error', () => {
-        expect(() => normalizeColor('not-a-color')).toThrow()
+        expect(() => normalizeColor('not a color')).toThrow('Invalid color format: not a color')
       })
     })
   })
