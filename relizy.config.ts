@@ -52,6 +52,7 @@ export default defineConfig({
           'packages/themes',
           'packages/translations',
           'packages/utils',
+          'packages/vite-plugin',
         ],
       },
       {
