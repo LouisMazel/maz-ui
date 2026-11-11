@@ -150,7 +150,7 @@ if (scrollable) {
           <h2
             v-if="hasSlotContent(slots.title) || title"
             :id="titleId"
-            class="m-dialog-title maz:my-0 maz:font-display maz:text-xl maz:font-semibold"
+            class="m-dialog-title maz:my-0 maz:text-title-3"
           >
             <!--
                 @slot Title slot in the header
@@ -177,7 +177,7 @@ if (scrollable) {
         :class="{
           '--bottom-padding': !hasFooter,
           'maz:pb-4': !hasFooter,
-          'maz:overflow-auto maz:border-t maz:border-divider maz:py-4': scrollable,
+          'maz:scrollbar-themed maz:overflow-auto maz:border-t maz:border-divider maz:py-4': scrollable,
           'maz:border-b': scrollable && hasFooter,
         }"
       >

@@ -120,3 +120,48 @@ describe('mazAccordion', () => {
     expect(step.find('.header-icon').classes()).not.toContain('--rotate')
   })
 })
+
+describe('given MazAccordion with the lazy prop', () => {
+  describe('when a panel is opened then closed', () => {
+    it('then its content is rendered at the first opening only and kept', async () => {
+      const wrapper = mount(MazAccordion, {
+        props: { lazy: true },
+        slots: {
+          'title-1': 'Title 1',
+          'content-1': '<p class="lazy-content">Content 1</p>',
+        },
+      })
+
+      await vi.dynamicImportSettled()
+      await wrapper.vm.$nextTick()
+      const button = wrapper.find('button')
+
+      expect(wrapper.find('.lazy-content').exists()).toBe(false)
+      expect(wrapper.find(`#${button.attributes('aria-controls')}`).exists()).toBe(true)
+
+      await button.trigger('click')
+
+      expect(wrapper.find('.lazy-content').exists()).toBe(true)
+
+      await button.trigger('click')
+
+      expect(wrapper.find('.lazy-content').exists()).toBe(true)
+    })
+  })
+
+  describe('when lazy is not set', () => {
+    it('then the content of a closed panel is rendered', async () => {
+      const wrapper = mount(MazAccordion, {
+        slots: {
+          'title-1': 'Title 1',
+          'content-1': '<p class="lazy-content">Content 1</p>',
+        },
+      })
+
+      await vi.dynamicImportSettled()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.find('.lazy-content').exists()).toBe(true)
+    })
+  })
+})

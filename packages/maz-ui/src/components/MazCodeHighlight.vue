@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+import type { ThemeState } from '@maz-ui/themes'
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
-import type { VNode } from 'vue'
+import type { Ref, VNode } from 'vue'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { MazClipboard } from '@maz-ui/icons/lazy/MazClipboard'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, useSlots, watch } from 'vue'
+import { computed, defineAsyncComponent, getCurrentInstance, inject, onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch } from 'vue'
 import { vTooltip } from '../directives/vTooltip'
 
 export interface MazCodeHighlightProps {
@@ -13,8 +14,15 @@ export interface MazCodeHighlightProps {
   code?: string
   /** Language identifier for syntax highlighting (e.g. 'vue', 'ts', 'bash') */
   language?: string
-  /** Override the shiki theme name. Defaults to github-light/github-dark based on current color mode */
+  /** Override the shiki theme name. Takes priority over the theme chosen from the color mode (tokyo-night in dark, github-light in light) */
   theme?: string
+  /**
+   * Color mode of the block.
+   * - `auto`: follows the closest `.dark` ancestor, then the `@maz-ui/themes` color mode when the theme plugin is installed, then the `dark` class of `<html>`
+   * - `light` / `dark`: forces the mode of this block, whatever the app color mode
+   * @default 'auto'
+   */
+  colorMode?: 'auto' | 'light' | 'dark'
   /**
    * Apply rounded corners on the highlighted code block.
    * @default true
@@ -41,6 +49,7 @@ const {
   code,
   language = 'text',
   theme,
+  colorMode = 'auto',
   rounded = true,
   copyable = true,
   copyValue,
@@ -55,7 +64,24 @@ const copyLabel = computed(() => translations?.copyToClipboard ?? t('codeHighlig
 const copiedLabel = computed(() => translations?.copiedToClipboard ?? t('codeHighlight.copiedToClipboard'))
 
 const slots = useSlots()
-const isDark = ref(typeof document !== 'undefined' && document.documentElement.classList.contains('dark'))
+const rootRef = useTemplateRef<HTMLElement>('rootRef')
+const themeState = inject<Ref<ThemeState | undefined> | undefined>('mazThemeState', undefined)
+  ?? getCurrentInstance()?.appContext.config.globalProperties.$mazThemeState as Ref<ThemeState | undefined> | undefined
+const hasDarkAncestor = ref<boolean>()
+
+function htmlHasDarkClass() {
+  return typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
+}
+
+const isDark = computed(() => {
+  if (colorMode !== 'auto')
+    return colorMode === 'dark'
+  if (hasDarkAncestor.value)
+    return true
+  if (themeState?.value)
+    return !!themeState.value.isDark
+  return hasDarkAncestor.value ?? htmlHasDarkClass()
+})
 const copied = ref(false)
 let copyResetTimer: ReturnType<typeof setTimeout> | undefined
 
@@ -150,14 +176,21 @@ async function copy() {
 
 let observer: MutationObserver | undefined
 
+function updateHasDarkAncestor() {
+  hasDarkAncestor.value = !!rootRef.value?.closest('.dark')
+}
+
 onMounted(() => {
-  observer = new MutationObserver(() => {
-    isDark.value = document.documentElement.classList.contains('dark')
-  })
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['class'],
-  })
+  updateHasDarkAncestor()
+  observer = new MutationObserver(updateHasDarkAncestor)
+  let node: HTMLElement | null = rootRef.value
+  while (node) {
+    observer.observe(node, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+    node = node.parentElement
+  }
 })
 
 onUnmounted(() => {
@@ -169,9 +202,13 @@ watch([resolvedCode, resolvedTheme], highlight, { immediate: true })
 </script>
 
 <template>
-  <div class="m-code-highlight m-reset-css maz:group maz:relative" :class="{ '--no-rounded': !rounded }">
+  <div
+    ref="rootRef"
+    class="m-code-highlight m-reset-css maz:group maz:relative"
+    :class="{ '--no-rounded': !rounded, 'dark': colorMode === 'dark', 'light': colorMode === 'light' }"
+  >
     <div class="m-code-highlight__content" v-html="highlightedHtml" />
-    <span class="maz:absolute maz:top-2 maz:right-2 maz:rounded-sm maz:px-2 maz:py-1 maz:text-xs maz:text-muted" :class="{ 'maz:transition-opacity maz:group-hover:opacity-0': copyable }">{{ language }}</span>
+    <span class="maz:absolute maz:top-2 maz:right-2 maz:rounded-sm maz:px-2 maz:py-1 maz:text-caption" :class="{ 'maz:transition-opacity maz:group-hover:opacity-0': copyable }">{{ language }}</span>
     <MazBtn
       v-if="copyable && resolvedCopyValue"
       v-tooltip="{
@@ -194,13 +231,11 @@ watch([resolvedCode, resolvedTheme], highlight, { immediate: true })
 
 .m-code-highlight {
   :deep(pre.shiki) {
-    @apply maz:rounded-md maz:overflow-x-auto maz:p-4 maz:text-sm maz:font-mono;
-
-    line-height: 1.6;
+    @apply maz:rounded-md maz:overflow-x-auto maz:scrollbar-themed maz:p-4 maz:type-code maz:text-sm;
   }
 
   :deep(code) {
-    @apply maz:font-mono;
+    @apply maz:type-code;
   }
 
   &.--no-rounded :deep(pre.shiki) {

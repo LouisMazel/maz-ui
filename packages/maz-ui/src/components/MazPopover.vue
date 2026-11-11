@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazNeutralColor } from './types'
 
 import { autoPlacement, autoUpdate, flip, offset as floatingOffset, hide, shift, useFloating } from '@floating-ui/vue'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
@@ -42,7 +42,7 @@ const {
   closeOnEscape = true,
   persistent = false,
   panelStyle,
-  color = 'surface',
+  color = 'container',
   overlayClass,
   panelClass,
   preferPosition,
@@ -223,11 +223,11 @@ export interface MazPopoverProps {
    */
   ariaDescribedby?: string
   /**
-   * Color variant of the popover
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast, surface
-   * @default surface
+   * Color variant of the popover: `container` (the default) and `surface` are the neutral colors of the theme
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, surface, container
+   * @default container
    */
-  color?: MazColor | 'surface'
+  color?: MazColor | MazNeutralColor
   /**
    * Trap focus inside the popover
    * @default true
@@ -995,9 +995,13 @@ defineExpose({
   contain: layout style paint;
   backface-visibility: hidden;
 
-  /* Background color */
+  /* Neutral colors */
+  &.--container {
+    @apply maz:dark:border maz:dark:border-divider maz:bg-container maz:text-foreground;
+  }
+
   &.--surface {
-    @apply maz:dark:border maz:dark:border-divider maz:bg-container;
+    @apply maz:dark:border maz:dark:border-divider maz:bg-surface maz:text-foreground;
   }
 
   /* Color variants */

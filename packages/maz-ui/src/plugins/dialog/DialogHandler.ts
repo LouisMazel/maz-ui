@@ -1,14 +1,35 @@
-import type { App } from 'vue'
+import type { App, Component, MaybeRefOrGetter } from 'vue'
 import type { MazDialogConfirmProps } from '../../components/MazDialogConfirm.vue'
 import MazDialogConfirm from '../../components/MazDialogConfirm.vue'
 import { useMazDialogConfirm } from '../../components/MazDialogConfirm/useMazDialogConfirm'
 import { useMountComponent } from '../../composables/useMountComponent'
+import { createReactiveDialog, isReactiveSource } from './createReactiveDialog'
 
-export type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'variant' | 'justify'>> & {
+type DialogButtonProps = MazDialogConfirmProps['acceptProps']
+
+export type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'variant' | 'justify' | 'acceptProps' | 'rejectProps'>> & {
+  /**
+   * Props of the accept button, a ref, a getter or a reactive object to update the button while the dialog is open
+   */
+  acceptProps?: MaybeRefOrGetter<DialogButtonProps>
+  /**
+   * Props of the reject button, a ref, a getter or a reactive object to update the button while the dialog is open
+   */
+  rejectProps?: MaybeRefOrGetter<DialogButtonProps>
+  /**
+   * Component (or functional component / render function) rendered in the body instead of the message.
+   * It receives `contentProps`, plus `accept` and `reject` functions.
+   */
+  content?: Component
+  /**
+   * Props of the `content` component, a ref, a getter or a reactive object to keep the content up to date
+   */
+  contentProps?: MaybeRefOrGetter<Record<string, unknown>>
   onClose?: () => unknown
   onAccept?: (response: unknown) => unknown
   onReject?: (response: unknown) => unknown
 }
+export type DialogConfirmOptions = Omit<DialogOptions, 'onAccept' | 'onReject' | 'onClose'>
 type RequiredDialogOptions = DialogOptions & { identifier: string }
 
 const DEFAULT_OPTIONS = {
@@ -18,6 +39,7 @@ const DEFAULT_OPTIONS = {
 interface ActiveDialogEntry {
   destroy: () => void
   cleanupTimer?: ReturnType<typeof setTimeout>
+  onDispose?: () => void
 }
 
 export class DialogHandler {
@@ -28,7 +50,29 @@ export class DialogHandler {
     readonly globalOptions: DialogOptions = DEFAULT_OPTIONS,
   ) {}
 
+  /**
+   * Open a confirmation dialog and wait for the choice of the user
+   * @returns a promise resolved with `true` on accept, and `false` on reject, close (button, escape, backdrop, programmatic), destroy or replacement by a dialog with the same identifier. It never rejects.
+   */
+  public confirm(options: DialogConfirmOptions = {}): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      this.mount(
+        {
+          ...options,
+          onAccept: () => resolve(true),
+          onReject: () => resolve(false),
+          onClose: () => resolve(false),
+        },
+        () => resolve(false),
+      )
+    })
+  }
+
   public open(options: DialogOptions) {
+    return this.mount(options)
+  }
+
+  private mount(options: DialogOptions, onDispose?: () => void) {
     const props: RequiredDialogOptions = {
       ...DEFAULT_OPTIONS,
       ...this.globalOptions,
@@ -44,16 +88,26 @@ export class DialogHandler {
         clearTimeout(existing.cleanupTimer)
       }
       removeDialogFromState(props.identifier)
+      existing.onDispose?.()
       existing.destroy()
       this.activeDialogs.delete(props.identifier)
     }
 
-    const { destroy, vNode } = useMountComponent<typeof MazDialogConfirm, MazDialogConfirmProps>(MazDialogConfirm, {
-      props,
-      app: this.app,
-    })
+    const isReactive = !!props.content
+      || isReactiveSource(props.acceptProps)
+      || isReactiveSource(props.rejectProps)
 
-    const entry: ActiveDialogEntry = { destroy }
+    const { destroy, vNode } = isReactive
+      ? useMountComponent(
+          createReactiveDialog({ props, content: props.content, contentProps: props.contentProps }),
+          { app: this.app },
+        )
+      : useMountComponent<typeof MazDialogConfirm, MazDialogConfirmProps>(MazDialogConfirm, {
+          props: props as MazDialogConfirmProps,
+          app: this.app,
+        })
+
+    const entry: ActiveDialogEntry = { destroy, onDispose }
     this.activeDialogs.set(props.identifier, entry)
 
     const { showDialogAndWaitChoice } = useMazDialogConfirm()

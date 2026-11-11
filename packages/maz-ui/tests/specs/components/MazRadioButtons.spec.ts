@@ -160,6 +160,35 @@ describe('given MazRadioButtons component', () => {
     })
   })
 
+  describe('when rendered with the container color and a selector', () => {
+    it('then the selected option has the container background and a foreground border', () => {
+      const wrapper = mount(MazRadioButtons, {
+        props: {
+          options,
+          color: 'container',
+          modelValue: 'option1',
+          selector: true,
+        },
+      })
+
+      const style = wrapper.find('.m-radio-buttons__items.--is-selected').attributes('style')
+
+      expect(style).toContain('background-color: var(--maz-container-bg, var(--maz-surface))')
+      expect(style).toContain('border-color: var(--maz-foreground)')
+      expect(wrapper.find('.m-radio-buttons__items__checkbox span').attributes('style')).toContain('background-color: var(--maz-foreground)')
+    })
+  })
+
+  describe('when rendered with the surface color', () => {
+    it('then the selected option has the surface background', () => {
+      const wrapper = mount(MazRadioButtons, {
+        props: { options, color: 'surface', modelValue: 'option1' },
+      })
+
+      expect(wrapper.find('.m-radio-buttons__items.--is-selected').attributes('style')).toContain('background-color: var(--maz-surface)')
+    })
+  })
+
   describe('when option is clicked', () => {
     it('then it should emit update:model-value', async () => {
       const wrapper = mount(MazRadioButtons, {

@@ -16,7 +16,7 @@ describe('mazPagination.vue', () => {
     expect(wrapper.exists()).toBe(true)
     expect(wrapper.props('buttonProps')).toBeUndefined()
     expect(wrapper.props('pageRange')).toBe(1)
-    expect(wrapper.props('activeColor')).toBe('surface')
+    expect(wrapper.props('activeColor')).toBe('contrast')
   })
 
   // Test rendering with custom props
@@ -169,6 +169,22 @@ describe('given a MazUi global default for size', () => {
       })
 
       expect(wrapper.findComponent(MazBtn).props('size')).toBe('sm')
+    })
+  })
+
+  describe('given a pagination without buttonProps', () => {
+    describe('when it is rendered on the first page', () => {
+      it('then the inactive buttons have the container color', () => {
+        const wrapper = mount(MazPagination, {
+          props: { totalPages: 10, modelValue: 1 },
+        })
+
+        const colors = wrapper.findAllComponents(MazBtn).map(button => button.props('color'))
+
+        expect(colors).toContain('container')
+        expect(colors).toContain('contrast')
+        expect(wrapper.findAllComponents(MazBtn).every(button => !button.props('outlined'))).toBe(true)
+      })
     })
   })
 })

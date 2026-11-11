@@ -158,13 +158,13 @@ const currentIcon = computed(() => {
     </div>
 
     <div class="m-alert-body maz:flex maz:flex-1 maz:flex-col maz:gap-1">
-      <p v-if="hasTitle" :id="headingId" class="m-alert-title maz:m-0 maz:font-display maz:leading-tight maz:font-semibold">
+      <p v-if="hasTitle" :id="headingId" class="m-alert-title maz:m-0 maz:type-title-4">
         <!-- @slot Title slot - overrides title prop -->
         <slot name="title">
           {{ title }}
         </slot>
       </p>
-      <div v-if="hasContent" :id="contentId" class="m-alert-content maz:leading-relaxed">
+      <div v-if="hasContent" :id="contentId" class="m-alert-content maz:type-body">
         <!-- @slot Default slot for alert content - overrides content prop -->
         <slot>{{ content }}</slot>
       </div>

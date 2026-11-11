@@ -382,7 +382,7 @@ onMounted(() => {
       >
         <component :is="iconComponent" v-if="iconComponent" class="maz:text-2xl" />
 
-        <div class="m-toast__message maz:m-0 maz:flex-1 maz:py-3 maz:text-start maz:font-medium" v-text="html ? undefined : message" v-html="html ? message : undefined" />
+        <div class="m-toast__message maz:m-0 maz:flex-1 maz:py-3 maz:text-start maz:type-label" v-text="html ? undefined : message" v-html="html ? message : undefined" />
 
         <MazBtn
           v-for="(toastButton, index) in internalButtons"

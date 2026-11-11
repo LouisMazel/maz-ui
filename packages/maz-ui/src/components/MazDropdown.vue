@@ -4,7 +4,7 @@ import type { RouteLocationRaw } from 'vue-router'
 import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazNeutralColor, MazSize } from './types'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
@@ -132,10 +132,10 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
   /**
    * Color theme for the dropdown button
    * @type {MazColor}
-   * @values primary, secondary, info, success, warning, destructive, transparent, contrast, accent
+   * @values primary, secondary, info, success, warning, destructive, transparent, contrast, accent, surface, container
    * @default 'transparent'
    */
-  color?: MazColor
+  color?: MazColor | MazNeutralColor
   /**
    * Position of the menu relative to trigger
    * @values auto, top, bottom, left, right, top-start, top-end, bottom-start, bottom-end, left-start, left-end, right-start, right-end
@@ -346,7 +346,7 @@ watch(
     role="menu"
     :style="styleProp"
     :prefer-position
-    color="surface"
+    color="container"
     :position
     :transition
     :disabled
@@ -437,7 +437,7 @@ watch(
       <div
         :id="`${instanceId}-menu`"
         role="none"
-        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2"
+        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:scrollbar-themed maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2"
         tabindex="-1"
         :class="menuPanelClass"
         :style="menuPanelStyle"

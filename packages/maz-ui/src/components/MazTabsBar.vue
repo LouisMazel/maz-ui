@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { MazBadgeProps } from './MazBadge.vue'
 import type { MazBtnProps } from './MazBtn.vue'
+import type { MazIndicatorProps } from './MazIndicator.vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types'
 
 /**
@@ -97,15 +98,20 @@ export type MazTabsBarObjectItem<Value extends string | number = string | number
      */
     disabled?: boolean
     /**
-     * Badge to display in the tab
+     * Badge to display in the tab, next to its label
      * Inherit all props of MazBadge component
      */
     badge?: MazBadgeProps & {
       /**
-       * Content of the badge
+       * Content of the badge. `true` renders a dot without text, `false` hides the badge
        */
       content: string | number | boolean
     }
+    /**
+     * Indicator on the top end corner of the tab (unread, new content): `true` for a dot,
+     * a number or a text for a counter (`99+` above `max`), or the props of MazIndicator
+     */
+    indicator?: boolean | number | string | MazIndicatorProps
   }
 
 export type MazTabsBarItem<Value extends string | number = string | number>
@@ -161,6 +167,7 @@ const emits = defineEmits<{
 }>()
 
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
+const MazIndicator = defineAsyncComponent(() => import('./MazIndicator.vue'))
 
 const injectedTabs = inject<MazTabsProvide | undefined>('maz-tabs', undefined)
 
@@ -208,6 +215,27 @@ const ROUNDED_CLASS: Record<MazRoundedSize, string> = {
   full: 'maz:rounded-full',
 } as const
 
+/** A badge with `content: true` is a dot: no text, so no padding nor line box */
+const DOT_BADGE_STYLE = {
+  padding: 0,
+  width: '0.5em',
+  height: '0.5em',
+  borderRadius: '9999px',
+} as const
+
+/** Props of the MazIndicator of an item: `true` is a dot, a number or a text a counter */
+function resolveIndicator(indicator: MazTabsBarObjectItem['indicator']): MazIndicatorProps | undefined {
+  if (indicator === undefined || indicator === null || indicator === false)
+    return undefined
+  if (typeof indicator === 'object')
+    return indicator
+  return {
+    content: indicator === true
+      ? undefined
+      : indicator,
+  }
+}
+
 const normalizedItems = computed(() =>
   items.map((item) => {
     if (typeof item === 'string') {
@@ -219,11 +247,14 @@ const normalizedItems = computed(() =>
         roundedSize: undefined as MazRoundedSize | undefined,
         color: 'transparent' as NonNullable<MazBtnProps['color']>,
         badge: undefined as MazTabsBarObjectItem['badge'],
+        indicator: undefined as MazIndicatorProps | undefined,
+        overflowHidden: undefined as boolean | undefined,
         btnProps: {} as Record<string, unknown>,
       }
     }
 
-    const { label, value, disabled, badge, size, roundedSize, color: itemColor, ...btnProps } = item as MazTabsBarObjectItem
+    const { label, value, disabled, badge, indicator, size, roundedSize, color: itemColor, overflowHidden, ...btnProps } = item as MazTabsBarObjectItem
+    const indicatorProps = resolveIndicator(indicator)
 
     return {
       label,
@@ -233,6 +264,9 @@ const normalizedItems = computed(() =>
       roundedSize,
       color: (itemColor ?? 'transparent') as NonNullable<MazBtnProps['color']>,
       badge,
+      indicator: indicatorProps,
+      // The indicator sits on the corner of the tab: the button must not clip it
+      overflowHidden: overflowHidden ?? (indicatorProps ? false : undefined),
       btnProps,
     }
   }),
@@ -474,7 +508,7 @@ onMounted(() => {
   <div
     ref="tabsBarRef"
     role="tablist"
-    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:bg-container maz:p-2 maz:align-top"
+    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:scrollbar-themed maz:gap-1 maz:overflow-x-auto maz:bg-container maz:p-2 maz:align-top"
     :class="[
       ROUNDED_CLASS[resolvedRoundedSize],
       {
@@ -508,11 +542,12 @@ onMounted(() => {
         :size="item.size ?? resolvedSize"
         :rounded-size="item.roundedSize ?? resolvedRoundedSize"
         :disabled="item.disabled"
+        :overflow-hidden="item.overflowHidden"
         :class="{
           '--is-active': isActiveTab(index),
           '--disabled': item.disabled,
         }"
-        class="m-tabs-bar__item maz:relative maz:z-1 maz:flex-none maz:font-medium"
+        class="m-tabs-bar__item maz:relative maz:z-1 maz:flex-none maz:type-label"
         :style="getTabStyle(index, item.disabled)"
         role="tab"
         :aria-selected="isActiveTab(index) ? 'true' : 'false'"
@@ -531,20 +566,35 @@ onMounted(() => {
           {{ item.label }}
 
           <MazBadge
-            v-if="item.badge"
+            v-if="item.badge && item.badge.content !== false"
             v-bind="item.badge"
             :size="item.badge.size ?? item.size ?? resolvedSize ?? 'xs'"
             class="m-tabs-bar__item__badge"
+            :class="{ '--dot': item.badge.content === true }"
+            :style="item.badge.content === true ? DOT_BADGE_STYLE : undefined"
           >
             <!--
               @slot badge-content - Content in the badge
                 @binding {string | number | boolean} content - content of the badge provided in item
             -->
             <slot name="badge-content" :content="item.badge.content">
-              {{ item.badge.content }}
+              <template v-if="typeof item.badge.content !== 'boolean'">
+                {{ item.badge.content }}
+              </template>
             </slot>
           </MazBadge>
         </slot>
+
+        <MazIndicator v-if="item.indicator" v-bind="item.indicator" attached class="m-tabs-bar__item__indicator">
+          <!--
+            @slot indicator - Replace the text of a counter indicator
+              @binding {string} text - text of the counter (`99+` above `max`)
+              @binding {number} index - index of the item
+          -->
+          <template v-if="$slots.indicator" #content="{ text }">
+            <slot name="indicator" :text="text" :index="index" />
+          </template>
+        </MazIndicator>
       </MazBtn>
     </template>
   </div>

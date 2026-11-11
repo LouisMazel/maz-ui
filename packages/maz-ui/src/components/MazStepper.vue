@@ -200,7 +200,7 @@ function isLastStep(step: number): boolean {
         :aria-expanded="isStepOpen(step) ? 'true' : 'false'"
         :aria-controls="getContentId(step)"
         :disabled="isStepDisabled(step)"
-        class="m-stepper__header maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200 maz:select-text"
+        class="m-stepper__header maz:flex maz:w-full maz:cursor-interactive maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200 maz:select-text"
         :class="[
           {
             '--is-current-step maz:cursor-default': step === currentStep || allStepsOpened,
@@ -251,7 +251,7 @@ function isLastStep(step: number): boolean {
                 <span v-if="getPropertyInStep('title', step)" v-html="getPropertyInStep('title', step)" />
               </slot>
             </span>
-            <span v-if="hasDataForStep('subtitle', step)" class="m-stepper__subtitle maz:mt-1 maz:text-sm maz:text-muted">
+            <span v-if="hasDataForStep('subtitle', step)" class="m-stepper__subtitle maz:mt-1 maz:text-body-sm maz:text-muted">
               <!--
                 @slot title-${step} - Subtitle of the step
               -->
@@ -262,7 +262,7 @@ function isLastStep(step: number): boolean {
           </div>
         </div>
 
-        <span v-if="hasDataForStep('titleInfo', step)" class="m-stepper__right maz:truncate maz:text-end maz:text-sm maz:text-primary">
+        <span v-if="hasDataForStep('titleInfo', step)" class="m-stepper__right maz:truncate maz:text-end maz:text-body-sm maz:text-primary">
           <!--
             @slot title-info-${step} - Info of the right of the step
           -->
@@ -322,7 +322,7 @@ function isLastStep(step: number): boolean {
 }
 
 .m-stepper__title {
-  @apply maz:text-lg;
+  @apply maz:text-title-4;
 }
 
 .m-stepper__header {

@@ -1135,7 +1135,7 @@ defineExpose({
 }
 
 .m-dropzone__info-text {
-  @apply maz:mt-4 maz:text-center maz:text-sm maz:text-muted maz:max-w-full maz:flex maz:flex-col;
+  @apply maz:mt-4 maz:text-center maz:text-body-sm maz:text-muted maz:max-w-full maz:flex maz:flex-col;
 }
 
 .m-dropzone__upload-text {
@@ -1155,7 +1155,7 @@ defineExpose({
 }
 
 .m-dropzone__file-info {
-  @apply maz:flex maz:flex-col maz:gap-0.5 maz:text-center maz:text-sm maz:font-semibold;
+  @apply maz:flex maz:flex-col maz:gap-0.5 maz:text-center maz:text-label;
 }
 
 .m-dropzone__description {
@@ -1207,7 +1207,7 @@ defineExpose({
 }
 
 .m-dropzone__divider {
-  @apply maz:text-muted maz:text-sm;
+  @apply maz:text-body-sm maz:text-muted;
 }
 
 .m-dropzone--is-over-error {

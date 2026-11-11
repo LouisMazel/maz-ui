@@ -141,7 +141,7 @@ function onFocus(event: FocusEvent) {
   <label
     :for="instanceId"
     class="m-radio m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
-    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled }, classProp]"
+    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-interactive': !disabled }, classProp]"
     :style="[style, { '--radio-size': radioSize, '--radio-selected-color': radioSelectedColor, '--radio-box-shadow': radioBoxShadow }]"
   >
     <input
@@ -174,7 +174,7 @@ function onFocus(event: FocusEvent) {
 
       <span
         v-if="hint"
-        class="m-radio__hint maz:text-sm" :class="{
+        class="m-radio__hint maz:text-body-sm" :class="{
           '--error': error,
           '--success': success,
           '--warning': warning,
