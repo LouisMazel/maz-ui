@@ -36,6 +36,7 @@ const ECOSYSTEM_PACKAGES: Record<string, string> = {
   'ecosystem/translations': '@maz-ui/translations',
   'ecosystem/nuxt': '@maz-ui/nuxt',
   'ecosystem/mcp': '@maz-ui/mcp',
+  'ecosystem/vite-plugin': '@maz-ui/vite-plugin',
   'ecosystem/eslint-config': '@maz-ui/eslint-config',
   'ecosystem/stylelint-config': '@maz-ui/stylelint-config',
   'ecosystem/upgrade': '@maz-ui/upgrade',

@@ -34,7 +34,7 @@ Never guess an API: only use documented props, events, slots and imports.
 
 Use `@maz-ui/icons`, never inline SVG nor another icon library. Pick the format by usage:
 
-- **Icon props** (`<MazBtn :start-icon>`, `<MazIcon :icon>`...): the raw SVG string, the lightest, `@maz-ui/icons/raw/MazTrash`.
+- **Icon props** (`<MazBtn :start-icon>`, `<MazIcon :icon>`...): the raw SVG string, the lightest, `@maz-ui/icons/raw/MazTrash`. A raw icon is a string: used as a tag (`<MazTrash />`) it renders nothing, without error.
 - **Directly in a template**: the component, `@maz-ui/icons/static/MazTrash`, then `<MazTrash class="size-5 text-muted" />` (size and color from the text: `1em`, `currentColor`).
 - **Not visible at first render** (`v-if`, menus, dialogs, tabs): the lazy component, `@maz-ui/icons/lazy/MazTrash`. Never for icons visible on load: each one is an extra request.
 - `<img>` or CSS only for multicolor icons (flags, logos): `@maz-ui/icons/svg/<name>.svg`, the text color does not apply there.
@@ -52,9 +52,13 @@ The texts built in the components come from `@maz-ui/translations`: change the l
 The maz-ui theme is exposed to Tailwind (`@import 'maz-ui/tailwindcss/theme.css'`) and the project usually extends it. Only use theme tokens:
 
 - **Project tokens first**: the Tailwind entry of the project adds its own `@theme` tokens, variants and utilities, and the `definePreset` file sets the brand values. `get_theme_tokens` lists both (or read these files). When a value is missing, add a token to the project `@theme` instead of an arbitrary value.
-- Colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` (each with `-foreground` and `-50` to `-950`), `surface`, `foreground`, `muted`, `divider`, `overlay`, `bg-container`, `bg-input`. Example: `bg-surface text-foreground border-divider`.
+- Colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` (each with `-foreground` and `-50` to `-950`), `surface`, `foreground`, `muted`, `divider`, `overlay`, `bg-container`, `bg-input`. Example: `bg-surface text-foreground border-divider`. The page color is `surface`, not shadcn's `background` (`bg-background` does not exist).
+- `secondary` is the second strong brand color, not a muted surface (unlike shadcn/ui): never make `primary` or `secondary` pale (3:1 minimum against `surface`, light and dark); discreet backgrounds use `surface`, `container`, `muted` or the `-50`/`-100` steps.
 - Never the default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`, `text-black`) nor hard-coded colors (`#fff`, `rgb()`, `bg-[#...]`). Theme colors already adapt to dark mode: no `dark:` color overrides.
-- Radius `rounded-*`, shadows `shadow-sm` to `shadow-xl` and `shadow-elevation`, spacing scale (`p-4`, `gap-2`), breakpoints `mob-*`, `tab-*`, `lap-*` (plus `sm` to `2xl`), utilities `flex-center`, `padded-container`.
+- Radius `rounded-*`, shadows `shadow-sm` to `shadow-xl` and `shadow-elevation`, spacing scale (`p-4`, `gap-2`), utilities `flex-center`, `disabled-state`.
+- Layout: `padded-container` on each full-width band of a page (header, sections, footer) instead of `container mx-auto px-4`; breakpoints `mob-*`, `tab-*`, `lap-*` (`tab-m:grid-cols-2`), and the same names as container queries under an `@container` parent (`@tab-m:grid-cols-2`).
+- Text: the type scale (`text-display`, `text-title-1` to `text-title-4`, `text-body-lg`, `text-body`, `text-body-sm`, `text-label`, `text-caption`, `text-overline`, `text-code`; `type-<level>` keeps the font size of the element) instead of ad hoc sizes (`text-2xl font-semibold`, `text-xs text-muted`, `text-[13px]`); `rich-text` on raw HTML (Markdown, CMS).
+- One solid primary `MazBtn` per group of actions; the others `outlined`, `pastel` or a `MazLink`.
 - **No `maz:` prefix** in this project: it is internal to the maz-ui library.
 - In custom CSS, use the variables: `var(--maz-primary)`, `var(--maz-rounded-md)`, `calc(var(--maz-space) * 4)`.
 
@@ -76,7 +80,7 @@ Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <fi
 1. **Search by need**: `search_docs("<what you need>")`, e.g. "user avatar with initials", "confirm before delete", "phone number input", "debounce search". Pick the most specific result.
 2. **Read the exact API** before writing a template: `get_component_api(["MazBtn", "MazDialog"])` (batch up to 10). Never invent a prop, event or slot.
 3. **Icons**: `find_icons("delete")` returns the icon names and their imports.
-4. **Styling**: `get_theme_tokens()` lists the theme of the project (its preset, `@theme` tokens, variants and utilities) and every Tailwind class of maz-ui (colors, radius, shadows, breakpoints, utilities). Use `get_doc("guide/tailwind")` to extend the theme.
+4. **Styling**: `get_theme_tokens()` lists the theme of the project (its preset, `@theme` tokens, variants and utilities) its effective colors, and every Tailwind class of maz-ui (colors, radius, shadows, breakpoints, container queries, layout, type scale, utilities). Use `get_doc("guide/tailwind")` to extend the theme.
 5. **Write the code** with deep imports, or rely on the auto-imports of `@maz-ui/nuxt`.
 6. **Review**: `review_code({ paths: ["src/components/MyForm.vue"] })` and fix every finding (unknown props, invalid values, native elements, default palette colors, `maz:` prefix, duplicated helpers).
 

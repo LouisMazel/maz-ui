@@ -122,6 +122,8 @@ export interface NamedToken {
 export interface TailwindUtility {
   name: string
   css: string
+  /** The comment right above the `@utility` */
+  description?: string
 }
 
 export interface TailwindManifest {
@@ -131,6 +133,8 @@ export interface TailwindManifest {
   radius: NamedToken[]
   shadows: NamedToken[]
   breakpoints: NamedToken[]
+  /** Container query sizes (`@tab-m:`), from `theme-containers.css` */
+  containers: NamedToken[]
   zIndex: NamedToken[]
   fonts: NamedToken[]
   durations: NamedToken[]
