@@ -10,6 +10,7 @@ export interface MazSidebarContext {
   side: ComputedRef<'start' | 'end'>
   collapsible: ComputedRef<'offcanvas' | 'icon' | 'hover' | 'none'>
   mode: ComputedRef<'push' | 'overlay'>
+  variant: ComputedRef<'sidebar' | 'floating'>
   tooltipMode: ComputedRef<MazSidebarTooltipMode>
   toggle: () => void
   setOpen: (value: boolean) => void
@@ -39,6 +40,19 @@ export interface MazSidebarProps {
    * - overlay: sidebar floats over content with a backdrop
    */
   mode?: 'push' | 'overlay'
+  /**
+   * Look of the sidebar
+   * - sidebar: flat panel with a border, edge to edge
+   * - floating: rounded panel inset from the edges of the window, in the
+   *   translucent material of the theme (`glass`), with a neutral selection and
+   *   accent-colored icons, like the sidebars of macOS and iPadOS.
+   *   `width` and `iconWidth` include the inset. The menu buttons keep their icon
+   *   in place when the sidebar collapses by subtracting `--maz-sidebar-inset`
+   *   (horizontal padding around the buttons, `1.5rem` by default): override it
+   *   if you change the padding of the panel or of `MazSidebarContent`.
+   * @default 'sidebar'
+   */
+  variant?: 'sidebar' | 'floating'
   /** Width of the expanded sidebar */
   width?: string
   /** Width of the collapsed sidebar in icon mode */
@@ -89,6 +103,7 @@ const {
   side = 'start',
   collapsible = 'offcanvas',
   mode = 'push',
+  variant = 'sidebar',
   width = '16rem',
   iconWidth = '3rem',
   tooltipMode = 'closed',
@@ -205,6 +220,7 @@ provide(mazSidebarKey, {
   side: computed(() => side),
   collapsible: computed(() => collapsible),
   mode: computed(() => mode),
+  variant: computed(() => variant),
   tooltipMode: computed(() => tooltipMode),
   toggle,
   setOpen,
@@ -237,8 +253,9 @@ const pushWidthClass = computed(() => {
   return 'maz:w-(--maz-sidebar-width)'
 })
 
-const borderClass = computed(() =>
-  side === 'start'
+const borderClass = computed(() => variant === 'floating'
+  ? ''
+  : side === 'start'
     ? 'maz:border-e maz:border-divider'
     : 'maz:border-s maz:border-divider',
 )
@@ -252,8 +269,10 @@ defineExpose({ toggle, setOpen })
   <aside
     v-if="mode === 'push'"
     :id="uniqueId"
-    class="m-sidebar --push m-reset-css maz:relative maz:flex maz:h-full maz:shrink-0 maz:flex-col maz:overflow-hidden maz:bg-container maz:transition-[width,border-width] maz:duration-250 maz:ease-in-out maz:motion-reduce:transition-none"
+    class="m-sidebar --push m-reset-css maz:relative maz:flex maz:h-full maz:shrink-0 maz:flex-col maz:overflow-hidden maz:transition-[width,padding,border-width] maz:duration-250 maz:ease-in-out maz:motion-reduce:transition-none"
     :class="[
+      `--${variant}`,
+      variant === 'floating' ? ['maz:[--maz-sidebar-inset:1.5rem]', !isOffcanvasCollapsed && 'maz:p-2'] : 'maz:bg-container',
       `--side-${side}`,
       `--${state}`,
       `--collapsible-${collapsible}`,
@@ -267,7 +286,10 @@ defineExpose({ toggle, setOpen })
     @focusin="onSidebarFocusIn"
     @focusout="onSidebarFocusOut"
   >
-    <slot />
+    <div v-if="variant === 'floating'" class="m-sidebar__panel maz:flex maz:min-h-0 maz:flex-1 maz:flex-col maz:overflow-hidden maz:rounded-xl maz:glass maz:shadow-md">
+      <slot />
+    </div>
+    <slot v-else />
   </aside>
 
   <!-- Overlay mode: backdrop + slide-in sidebar -->
@@ -283,8 +305,8 @@ defineExpose({ toggle, setOpen })
     <template #default>
       <aside
         :id="uniqueId"
-        class="m-sidebar --overlay --expanded m-reset-css maz:pointer-events-auto maz:flex maz:min-h-screen maz:w-(--maz-sidebar-width) maz:flex-col maz:overflow-y-auto maz:bg-container"
-        :class="[`--side-${side}`, borderClass]"
+        class="m-sidebar --overlay --expanded m-reset-css maz:pointer-events-auto maz:flex maz:min-h-screen maz:w-(--maz-sidebar-width) maz:scrollbar-themed maz:flex-col maz:overflow-y-auto"
+        :class="[`--${variant}`, `--side-${side}`, borderClass, variant === 'floating' ? 'maz:m-2 maz:min-h-[calc(100vh-1rem)] maz:rounded-xl maz:glass maz:shadow-elevation' : 'maz:bg-container']"
         :style="sidebarStyle"
         :aria-label="t('aria.sidebar')"
       >

@@ -81,6 +81,13 @@ export interface ThemeFoundation {
    */
   'disabled-cursor'?: string
   /**
+   * Cursor of the interactive controls (buttons, checkboxes, radios, switches,
+   * selects, sidebar items…). Links keep the pointer. Desktop platform presets
+   * set `'default'`: native controls keep the arrow cursor.
+   * @default 'pointer'
+   */
+  'interactive-cursor'?: string
+  /**
    * Base spacing unit. Tailwind multiplies this for every `p-N`, `m-N`,
    * `gap-N`, etc. Bridged into Tailwind's `--spacing` token.
    * @default '0.25rem'
@@ -183,6 +190,36 @@ export interface ThemeComponents {
     'top-label-font-weight'?: string
   }
   /**
+   * Translucent material ("glass") of the floating surfaces: sidebars, toolbars,
+   * popovers and menus over a blurred background. Used by the `glass` utility
+   * and the `bg-glass` / `border-glass` colors. Falls back to the container
+   * background when the user reduces transparency (system setting or the
+   * `reduce-transparency` class on an ancestor).
+   */
+  glass?: {
+    /**
+     * Background of the material, usually translucent.
+     * Defaults to the container background at 72% opacity.
+     */
+    bg?: ThemeComponentBg
+    /**
+     * Hairline edge drawn around the material.
+     * Defaults to the divider color.
+     */
+    border?: ThemeComponentBg
+    /**
+     * Blur radius of the backdrop. `'0px'` turns the blur off (platforms without
+     * a blurred material).
+     * @default '24px'
+     */
+    blur?: SizeUnit
+    /**
+     * Saturation of the backdrop, as a `saturate()` factor.
+     * @default '1.4'
+     */
+    saturate?: string
+  }
+  /**
    * Dialog sizing on tablet and up (`MazDialog`). Both values map to
    * `--maz-dialog-max-width` / `--maz-dialog-min-width` and are consumed by
    * the component through `var(--maz-dialog-max-width, 38rem)` /
@@ -202,6 +239,43 @@ export interface ThemeComponents {
     'min-width'?: SizeUnit
   }
 }
+
+/** Levels of the type scale: one `text-<level>` utility each (`text-title-2`, `text-caption`...) */
+export type TypographyLevel
+  = | 'display'
+    | 'title-1'
+    | 'title-2'
+    | 'title-3'
+    | 'title-4'
+    | 'body-lg'
+    | 'body'
+    | 'body-sm'
+    | 'label'
+    | 'caption'
+    | 'overline'
+    | 'code'
+
+/**
+ * Values of a level of the type scale, emitted as `--maz-typography-<level>-<key>`.
+ * A missing key keeps the default of the `text-<level>` utility.
+ */
+export interface TypographyLevelTokens {
+  /** Font stack, e.g. `var(--maz-font-display-stack)` */
+  font?: string
+  /** Font size, e.g. `'1.5rem'` or `'clamp(2rem, 1.5rem + 2vw, 3rem)'` */
+  size?: string
+  /** Font weight, e.g. `'600'` */
+  weight?: string
+  /** Line height, e.g. `'1.3'` */
+  leading?: string
+  /** Letter spacing, e.g. `'-0.01em'` */
+  tracking?: string
+  /** Text color, only used by `caption` (muted by default) */
+  color?: CSSColor
+}
+
+/** Type scale of the preset, by level. See {@link TypographyLevel}. */
+export type ThemeTypography = Partial<Record<TypographyLevel, TypographyLevelTokens>>
 
 export interface ThemePresetOverrides {
   /**
@@ -240,7 +314,29 @@ export interface ThemePresetOverrides {
    * @default undefined
    */
   components?: ThemeComponents
+
+  /**
+   * Type scale overrides, by level
+   * @default undefined
+   */
+  typography?: ThemeTypography
+
+  /**
+   * System colors of the platform, by color role
+   * @default undefined
+   */
+  systemColors?: ThemeSystemColors
 }
+
+/**
+ * System color keywords of the platform, by color role: `AccentColor`,
+ * `Canvas`, or the WebKit keywords of macOS (`-apple-system-control-accent`,
+ * `-apple-system-label`…). Each keyword replaces the color of its role only
+ * where the browser supports it (`@supports`), so the color of `colors` stays
+ * the fallback everywhere else. A system color follows the color scheme by
+ * itself: one keyword serves the light and the dark mode.
+ */
+export type ThemeSystemColors = Partial<Record<keyof ThemeColors, string>>
 
 export interface ThemePreset {
   /**
@@ -254,9 +350,19 @@ export interface ThemePreset {
   foundation: ThemeFoundation
   scales: ThemeScales
   components?: ThemeComponents
+  /**
+   * Type scale (`text-display`, `text-title-1`... `text-caption`). Each level
+   * keeps the defaults of maz-ui for the keys it does not set.
+   */
+  typography?: ThemeTypography
+  /**
+   * System colors of the platform (user accent, labels, separators), applied
+   * where the browser supports them. See {@link ThemeSystemColors}.
+   */
+  systemColors?: ThemeSystemColors
 }
 
-export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian' | 'nova' | 'folio' | 'maz-ui'
+export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian' | 'nova' | 'folio' | 'macos' | 'windows' | 'linux' | 'maz-ui'
 
 export type ColorMode = 'light' | 'dark' | 'auto'
 

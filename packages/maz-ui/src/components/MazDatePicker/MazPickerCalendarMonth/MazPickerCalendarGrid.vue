@@ -496,7 +496,7 @@ watch(
                 :aria-label="getDayLabel(day.date)"
                 :aria-current="isToday(day.date) ? 'date' : undefined"
                 :tabindex="tabbableDateKey === getDateKey(day.date) ? 0 : -1"
-                class="maz:size-8 maz:cursor-pointer maz:rounded-full"
+                class="maz:size-8 maz:cursor-interactive maz:rounded-full"
                 :class="{
                   '--is-first': isFirstDay(day.date) && isSelectedOrBetween(day.date) === DaySelect.SELECTED,
                   '--is-last': isLastDay(day.date) && isSelectedOrBetween(day.date) === DaySelect.SELECTED,

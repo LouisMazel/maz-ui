@@ -343,7 +343,7 @@ const stateLabelColor = computed(() => [
     </label>
 
     <div
-      v-if="assistiveText" class="m-textarea__bottom-text maz:-mt-1 maz:text-sm" :class="[
+      v-if="assistiveText" class="m-textarea__bottom-text maz:-mt-1 maz:text-body-sm" :class="[
         {
           'maz:text-destructive-600': error,
           'maz:text-success-600': success,
@@ -385,6 +385,19 @@ const stateLabelColor = computed(() => [
     &.--has-append {
       @apply maz:pb-4;
     }
+
+    &:-webkit-autofill {
+      -webkit-text-fill-color: var(--maz-foreground);
+      transition:
+        padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+        background-color 0s 600000s,
+        color 0s 600000s;
+    }
+  }
+
+  /* The browsers only paint the autofilled <textarea>: the whole field gets an autofill tint instead */
+  &:has(textarea:-webkit-autofill) {
+    background-color: color-mix(in oklab, var(--maz-primary) 12%, var(--maz-input-bg, var(--maz-surface)));
   }
 
   &.--is-disabled {

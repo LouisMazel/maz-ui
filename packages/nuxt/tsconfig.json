@@ -16,6 +16,7 @@
     "../../tools/**/*",
     "../stylelint-config/**/*",
     "../maz-cli/**/*",
+    "../vite-plugin/**/*",
     "../../apps/**/*"
   ]
 }

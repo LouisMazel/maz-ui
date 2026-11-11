@@ -9,6 +9,7 @@ export const DialogPlugin: Plugin<[DialogOptions?]> = {
 
     app.config.globalProperties.$mazDialog = {
       open: dialogHandler.open.bind(dialogHandler),
+      confirm: dialogHandler.confirm.bind(dialogHandler),
       globalOptions: dialogHandler.globalOptions,
     }
   },
@@ -37,4 +38,4 @@ declare module 'vue' {
   }
 }
 
-export { DialogHandler, type DialogOptions } from './dialog/DialogHandler'
+export { type DialogConfirmOptions, DialogHandler, type DialogOptions } from './dialog/DialogHandler'

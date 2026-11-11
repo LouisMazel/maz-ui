@@ -71,4 +71,21 @@ describe('given MazSidebarGroup component', () => {
       consoleSpy.mockRestore()
     })
   })
+
+  describe('when the sidebar is floating', () => {
+    it('then the label is a small heading, not an uppercase overline', () => {
+      const wrapper = mountWithSidebar('<MazSidebarGroup label="Projects">items</MazSidebarGroup>', { open: true, variant: 'floating' })
+      const label = wrapper.find('.m-sidebar-group__label')
+
+      expect(label.classes()).toContain('maz:text-caption')
+      expect(label.classes()).not.toContain('maz:uppercase')
+    })
+
+    it('then, collapsed to icons, the label leaves a hairline separator', () => {
+      const wrapper = mountWithSidebar('<MazSidebarGroup label="Projects">items</MazSidebarGroup>', { open: false, collapsible: 'icon', variant: 'floating' })
+
+      expect(wrapper.find('.m-sidebar-group__label').classes()).toContain('maz:sr-only')
+      expect(wrapper.find('.m-sidebar-group__separator').attributes('aria-hidden')).toBe('true')
+    })
+  })
 })

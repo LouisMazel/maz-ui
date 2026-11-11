@@ -58,6 +58,10 @@ const tokens: TailwindManifest = {
   ],
   breakpoints: [
     { name: 'tab-m:', value: '768px' },
+    { name: 'custom:', value: '1px' },
+  ],
+  containers: [
+    { name: '@tab-m:', value: '768px' },
   ],
   zIndex: [
     { name: 'z-15', value: '15' },
@@ -73,7 +77,12 @@ const tokens: TailwindManifest = {
   ],
   spacing: [],
   utilities: [
-    { name: 'flex-center', css: 'align-items: center;' },
+    { name: 'flex-center', css: 'align-items: center;', description: 'Centers the children' },
+    { name: 'cap-f', css: 'text-transform: capitalize;' },
+    { name: 'text-title-1', css: 'font-size: var(--maz-typography-title-1-size, 2rem); font-weight: var(--maz-typography-title-1-weight, 700);', description: 'Page title' },
+    { name: 'text-code', css: 'font-size: 0.875em;' },
+    { name: 'rich-text', css: 'color: red;', description: 'Raw HTML' },
+    { name: 'rich-text-sm', css: '--maz-rich-text-size: 0.875rem;' },
   ],
   variants: [
     { name: 'dark', value: '&:where(.dark, .dark *)' },
@@ -109,12 +118,44 @@ describe('given renderTailwindReference', () => {
 
     it('then falls back to the default spacing variable and lists every other token', () => {
       expect(markdown).toContain('`--spacing` is `var(--maz-space)`')
-      expect(markdown).toContain('| `tab-m:` | 768px |')
+      expect(markdown).toContain('| `tab-m:` | 768px | tablets portrait (Tailwind `md`) |')
+      expect(markdown).toContain('| `custom:` | 1px | - |')
+      expect(markdown).toContain('| `@tab-m:` | 768px |')
       expect(markdown).toContain('| `z-15` | `15` |')
       expect(markdown).toContain('| `duration-(--duration-fast)` | `var(--maz-motion-fast, 100ms)` |')
-      expect(markdown).toContain('| `flex-center` | `align-items: center;` |')
+      expect(markdown).toContain('| `flex-center` | Centers the children | `align-items: center;` |')
+      expect(markdown).toContain('| `cap-f` | - | `text-transform: capitalize;` |')
       expect(markdown).toContain('| `--maz-container-max-width` | `1440px` |')
       expect(markdown).toContain('`maz-fade`, `maz-slide`')
+    })
+  })
+
+  describe('when rendering the type scale and the rich text', () => {
+    const markdown = renderTailwindReference(tokens)
+
+    it('then lists each level with its defaults, apart from the other utilities', () => {
+      expect(markdown).toContain('| `text-title-1` | Page title | `2rem` | `700` | `-` |')
+      expect(markdown).toContain('| `text-code` | - | `-` | `-` | `-` |')
+      expect(markdown).toContain('| `rich-text` | Raw HTML |')
+      expect(markdown).toContain('| `rich-text-sm` | - |')
+      expect(markdown).not.toContain('| `text-title-1` | Page title | `font-size')
+    })
+
+    it('then documents the layout without the legacy variables', () => {
+      const tokensWithLegacy = {
+        ...tokens,
+        containerVariables: [
+          ...tokens.containerVariables,
+          { name: '--maz-container-width', value: 'x' },
+          { name: '--maz-container-padding', value: 'y' },
+        ],
+      }
+      const layout = renderTailwindReference(tokensWithLegacy)
+
+      expect(layout).toContain('## Layout')
+      expect(layout).toContain('### Action hierarchy')
+      expect(layout).not.toContain('`--maz-container-width`')
+      expect(layout).not.toContain('| `--maz-container-padding` |')
     })
   })
 

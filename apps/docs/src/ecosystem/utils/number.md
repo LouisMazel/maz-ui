@@ -9,7 +9,9 @@ description: The module formatNumber is a function that formats numbers with the
 
 > This module uses the native api [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) from browsers
 
+<div class="vp-raw">
 <MazInput v-model="numberValue" type="number" />
+</div>
 
 <div
   style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 export interface MazExpandAnimationProps {
   /**
@@ -12,16 +12,29 @@ export interface MazExpandAnimationProps {
    * @default 'ease-in-out'
    */
   timingFunction?: string
+  /**
+   * Render the content at the first opening only, then keep it mounted (the closing animation still works)
+   * @default false
+   */
+  lazy?: boolean
 }
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const { duration = '300ms', timingFunction = 'ease-in-out' } = defineProps<MazExpandAnimationProps>()
+const { duration = '300ms', timingFunction = 'ease-in-out', lazy = false } = defineProps<MazExpandAnimationProps>()
 
 const isOpen = defineModel<boolean>()
 const hasOverflowHidden = ref(!isOpen.value)
+
+const hasBeenOpened = ref(!!isOpen.value)
+const isContentRendered = computed(() => !lazy || hasBeenOpened.value || !!isOpen.value)
+
+watch(isOpen, (value) => {
+  if (value)
+    hasBeenOpened.value = true
+})
 
 const expandAnimationRef = ref<HTMLDivElement>()
 
@@ -51,7 +64,7 @@ onUnmounted(() => {
 <template>
   <div
     ref="expandAnimationRef"
-    class="m-expand-animation m-reset-css maz:max-w-full maz:overflow-x-auto"
+    class="m-expand-animation m-reset-css maz:max-w-full maz:scrollbar-themed maz:overflow-x-auto"
     :class="{ 'm-expand-animation--expanded': isOpen }"
     :aria-hidden="!isOpen"
     role="region"
@@ -65,7 +78,7 @@ onUnmounted(() => {
       }"
     >
       <!-- @slot Default Slot - Display content -->
-      <slot />
+      <slot v-if="isContentRendered" />
     </div>
   </div>
 </template>

@@ -7,6 +7,7 @@ description: Get country flag from flagcdn.com with a simple function call
 
 {{ $frontmatter.description }}
 
+<div class="vp-raw">
 <MazSelect
   v-model="countryCode"
   :options="countryOptions"
@@ -34,6 +35,7 @@ description: Get country flag from flagcdn.com with a simple function call
     </div>
   </template>
 </MazSelect>
+</div>
 
 ## Basic usage
 

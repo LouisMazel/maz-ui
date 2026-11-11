@@ -40,7 +40,7 @@ export interface HomeSnippet {
   code: string
 }
 
-export type HomeSnippetName = 'upgrade' | 'standalone' | 'nuxt' | 'typescript' | 'tokens' | 'darkMode' | 'toolbox' | 'mcp' | 'relizy'
+export type HomeSnippetName = 'upgrade' | 'standalone' | 'nuxt' | 'typescript' | 'tokens' | 'darkMode' | 'toolbox' | 'mcp' | 'relizy' | 'vitePlugin'
 
 export interface HomeData {
   version: string
@@ -120,6 +120,7 @@ formatCurrency(1234.5, 'en-US', { currency: 'EUR' })`,
   },
   mcp: { lang: 'bash', code: 'npx @maz-ui/mcp init' },
   relizy: { lang: 'bash', code: 'npx relizy init' },
+  vitePlugin: { lang: 'bash', code: 'npm install -D @maz-ui/vite-plugin' },
 }
 
 interface SidebarItem {

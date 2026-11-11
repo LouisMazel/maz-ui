@@ -837,7 +837,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
     </div>
 
     <div
-      v-if="assistiveText" :id="assistiveTextId" aria-live="polite" class="m-input-phone-number__bottom-text maz:mt-1 maz:text-sm" :class="assistiveTextStateColor"
+      v-if="assistiveText" :id="assistiveTextId" aria-live="polite" class="m-input-phone-number__bottom-text maz:mt-1 maz:text-body-sm" :class="assistiveTextStateColor"
     >
       {{ assistiveText }}
     </div>

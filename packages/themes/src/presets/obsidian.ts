@@ -11,6 +11,7 @@ import {
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SHADOW,
   DEFAULT_SPACE,
+  typographyWith,
 } from './_defaults'
 
 /**
@@ -52,6 +53,12 @@ export const obsidian: ThemePreset = {
     rounded: { md: '0.5rem' },
     shadow: DEFAULT_SHADOW,
   },
+  typography: typographyWith({
+    'display': { weight: '800', tracking: '-0.035em' },
+    'title-1': { weight: '800', tracking: '-0.03em' },
+    'title-2': { weight: '700', tracking: '-0.02em' },
+    'overline': { tracking: '0.12em' },
+  }),
   components: {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },

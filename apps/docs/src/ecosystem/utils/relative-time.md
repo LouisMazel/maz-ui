@@ -9,7 +9,7 @@ description: The module formatRelativeTime formats the delay between a date and 
 
 > All the texts come from `Intl`: any [BCP 47](https://www.rfc-editor.org/info/bcp47) locale supported by the browser or Node.js works. To keep a date up to date on screen, use the [useRelativeTime](../../composables/use-relative-time) composable.
 
-<div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
+<div class="vp-raw maz:flex maz:flex-col maz:gap-4 maz:items-start">
   <MazSelect
     v-model="locale"
     label="Locale"

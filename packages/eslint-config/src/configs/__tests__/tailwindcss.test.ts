@@ -96,5 +96,38 @@ describe('tailwindcssConfigs', () => {
         { baseFontSize: 16, unit: 'em' },
       ])
     })
+
+    it('reads the base font size from a CSS size', () => {
+      const [block] = tailwindcssConfigs('recommended', {
+        noArbitraryPx: { baseFontSize: '13px' },
+      })
+      expect(block.rules?.['maz/tailwind-no-arbitrary-px']).toEqual([
+        'error',
+        { baseFontSize: 13, unit: 'rem' },
+      ])
+    })
+
+    it('reads the base font size from a theme preset', () => {
+      const [block] = tailwindcssConfigs('recommended', {
+        noArbitraryPx: {
+          baseFontSize: {
+            foundation: { 'base-font-size': '13px' },
+          },
+        },
+      })
+      expect(block.rules?.['maz/tailwind-no-arbitrary-px']).toEqual([
+        'error',
+        { baseFontSize: 13, unit: 'rem' },
+      ])
+    })
+
+    it('throws a clear error when the base font size cannot be read', () => {
+      expect(() => tailwindcssConfigs('recommended', {
+        noArbitraryPx: { baseFontSize: '1rem' },
+      })).toThrow(/baseFontSize/)
+      expect(() => tailwindcssConfigs('recommended', {
+        noArbitraryPx: { baseFontSize: {} },
+      })).toThrow(/baseFontSize/)
+    })
   })
 })

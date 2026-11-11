@@ -202,6 +202,25 @@ defineConfig({
 | `false`                            | Disabled.                                           |
 | `{ baseFontSize, unit, severity }` | Override any subset of the defaults.                |
 
+#### Match the root font size of your theme
+
+The autofix divides by `baseFontSize`: it must be the root font size of your app, or the fixed value renders at another size. The default (16) suits the browser default; `@maz-ui/themes` presets set their own through `base-font-size` (14px for most of them, 13px for `macos`, 16px for `ocean`). Pass the preset itself, a CSS size or a number:
+
+```ts
+import { macos } from '@maz-ui/themes'
+
+defineConfig({
+  tailwindcss: {
+    preset: 'recommended',
+    noArbitraryPx: { baseFontSize: macos }, // or '13px', or 13
+  },
+})
+```
+
+With `macos`, `pt-[34px]` becomes `pt-[2.615rem]` instead of `pt-[2.125rem]` (27.6px). The error message shows the base used, so a wrong base is easy to spot.
+
+When the app switches preset at runtime (a desktop app picking the preset of its platform), `rem` values follow the root font size of the running preset: set `baseFontSize` to the preset you design on. A value that must stay the same size whatever the preset, like the height of a native title bar, stays in `px`: disable the rule on that line with a comment saying why.
+
 If both are set, the standard `rules` override wins (it's the last block applied).
 
 What the autofix does (with `baseFontSize: 16`):

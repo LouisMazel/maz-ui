@@ -13,7 +13,9 @@ This module uses the native api [Intl.NumberFormat](https://developer.mozilla.or
 
 Enter only numbers
 
+<div class="vp-raw">
 <MazInput v-model="numberValue" type="number" />
+</div>
 
 <div
   style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"

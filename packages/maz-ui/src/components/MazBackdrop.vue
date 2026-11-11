@@ -343,7 +343,7 @@ defineExpose({
           :aria-labelledby="hasOwnDialogRole ? ariaLabelledby : undefined"
           :aria-describedby="hasOwnDialogRole ? ariaDescribedby : undefined"
         >
-          <div class="m-backdrop-wrapper maz:fixed maz:inset-0 maz:overflow-y-auto">
+          <div class="m-backdrop-wrapper maz:fixed maz:inset-0 maz:scrollbar-themed maz:overflow-y-auto">
             <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
             <div
               class="m-backdrop-content maz:flex maz:min-h-full maz:tab-s:p-0"

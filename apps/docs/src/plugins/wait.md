@@ -40,9 +40,11 @@ export default defineNuxtConfig({
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazBtn @click="submitData" :loading="wait.isLoading('DATA_SUBMITTING')">
   Submit Data
 </MazBtn>
+</div>
 
 <br />
 

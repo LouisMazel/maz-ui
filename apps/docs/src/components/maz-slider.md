@@ -11,7 +11,9 @@ description: MazSlider is a standalone component that replaces the standard html
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazSlider v-model="sliderValue" class="vp-raw" />
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -29,7 +31,9 @@ const sliderValue = ref(50)
 
 ### Step
 
+<div class="vp-raw">
 <MazSlider v-model="sliderStepValue" :step="10" class="vp-raw" />
+</div>
 
 ```html
 <MazSlider v-model="value" :step="10" class="vp-raw" />
@@ -37,7 +41,9 @@ const sliderValue = ref(50)
 
 ### Multiple sliders & labels
 
+<div class="vp-raw">
 <MazSlider v-model="multipleSilders" :labels="multipleSildersLabels" />
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -54,6 +60,7 @@ const multipleSildersLabels = ['Small', 'Middle', 'Big']
 
 ### Sizes & colors
 
+<div class="vp-raw">
 <MazSlider
   v-model="multipleSilders"
   :labels="multipleSildersLabels"
@@ -81,6 +88,7 @@ const multipleSildersLabels = ['Small', 'Middle', 'Big']
   color="info"
   size="10px"
 />
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -123,6 +131,7 @@ const multipleSildersLabels = ['Small', 'Middle', 'Big']
 
 ### Logarithmic/exponential
 
+<div class="vp-raw">
 <MazSlider
   v-model="logSilders"
   :labels="logSildersLabels"
@@ -130,6 +139,7 @@ const multipleSildersLabels = ['Small', 'Middle', 'Big']
   :max="50000"
   logs
 />
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -156,11 +166,13 @@ const logSildersLabels: ['Micro', 'Small', 'Middle', 'Big']
 >
 > Component don't have animation on cursor
 
+<div class="vp-raw">
 <MazSlider
   v-model="multipleSilders"
   :divider="false"
   :cursor-anim="false"
 />
+</div>
 
 ```vue
 <script lang="ts" setup>

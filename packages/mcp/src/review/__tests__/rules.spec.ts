@@ -2,8 +2,16 @@ import type { ComponentApi } from '../../knowledge/schema'
 import type { Finding, Framework } from '../index'
 
 import { getKnowledge } from '../../__tests__/helpers'
+import { Knowledge } from '../../knowledge/load'
 import { reviewCode } from '../index'
 import { propSuggestions } from '../template'
+
+function withoutTailwind(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: { ...loaded.fragment, tailwind: undefined },
+  })))
+}
 
 function review(code: string, filename = 'Test.vue', framework?: Framework): Finding[] {
   return reviewCode(code, {
@@ -38,7 +46,7 @@ describe('given the unknown-component rule', () => {
 
   describe('when the tag is a component, an icon, a kebab-case or a lazy Nuxt component', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf(template('<MazBtn>x</MazBtn><maz-btn>x</maz-btn><LazyMazBtn>x</LazyMazBtn><MazTrash class="size-5" />'))).toEqual([])
+      expect(rulesOf(template('<MazBtn>x</MazBtn><maz-btn outlined>x</maz-btn><LazyMazBtn pastel>x</LazyMazBtn><MazTrash class="size-5" />'))).toEqual([])
     })
   })
 
@@ -664,6 +672,213 @@ describe('given the missing-reference rule', () => {
   describe('when @apply contains wrong classes', () => {
     it('then the classes are checked', () => {
       expect(rulesOf('.a { @apply maz:flex bg-red-500; }', 'a.css')).toEqual(['internal-prefix', 'theme-colors'])
+    })
+  })
+})
+
+describe('given the pale-brand-color rule', () => {
+  const preset = (base: string, colors: string): string => `import { definePreset } from '@maz-ui/themes'\nexport const brand = definePreset({ base: ${base}, overrides: { name: 'brand', colors: { ${colors} } } })\n`
+  const paleRules = (code: string): string[] => rulesOf(code, 'theme.ts').filter(rule => rule === 'pale-brand-color')
+
+  describe('when secondary is almost white in light mode', () => {
+    it('then it warns that secondary is a strong brand color', () => {
+      const [finding] = review(preset('\'maz-ui\'', 'light: { secondary: \'oklch(0.96 0.01 254)\' }'), 'theme.ts')
+
+      expect(finding.rule).toBe('pale-brand-color')
+      expect(finding.severity).toBe('warning')
+      expect(finding.line).toBe(2)
+      expect(finding.message).toContain('strong brand color')
+      expect(finding.suggestion).toContain('bg-container')
+    })
+  })
+
+  describe('when primary is pale in light mode', () => {
+    it('then it warns about primary', () => {
+      const [finding] = review(preset('mazUi', 'light: { primary: \'#eeeeee\' }'), 'theme.ts')
+
+      expect(finding.message).toContain('`primary` (light)')
+    })
+  })
+
+  describe('when a dark color is too close to the surface of the base preset', () => {
+    it('then it warns for the dark mode', () => {
+      expect(paleRules(preset('\'obsidian\'', 'dark: { secondary: \'oklch(0.22 0.03 254)\' }'))).toEqual(['pale-brand-color'])
+    })
+  })
+
+  describe('when the override defines its own surface', () => {
+    it('then the contrast is computed against it', () => {
+      expect(paleRules(preset('mazUi', 'light: { surface: \'oklch(0.2 0 0)\', secondary: \'oklch(0.25 0 0)\' }'))).toEqual(['pale-brand-color'])
+      expect(paleRules(preset('mazUi', 'light: { surface: \'oklch(0.2 0 0)\', secondary: \'oklch(0.9 0 0)\' }'))).toEqual([])
+    })
+  })
+
+  describe('when the colors are strong, not literal or not computable', () => {
+    it('then nothing is reported', () => {
+      expect(paleRules(preset('mazUi', 'light: { secondary: \'oklch(0.5 0.2 300)\' }'))).toEqual([])
+      expect(paleRules(preset('mazUi', 'light: { secondary: brand.secondary }'))).toEqual([])
+      expect(paleRules(preset('mazUi', 'light: { secondary: \'not a color\' }'))).toEqual([])
+      expect(paleRules(preset('mazUi', 'light: { surface: brand.surface, secondary: \'#fafafa\' }'))).toEqual([])
+      expect(paleRules(preset('mazUi', 'light: [1]'))).toEqual([])
+    })
+  })
+
+  describe('when the base is unknown', () => {
+    it('then light is checked against white and dark is ignored', () => {
+      expect(paleRules(preset('basePreset', 'light: { secondary: \'#f5f5f5\' }'))).toEqual(['pale-brand-color'])
+      expect(paleRules(preset('basePreset', 'dark: { secondary: \'#111111\' }'))).toEqual([])
+      expect(paleRules(preset('basePreset', 'light: { secondary: \'#777777\' }'))).toEqual([])
+    })
+  })
+
+  describe('when the preset has no base', () => {
+    it('then light is checked against white', () => {
+      expect(paleRules('definePreset({ overrides: { colors: { light: { primary: "#fefefe" } } } })')).toEqual(['pale-brand-color'])
+    })
+  })
+
+  describe('when the file has no definePreset', () => {
+    it('then nothing is reported', () => {
+      expect(paleRules('export const colors = { light: { secondary: \'#fafafa\' } }')).toEqual([])
+    })
+  })
+
+  describe('when the line is ignored', () => {
+    it('then nothing is reported', () => {
+      const code = 'import { definePreset } from \'@maz-ui/themes\'\ndefinePreset({ base: \'mazUi\', overrides: { colors: { light: {\n// maz-ui-review-ignore pale-brand-color\nsecondary: \'#fafafa\' } } } })'
+
+      expect(paleRules(code)).toEqual([])
+    })
+  })
+})
+
+describe('given the type-scale rule', () => {
+  describe('when a class list combines what a level of the type scale sets', () => {
+    it('then it suggests the level', () => {
+      const findings = review(template('<p class="mt-2 text-xs text-muted">a</p><h2 class="text-2xl font-semibold">b</h2><span class="text-xs uppercase tracking-wider text-muted">c</span><label class="text-sm font-medium">d</label>'))
+
+      expect(findings.map(finding => finding.suggestion?.slice(0, 22))).toEqual([
+        'Use `text-caption`: it',
+        'Use `text-title-2`: it',
+        'Use `text-overline`: i',
+        'Use `text-label`: it s',
+      ])
+      expect(findings[0]).toMatchObject({
+        rule: 'type-scale',
+        severity: 'info',
+        line: 2,
+        column: 16,
+      })
+    })
+  })
+
+  describe('when the class list already uses a level, or only part of a combination', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<p class="text-caption text-xs text-muted">a</p><p class="text-xs">b</p><p class="tab-m:text-2xl font-bold">c</p>'))).toEqual([])
+    })
+  })
+
+  describe('when the installed maz-ui has no type scale', () => {
+    it('then nothing is reported', () => {
+      const findings = reviewCode(template('<p class="text-xs text-muted">a</p>'), {
+        filename: 'Test.vue',
+        knowledge: withoutTailwind(),
+      })
+
+      expect(findings).toEqual([])
+    })
+  })
+})
+
+describe('given the arbitrary-font-size rule', () => {
+  describe('when a class hard-codes a font size', () => {
+    it('then it reports it with the type scale', () => {
+      const findings = review(template('<p class="text-[13px] tab-m:text-[0.9rem] text-[length:1.2em] text-[#fff]">a</p>'))
+
+      expect(findings.filter(finding => finding.rule === 'arbitrary-font-size')).toHaveLength(3)
+      expect(findings[0].suggestion).toContain('`text-title-2`')
+    })
+
+    it('then without type scale it suggests the Tailwind sizes', () => {
+      const [finding] = reviewCode(template('<p class="text-[13px]">a</p>'), {
+        filename: 'Test.vue',
+        knowledge: withoutTailwind(),
+      })
+
+      expect(finding.suggestion).toContain('`text-xs` to `text-9xl`')
+    })
+  })
+})
+
+describe('given the multiple-primary-actions rule', () => {
+  describe('when several solid primary buttons are siblings', () => {
+    it('then it reports the second one', () => {
+      const findings = review(template('<div>\n  <MazBtn>Save</MazBtn>\n  <MazBtn color="primary">Publish</MazBtn>\n</div>'))
+
+      expect(findings).toMatchObject([
+        { rule: 'multiple-primary-actions', severity: 'info', line: 4 },
+      ])
+    })
+  })
+
+  describe('when only one button is solid primary', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn outlined>Draft</MazBtn><MazBtn color="secondary">x</MazBtn><MazBtn :color="c">y</MazBtn><MazBtn :pastel="true">z</MazBtn><MazBtn fab>w</MazBtn></div><div><MazBtn>Other group</MazBtn></div>'))).toEqual([])
+    })
+  })
+})
+
+describe('given the background color name of shadcn', () => {
+  describe('when a class uses background as a color', () => {
+    it('then it points to the surface color', () => {
+      const [finding] = review(template('<div class="bg-background"></div>'))
+
+      expect(finding.rule).toBe('theme-colors')
+      expect(finding.severity).toBe('warning')
+      expect(finding.suggestion).toContain('`bg-surface`')
+    })
+
+    it('then text, border and variants are reported with the same fix', () => {
+      const findings = review(template('<div class="text-background border-background md:hover:bg-background/50"></div>'))
+
+      expect(findings.map(finding => finding.rule)).toEqual(['theme-colors', 'theme-colors', 'theme-colors'])
+      expect(findings[2].suggestion).toContain('`md:hover:bg-surface/50`')
+    })
+  })
+
+  describe('when a class only contains the word background', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<div class="bg-surface bg-clip-text background-x"></div>'))).toEqual([])
+    })
+  })
+})
+
+describe('given the raw-icon-tag rule', () => {
+  const sfc = (script: string, markup: string): string => `<script setup lang="ts">\n${script}\n</script>\n${template(markup)}`
+
+  describe('when an icon imported from raw is used as a tag', () => {
+    it('then it reports an error pointing to the static import', () => {
+      const [finding] = review(sfc('import { MazTrash } from \'@maz-ui/icons/raw/MazTrash\'', '<MazTrash class="size-5" />'))
+
+      expect(finding.rule).toBe('raw-icon-tag')
+      expect(finding.severity).toBe('error')
+      expect(finding.suggestion).toContain('@maz-ui/icons/static/MazTrash')
+    })
+
+    it('then an aliased import is reported too', () => {
+      expect(rulesOf(sfc('import { MazTrash as Bin } from \'@maz-ui/icons/raw\'', '<Bin />'))).toEqual(['raw-icon-tag'])
+    })
+  })
+
+  describe('when a raw icon is passed to an icon prop', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(sfc('import { MazTrash } from \'@maz-ui/icons/raw/MazTrash\'', '<MazBtn :icon="MazTrash">x</MazBtn>'))).toEqual([])
+    })
+  })
+
+  describe('when a static or lazy icon is used as a tag or passed to an icon prop', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(sfc('import { MazTrash } from \'@maz-ui/icons/static/MazTrash\'\nimport { MazStar } from \'@maz-ui/icons/lazy/MazStar\'', '<MazTrash /><MazBtn :icon="MazStar">x</MazBtn>'))).toEqual([])
     })
   })
 })

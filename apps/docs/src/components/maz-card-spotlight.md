@@ -11,9 +11,11 @@ description: MazCardSpotlight is a card with a glowing spotlight that follows th
 
 **This component is better in dark mode**
 
+<div class="vp-raw">
 <MazBtn @click="setColorMode('dark')" color="warning">
 Switch to dark theme
 </MazBtn>
+</div>
 
 ::: tip
 If you want to increase the border width, you must just add padding @default: `var(--maz-border-width)` (1px)

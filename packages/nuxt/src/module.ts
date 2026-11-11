@@ -8,12 +8,14 @@ import { fileURLToPath } from 'node:url'
 import { detectAgentTargets, findProjectPackage, readPackageVersion, resolveAgentDocsDir, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
+import { MazUiPurgeCss } from '@maz-ui/vite-plugin'
 import { addCustomTab } from '@nuxt/devtools-kit'
 import {
   addComponent,
   addImports,
   addPlugin,
   addTemplate,
+  addVitePlugin,
   createResolver,
   defineNuxtModule,
   resolvePath,
@@ -47,7 +49,7 @@ type ComponentNames = keyof typeof import('maz-ui/components')
 
 const COMPONENT_NAMES: Omit<
   Record<ComponentNames, true>,
-  'useMazDialogConfirm' | 'mazSidebarKey'
+  'useMazDialogConfirm' | 'mazSidebarKey' | 'mazListKey'
 > = {
   MazAccordion: true,
   MazAlert: true,
@@ -69,6 +71,7 @@ const COMPONENT_NAMES: Omit<
   MazContainer: true,
   MazCircularProgressBar: true,
   MazCodeHighlight: true,
+  MazColorPicker: true,
   MazDialog: true,
   MazDialogConfirm: true,
   MazDrawer: true,
@@ -78,7 +81,9 @@ const COMPONENT_NAMES: Omit<
   MazFullscreenLoader: true,
   MazGallery: true,
   MazIcon: true,
+  MazIndicator: true,
   MazInput: true,
+  MazInputAutocomplete: true,
   MazInputCode: true,
   MazInputNumber: true,
   MazInputPhoneNumber: true,
@@ -86,10 +91,13 @@ const COMPONENT_NAMES: Omit<
   MazInputTags: true,
   MazLazyImg: true,
   MazLink: true,
+  MazList: true,
+  MazListItem: true,
   MazLoadingBar: true,
   MazMarkdownEditor: true,
   MazPagination: true,
   MazDatePicker: true,
+  MazProgressBar: true,
   MazPullToRefresh: true,
   MazRadio: true,
   MazRadioButtons: true,
@@ -101,6 +109,7 @@ const COMPONENT_NAMES: Omit<
   MazSlider: true,
   MazSpinner: true,
   MazStepper: true,
+  MazSegmented: true,
   MazSwitch: true,
   MazSidebar: true,
   MazSidebarMenu: true,
@@ -146,6 +155,7 @@ const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDial
   useBreakpoints: true,
   useUserVisibility: true,
   useStringMatching: true,
+  useFuzzySearch: true,
   useTimer: true,
   useFormValidator: true,
   useDisplayNames: true,
@@ -169,6 +179,8 @@ const defaults = {
   },
   css: {
     injectCss: true,
+    injectUtilities: false,
+    purge: true,
   },
   theme: {
     preset: 'maz-ui',
@@ -308,6 +320,17 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
   }
 }
 
+/** The entries of maz-ui the plugins and directives enabled in the options install */
+function getModuleEntries(options: { plugins: NonNullable<MazUiNuxtOptions['plugins']>, directives: NonNullable<MazUiNuxtOptions['directives']> }): string[] {
+  const plugins = Object.entries(options.plugins).filter(([, enabled]) => enabled).map(([name]) => `plugins/${name}`)
+  const directives = Object.entries(options.directives).filter(([, enabled]) => enabled).map(([name]) => `directives/${name}`)
+
+  return [
+    ...plugins,
+    ...directives,
+  ]
+}
+
 function addMazUiComposableImport({
   name,
   from,
@@ -368,8 +391,27 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // CSS
 
+    if (moduleOptions.css.injectUtilities) {
+      nuxt.options.css.unshift('maz-ui/utilities.css')
+    }
+
     if (moduleOptions.css.injectCss) {
       nuxt.options.css.unshift('maz-ui/style.css')
+    }
+
+    if (moduleOptions.css.purge !== false && !nuxt.options.dev) {
+      const purgeOptions = typeof moduleOptions.css.purge === 'object'
+        ? moduleOptions.css.purge
+        : {}
+
+      addVitePlugin(MazUiPurgeCss({
+        ...purgeOptions,
+        // The plugins and directives of the module are installed from node_modules, where the purge does not look
+        entries: [
+          ...getModuleEntries(moduleOptions),
+          ...(purgeOptions.entries ?? []),
+        ],
+      }))
     }
 
     // cssnano's `postcss-calc` cannot parse the relative OKLCh values maz-ui

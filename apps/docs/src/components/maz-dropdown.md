@@ -57,6 +57,7 @@ The `adaptive` trigger mode automatically adapts to the user's device:
 
 This provides the best user experience across all devices without requiring manual configuration.
 
+<div class="vp-raw">
 <MazDropdown
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
@@ -67,6 +68,7 @@ This provides the best user experience across all devices without requiring manu
 >
   Adaptive trigger
 </MazDropdown>
+</div>
 
 ```html{7}
 <MazDropdown
@@ -83,6 +85,7 @@ This provides the best user experience across all devices without requiring manu
 
 ## Open dropdown only on click
 
+<div class="vp-raw">
 <MazDropdown
   :model-value="true"
   :items="[
@@ -94,6 +97,7 @@ This provides the best user experience across all devices without requiring manu
 >
   Click me
 </MazDropdown>
+</div>
 
 ```html{7}
 <MazDropdown
@@ -110,6 +114,7 @@ This provides the best user experience across all devices without requiring manu
 
 ## Open dropdown only on hover
 
+<div class="vp-raw">
 <MazDropdown
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
@@ -120,6 +125,7 @@ This provides the best user experience across all devices without requiring manu
 >
   Hover me
 </MazDropdown>
+</div>
 
 ```html{7}
 <MazDropdown
@@ -138,6 +144,7 @@ This provides the best user experience across all devices without requiring manu
 
 You can provide an icon to replace the default chevron icon and disable the animation
 
+<div class="vp-raw">
 <MazDropdown
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
@@ -149,7 +156,9 @@ You can provide an icon to replace the default chevron icon and disable the anim
 >
   Custom icon
 </MazDropdown>
+</div>
 
+<div class="vp-raw">
 <MazDropdown
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
@@ -162,6 +171,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
 >
   No icon animation
 </MazDropdown>
+</div>
 
 ```vue{7}
 <script lang="ts" setup>
@@ -212,12 +222,27 @@ You can provide an icon to replace the default chevron icon and disable the anim
 </MazDropdown>
 ```
 
+## Colors
+
+The `color` prop is applied to the trigger button and accepts the neutral colors `surface` and `container` (`MazNeutralColor`). The dropdown panel uses the `container` color.
+
+<div class="vp-raw maz:flex maz:gap-4 maz:flex-wrap">
+  <MazDropdown color="surface" label="Surface" :items="[{ label: 'Action' }]" />
+  <MazDropdown color="container" label="Container" :items="[{ label: 'Action' }]" />
+</div>
+
+```vue
+<MazDropdown color="surface" label="Surface" :items="items" />
+<MazDropdown color="container" label="Container" :items="items" />
+```
+
 ## Custom dropdown main button without chevron icon
 
 ::: tip
   This component uses [MazBtn](./maz-btn.md) has a menu button, so it inherits all its props
 :::
 
+<div class="vp-raw">
 <MazDropdown
   color="primary"
   fab
@@ -233,6 +258,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
   ]"
   :close-on-click="false"
 />
+</div>
 
 ::: details View code
 
@@ -268,6 +294,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
 
 You can provide a template to replace the default dropdown panel
 
+<div class="vp-raw">
 <MazDropdown>
   Customized dropdown
 
@@ -288,6 +315,7 @@ You can provide a template to replace the default dropdown panel
     </div>
   </template>
 </MazDropdown>
+</div>
 
 ::: details View code
 
@@ -320,6 +348,7 @@ You can provide a template to replace the default dropdown panel
 
 You can provide a template to replace menuitem labels to add more elements in each menuitem
 
+<div class="vp-raw">
 <MazDropdown
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED'), additionnalData: 'https://placedog.net/240/200' },
@@ -340,6 +369,7 @@ You can provide a template to replace menuitem labels to add more elements in ea
     </div>
   </template>
 </MazDropdown>
+</div>
 
 ::: details View code
 
@@ -376,7 +406,7 @@ You can provide an HTML element or a component to replace the default button
 Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab key
 :::
 
-<div class="maz:flex maz:gap-4">
+<div class="vp-raw maz:flex maz:gap-4">
   <MazDropdown
     :items="[
       {
@@ -504,6 +534,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
 
 isOpen: {{ isOpen }}
 
+<div class="vp-raw">
 <MazDropdown
   v-model="isOpen"
   :items="[
@@ -521,6 +552,7 @@ isOpen: {{ isOpen }}
 <MazBtn @click="openDropdown">
   Open Dropdown
 </MazBtn>
+</div>
 
 ```vue
 <template>
@@ -549,7 +581,7 @@ isOpen: {{ isOpen }}
 
 ## Position
 
-<div class="maz:flex maz:gap-3 maz:flex-wrap">
+<div class="vp-raw maz:flex maz:gap-3 maz:flex-wrap">
   <MazDropdown
     color="contrast"
     :items="[

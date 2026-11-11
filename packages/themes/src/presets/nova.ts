@@ -11,6 +11,7 @@ import {
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SHADOW,
   DEFAULT_SPACE,
+  typographyWith,
 } from './_defaults'
 
 /**
@@ -57,6 +58,11 @@ export const nova: ThemePreset = {
     rounded: { md: '0.5rem' },
     shadow: DEFAULT_SHADOW,
   },
+  typography: typographyWith({
+    'display': { leading: '1.05', tracking: '-0.04em' },
+    'title-1': { tracking: '-0.03em' },
+    'title-2': { tracking: '-0.02em' },
+  }),
   components: {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },

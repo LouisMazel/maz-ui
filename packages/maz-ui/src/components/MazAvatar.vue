@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
+import type { MazIndicatorProps } from './MazIndicator.vue'
 import type { MazColor, MazRoundedSize, MazSize, MazSizeUnit } from './types'
 import { MazPencil } from '@maz-ui/icons/lazy/MazPencil'
 import { computed, defineAsyncComponent } from 'vue'
@@ -24,6 +25,8 @@ const {
   letterCount = 2,
   fallbackSrc = undefined,
   loading = 'intersecting',
+  square,
+  indicator,
 } = defineProps<MazAvatarProps>()
 
 const emits = defineEmits<{
@@ -42,6 +45,7 @@ const emits = defineEmits<{
 const { roundedSize } = useGlobalConfig<{ roundedSize: MazRoundedSize }>('MazAvatar', { roundedSize: 'md' })
 
 const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
+const MazIndicator = defineAsyncComponent(() => import('./MazIndicator.vue'))
 
 export interface MazAvatarProps {
   /** The style of the component */
@@ -107,10 +111,18 @@ export interface MazAvatarProps {
    */
   loading?: 'lazy' | 'eager' | 'intersecting'
   /**
-   * The color of the avatar
-   * @values `"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent"`
+   * The color of the avatar. `auto` derives a stable hue from the caption: the
+   * same name always gets the same color, different names get distinct ones
+   * @values `"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent" | "auto"`
    */
-  color?: MazColor
+  color?: MazColor | 'auto'
+  /**
+   * Indicator (`MazIndicator`) on a corner of the avatar: `true` (or the attribute
+   * alone) for a status dot at the bottom, a number or a short text for a counter
+   * at the top (notifications, unread messages), or the props of `MazIndicator`
+   * (`color`, `position`, `max`, `label`, `pulse`...). `0` hides a counter
+   */
+  indicator?: boolean | number | string | MazIndicatorProps
 }
 
 const componentType = computed(() => {
@@ -149,6 +161,49 @@ function handleImageError(event: Event) {
 }
 
 const hasInitial = computed(() => !src && caption)
+
+/** Stable hue of a caption: a string hash spread over the color wheel with the golden angle. */
+function getCaptionHue(value: string) {
+  let hash = 7
+  for (const char of value)
+    hash = Math.imul(hash, 31) + char.codePointAt(0)! >>> 0
+  return Math.round((hash * 137.508) % 360)
+}
+
+const initialStyle = computed(() => {
+  if (!hasInitial.value)
+    return undefined
+  if (color === 'auto') {
+    return {
+      backgroundColor: `oklch(0.6 0.13 ${getCaptionHue(caption ?? '')})`,
+      color: 'oklch(1 0 0)',
+    }
+  }
+  return {
+    backgroundColor: `var(--maz-${color})`,
+    color: `var(--maz-${color}-foreground)`,
+  }
+})
+
+const indicatorProps = computed<MazIndicatorProps | undefined>(() => {
+  if (indicator === undefined || indicator === null || indicator === false)
+    return undefined
+  const props: MazIndicatorProps = typeof indicator === 'object'
+    ? indicator
+    : {
+        content: indicator === true
+          ? undefined
+          : indicator,
+      }
+  const isDot = props.content === undefined || props.content === ''
+  return {
+    overlap: square || roundedSize.value !== 'full'
+      ? 'rectangular'
+      : 'circular',
+    position: isDot ? 'bottom-end' : 'top-end',
+    ...props,
+  }
+})
 
 const ROUNDED_CLASS = {
   none: 'maz:rounded-none',
@@ -196,87 +251,95 @@ const fontSize = computed(() => {
     :to="to"
     :target="isLink ? target : undefined"
   >
-    <div
-      class="m-avatar__wrapper maz:relative maz:flex maz:size-[3em] maz:flex-none maz:justify-center maz:overflow-hidden"
-      :tabindex="clickable ? 0 : -1"
-      :class="[
-        ROUNDED_CLASS[square ? 'none' : roundedSize],
-        `--rounded-${square ? 'none' : roundedSize}`,
-        {
-          '--clickable': clickable,
-          '--has-shadow': !noElevation,
-          '--bordered': bordered,
-          '--has-initial': hasInitial,
-          'maz:shadow-sm': !noElevation,
-          'maz:border maz:border-solid maz:border-divider': bordered,
-          'maz:items-center': hasInitial,
-        },
-      ]"
-      :style="hasInitial ? {
-        backgroundColor: `var(--maz-${color})`,
-        color: `var(--maz-${color}-foreground)`,
-      } : undefined"
-    >
-      <template v-if="shouldDisplayImg">
-        <MazLazyImg
-          v-if="loading === 'intersecting'"
-          v-bind="$attrs"
-          class="m-avatar__picture maz:w-full maz:max-w-full"
-          :src
-          :alt
-          :image-height-full
-          :hide-loader
-          :fallback-src
-          @click="clickable ? $emit('click', $event) : null"
-          @error="$emit('error', $event)"
-          @loaded="$emit('loaded', $event)"
-          @loading="$emit('loading', $event)"
-          @intersecting="$emit('intersecting', $event)"
-        />
-        <img
-          v-else
-          class="m-avatar__picture"
-          :class="[imageHeightFull ? 'maz:h-full maz:max-h-full maz:w-auto maz:max-w-none' : 'maz:w-full maz:max-w-full']"
-          :src="src ?? fallbackSrc"
-          :alt="alt"
-          :loading
-          decoding="async"
-          @error="handleImageError"
-        >
-      </template>
-      <!--
+    <span class="m-avatar__frame maz:relative maz:inline-flex maz:flex-none">
+      <div
+        class="m-avatar__wrapper maz:relative maz:flex maz:size-[3em] maz:flex-none maz:justify-center maz:overflow-hidden"
+        :tabindex="clickable ? 0 : -1"
+        :class="[
+          ROUNDED_CLASS[square ? 'none' : roundedSize],
+          `--rounded-${square ? 'none' : roundedSize}`,
+          {
+            '--clickable': clickable,
+            '--has-shadow': !noElevation,
+            '--bordered': bordered,
+            '--has-initial': hasInitial,
+            'maz:shadow-sm': !noElevation,
+            'maz:border maz:border-solid maz:border-divider': bordered,
+            'maz:items-center': hasInitial,
+          },
+        ]"
+        :style="initialStyle"
+      >
+        <template v-if="shouldDisplayImg">
+          <MazLazyImg
+            v-if="loading === 'intersecting'"
+            v-bind="$attrs"
+            class="m-avatar__picture maz:w-full maz:max-w-full"
+            :src
+            :alt
+            :image-height-full
+            :hide-loader
+            :fallback-src
+            @click="clickable ? $emit('click', $event) : null"
+            @error="$emit('error', $event)"
+            @loaded="$emit('loaded', $event)"
+            @loading="$emit('loading', $event)"
+            @intersecting="$emit('intersecting', $event)"
+          />
+          <img
+            v-else
+            class="m-avatar__picture"
+            :class="[imageHeightFull ? 'maz:h-full maz:max-h-full maz:w-auto maz:max-w-none' : 'maz:w-full maz:max-w-full']"
+            :src="src ?? fallbackSrc"
+            :alt="alt"
+            :loading
+            decoding="async"
+            @error="handleImageError"
+          >
+        </template>
+        <!--
         @slot round-text - Replace the initials displayed when a caption is set and no image source is provided
       -->
-      <slot v-if="caption && !src" name="round-text">
-        <span class="m-avatar__initial maz:text-[1.5em] maz:uppercase"> {{ getInitials(caption) }} </span>
-      </slot>
+        <slot v-if="caption && !src" name="round-text">
+          <span class="m-avatar__initial maz:text-[1.5em] maz:uppercase"> {{ getInitials(caption) }} </span>
+        </slot>
 
-      <button
-        v-if="clickable"
-        type="button"
-        tabindex="-1"
-        class="m-avatar__button maz:absolute maz:inset-0 maz:flex maz:w-full maz:cursor-pointer maz:flex-center maz:border-none maz:bg-transparent maz:opacity-0 maz:transition-all maz:duration-200"
-        :class="ROUNDED_CLASS[square ? 'none' : roundedSize]"
-        :style="{
-          backgroundColor: src
-            ? `color-mix(in srgb, var(--maz-${buttonColor}) 60%, transparent)`
-            : `var(--maz-${buttonColor})`,
-        }"
-        @click="$emit('click', $event)"
-      >
-        <!--
+        <button
+          v-if="clickable"
+          type="button"
+          tabindex="-1"
+          class="m-avatar__button maz:absolute maz:inset-0 maz:flex maz:w-full maz:cursor-interactive maz:flex-center maz:border-none maz:bg-transparent maz:opacity-0 maz:transition-all maz:duration-200"
+          :class="ROUNDED_CLASS[square ? 'none' : roundedSize]"
+          :style="{
+            backgroundColor: src
+              ? `color-mix(in srgb, var(--maz-${buttonColor}) 60%, transparent)`
+              : `var(--maz-${buttonColor})`,
+          }"
+          @click="$emit('click', $event)"
+        >
+          <!--
           @slot icon - The icon displayed on the clickable button overlay (shown on hover/focus)
         -->
-        <slot v-if="!hideClickableIcon" name="icon">
-          <MazPencil class="m-avatar__button__icon maz:text-white" />
-        </slot>
-      </button>
-    </div>
+          <slot v-if="!hideClickableIcon" name="icon">
+            <MazPencil class="m-avatar__button__icon maz:text-white" />
+          </slot>
+        </button>
+      </div>
+      <MazIndicator v-if="indicatorProps" v-bind="indicatorProps" attached>
+        <!--
+          @slot indicator - Replace the text of a counter indicator
+            @binding {string} text the text of the counter (`99+` above `max`)
+        -->
+        <template v-if="$slots.indicator" #content="{ text }">
+          <slot name="indicator" :text="text" />
+        </template>
+      </MazIndicator>
+    </span>
     <!--
       @slot caption - Replace the caption displayed below the avatar (requires `showCaption`)
     -->
     <slot name="caption">
-      <p v-if="showCaption && caption" class="m-avatar__caption maz:w-full maz:truncate maz:text-center maz:font-medium maz:capitalize">
+      <p v-if="showCaption && caption" class="m-avatar__caption maz:w-full maz:truncate maz:text-center maz:type-label maz:capitalize">
         {{ caption }}
       </p>
     </slot>

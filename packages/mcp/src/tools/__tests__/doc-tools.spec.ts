@@ -390,6 +390,32 @@ describe('given get_theme_tokens', () => {
     })
   })
 
+  describe('when a bundled preset, colors and steps are given', () => {
+    it('then it details the effective colors of these steps of the preset', async () => {
+      const output = await getThemeTokens(getContext(), {
+        project: false,
+        preset: 'ocean',
+        colors: ['accent'],
+        steps: ['300'],
+      })
+
+      expect(output).toContain('### Effective colors of the `ocean` preset')
+      expect(output).toContain('| `accent-300` |')
+      expect(output).not.toContain('| `accent-500` |')
+      expect(output).not.toContain('## Your project theme')
+    })
+  })
+
+  describe('when the topics leave the colors out', () => {
+    it('then the effective colors are not rendered', async () => {
+      const output = await getThemeTokens(getContext(), {
+        topics: ['radius'],
+      })
+
+      expect(output).not.toContain('Effective colors')
+    })
+  })
+
   describe('when the bundle has no Tailwind reference', () => {
     it('then it throws', async () => {
       const directory = createTempDir()

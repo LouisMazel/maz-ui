@@ -7,6 +7,10 @@ description: Efficient composable for string matching tasks, utilizing Levenshte
 
 {{ $frontmatter.description }}
 
+::: tip
+It compares two whole strings, with the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance): a short query is far from a long text ("fra" and "France" do not match). To search a query in a list, use [useFuzzySearch](./use-fuzzy-search.md).
+:::
+
 ## Usage
 
 <ComponentDemo>

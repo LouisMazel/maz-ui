@@ -732,7 +732,7 @@ watch(
           v-bind="{ ...inputProps, ...$attrs }"
           block
           autocomplete="off"
-          class="m-date-picker__input maz:size-full"
+          class="m-date-picker__input maz:w-full"
           :label
           :disabled
           :placeholder
@@ -828,11 +828,11 @@ watch(
 
   &:not(.--is-disabled) {
     & .m-date-picker__button {
-      @apply maz:cursor-pointer;
+      @apply maz:cursor-interactive;
     }
 
     & .m-date-picker__input:deep(input) {
-      @apply maz:cursor-pointer!;
+      @apply maz:cursor-interactive!;
     }
   }
 }

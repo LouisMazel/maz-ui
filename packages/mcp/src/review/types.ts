@@ -27,6 +27,11 @@ export type RuleId
     | 'prefer-utils'
     | 'nuxt-auto-import'
     | 'missing-reference'
+    | 'pale-brand-color'
+    | 'type-scale'
+    | 'arbitrary-font-size'
+    | 'multiple-primary-actions'
+    | 'raw-icon-tag'
 
 export interface Finding {
   rule: RuleId
@@ -52,4 +57,6 @@ export interface ReviewContext extends ReviewOptions {
   report: (finding: Omit<Finding, 'line' | 'column'>, offset: number) => void
   /** Components imported by the SFC: local name -> maz-ui name, `undefined` for the components of the project */
   localComponents?: Map<string, string | undefined>
+  /** Icons imported as SVG strings from `@maz-ui/icons/raw`: local names */
+  rawIcons?: Set<string>
 }

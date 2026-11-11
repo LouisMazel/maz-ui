@@ -115,7 +115,7 @@ const titleId = computed(() => `${instanceId.value}-title`)
             hasTitle ? 'maz:justify-between' : 'maz:justify-end',
           ]"
         >
-          <h4 :id="hasTitle ? titleId : undefined" class="m-drawer-header__title maz:m-0 maz:font-display maz:text-xl maz:font-semibold">
+          <h4 :id="hasTitle ? titleId : undefined" class="m-drawer-header__title maz:m-0 maz:text-title-3">
             <slot name="title" :close="close">
               {{ title }}
             </slot>
@@ -126,7 +126,7 @@ const titleId = computed(() => `${instanceId.value}-title`)
             </MazBtn>
           </div>
         </header>
-        <div class="m-drawer-body maz:z-0 maz:min-h-0 maz:flex-1 maz:overflow-auto maz:bg-clip-padding">
+        <div class="m-drawer-body maz:z-0 maz:min-h-0 maz:flex-1 maz:scrollbar-themed maz:overflow-auto maz:bg-clip-padding">
           <slot :close="close" />
         </div>
       </div>

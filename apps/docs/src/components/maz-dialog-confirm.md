@@ -20,10 +20,15 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazBtn @click="askToUser">Ask user</MazBtn>
+</div>
 
+<div class="vp-raw">
 <MazDialogConfirm identifier="one" accept-text="Ok" reject-text="Reject" />
+</div>
 
+<div class="vp-raw">
 <MazDialogConfirm identifier="two" :buttons="buttons">
   <template #title>
     Do you really want to delete this user?
@@ -32,7 +37,9 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     Are you really sure you want to delete this user?
   </template>
 </MazDialogConfirm>
+</div>
 
+<div class="vp-raw">
 <MazDialog v-model="confirmDialog">
   <template #title>
     User deleted
@@ -46,6 +53,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </MazBtn>
   </template>
 </MazDialog>
+</div>
 
 ```vue
 <script setup>
@@ -135,6 +143,26 @@ async function askToUser() {
   </MazDialog>
 </template>
 ```
+
+## Rich content and reactive buttons
+
+The default slot accepts any content (list, alert, form), and receives the `accept` and `reject` functions. The `accept-props` and `reject-props` are regular props: bind them to a reactive state to disable or put the button in loading state.
+
+```vue
+<MazDialogConfirm
+  identifier="publish"
+  :accept-props="{ disabled: !hasIdentity, type: 'accept', color: 'success' }"
+>
+  <template #default>
+    <MazAlert color="warning">Set your git identity first</MazAlert>
+    <ul>
+      <li v-for="file in files" :key="file">{{ file }}</li>
+    </ul>
+  </template>
+</MazDialogConfirm>
+```
+
+With the [dialog plugin](./../plugins/dialog.md#rich-content), use the `content` option and reactive `acceptProps` instead.
 
 ## Types
 

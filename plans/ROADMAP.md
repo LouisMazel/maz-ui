@@ -37,3 +37,21 @@ Définir les variants (`color` x `size` x `variant`) via une config type-safe (`
 - **Distribution "registry" à la shadcn** : `npx maz add button` qui copie le code dans le projet. Point de départ : `maz-cli`.
 - **Tests de régression visuelle** (Playwright screenshots, éventuellement Histoire / Storybook).
 - **Container queries** (`@container` de Tailwind v4) pour rendre `MazCard` / `MazTable` responsives à leur conteneur.
+
+## v6 (breaking)
+
+### Styles des composants dans `@layer components`
+
+Les styles scoped des composants sont compilés hors de toute `@layer` (`dist/assets/*.css`) : ils gagnent toujours sur les utilitaires Tailwind du consommateur, qui doit passer par `!` (`text-white!` sur un `MazBtn`) ou par la prop `textColor`. Relevé par un projet qui utilise maz-ui (couleur de texte de `MazBtn color="transparent"`).
+
+- [ ] Compiler les styles des composants dans `@layer components`, pour toute la lib (pas composant par composant).
+- [ ] Sortir des templates les classes `maz:` qui fixent ce que le CSS du composant surcharge (`maz:bg-transparent`, `maz:text-foreground`, `maz:border-transparent` de `MazBtn`...) : en `@layer utilities`, elles l'emporteraient sinon sur le CSS du composant.
+- [ ] Breaking : un CSS global non layéré du consommateur (reset `button { background: none }`) l'emportera alors sur les composants. À documenter dans le guide de migration.
+
+### `MazAvatar` : chargement natif par défaut
+
+`loading="intersecting"` (le défaut) passe par `MazLazyImg` (async chunk, directive `vLazyImg`, un `IntersectionObserver` par avatar) alors que `loading="lazy"` utilise déjà un `<img>` natif. `MazSelectCountry` est déjà passé au natif.
+
+- [ ] Passer le défaut de `loading` à `'lazy'`.
+- [ ] Déprécier `'intersecting'` en 5.x, le retirer en v6, avec les événements `loading` et `intersecting` qui en dépendent. Le `<img>` natif n'émet aujourd'hui que `error` : ajouter un `@load` pour garder `loaded`.
+- [ ] Note dans le guide de migration.

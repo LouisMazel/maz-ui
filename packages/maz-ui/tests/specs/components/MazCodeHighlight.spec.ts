@@ -1,6 +1,6 @@
 import MazCodeHighlight from '@components/MazCodeHighlight.vue'
 import { flushPromises, mount } from '@vue/test-utils'
-import { createSSRApp } from 'vue'
+import { createSSRApp, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 
 vi.mock('shiki', () => ({
@@ -359,6 +359,158 @@ describe('given MazCodeHighlight component', () => {
       await flushPromises()
 
       expect(() => wrapper.unmount()).not.toThrow()
+    })
+  })
+  describe('when the color mode is resolved', () => {
+    const themeStateProvide = (isDark: boolean) => ref({ isDark })
+
+    async function lastTheme(options: {
+      props?: Record<string, unknown>
+      parentClass?: string
+      themeState?: ReturnType<typeof themeStateProvide>
+      htmlDark?: boolean
+    } = {}) {
+      const { codeToHtml } = await import('shiki')
+      vi.mocked(codeToHtml).mockClear()
+      document.documentElement.classList.toggle('dark', !!options.htmlDark)
+      const parent = document.createElement('div')
+      if (options.parentClass)
+        parent.className = options.parentClass
+      document.body.append(parent)
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: 'const x = 1', ...options.props },
+        attachTo: parent,
+        global: {
+          provide: options.themeState
+            ? { mazThemeState: options.themeState }
+            : {},
+        },
+      })
+      await flushPromises()
+      const calls = vi.mocked(codeToHtml).mock.calls
+      const theme = (calls.at(-1)?.[1] as { theme: string }).theme
+      return { wrapper, theme, parent }
+    }
+
+    afterEach(() => {
+      document.documentElement.classList.remove('dark')
+      document.body.innerHTML = ''
+    })
+
+    describe('given no theme plugin and no dark class', () => {
+      it('then it uses the light theme', async () => {
+        const { theme } = await lastTheme()
+        expect(theme).toBe('github-light')
+      })
+    })
+
+    describe('given the html element has the dark class and no theme plugin', () => {
+      it('then it uses the dark theme', async () => {
+        const { theme } = await lastTheme({ htmlDark: true })
+        expect(theme).toBe('tokyo-night')
+      })
+    })
+
+    describe('given a dark ancestor', () => {
+      it('then it uses the dark theme without any prop', async () => {
+        const { theme } = await lastTheme({ parentClass: 'dark' })
+        expect(theme).toBe('tokyo-night')
+      })
+
+      it('then it takes priority over a light theme state', async () => {
+        const { theme } = await lastTheme({
+          parentClass: 'dark',
+          themeState: themeStateProvide(false),
+        })
+        expect(theme).toBe('tokyo-night')
+      })
+
+      it('then it reacts when the ancestor class changes', async () => {
+        const { theme, parent } = await lastTheme()
+        const { codeToHtml } = await import('shiki')
+        expect(theme).toBe('github-light')
+
+        parent.classList.add('dark')
+        await flushPromises()
+        await vi.waitFor(() => expect(vi.mocked(codeToHtml).mock.calls.at(-1)?.[1]).toMatchObject({ theme: 'tokyo-night' }))
+
+        parent.classList.remove('dark')
+        await vi.waitFor(() => expect(vi.mocked(codeToHtml).mock.calls.at(-1)?.[1]).toMatchObject({ theme: 'github-light' }))
+      })
+    })
+
+    describe('given a theme state', () => {
+      it('then it uses the dark theme when the state is dark', async () => {
+        const { theme } = await lastTheme({
+          themeState: themeStateProvide(true),
+        })
+        expect(theme).toBe('tokyo-night')
+      })
+
+      it('then it uses the light theme when the state is light', async () => {
+        const { theme } = await lastTheme({
+          themeState: themeStateProvide(false),
+        })
+        expect(theme).toBe('github-light')
+      })
+
+      it('then it takes priority over the html class', async () => {
+        const { theme } = await lastTheme({
+          themeState: themeStateProvide(false),
+          htmlDark: false,
+        })
+        expect(theme).toBe('github-light')
+      })
+
+      it('then it follows the state changes', async () => {
+        const themeState = themeStateProvide(false)
+        await lastTheme({ themeState })
+        const { codeToHtml } = await import('shiki')
+        themeState.value = { isDark: true }
+        await vi.waitFor(() => expect(vi.mocked(codeToHtml).mock.calls.at(-1)?.[1]).toMatchObject({ theme: 'tokyo-night' }))
+      })
+
+      it('then it renders on the server with the state', async () => {
+        const html = await renderToString(createSSRApp(MazCodeHighlight, { code: 'const x = 1' }).provide('mazThemeState', themeStateProvide(true)))
+        expect(html).toContain('const x = 1')
+      })
+    })
+
+    describe('given the colorMode prop', () => {
+      it('then dark forces the dark theme and the dark class over a light state', async () => {
+        const { theme, wrapper } = await lastTheme({
+          props: { colorMode: 'dark' },
+          themeState: themeStateProvide(false),
+        })
+        expect(theme).toBe('tokyo-night')
+        expect(wrapper.find('.m-code-highlight').classes()).toContain('dark')
+      })
+
+      it('then light forces the light theme and the light class over a dark ancestor', async () => {
+        const { theme, wrapper } = await lastTheme({
+          props: { colorMode: 'light' },
+          parentClass: 'dark',
+          htmlDark: true,
+        })
+        expect(theme).toBe('github-light')
+        expect(wrapper.find('.m-code-highlight').classes()).toContain('light')
+        expect(wrapper.find('.m-code-highlight').classes()).not.toContain('dark')
+      })
+
+      it('then auto adds no mode class', async () => {
+        const { wrapper } = await lastTheme({
+          props: { colorMode: 'auto' },
+        })
+        expect(wrapper.find('.m-code-highlight').classes()).not.toContain('dark')
+        expect(wrapper.find('.m-code-highlight').classes()).not.toContain('light')
+      })
+
+      it('then the theme prop keeps priority over the forced mode', async () => {
+        const { theme } = await lastTheme({
+          props: { colorMode: 'dark', theme: 'dracula' },
+        })
+        expect(theme).toBe('dracula')
+      })
     })
   })
 })

@@ -9,7 +9,7 @@ import type { MazColor, MazCountryFlagSrc, MazSize } from './types'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { getBrowserLocale } from '@maz-ui/utils/helpers/getBrowserLocale'
 import { getCountryFlagUrl } from '@maz-ui/utils/helpers/getCountryFlagUrl'
-import { computed, defineAsyncComponent, shallowReactive } from 'vue'
+import { computed, onBeforeUnmount, onMounted, shallowReactive, watch } from 'vue'
 import { useDisplayNames } from '../composables/useDisplayNames'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
@@ -223,7 +223,6 @@ const instanceId = useInstanceUniqId({
 const { t, locale: mazLocale } = useTranslations()
 const locale = computed(() => componentLocale ?? mazLocale.value ?? getBrowserLocale())
 
-const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
 const EMPTY_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
 const { getAllDisplayNames } = useDisplayNames(locale)
@@ -270,8 +269,8 @@ function getFlagUrl(code: Option['code'], size: Parameters<typeof getCountryFlag
 const flagSources = shallowReactive<Record<string, string | undefined>>({})
 
 /**
- * With `flagSrc`, a template gives the URL right away (loaded by MazLazyImg when visible, like the CDN).
- * A function is called when the flag becomes visible (`intersecting` of MazLazyImg): until then, an empty image keeps MazLazyImg waiting.
+ * With `flagSrc`, a template gives the URL right away (loaded by the native lazy loading when visible, like the CDN).
+ * A function is called when the flag becomes visible (one observer for the whole list): until then, an empty image is displayed.
  * A source resolved to `undefined`, or an image in error, displays the badge.
  */
 function getFlagSrc(code: Option['code']) {
@@ -306,6 +305,34 @@ async function resolveFlagSrc(code?: Option['code']) {
     flagSources[code] = undefined
   }
 }
+
+let flagObserver: IntersectionObserver | undefined
+const observedFlags = new WeakMap<Element, Option['code']>()
+
+/** Function ref of the flags of the list: with a `flagSrc` function, the source of a flag is resolved when it becomes visible */
+function observeFlag(element: unknown, code: Option['code']) {
+  if (typeof flagSrc.value !== 'function' || !(element instanceof Element) || observedFlags.has(element) || code in flagSources) {
+    return
+  }
+
+  flagObserver ??= new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) {
+        continue
+      }
+
+      flagObserver?.unobserve(entry.target)
+      resolveFlagSrc(observedFlags.get(entry.target))
+    }
+  })
+
+  observedFlags.set(element, code)
+  flagObserver.observe(element)
+}
+
+onMounted(() => resolveFlagSrc(modelValue))
+watch(() => modelValue, code => resolveFlagSrc(code))
+onBeforeUnmount(() => flagObserver?.disconnect())
 
 function onFlagError(code?: Option['code']) {
   if (flagSrc.value && code && getFlagSrc(code) !== EMPTY_IMAGE) {
@@ -366,17 +393,16 @@ const flagUrl = computed(() => {
             @binding {String} country-code - current selected country code - Ex: `"FR"`
         -->
         <slot name="selector-flag" :country-code="modelValue">
-          <MazLazyImg
+          <img
             v-if="flagUrl && !hideFlags"
             :src="flagUrl"
             :alt="modelValue"
             width="20"
             height="20"
-            class="maz:size-5 maz:rounded-md"
-            img-class="maz:size-5 maz:rounded-md"
-            @intersecting="resolveFlagSrc(modelValue)"
+            decoding="async"
+            class="m-select-country__flag maz:size-5 maz:rounded-md"
             @error="onFlagError(modelValue)"
-          />
+          >
         </slot>
       </template>
       <template #no-results>
@@ -400,17 +426,18 @@ const flagUrl = computed(() => {
               :option="option"
               :is-selected="isSelected"
             >
-              <MazLazyImg
+              <img
                 v-if="option.code && getFlagSrc(option.code)"
+                :ref="element => observeFlag(element, option.code)"
                 :src="getFlagSrc(option.code)"
                 :alt="`${option.name} flag`"
                 width="20"
                 height="20"
-                class="maz:size-5 maz:rounded-md"
-                img-class="maz:rounded-md maz:h-5 maz:w-5"
-                @intersecting="resolveFlagSrc(option.code)"
+                loading="lazy"
+                decoding="async"
+                class="m-select-country__flag maz:size-5 maz:rounded-md"
                 @error="onFlagError(option.code)"
-              />
+              >
               <span v-else class="m-select-country__select__item__list-flag maz:flex maz:size-5 maz:flex-center maz:rounded-full maz:bg-primary-500 maz:text-xs maz:leading-none maz:text-primary-foreground/80">
                 {{ option.code }}
               </span>

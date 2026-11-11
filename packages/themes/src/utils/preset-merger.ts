@@ -1,4 +1,4 @@
-import type { ThemeColors, ThemeComponents, ThemePreset, ThemePresetOverrides, ThemeScales } from '../types'
+import type { ThemeColors, ThemeComponents, ThemePreset, ThemePresetOverrides, ThemeScales, ThemeTypography, TypographyLevel } from '../types'
 
 export function mergePresets(base: ThemePreset, overrides: ThemePresetOverrides): ThemePreset {
   return {
@@ -13,7 +13,31 @@ export function mergePresets(base: ThemePreset, overrides: ThemePresetOverrides)
       light: mergeColors(base.colors.light, overrides.colors?.light),
       dark: mergeColors(base.colors.dark, overrides.colors?.dark),
     },
+    ...((base.typography || overrides.typography) && {
+      typography: mergeTypography(base.typography, overrides.typography),
+    }),
+    ...((base.systemColors || overrides.systemColors) && {
+      systemColors: {
+        ...base.systemColors,
+        ...overrides.systemColors,
+      },
+    }),
   }
+}
+
+function mergeTypography(base?: ThemeTypography, overrides?: ThemeTypography): ThemeTypography {
+  const levels = new Set([
+    ...Object.keys(base ?? {}),
+    ...Object.keys(overrides ?? {}),
+  ]) as Set<TypographyLevel>
+
+  return Object.fromEntries([...levels].map(level => [
+    level,
+    {
+      ...base?.[level],
+      ...overrides?.[level],
+    },
+  ]))
 }
 
 function mergeScales(base: ThemeScales, overrides?: ThemePresetOverrides['scales']): ThemeScales {
@@ -61,6 +85,27 @@ function mergeComponents(base?: ThemeComponents, overrides?: ThemeComponents): T
     dialog: {
       ...base?.dialog,
       ...overrides?.dialog,
+    },
+    ...mergeGlass(base?.glass, overrides?.glass),
+  }
+}
+
+function mergeGlass(base?: ThemeComponents['glass'], overrides?: ThemeComponents['glass']): Pick<ThemeComponents, 'glass'> {
+  if (!base && !overrides)
+    return {}
+
+  return {
+    glass: {
+      ...base,
+      ...overrides,
+      bg: {
+        ...base?.bg,
+        ...overrides?.bg,
+      },
+      border: {
+        ...base?.border,
+        ...overrides?.border,
+      },
     },
   }
 }

@@ -13,6 +13,10 @@ export const composables = {
       link: '/composables/use-drag',
     },
     { text: 'useFormValidator', link: '/composables/use-form-validator' },
+    {
+      text: withNewBadge('useFuzzySearch'),
+      link: '/composables/use-fuzzy-search',
+    },
     { text: 'useIdleTimeout', link: '/composables/use-idle-timeout' },
     { text: 'useDisplayNames', link: '/composables/use-display-names' },
     {

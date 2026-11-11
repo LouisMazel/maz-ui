@@ -405,7 +405,7 @@ function referenceDrafts(tailwind: TailwindManifest | undefined, iconNames: stri
     ...(tailwind
       ? [
           {
-            entry: referenceEntry('reference/tailwind-tokens', 'Tailwind CSS theme reference', 'Every Tailwind class, variant and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints, typography, z-index, custom utilities.', 'maz-ui'),
+            entry: referenceEntry('reference/tailwind-tokens', 'Tailwind CSS theme reference', 'Every Tailwind class, variant and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints and container queries, layout (padded-container), type scale, rich text, z-index, custom utilities.', 'maz-ui'),
             content: renderTailwindReference(tailwind),
           },
         ]

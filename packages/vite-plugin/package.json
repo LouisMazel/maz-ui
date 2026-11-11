@@ -1,0 +1,103 @@
+{
+  "name": "@maz-ui/vite-plugin",
+  "type": "module",
+  "version": "5.7.0-beta.0",
+  "description": "Vite plugins for Maz-UI: purge the CSS of the components and utilities your app does not use",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "homepage": "https://maz-ui.com/ecosystem/vite-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git",
+    "directory": "packages/vite-plugin"
+  },
+  "bugs": "https://github.com/LouisMazel/maz-ui/issues",
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "maz-ui",
+    "purge",
+    "css",
+    "tree-shaking"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "monorepo:dev": "./src/index.ts",
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
+    "./manifest": {
+      "monorepo:dev": "./src/manifest.ts",
+      "types": "./dist/manifest.d.mts",
+      "import": "./dist/manifest.mjs",
+      "default": "./dist/manifest.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "agent-docs",
+    "dist"
+  ],
+  "engines": {
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
+  },
+  "scripts": {
+    "build": "unbuild && pnpm generate:agent-docs",
+    "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/vite-plugin",
+    "dev": "unbuild --stub",
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage"
+  },
+  "peerDependencies": {
+    "vite": ">=6.0.0 <9.0.0"
+  },
+  "dependencies": {
+    "postcss": "catalog:",
+    "tinyglobby": "catalog:"
+  },
+  "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:^",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [
+      "eslint --fix"
+    ]
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "inputs": [
+          "production",
+          "^production",
+          "{workspaceRoot}/tools/agent-docs/src/**/*",
+          "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/apps/docs/src/**/*"
+        ],
+        "outputs": [
+          "{projectRoot}/dist",
+          "{projectRoot}/agent-docs"
+        ]
+      }
+    }
+  }
+}

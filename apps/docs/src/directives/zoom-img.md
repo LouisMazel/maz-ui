@@ -13,17 +13,21 @@ description: vZoomImg is a Vue directive to enlarge an image like a modal on cli
 
 > Click on the photo
 
+<div class="vp-raw">
 <MazCard overflow-hidden>
   <img
     src="https://placedog.net/1500/1000"
     v-zoom-img="{ src: 'https://placedog.net/1500/1000' }"
   />
 </MazCard>
+</div>
 <br />
 <br />
+<div class="vp-raw">
 <MazBtn v-zoom-img="{ src: 'https://placedog.net/1000/500' }">
   Show photo
 </MazBtn>
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -48,12 +52,14 @@ import { vZoomImg } from 'maz-ui/directives'
 
 <br />
 
+<div class="vp-raw">
 <MazCard overflow-hidden>
   <img
     src="https://placedog.net/1200/800"
     v-zoom-img="zoomImgBinding"
   />
 </MazCard>
+</div>
 
 <script lang="ts" setup>
   import { vZoomImg } from 'maz-ui/directives/vZoomImg'

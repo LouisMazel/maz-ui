@@ -241,6 +241,12 @@ describe('MazPopover extended coverage', () => {
       const panel = wrapper.find('.m-popover-panel')
       expect(panel.classes()).toContain('--surface')
     })
+
+    it('then the panel has the container color by default', async () => {
+      const wrapper = await getWrapper({ modelValue: true })
+      const panel = wrapper.find('.m-popover-panel')
+      expect(panel.classes()).toContain('--container')
+    })
   })
 
   describe('when offset is configured', () => {

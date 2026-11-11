@@ -18,6 +18,7 @@ export default {
     selectAll: 'Alle Zeilen auswählen',
     selectRow: 'Zeile auswählen',
     removeFile: 'Datei entfernen',
+    remove: 'Entfernen',
     sidebar: 'Seitenleiste',
     openSidebar: 'Seitenleiste öffnen',
     closeSidebar: 'Seitenleiste schließen',
@@ -66,6 +67,12 @@ export default {
   },
   select: {
     searchPlaceholder: 'Suchen',
+  },
+  inputAutocomplete: {
+    noResults: 'Keine Ergebnisse',
+    loading: 'Wird geladen...',
+    error: 'Ein Fehler ist aufgetreten, bitte erneut versuchen',
+    results: 'Ergebnisse: {count}',
   },
   table: {
     noResults: 'Keine Ergebnisse',
@@ -122,6 +129,16 @@ export default {
   codeHighlight: {
     copyToClipboard: 'In Zwischenablage kopieren',
     copiedToClipboard: 'In Zwischenablage kopiert',
+  },
+  colorPicker: {
+    openPicker: 'Farbwähler öffnen',
+    area: 'Sättigung und Helligkeit',
+    areaValue: 'Sättigung {saturation} %, Helligkeit {brightness} %',
+    hue: 'Farbton',
+    alpha: 'Deckkraft',
+    eyeDropper: 'Farbe vom Bildschirm aufnehmen',
+    swatches: 'Vordefinierte Farben',
+    selectSwatch: '{color} auswählen',
   },
   windowMockup: {
     copyUrlToClipboard: 'URL in Zwischenablage kopieren',

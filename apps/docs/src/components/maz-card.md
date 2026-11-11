@@ -41,6 +41,7 @@ description: MazCard is a standalone component to display some texts and images 
 
 ## Advanced usage
 
+<div class="vp-raw">
 <MazCard :gallery="{ images: ['https://placedog.net/480/480'], height: 300 }" class="vp-raw">
   <template #content-title>
     Cute Kitten
@@ -66,6 +67,7 @@ description: MazCard is a standalone component to display some texts and images 
     </MazBtn>
   </template>
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -122,6 +124,7 @@ When you display images, you can change the orientation of the card, available o
 ### Row
 
 <br />
+<div class="vp-raw">
 <MazCard :gallery="{ images: ['https://placedog.net/450/450'] }" orientation="row" class="vp-raw">
   <template #content-title>
     <h3> Cute Kitten </h3>
@@ -132,6 +135,7 @@ When you display images, you can change the orientation of the card, available o
     </p>
   </template>
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -154,6 +158,7 @@ When you display images, you can change the orientation of the card, available o
 
 <br />
 
+<div class="vp-raw">
 <MazCard :gallery="{ images: ['https://placedog.net/380/380'] }" orientation="row-reverse" class="vp-raw">
   <template #content-title>
     <h3> Cute Kitten </h3>
@@ -164,6 +169,7 @@ When you display images, you can change the orientation of the card, available o
     </p>
   </template>
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -190,6 +196,7 @@ When you display images, you can change the orientation of the card, available o
 
 <br />
 
+<div class="vp-raw">
 <MazCard
   :gallery="{ images: ['https://placedog.net/420/420'], height: 300 }"
   orientation="column-reverse"
@@ -204,6 +211,7 @@ When you display images, you can change the orientation of the card, available o
     </p>
   </template>
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -229,17 +237,21 @@ When you display images, you can change the orientation of the card, available o
 
 Use props: `collapsible` & `v-model:collapse-open`
 
+<div class="vp-raw">
 <MazCard collapsible title="Lorem Ipsum is simply" block style="margin-bottom: 1rem;" class="vp-raw">
   <p>
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
   </p>
 </MazCard>
+</div>
 
+<div class="vp-raw">
 <MazCard collapsible v-model:collapse-open="cardOpen" title="Lorem Ipsum is simply" block class="vp-raw">
   <p>
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
   </p>
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -281,6 +293,7 @@ To access the link, simply click the card.
 - `href-target` is the behavior of the link on click
 - You can use `:scale="false"` to remove the scale animation on hover
 
+<div class="vp-raw">
 <MazCard
   :gallery="{ images: ['https://placedog.net/400/400'], height: 300 }"
   href="/components/maz-card#linked-card"
@@ -290,6 +303,7 @@ To access the link, simply click the card.
 >
   Click on the card to follow the href link
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -310,9 +324,11 @@ To access the link, simply click the card.
 
 ## No bordered
 
+<div class="vp-raw">
 <MazCard :bordered="false" class="vp-raw">
   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -326,9 +342,11 @@ To access the link, simply click the card.
 
 ## Elevation
 
+<div class="vp-raw">
 <MazCard elevation :bordered="false" class="vp-raw">
   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -342,6 +360,7 @@ To access the link, simply click the card.
 
 ## Gallery images
 
+<div class="vp-raw">
 <MazCard
   :gallery="{
     images: ['https://placedog.net/640/640', 'https://placedog.net/560/560', 'https://placedog.net/720/720', 'https://placedog.net/360/360'],
@@ -353,6 +372,7 @@ To access the link, simply click the card.
 >
   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -375,6 +395,7 @@ To access the link, simply click the card.
 
 ### Basic
 
+<div class="vp-raw">
 <MazCard class="vp-raw">
   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 
@@ -384,6 +405,7 @@ To access the link, simply click the card.
     </MazBtn>
   </template>
 </MazCard>
+</div>
 
 ::: details View code
 
@@ -405,6 +427,7 @@ To access the link, simply click the card.
 
 Use the prop option `footer-align="start"`
 
+<div class="vp-raw">
 <MazCard footer-align="start" class="vp-raw">
   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 
@@ -414,6 +437,7 @@ Use the prop option `footer-align="start"`
     </MazBtn>
   </template>
 </MazCard>
+</div>
 
 ::: details View code
 

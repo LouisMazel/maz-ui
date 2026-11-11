@@ -94,7 +94,7 @@ npm install @maz-ui/themes
 **Features:**
 
 - 🎨 Native `light-dark()` + `color-scheme` + OKLCh scales via relative color syntax
-- 🌓 Smart dark mode — `class` or `media` strategies, with smooth transitions on toggle
+- 🌓 Smart dark mode: `class` or `media` strategies, with smooth transitions on toggle
 - ✨ Optional animated theme switch via View Transitions (`setColorMode(..., { animate: true })`)
 - ⚡ `runtime` and `buildtime` rendering strategies
 - 🍪 Active preset persisted across reloads (opt-out)
@@ -166,9 +166,27 @@ npx @maz-ui/mcp init
 
 ---
 
+### @maz-ui/vite-plugin
+
+**Ship less CSS**
+
+```bash
+npm install -D @maz-ui/vite-plugin
+```
+
+**Features:**
+
+- Removes from the CSS of maz-ui the rules of the components, plugins, directives and utilities your app does not use
+- Build only, with a bundle check and a report of the CSS saved
+- Included in `@maz-ui/nuxt` (`css.purge`)
+
+[→ View the Vite plugin](./../ecosystem/vite-plugin.md)
+
+---
+
 ### Keep the packages on the same version
 
-`maz-ui` and the packages of its ecosystem (`@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/icons`, `@maz-ui/utils`, `@maz-ui/nuxt`, `@maz-ui/node`, `@maz-ui/mcp`) are released together, always on the same version. When you install several of them, keep them on this version: two versions of a package install two copies of it, which make your bundle heavier, and two copies of `maz-ui` do not share the global configuration (`@maz-ui/nuxt` warns about it when it starts).
+`maz-ui` and the packages of its ecosystem (`@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/icons`, `@maz-ui/utils`, `@maz-ui/nuxt`, `@maz-ui/node`, `@maz-ui/mcp`, `@maz-ui/vite-plugin`) are released together, always on the same version. When you install several of them, keep them on this version: two versions of a package install two copies of it, which make your bundle heavier, and two copies of `maz-ui` do not share the global configuration (`@maz-ui/nuxt` warns about it when it starts).
 
 Group their updates in a single pull request. With Dependabot (`.github/dependabot.yml`):
 

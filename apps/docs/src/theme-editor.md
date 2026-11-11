@@ -1,18 +1,11 @@
 ---
 title: Theme Editor
-description: Create your own theme for maz-ui and export it to use it in your project
+description: Start from a preset, shape the colors, the type, the radius and the motion of maz-ui on live components, then copy the code of your theme.
 layout: home
+markdownStyles: false
 sidebar: false
+aside: false
 ---
-
-<br />
-<br />
-
-# {{ $frontmatter.title }}
-
-{{ $frontmatter.description }}
-
-<br />
 
 <ThemeEditorPage />
 

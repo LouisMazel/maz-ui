@@ -79,6 +79,19 @@ describe('MazLink component', () => {
     expect(inheritWrapper.classes()).not.toContain('maz:not-disabled:text-primary')
   })
 
+  it('lightens a theme color on hover in dark mode instead of darkening it', () => {
+    const wrapper = shallowMount(MazLink, {
+      props: { color: 'primary' },
+      slots: { default: 'Link' },
+      global: {
+        stubs: { RouterLink: true },
+      },
+    })
+
+    expect(wrapper.classes()).toContain('maz:not-disabled:hover:text-primary-700')
+    expect(wrapper.classes()).toContain('maz:not-disabled:dark:hover:text-primary-300')
+  })
+
   it('applies underline-hover modifier when underline is false', () => {
     const hoverWrapper = shallowMount(MazLink, {
       props: { underline: false, underlineHover: true },

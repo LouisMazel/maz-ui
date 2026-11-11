@@ -227,13 +227,15 @@ The consuming component still derives sensible defaults (e.g. icon size from the
 
 This pack is the Heroicons set plus a few additions specific to maz-ui.
 
+<div class="vp-raw">
 <MazBtn download href="/icons/_icons.zip" end-icon="/arrow-down-tray.svg">
   Download pack
 </MazBtn>
+</div>
 
 Source: [Heroicons](https://heroicons.com/) — see also the [icon set page](./../ecosystem/icons/icon-set.md).
 
-<div class="flex items-start flex-wrap gap-05">
+<div class="vp-raw flex items-start flex-wrap gap-05">
   <div v-for="({ component, name }, i) in iconsList" :key="i" class="flex flex-col flex-center maz:p-2 maz:rounded-md maz:border">
     <MazIcon :icon="component" size="lg" />
     <span style="font-size: 11px;">
