@@ -49,7 +49,7 @@ type ComponentNames = keyof typeof import('maz-ui/components')
 
 const COMPONENT_NAMES: Omit<
   Record<ComponentNames, true>,
-  'useMazDialogConfirm' | 'mazSidebarKey'
+  'useMazDialogConfirm' | 'mazSidebarKey' | 'mazListKey'
 > = {
   MazAccordion: true,
   MazAlert: true,
