@@ -18,6 +18,7 @@ export default {
     selectAll: '选择所有行',
     selectRow: '选择行',
     removeFile: '删除文件',
+    remove: '删除',
     sidebar: '侧边栏',
     openSidebar: '打开侧边栏',
     closeSidebar: '关闭侧边栏',
@@ -66,6 +67,12 @@ export default {
   },
   select: {
     searchPlaceholder: '搜索',
+  },
+  inputAutocomplete: {
+    noResults: '无结果',
+    loading: '加载中...',
+    error: '发生错误，请重试',
+    results: '结果：{count}',
   },
   table: {
     noResults: '无结果',
@@ -122,6 +129,16 @@ export default {
   codeHighlight: {
     copyToClipboard: '复制到剪贴板',
     copiedToClipboard: '已复制到剪贴板',
+  },
+  colorPicker: {
+    openPicker: '打开颜色选择器',
+    area: '饱和度和亮度',
+    areaValue: '饱和度 {saturation}%，亮度 {brightness}%',
+    hue: '色相',
+    alpha: '不透明度',
+    eyeDropper: '从屏幕取色',
+    swatches: '预设颜色',
+    selectSwatch: '选择 {color}',
   },
   windowMockup: {
     copyUrlToClipboard: '复制 URL 到剪贴板',

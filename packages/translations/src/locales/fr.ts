@@ -18,6 +18,7 @@ export default {
     selectAll: 'Sélectionner toutes les lignes',
     selectRow: 'Sélectionner la ligne',
     removeFile: 'Supprimer le fichier',
+    remove: 'Supprimer',
     sidebar: 'Barre latérale',
     openSidebar: 'Ouvrir la barre latérale',
     closeSidebar: 'Fermer la barre latérale',
@@ -79,6 +80,12 @@ export default {
   select: {
     searchPlaceholder: 'Rechercher',
   },
+  inputAutocomplete: {
+    noResults: 'Aucun résultat',
+    loading: 'Chargement...',
+    error: 'Une erreur est survenue, réessayez',
+    results: 'Résultats : {count}',
+  },
   pagination: {
     navAriaLabel: 'Navigation',
     screenReader: {
@@ -122,6 +129,16 @@ export default {
   codeHighlight: {
     copyToClipboard: 'Copier dans le presse-papiers',
     copiedToClipboard: 'Copié dans le presse-papiers',
+  },
+  colorPicker: {
+    openPicker: 'Ouvrir le sélecteur de couleur',
+    area: 'Saturation et luminosité',
+    areaValue: 'Saturation {saturation} %, luminosité {brightness} %',
+    hue: 'Teinte',
+    alpha: 'Opacité',
+    eyeDropper: 'Prélever une couleur à l\'écran',
+    swatches: 'Couleurs prédéfinies',
+    selectSwatch: 'Choisir {color}',
   },
   windowMockup: {
     copyUrlToClipboard: 'Copier l\'URL dans le presse-papiers',

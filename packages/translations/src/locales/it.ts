@@ -18,6 +18,7 @@ export default {
     selectAll: 'Seleziona tutte le righe',
     selectRow: 'Seleziona riga',
     removeFile: 'Rimuovi file',
+    remove: 'Rimuovi',
     sidebar: 'Barra laterale',
     openSidebar: 'Apri la barra laterale',
     closeSidebar: 'Chiudi la barra laterale',
@@ -66,6 +67,12 @@ export default {
   },
   select: {
     searchPlaceholder: 'Cerca',
+  },
+  inputAutocomplete: {
+    noResults: 'Nessun risultato',
+    loading: 'Caricamento...',
+    error: 'Si è verificato un errore, riprova',
+    results: 'Risultati: {count}',
   },
   table: {
     noResults: 'Nessun risultato',
@@ -122,6 +129,16 @@ export default {
   codeHighlight: {
     copyToClipboard: 'Copia negli appunti',
     copiedToClipboard: 'Copiato negli appunti',
+  },
+  colorPicker: {
+    openPicker: 'Apri il selettore di colore',
+    area: 'Saturazione e luminosità',
+    areaValue: 'Saturazione {saturation}%, luminosità {brightness}%',
+    hue: 'Tonalità',
+    alpha: 'Opacità',
+    eyeDropper: 'Preleva un colore dallo schermo',
+    swatches: 'Colori predefiniti',
+    selectSwatch: 'Seleziona {color}',
   },
   windowMockup: {
     copyUrlToClipboard: 'Copia URL negli appunti',
