@@ -18,7 +18,7 @@ const longDays = computed(() => getDaysOfWeek(props.locale, props.firstDayOfWeek
       :key="label"
       role="columnheader"
       :aria-label="longDays[index]"
-      class="maz:text-xs maz:text-muted"
+      class="maz:text-caption"
     >
       {{ label }}
     </span>

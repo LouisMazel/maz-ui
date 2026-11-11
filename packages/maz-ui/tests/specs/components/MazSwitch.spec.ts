@@ -53,4 +53,13 @@ describe('mazSwitch', () => {
     await wrapper.setProps({ modelValue: false })
     expect(input.element.checked).toBe(false)
   })
+
+  it('keeps the aria-label passed as an attribute when there is no label', () => {
+    const wrapper = mount(MazSwitch, {
+      props: { modelValue: false },
+      attrs: { 'aria-label': 'Dark mode' },
+    })
+
+    expect(wrapper.find('input').attributes('aria-label')).toBe('Dark mode')
+  })
 })

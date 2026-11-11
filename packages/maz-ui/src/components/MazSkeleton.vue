@@ -99,7 +99,7 @@ const customStyles = computed(() => {
 
 <template>
   <div
-    class="m-skeleton m-reset-css maz:relative maz:overflow-hidden maz:bg-linear-to-r maz:from-surface-800/40 maz:via-surface-700/30 maz:to-surface-800/40 maz:dark:from-surface-700/30 maz:dark:via-surface-600/20 maz:dark:to-surface-700/30"
+    class="m-skeleton m-reset-css maz:relative maz:overflow-hidden maz:bg-linear-to-r maz:from-surface-800/40 maz:via-surface-700/30 maz:to-surface-800/40 maz:dark:from-foreground/12 maz:dark:via-foreground/6 maz:dark:to-foreground/12"
     :class="[
       shape && `m-skeleton--${shape}`,
       `m-skeleton--rounded-${roundedSize}`,
