@@ -65,13 +65,13 @@
     "test:unit:coverage": "pnpm generate:docs && vitest run --coverage"
   },
   "devDependencies": {
-    "@babel/parser": "^8.1.0",
-    "@babel/types": "^8.1.0",
+    "@babel/parser": "^8.1.2",
+    "@babel/types": "^8.1.2",
     "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/node": "workspace:^",
     "@maz-ui/themes": "workspace:^",
     "@maz-ui/utils": "workspace:^",
-    "@modelcontextprotocol/inspector": "^2.14.0",
+    "@modelcontextprotocol/inspector": "^2.15.0",
     "@modelcontextprotocol/sdk": "^1.32.2",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",

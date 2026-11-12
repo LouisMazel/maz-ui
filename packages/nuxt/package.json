@@ -87,7 +87,7 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
     "@nuxt/devtools": "catalog:",
-    "@nuxt/module-builder": "^1.0.3",
+    "@nuxt/module-builder": "^1.0.4",
     "@nuxt/schema": "^4.6.4",
     "@nuxt/test-utils": "^4.4.0",
     "@types/node": "catalog:",
