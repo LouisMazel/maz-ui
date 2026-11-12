@@ -5,7 +5,7 @@ import { createRequire } from 'node:module'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { detectAgentTargets, findProjectPackage, readPackageVersion, resolveAgentDocsDir, setupAgents } from '@maz-ui/node'
+import { readPackageVersion, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { MazUiPurgeCss } from '@maz-ui/vite-plugin'
@@ -239,15 +239,6 @@ function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult
   return messages.join(' ')
 }
 
-/** Version of the `@maz-ui/mcp` installed for the app, pinned in the `npx` command when the project root does not install it */
-function installedMcpVersion(rootDir: string): string | undefined {
-  const mcpDir = findProjectPackage(rootDir, '@maz-ui/mcp')
-
-  return mcpDir
-    ? readPackageVersion(mcpDir)
-    : undefined
-}
-
 /** Version of the maz-ui that Node.js resolves from a file, `undefined` when it does not resolve */
 function resolveMazUiVersion(from: string): string | undefined {
   try {
@@ -290,24 +281,18 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
     const projectDir = dir
       ? resolve(rootDir, dir)
       : (workspaceDir || rootDir)
-    const targets = requestedTargets ?? detectAgentTargets(projectDir)
 
-    if (targets.length === 0 || (!rules && !mcp))
+    if (!rules && !mcp)
       return
 
-    const mazUiDir = findProjectPackage(rootDir, 'maz-ui')
+    // The maz-ui and the @maz-ui/mcp of the app give the rules and the version pinned in the npx command
     const result = setupAgents({
       rootDir: projectDir,
-      targets,
+      appDir: rootDir,
+      targets: requestedTargets,
       rules,
       mcp,
       paths,
-      mcpVersion: installedMcpVersion(rootDir),
-      ...(mazUiDir
-        ? {
-            docsDir: resolveAgentDocsDir(mazUiDir),
-          }
-        : {}),
     })
     const applied = result.changes.filter(change => ['create', 'update', 'remove'].includes(change.action))
 
