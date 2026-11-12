@@ -32,10 +32,10 @@ export default defineConfig({
         'src/**/__tests__/**',
       ],
       thresholds: {
-        lines: 99.78,
+        lines: 99.82,
         functions: 100,
-        branches: 96.61,
-        statements: 99.79,
+        branches: 97.06,
+        statements: 99.83,
         autoUpdate: !process.env.CI,
       },
     },
