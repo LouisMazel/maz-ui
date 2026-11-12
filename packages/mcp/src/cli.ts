@@ -159,7 +159,7 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
     console.log(`\nThe MCP server runs through \`${serverCommand}\`: install @maz-ui/mcp as a devDependency of the project (\`${INSTALL_DEV_COMMANDS[detectPackageManager(cwd)]} @maz-ui/mcp\`) and run init again to start it in about a second, at the version of your lockfile.`)
 
   if (!remove && rules && targets.includes('agents-md'))
-    console.log(`\nCodex and Windsurf read AGENTS.md. To give them the MCP server too, add \`${serverCommand}\` to their global MCP config.`)
+    console.log(`\nCodex, Cline and Zed read AGENTS.md but have no MCP config in the project. To give them the MCP server too, add \`${serverCommand}\` to their global MCP config.`)
 
   return 0
 }
