@@ -639,6 +639,11 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'claude rules',
     'mcp config',
   ],
+  'ecosystem/node/project': [
+    'package manager',
+    'monorepo workspaces',
+    'installed package',
+  ],
 
   'ecosystem/themes': [
     'theme',
