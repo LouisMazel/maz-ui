@@ -3,6 +3,7 @@ minimumReleaseAgeExclude:
   - '@yoloship/*'
   - '@maz-ui/*'
   - relizy*
+  - '@relizy/core@2.3.0'
 
 # eslint-disable-next-line pnpm/yaml-enforce-settings
 trustPolicy: off

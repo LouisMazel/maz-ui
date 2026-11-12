@@ -323,8 +323,8 @@ importers:
         specifier: ^24.0.6
         version: 24.0.6
       relizy:
-        specifier: 2.2.0
-        version: 2.2.0(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.16))(libphonenumber-js@1.13.16)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.31.0)(vue@3.5.45(typescript@6.0.3))
+        specifier: ^2.2.1
+        version: 2.2.1(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.16))(libphonenumber-js@1.13.16)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.31.0)(vue@3.5.45(typescript@6.0.3))
       semver:
         specifier: ^7.8.6
         version: 7.8.6
@@ -694,13 +694,13 @@ importers:
         version: 3.6.1(sass@1.108.1)(typescript@6.0.3)(vue-sfc-transformer@0.2.5(@volar/typescript@2.4.30(typescript@6.0.3))(@vue/compiler-core@3.5.45)(@vue/language-core@3.3.14)(esbuild@0.28.2)(rolldown@1.2.18)(typescript@6.0.3)(vue@3.5.45(typescript@6.0.3)))(vue-tsc@3.3.14(typescript@6.0.3))(vue@3.5.45(typescript@6.0.3))
       unplugin-vue-components:
         specifier: 'catalog:'
-        version: 32.1.0(@nuxt/kit@4.6.4(@nuxt/schema@4.6.4)(confbox@0.3.2)(dotenv@17.4.2)(giget@3.3.1)(jiti@2.7.0)(magic-string@1.4.5)(mlly@1.8.2)(oxc-parser@0.157.0)(rolldown@1.2.16)(unplugin@3.7.0(esbuild@0.28.2)(rolldown@1.2.16)(rollup@4.67.4)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))))(esbuild@0.28.2)(rolldown@1.2.16)(rollup@4.67.4)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(vue@3.5.45(typescript@6.0.3))
+        version: 32.1.0(@nuxt/kit@4.6.4(@nuxt/schema@4.6.4)(confbox@0.3.2)(dotenv@17.4.2)(giget@3.3.1)(jiti@2.7.0)(magic-string@1.4.5)(mlly@1.8.2)(oxc-parser@0.157.0)(rolldown@1.2.18)(unplugin@3.7.0(esbuild@0.28.2)(rolldown@1.2.18)(rollup@4.67.4)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))))(esbuild@0.28.2)(rolldown@1.2.18)(rollup@4.67.4)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(vue@3.5.45(typescript@6.0.3))
       vite:
         specifier: 'catalog:'
         version: 8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
       vite-plugin-dts:
         specifier: 'catalog:'
-        version: 5.1.2(@vue/language-core@3.3.14)(esbuild@0.28.2)(rolldown@1.2.16)(rollup@4.67.4)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+        version: 5.1.2(@vue/language-core@3.3.14)(esbuild@0.28.2)(rolldown@1.2.18)(rollup@4.67.4)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
       vite-svg-loader:
         specifier: 'catalog:'
         version: 5.1.3(supports-color@10.2.2)(vue@3.5.45(typescript@6.0.3))
@@ -1253,7 +1253,7 @@ importers:
         version: 8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
       vite-plugin-dts:
         specifier: 'catalog:'
-        version: 5.1.2(@vue/language-core@3.3.14)(esbuild@0.28.2)(rolldown@1.2.16)(rollup@4.67.4)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+        version: 5.1.2(@vue/language-core@3.3.14)(esbuild@0.28.2)(rolldown@1.2.18)(rollup@4.67.4)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
       vitest:
         specifier: 'catalog:'
         version: 5.1.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(@vitest/ui@5.1.0)(jsdom@30.1.3)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
@@ -2676,8 +2676,8 @@ packages:
       libphonenumber-js:
         optional: true
 
-  '@maz-ui/utils@5.5.0':
-    resolution: {integrity: sha512-C+rRSW32O1d2JN4OfLqIq2E9yqymGybei2kT68b4yrZxrr9bkmsASokraDmZB/vZARxZCw8CX/7iYUo76qPDrg==}
+  '@maz-ui/utils@5.6.0':
+    resolution: {integrity: sha512-pDe0USOImOdvvQHi8NhBLrllSpNpZU3zDPopLZsmErXyRX3Trb0VO37Xx4QnQVxlpb6pmFxG2kG3aH/u4xKasg==}
     engines: {node: ^22.23.4 || ^24.22.1 || >=26.12.1}
     peerDependencies:
       libphonenumber-js: '>= 1 < 2'
@@ -3504,6 +3504,10 @@ packages:
 
   '@quansync/fs@1.1.0':
     resolution: {integrity: sha512-qAPG/t3HqML1TlN7sY/pTbEjzFVAKsMjNNMGheyDosro+kT4iw2KCUoHcVdmliwWjorm4elZbgNQyU2eD97eDg==}
+
+  '@relizy/core@2.3.0':
+    resolution: {integrity: sha512-OZOjT0rJokssyJA/C8Z+2aPuvnoO4t1U5MbYLlxp1mYS+BbxOxGHpFlG8TyYCLBnuonFa6wmj7nhUiqum0EdkQ==}
+    engines: {node: ^22.23.4 || ^24.22.1 || >=26.12.1}
 
   '@resvg/resvg-wasm@2.4.0':
     resolution: {integrity: sha512-C7c51Nn4yTxXFKvgh2txJFNweaVcfUPQxwEUFw4aWsCmfiBDJsTSwviIF8EcwjQ6k8bPyMWCl1vw4BdxE569Cg==}
@@ -8014,8 +8018,8 @@ packages:
     resolution: {integrity: sha512-EWV80YgFaVgFrjGCAsV7oybp4GOxbls5RzBg8OB0nKEVXsBJR1JlV8Di1JhCROg3MzTfe1RI8yitIm1eOs68iA==}
     hasBin: true
 
-  relizy@2.2.0:
-    resolution: {integrity: sha512-Incujmovy27erhTlA8492h2sFtM2stN+3OMdi184VV2dF5VBoyxBTXNnNv+txhFzYNaSxiLCpTHrAGbH/7Li+w==}
+  relizy@2.2.1:
+    resolution: {integrity: sha512-rwsvmgym+wz3JvmvWVb+Af0kqB+eThX04j9g/VEPVDuN0eTFWa8zVpM7AMmz2GPDEvzB/Xw76rQqATmqwgnOew==}
     engines: {node: ^22.23.4 || ^24.22.1 || >=26.12.1}
     hasBin: true
     peerDependencies:
@@ -10739,7 +10743,7 @@ snapshots:
     optionalDependencies:
       libphonenumber-js: 1.13.16
 
-  '@maz-ui/utils@5.5.0(libphonenumber-js@1.13.16)(vue@3.5.45(typescript@6.0.3))':
+  '@maz-ui/utils@5.6.0(libphonenumber-js@1.13.16)(vue@3.5.45(typescript@6.0.3))':
     optionalDependencies:
       libphonenumber-js: 1.13.16
       vue: 3.5.45(typescript@6.0.3)
@@ -10921,7 +10925,7 @@ snapshots:
   '@nuxt/cli@3.37.0(@nuxt/schema@4.6.4)(@parcel/watcher@2.6.0)(commander@15.0.0)(magicast@0.5.5)(supports-color@10.2.2)':
     dependencies:
       '@bomb.sh/tab': 0.0.19(citty@0.2.2)(commander@15.0.0)
-      '@clack/prompts': 1.8.1
+      '@clack/prompts': 1.9.0
       c12: 3.3.4(magicast@0.5.5)
       citty: 0.2.2
       confbox: 0.2.4
@@ -11943,6 +11947,23 @@ snapshots:
   '@quansync/fs@1.1.0':
     dependencies:
       quansync: 1.0.0
+
+  '@relizy/core@2.3.0(libphonenumber-js@1.13.16)(supports-color@7.2.0)(vue@3.5.45(typescript@6.0.3))':
+    dependencies:
+      '@maz-ui/node': 5.6.0
+      '@maz-ui/utils': 5.6.0(libphonenumber-js@1.13.16)(vue@3.5.45(typescript@6.0.3))
+      confbox: 0.3.2
+      convert-gitmoji: 0.1.5
+      fast-glob: 3.3.3
+      mdast-util-from-markdown: 2.1.0(supports-color@7.2.0)
+      mdast-util-gfm: 3.1.0(supports-color@7.2.0)
+      micromark-extension-gfm: 3.0.0
+      micromatch: 4.0.8
+      semver: 7.8.6
+    transitivePeerDependencies:
+      - libphonenumber-js
+      - supports-color
+      - vue
 
   '@resvg/resvg-wasm@2.4.0': {}
 
@@ -17398,22 +17419,20 @@ snapshots:
     dependencies:
       jsesc: 3.1.0
 
-  relizy@2.2.0(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.16))(libphonenumber-js@1.13.16)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.31.0)(vue@3.5.45(typescript@6.0.3)):
+  relizy@2.2.1(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.16))(libphonenumber-js@1.13.16)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.31.0)(vue@3.5.45(typescript@6.0.3)):
     dependencies:
-      '@clack/prompts': 1.8.1
+      '@clack/prompts': 1.9.0
       '@maz-ui/node': 5.6.0
-      '@maz-ui/utils': 5.5.0(libphonenumber-js@1.13.16)(vue@3.5.45(typescript@6.0.3))
+      '@maz-ui/utils': 5.6.0(libphonenumber-js@1.13.16)(vue@3.5.45(typescript@6.0.3))
+      '@relizy/core': 2.3.0(libphonenumber-js@1.13.16)(supports-color@7.2.0)(vue@3.5.45(typescript@6.0.3))
       c12: 3.3.4(magicast@0.5.5)
-      commander: 15.0.0
-      confbox: 0.3.2
-      convert-gitmoji: 0.1.5
+      commander: 15.1.0
       defu: 6.1.7
       fast-glob: 3.3.3
       mdast-util-from-markdown: 2.1.0(supports-color@7.2.0)
       mdast-util-gfm: 3.1.0(supports-color@7.2.0)
       micromark-extension-gfm: 3.0.0
       micromatch: 4.0.8
-      node-fetch-native: 1.6.7
       oxc-parser: 0.157.0
       semver: 7.8.6
     optionalDependencies:
