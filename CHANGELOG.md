@@ -1,5 +1,21 @@
 # Change Log
 
+## v5.7.0-beta.2 (2026-11-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.1...v5.7.0-beta.2)
+
+### 🩹 Fixes
+
+- **mcp:** Name Codex, Cline and Zed as the agents without a project MCP config in init ([32752a7f4](https://github.com/LouisMazel/maz-ui/commit/32752a7f4))
+
+### 💅 Refactors
+
+- **nuxt:** Let setupAgents resolve the agents, the rules and the MCP version of the app ([0ce969446](https://github.com/LouisMazel/maz-ui/commit/0ce969446))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.1 (2026-11-11)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.0...v5.7.0-beta.1)
