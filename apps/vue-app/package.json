@@ -24,7 +24,7 @@
     "@maz-ui/translations": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
     "@tailwindcss/vite": "catalog:",
-    "@tsconfig/node22": "^22.0.6",
+    "@tsconfig/node22": "^22.0.7",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "@vue/tsconfig": "^0.9.1",
