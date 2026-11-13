@@ -237,6 +237,101 @@ Set `:rounded="false"` to render the highlighted block with squared corners — 
   </template>
 </ComponentDemo>
 
+## Sizes
+
+`size` sets the size of the code text and of the padding around it: `mini`, `xs`, `sm`, `md` (default) or `lg`. Small sizes fit dense content like logs or terminal output.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-2">
+    <MazCodeHighlight v-for="size in ['mini', 'xs', 'sm', 'md', 'lg']" :key="size" :code="`const size = '${size}'`" language="ts" :size="size" />
+  </div>
+
+  <template #code>
+
+```vue
+<template>
+  <MazCodeHighlight code="const size = 'mini'" language="ts" size="mini" />
+  <MazCodeHighlight code="const size = 'xs'" language="ts" size="xs" />
+  <MazCodeHighlight code="const size = 'sm'" language="ts" size="sm" />
+  <MazCodeHighlight code="const size = 'md'" language="ts" />
+  <MazCodeHighlight code="const size = 'lg'" language="ts" size="lg" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Long code: max height and line wrap
+
+`max-height` (any CSS length) caps the height of the block: longer code scrolls inside it. `wrap` breaks long lines instead of scrolling horizontally, and `hide-language` removes the language badge.
+
+<ComponentDemo>
+  <MazCodeHighlight :code="longLog" language="log" size="xs" max-height="8rem" wrap hide-language />
+
+  <template #code>
+
+```vue
+<template>
+  <MazCodeHighlight
+    :code="longLog"
+    language="log"
+    size="xs"
+    max-height="8rem"
+    wrap
+    hide-language
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Follow streamed code (logs)
+
+For code that grows while it is displayed (logs, build or terminal output), set `follow` with a `max-height`:
+
+- the block stays scrolled to its last line as code is appended;
+- scrolling up stops following, scrolling back to the bottom follows again;
+- appended lines are highlighted alone, from the grammar state of the previous ones, instead of the whole code again: the cost of an update depends on the new lines, not on the size of the log.
+
+The code must grow by appending (the new code starts with the previous one); any other change highlights it again from the start. The exposed `scrollToBottom()` method scrolls to the last line and follows again, for a "Follow" button for example.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:items-start maz:gap-2">
+    <MazBtn size="sm" @click="toggleStream">{{ streaming ? 'Stop' : 'Start' }} the build</MazBtn>
+    <MazCodeHighlight :code="streamedLog" language="log" size="xs" max-height="10rem" follow hide-language class="maz:w-full" />
+  </div>
+
+  <template #code>
+
+```vue
+<template>
+  <MazCodeHighlight
+    ref="log"
+    :code="lines.join('\n')"
+    language="log"
+    size="xs"
+    max-height="10rem"
+    follow
+    hide-language
+  />
+  <MazBtn size="sm" @click="log?.scrollToBottom()">Follow</MazBtn>
+</template>
+
+<script lang="ts" setup>
+  import { ref, useTemplateRef } from 'vue'
+  import MazBtn from 'maz-ui/components/MazBtn'
+  import MazCodeHighlight from 'maz-ui/components/MazCodeHighlight'
+
+  const log = useTemplateRef('log')
+  // Push the lines of your process as they arrive
+  const lines = ref<string[]>([])
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Custom translations
 
 The copy button's aria-label and tooltip come from the `@maz-ui/translations` package (`codeHighlight.copyToClipboard` / `codeHighlight.copiedToClipboard`). You can override either key per-instance with the `translations` prop without touching the global locale:
@@ -269,6 +364,8 @@ The copy button's aria-label and tooltip come from the `@maz-ui/translations` pa
 For app-wide translations, set up the [maz-ui translations plugin](/ecosystem/translations) and the component will pick up your locale automatically.
 
 <script lang="ts" setup>
+  import { onBeforeUnmount, ref } from 'vue'
+
   const vueExample = `<script lang="ts" setup>
   import { ref } from 'vue'
   const count = ref(0)
@@ -277,6 +374,29 @@ For app-wide translations, set up the [maz-ui translations plugin](/ecosystem/tr
 <template>
   <button @click="count++">Count: {{ count }}</button>
 </template>`
+
+  const longLog = Array.from({ length: 12 }, (_, i) => `2026-11-13T09:${String(20 + i).padStart(2, '0')}:00.000Z [build] ${i % 4 === 3 ? 'WARN' : 'INFO'} packages/core/src/module-${i}.ts compiled in ${40 + i * 7}ms, output written to dist/module-${i}.js`).join('\n')
+
+  const STEPS = ['Resolving dependencies', 'Compiling src/index.ts', 'Compiling src/utils.ts', 'WARN Unused export in src/legacy.ts', 'Bundling 42 modules', 'Minifying', 'Writing dist/index.js', 'ERROR Type check failed in src/api.ts', 'Retrying type check', 'Done in 4.2s']
+  const streamedLog = ref('')
+  const streaming = ref(false)
+  let timer: ReturnType<typeof setInterval> | undefined
+  let count = 0
+
+  function toggleStream() {
+    if (streaming.value) {
+      clearInterval(timer)
+      streaming.value = false
+      return
+    }
+    streaming.value = true
+    timer = setInterval(() => {
+      const line = `[${String(++count).padStart(3, '0')}] ${STEPS[count % STEPS.length]}`
+      streamedLog.value = streamedLog.value ? `${streamedLog.value}\n${line}` : line
+    }, 300)
+  }
+
+  onBeforeUnmount(() => clearInterval(timer))
 </script>
 
 <!--@include: ./../../.vitepress/generated-docs/maz-code-highlight.doc.md-->
