@@ -68,6 +68,17 @@ const btnGroupItems = [
   { text: 'Right', value: 'right' },
 ]
 
+const btnDropdownItems = [
+  {
+    label: 'Save as draft',
+    onClick: () => {},
+  },
+  {
+    label: 'Save and publish',
+    onClick: () => {},
+  },
+]
+
 const tableHeaders = [
   { label: 'Name', key: 'name' },
   { label: 'Email', key: 'email' },
@@ -262,6 +273,35 @@ const checklistItems = [
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-2 maz:mb-4">
         <MazBtnGroup v-for="s in sizes" :key="s" v-model="btnGroupValue" :items="btnGroupItems" :size="s" />
+      </div>
+    </section>
+
+    <!-- ==================== MazBtnDropdown ==================== -->
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazBtnDropdown
+      </h2>
+      <div class="maz:flex maz:flex-wrap maz:gap-3 maz:mb-4">
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options">
+          Save
+        </MazBtnDropdown>
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" outlined>
+          Save
+        </MazBtnDropdown>
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" pastel color="secondary">
+          Save
+        </MazBtnDropdown>
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" trigger="hover">
+          Hover
+        </MazBtnDropdown>
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" action-disabled>
+          Save
+        </MazBtnDropdown>
+      </div>
+      <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-3 maz:mb-4">
+        <MazBtnDropdown v-for="s in sizes" :key="s" :items="btnDropdownItems" menu-label="Other save options" :size="s">
+          Save
+        </MazBtnDropdown>
       </div>
     </section>
 
