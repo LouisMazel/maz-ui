@@ -42,7 +42,7 @@ export default defineConfig({
         // The library and its ecosystem: every package released at once on the same version (a consumer keeps all of
         // them on one version, so a single copy of maz-ui), the `v*` tags and the version of the root package.json
         name: 'ecosystem',
-        title: 'maz-ui',
+        title: 'Ecosystem',
         versionMode: 'unified',
         packages: [
           'packages/icons',
