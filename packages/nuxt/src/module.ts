@@ -9,7 +9,7 @@ import { readPackageVersion, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { MazUiPurgeCss } from '@maz-ui/vite-plugin'
-import { addCustomTab } from '@nuxt/devtools-kit'
+import { onDevtoolsReady } from '@nuxt/devtools-kit'
 import {
   addComponent,
   addImports,
@@ -568,14 +568,14 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // Devtools
     if (moduleOptions.general.devtools) {
-      addCustomTab({
-        name: 'maz-ui',
-        title: 'maz-ui',
-        icon: 'https://maz-ui.com/img/icons/android-chrome-512x512.png',
-        view: {
+      onDevtoolsReady((ctx) => {
+        ctx.docks.register({
+          id: 'maz-ui',
           type: 'iframe',
-          src: 'https://maz-ui.com',
-        },
+          title: 'maz-ui',
+          icon: 'https://maz-ui.com/img/icons/android-chrome-512x512.png',
+          url: 'https://maz-ui.com',
+        })
       })
     }
   },

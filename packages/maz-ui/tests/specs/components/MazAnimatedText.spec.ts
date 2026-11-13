@@ -88,10 +88,10 @@ describe('given a MazAnimatedText', () => {
         },
       })
 
-      const root = wrapper.find('p.m-animated-text__root')
+      const root = wrapper.find<HTMLElement>('p.m-animated-text__root')
 
-      expect(root.attributes('style')).toContain('column-gap: 1rem')
-      expect(root.attributes('style')).toContain('row-gap: 0.5rem')
+      expect(root.element.style.columnGap).toBe('1rem')
+      expect(root.element.style.rowGap).toBe('0.5rem')
     })
   })
 

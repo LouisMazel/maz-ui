@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, readPackageVersion, createRequire } = vi.hoisted(() => {
+const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, onDevtoolsReady, register, useLogger, logger, setupAgents, readPackageVersion, createRequire } = vi.hoisted(() => {
   const logger = {
     info: vi.fn(),
     warn: vi.fn(),
@@ -30,7 +30,8 @@ const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, addImports, addTe
       resolve: (...args: string[]) => args.join('/'),
     })),
     defineNuxtModule: vi.fn((config: any) => config),
-    addCustomTab: vi.fn(),
+    onDevtoolsReady: vi.fn(),
+    register: vi.fn(),
     createRequire: vi.fn((_from: string) => ({
       resolve: (id: string): string => {
         throw new Error(`Cannot find module '${id}'`)
@@ -66,7 +67,7 @@ vi.mock('@maz-ui/node', () => ({
 }))
 
 vi.mock('@nuxt/devtools-kit', () => ({
-  addCustomTab,
+  onDevtoolsReady,
 }))
 
 vi.mock('defu', () => ({
@@ -1257,13 +1258,18 @@ describe('nuxt module', () => {
 
     describe('devtools', () => {
       it('should add devtools tab when devtools is true', () => {
+        onDevtoolsReady.mockImplementation((fn: (ctx: any) => void) => fn({
+          docks: { register },
+        }))
         callSetup({
           general: { devtools: true },
         })
-        expect(addCustomTab).toHaveBeenCalledWith(
+        expect(register).toHaveBeenCalledWith(
           expect.objectContaining({
-            name: 'maz-ui',
+            id: 'maz-ui',
+            type: 'iframe',
             title: 'maz-ui',
+            url: 'https://maz-ui.com',
           }),
         )
       })
@@ -1272,7 +1278,7 @@ describe('nuxt module', () => {
         callSetup({
           general: { devtools: false },
         })
-        expect(addCustomTab).not.toHaveBeenCalled()
+        expect(onDevtoolsReady).not.toHaveBeenCalled()
       })
     })
   })

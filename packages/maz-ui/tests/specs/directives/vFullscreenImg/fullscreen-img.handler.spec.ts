@@ -108,13 +108,17 @@ describe('fullscreenImgHandler', () => {
   it('should apply scale on hover', () => {
     binding.value = { src: 'https://example.com/image.jpg', scaleOnHover: true }
     handler.create(el, binding)
-    expect(el.style.transition).toBe('all 200ms ease-in-out')
+    expect(el.style.transitionProperty).toBe('all')
+    expect(el.style.transitionDuration).toBe('200ms')
+    expect(el.style.transitionTimingFunction).toBe('ease-in-out')
   })
 
   it('should apply blur on hover', () => {
     binding.value = { src: 'https://example.com/image.jpg', blurOnHover: true }
     handler.create(el, binding)
-    expect(el.style.transition).toBe('all 200ms ease-in-out')
+    expect(el.style.transitionProperty).toBe('all')
+    expect(el.style.transitionDuration).toBe('200ms')
+    expect(el.style.transitionTimingFunction).toBe('ease-in-out')
   })
 
   it('should handle mouseenter with scaleOnHover', () => {

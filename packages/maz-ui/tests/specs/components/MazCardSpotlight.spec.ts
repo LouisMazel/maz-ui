@@ -298,7 +298,7 @@ describe('given mazCardSpotlight component', () => {
     it('does not show blob when component is not intersecting', async () => {
       const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
 
-      const wrapper = mount(MazCardSpotlight)
+      const wrapper = mount(MazCardSpotlight, { attachTo: document.body })
 
       await wrapper.vm.$nextTick()
 
@@ -322,6 +322,7 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       expect(blob.isVisible()).toBe(false)
+      wrapper.unmount()
     })
 
     it('stops animation when component leaves viewport', async () => {
