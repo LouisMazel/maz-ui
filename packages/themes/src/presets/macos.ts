@@ -11,11 +11,14 @@ import {
  * Identity:
  * - System font at 13px, the body size of macOS: the whole `rem` scale
  *   (spacing included) tightens with it.
- * - `primary` and `accent` follow the accent color chosen by the user in
- *   System Settings, `foreground`, `muted` and `divider` the system label
- *   and separator colors (`systemColors`, WebKit only). Everywhere else the
+ * - `primary` follows the accent color chosen by the user in System
+ *   Settings, `foreground`, `muted` and `divider` the system label and
+ *   separator colors (`systemColors`, WebKit only). Everywhere else the
  *   Apple values below are the fallback.
- * - White text on the accent and on red, like macOS: these pairs reach the 3:1
+ * - `secondary` is the system purple, `accent` the system pink and `info`
+ *   the system teal (pink and teal darkened on light for their white text):
+ *   four strong colors that never look alike.
+ * - White text on the accent colors and on red, like macOS: these pairs reach the 3:1
  *   of WCAG for controls and large text, not the 4.5:1 of body text. Green and
  *   yellow keep a dark text in dark mode, the body text stays AA.
  * - Grouped content on a light gray window (`surface`) inside white blocks
@@ -135,7 +138,6 @@ export const macos: ThemePreset = {
   },
   systemColors: {
     primary: '-apple-system-control-accent',
-    accent: '-apple-system-control-accent',
     foreground: '-apple-system-label',
     muted: '-apple-system-secondary-label',
     divider: '-apple-system-separator',
@@ -146,11 +148,11 @@ export const macos: ThemePreset = {
       'foreground': '#1d1d1f',
       'primary': '#007aff',
       'primary-foreground': '#ffffff',
-      'secondary': '#e4e4e7',
-      'secondary-foreground': '#1d1d1f',
-      'accent': '#007aff',
+      'secondary': '#af52de',
+      'secondary-foreground': '#ffffff',
+      'accent': '#d30f45',
       'accent-foreground': '#ffffff',
-      'info': '#007aff',
+      'info': '#00809d',
       'info-foreground': '#ffffff',
       'success': '#1e7f34',
       'success-foreground': '#ffffff',
@@ -170,12 +172,12 @@ export const macos: ThemePreset = {
       'foreground': '#f5f5f7',
       'primary': '#0a84ff',
       'primary-foreground': '#ffffff',
-      'secondary': '#3a3a3c',
-      'secondary-foreground': '#f5f5f7',
-      'accent': '#0a84ff',
+      'secondary': '#bf5af2',
+      'secondary-foreground': '#ffffff',
+      'accent': '#ff375f',
       'accent-foreground': '#ffffff',
-      'info': '#0a84ff',
-      'info-foreground': '#ffffff',
+      'info': '#40c8e0',
+      'info-foreground': '#000000',
       'success': '#32d74b',
       'success-foreground': '#000000',
       'warning': '#ff9f0a',

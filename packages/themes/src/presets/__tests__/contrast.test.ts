@@ -21,6 +21,7 @@ const AA_UI = 3
 const PLATFORM_PAIRS: Record<string, string[]> = {
   macos: [
     'primary',
+    'secondary',
     'accent',
     'info',
     'destructive',
