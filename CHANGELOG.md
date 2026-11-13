@@ -1,5 +1,23 @@
 # Change Log
 
+## v5.7.0-beta.3 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.2...v5.7.0-beta.3)
+
+### 📦 Build
+
+- **deps:** Update 3 dependencies (major) ([13e9990eb](https://github.com/LouisMazel/maz-ui/commit/13e9990eb))
+
+  - @nuxt/devtools ^3.4.4 -> ^4.1.0
+  - @nuxt/devtools-kit ^3.4.4 -> ^4.1.0
+  - jsdom ^30.1.3 -> ^31.0.0
+
+  Code adapted to the new versions by an AI agent (Claude Code), then checked by the project's checks.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.2 (2026-11-12)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.1...v5.7.0-beta.2)
