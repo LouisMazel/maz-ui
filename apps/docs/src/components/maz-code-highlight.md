@@ -106,15 +106,26 @@ Pass any valid [shiki language identifier](https://shiki.style/languages) to the
 
 ## Custom theme
 
-Override the auto-detected theme with any [shiki built-in theme](https://shiki.style/themes).
+The block uses `github-light` in light mode and `tokyo-night` in dark mode. Change them with `light-theme` and `dark-theme` (any [shiki built-in theme](https://shiki.style/themes)), or force one theme whatever the color mode with `theme`.
 
 <ComponentDemo>
-  <MazCodeHighlight code="console.log('dracula theme')" language="js" theme="dracula" />
+  <div class="maz:flex maz:flex-col maz:gap-2">
+    <MazCodeHighlight code="console.log('one-light or github-dark-default')" language="js" light-theme="one-light" dark-theme="github-dark-default" />
+    <MazCodeHighlight code="console.log('dracula theme')" language="js" theme="dracula" />
+  </div>
 
   <template #code>
 
 ```vue
 <template>
+  <!-- One theme per color mode -->
+  <MazCodeHighlight
+    code="console.log('one-light or github-dark-default')"
+    language="js"
+    light-theme="one-light"
+    dark-theme="github-dark-default"
+  />
+  <!-- The same theme in both modes -->
   <MazCodeHighlight code="console.log('dracula theme')" language="js" theme="dracula" />
 </template>
 
@@ -130,12 +141,12 @@ Override the auto-detected theme with any [shiki built-in theme](https://shiki.s
 
 By default (`color-mode="auto"`) the block follows the color mode of your app. The mode is resolved in this order:
 
-1. the `color-mode` prop, when it is not `auto`
+1. the `color-mode` prop, or `defaults.MazCodeHighlight.colorMode` of the MazUi plugin, when it is not `auto`
 2. the closest `.dark` ancestor (including `<html>`), observed for changes
 3. the color mode of [`@maz-ui/themes`](/ecosystem/themes) when the theme plugin is installed (known at render time, so it is consistent with SSR and Nuxt)
 4. the `dark` class of `<html>`
 
-The `theme` prop (shiki theme name) always wins over the theme chosen from the color mode.
+The resolved mode picks `light-theme` or `dark-theme`; the `theme` prop (shiki theme name) always wins over both.
 
 ### Force the color mode
 
@@ -158,6 +169,19 @@ Set `color-mode` to `light` or `dark` to force the mode of a single block. The `
 
   </template>
 </ComponentDemo>
+
+### Force the color mode for the whole app
+
+Set `colorMode` in the `defaults` of the [MazUi plugin](/guide/global-defaults) (or `mazUi.defaults` of the Nuxt module) to force the mode of every code block, e.g. dark blocks for logs and terminal output in a light app. A `color-mode` prop on a block still wins.
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUiPreset },
+  defaults: {
+    MazCodeHighlight: { colorMode: 'dark' },
+  },
+})
+```
 
 ### Dark ancestor
 
@@ -239,11 +263,11 @@ Set `:rounded="false"` to render the highlighted block with squared corners — 
 
 ## Sizes
 
-`size` sets the size of the code text and of the padding around it: `mini`, `xs`, `sm`, `md` (default) or `lg`. Small sizes fit dense content like logs or terminal output.
+`size` sets the size of the code text and of the padding around it: `mini`, `xs`, `sm`, `md` (default), `lg` or `xl`. Small sizes fit dense content like logs or terminal output.
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-2">
-    <MazCodeHighlight v-for="size in ['mini', 'xs', 'sm', 'md', 'lg']" :key="size" :code="`const size = '${size}'`" language="ts" :size="size" />
+    <MazCodeHighlight v-for="size in ['mini', 'xs', 'sm', 'md', 'lg', 'xl']" :key="size" :code="`const size = '${size}'`" language="ts" :size="size" />
   </div>
 
   <template #code>
@@ -255,6 +279,7 @@ Set `:rounded="false"` to render the highlighted block with squared corners — 
   <MazCodeHighlight code="const size = 'sm'" language="ts" size="sm" />
   <MazCodeHighlight code="const size = 'md'" language="ts" />
   <MazCodeHighlight code="const size = 'lg'" language="ts" size="lg" />
+  <MazCodeHighlight code="const size = 'xl'" language="ts" size="xl" />
 </template>
 ```
 
@@ -263,7 +288,7 @@ Set `:rounded="false"` to render the highlighted block with squared corners — 
 
 ## Long code: max height and line wrap
 
-`max-height` (any CSS length) caps the height of the block: longer code scrolls inside it. `wrap` breaks long lines instead of scrolling horizontally, and `hide-language` removes the language badge.
+`max-height` (any CSS length) caps the height of the block: longer code scrolls inside it. `wrap` breaks long lines instead of scrolling horizontally, and `hide-language` removes the language badge. Once the user scrolls up in a long block, a button scrolls it back to its last line (with or without `follow`).
 
 <ComponentDemo>
   <MazCodeHighlight :code="longLog" language="log" size="xs" max-height="8rem" wrap hide-language />
@@ -332,9 +357,39 @@ The code must grow by appending (the new code starts with the previous one); any
   </template>
 </ComponentDemo>
 
+## Defaults for the whole app
+
+Set the light and dark themes, the color mode, the size or the display props once for every code block with the `defaults` of the [MazUi plugin](/guide/global-defaults) (or the `mazUi.defaults` of the Nuxt module). A prop set on an instance still wins.
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUiPreset },
+  defaults: {
+    MazCodeHighlight: {
+      lightTheme: 'one-light',
+      darkTheme: 'github-dark-default',
+      size: 'sm',
+    },
+  },
+})
+```
+
+To keep every code block dark whatever the color mode of the app (logs, terminal output), force the color mode too:
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUiPreset },
+  defaults: {
+    MazCodeHighlight: { colorMode: 'dark', darkTheme: 'github-dark-default' },
+  },
+})
+```
+
+Globalizable props: `lightTheme`, `darkTheme`, `theme` (one theme in both modes), `colorMode`, `size` (also read from `defaults.global.size`), `rounded`, `copyable`, `wrap` and `hideLanguage`.
+
 ## Custom translations
 
-The copy button's aria-label and tooltip come from the `@maz-ui/translations` package (`codeHighlight.copyToClipboard` / `codeHighlight.copiedToClipboard`). You can override either key per-instance with the `translations` prop without touching the global locale:
+The labels and tooltips of the copy button and of the scroll-to-bottom button come from the `@maz-ui/translations` package (`codeHighlight.copyToClipboard`, `codeHighlight.copiedToClipboard`, `codeHighlight.scrollToBottom`). You can override any key per-instance with the `translations` prop without touching the global locale:
 
 <ComponentDemo>
   <MazCodeHighlight

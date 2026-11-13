@@ -89,9 +89,10 @@ defaults: {
 | --- | --- | --- |
 | `roundedSize` | `MazRoundedSize` (`'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'`) | `MazBtn`, `MazBtnGroup`, `MazContainer`, `MazInput`, `MazTextarea`, `MazTable`, `MazBadge`, `MazAlert`, `MazAvatar`, `MazSkeleton`, `MazTimeline`, `MazSegmented` |
 | `flagSrc` | `MazCountryFlagSrc` (URL template or function, e.g. `loadCountryFlag` from `maz-ui/country-flags`) | `MazSelectCountry`, `MazInputPhoneNumber` (see [flags source](../components/maz-select-country.md#flags-source)) |
-| `size` | `MazSize` (`'mini' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`) | `MazBtn`, `MazBtnGroup`, `MazBadge`, `MazInput`, `MazSelect`, `MazSelectCountry`, `MazInputNumber`, `MazInputTags`, `MazInputPhoneNumber`, `MazCheckbox`, `MazRadio`, `MazRadioButtons`, `MazDropdown`, `MazPagination`, `MazTable`, `MazTimeline`, `MazSegmented` |
+| `size` | `MazSize` (`'mini' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`) | `MazBtn`, `MazBtnGroup`, `MazBadge`, `MazInput`, `MazSelect`, `MazSelectCountry`, `MazInputNumber`, `MazInputTags`, `MazInputPhoneNumber`, `MazCheckbox`, `MazRadio`, `MazRadioButtons`, `MazDropdown`, `MazPagination`, `MazTable`, `MazTimeline`, `MazSegmented`, `MazCodeHighlight` |
 | `bordered`, `elevation`, `padding`, `transparent`, `overflowHidden` | `boolean` | `MazContainer` |
 | `bordered`, `elevation`, `padding`, `radius`, `scale`, `overflowHidden` | `boolean` | `MazCard` |
+| `lightTheme`, `darkTheme`, `theme` (shiki theme names), `colorMode` (`'auto' \| 'light' \| 'dark'`), `rounded`, `copyable`, `wrap`, `hideLanguage` | `string`, `boolean` | `MazCodeHighlight` (see [defaults for the whole app](../components/maz-code-highlight.md#defaults-for-the-whole-app)) |
 
 ::: tip Note
 Components whose `size` is a free CSS length (`MazSizeUnit`, e.g. `MazSpinner`, `MazAvatar`, `MazDrawer`, `MazSlider`, `MazCircularProgressBar`, `MazFullscreenLoader`) do not take the global `size` token - the value would not be valid for them. `MazAlert` and `MazTimeline` keep their own wider `roundedSize` scale; a `defaults.global.roundedSize` value still applies to them, and their extra steps (`2xl`, `3xl`) are reachable through their per-component entry.
