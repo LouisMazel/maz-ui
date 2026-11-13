@@ -179,6 +179,15 @@ function onFocus(event: FocusEvent) {
 }
 
 .m-switch__toggle {
+  /* No light-dark() here: the build rewrites it into variables that only exist with a color-scheme rule */
+  --m-switch-track: color-mix(in srgb, var(--maz-foreground) 16%, transparent);
+  --m-switch-thumb: oklch(100% 0 0deg);
+
+  @variant dark {
+    --m-switch-track: color-mix(in srgb, var(--maz-foreground) 24%, transparent);
+    --m-switch-thumb: var(--maz-foreground);
+  }
+
   &::before {
     content: '';
     transition: all 200ms ease-in-out;
@@ -188,10 +197,7 @@ function onFocus(event: FocusEvent) {
 
     /* Translucent foreground so the track stays visible on any background, in both modes */
     border-color: transparent;
-    background-color: light-dark(
-      color-mix(in oklab, var(--maz-foreground) 16%, transparent),
-      color-mix(in oklab, var(--maz-foreground) 24%, transparent)
-    );
+    background-color: var(--m-switch-track);
   }
 
   &::after {
@@ -199,7 +205,7 @@ function onFocus(event: FocusEvent) {
 
     @apply maz:absolute maz:left-0.5 maz:top-1 maz:block maz:h-5 maz:w-5 maz:rounded-full;
 
-    background-color: light-dark(oklch(100% 0 0deg), var(--maz-foreground));
+    background-color: var(--m-switch-thumb);
     box-shadow: 0 1px 3px 0 hsl(0deg 0% 0% / 25%);
     transition: all 200ms ease-in-out;
   }
