@@ -1,5 +1,21 @@
 # Change Log
 
+## v5.7.0-beta.4 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.3...v5.7.0-beta.4)
+
+### 🚀 Features
+
+- **maz-ui:** Add size, max height, wrap and log follow mode to MazCodeHighlight ([284768c60](https://github.com/LouisMazel/maz-ui/commit/284768c60))
+
+  - `size` (`mini`, `xs`, `sm`, `md`, `lg`) sets the size of the code and its padding
+  - `max-height` caps the height of the block, `wrap` breaks long lines, `hide-language` hides the language badge
+  - `follow` keeps the block scrolled to the last line of a code that grows (logs, build output) and highlights only the appended lines; the exposed `scrollToBottom()` follows again
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.3 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.2...v5.7.0-beta.3)
