@@ -62,6 +62,7 @@ const COMPONENT_NAMES: Omit<
   MazBottomSheet: true,
   MazBtn: true,
   MazBtnGroup: true,
+  MazBtnDropdown: true,
   MazCard: true,
   MazCardSpotlight: true,
   MazCarousel: true,
