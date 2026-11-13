@@ -186,14 +186,12 @@ function onFocus(event: FocusEvent) {
     @apply maz:relative maz:left-0 maz:top-0.5 maz:block maz:h-6 maz:w-12 maz:rounded-full;
     @apply maz:border maz:border-solid;
 
-    /* Mixed from the foreground so the track stays visible on any surface, in both modes */
-    --switch-track: light-dark(
-      color-mix(in oklab, var(--maz-foreground) 16%, var(--maz-surface)),
-      color-mix(in oklab, var(--maz-foreground) 24%, var(--maz-surface))
+    /* Translucent foreground so the track stays visible on any background, in both modes */
+    border-color: transparent;
+    background-color: light-dark(
+      color-mix(in oklab, var(--maz-foreground) 16%, transparent),
+      color-mix(in oklab, var(--maz-foreground) 24%, transparent)
     );
-
-    border-color: var(--switch-track);
-    background-color: var(--switch-track);
   }
 
   &::after {
