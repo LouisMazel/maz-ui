@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.7.0-beta.6 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)
+
+### 📦 Build
+
+- **maz-ui:** Resolve the colors of MazSwitch without light-dark() ([2ab6c0351](https://github.com/LouisMazel/maz-ui/commit/2ab6c0351))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.5 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.4...v5.7.0-beta.5)
