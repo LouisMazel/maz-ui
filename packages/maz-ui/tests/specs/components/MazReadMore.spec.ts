@@ -79,12 +79,11 @@ describe('given MazReadMore component', () => {
     })
 
     it('then it applies the line clamp styles', () => {
-      const content = wrapper.find('.m-read-more__content')
-      const style = content.attributes('style')
+      const { style } = wrapper.find<HTMLElement>('.m-read-more__content').element
 
-      expect(style).toContain('display: -webkit-box')
-      expect(style).toContain('-webkit-line-clamp: 3')
-      expect(style).toContain('overflow: hidden')
+      expect(style.display).toBe('-webkit-box')
+      expect(style.getPropertyValue('-webkit-line-clamp')).toBe('3')
+      expect(style.overflow).toBe('hidden')
     })
   })
 
