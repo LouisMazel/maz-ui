@@ -129,6 +129,7 @@ export default {
   codeHighlight: {
     copyToClipboard: '复制到剪贴板',
     copiedToClipboard: '已复制到剪贴板',
+    scrollToBottom: '滚动到底部',
   },
   colorPicker: {
     openPicker: '打开颜色选择器',

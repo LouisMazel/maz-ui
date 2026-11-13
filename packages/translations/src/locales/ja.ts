@@ -129,6 +129,7 @@ export default {
   codeHighlight: {
     copyToClipboard: 'クリップボードにコピー',
     copiedToClipboard: 'クリップボードにコピーされました',
+    scrollToBottom: '一番下へスクロール',
   },
   colorPicker: {
     openPicker: 'カラーピッカーを開く',

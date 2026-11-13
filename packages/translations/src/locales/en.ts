@@ -237,10 +237,12 @@ export default {
    * The keys are:
    * - copyToClipboard: Label/tooltip for the copy button (default state).
    * - copiedToClipboard: Label/tooltip for the copy button after a successful copy.
+   * - scrollToBottom: Label/tooltip for the button that scrolls a long block back to its last line.
    */
   codeHighlight: {
     copyToClipboard: 'Copy to clipboard',
     copiedToClipboard: 'Copied to clipboard',
+    scrollToBottom: 'Scroll to bottom',
   },
   /**
    * This is the translation for the color picker component.

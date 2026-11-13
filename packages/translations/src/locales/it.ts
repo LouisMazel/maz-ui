@@ -129,6 +129,7 @@ export default {
   codeHighlight: {
     copyToClipboard: 'Copia negli appunti',
     copiedToClipboard: 'Copiato negli appunti',
+    scrollToBottom: 'Scorri in fondo',
   },
   colorPicker: {
     openPicker: 'Apri il selettore di colore',
