@@ -1,4 +1,5 @@
 import MazCodeHighlight from '@components/MazCodeHighlight.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createSSRApp, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
@@ -691,6 +692,245 @@ describe('given MazCodeHighlight component', () => {
         Object.defineProperty(Element.prototype, 'scrollHeight', scrollHeight)
         Object.defineProperty(Element.prototype, 'clientHeight', clientHeight)
       }
+    })
+  })
+})
+
+describe('given a MazCodeHighlight longer than its max height', () => {
+  /** jsdom has no layout: every pre measures `content` px of code in a 100px box, and keeps its scroll position. */
+  async function withLayout(content: number, run: () => Promise<void>) {
+    const tops = new WeakMap<Element, number>()
+    const descriptors = ['scrollTop', 'scrollHeight', 'clientHeight'].map(key => [
+      key,
+      Object.getOwnPropertyDescriptor(Element.prototype, key)!,
+    ] as const)
+    Object.defineProperty(Element.prototype, 'scrollTop', {
+      configurable: true,
+      get() { return tops.get(this) ?? 0 },
+      set(value: number) { tops.set(this, value) },
+    })
+    Object.defineProperty(Element.prototype, 'scrollHeight', {
+      configurable: true,
+      get: () => content,
+    })
+    Object.defineProperty(Element.prototype, 'clientHeight', {
+      configurable: true,
+      get: () => 100,
+    })
+    try {
+      await run()
+    }
+    finally {
+      for (const [key, descriptor] of descriptors)
+        Object.defineProperty(Element.prototype, key, descriptor)
+    }
+  }
+
+  const bottomButton = '.m-code-highlight__bottom-btn'
+
+  describe('when the user scrolls up', () => {
+    it('then a button scrolls back to the last line, without follow too', async () => {
+      await withLayout(500, async () => {
+        const wrapper = mount(MazCodeHighlight, {
+          props: { code: 'one\ntwo', maxHeight: '4rem' },
+        })
+        await flushPromises()
+        const pre = () => wrapper.find('pre').element as HTMLElement
+        expect(wrapper.find(bottomButton).exists()).toBe(false)
+
+        pre().scrollTop = 120
+        pre().dispatchEvent(new Event('scroll'))
+        // MazBtn is an async component: wait for its chunk before looking for the button.
+        await vi.dynamicImportSettled()
+        await flushPromises()
+        const button = wrapper.find(bottomButton)
+        expect(button.exists()).toBe(true)
+
+        await button.trigger('click')
+        await flushPromises()
+        expect(pre().scrollTop).toBe(500)
+        expect(wrapper.find(bottomButton).exists()).toBe(false)
+        wrapper.unmount()
+      })
+    })
+  })
+
+  describe('when the code fits in the block', () => {
+    it('then there is no button', async () => {
+      await withLayout(100, async () => {
+        const wrapper = mount(MazCodeHighlight, {
+          props: { code: 'one', maxHeight: '4rem' },
+        })
+        await flushPromises()
+        const pre = () => wrapper.find('pre').element as HTMLElement
+        pre().dispatchEvent(new Event('scroll'))
+        // MazBtn is an async component: wait for its chunk before looking for the button.
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        expect(wrapper.find(bottomButton).exists()).toBe(false)
+        wrapper.unmount()
+      })
+    })
+  })
+
+  describe('when a custom label is given', () => {
+    it('then the button uses it', async () => {
+      await withLayout(500, async () => {
+        const wrapper = mount(MazCodeHighlight, {
+          props: {
+            code: 'one\ntwo',
+            maxHeight: '4rem',
+            translations: { scrollToBottom: 'Aller en bas' },
+          },
+        })
+        await flushPromises()
+        const pre = () => wrapper.find('pre').element as HTMLElement
+        pre().scrollTop = 0
+        pre().dispatchEvent(new Event('scroll'))
+        // MazBtn is an async component: wait for its chunk before looking for the button.
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        expect(wrapper.find(bottomButton).attributes('aria-label')).toBe('Aller en bas')
+        wrapper.unmount()
+      })
+    })
+  })
+})
+
+describe('given MazUi global defaults for MazCodeHighlight', () => {
+  function mountWithDefaults(props: Record<string, unknown> = {}) {
+    return mount(MazCodeHighlight, {
+      props: { code: 'echo 1', language: 'bash', ...props },
+      global: {
+        provide: {
+          [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+            global: { size: 'lg' },
+            MazCodeHighlight: {
+              theme: 'github-dark-default',
+              colorMode: 'dark',
+              size: 'xs',
+              wrap: true,
+              hideLanguage: true,
+              copyable: false,
+              rounded: false,
+            },
+          },
+        },
+      },
+    })
+  }
+
+  describe('when no prop is passed', () => {
+    it('then the component defaults apply, before the global ones', async () => {
+      const { codeToHtml } = await import('shiki')
+      vi.mocked(codeToHtml).mockClear()
+
+      const wrapper = mountWithDefaults()
+      await flushPromises()
+
+      expect(codeToHtml).toHaveBeenCalledWith('echo 1', expect.objectContaining({ theme: 'github-dark-default' }))
+      const root = wrapper.find('.m-code-highlight')
+      expect(root.classes()).toEqual(expect.arrayContaining([
+        '--size-xs',
+        '--wrap',
+        '--no-rounded',
+        'dark',
+      ]))
+      expect(root.classes()).not.toContain('--size-lg')
+      expect(wrapper.text()).not.toContain('bash')
+      expect(wrapper.find('button').exists()).toBe(false)
+    })
+  })
+
+  describe('when the props are passed on the instance', () => {
+    it('then the instance props win over the defaults', async () => {
+      const { codeToHtml } = await import('shiki')
+      vi.mocked(codeToHtml).mockClear()
+
+      const wrapper = mountWithDefaults({
+        theme: 'dracula',
+        colorMode: 'light',
+        size: 'sm',
+        wrap: false,
+        hideLanguage: false,
+        rounded: true,
+      })
+      await flushPromises()
+
+      expect(codeToHtml).toHaveBeenCalledWith('echo 1', expect.objectContaining({ theme: 'dracula' }))
+      const root = wrapper.find('.m-code-highlight')
+      expect(root.classes()).toEqual(expect.arrayContaining(['--size-sm', 'light']))
+      expect(root.classes()).not.toEqual(expect.arrayContaining(['--wrap']))
+      expect(root.classes()).not.toContain('--no-rounded')
+      expect(wrapper.text()).toContain('bash')
+    })
+  })
+
+  describe('when a light and a dark theme are set for the whole app', () => {
+    function mountWithThemes(props: Record<string, unknown>) {
+      return mount(MazCodeHighlight, {
+        props: { code: 'echo 1', ...props },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazCodeHighlight: { lightTheme: 'one-light', darkTheme: 'github-dark-default' },
+            },
+          },
+        },
+      })
+    }
+
+    it.each([
+      ['light', 'one-light'],
+      ['dark', 'github-dark-default'],
+    ])('then the %s mode uses its theme', async (colorMode, expected) => {
+      const { codeToHtml } = await import('shiki')
+      vi.mocked(codeToHtml).mockClear()
+
+      mountWithThemes({ colorMode })
+      await flushPromises()
+
+      expect(codeToHtml).toHaveBeenCalledWith('echo 1', expect.objectContaining({ theme: expected }))
+    })
+
+    it('then the theme of the instance wins over both', async () => {
+      const { codeToHtml } = await import('shiki')
+      vi.mocked(codeToHtml).mockClear()
+
+      mountWithThemes({ colorMode: 'dark', theme: 'dracula' })
+      await flushPromises()
+
+      expect(codeToHtml).toHaveBeenCalledWith('echo 1', expect.objectContaining({ theme: 'dracula' }))
+    })
+
+    it('then a dark theme of the instance wins over the app one', async () => {
+      const { codeToHtml } = await import('shiki')
+      vi.mocked(codeToHtml).mockClear()
+
+      mountWithThemes({ colorMode: 'dark', darkTheme: 'vitesse-dark' })
+      await flushPromises()
+
+      expect(codeToHtml).toHaveBeenCalledWith('echo 1', expect.objectContaining({ theme: 'vitesse-dark' }))
+    })
+  })
+
+  describe('when only the global defaults are set', () => {
+    it('then the global size applies', async () => {
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: 'echo 1' },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'lg' },
+            },
+          },
+        },
+      })
+      await flushPromises()
+
+      expect(wrapper.find('.m-code-highlight').classes()).toContain('--size-lg')
     })
   })
 })

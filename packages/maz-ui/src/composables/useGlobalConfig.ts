@@ -6,6 +6,7 @@ import type { MazBtnProps } from '../components/MazBtn.vue'
 import type { MazButtonGroupProps } from '../components/MazBtnGroup.vue'
 import type { MazCardProps } from '../components/MazCard.vue'
 import type { MazCheckboxProps } from '../components/MazCheckbox.vue'
+import type { MazCodeHighlightProps } from '../components/MazCodeHighlight.vue'
 import type { MazContainerProps } from '../components/MazContainer.vue'
 import type { MazDropdownProps } from '../components/MazDropdown.vue'
 import type { MazInputProps } from '../components/MazInput.vue'
@@ -63,6 +64,7 @@ export interface MazUiDefaultsOptions {
   MazBtnGroup?: Partial<MazButtonGroupProps>
   MazCard?: Partial<MazCardProps>
   MazCheckbox?: Partial<MazCheckboxProps>
+  MazCodeHighlight?: Partial<MazCodeHighlightProps>
   MazContainer?: Partial<MazContainerProps>
   MazDropdown?: Partial<MazDropdownProps>
   MazInput?: Partial<MazInputProps>

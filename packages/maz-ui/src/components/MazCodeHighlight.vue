@@ -4,10 +4,13 @@ import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { GrammarState, ThemedToken, TokensResult } from 'shiki'
 import type { Ref, VNode } from 'vue'
+import type { MazSize } from './types'
+import { MazArrowDown } from '@maz-ui/icons/lazy/MazArrowDown'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { MazClipboard } from '@maz-ui/icons/lazy/MazClipboard'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, getCurrentInstance, inject, nextTick, onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { vTooltip } from '../directives/vTooltip'
 
 export interface MazCodeHighlightProps {
@@ -15,8 +18,22 @@ export interface MazCodeHighlightProps {
   code?: string
   /** Language identifier for syntax highlighting (e.g. 'vue', 'ts', 'bash') */
   language?: string
-  /** Override the shiki theme name. Takes priority over the theme chosen from the color mode (tokyo-night in dark, github-light in light) */
+  /**
+   * Shiki theme of the block whatever the color mode: takes priority over `lightTheme` and `darkTheme`.
+   */
   theme?: string
+  /**
+   * Shiki theme used in light mode. Can be set for the whole app with `defaults.MazCodeHighlight.lightTheme` of the
+   * MazUi plugin.
+   * @default 'github-light'
+   */
+  lightTheme?: string
+  /**
+   * Shiki theme used in dark mode. Can be set for the whole app with `defaults.MazCodeHighlight.darkTheme` of the
+   * MazUi plugin.
+   * @default 'tokyo-night'
+   */
+  darkTheme?: string
   /**
    * Color mode of the block.
    * - `auto`: follows the closest `.dark` ancestor, then the `@maz-ui/themes` color mode when the theme plugin is installed, then the `dark` class of `<html>`
@@ -46,9 +63,10 @@ export interface MazCodeHighlightProps {
   translations?: DeepPartial<MazUiTranslationsNestedSchema['codeHighlight']>
   /**
    * Size of the code text (and of the padding around it).
+   * Can be set for the whole app with `defaults.MazCodeHighlight.size` or `defaults.global.size` of the MazUi plugin.
    * @default 'md'
    */
-  size?: 'mini' | 'xs' | 'sm' | 'md' | 'lg'
+  size?: MazSize
   /**
    * Maximum height of the block (any CSS length, e.g. `20rem`): longer code scrolls inside the block.
    */
@@ -75,18 +93,33 @@ export interface MazCodeHighlightProps {
 const {
   code,
   language = 'text',
-  theme,
-  colorMode = 'auto',
-  rounded = true,
-  copyable = true,
   copyValue,
   translations,
-  size = 'md',
   maxHeight,
   follow = false,
-  wrap = false,
-  hideLanguage = false,
 } = defineProps<MazCodeHighlightProps>()
+
+const { theme, lightTheme, darkTheme, colorMode, rounded, copyable, size, wrap, hideLanguage } = useGlobalConfig<{
+  theme: string | undefined
+  lightTheme: string
+  darkTheme: string
+  colorMode: NonNullable<MazCodeHighlightProps['colorMode']>
+  rounded: boolean
+  copyable: boolean
+  size: NonNullable<MazCodeHighlightProps['size']>
+  wrap: boolean
+  hideLanguage: boolean
+}>('MazCodeHighlight', {
+  theme: undefined,
+  lightTheme: 'github-light',
+  darkTheme: 'tokyo-night',
+  colorMode: 'auto',
+  rounded: true,
+  copyable: true,
+  size: 'md',
+  wrap: false,
+  hideLanguage: false,
+})
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
@@ -94,6 +127,7 @@ const { t } = useTranslations()
 
 const copyLabel = computed(() => translations?.copyToClipboard ?? t('codeHighlight.copyToClipboard'))
 const copiedLabel = computed(() => translations?.copiedToClipboard ?? t('codeHighlight.copiedToClipboard'))
+const scrollToBottomLabel = computed(() => translations?.scrollToBottom ?? t('codeHighlight.scrollToBottom'))
 
 const slots = useSlots()
 const rootRef = useTemplateRef<HTMLElement>('rootRef')
@@ -106,8 +140,8 @@ function htmlHasDarkClass() {
 }
 
 const isDark = computed(() => {
-  if (colorMode !== 'auto')
-    return colorMode === 'dark'
+  if (colorMode.value !== 'auto')
+    return colorMode.value === 'dark'
   if (hasDarkAncestor.value)
     return true
   if (themeState?.value)
@@ -159,9 +193,9 @@ const highlightedHtml = ref(resolvedCode.value
   : '')
 
 const resolvedTheme = computed(() => {
-  if (theme)
-    return theme
-  return isDark.value ? 'tokyo-night' : 'github-light'
+  if (theme.value)
+    return theme.value
+  return isDark.value ? darkTheme.value : lightTheme.value
 })
 
 const resolvedCopyValue = computed(() => copyValue ?? resolvedCode.value)
@@ -322,13 +356,25 @@ function codeElement() {
   return contentRef.value?.querySelector<HTMLElement>('pre') ?? undefined
 }
 
+/** The user scrolled the block and its last line is out of view: the scroll-to-bottom button shows. */
+const awayFromBottom = ref(false)
+
+function isAtBottom(element: HTMLElement) {
+  return element.scrollHeight - element.scrollTop - element.clientHeight <= 4
+}
+
+function updateAwayFromBottom(element: HTMLElement) {
+  awayFromBottom.value = element.scrollHeight - element.clientHeight > 4 && !isAtBottom(element)
+}
+
 function onScroll(event: Event) {
   const element = event.target as HTMLElement
   if (element.tagName !== 'PRE')
     return
   scroll.top = element.scrollTop
   scroll.left = element.scrollLeft
-  scroll.atBottom = element.scrollHeight - element.scrollTop - element.clientHeight <= 4
+  scroll.atBottom = isAtBottom(element)
+  updateAwayFromBottom(element)
 }
 
 /** Scrolls the block to its last line and follows the next ones again (with `follow`). */
@@ -337,7 +383,9 @@ function scrollToBottom() {
   if (!element)
     return
   element.scrollTop = element.scrollHeight
+  scroll.top = element.scrollTop
   scroll.atBottom = true
+  awayFromBottom.value = false
 }
 
 watch(highlightedHtml, async () => {
@@ -351,6 +399,9 @@ watch(highlightedHtml, async () => {
   }
   element.scrollTop = scroll.top
   element.scrollLeft = scroll.left
+  // Shown once the user scrolled up, not for a long block displayed from its top.
+  if (awayFromBottom.value)
+    updateAwayFromBottom(element)
 })
 
 defineExpose({
@@ -406,6 +457,21 @@ watch([resolvedCode, resolvedTheme], highlight, { immediate: true })
       :icon="copied ? MazCheck : MazClipboard"
       @click="copy"
     />
+    <MazBtn
+      v-if="awayFromBottom"
+      v-tooltip="{
+        text: scrollToBottomLabel,
+        color: 'surface',
+        position: 'left',
+      }"
+      size="xs"
+      color="surface"
+      fab
+      class="m-code-highlight__bottom-btn maz:absolute maz:right-3 maz:bottom-3 maz:shadow-elevation"
+      :aria-label="scrollToBottomLabel"
+      :icon="MazArrowDown"
+      @click="scrollToBottom"
+    />
   </div>
 </template>
 
@@ -433,6 +499,10 @@ watch([resolvedCode, resolvedTheme], highlight, { immediate: true })
 
   &.--size-lg :deep(pre.shiki) {
     @apply maz:p-5 maz:text-base;
+  }
+
+  &.--size-xl :deep(pre.shiki) {
+    @apply maz:p-6 maz:text-lg;
   }
 
   &.--wrap :deep(pre.shiki) {
