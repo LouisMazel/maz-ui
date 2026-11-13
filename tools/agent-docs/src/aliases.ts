@@ -92,6 +92,13 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'toolbar',
     'grouped buttons',
   ],
+  'components/maz-btn-dropdown': [
+    'split button',
+    'button with menu',
+    'dropdown button',
+    'save as',
+    'action variants',
+  ],
   'components/maz-card': [
     'card',
     'panel',
@@ -784,6 +791,8 @@ export const RELATED_DOCS: Array<[string, string]> = [
   ['plugins/aos', 'composables/use-aos'],
   ['plugins/wait', 'composables/use-wait'],
   ['components/maz-dialog', 'components/maz-dialog-confirm'],
+  ['components/maz-btn-dropdown', 'components/maz-dropdown'],
+  ['components/maz-btn-dropdown', 'components/maz-btn'],
   ['components/maz-dialog', 'components/maz-bottom-sheet'],
   ['components/maz-dialog', 'components/maz-backdrop'],
   ['components/maz-drawer', 'components/maz-backdrop'],
