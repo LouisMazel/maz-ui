@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.7.0-beta.5 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.4...v5.7.0-beta.5)
+
+### 🚀 Features
+
+- **translations:** Add the scroll to bottom label of MazCodeHighlight ([f6a747254](https://github.com/LouisMazel/maz-ui/commit/f6a747254))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.4 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.3...v5.7.0-beta.4)

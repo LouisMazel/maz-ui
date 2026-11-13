@@ -1,5 +1,22 @@
 # Change Log
 
+## v5.7.0-beta.5 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.4...v5.7.0-beta.5)
+
+### 🚀 Features
+
+- **maz-ui:** Add app-wide defaults, light and dark themes and a scroll to bottom button to MazCodeHighlight ([1d5abce9b](https://github.com/LouisMazel/maz-ui/commit/1d5abce9b))
+
+  - `light-theme` and `dark-theme` choose the shiki theme of each color mode (`theme` still forces one for both)
+  - Every display prop (`size`, themes, `color-mode`, `rounded`, `copyable`, `wrap`, `hide-language`) can be set for the whole app with `defaults.MazCodeHighlight` of the MazUi plugin, and `size` also follows `defaults.global.size`
+  - A button scrolls a long block back to its last line once the user scrolled up
+  - `size` accepts `xl`
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.4 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.3...v5.7.0-beta.4)
