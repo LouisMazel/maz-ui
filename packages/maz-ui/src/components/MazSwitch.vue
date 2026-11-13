@@ -161,6 +161,10 @@ function onFocus(event: FocusEvent) {
   outline-offset: 2px;
 }
 
+.m-switch:not(.--is-disabled):hover .m-switch__input:not(:checked) + .m-switch__toggle::before {
+  box-shadow: 0 0 0 0.125rem color-mix(in srgb, var(--switch-color) 60%, transparent);
+}
+
 .m-switch__input:checked + .m-switch__toggle {
   &::after {
     @apply maz:translate-x-6;
@@ -183,8 +187,13 @@ function onFocus(event: FocusEvent) {
     @apply maz:border maz:border-solid;
 
     /* Mixed from the foreground so the track stays visible on any surface, in both modes */
-    border-color: color-mix(in oklab, var(--maz-foreground) 40%, var(--maz-surface));
-    background-color: color-mix(in oklab, var(--maz-foreground) 28%, var(--maz-surface));
+    --switch-track: light-dark(
+      color-mix(in oklab, var(--maz-foreground) 16%, var(--maz-surface)),
+      color-mix(in oklab, var(--maz-foreground) 24%, var(--maz-surface))
+    );
+
+    border-color: var(--switch-track);
+    background-color: var(--switch-track);
   }
 
   &::after {
