@@ -103,6 +103,12 @@ const titleId = computed(() => `${instanceId.value}-title`)
         :class="[
           `--${variant}`,
           (variant === 'start' || variant === 'end') ? 'maz:size-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:h-auto maz:w-full',
+          {
+            'maz:border-r maz:border-divider': variant === 'start',
+            'maz:border-l maz:border-divider': variant === 'end',
+            'maz:border-b maz:border-divider': variant === 'top',
+            'maz:border-t maz:border-divider': variant === 'bottom',
+          },
         ]"
         :style="{
           '--maz-drawer-size': size,
