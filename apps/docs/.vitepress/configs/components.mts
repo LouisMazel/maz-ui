@@ -11,6 +11,10 @@ export const components = {
       items: [
         { text: 'Btn', link: '/components/maz-btn' },
         { text: 'BtnGroup', link: '/components/maz-btn-group' },
+        {
+          text: withNewBadge('BtnDropdown'),
+          link: '/components/maz-btn-dropdown',
+        },
         { text: 'Checkbox', link: '/components/maz-checkbox' },
         { text: 'Checklist', link: '/components/maz-checklist' },
         {

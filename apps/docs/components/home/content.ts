@@ -240,6 +240,12 @@ export const NEW_MODULES: HomeModule[] = [
     link: '/components/maz-indicator',
   },
   {
+    name: 'MazBtnDropdown',
+    kind: 'Component',
+    description: 'Split button: a main action and its variants in a menu.',
+    link: '/components/maz-btn-dropdown',
+  },
+  {
     name: 'MazSidebar',
     kind: 'Component',
     description: 'Composable sidebar for dashboards, collapsible and accessible.',

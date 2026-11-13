@@ -11,6 +11,10 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 
 <!--@include: ./../../.vitepress/mixins/translated-component.md-->
 
+::: tip
+The button has a main action of its own and the menu lists its variants ("Save", then "Save as draft")? Use [MazBtnDropdown](./maz-btn-dropdown.md), a split button.
+:::
+
 ## Basic usage
 
 <ComponentDemo>
