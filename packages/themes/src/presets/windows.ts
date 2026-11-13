@@ -13,7 +13,10 @@ import {
  * - `primary` is the default Windows accent (its darker step on light, its
  *   lighter step on dark, as Fluent does for text and filled controls).
  *   Windows does not expose the user accent to the web: an app that reads it
- *   natively overrides `primary` and `accent`.
+ *   natively overrides `primary`.
+ * - `secondary` is the Fluent purple, `accent` the Fluent magenta and `info`
+ *   the Fluent teal, in the same steps: four strong colors that never look
+ *   alike.
  * - Light gray window (Mica) and lighter cards, small radii (4px controls,
  *   8px cards and flyouts), the Acrylic material for `glass`.
  * - Fluent motion: fast decelerated curves. Controls keep the arrow cursor.
@@ -134,11 +137,11 @@ export const windows: ThemePreset = {
       'foreground': '#1b1b1b',
       'primary': '#005fb8',
       'primary-foreground': '#ffffff',
-      'secondary': '#e9e9e9',
-      'secondary-foreground': '#1b1b1b',
-      'accent': '#005fb8',
+      'secondary': '#8764b8',
+      'secondary-foreground': '#ffffff',
+      'accent': '#bf0077',
       'accent-foreground': '#ffffff',
-      'info': '#005fb8',
+      'info': '#038387',
       'info-foreground': '#ffffff',
       'success': '#0f7b0f',
       'success-foreground': '#ffffff',
@@ -158,11 +161,11 @@ export const windows: ThemePreset = {
       'foreground': '#ffffff',
       'primary': '#60cdff',
       'primary-foreground': '#000000',
-      'secondary': '#3a3a3a',
-      'secondary-foreground': '#ffffff',
-      'accent': '#60cdff',
+      'secondary': '#b4a0ff',
+      'secondary-foreground': '#000000',
+      'accent': '#ff8fd0',
       'accent-foreground': '#000000',
-      'info': '#60cdff',
+      'info': '#4fd1d6',
       'info-foreground': '#000000',
       'success': '#6ccb5f',
       'success-foreground': '#000000',

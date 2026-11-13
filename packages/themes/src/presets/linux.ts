@@ -12,7 +12,10 @@ import {
  * - Adwaita Sans (Cantarell before GNOME 48) at 14px.
  * - `primary` is the default Adwaita blue, in its text step so that labels and
  *   filled controls keep the AA contrast. An app that reads the accent of the
- *   desktop natively overrides `primary` and `accent`.
+ *   desktop natively overrides `primary`.
+ * - `secondary` is the Adwaita purple, `accent` the Adwaita pink and `info`
+ *   the Adwaita teal, in the same text steps: four strong colors that never
+ *   look alike.
  * - Light window (`surface`) with white cards, rounded controls (6px) and
  *   cards (12px).
  * - GNOME draws no blurred material: `glass` stays opaque, the color of the
@@ -133,11 +136,11 @@ export const linux: ThemePreset = {
       'foreground': '#2e2e33',
       'primary': '#1c71d8',
       'primary-foreground': '#ffffff',
-      'secondary': '#e8e8ea',
-      'secondary-foreground': '#2e2e33',
-      'accent': '#1c71d8',
+      'secondary': '#9141ac',
+      'secondary-foreground': '#ffffff',
+      'accent': '#b5306f',
       'accent-foreground': '#ffffff',
-      'info': '#1c71d8',
+      'info': '#007184',
       'info-foreground': '#ffffff',
       'success': '#1b8553',
       'success-foreground': '#ffffff',
@@ -157,11 +160,11 @@ export const linux: ThemePreset = {
       'foreground': '#ffffff',
       'primary': '#78aeed',
       'primary-foreground': '#000000',
-      'secondary': '#3a3a3e',
-      'secondary-foreground': '#ffffff',
-      'accent': '#78aeed',
+      'secondary': '#dc8add',
+      'secondary-foreground': '#000000',
+      'accent': '#f28dc0',
       'accent-foreground': '#000000',
-      'info': '#78aeed',
+      'info': '#5fd5e8',
       'info-foreground': '#000000',
       'success': '#8ff0a4',
       'success-foreground': '#000000',

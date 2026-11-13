@@ -418,9 +418,9 @@ Three presets imitate the look of a native desktop app, for Tauri, Electron or a
 
 | Preset | Look | Specifics |
 | --- | --- | --- |
-| `macos` | macOS 26: SF Pro at `13px`, white blocks on a light gray window, translucent sidebars and toolbars | Follows the system accent color, labels and separators through [`systemColors`](#system-colors) (WebKit) |
-| `windows` | Windows 11, Fluent 2: Segoe UI Variable at `14px`, Mica window, 4px controls and 8px cards | Acrylic `glass`. The user accent is not exposed to the web: override `primary` and `accent` if your app reads it natively |
-| `linux` | GNOME, libadwaita: Adwaita Sans at `14px`, white cards, 6px controls and 12px cards | Opaque `glass` (GNOME draws no blurred material). Override `primary` and `accent` if your app reads the desktop accent |
+| `macos` | macOS 26: SF Pro at `13px`, white blocks on a light gray window, translucent sidebars and toolbars | `primary` follows the system accent color, the labels and separators follow the system through [`systemColors`](#system-colors) (WebKit). `secondary`, `accent` and `info` are the system purple, pink and teal |
+| `windows` | Windows 11, Fluent 2: Segoe UI Variable at `14px`, Mica window, 4px controls and 8px cards | Acrylic `glass`. The user accent is not exposed to the web: override `primary` if your app reads it natively. `secondary`, `accent` and `info` are the Fluent purple, magenta and teal |
+| `linux` | GNOME, libadwaita: Adwaita Sans at `14px`, white cards, 6px controls and 12px cards | Opaque `glass` (GNOME draws no blurred material). Override `primary` if your app reads the desktop accent. `secondary`, `accent` and `info` are the Adwaita purple, pink and teal |
 
 ```typescript
 import { linux, macos, windows } from '@maz-ui/themes/presets'
@@ -871,7 +871,6 @@ const myMacPreset = definePreset({
     name: 'my-mac-app',
     systemColors: {
       primary: '-apple-system-control-accent',
-      accent: '-apple-system-control-accent',
       foreground: '-apple-system-label',
       muted: '-apple-system-secondary-label',
       divider: '-apple-system-separator',
@@ -886,7 +885,6 @@ The generated CSS:
 @supports (color: -apple-system-control-accent) {
   :root {
     --maz-primary: -apple-system-control-accent;
-    --maz-accent: -apple-system-control-accent;
   }
 }
 ```
