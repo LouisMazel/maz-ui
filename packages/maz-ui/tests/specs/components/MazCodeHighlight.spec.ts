@@ -5,6 +5,22 @@ import { renderToString } from 'vue/server-renderer'
 
 vi.mock('shiki', () => ({
   codeToHtml: vi.fn().mockResolvedValue('<pre class="shiki github-light"><code>highlighted code</code></pre>'),
+  codeToTokens: vi.fn().mockImplementation((code: string, options: { grammarState?: { end: number } }) => Promise.resolve({
+    tokens: code.split('\n').map(line => [
+      {
+        content: line,
+        offset: 0,
+        color: '#123456',
+        fontStyle: line.startsWith('!')
+          ? 3
+          : 0,
+      },
+    ]),
+    fg: '#000000',
+    bg: '#ffffff',
+    themeName: 'github-light',
+    grammarState: { end: (options.grammarState?.end ?? 0) + code.length },
+  })),
 }))
 
 describe('given MazCodeHighlight component', () => {
@@ -511,6 +527,170 @@ describe('given MazCodeHighlight component', () => {
         })
         expect(theme).toBe('dracula')
       })
+    })
+  })
+
+  describe('when rendered with the display props', () => {
+    it('then size, wrap and max height are applied on the root', async () => {
+      const wrapper = mount(MazCodeHighlight, {
+        props: {
+          code: 'const x = 1',
+          size: 'xs',
+          wrap: true,
+          maxHeight: '12rem',
+        },
+      })
+      await flushPromises()
+
+      const root = wrapper.find('.m-code-highlight')
+      expect(root.classes()).toEqual(expect.arrayContaining(['--size-xs', '--wrap']))
+      expect(root.attributes('style')).toContain('--m-code-highlight-max-height: 12rem')
+    })
+
+    it('then the medium size and no max height are the defaults', async () => {
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: 'const x = 1' },
+      })
+      await flushPromises()
+
+      const root = wrapper.find('.m-code-highlight')
+      expect(root.classes()).toContain('--size-md')
+      expect(root.attributes('style')).toBeUndefined()
+    })
+
+    it('then hideLanguage removes the language badge', async () => {
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: 'echo 1', language: 'log', hideLanguage: true },
+      })
+      await flushPromises()
+
+      expect(wrapper.text()).not.toContain('log')
+    })
+  })
+
+  describe('when following streamed code', () => {
+    it('then only the appended lines are tokenized, from the grammar state of the previous ones', async () => {
+      const { codeToHtml, codeToTokens } = await import('shiki')
+      vi.mocked(codeToHtml).mockClear()
+      vi.mocked(codeToTokens).mockClear()
+
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: 'one\ntwo', language: 'log', follow: true },
+      })
+      await flushPromises()
+      expect(codeToHtml).not.toHaveBeenCalled()
+      expect(vi.mocked(codeToTokens).mock.calls.map(call => call[0])).toEqual(['one', 'two'])
+
+      vi.mocked(codeToTokens).mockClear()
+      await wrapper.setProps({ code: 'one\ntwo\nthree' })
+      await flushPromises()
+
+      expect(vi.mocked(codeToTokens).mock.calls.map(call => [call[0], call[1].grammarState])).toEqual([
+        [
+          'two',
+          { end: 3 },
+        ],
+        [
+          'three',
+          { end: 6 },
+        ],
+      ])
+      const lines = wrapper.findAll('.line').map(line => line.text())
+      expect(lines).toEqual(['one', 'two', 'three'])
+      expect(wrapper.find('pre.shiki').attributes('style')).toContain('background-color:#ffffff')
+    })
+
+    it('then a code that is not an extension of the previous one is highlighted again from the start', async () => {
+      const { codeToTokens } = await import('shiki')
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: 'one\ntwo', follow: true },
+      })
+      await flushPromises()
+
+      vi.mocked(codeToTokens).mockClear()
+      await wrapper.setProps({ code: 'other\nlines' })
+      await flushPromises()
+
+      expect(vi.mocked(codeToTokens).mock.calls.map(call => [call[0], call[1].grammarState])).toEqual([
+        ['other', undefined],
+        [
+          'lines',
+          { end: 5 },
+        ],
+      ])
+      expect(wrapper.findAll('.line').map(line => line.text())).toEqual(['other', 'lines'])
+    })
+
+    it('then the token styles and the html are escaped', async () => {
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: '!<b>bold</b>', follow: true },
+      })
+      await flushPromises()
+
+      const token = wrapper.find('.line span')
+      expect(token.text()).toBe('!<b>bold</b>')
+      expect(token.attributes('style')).toBe('color:#123456;font-style:italic;font-weight:bold')
+    })
+
+    it('then it falls back to plain text when tokenizing fails', async () => {
+      const { codeToTokens } = await import('shiki')
+      vi.mocked(codeToTokens).mockRejectedValueOnce(new Error('no shiki'))
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: 'a\nb', follow: true },
+      })
+      await flushPromises()
+
+      expect(wrapper.find('pre code').text()).toBe('a\nb')
+    })
+
+    it('then it sticks to the bottom until the user scrolls up', async () => {
+      // jsdom has no layout: every pre measures 500px of content in a 100px box, and keeps its scroll position.
+      const tops = new WeakMap<Element, number>()
+      const scrollTop = Object.getOwnPropertyDescriptor(Element.prototype, 'scrollTop')!
+      const scrollHeight = Object.getOwnPropertyDescriptor(Element.prototype, 'scrollHeight')!
+      const clientHeight = Object.getOwnPropertyDescriptor(Element.prototype, 'clientHeight')!
+      Object.defineProperty(Element.prototype, 'scrollTop', {
+        configurable: true,
+        get() { return tops.get(this) ?? 0 },
+        set(value: number) { tops.set(this, value) },
+      })
+      Object.defineProperty(Element.prototype, 'scrollHeight', {
+        configurable: true,
+        get: () => 500,
+      })
+      Object.defineProperty(Element.prototype, 'clientHeight', {
+        configurable: true,
+        get: () => 100,
+      })
+
+      try {
+        const wrapper = mount(MazCodeHighlight, {
+          props: { code: 'one', follow: true, maxHeight: '4rem' },
+        })
+        await flushPromises()
+        const pre = () => wrapper.find('pre').element as HTMLElement
+
+        await wrapper.setProps({ code: 'one\ntwo' })
+        await flushPromises()
+        expect(pre().scrollTop).toBe(500)
+
+        pre().scrollTop = 120
+        pre().dispatchEvent(new Event('scroll'))
+        await wrapper.setProps({ code: 'one\ntwo\nthree' })
+        await flushPromises()
+        expect(pre().scrollTop).toBe(120)
+
+        ;(wrapper.vm as unknown as { scrollToBottom: () => void }).scrollToBottom()
+        await wrapper.setProps({ code: 'one\ntwo\nthree\nfour' })
+        await flushPromises()
+        expect(pre().scrollTop).toBe(500)
+        wrapper.unmount()
+      }
+      finally {
+        Object.defineProperty(Element.prototype, 'scrollTop', scrollTop)
+        Object.defineProperty(Element.prototype, 'scrollHeight', scrollHeight)
+        Object.defineProperty(Element.prototype, 'clientHeight', clientHeight)
+      }
     })
   })
 })
