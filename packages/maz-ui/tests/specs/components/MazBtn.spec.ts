@@ -25,6 +25,19 @@ describe('mazBtn.vue', () => {
     expect(wrapper.classes()).toContain('--success')
   })
 
+  describe('given a neutral color', () => {
+    describe.each(['surface', 'container'] as const)('when the color is %s', (color) => {
+      it('then it has the color class and no theme color variables', () => {
+        const wrapper = shallowMount(MazBtn, {
+          props: { color },
+        })
+
+        expect(wrapper.classes()).toContain(`--${color}`)
+        expect(wrapper.attributes('style')).not.toContain('--m-btn-bg')
+      })
+    })
+  })
+
   it('renders with the correct type attribute', () => {
     const wrapper = shallowMount(MazBtn, {
       props: { type: 'submit' },

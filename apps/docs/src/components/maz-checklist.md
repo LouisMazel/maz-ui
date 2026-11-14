@@ -96,6 +96,12 @@ lastUpdated: false
   </template>
 </ComponentDemo>
 
+## Search
+
+The search is a fuzzy search (the [fuzzySearch](./../ecosystem/utils/fuzzy-search.md) helper of `@maz-ui/utils`, loaded only with `search`): it finds the prefixes, the words in any order, the initials, the typos, whatever the accents and the case, in the label and the value of the items. The best matches come first.
+
+`search-options.threshold` is the tolerance to typos: the minimal similarity (from 0 to 1) of a whole item with the query, for the items that do not contain it. `1` disables the typo tolerance (default `0.75`). The other `search-options` normalize the query given to a `search-function`.
+
 ## Custom search function
 
 You can replace the default search function by providing a custom search function. Useful when you need to search by multiple fields, if you want to use a different search algorithm or if you want search into your database by fetching data from an API.

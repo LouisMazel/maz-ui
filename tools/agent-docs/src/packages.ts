@@ -40,6 +40,14 @@ export const PACKAGE_DEFINITIONS: PackageDefinition[] = [
     mainDocId: 'ecosystem/mcp',
   },
   {
+    name: '@maz-ui/vite-plugin',
+    dir: 'vite-plugin',
+    short: 'vite-plugin',
+    description: 'Vite plugin that removes from the CSS of maz-ui the rules of the components, plugins, directives and utilities the app does not use (build only).',
+    group: 'ecosystem',
+    mainDocId: 'ecosystem/vite-plugin',
+  },
+  {
     name: '@maz-ui/node',
     dir: 'node',
     short: 'node',

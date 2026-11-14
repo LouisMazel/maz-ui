@@ -11,6 +11,7 @@ description: MazStepper is a standalone UI component customizable, reactive for 
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazStepper auto-validate-steps>
   <template #title-1>
       Sign-In
@@ -78,6 +79,7 @@ description: MazStepper is a standalone UI component customizable, reactive for 
     </div>
   </template>
 </MazStepper>
+</div>
 
 ::: details View code
 
@@ -165,6 +167,7 @@ Instead of using slots, you can provide its data with the `steps` property
 
 You can use html in all properties
 
+<div class="vp-raw">
 <MazStepper
   :steps="[
     { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', content: 'Content 1' },
@@ -175,6 +178,7 @@ You can use html in all properties
 >
 
 </MazStepper>
+</div>
 
 ```vue{3-8}
 <template>
@@ -191,6 +195,7 @@ You can use html in all properties
 
 ## Replace default step point
 
+<div class="vp-raw">
 <MazStepper
   :steps="[
       { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', content: 'Content 1' },
@@ -200,6 +205,7 @@ You can use html in all properties
     <div class="maz:bg-red-500 maz:p-1 maz:size-8 maz:rounded-md maz:flex maz:flex-center">{{ step }}</div>
   </template>
 </MazStepper>
+</div>
 
 ```vue{8-10}
 <template>
@@ -224,6 +230,7 @@ States available: `'success' | 'warning' | 'error' | 'disabled'`
 
 You should respect order of steps in the array:
 
+<div class="vp-raw">
 <MazStepper
   v-model="currentStep"
   :steps="[
@@ -250,6 +257,7 @@ You should respect order of steps in the array:
   <template #title-info-4> Error </template>
   <template #content-4> Content 4 </template>
 </MazStepper>
+</div>
 
 ```vue{4-9}
 <template>
@@ -293,6 +301,7 @@ Then all previous steps then the current and then the validated state
 Click on the first or third step to see the validated steps changes:
 :::
 
+<div class="vp-raw">
 <MazStepper v-model="currentStep" auto-validate-steps color="secondary">
   <template #title-1> Step 1 </template>
   <template #content-1> Content 1 </template>
@@ -303,6 +312,7 @@ Click on the first or third step to see the validated steps changes:
   <template #title-3> Step 3 </template>
   <template #content-3> Content 3 </template>
 </MazStepper>
+</div>
 
 ```vue{4}
 <template>
@@ -339,6 +349,7 @@ To not allow your users to go to the next steps, you can use the following prop 
 Try to click on first and third steps
 :::
 
+<div class="vp-raw">
 <MazStepper :model-value="2" disabled-previous-steps disabled-next-steps>
   <template #title-1> Step 1 </template>
   <template #content-1> Content 1 </template>
@@ -349,6 +360,7 @@ Try to click on first and third steps
   <template #title-3> Step 3 </template>
   <template #content-3> Content 3 </template>
 </MazStepper>
+</div>
 
 ```vue{4,5}
 <template>
@@ -381,6 +393,7 @@ To open and validate all steps, you can use the following prop options:
 - `all-steps-validated`
 - `all-steps-opened`
 
+<div class="vp-raw">
 <MazStepper all-steps-validated all-steps-opened>
   <template #title-1> Step 1 </template>
   <template #content-1> Content 1 </template>
@@ -391,6 +404,7 @@ To open and validate all steps, you can use the following prop options:
   <template #title-3> Step 3 </template>
   <template #content-3> Content 3 </template>
 </MazStepper>
+</div>
 
 ## Can close steps
 
@@ -400,6 +414,7 @@ Use the property `can-close-steps` to let the user be able to close each step on
 Click on step titles to toggle content
 :::
 
+<div class="vp-raw">
 <MazStepper can-close-steps>
   <template #title-1> Step 1 </template>
   <template #content-1> Content 1 </template>
@@ -410,6 +425,7 @@ Click on step titles to toggle content
   <template #title-3> Step 3 </template>
   <template #content-3> Content 3 </template>
 </MazStepper>
+</div>
 
 ## Types
 

@@ -440,7 +440,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 .m-slider__btn {
   position: absolute;
   outline: none;
-  cursor: pointer;
+  cursor: var(--maz-interactive-cursor, pointer);
   font-size: 0.8em;
   font-weight: bold;
   line-height: 1;

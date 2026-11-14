@@ -4,8 +4,71 @@ const COLOR_UTILITIES = 'bg|text|border(?:-[trblxyse])?|ring(?:-offset)?|outline
 const PALETTE = 'slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose'
 
 const PALETTE_CLASS = new RegExp(`^(?:[\\w-]+:)*!?(${COLOR_UTILITIES})-(${PALETTE})-(\\d{2,3})(?:/\\d+)?!?$`)
-const BLACK_WHITE_CLASS = new RegExp(`^(?:[\\w-]+:)*!?(${COLOR_UTILITIES})-(white|black)(?:/\\d+)?!?$`)
+const BLACK_WHITE_CLASS = new RegExp(`^(?:[\\w-]+:)*!?(${COLOR_UTILITIES})-(white|black|background)(?:/\\d+)?!?$`)
 const ARBITRARY_COLOR_CLASS = /^(?:[\w-]+:)*!?[\w-]+-\[(?:#[\da-f]{3,8}|(?:rgba?|hsla?|oklch|oklab|lab|lch|color)\([^\]]*\))\]/i
+const ARBITRARY_FONT_SIZE_CLASS = /^(?:[\w-]+:)*!?text-\[(?:length:)?\d*\.?\d+(?:px|rem|em)\]!?$/
+const TYPE_SCALE_CLASS = /^(?:[\w-]+:)*!?text-(?:display|title-\d|body(?:-sm|-lg)?|label|caption|overline|code)$/
+
+/** Combinations of Tailwind classes that a level of the type scale replaces */
+const TYPE_SCALE_COMBINATIONS: Array<{ level: string, classes: RegExp[] }> = [
+  {
+    level: 'text-overline',
+    classes: [/^text-xs$/, /^uppercase$/, /^tracking-(?:wide|wider|widest)$/],
+  },
+  {
+    level: 'text-caption',
+    classes: [/^text-xs$/, /^text-muted$/],
+  },
+  {
+    level: 'text-title-1',
+    classes: [/^text-(?:3xl|4xl)$/, /^font-(?:semibold|bold|extrabold)$/],
+  },
+  {
+    level: 'text-title-2',
+    classes: [/^text-2xl$/, /^font-(?:semibold|bold)$/],
+  },
+  {
+    level: 'text-title-3',
+    classes: [/^text-xl$/, /^font-(?:semibold|bold)$/],
+  },
+  {
+    level: 'text-title-4',
+    classes: [/^text-lg$/, /^font-(?:semibold|bold)$/],
+  },
+  {
+    level: 'text-label',
+    classes: [/^text-sm$/, /^font-medium$/],
+  },
+]
+
+function hasTypeScale(context: ReviewContext): boolean {
+  return !!context.knowledge.tailwind?.utilities.some(utility => utility.name === 'text-caption')
+}
+
+/** Suggests the level of the type scale for an ad hoc combination (`text-xs text-muted` -> `text-caption`) */
+function checkTypeScale(value: string, offset: number, context: ReviewContext): void {
+  const tokens = [
+    ...value.matchAll(/\S+/g),
+  ]
+
+  if (!hasTypeScale(context) || tokens.some(([token]) => TYPE_SCALE_CLASS.test(token)))
+    return
+
+  for (const { level, classes } of TYPE_SCALE_COMBINATIONS) {
+    const matched = classes.map(pattern => tokens.find(([token]) => pattern.test(token)))
+
+    if (matched.every(Boolean)) {
+      context.report({
+        rule: 'type-scale',
+        severity: 'info',
+        message: `\`${matched.map(match => match![0]).join(' ')}\` is a level of the maz-ui type scale.`,
+        suggestion: `Use \`${level}\`: it sets the size, weight, line height and letter spacing of the theme together. See \`get_theme_tokens({ topics: ["type-scale"] })\`.`,
+      }, offset + (matched[0]!.index ?? 0))
+      return
+    }
+  }
+}
+
 const TAILWIND_V3_CLASS = /^(?:[\w-]+:)*!?(?:(?:bg|text|border|divide|ring|placeholder)-opacity-\d+|flex-(?:shrink|grow)(?:-\d+)?|overflow-ellipsis|decoration-(?:slice|clone))$/
 
 /** Theme color advised for each default palette hue */
@@ -86,6 +149,16 @@ export function backgroundOf(classList: string): Background | undefined {
 }
 
 function reportBlackWhite(token: string, utility: string, color: string, background: Background | undefined, position: number, context: ReviewContext): void {
+  if (color === 'background') {
+    context.report({
+      rule: 'theme-colors',
+      severity: 'warning',
+      message: `\`${token}\` is not a maz-ui color: the page color is named \`surface\` (the \`background\` of shadcn).`,
+      suggestion: `Use \`${token.replace('-background', '-surface')}\`.`,
+    }, position)
+    return
+  }
+
   if (background?.kind === 'fixed' && utility !== 'bg')
     return
 
@@ -161,6 +234,18 @@ export function checkClassList(value: string, offset: number, context: ReviewCon
       continue
     }
 
+    if (ARBITRARY_FONT_SIZE_CLASS.test(token)) {
+      context.report({
+        rule: 'arbitrary-font-size',
+        severity: 'warning',
+        message: `\`${token}\` hard-codes a font size outside of the scale.`,
+        suggestion: hasTypeScale(context)
+          ? 'Use a level of the type scale (`text-title-2`, `text-body`, `text-body-sm`, `text-caption`...) or a Tailwind size (`text-sm`, `text-lg`...). See `get_theme_tokens({ topics: ["type-scale"] })`.'
+          : 'Use a Tailwind size (`text-xs` to `text-9xl`), or add a `--text-*` token to your Tailwind `@theme`.',
+      }, position)
+      continue
+    }
+
     if (TAILWIND_V3_CLASS.test(token)) {
       context.report({
         rule: 'tailwind-v3',
@@ -172,6 +257,8 @@ export function checkClassList(value: string, offset: number, context: ReviewCon
       }, position)
     }
   }
+
+  checkTypeScale(value, offset, context)
 }
 
 /** Finds class lists in string literals of an expression (`:class`, `cn(...)`, computed classes) */

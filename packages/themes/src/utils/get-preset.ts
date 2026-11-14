@@ -39,5 +39,20 @@ export async function getPreset(preset?: ThemePresetName | ThemePreset) {
     return folio
   }
 
+  if (preset === 'macos') {
+    const { macos } = await import('../presets/macos')
+    return macos
+  }
+
+  if (preset === 'windows') {
+    const { windows } = await import('../presets/windows')
+    return windows
+  }
+
+  if (preset === 'linux') {
+    const { linux } = await import('../presets/linux')
+    return linux
+  }
+
   throw new TypeError(`[@maz-ui/themes] Preset ${preset} not found`)
 }

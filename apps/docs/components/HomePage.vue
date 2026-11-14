@@ -43,9 +43,6 @@ const HomeInventory = defineAsyncComponent({
 <template>
   <div class="home">
     <ScopedPresets />
-    <ClientOnly>
-      <MazReadingProgressBar height="3px" />
-    </ClientOnly>
     <HomeCover :data />
     <HomeV5 :data />
     <HomeAtelier :data />

@@ -92,7 +92,9 @@ describe('given VueZoomImg class', () => {
       await sleep(0)
       expect(mockElement.classList.contains('maz-zoom-img-instance')).toBe(true)
       expect(mockElement.getAttribute('data-zoom-src')).toBe('path/to/image.jpg')
-      expect(mockElement.style.transition).toBe('all 300ms ease-in-out')
+      expect(mockElement.style.transitionProperty).toBe('all')
+      expect(mockElement.style.transitionDuration).toBe('300ms')
+      expect(mockElement.style.transitionTimingFunction).toBe('ease-in-out')
     })
 
     it('then it should not add functionality if disabled option is true', () => {

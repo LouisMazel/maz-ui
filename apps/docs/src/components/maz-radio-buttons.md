@@ -357,6 +357,28 @@ This option will display a select icon on the left of the label
   </template>
 </ComponentDemo>
 
+## Colors
+
+The `color` prop accepts the brand colors and the neutral colors `surface` and `container` (`MazNeutralColor`). With a neutral color, the selected option gets the neutral background and a foreground border, and the selector bubble uses the foreground color. Use `container` for white options on a grey page with presets like macOS.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazRadioButtons v-model="neutralSurface" color="surface" :options="neutralOptions" />
+    <MazRadioButtons v-model="neutralContainer" color="container" :options="neutralOptions" />
+  </div>
+
+  <template #code>
+
+```vue
+<template>
+  <MazRadioButtons v-model="value" color="surface" :options="options" />
+  <MazRadioButtons v-model="value" color="container" :options="options" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Types
 
 ### options
@@ -458,5 +480,13 @@ When no `name` is provided, each instance gets a unique one, so two groups of th
         'Predict with match odds. If you find the correct winner of the match you earn the points associated with the rating, if you have the perfect score you double your score.',
       style: 'min-width: 250px;'
     },
+  ]
+
+  const neutralSurface = ref('a')
+  const neutralContainer = ref('a')
+  const neutralOptions = [
+    { label: 'Option A', value: 'a' },
+    { label: 'Option B', value: 'b' },
+    { label: 'Option C', value: 'c' },
   ]
 </script>

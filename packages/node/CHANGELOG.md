@@ -1,5 +1,23 @@
 # Changelog
 
+## @maz-ui/node@5.7.0-beta.0 (2026-11-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/node@5.6.0...@maz-ui/node@5.7.0-beta.0)
+
+### 🚀 Features
+
+- **node:** Support more AI agents and monorepos in setupAgents ([a43ac502d](https://github.com/LouisMazel/maz-ui/commit/a43ac502d))
+
+  - `setupAgents` and `detectAgentTargets` support Gemini CLI, OpenCode, Junie, Windsurf, Warp, Kiro and Roo Code: the MCP server goes in their project config, their rules come from `AGENTS.md` (added to the context files of Gemini CLI).
+  - New `appDir` option for monorepos: the rules come from the maz-ui of the app, and `mcpVersion` defaults to the version of its `@maz-ui/mcp`.
+  - Without any detected agent, nothing is written and maz-ui is not required.
+  - `remove: true` also removes the folders it leaves empty (`.cursor/`, `.gemini/`...).
+  - `detectPackageManager`, `findProjectPackage`, `findWorkspaceDirs` and `readPackageVersion` are documented (https://maz-ui.com/ecosystem/node/project), the other internal helpers are deprecated.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## @maz-ui/node@5.6.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...@maz-ui/node@5.6.0)

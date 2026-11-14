@@ -13,6 +13,7 @@ const composablesMap: Record<Composables, true> = {
   useIdleTimeout: true,
   useInstanceUniqId: true,
   useReadingTime: true,
+  useRelativeTime: true,
   useStringMatching: true,
   usePullToRefresh: true,
   useSwipe: true,
@@ -23,6 +24,7 @@ const composablesMap: Record<Composables, true> = {
   useWindowSize: true,
   useDisplayNames: true,
   useFreezeValue: true,
+  useFuzzySearch: true,
   useDialog: true,
   useDrag: true,
   useMountComponent: true,
@@ -72,7 +74,15 @@ const modulesMap: Record<Modules, true> = {
   formatJson: true,
   fetchLocaleIp: true,
   formatPhoneNumber: true,
+  formatRelativeTime: true,
+  getRelativeTime: true,
   getBrowserLocale: true,
+  fuzzySearch: true,
+  createFuzzySearch: true,
+  highlightMatches: true,
+  levenshteinDistance: true,
+  getMatchingScore: true,
+  isStringMatching: true,
 }
 
 /**

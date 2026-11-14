@@ -1,5 +1,4 @@
 import type { MazPopoverProps } from '@components/MazPopover.vue'
-import type { MazColor } from '@/components/types'
 import MazPopover from '@components/MazPopover.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
@@ -82,7 +81,8 @@ describe('given MazPopover component', () => {
         'destructive',
         'contrast',
         'surface',
-      ] as MazColor[],
+        'container',
+      ] as NonNullable<MazPopoverProps['color']>[],
     )('then it should apply the correct color classes', async (color) => {
       const wrapper = await mountPopover(MazPopover, {
         props: {

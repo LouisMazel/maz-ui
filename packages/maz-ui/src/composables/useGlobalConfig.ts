@@ -3,12 +3,15 @@ import type { MazAlertProps } from '../components/MazAlert.vue'
 import type { MazAvatarProps } from '../components/MazAvatar.vue'
 import type { MazBadgeProps } from '../components/MazBadge.vue'
 import type { MazBtnProps } from '../components/MazBtn.vue'
+import type { MazBtnDropdownProps } from '../components/MazBtnDropdown.vue'
 import type { MazButtonGroupProps } from '../components/MazBtnGroup.vue'
 import type { MazCardProps } from '../components/MazCard.vue'
 import type { MazCheckboxProps } from '../components/MazCheckbox.vue'
+import type { MazCodeHighlightProps } from '../components/MazCodeHighlight.vue'
 import type { MazContainerProps } from '../components/MazContainer.vue'
 import type { MazDropdownProps } from '../components/MazDropdown.vue'
 import type { MazInputProps } from '../components/MazInput.vue'
+import type { MazInputAutocompleteProps } from '../components/MazInputAutocomplete.vue'
 import type { MazInputNumberProps } from '../components/MazInputNumber.vue'
 import type { MazInputPhoneNumberProps } from '../components/MazInputPhoneNumber.vue'
 import type { MazInputTagsProps } from '../components/MazInputTags.vue'
@@ -16,6 +19,7 @@ import type { MazMarkdownEditorProps } from '../components/MazMarkdownEditor.vue
 import type { MazPaginationProps } from '../components/MazPagination.vue'
 import type { MazRadioProps } from '../components/MazRadio.vue'
 import type { MazRadioButtonsProps } from '../components/MazRadioButtons.vue'
+import type { MazSegmentedProps } from '../components/MazSegmented.vue'
 import type { MazSelectProps } from '../components/MazSelect.vue'
 import type { MazSelectCountryProps } from '../components/MazSelectCountry.vue'
 import type { MazSkeletonProps } from '../components/MazSkeleton.vue'
@@ -59,11 +63,14 @@ export interface MazUiDefaultsOptions {
   MazBadge?: Partial<MazBadgeProps>
   MazBtn?: Partial<MazBtnProps>
   MazBtnGroup?: Partial<MazButtonGroupProps>
+  MazBtnDropdown?: Partial<MazBtnDropdownProps>
   MazCard?: Partial<MazCardProps>
   MazCheckbox?: Partial<MazCheckboxProps>
+  MazCodeHighlight?: Partial<MazCodeHighlightProps>
   MazContainer?: Partial<MazContainerProps>
   MazDropdown?: Partial<MazDropdownProps>
   MazInput?: Partial<MazInputProps>
+  MazInputAutocomplete?: Partial<MazInputAutocompleteProps<any>>
   MazInputNumber?: Partial<MazInputNumberProps>
   MazInputPhoneNumber?: Partial<MazInputPhoneNumberProps>
   MazInputTags?: Partial<MazInputTagsProps>
@@ -73,6 +80,7 @@ export interface MazUiDefaultsOptions {
   MazRadioButtons?: Partial<MazRadioButtonsProps>
   MazSelect?: Partial<MazSelectProps<any, any, any>>
   MazSelectCountry?: Partial<MazSelectCountryProps>
+  MazSegmented?: Partial<MazSegmentedProps>
   MazSkeleton?: Partial<MazSkeletonProps>
   MazTable?: Partial<MazTableProps<any>>
   MazTabsBar?: Partial<MazTabsBarProps<any>>

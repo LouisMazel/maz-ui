@@ -13,7 +13,9 @@ description: MazPagination lets users navigate between the pages of a list or a 
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazPagination v-bind="props" v-model="currentPage" size="md" />
+</div>
 
 `v-model="{{currentPage}}"`
 
@@ -38,7 +40,7 @@ const props: MazPaginationProps = {
 
 ## Sizes
 
-<div class="maz:flex maz:flex-col maz:gap-4">
+<div class="vp-raw maz:flex maz:flex-col maz:gap-4">
   <MazPagination v-bind="props" v-model="currentPage" size="xs" />
   <MazPagination v-bind="props" v-model="currentPage" size="sm" />
   <MazPagination v-bind="props" v-model="currentPage" size="md" />
@@ -56,7 +58,9 @@ const props: MazPaginationProps = {
 
 ## Colors
 
-<div class="maz:flex maz:flex-col maz:gap-4">
+The page buttons use the neutral `container` color by default (see `color`) and the active page uses `activeColor` (`contrast` by default).
+
+<div class="vp-raw maz:flex maz:flex-col maz:gap-4">
   <MazPagination :total-pages="10" v-model="currentPage" active-color="primary" />
   <MazPagination :total-pages="10" v-model="currentPage" active-color="secondary" />
   <MazPagination :total-pages="10" v-model="currentPage" active-color="success" />

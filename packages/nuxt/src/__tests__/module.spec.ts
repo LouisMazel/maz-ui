@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion, resolveAgentDocsDir, createRequire } = vi.hoisted(() => {
+const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, onDevtoolsReady, register, useLogger, logger, setupAgents, readPackageVersion, createRequire } = vi.hoisted(() => {
   const logger = {
     info: vi.fn(),
     warn: vi.fn(),
@@ -18,12 +18,11 @@ const { addComponent, addPlugin, addImports, addTemplate, resolvePath, createRes
       changes: [] as Array<{ file: string, action: string }>,
       localMcpServer: true,
     })),
-    detectAgentTargets: vi.fn((): string[] => ['claude']),
-    findProjectPackage: vi.fn((_rootDir: string, _name: string): string | undefined => '/project/node_modules/maz-ui'),
     readPackageVersion: vi.fn((): string | undefined => undefined),
-    resolveAgentDocsDir: vi.fn((packageDir: string): string | undefined => `${packageDir}/agent-docs`),
     addComponent: vi.fn(),
     addPlugin: vi.fn(),
+    addVitePlugin: vi.fn(),
+    MazUiPurgeCss: vi.fn((options: Record<string, unknown>) => ({ name: 'maz-ui:purge-css', options })),
     addTemplate: vi.fn(),
     resolvePath: vi.fn((path: string) => Promise.resolve(`/project/${path.replace('~/', '')}`)),
     addImports: vi.fn(),
@@ -31,7 +30,8 @@ const { addComponent, addPlugin, addImports, addTemplate, resolvePath, createRes
       resolve: (...args: string[]) => args.join('/'),
     })),
     defineNuxtModule: vi.fn((config: any) => config),
-    addCustomTab: vi.fn(),
+    onDevtoolsReady: vi.fn(),
+    register: vi.fn(),
     createRequire: vi.fn((_from: string) => ({
       resolve: (id: string): string => {
         throw new Error(`Cannot find module '${id}'`)
@@ -48,6 +48,7 @@ vi.mock('node:module', async importOriginal => ({
 vi.mock('@nuxt/kit', () => ({
   addComponent,
   addPlugin,
+  addVitePlugin,
   addImports,
   addTemplate,
   resolvePath,
@@ -56,16 +57,17 @@ vi.mock('@nuxt/kit', () => ({
   useLogger,
 }))
 
+vi.mock('@maz-ui/vite-plugin', () => ({
+  MazUiPurgeCss,
+}))
+
 vi.mock('@maz-ui/node', () => ({
   setupAgents,
-  detectAgentTargets,
-  findProjectPackage,
   readPackageVersion,
-  resolveAgentDocsDir,
 }))
 
 vi.mock('@nuxt/devtools-kit', () => ({
-  addCustomTab,
+  onDevtoolsReady,
 }))
 
 vi.mock('defu', () => ({
@@ -110,6 +112,8 @@ describe('nuxt module', () => {
     it('should have correct css defaults', () => {
       expect(config.defaults.css).toEqual({
         injectCss: true,
+        injectUtilities: false,
+        purge: true,
       })
     })
 
@@ -162,6 +166,7 @@ describe('nuxt module', () => {
       expect(composables.useTranslations).toBe(true)
       expect(composables.useIdleTimeout).toBe(true)
       expect(composables.useReadingTime).toBe(true)
+      expect(composables.useRelativeTime).toBe(true)
       expect(composables.useFormField).toBe(true)
       expect(composables.useWindowSize).toBe(true)
       expect(composables.useBreakpoints).toBe(true)
@@ -312,6 +317,84 @@ describe('nuxt module', () => {
           css: { injectCss: false },
         })
         expect(nuxt.options.css).not.toContain('maz-ui/style.css')
+      })
+
+      describe('given the utilities option', () => {
+        describe('when injectUtilities is enabled', () => {
+          it('then maz-ui/utilities.css is injected after maz-ui/style.css', () => {
+            const { nuxt } = callSetup({
+              css: { injectUtilities: true },
+            })
+
+            expect(nuxt.options.css).toEqual(['maz-ui/style.css', 'maz-ui/utilities.css'])
+          })
+        })
+
+        describe('when injectUtilities keeps its default', () => {
+          it('then maz-ui/utilities.css is not injected', () => {
+            const { nuxt } = callSetup()
+
+            expect(nuxt.options.css).not.toContain('maz-ui/utilities.css')
+          })
+        })
+      })
+
+      describe('given the purge option', () => {
+        describe('when the app is built with the defaults', () => {
+          it('then the purge plugin is added with the entries of the enabled plugins and directives', () => {
+            callSetup({
+              plugins: { toast: true, dialog: false },
+              directives: { vTooltip: true },
+            })
+
+            expect(MazUiPurgeCss).toHaveBeenCalledWith({
+              entries: ['plugins/toast', 'directives/vTooltip'],
+            })
+            expect(addVitePlugin).toHaveBeenCalledWith({
+              name: 'maz-ui:purge-css',
+              options: {
+                entries: ['plugins/toast', 'directives/vTooltip'],
+              },
+            })
+          })
+        })
+
+        describe('when purge is an object', () => {
+          it('then its options are passed and its entries are merged', () => {
+            callSetup({
+              css: {
+                purge: {
+                  safelist: ['maz:p-2'],
+                  entries: ['MazBtn'],
+                },
+              },
+              plugins: { wait: true },
+            })
+
+            expect(MazUiPurgeCss).toHaveBeenCalledWith({
+              safelist: ['maz:p-2'],
+              entries: ['plugins/wait', 'MazBtn'],
+            })
+          })
+        })
+
+        describe('when purge is false', () => {
+          it('then the purge plugin is not added', () => {
+            callSetup({
+              css: { purge: false },
+            })
+
+            expect(addVitePlugin).not.toHaveBeenCalled()
+          })
+        })
+
+        describe('when the app runs in dev', () => {
+          it('then the purge plugin is not added', () => {
+            callSetup({}, {}, { dev: true })
+
+            expect(addVitePlugin).not.toHaveBeenCalled()
+          })
+        })
       })
 
       it('should disable cssnano calc optimization', () => {
@@ -876,10 +959,9 @@ describe('nuxt module', () => {
 
           expect(setupAgents).toHaveBeenCalledWith({
             rootDir: '/project',
-            targets: ['claude'],
+            appDir: '/project',
             rules: false,
             mcp: true,
-            docsDir: '/project/node_modules/maz-ui/agent-docs',
           })
         })
       })
@@ -893,16 +975,14 @@ describe('nuxt module', () => {
       })
 
       describe('when it is enabled in development', () => {
-        it('then the rules and the MCP server of the detected agents are configured from the root directory', () => {
+        it('then the rules and the MCP server of the agents are configured from the root directory', () => {
           callSetup({ agents: true }, {}, { dev: true })
 
-          expect(detectAgentTargets).toHaveBeenCalledWith('/project')
           expect(setupAgents).toHaveBeenCalledWith({
             rootDir: '/project',
-            targets: ['claude'],
+            appDir: '/project',
             rules: true,
             mcp: true,
-            docsDir: '/project/node_modules/maz-ui/agent-docs',
           })
         })
       })
@@ -916,7 +996,7 @@ describe('nuxt module', () => {
       })
 
       describe('when targets, rules and mcp are given', () => {
-        it('then they are passed through without detection', () => {
+        it('then they are passed through', () => {
           callSetup({
             agents: {
               targets: ['cursor', 'agents-md'],
@@ -925,26 +1005,23 @@ describe('nuxt module', () => {
             },
           }, {}, { dev: true })
 
-          expect(detectAgentTargets).not.toHaveBeenCalled()
           expect(setupAgents).toHaveBeenCalledWith({
             rootDir: '/project',
+            appDir: '/project',
             targets: ['cursor', 'agents-md'],
             rules: true,
             mcp: false,
-            docsDir: '/project/node_modules/maz-ui/agent-docs',
           })
         })
       })
 
       describe('when the app is part of a monorepo', () => {
-        it('then the files are written at the workspace root with the docs of the maz-ui of the app', () => {
+        it('then the files are written at the workspace root with the maz-ui of the app', () => {
           callSetup({
             agents: { rules: false, mcp: true },
           }, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo' })
 
-          expect(detectAgentTargets).toHaveBeenCalledWith('/repo')
-          expect(findProjectPackage).toHaveBeenCalledWith('/repo/apps/web', 'maz-ui')
-          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ rootDir: '/repo' }))
+          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ rootDir: '/repo', appDir: '/repo/apps/web' }))
         })
       })
 
@@ -958,51 +1035,11 @@ describe('nuxt module', () => {
         })
       })
 
-      describe('when the installed maz-ui only ships the legacy docs folder', () => {
-        it('then the docs folder of the installed package is passed', () => {
-          resolveAgentDocsDir.mockReturnValueOnce('/project/node_modules/maz-ui/docs')
-
-          callSetup({
-            agents: { rules: true, mcp: true },
-          }, {}, { dev: true })
-
-          expect(resolveAgentDocsDir).toHaveBeenCalledWith('/project/node_modules/maz-ui')
-          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ docsDir: '/project/node_modules/maz-ui/docs' }))
-        })
-      })
-
-      describe('when maz-ui is not found from the Nuxt root', () => {
-        it('then setupAgents resolves the docs by itself', () => {
-          findProjectPackage.mockReturnValueOnce(undefined)
-
-          callSetup({
-            agents: { rules: false, mcp: true },
-          }, {}, { dev: true })
-
-          expect(setupAgents).toHaveBeenCalledWith({
-            rootDir: '/project',
-            targets: ['claude'],
-            rules: false,
-            mcp: true,
-          })
-        })
-      })
-
       describe('when both rules and mcp are disabled', () => {
         it('then the agents are not configured', () => {
           callSetup({
             agents: { rules: false, mcp: false },
           }, {}, { dev: true })
-
-          expect(setupAgents).not.toHaveBeenCalled()
-        })
-      })
-
-      describe('when no agent is detected', () => {
-        it('then nothing is written', () => {
-          detectAgentTargets.mockReturnValueOnce([])
-
-          callSetup({ agents: true }, {}, { dev: true })
 
           expect(setupAgents).not.toHaveBeenCalled()
         })
@@ -1107,34 +1144,6 @@ describe('nuxt module', () => {
           }, {}, { dev: true })
 
           expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create). The MCP server runs through npx: add @maz-ui/mcp to the devDependencies of the project root to start it in about a second, at the version of your lockfile.')
-        })
-      })
-
-      describe('when @maz-ui/mcp is installed for the app', () => {
-        it('then its version is pinned in the npx command', () => {
-          findProjectPackage.mockImplementation((_: string, name: string) => `/project/node_modules/${name}`)
-          readPackageVersion.mockReturnValueOnce('5.2.0')
-
-          callSetup({
-            agents: { rules: false, mcp: true },
-          }, {}, { dev: true })
-
-          expect(readPackageVersion).toHaveBeenCalledWith('/project/node_modules/@maz-ui/mcp')
-          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ mcpVersion: '5.2.0' }))
-          findProjectPackage.mockReset()
-          findProjectPackage.mockReturnValue('/project/node_modules/maz-ui')
-        })
-      })
-
-      describe('when @maz-ui/mcp is not installed', () => {
-        it('then no version is pinned', () => {
-          findProjectPackage.mockReturnValueOnce('/project/node_modules/maz-ui').mockReturnValueOnce(undefined)
-
-          callSetup({
-            agents: { rules: false, mcp: true },
-          }, {}, { dev: true })
-
-          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ mcpVersion: undefined }))
         })
       })
 
@@ -1249,13 +1258,18 @@ describe('nuxt module', () => {
 
     describe('devtools', () => {
       it('should add devtools tab when devtools is true', () => {
+        onDevtoolsReady.mockImplementation((fn: (ctx: any) => void) => fn({
+          docks: { register },
+        }))
         callSetup({
           general: { devtools: true },
         })
-        expect(addCustomTab).toHaveBeenCalledWith(
+        expect(register).toHaveBeenCalledWith(
           expect.objectContaining({
-            name: 'maz-ui',
+            id: 'maz-ui',
+            type: 'iframe',
             title: 'maz-ui',
+            url: 'https://maz-ui.com',
           }),
         )
       })
@@ -1264,7 +1278,7 @@ describe('nuxt module', () => {
         callSetup({
           general: { devtools: false },
         })
-        expect(addCustomTab).not.toHaveBeenCalled()
+        expect(onDevtoolsReady).not.toHaveBeenCalled()
       })
     })
   })

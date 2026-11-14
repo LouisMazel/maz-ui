@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/eslint-config",
   "type": "module",
-  "version": "5.5.0",
+  "version": "5.6.0-beta.0",
   "description": "ESLint configuration for JavaScript/TypeScript projects",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -57,21 +57,21 @@
   "dependencies": {
     "@antfu/eslint-config": "^10.0.0",
     "consola": "catalog:",
-    "eslint-plugin-better-tailwindcss": "^4.10.0",
+    "eslint-plugin-better-tailwindcss": "^4.11.0",
     "eslint-plugin-format": "^2.0.1",
     "eslint-plugin-sonarjs": "^4.2.2",
     "eslint-plugin-vuejs-accessibility": "^2.6.3"
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "@typescript-eslint/rule-tester": "^8.72.1",
+    "@typescript-eslint/rule-tester": "^8.72.2",
     "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",
     "eslint": "catalog:",
     "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:",
-    "vue-eslint-parser": "^10.4.1"
+    "vue-eslint-parser": "^10.4.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

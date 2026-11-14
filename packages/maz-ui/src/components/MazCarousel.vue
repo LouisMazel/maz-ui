@@ -95,7 +95,7 @@ function setScrollState(event: Event) {
     <div v-if="hasHeader()" class="m-carousel__header maz:flex maz:items-center" :class="[hasTitle() ? '--has-title' : '', hasTitle() ? 'maz:justify-between' : 'maz:justify-end']">
       <div v-if="hasTitle()">
         <slot name="title">
-          <h4 class="maz:text-xl maz:font-semibold">
+          <h4 class="maz:text-title-3">
             {{ title }}
           </h4>
         </slot>

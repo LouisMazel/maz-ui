@@ -53,6 +53,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - `packages/maz-cli/` - CLI tool for theme generation
 - `packages/nuxt/` - Nuxt 3 module (@maz-ui/nuxt)
 - `packages/node/` - Node.js utilities (also `setupAgents`, used by `npx @maz-ui/mcp init` and the Nuxt `agents` option)
+- `packages/vite-plugin/` - Vite plugins (@maz-ui/vite-plugin): `MazUiPurgeCss` removes the unused CSS of maz-ui, from the `purge-manifest.json` written by the build of maz-ui
 - `packages/mcp/` - MCP server and CLI for AI agents (@maz-ui/mcp): search, component APIs, icons, theme tokens, code review
 - `apps/docs/` - Documentation site
 - `apps/vue-app/` - Vue 3 demo application
@@ -125,7 +126,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 
 `relizy.config.ts` releases the packages in two groups (`monorepo.groups`), listed explicitly: a new published package must be added to one of them.
 
-- `ecosystem` (`unified`): `maz-ui`, `@maz-ui/icons`, `@maz-ui/mcp`, `@maz-ui/nuxt`, `@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/utils`. Every package released at once, on the same version (the consumers keep all of them on one version), the `v*` tags and the version of the root `package.json`.
+- `ecosystem` (`unified`): `maz-ui`, `@maz-ui/icons`, `@maz-ui/mcp`, `@maz-ui/nuxt`, `@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/utils`, `@maz-ui/vite-plugin`. Every package released at once, on the same version (the consumers keep all of them on one version), the `v*` tags and the version of the root `package.json`.
 - `tooling` (`independent`): `@maz-ui/eslint-config`, `@maz-ui/node`, `@maz-ui/stylelint-config`, `@maz-ui/upgrade`. One version line and one tag per package (`@maz-ui/eslint-config@5.1.0`), kept out of the root `CHANGELOG.md`.
 
 ### Dependencies

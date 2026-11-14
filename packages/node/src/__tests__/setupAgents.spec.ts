@@ -1,38 +1,27 @@
-import type { AgentDocs, AgentsTool, SetupAgentsResult } from '../setupAgents'
+import type { AgentDocs, AgentsTool, AgentTarget, SetupAgentsResult } from '../agents/types'
 import { createHash } from 'node:crypto'
-
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { parse } from 'jsonc-parser'
 import * as agentsEntry from '../agents'
-import {
-  AGENT_TARGETS,
-  AGENTS_MD_BEGIN,
-  AGENTS_MD_END,
-  compareVersions,
-  DEFAULT_MCP_SERVER,
-  detectAgentTargets,
-  detectPackageManager,
-  findInstalledPackage,
-  findProjectPackage,
-  findWorkspaceDirs,
-  findWorkspacesUsing,
-  installsMcpPackage,
-  isEditedManagedContent,
-  MANAGED_MARKER,
-  MAZ_UI_AGENTS_TOOL,
-  MCP_SERVER_NAME,
-  mcpServerCommand,
-  readAgentDocs,
-  readManagedVersion,
-  readWorkspacePatterns,
-  resolveAgentDocsDir,
-  resolveRulePaths,
-  setupAgents,
-  writeFileAtomic,
-} from '../setupAgents'
+import { readAgentDocs, resolveAgentDocsDir } from '../agents/agentDocs'
+import { isEditedManagedContent, readManagedVersion } from '../agents/managedContent'
+import { installsMcpPackage, mcpServerCommand } from '../agents/mcpServer'
+import { resolveRulePaths } from '../agents/rulePaths'
+import { setupAgents } from '../agents/setupAgents'
+import { MAZ_UI_AGENTS_TOOL } from '../agents/tool'
+import { compareVersions, writeFileAtomic } from '../agents/utils'
+import { detectPackageManager, findInstalledPackage, findProjectPackage, findWorkspaceDirs, findWorkspacesUsing, readWorkspacePatterns } from '../project'
 
+const MANAGED_MARKER = 'Managed by maz-ui'
+const AGENTS_MD_BEGIN = '<!-- BEGIN:maz-ui -->'
+const AGENTS_MD_END = '<!-- END:maz-ui -->'
+const MCP_SERVER_NAME = 'maz-ui'
+const DEFAULT_MCP_SERVER = {
+  command: 'npx',
+  args: ['-y', '@maz-ui/mcp@latest'],
+}
 const CLAUDE_RULE = '# maz-ui\n\nUse maz-ui components.'
 const AGENTS_SECTION = '## maz-ui\n\nUse maz-ui components.'
 
@@ -75,113 +64,6 @@ beforeEach(() => {
 afterEach(() => {
   rmSync(rootDir, { recursive: true, force: true })
   rmSync(docsDir, { recursive: true, force: true })
-})
-
-describe('given detectAgentTargets', () => {
-  describe('when the project has no agent configuration', () => {
-    it('then it returns no target', () => {
-      expect(detectAgentTargets(rootDir)).toEqual([])
-    })
-  })
-
-  describe.each([
-    [
-      '.claude/settings.json',
-      ['claude'],
-    ],
-    [
-      'CLAUDE.md',
-      ['claude'],
-    ],
-    [
-      '.claude/CLAUDE.md',
-      ['claude'],
-    ],
-    [
-      'CLAUDE.local.md',
-      ['claude'],
-    ],
-    [
-      '.mcp.json',
-      ['claude'],
-    ],
-    [
-      '.cursor/mcp.json',
-      ['agents-md', 'cursor'],
-    ],
-    [
-      '.cursorrules',
-      ['agents-md', 'cursor'],
-    ],
-    [
-      '.vscode/mcp.json',
-      ['agents-md', 'vscode'],
-    ],
-    [
-      '.github/copilot-instructions.md',
-      ['agents-md', 'vscode'],
-    ],
-    [
-      '.github/instructions/vue.instructions.md',
-      ['agents-md', 'vscode'],
-    ],
-    [
-      'AGENTS.md',
-      ['agents-md'],
-    ],
-    [
-      '.codex/config.toml',
-      ['agents-md'],
-    ],
-    [
-      '.windsurf/rules/main.md',
-      ['agents-md'],
-    ],
-    [
-      '.devin/rules/main.md',
-      ['agents-md'],
-    ],
-    [
-      '.windsurfrules',
-      ['agents-md'],
-    ],
-    [
-      'GEMINI.md',
-      ['agents-md'],
-    ],
-  ])('when the project contains %s', (file, expected) => {
-    it(`then it detects ${expected.join(', ')}`, () => {
-      writeProjectFile(file, '{}')
-
-      expect(detectAgentTargets(rootDir)).toEqual(expected)
-    })
-  })
-
-  describe('when the project contains several agent configurations', () => {
-    it('then it returns the targets in the canonical order', () => {
-      writeProjectFile('.vscode/mcp.json', '{}')
-      writeProjectFile('.cursor/mcp.json', '{}')
-      writeProjectFile('CLAUDE.md', '# project')
-
-      expect(detectAgentTargets(rootDir)).toEqual([
-        'claude',
-        'agents-md',
-        'cursor',
-        'vscode',
-      ])
-    })
-  })
-
-  describe('when reading the exported target list', () => {
-    it('then it lists every supported agent', () => {
-      expect(AGENT_TARGETS).toEqual([
-        'claude',
-        'agents-md',
-        'cursor',
-        'vscode',
-      ])
-    })
-  })
 })
 
 describe('given readAgentDocs', () => {
@@ -746,7 +628,466 @@ describe('given setupAgents with MCP config targets', () => {
   })
 })
 
+describe('given setupAgents with the targets of the other agents', () => {
+  describe.each([
+    [
+      'gemini',
+      '.gemini/settings.json',
+      'mcpServers',
+      {
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@latest'],
+      },
+    ],
+    [
+      'opencode',
+      'opencode.json',
+      'mcp',
+      {
+        type: 'local',
+        command: ['npx', '-y', '@maz-ui/mcp@latest'],
+      },
+    ],
+    [
+      'junie',
+      '.junie/mcp/mcp.json',
+      'mcpServers',
+      {
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@latest'],
+      },
+    ],
+    [
+      'windsurf',
+      '.devin/mcp_config.json',
+      'mcpServers',
+      {
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@latest'],
+      },
+    ],
+    [
+      'warp',
+      '.warp/.mcp.json',
+      'mcpServers',
+      {
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@latest'],
+      },
+    ],
+    [
+      'kiro',
+      '.kiro/settings/mcp.json',
+      'mcpServers',
+      {
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@latest'],
+      },
+    ],
+    [
+      'roo',
+      '.roo/mcp.json',
+      'mcpServers',
+      {
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@latest'],
+      },
+    ],
+  ] as [AgentTarget, string, string, Record<string, unknown>][])('when the %s target is configured', (target, file, rootKey, entry) => {
+    it(`then it registers the MCP server in ${file} only`, () => {
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: [target],
+      })
+
+      expect(parse(readProjectFile(file))[rootKey]).toEqual({ [MCP_SERVER_NAME]: entry })
+      expect(result.changes.map(change => change.file)).toEqual([file])
+    })
+  })
+
+  describe('when the gemini and agents-md targets are configured and the project has no Gemini settings', () => {
+    it('then it creates the settings once, with the MCP server and AGENTS.md next to GEMINI.md in the context files', () => {
+      const dryRun = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+        dryRun: true,
+      })
+
+      expect(changeOf(dryRun, '.gemini/settings.json')).toEqual({ file: '.gemini/settings.json', action: 'create', reason: 'Gemini CLI reads AGENTS.md' })
+      expect(dryRun.changes.filter(change => change.file === '.gemini/settings.json')).toHaveLength(1)
+      expect(projectFileExists('.gemini/settings.json')).toBe(false)
+
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+      })
+
+      expect(parse(readProjectFile('.gemini/settings.json'))).toEqual({
+        context: {
+          fileName: ['GEMINI.md', 'AGENTS.md'],
+        },
+        mcpServers: {
+          [MCP_SERVER_NAME]: {
+            command: 'npx',
+            args: ['-y', '@maz-ui/mcp@latest'],
+          },
+        },
+      })
+    })
+  })
+
+  describe('when the Gemini settings already list other context files', () => {
+    it('then it adds AGENTS.md and keeps the other settings and comments', () => {
+      writeProjectFile('.gemini/settings.json', '{\n  // team settings\n  "theme": "dark",\n  "context": { "fileName": "CONTEXT.md" }\n}\n')
+
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+        mcp: false,
+      })
+
+      expect(readProjectFile('.gemini/settings.json')).toContain('// team settings')
+      expect(parse(readProjectFile('.gemini/settings.json'))).toEqual({
+        theme: 'dark',
+        context: {
+          fileName: ['CONTEXT.md', 'AGENTS.md'],
+        },
+      })
+    })
+  })
+
+  describe('when the Gemini settings already read AGENTS.md', () => {
+    it('then it leaves them untouched', () => {
+      const settings = '{\n  "context": { "fileName": ["AGENTS.md"] }\n}\n'
+      writeProjectFile('.gemini/settings.json', settings)
+
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+        mcp: false,
+      })
+
+      expect(readProjectFile('.gemini/settings.json')).toBe(settings)
+    })
+  })
+
+  describe('when the context of the Gemini settings is invalid', () => {
+    it('then it skips the settings', () => {
+      writeProjectFile('.gemini/settings.json', '{ "context": "AGENTS.md" }')
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+        mcp: false,
+      })
+
+      expect(changeOf(result, '.gemini/settings.json')).toEqual({ file: '.gemini/settings.json', action: 'skip', reason: 'invalid JSON or context.fileName: left untouched' })
+    })
+  })
+
+  describe('when the Gemini settings are not a JSON object', () => {
+    it('then it skips the settings', () => {
+      writeProjectFile('.gemini/settings.json', '[]\n')
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+        mcp: false,
+      })
+
+      expect(changeOf(result, '.gemini/settings.json')).toEqual({ file: '.gemini/settings.json', action: 'skip', reason: 'invalid JSON or context.fileName: left untouched' })
+      expect(readProjectFile('.gemini/settings.json')).toBe('[]\n')
+    })
+  })
+
+  describe('when the Gemini settings have no final newline', () => {
+    it('then it adds AGENTS.md and ends the file with a newline', () => {
+      writeProjectFile('.gemini/settings.json', '{ "theme": "dark" }')
+
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+        mcp: false,
+      })
+
+      expect(readProjectFile('.gemini/settings.json').endsWith('}\n')).toBe(true)
+      expect(parse(readProjectFile('.gemini/settings.json'))).toEqual({
+        theme: 'dark',
+        context: {
+          fileName: ['GEMINI.md', 'AGENTS.md'],
+        },
+      })
+    })
+  })
+
+  describe('when the Gemini settings have neither the MCP server nor AGENTS.md', () => {
+    it('then it reports a single update of the settings', () => {
+      writeProjectFile('.gemini/settings.json', '{\n  "theme": "dark"\n}\n')
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+      })
+
+      expect(result.changes.filter(change => change.file === '.gemini/settings.json')).toEqual([
+        { file: '.gemini/settings.json', action: 'update', reason: 'Gemini CLI reads AGENTS.md' },
+      ])
+      expect(parse(readProjectFile('.gemini/settings.json'))).toEqual({
+        theme: 'dark',
+        context: {
+          fileName: ['GEMINI.md', 'AGENTS.md'],
+        },
+        mcpServers: {
+          [MCP_SERVER_NAME]: DEFAULT_MCP_SERVER,
+        },
+      })
+    })
+  })
+
+  describe('when the Gemini settings already register the MCP server but not AGENTS.md', () => {
+    it('then it reports the update of the context files, not the unchanged server', () => {
+      writeProjectFile('.gemini/settings.json', `${JSON.stringify({
+        mcpServers: { [MCP_SERVER_NAME]: DEFAULT_MCP_SERVER },
+      }, null, 2)}\n`)
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+      })
+
+      expect(result.changes.filter(change => change.file === '.gemini/settings.json')).toEqual([
+        { file: '.gemini/settings.json', action: 'update', reason: 'Gemini CLI reads AGENTS.md' },
+      ])
+      expect(parse(readProjectFile('.gemini/settings.json')).context).toEqual({
+        fileName: ['GEMINI.md', 'AGENTS.md'],
+      })
+    })
+  })
+
+  describe('when the OpenCode config holds a remote server', () => {
+    it('then it adds the MCP server and keeps the remote one', () => {
+      const remote = { type: 'remote', url: 'https://mcp.example.com' }
+      writeProjectFile('opencode.json', `${JSON.stringify({
+        mcp: { docs: remote },
+      }, null, 2)}\n`)
+
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['opencode'],
+        rules: false,
+      })
+
+      expect(parse(readProjectFile('opencode.json')).mcp).toEqual({
+        docs: remote,
+        [MCP_SERVER_NAME]: {
+          type: 'local',
+          command: ['npx', '-y', '@maz-ui/mcp@latest'],
+        },
+      })
+    })
+  })
+
+  describe('when the gemini target is configured without agents-md', () => {
+    it('then it leaves the context files of Gemini CLI untouched', () => {
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['gemini'],
+      })
+
+      expect(parse(readProjectFile('.gemini/settings.json')).context).toBeUndefined()
+    })
+  })
+
+  describe('when the gemini and agents-md targets are removed', () => {
+    it('then it removes the MCP server and keeps AGENTS.md in the context files', () => {
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+      })
+
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md', 'gemini'],
+        remove: true,
+      })
+
+      expect(parse(readProjectFile('.gemini/settings.json'))).toEqual({
+        context: {
+          fileName: ['GEMINI.md', 'AGENTS.md'],
+        },
+        mcpServers: {},
+      })
+      expect(projectFileExists('AGENTS.md')).toBe(false)
+    })
+  })
+
+  describe('when the project already has an opencode.jsonc', () => {
+    it('then it registers the MCP server in it and keeps its comments', () => {
+      writeProjectFile('opencode.jsonc', '{\n  // models\n  "model": "anthropic/claude"\n}\n')
+
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['opencode'],
+      })
+
+      expect(projectFileExists('opencode.json')).toBe(false)
+      expect(readProjectFile('opencode.jsonc')).toContain('// models')
+      expect(parse(readProjectFile('opencode.jsonc')).mcp).toEqual({
+        [MCP_SERVER_NAME]: {
+          type: 'local',
+          command: ['npx', '-y', '@maz-ui/mcp@latest'],
+        },
+      })
+    })
+  })
+
+  describe('when the OpenCode entry runs npx and @maz-ui/mcp is now installed', () => {
+    it('then it replaces the command and keeps the other fields', () => {
+      writeProjectFile('opencode.json', `${JSON.stringify({
+        mcp: {
+          [MCP_SERVER_NAME]: {
+            type: 'local',
+            command: ['npx', '-y', '@maz-ui/mcp@latest'],
+            enabled: true,
+          },
+        },
+      }, null, 2)}\n`)
+      writeProjectFile('package.json', JSON.stringify({
+        devDependencies: { '@maz-ui/mcp': '^5.0.0' },
+      }))
+      writeProjectFile('pnpm-lock.yaml', '')
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['opencode'],
+      })
+
+      expect(parse(readProjectFile('opencode.json')).mcp).toEqual({
+        [MCP_SERVER_NAME]: {
+          type: 'local',
+          command: ['pnpm', 'exec', 'maz-ui-mcp'],
+          enabled: true,
+        },
+      })
+      expect(changeOf(result, 'opencode.json')?.action).toBe('update')
+    })
+  })
+
+  describe('when the OpenCode entry is already registered', () => {
+    it('then it leaves the config unchanged', () => {
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['opencode'],
+      })
+
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['opencode'],
+      })
+
+      expect(changeOf(result, 'opencode.json')).toEqual({ file: 'opencode.json', action: 'unchanged', reason: 'maz-ui MCP server already registered as "maz-ui"' })
+    })
+  })
+
+  describe('when the warp target is configured with the claude target', () => {
+    it('then it registers the MCP server in .mcp.json only, which Warp also reads', () => {
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'warp'],
+      })
+
+      expect(projectFileExists('.mcp.json')).toBe(true)
+      expect(projectFileExists('.warp/.mcp.json')).toBe(false)
+    })
+  })
+})
+
 describe('given setupAgents in remove mode', () => {
+  describe('when the removed files were the only content of their folders', () => {
+    it('then it removes the folders left empty', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'cursor', 'gemini'],
+      })
+
+      setupAgents({
+        rootDir,
+        targets: ['claude', 'cursor', 'gemini'],
+        remove: true,
+      })
+
+      expect(projectFileExists('.cursor')).toBe(false)
+      expect(projectFileExists('.gemini')).toBe(false)
+      expect(projectFileExists('.claude')).toBe(false)
+      expect(readdirSync(rootDir)).toEqual(['CLAUDE.md'])
+    })
+  })
+
+  describe('when the folders of the removed files hold other files', () => {
+    it('then it keeps the folders and their other files', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+      writeProjectFile('.claude/settings.json', '{}')
+      writeProjectFile('.cursor/rules/team.mdc', '# team')
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'cursor'],
+      })
+
+      setupAgents({
+        rootDir,
+        targets: ['claude', 'cursor'],
+        remove: true,
+      })
+
+      expect(projectFileExists('.claude/rules')).toBe(false)
+      expect(projectFileExists('.claude/settings.json')).toBe(true)
+      expect(projectFileExists('.cursor/mcp.json')).toBe(false)
+      expect(projectFileExists('.cursor/rules/team.mdc')).toBe(true)
+    })
+  })
+
+  describe('when the removal is a dry run', () => {
+    it('then it keeps the files and their folders', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['cursor'],
+      })
+
+      setupAgents({
+        rootDir,
+        targets: ['cursor'],
+        remove: true,
+        dryRun: true,
+      })
+
+      expect(projectFileExists('.cursor/mcp.json')).toBe(true)
+    })
+  })
+
   describe('when everything was set up before', () => {
     let result: SetupAgentsResult
 
@@ -1388,6 +1729,42 @@ describe('given setupAgents with the command of the MCP server', () => {
         args: ['-y', '@maz-ui/mcp@5.2.0'],
       })
       expect(result.localMcpServer).toBe(false)
+    })
+  })
+
+  describe('when no version is given and the app installs @maz-ui/mcp outside of the project root', () => {
+    it('then the config pins the version installed for the app', () => {
+      const appDir = join(rootDir, 'apps/web')
+      writeProjectFile('apps/web/node_modules/@maz-ui/mcp/package.json', JSON.stringify({ name: '@maz-ui/mcp', version: '5.3.0' }))
+
+      setupAgents({
+        rootDir,
+        appDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(server()).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@5.3.0'],
+      })
+    })
+  })
+
+  describe('when no version is given and @maz-ui/mcp is not installed', () => {
+    it('then the config runs the latest version', () => {
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
+
+      expect(server()).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@latest'],
+      })
     })
   })
 
@@ -2696,11 +3073,35 @@ function bodyChecksum(body: string): string {
 
 describe('given the agents entry', () => {
   describe('when its exports are read', () => {
-    it('then it exposes the same API as the setupAgents module', async () => {
-      const source = await import('../setupAgents')
-
-      expect(Object.keys(agentsEntry).sort()).toEqual(Object.keys(source).sort())
-      expect(agentsEntry.setupAgents).toBe(source.setupAgents)
+    it('then it exposes the setupAgents API, the project helpers and the deprecated exports of 5.6', () => {
+      expect(Object.keys(agentsEntry).sort()).toEqual([
+        'AGENT_TARGETS',
+        'AGENTS_MD_BEGIN',
+        'AGENTS_MD_END',
+        'DEFAULT_MCP_SERVER',
+        'MANAGED_MARKER',
+        'MAZ_UI_AGENTS_TOOL',
+        'MCP_SERVER_NAME',
+        'compareVersions',
+        'detectAgentTargets',
+        'detectPackageManager',
+        'findInstalledPackage',
+        'findProjectPackage',
+        'findWorkspaceDirs',
+        'findWorkspacesUsing',
+        'installsMcpPackage',
+        'isEditedManagedContent',
+        'mcpServerCommand',
+        'readAgentDocs',
+        'readManagedVersion',
+        'readPackageVersion',
+        'readWorkspacePatterns',
+        'resolveAgentDocsDir',
+        'resolveRulePaths',
+        'setupAgents',
+        'writeFileAtomic',
+      ].sort())
+      expect(agentsEntry.setupAgents).toBe(setupAgents)
     })
   })
 })
@@ -3281,6 +3682,39 @@ describe('given resolveRulePaths with many workspaces', () => {
       createWorkspaces(100)
 
       expect(resolveRulePaths(rootDir, tool)).toEqual(['**/*.{a,b,c,d,e,f,g,h,i,j}', 'plain.md', String.raw`escaped\{x,y\}.md`])
+    })
+  })
+})
+
+describe('given setupAgents with the app directory of a monorepo', () => {
+  describe('when maz-ui is installed in the app and not at the project root', () => {
+    it('then the rules come from the maz-ui of the app', () => {
+      writeProjectFile('CLAUDE.md', '# project')
+      writeProjectFile('apps/web/node_modules/maz-ui/package.json', JSON.stringify({ name: 'maz-ui', version: '5.4.0' }))
+      createDocs(join(rootDir, 'apps/web/node_modules/maz-ui/agent-docs'), { version: '5.4.0' })
+
+      const result = setupAgents({
+        rootDir,
+        appDir: join(rootDir, 'apps/web'),
+        targets: ['claude'],
+        mcp: false,
+      })
+
+      expect(result.version).toBe('5.4.0')
+      expect(readProjectFile('.claude/rules/maz-ui.md')).toContain('Managed by maz-ui 5.4.0')
+    })
+  })
+})
+
+describe('given setupAgents without target', () => {
+  describe('when no agent is detected and maz-ui is not installed', () => {
+    it('then it writes nothing and does not read the rules', () => {
+      const result = setupAgents({ rootDir })
+
+      expect(result.targets).toEqual([])
+      expect(result.changes).toEqual([])
+      expect(result.version).toBe('')
+      expect(readdirSync(rootDir)).toEqual([])
     })
   })
 })

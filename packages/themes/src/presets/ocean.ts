@@ -9,6 +9,7 @@ import {
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SHADOW,
   DEFAULT_SPACE,
+  typographyWith,
 } from './_defaults'
 
 /**
@@ -51,6 +52,13 @@ export const ocean: ThemePreset = {
     rounded: { md: '1rem' },
     shadow: DEFAULT_SHADOW,
   },
+  typography: typographyWith({
+    'display': { weight: '600' },
+    'title-1': { weight: '600' },
+    'title-4': { weight: '500' },
+    'body-lg': { leading: '1.7' },
+    'body': { leading: '1.7' },
+  }),
   components: {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },

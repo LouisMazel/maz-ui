@@ -9,7 +9,9 @@ description: MazLazyImg is a standalone component to display images and svgs wit
 
 <!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
+<div class="vp-raw">
 <MazLazyImg src="https://placedog.net/1000/1000" block />
+</div>
 
 ```vue
 <script setup lang="ts">
@@ -59,11 +61,13 @@ By default the image is displayed with `width: 100%`. Enable `image-height-full`
 
 Provide `fallback-src` to swap the image when it fails to load.
 
+<div class="vp-raw">
 <MazLazyImg
   block
   src="https://broken-link-image-src.example"
   fallback-src="https://placedog.net/500/500?id=42"
 />
+</div>
 
 ```vue
 <template>

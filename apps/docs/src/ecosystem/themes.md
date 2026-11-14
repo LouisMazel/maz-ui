@@ -23,7 +23,7 @@ Modern and performant theme system for Maz-UI built on native CSS features (`lig
 
 ## Theme Editor
 
-Create your own theme with the [Theme Editor](./../theme-editor.md).
+Create your own theme with the [Theme Editor](./../theme-editor.md): start from a preset, edit the colors, fonts, type scale, radius, shadows and motion on live components, then copy the code for Vue, Nuxt or a preset file. Only your changes are exported, on top of the preset.
 
 ## Quick Usage
 
@@ -41,7 +41,7 @@ const app = createApp(App)
 
 app.use(MazUi, {
   theme: {
-    preset: mazUi, // pristine | ocean | obsidian | nova | folio
+    preset: mazUi, // pristine | ocean | obsidian | nova | folio | macos | windows | linux
     strategy: 'runtime', // 'runtime' | 'buildtime'
     darkModeStrategy: 'class', // 'class' | 'media' (only if mode is `both`)
     mode: 'both', // 'light' | 'dark' | 'both' (supported color modes)
@@ -412,6 +412,59 @@ import { folio } from '@maz-ui/themes/presets'
 Like the other presets, Folio only declares font stacks: load Fraunces, Inter and Geist Mono yourself (self-hosted or from a font service), the stacks fall back to system fonts otherwise.
 :::
 
+### macOS, Windows and Linux
+
+Three presets imitate the look of a native desktop app, for Tauri, Electron or a web app that wants to feel at home on the user's system. They differ from the other presets on more than colors: system font stacks, the native body size, native radii and motion, the translucent [glass material](#glass-material) and the arrow cursor on controls ([`interactive-cursor`](#interactive-cursor)).
+
+| Preset | Look | Specifics |
+| --- | --- | --- |
+| `macos` | macOS 26: SF Pro at `13px`, white blocks on a light gray window, translucent sidebars and toolbars | `primary` follows the system accent color, the labels and separators follow the system through [`systemColors`](#system-colors) (WebKit). `secondary`, `accent` and `info` are the system purple, pink and teal |
+| `windows` | Windows 11, Fluent 2: Segoe UI Variable at `14px`, Mica window, 4px controls and 8px cards | Acrylic `glass`. The user accent is not exposed to the web: override `primary` if your app reads it natively. `secondary`, `accent` and `info` are the Fluent purple, magenta and teal |
+| `linux` | GNOME, libadwaita: Adwaita Sans at `14px`, white cards, 6px controls and 12px cards | Opaque `glass` (GNOME draws no blurred material). Override `primary` if your app reads the desktop accent. `secondary`, `accent` and `info` are the Adwaita purple, pink and teal |
+
+```typescript
+import { linux, macos, windows } from '@maz-ui/themes/presets'
+```
+
+Each of them also sets the [`typography`](#typography) of the preset on the scale of its system: the `text-display`, `text-title-1`...`text-caption` utilities follow the text styles of macOS, the Fluent type ramp and the libadwaita style classes, so headings and body text look native without any class change.
+
+| Utility | `macos` | `windows` | `linux` (at `14px`) |
+| --- | --- | --- | --- |
+| `text-display` | 34px, bold | 68px, semibold | 42px, light |
+| `text-title-1` | 26px, bold | 28px, semibold | 25px, extra bold |
+| `text-title-2` | 22px, bold | 20px, semibold | 19px, extra bold |
+| `text-title-3` | 17px, semibold | 18px, semibold | 19px, bold |
+| `text-title-4` | 13px, semibold | 14px, semibold | 17px, bold |
+| `text-body` | 13px | 14px | 14px |
+| `text-body-sm`, `text-caption` | 12px, 11px | 12px | 11.5px |
+
+Pick the preset from the platform of the user. In a browser, `navigator.userAgentData?.platform` is the modern source (Chromium), `navigator.platform` the fallback. In Tauri or Electron, prefer the OS reported by the shell (`@tauri-apps/plugin-os`, `process.platform`): it is reliable and available before the first render.
+
+```typescript
+import type { ThemePreset } from '@maz-ui/themes'
+import { linux, macos, mazUi, windows } from '@maz-ui/themes/presets'
+
+function getNativePreset(): ThemePreset {
+  const platform = (navigator.userAgentData?.platform ?? navigator.platform).toLowerCase()
+
+  if (platform.includes('mac'))
+    return macos
+  if (platform.includes('win'))
+    return windows
+  if (platform.includes('linux') || platform.includes('x11'))
+    return linux
+  return mazUi
+}
+
+app.use(MazUi, { theme: { preset: getNativePreset() } })
+```
+
+With Tauri, switch on the value returned by the `platform()` function of the OS plugin (`'macos'`, `'windows'`, `'linux'`) instead of reading the user agent.
+
+::: tip Fonts
+These presets only declare system font stacks (`-apple-system`, `Segoe UI Variable`, `Adwaita Sans`...): nothing to load, the platform provides them. On another system, the stacks fall back to `system-ui`.
+:::
+
 ## Rendering Strategies
 
 ### ⚡ Runtime (Recommended)
@@ -542,13 +595,13 @@ const brandTheme = await definePreset({
     colors: {
       light: {
         primary: 'oklch(0.6 0.18 254)',
-        secondary: 'oklch(0.96 0.01 254)',
+        secondary: 'oklch(0.55 0.2 305)',
         surface: 'oklch(0.99 0.005 254)',
         accent: 'oklch(0.7 0.22 305)'
       },
       dark: {
         primary: 'oklch(0.7 0.18 254)',
-        secondary: 'oklch(0.22 0.03 254)',
+        secondary: 'oklch(0.72 0.17 305)',
         surface: 'oklch(0.18 0.02 254)',
         accent: 'oklch(0.78 0.2 305)'
       }
@@ -556,6 +609,57 @@ const brandTheme = await definePreset({
   }
 })
 ```
+
+### Color tokens
+
+Each token has a precise role. Pick the values with that role in mind, not from another design system.
+
+| Token | Role |
+| --- | --- |
+| `primary` | Main brand color: main actions, links, focus rings, selected states. |
+| `secondary` | **Second strong brand color** (violet in `maz-ui`, pink in `folio`). Not a muted surface. Used for `MazBtn color="secondary"`, badges, accents of identity. |
+| `accent` | Highlights and tertiary emphasis, a color that stands out from `primary` and `secondary`. |
+| `info`, `success`, `warning`, `destructive` | Semantic states: information, success, warning, error and dangerous actions. |
+| `contrast` | Neutral high-contrast color (near black in light mode, near white in dark mode). |
+| `surface` | Page background. |
+| `foreground` | Body text on `surface`. |
+| `container` | Background of cards, dialogs, popovers and drawers (preset `components.container`). |
+| `input` | Background of inputs, selects and textareas (preset `components.input`). |
+| `muted` | Secondary text, placeholders, disabled content. |
+| `divider` | Borders and separators. |
+| `overlay` | Backdrop behind dialogs and drawers. |
+| `shadow` | Tint of the shadows. |
+
+Every brand and state color (`primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast`) has a `-foreground` color: the text or icon color to put on top of it (`bg-primary text-primary-foreground`). The token and its `-foreground` are chosen as a pair, in light and dark modes.
+
+For a discreet background, never make `secondary` pale. Use:
+
+- `surface`, `container` or `muted` (for example `bg-muted/10`)
+- the light steps of a color (`bg-primary-50`, `bg-secondary-100`)
+- `MazBtn` with the `pastel` or `outlined` props (`<MazBtn color="secondary" pastel>`)
+
+```html
+<div class="rounded-lg bg-container p-4 text-foreground">
+  <span class="rounded-full bg-secondary-100 px-2 text-secondary-700">New</span>
+</div>
+```
+
+#### Contrast
+
+Check the contrast of every color you set, in light **and** dark modes (WCAG 2):
+
+- Text (a token and its `-foreground`, `foreground` on `surface`, `muted` on `surface`): at least 4.5:1 (AA).
+- UI elements and large text: at least 3:1.
+- A brand color used as text or border (`text-primary`, `MazBtn outlined`, focus ring) must reach 3:1 against `surface` and `container`. This is why `primary` and `secondary` cannot be pale: lower their lightness in light mode, raise it in dark mode.
+
+The `review_code` tool of the [MCP server](/guide/ai-agents) warns when the `primary` or `secondary` of a `definePreset` is under 3:1 against its surface.
+
+#### Common mistakes
+
+- **A pale `secondary`** (close to `surface`), copied from the shadcn/ui convention where `secondary` is a muted surface: `MazBtn color="secondary" outlined` becomes invisible. Keep it a strong brand color.
+- **Hard-coded colors** (`#3b82f6`, `rgb(...)`, `bg-[#fff]`): they ignore the preset and the dark mode. Use theme colors.
+- **`dark:` overrides of theme colors** (`bg-surface dark:bg-gray-900`): theme colors already resolve per mode with `light-dark()`. `bg-surface` is enough.
+- **The default Tailwind palette** (`bg-blue-500`, `text-gray-600`, `bg-white`): use `bg-primary`, `text-muted`, `bg-surface`.
 
 ### Customizing scales
 
@@ -634,6 +738,38 @@ const brandTheme = definePreset({
 - The steps are redefined for the maz-ui components (`--maz-color-<role>-<step>`) and for the Tailwind classes of your project (`--color-<role>-<step>`). They take precedence over a step you redefine in your own `@theme`.
 - The browsers clip an out-of-gamut color channel by channel, which can shift its hue: the chroma cap keeps this shift under the visible threshold for almost every color, the most saturated blues and yellows excepted.
 
+### Effective colors
+
+The preset only gives the base colors: the steps, `bg-container`, `bg-input` and the `-foreground` pairs are computed by the browser (`oklch(from var(--maz-accent) ...)`), so the devtools never show the final color. Three ways to see the effective theme, every color and step in both modes, with its contrast ratios:
+
+- **The [Theme Editor](./../theme-editor.md)**: the "Contrast" tab of the preview shows every token and step of the preset you edit, in light and dark, with its contrast against the surface and its `-foreground`.
+- **The MCP server**: `get_theme_tokens` prints the effective colors of the presets of your project (`definePreset`) and lists what to check: text pairs under AA, a pale `primary` or `secondary`, steps that look the same, steps that change a lot between light and dark. `get_theme_tokens({ colors: ["accent"] })` details the oklch and contrasts of each step, `steps: ["300"]` keeps the output short, `preset: "ocean"` shows a bundled preset.
+- **The command line**: `npx @maz-ui/mcp colors` (presets of the project), `npx @maz-ui/mcp colors ocean --colors accent --steps 100,300,500`.
+
+In code, `resolvePreset()` returns the same values. It runs the CSS of the stylesheet (the formulas of `scales.color`, `var()`, `light-dark()` and the relative color syntax), so it matches what the browser renders:
+
+```typescript
+import { mazUi } from '@maz-ui/themes/presets/mazUi'
+import { getContrastRatio, resolvePreset } from '@maz-ui/themes/utils/resolve-preset'
+
+const { light, dark } = resolvePreset(mazUi)
+
+light.scales.accent?.['300'] // { hex: '#44ac8a', oklch: 'oklch(0.6745 0.1092 168.15)' }
+dark.colors.input // { hex: '#2f303c', oklch: '...' }
+
+getContrastRatio(light.colors.primary!.hex, light.colors.surface!.hex) // 4.6
+```
+
+| Export | Returns |
+| --- | --- |
+| `resolvePreset(preset)` | `{ name, colorScale, light, dark }`: each mode has `colors` (every token, `container` and `input`) and `scales` (`50` to `950` of each color with a scale), as `{ hex, oklch }` |
+| `evaluateColor(css, { mode, resolve })` | The oklch channels of a CSS color: plain colors, `var()` with fallback, `light-dark()`, `oklch(from ...)` |
+| `getContrastRatio(a, b)` | WCAG 2 contrast ratio of two colors, from 1 to 21 |
+| `getColorDistance(a, b)` | OKLab distance of two colors: under `0.02` they look the same |
+| `getRelativeColorScale(base)`, `getPerceptualColorScale(base)` | The CSS of the steps, from `@maz-ui/themes/utils/css-generator` |
+
+The hex values are sRGB: a wide-gamut color is clipped, as on a sRGB screen. A value that cannot be computed (an unknown variable) is missing from the result.
+
 ### Per-component overrides
 
 `components` is a small, validated set of per-component knobs. Every entry is per-mode where appropriate so light and dark can drift independently:
@@ -683,6 +819,156 @@ const wideDialogTheme = definePreset({
 ```
 
 Both values are in `rem`, so they scale with the preset's `base-font-size`. Bundled presets anchored on `14px` use `38rem` / `32rem`; `ocean` (`16px`) ships scaled rem values (`33.25rem` / `28rem`) to keep the same rendered pixel width. The `max-width` / `min-width` props on `MazDialog` still override the preset per instance.
+
+### Typography
+
+`typography` sets the levels of the type scale, the `text-display`, `text-title-1`... `text-caption` utilities of `maz-ui/tailwindcss/utilities.css` (see [Type scale](./../guide/typography.md#type-scale)). Each level takes `font`, `size`, `weight`, `leading` and `tracking` (and `color` for `caption`); a key you leave out keeps the default of maz-ui.
+
+```typescript
+const brandTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    typography: {
+      'display': { size: 'clamp(2.5rem, 2rem + 3vw, 4rem)', weight: '800' },
+      'title-1': { size: '2.25rem', tracking: '-0.03em' },
+      'caption': { color: 'var(--maz-foreground)' },
+    },
+  },
+})
+```
+
+Levels: `display`, `title-1`, `title-2`, `title-3`, `title-4`, `body-lg`, `body`, `body-sm`, `label`, `caption`, `overline`, `code`. Each key becomes a CSS variable, `--maz-typography-<level>-<key>` (`--maz-typography-title-1-size`).
+
+Each preset of maz-ui sets the whole scale, tuned to its identity: `maz-ui` keeps the defaults, `pristine` and `nova` tighten the titles, `obsidian` makes them heavier, `ocean` and `folio` lighten them and give the body text more air. With `base`, your overrides apply on top of the scale of the base preset, level by level. The Type panel of the [theme editor](./../theme-editor.md) edits and exports these values.
+
+The components of maz-ui use the same levels (dialog and card titles, hints of the fields, tabs, list items...): the `typography` block restyles them along with your own text. See [Type scale](./../guide/typography.md#type-scale).
+
+### Color formats
+
+Every color of a preset (`colors.light`, `colors.dark`, `components.*.bg`, `systemColors`) is any CSS color, written as-is in the stylesheet:
+
+| Format | Examples |
+| --- | --- |
+| Hex | `#0069d9`, `#0069d9cc` |
+| Functions | `rgb(0 105 217)`, `hsl(210 100% 43%)`, `hwb(210 0% 15%)`, `oklch(0.55 0.2 254)`, `oklab(...)`, `lab(...)`, `lch(...)`, `color(display-p3 0 0.4 0.85)` |
+| Mixing | `color-mix(in oklch, var(--maz-primary) 20%, transparent)`, `light-dark(#fff, #000)` |
+| Variables | `var(--maz-primary)`, `var(--brand, #0069d9)` |
+| Named keywords | `transparent`, `currentColor`, `rebeccapurple` |
+| System keywords | `AccentColor`, `Canvas`, `CanvasText`, `-apple-system-control-accent` |
+
+A value that is none of these (a typo, `"blue 500"`) throws `Invalid color format` when the CSS is generated. The legacy form `"210 100% 43%"` (three channels) is still accepted and wrapped in `hsl()`.
+
+A system keyword is only understood by some browsers: a browser that does not know it ignores the whole declaration. Use the [`systemColors`](#system-colors) key, which guards the keyword with `@supports` and keeps your color as the fallback, rather than writing a system keyword in `colors`.
+
+### System colors
+
+`systemColors` binds a color role to a system color of the platform: the accent color chosen by the user, the label and separator colors... Each keyword is emitted under `@supports (color: <keyword>)` after the colors, so it replaces the color of its role only where the browser supports it. Everywhere else, the color of `colors` stays: it is the fallback, keep it a good color.
+
+```typescript
+const myMacPreset = definePreset({
+  base: 'macos',
+  overrides: {
+    name: 'my-mac-app',
+    systemColors: {
+      primary: '-apple-system-control-accent',
+      foreground: '-apple-system-label',
+      muted: '-apple-system-secondary-label',
+      divider: '-apple-system-separator',
+    },
+  },
+})
+```
+
+The generated CSS:
+
+```css
+@supports (color: -apple-system-control-accent) {
+  :root {
+    --maz-primary: -apple-system-control-accent;
+  }
+}
+```
+
+- The keys are the color roles of [`colors`](#colors) (`primary`, `foreground`, `divider`...). Values are system keywords: `AccentColor`, `AccentColorText`, `Canvas`, `CanvasText`, `LinkText`... or the WebKit keywords of macOS.
+- A system color follows the color scheme by itself: one keyword serves the light and the dark mode.
+- The `macos` preset uses it for the accent, the labels and the separators. The steps of `primary` (`primary-300`...) and its `-foreground` are computed from the system color, so they follow it.
+- Check the contrast of the fallback colors: the system color is chosen by the user and cannot be checked ahead.
+
+### Glass material
+
+`components.glass` is the translucent material of the floating surfaces: sidebars, toolbars, popovers and menus over a blurred background (`MazSidebar variant="floating"` uses it).
+
+```typescript
+const frostedTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'frosted',
+    components: {
+      glass: {
+        bg: { light: 'rgb(246 246 248 / 0.72)', dark: 'rgb(48 48 52 / 0.62)' },
+        border: { light: 'rgb(0 0 0 / 0.08)', dark: 'rgb(255 255 255 / 0.1)' },
+        blur: '24px',
+        saturate: '1.4',
+      },
+    },
+  },
+})
+```
+
+| Key | CSS variable | Default |
+| --- | --- | --- |
+| `bg.light` / `.dark` | `--maz-glass-bg` | The container background at 72% opacity |
+| `border.light` / `.dark` | `--maz-glass-border` | The divider color |
+| `blur` | `--maz-glass-blur` | `24px`. `0px` turns the blur off |
+| `saturate` | `--maz-glass-saturate` | `1.4` |
+
+Tailwind side:
+
+```html
+<!-- The utility: translucent background, blurred backdrop and hairline edge -->
+<nav class="glass rounded-xl p-2">...</nav>
+
+<!-- The two colors, to build your own surface -->
+<div class="bg-glass border border-glass backdrop-blur-md">...</div>
+```
+
+When the user reduces transparency, the material falls back to an opaque surface (the container background). Two ways trigger it:
+
+- the system setting, through the `prefers-reduced-transparency` media query;
+- the `reduce-transparency` class on an ancestor (`<html>` for example): the "opaque" setting of your own app.
+
+The `transparency-reduce:` variant applies your classes in both cases:
+
+```html
+<aside class="bg-glass backdrop-blur-xl transparency-reduce:bg-container transparency-reduce:backdrop-blur-none">
+  ...
+</aside>
+```
+
+```typescript
+// An in-app "Reduce transparency" switch
+document.documentElement.classList.toggle('reduce-transparency', isOpaque)
+```
+
+The `windows` preset ships an Acrylic-like glass, `macos` a vibrancy-like one, and `linux` an opaque one (`blur: '0px'`).
+
+### Interactive cursor
+
+`foundation['interactive-cursor']` is the cursor of the interactive controls: buttons, checkboxes, radios, switches, selects, sidebar items... It defaults to `pointer`. Native controls keep the arrow, so the `macos`, `windows` and `linux` presets set `default`. Links keep the pointer. The `cursor-interactive` utility applies it to your own controls.
+
+```typescript
+const calmTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'calm',
+    foundation: { 'interactive-cursor': 'default' },
+  },
+})
+```
+
+```html
+<div role="button" tabindex="0" class="cursor-interactive">Custom control</div>
+```
 
 ## useTheme Composable API
 
@@ -996,6 +1282,7 @@ Single-value design tokens. Set via `foundation.<key>` on the preset.
 | `easing-in-out` | `--maz-easing-in-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Bridged to `--ease-in-out`. |
 | `disabled-opacity` | `--maz-disabled-opacity` | `0.5` | Applied to disabled buttons / inputs. |
 | `disabled-cursor` | `--maz-disabled-cursor` | `not-allowed` | Cursor for disabled interactive elements. |
+| `interactive-cursor` | `--maz-interactive-cursor` | `pointer` | Cursor of the interactive controls, `default` on the platform presets. Utility `cursor-interactive` (see [Interactive cursor](#interactive-cursor)). |
 
 > **Why `font-mono-stack` / `font-display-stack` / `motion-*`?** Under Tailwind v4 `prefix(maz)`, the bridge LHS gets prefixed (`--font-mono` → `--maz-font-mono`), so a same-named source token would self-cycle. The `-stack` and `motion-` suffixes break the collision.
 
@@ -1007,11 +1294,11 @@ Defined per mode under `colors.light` / `colors.dark`. Each base color also gets
 | --- | --- | --- | --- |
 | `surface` | `--maz-surface` | `--maz-surface-50..900` | Page / container background. |
 | `foreground` | `--maz-foreground` | `--maz-foreground-50..900` | Default text color. |
-| `primary` | `--maz-primary` | `--maz-primary-50..900` | Brand color. |
+| `primary` | `--maz-primary` | `--maz-primary-50..900` | Main brand color. |
 | `primary-foreground` | `--maz-primary-foreground` | — | Text on `bg-primary`. |
-| `secondary` | `--maz-secondary` | `--maz-secondary-50..900` | |
+| `secondary` | `--maz-secondary` | `--maz-secondary-50..900` | Second strong brand color, not a muted surface. |
 | `secondary-foreground` | `--maz-secondary-foreground` | — | |
-| `accent` | `--maz-accent` | `--maz-accent-50..900` | |
+| `accent` | `--maz-accent` | `--maz-accent-50..900` | Highlights. |
 | `accent-foreground` | `--maz-accent-foreground` | — | |
 | `info` | `--maz-info` | `--maz-info-50..900` | Status — informational. |
 | `info-foreground` | `--maz-info-foreground` | — | |
@@ -1049,8 +1336,25 @@ Per-component knobs under `components.<key>`. All optional — omit to fall back
 | `btn.font-weight` | `--maz-btn-font-weight` | Font-weight on `.m-btn`. Defaults to `'500'`. |
 | `container.bg.light` / `.dark` | `--maz-container-bg` (per mode) | Background of `Card`, `Container`, `Dialog`, `Popover`, `Drawer`, … Defaults to `var(--maz-surface)`. Bridged to `--color-container`. |
 | `input.bg.light` / `.dark` | `--maz-input-bg` (per mode) | Background of `Input`, `Textarea`, `Select`, `Checkbox`, … Defaults to `var(--maz-surface)` light, `var(--maz-surface-400)` dark. Bridged to `--color-input`. |
+| `glass.bg.light` / `.dark` | `--maz-glass-bg` (per mode) | Translucent material of floating surfaces. Defaults to the container background at 72% opacity. Bridged to `--color-glass` (`bg-glass`). See [Glass material](#glass-material). |
+| `glass.border.light` / `.dark` | `--maz-glass-border` (per mode) | Hairline edge of the material. Defaults to the divider color. Bridged to `--color-glass-border` (`border-glass`). |
+| `glass.blur` | `--maz-glass-blur` | Backdrop blur. Defaults to `24px`. |
+| `glass.saturate` | `--maz-glass-saturate` | Backdrop saturation. Defaults to `1.4`. |
 | `dialog.max-width` | `--maz-dialog-max-width` | Max-width of `MazDialog` on tablet and up. Defaults to `38rem` (`33.25rem` on `ocean`). Overridable via the `max-width` prop. |
 | `dialog.min-width` | `--maz-dialog-min-width` | Min-width of `MazDialog` on tablet and up. Defaults to `32rem` (`28rem` on `ocean`). Overridable via the `min-width` prop. |
+
+### Typography
+
+Levels of the type scale under `typography.<level>`. All optional: a missing key keeps the default of the `text-<level>` utility.
+
+| Preset key | CSS variable | Notes |
+| --- | --- | --- |
+| `<level>.font` | `--maz-typography-<level>-font` | Font stack. Titles default to the display font, the others to the sans font, `code` to the mono font. |
+| `<level>.size` | `--maz-typography-<level>-size` | Font size, `rem` or fluid (`clamp()`). |
+| `<level>.weight` | `--maz-typography-<level>-weight` | Font weight. |
+| `<level>.leading` | `--maz-typography-<level>-leading` | Line height. |
+| `<level>.tracking` | `--maz-typography-<level>-tracking` | Letter spacing. |
+| `caption.color` | `--maz-typography-caption-color` | Defaults to `var(--maz-muted)`. |
 
 ### Sample output
 

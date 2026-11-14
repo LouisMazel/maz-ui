@@ -1068,7 +1068,7 @@ defineExpose({
           <div
             v-if="lineNumbers"
             ref="gutterEl"
-            class="m-markdown-editor__gutter maz:overflow-hidden maz:border-r maz:border-divider maz:py-3 maz:pr-2 maz:pl-3 maz:text-right maz:font-mono maz:text-sm maz:text-muted maz:select-none maz:dark:border-divider-400"
+            class="m-markdown-editor__gutter maz:overflow-hidden maz:border-r maz:border-divider maz:py-3 maz:pr-2 maz:pl-3 maz:text-right maz:type-code maz:text-sm maz:text-muted maz:select-none maz:dark:border-divider-400"
             aria-hidden="true"
           >
             <span v-for="n in lineCount" :key="n" class="maz:block">{{ n }}</span>
@@ -1078,7 +1078,7 @@ defineExpose({
             ref="textareaEl"
             v-bind="$attrs"
             v-model="inputValue"
-            class="m-markdown-editor__textarea maz:min-w-0 maz:flex-1 maz:resize-y maz:bg-transparent maz:px-4 maz:py-3 maz:font-mono maz:text-sm maz:outline-hidden"
+            class="m-markdown-editor__textarea maz:min-w-0 maz:flex-1 maz:resize-y maz:bg-transparent maz:px-4 maz:py-3 maz:type-code maz:text-sm maz:outline-hidden"
             :name
             :rows
             :placeholder
@@ -1102,7 +1102,7 @@ defineExpose({
           :aria-labelledby="getTabId('preview')"
           :style="{ minHeight: `${rows * 1.5}rem` }"
         >
-          <div v-if="previewHtml" class="m-markdown-editor__preview-content" v-html="previewHtml" />
+          <div v-if="previewHtml" class="m-markdown-editor__preview-content maz:rich-text maz:[--maz-rich-text-max-width:none] maz:rich-text-sm" v-html="previewHtml" />
           <p v-else-if="!isRendering" class="m-markdown-editor__preview-empty maz:text-muted maz:italic">
             <!--
               @slot empty-preview - Content displayed in the preview pane when there is nothing to render
@@ -1117,7 +1117,7 @@ defineExpose({
 
     <div
       v-if="assistiveText"
-      class="m-markdown-editor__bottom-text maz:-mt-1 maz:text-sm"
+      class="m-markdown-editor__bottom-text maz:-mt-1 maz:text-body-sm"
       :class="{
         'maz:text-destructive-600': error,
         'maz:text-success-600': success,
@@ -1132,79 +1132,6 @@ defineExpose({
 
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
-
-.m-markdown-editor__preview-content {
-  line-height: 1.6;
-
-  :deep(h1),
-  :deep(h2),
-  :deep(h3),
-  :deep(h4) {
-    @apply maz:font-semibold maz:mt-4 maz:mb-2 maz:first:mt-0;
-  }
-
-  :deep(h1) {
-    @apply maz:text-2xl;
-  }
-
-  :deep(h2) {
-    @apply maz:text-xl;
-  }
-
-  :deep(h3) {
-    @apply maz:text-lg;
-  }
-
-  :deep(p) {
-    @apply maz:my-2;
-  }
-
-  :deep(ul),
-  :deep(ol) {
-    @apply maz:my-2 maz:pl-6;
-  }
-
-  :deep(ul) {
-    @apply maz:list-disc;
-  }
-
-  :deep(ol) {
-    @apply maz:list-decimal;
-  }
-
-  :deep(a) {
-    @apply maz:text-primary maz:underline;
-  }
-
-  :deep(blockquote) {
-    @apply maz:border-l-4 maz:border-divider maz:pl-4 maz:text-muted maz:italic;
-  }
-
-  :deep(code) {
-    @apply maz:rounded-xs maz:bg-surface-600 maz:px-1 maz:py-0.5 maz:font-mono maz:text-xs maz:dark:bg-surface-400;
-  }
-
-  :deep(pre) {
-    @apply maz:my-2 maz:overflow-x-auto maz:rounded-md maz:bg-surface-600 maz:p-3 maz:dark:bg-surface-400;
-  }
-
-  :deep(pre code) {
-    @apply maz:bg-transparent maz:p-0;
-  }
-
-  :deep(table) {
-    @apply maz:my-2 maz:w-full maz:border-collapse;
-  }
-
-  :deep(th),
-  :deep(td) {
-    @apply maz:border maz:border-divider maz:px-2 maz:py-1 maz:dark:border-divider-400;
-  }
-
-  :deep(img) {
-    @apply maz:max-w-full;
-  }
-}
 
 .m-markdown-editor__textarea {
   field-sizing: content;

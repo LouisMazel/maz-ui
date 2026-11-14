@@ -838,69 +838,69 @@ app.use(MazUi)
 
 ### Dependencies
 
-- <MazCheckbox> Update maz-ui to v4.0.0+ </MazCheckbox>
-- <MazCheckbox> Remove `dropzone` dependency </MazCheckbox>
-- <MazCheckbox> Update Vue to v3.5+ </MazCheckbox>
-- <MazCheckbox> Update unplugin-auto-import to v19+ </MazCheckbox>
-- <MazCheckbox> Update unplugin-vue-components to v28+ </MazCheckbox>
+- <span class="vp-raw"><MazCheckbox> Update maz-ui to v4.0.0+ </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Remove `dropzone` dependency </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update Vue to v3.5+ </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update unplugin-auto-import to v19+ </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update unplugin-vue-components to v28+ </MazCheckbox></span>
 
 ### Configuration
 
-- <MazCheckbox> Add MazUi plugin in main.ts </MazCheckbox>
-- <MazCheckbox> Configure theme with new system </MazCheckbox>
-- <MazCheckbox> Configure translations with new system </MazCheckbox>
-- <MazCheckbox> Migrate Nuxt configuration to @maz-ui/nuxt (if using Nuxt) </MazCheckbox>
+- <span class="vp-raw"><MazCheckbox> Add MazUi plugin in main.ts </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Configure theme with new system </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Configure translations with new system </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Migrate Nuxt configuration to @maz-ui/nuxt (if using Nuxt) </MazCheckbox></span>
 
 ### Imports
 
-- <MazCheckbox> Migrate plugin imports to `maz-ui/plugins/*` </MazCheckbox>
-- <MazCheckbox> Migrate directive imports to `maz-ui/directives/*` </MazCheckbox>
-- <MazCheckbox> Migrate composable imports to `maz-ui/composables/*` </MazCheckbox>
-- <MazCheckbox> Update utility imports (e.g. currency → formatCurrency, etc.) </MazCheckbox>
+- <span class="vp-raw"><MazCheckbox> Migrate plugin imports to `maz-ui/plugins/*` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Migrate directive imports to `maz-ui/directives/*` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Migrate composable imports to `maz-ui/composables/*` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update utility imports (e.g. currency → formatCurrency, etc.) </MazCheckbox></span>
 
 ### Components
 
-- <MazCheckbox> Replace `MazBtn variant="link"` with `MazLink` </MazCheckbox>
-- <MazCheckbox> Update `MazBtn outline` to `outlined` </MazCheckbox>
-- <MazCheckbox> Rename `MazPhoneNumberInput` to `MazInputPhoneNumber` </MazCheckbox>
-- <MazCheckbox> Rename `MazPicker` to `MazDatePicker` </MazCheckbox>
-- <MazCheckbox> Replace `MazTransitionExpand` with `MazExpandAnimation` </MazCheckbox>
-- <MazCheckbox> Update `MazDropdown`/`MazSelect` position props </MazCheckbox>
-- <MazCheckbox> Rename `MazDialogPromise` to `MazDialogConfirm` </MazCheckbox>
-- <MazCheckbox> Check new `MazDropzone` props </MazCheckbox>
-- <MazCheckbox> Rename `MazPicker` to `MazDatePicker` </MazCheckbox>
+- <span class="vp-raw"><MazCheckbox> Replace `MazBtn variant="link"` with `MazLink` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update `MazBtn outline` to `outlined` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Rename `MazPhoneNumberInput` to `MazInputPhoneNumber` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Rename `MazPicker` to `MazDatePicker` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Replace `MazTransitionExpand` with `MazExpandAnimation` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update `MazDropdown`/`MazSelect` position props </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Rename `MazDialogPromise` to `MazDialogConfirm` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Check new `MazDropzone` props </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Rename `MazPicker` to `MazDatePicker` </MazCheckbox></span>
 
 ### API Changes
 
-- <MazCheckbox> Migrate `useDialog` from Promise to callback API </MazCheckbox>
-- <MazCheckbox> Rename `useLanguageDisplayNames` to `useDisplayNames` </MazCheckbox>
-- <MazCheckbox> Update `@update` to `@data` in `MazInputPhoneNumber` </MazCheckbox>
-- <MazCheckbox> Replace removed colors (theme → contrast, danger → destructive) </MazCheckbox>
-- <MazCheckbox> Remove `v-closable` directive usage </MazCheckbox>
+- <span class="vp-raw"><MazCheckbox> Migrate `useDialog` from Promise to callback API </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Rename `useLanguageDisplayNames` to `useDisplayNames` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update `@update` to `@data` in `MazInputPhoneNumber` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Replace removed colors (theme → contrast, danger → destructive) </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Remove `v-closable` directive usage </MazCheckbox></span>
 
 ### Helpers to Composables
 
-- <MazCheckbox> Migrate `idleTimeout` to `useIdleTimeout` </MazCheckbox>
-- <MazCheckbox> Migrate `userVisibility` to `useUserVisibility` </MazCheckbox>
-- <MazCheckbox> Migrate `mountComponent` to `useMountComponent` </MazCheckbox>
-- <MazCheckbox> Migrate `injectStrict` to `useInjectStrict` </MazCheckbox>
-- <MazCheckbox> Migrate `freezeValue` to `useFreezeValue` </MazCheckbox>
+- <span class="vp-raw"><MazCheckbox> Migrate `idleTimeout` to `useIdleTimeout` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Migrate `userVisibility` to `useUserVisibility` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Migrate `mountComponent` to `useMountComponent` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Migrate `injectStrict` to `useInjectStrict` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Migrate `freezeValue` to `useFreezeValue` </MazCheckbox></span>
 
 ### TypeScript
 
-- <MazCheckbox> Update all type imports to use `Maz` prefix </MazCheckbox>
-- <MazCheckbox> Update prop type imports (e.g. Props → MazBtnProps) </MazCheckbox>
-- <MazCheckbox> Update generic types (e.g. Color → MazColor, Size → MazSize) </MazCheckbox>
+- <span class="vp-raw"><MazCheckbox> Update all type imports to use `Maz` prefix </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update prop type imports (e.g. Props → MazBtnProps) </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update generic types (e.g. Color → MazColor, Size → MazSize) </MazCheckbox></span>
 
 ### Testing and Validation
 
-- <MazCheckbox> Test TypeScript compilation </MazCheckbox>
-- <MazCheckbox> Test production build </MazCheckbox>
-- <MazCheckbox> Check bundle size </MazCheckbox>
-- <MazCheckbox> Run unit tests </MazCheckbox>
-- <MazCheckbox> Test in development and production </MazCheckbox>
-- <MazCheckbox> Test SSR/Nuxt if applicable </MazCheckbox>
-- <MazCheckbox> Validate critical functionality </MazCheckbox>
+- <span class="vp-raw"><MazCheckbox> Test TypeScript compilation </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Test production build </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Check bundle size </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Run unit tests </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Test in development and production </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Test SSR/Nuxt if applicable </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Validate critical functionality </MazCheckbox></span>
 
 ## Additional Resources
 

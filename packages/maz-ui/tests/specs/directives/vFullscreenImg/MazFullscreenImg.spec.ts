@@ -205,6 +205,7 @@ describe('mazFullscreenImg', () => {
           ...defaultProperties,
           ...extraProps,
         },
+        attachTo: document.body,
       })
     }
 

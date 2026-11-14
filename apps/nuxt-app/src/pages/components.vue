@@ -50,6 +50,9 @@ const dateValue = ref('2026-03-20')
 const expandOpen = ref(true)
 const btnGroupValue = ref('center')
 const radioBtnValue = ref('b')
+const segmentedValue = ref('b')
+const colorPickerValue = ref('#3b82f6')
+const listSwitch = ref(true)
 const checklistValue = ref(['vue'])
 const dialogOpen = ref(false)
 const bottomSheetOpen = ref(false)
@@ -72,6 +75,17 @@ const btnGroupItems = [
   { text: 'Left', value: 'left' },
   { text: 'Center', value: 'center', active: true },
   { text: 'Right', value: 'right' },
+]
+
+const btnDropdownItems = [
+  {
+    label: 'Save as draft',
+    onClick: () => {},
+  },
+  {
+    label: 'Save and publish',
+    onClick: () => {},
+  },
 ]
 
 const tableHeaders = [
@@ -266,6 +280,34 @@ const checklistItems = [
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-2 maz:mb-4">
         <MazBtnGroup v-for="s in sizes" :key="s" v-model="btnGroupValue" :items="btnGroupItems" :size="s" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazBtnDropdown
+      </h2>
+      <div class="maz:flex maz:flex-wrap maz:gap-3 maz:mb-4">
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options">
+          Save
+        </MazBtnDropdown>
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" outlined>
+          Save
+        </MazBtnDropdown>
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" pastel color="secondary">
+          Save
+        </MazBtnDropdown>
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" trigger="hover">
+          Hover
+        </MazBtnDropdown>
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" action-disabled>
+          Save
+        </MazBtnDropdown>
+      </div>
+      <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-3 maz:mb-4">
+        <MazBtnDropdown v-for="s in sizes" :key="s" :items="btnDropdownItems" menu-label="Other save options" :size="s">
+          Save
+        </MazBtnDropdown>
       </div>
     </section>
 
@@ -818,7 +860,7 @@ const checklistItems = [
         MazTabs
       </h2>
       <MazTabs v-model="tabValue">
-        <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features' }, { label: 'Pricing' }]" />
+        <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features', badge: { content: 3, color: 'primary', pastel: true, roundedSize: 'full' } }, { label: 'Pricing', indicator: { color: 'destructive', label: 'New prices' } }]" />
 
         <MazTabsContent>
           <MazTabsContentItem :tab="1" class="maz-py-4">
@@ -1366,6 +1408,74 @@ const checklistItems = [
             </template>
           </MazCard>
         </MazAnimatedElement>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazList
+      </h2>
+      <div class="maz:grid maz:gap-4 maz:md:grid-cols-2 maz:mb-4">
+        <MazList title="Settings" footer="Changes apply immediately.">
+          <MazListItem title="Wi-Fi" subtitle="Home network" clickable>
+            <template #end>
+              On
+            </template>
+          </MazListItem>
+          <MazListItem title="Notifications">
+            <template #actions>
+              <MazSwitch v-model="listSwitch" aria-label="Notifications" />
+            </template>
+          </MazListItem>
+          <MazListItem title="Advanced" collapsible>
+            Collapsible content
+          </MazListItem>
+        </MazList>
+        <MazList size="lg" :bordered="false">
+          <MazListItem title="Inbox" active />
+          <MazListItem title="Drafts" disabled clickable />
+        </MazList>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazColorPicker
+      </h2>
+      <div class="maz:flex maz:flex-col maz:items-start maz:gap-4 maz:mb-4">
+        <MazColorPicker v-model="colorPickerValue" label="Color" />
+        <MazColorPicker v-model="colorPickerValue" format="rgb" :alpha="false" :swatches="['#3b82f6', '#10b981', '#ef4444']" label="RGB with swatches" />
+        <MazColorPicker v-model="colorPickerValue" inline />
+        <MazColorPicker v-model="colorPickerValue" disabled label="Disabled" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazSegmented
+      </h2>
+      <div class="maz:flex maz:flex-col maz:items-start maz:gap-4 maz:mb-4">
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" aria-label="Segmented" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" color="primary" size="sm" aria-label="Segmented primary" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" rounded-size="full" block aria-label="Segmented block" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" disabled aria-label="Segmented disabled" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
+        MazIndicator
+      </h2>
+      <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-6 maz:mb-4">
+        <MazIndicator color="success" />
+        <MazIndicator :content="3" color="destructive" />
+        <MazIndicator :content="128" color="destructive" />
+        <MazIndicator :content="3" color="destructive">
+          <MazBtn>Inbox</MazBtn>
+        </MazIndicator>
+        <MazIndicator color="success" position="bottom-end" overlap="circular" pulse>
+          <MazAvatar caption="Louis Mazel" rounded-size="full" />
+        </MazIndicator>
       </div>
     </section>
 

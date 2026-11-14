@@ -6,9 +6,12 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { execPromise, logger } from '@maz-ui/node'
+import { generatePurgeManifest } from '@maz-ui/vite-plugin/manifest'
 import autoprefixer from 'autoprefixer'
 import postcss from 'postcss'
 import { compileAsync } from 'sass'
+
+import pkg from '../package.json' with { type: 'json' }
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -51,6 +54,16 @@ export function ViteCompileStyles(): Plugin {
         )
 
         logger.success('[CompileStyles] ✅ tailwind css compiled')
+
+        await execPromise(
+          'npx @tailwindcss/cli -i ./src/tailwindcss/utilities-entry.css -o dist/css/utilities.css --minify',
+        )
+
+        logger.success('[CompileStyles] ✅ public utilities compiled')
+
+        generatePurgeManifest(resolve(options.dir ?? './dist'), pkg.version)
+
+        logger.success('[CompileStyles] ✅ purge manifest generated')
 
         await compileScss()
 

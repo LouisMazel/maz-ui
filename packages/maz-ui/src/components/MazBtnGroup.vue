@@ -2,7 +2,7 @@
 import type { ButtonHTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazBtnProps } from './MazBtn.vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazNeutralColor, MazSize } from './types'
 import { defineAsyncComponent } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
 
@@ -36,9 +36,10 @@ export interface MazButtonGroupProps {
   size?: MazSize
   /**
    * The color of all buttons (only applies to props-based buttons)
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, transparent, surface, container
    * @default 'primary'
    */
-  color?: MazColor
+  color?: MazColor | MazNeutralColor
   /**
    * The rounded size of the buttons
    * @default 'lg'

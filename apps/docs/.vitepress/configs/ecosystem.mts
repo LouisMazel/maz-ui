@@ -30,6 +30,10 @@ export const ecosystem = {
       link: '/ecosystem/mcp',
     },
     {
+      text: withNewBadge('@maz-ui/vite-plugin'),
+      link: '/ecosystem/vite-plugin',
+    },
+    {
       text: withNewBadge('@maz-ui/upgrade'),
       link: '/ecosystem/upgrade',
     },

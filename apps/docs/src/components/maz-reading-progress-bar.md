@@ -15,7 +15,9 @@ This component use the `<Teleport />` component to move the progress bar to the 
 
 Look at the top of the page to see the component in action (scroll in page to inscrease progress bar width).
 
+<div class="vp-raw">
 <MazReadingProgressBar content-selector=".VPDoc" teleport-selector="#app" />
+</div>
 
 ```vue
 <script lang="ts" setup>

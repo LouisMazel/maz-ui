@@ -77,7 +77,9 @@ selectedValues: {{ selectedValues }}
 
 ## Search
 
-Use `search` property to add a search input in the options list
+Use `search` property to add a search input in the options list.
+
+The search is a fuzzy search (the [fuzzySearch](./../ecosystem/utils/fuzzy-search.md) helper of `@maz-ui/utils`, loaded only with `search`): it finds the prefixes, the words in any order, the initials ("nwz" finds "New Zealand"), the typos ("Franse" finds "France"), whatever the accents and the case. It searches the label, the input value and the value of the options. The best matches come first; with optgroups, the matched options keep the order of the list under their group.
 
 ::: tip
 You can use your own template to replace the empty icon when no results are found
@@ -95,7 +97,7 @@ You can use your own template to replace the empty icon when no results are foun
 :::
 
 ::: info
-You can adjust the search results by using `search-threshold` where 1 is a perfect match and 0 is a match with any character
+`search-threshold` is the tolerance to typos: the minimal similarity (from 0 to 1) of a whole option with the query, for the options that do not contain it. `1` disables the typo tolerance, `0` matches any option (default `0.75`)
 
 ```html
 <MazSelect :search-threshold="0.75" :options="[...]" />

@@ -1,5 +1,17 @@
 # Changelog
 
+## @maz-ui/upgrade@5.4.1-beta.0 (2026-11-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/upgrade@5.4.0...@maz-ui/upgrade@5.4.1-beta.0)
+
+### 🩹 Fixes
+
+- **upgrade:** Ship the LICENSE file in the package ([44f202b03](https://github.com/LouisMazel/maz-ui/commit/44f202b03))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## @maz-ui/upgrade@5.4.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/upgrade@5.3.1...@maz-ui/upgrade@5.4.0)

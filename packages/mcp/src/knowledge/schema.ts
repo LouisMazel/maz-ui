@@ -98,6 +98,8 @@ export const tailwindSchema = z.object({
   radius: z.array(namedTokenSchema),
   shadows: z.array(namedTokenSchema),
   breakpoints: z.array(namedTokenSchema),
+  /** Since maz-ui 5.7 */
+  containers: z.array(namedTokenSchema).optional(),
   zIndex: z.array(namedTokenSchema),
   fonts: z.array(namedTokenSchema),
   durations: z.array(namedTokenSchema),
@@ -106,6 +108,7 @@ export const tailwindSchema = z.object({
   utilities: z.array(z.object({
     name: z.string(),
     css: z.string(),
+    description: z.string().optional(),
   })),
   variants: z.array(namedTokenSchema),
   containerVariables: z.array(namedTokenSchema),

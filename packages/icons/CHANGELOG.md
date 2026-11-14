@@ -1,5 +1,56 @@
 # Change Log
 
+## v5.7.0-beta.6 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)
+
+No relevant changes since last release
+
+## v5.7.0-beta.5 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.4...v5.7.0-beta.5)
+
+No relevant changes since last release
+
+## v5.7.0-beta.4 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.3...v5.7.0-beta.4)
+
+No relevant changes since last release
+
+## v5.7.0-beta.3 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.2...v5.7.0-beta.3)
+
+No relevant changes since last release
+
+## v5.7.0-beta.2 (2026-11-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.1...v5.7.0-beta.2)
+
+No relevant changes since last release
+
+## v5.7.0-beta.1 (2026-11-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.0...v5.7.0-beta.1)
+
+### 🚀 Features
+
+- **icons:** Add git, sidebar and wifi-slash icons ([c1181309d](https://github.com/LouisMazel/maz-ui/commit/c1181309d))
+
+  - New icons: `MazGitBranch`, `MazGitPullRequest`, `MazSidebarLeft`, `MazSidebarLeftCompact`, `MazSidebarLeftHidden`, `MazSidebarRight`, `MazWifiSlash`
+  - Available from `@maz-ui/icons/raw/*`, `@maz-ui/icons/static/*`, `@maz-ui/icons/lazy/*` and as `LazyMaz*` exports of the package root
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.7.0-beta.0 (2026-11-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)
+
+No relevant changes since last release
+
 ## v5.6.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...v5.6.0)

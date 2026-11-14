@@ -526,14 +526,24 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 ## Colors
 
+The default color is `container`, the background of cards and panels (white in light mode with presets like macOS). `surface` renders the real page background.
+
 <ComponentDemo>
   <div class="maz:flex maz:gap-4 maz:flex-wrap">
-    <MazPopover color="surface" trigger="hover">
+    <MazPopover color="container" trigger="hover">
       <template #trigger>
-        <MazBtn color="contrast">Background</MazBtn>
+        <MazBtn color="contrast">Container (default)</MazBtn>
       </template>
       <div class="maz:p-4">
-        <p class="maz:text-sm">This popover has a default color!</p>
+        <p class="maz:text-sm">This popover has the default container color!</p>
+      </div>
+    </MazPopover>
+    <MazPopover color="surface" trigger="hover">
+      <template #trigger>
+        <MazBtn color="contrast">Surface</MazBtn>
+      </template>
+      <div class="maz:p-4">
+        <p class="maz:text-sm">This popover has the surface color!</p>
       </div>
     </MazPopover>
     <MazPopover color="primary" trigger="hover">
@@ -606,12 +616,20 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 ```vue
 <template>
-  <MazPopover color="surface" trigger="hover">
+  <MazPopover color="container" trigger="hover">
     <template #trigger>
-      <MazBtn color="contrast">Background</MazBtn>
+      <MazBtn color="contrast">Container (default)</MazBtn>
     </template>
     <div class="p-4">
-      <p class="text-sm">This popover has a default color!</p>
+      <p class="text-sm">This popover has the default container color!</p>
+    </div>
+  </MazPopover>
+  <MazPopover color="surface" trigger="hover">
+    <template #trigger>
+      <MazBtn color="contrast">Surface</MazBtn>
+    </template>
+    <div class="p-4">
+      <p class="text-sm">This popover has the surface color!</p>
     </div>
   </MazPopover>
   <MazPopover color="primary" trigger="hover">

@@ -503,6 +503,41 @@ describe('MazTabsBar branch coverage', () => {
       expect(wrapper.html()).toContain('5')
     })
 
+    it('renders a dot without text when the badge content is true', async () => {
+      const wrapper = mountTabsBar({
+        items: [
+          {
+            label: 'Tab 1',
+            badge: { content: true, color: 'destructive' },
+          },
+        ],
+      })
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      const badge = wrapper.find('.m-tabs-bar__item__badge')
+      expect(badge.exists()).toBe(true)
+      expect(badge.classes()).toContain('--dot')
+      expect(badge.text()).toBe('')
+      expect(wrapper.text()).not.toContain('true')
+    })
+
+    it('hides the badge when its content is false', async () => {
+      const wrapper = mountTabsBar({
+        items: [
+          {
+            label: 'Tab 1',
+            badge: { content: false },
+          },
+        ],
+      })
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      expect(wrapper.find('.m-tabs-bar__item__badge').exists()).toBe(false)
+      expect(wrapper.text()).not.toContain('false')
+    })
+
     it('does not render badge for items without badge', () => {
       const wrapper = mountTabsBar({
         items: [
@@ -511,6 +546,69 @@ describe('MazTabsBar branch coverage', () => {
       })
 
       expect(wrapper.findAll('.m-tabs-bar__item')).toHaveLength(1)
+    })
+  })
+
+  describe('item indicator', () => {
+    async function mountWithIndicator(indicator: unknown, slots?: Record<string, string>) {
+      const wrapper = mount(MazTabsBar, {
+        props: {
+          items: [
+            { label: 'Inbox', indicator },
+            { label: 'Sent' },
+          ],
+        },
+        slots,
+        global: {
+          provide: {
+            'maz-tabs': createTabsProvide(),
+          },
+        },
+      })
+      await vi.dynamicImportSettled()
+      await flushPromises()
+      await nextTick()
+      return wrapper
+    }
+
+    it('renders a dot attached to the tab with `true`', async () => {
+      const wrapper = await mountWithIndicator(true)
+      const indicator = wrapper.findAll('.m-tabs-bar__item')[0].find('.m-indicator')
+
+      expect(indicator.exists()).toBe(true)
+      expect(indicator.classes()).toContain('--dot')
+      expect(wrapper.findAll('.m-tabs-bar__item')[1].find('.m-indicator').exists()).toBe(false)
+    })
+
+    it('renders a counter capped by max', async () => {
+      const wrapper = await mountWithIndicator({ content: 120, max: 99, color: 'destructive' })
+
+      expect(wrapper.find('.m-indicator').text()).toBe('99+')
+    })
+
+    it('renders a counter from a number', async () => {
+      const wrapper = await mountWithIndicator(3)
+
+      expect(wrapper.find('.m-indicator').text()).toBe('3')
+    })
+
+    it('renders nothing with `false`', async () => {
+      const wrapper = await mountWithIndicator(false)
+
+      expect(wrapper.find('.m-indicator').exists()).toBe(false)
+    })
+
+    it('lets the indicator overflow the tab', async () => {
+      const wrapper = await mountWithIndicator(true)
+
+      expect(wrapper.findAll('.m-tabs-bar__item')[0].classes()).not.toContain('maz:overflow-hidden')
+      expect(wrapper.findAll('.m-tabs-bar__item')[1].classes()).toContain('maz:overflow-hidden')
+    })
+
+    it('replaces the text of the counter with the indicator slot', async () => {
+      const wrapper = await mountWithIndicator(4, { indicator: '<template #indicator="{ text, index }">{{ index }}:{{ text }}</template>' })
+
+      expect(wrapper.find('.m-indicator').text()).toBe('0:4')
     })
   })
 })

@@ -11,7 +11,9 @@ description: MazLoadingBar is an indeterminate progress bar to show that somethi
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazLoadingBar color="secondary" />
+</div>
 
 ```vue
 <script lang="ts" setup>

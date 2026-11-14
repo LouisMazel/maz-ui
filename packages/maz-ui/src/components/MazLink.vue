@@ -2,7 +2,7 @@
 import type { Component, HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazIconLike } from '../composables/useMazIconProps'
-import type { MazColor } from './types'
+import type { MazColor, MazNeutralColor } from './types'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnSquare'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
@@ -73,7 +73,7 @@ export interface MazLinkProps {
    * @default 'primary'
    * When 'none', the link will not have any color, so it will inherit the color of the parent
    */
-  color?: MazColor | 'muted' | 'surface' | 'inherit'
+  color?: MazColor | MazNeutralColor | 'muted' | 'inherit'
   /**
    * The target of the link
    * @default '_self'
@@ -147,16 +147,17 @@ const component = computed<Component | string>(() => {
 const isButton = computed(() => component.value === 'button')
 
 const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
-  primary: 'maz:not-disabled:text-primary maz:not-disabled:hover:text-primary-700',
-  secondary: 'maz:not-disabled:text-secondary maz:not-disabled:hover:text-secondary-700',
-  info: 'maz:not-disabled:text-info maz:not-disabled:hover:text-info-700',
-  warning: 'maz:not-disabled:text-warning maz:not-disabled:hover:text-warning-700',
-  destructive: 'maz:not-disabled:text-destructive maz:not-disabled:hover:text-destructive-700',
-  success: 'maz:not-disabled:text-success maz:not-disabled:hover:text-success-700',
-  accent: 'maz:not-disabled:text-accent maz:not-disabled:hover:text-accent-700',
+  primary: 'maz:not-disabled:text-primary maz:not-disabled:hover:text-primary-700 maz:not-disabled:dark:hover:text-primary-300',
+  secondary: 'maz:not-disabled:text-secondary maz:not-disabled:hover:text-secondary-700 maz:not-disabled:dark:hover:text-secondary-300',
+  info: 'maz:not-disabled:text-info maz:not-disabled:hover:text-info-700 maz:not-disabled:dark:hover:text-info-300',
+  warning: 'maz:not-disabled:text-warning maz:not-disabled:hover:text-warning-700 maz:not-disabled:dark:hover:text-warning-300',
+  destructive: 'maz:not-disabled:text-destructive maz:not-disabled:hover:text-destructive-700 maz:not-disabled:dark:hover:text-destructive-300',
+  success: 'maz:not-disabled:text-success maz:not-disabled:hover:text-success-700 maz:not-disabled:dark:hover:text-success-300',
+  accent: 'maz:not-disabled:text-accent maz:not-disabled:hover:text-accent-700 maz:not-disabled:dark:hover:text-accent-300',
   contrast: 'maz:not-disabled:text-foreground maz:not-disabled:hover:text-foreground-900 maz:not-disabled:dark:hover:text-foreground-100',
-  muted: 'maz:not-disabled:text-muted maz:not-disabled:hover:text-muted-700',
+  muted: 'maz:not-disabled:text-muted maz:not-disabled:hover:text-muted-700 maz:not-disabled:dark:hover:text-muted-300',
   surface: 'maz:not-disabled:text-surface maz:not-disabled:hover:text-surface-700',
+  container: 'maz:not-disabled:text-container maz:not-disabled:hover:text-container/80',
   transparent: '',
   inherit: '',
 } as const

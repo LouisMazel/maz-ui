@@ -8,6 +8,19 @@ export interface CountryOption {
   name: string
 }
 
+function getLocaleRegion(locale: string) {
+  try {
+    const { region } = new Intl.Locale(locale).maximize()
+
+    return region?.length === 2
+      ? region
+      : undefined
+  }
+  catch {
+    return undefined
+  }
+}
+
 function getBrowserLocale() {
   if (typeof globalThis.window === 'undefined') {
     return
@@ -19,27 +32,36 @@ function getBrowserLocale() {
     return
   }
 
-  const parts = browserLocale.split('-')
-  let locale = parts.length > 1
-    ? parts[1].slice(0, 2).toUpperCase()
-    : parts[0].slice(0, 2).toUpperCase()
-
-  if (locale === 'EN') {
-    locale = 'US'
-  }
-
-  if (locale === 'JA') {
-    locale = 'JP'
-  }
-
   return {
-    locale,
+    locale: getLocaleRegion(browserLocale),
     browserLocale,
   }
 }
 
-let displayNamesInstance: Intl.DisplayNames | undefined
-let displayNamesLocale: string | undefined
+const displayNamesByLocale = new Map<string, Intl.DisplayNames>()
+const countryListByLocale = new Map<string, CountryOption[]>()
+
+function createDisplayNames(locale: string) {
+  try {
+    return new Intl.DisplayNames([
+      locale.replaceAll('_', '-'),
+    ], { type: 'region' })
+  }
+  catch {
+    return new Intl.DisplayNames(['en-US'], { type: 'region' })
+  }
+}
+
+function getDisplayNames(locale: string) {
+  let displayNames = displayNamesByLocale.get(locale)
+
+  if (!displayNames) {
+    displayNames = createDisplayNames(locale)
+    displayNamesByLocale.set(locale, displayNames)
+  }
+
+  return displayNames
+}
 
 function getCountryName(
   locale: string,
@@ -50,24 +72,16 @@ function getCountryName(
     return customCountriesNameListByIsoCode[code as CountryCode]
   }
 
-  if (displayNamesLocale !== locale || !displayNamesInstance) {
-    displayNamesLocale = locale
-    displayNamesInstance = new Intl.DisplayNames([locale], { type: 'region' })
-  }
-
-  return displayNamesInstance.of(code)
+  return getDisplayNames(locale).of(code)
 }
 
-function getCountryList(
-  locale?: string,
+function buildCountryList(
+  locale: string,
   customCountriesNameListByIsoCode?: Record<CountryCode, string>,
-): CountryOption[] | undefined {
+): CountryOption[] {
   const countriesList: CountryOption[] = []
-  const isoList = getCountries()
 
-  locale = locale ?? getBrowserLocale()?.browserLocale ?? 'en-US'
-
-  for (const code of isoList) {
+  for (const code of getCountries()) {
     const name = getCountryName(locale, code, customCountriesNameListByIsoCode)
 
     if (name) {
@@ -86,6 +100,26 @@ function getCountryList(
   }
 
   return countriesList
+}
+
+function getCountryList(
+  locale?: string,
+  customCountriesNameListByIsoCode?: Record<CountryCode, string>,
+): CountryOption[] {
+  const countryLocale = locale || getBrowserLocale()?.browserLocale || 'en-US'
+
+  if (customCountriesNameListByIsoCode) {
+    return buildCountryList(countryLocale, customCountriesNameListByIsoCode)
+  }
+
+  let countriesList = countryListByLocale.get(countryLocale)
+
+  if (!countriesList) {
+    countriesList = buildCountryList(countryLocale)
+    countryListByLocale.set(countryLocale, countriesList)
+  }
+
+  return [...countriesList]
 }
 
 async function fetchCountryCode(): Promise<{ data: CountryCode, error: undefined } | { data: undefined, error: Error }> {
@@ -113,13 +147,25 @@ async function fetchCountryCode(): Promise<{ data: CountryCode, error: undefined
 }
 
 const isLetterOrNumberRegex = /[^\d ()+-]/g
+const arabicIndicDigitRegex = /[\u0660-\u0669\u06F0-\u06F9]/g
+const EXTENDED_ARABIC_INDIC_ZERO = 0x06F0
+const ARABIC_INDIC_ZERO = 0x0660
+
+function toAsciiDigits(input: string) {
+  return input.normalize('NFKC').replaceAll(arabicIndicDigitRegex, (digit) => {
+    const codePoint = digit.codePointAt(0) ?? ARABIC_INDIC_ZERO
+    return String(codePoint - (codePoint >= EXTENDED_ARABIC_INDIC_ZERO
+      ? EXTENDED_ARABIC_INDIC_ZERO
+      : ARABIC_INDIC_ZERO))
+  })
+}
 
 function sanitizePhoneNumber(input?: string | undefined | null) {
   if (!input) {
     return ''
   }
 
-  return input.replaceAll(isLetterOrNumberRegex, '').trim()
+  return toAsciiDigits(input).replaceAll(isLetterOrNumberRegex, '').trim()
 }
 
 export function useMazInputPhoneNumber() {

@@ -5,3 +5,18 @@
  * which ignores the theme switcher entirely.
  */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * `transparency-reduce:` applies when the user reduces transparency: the
+ * system setting (`prefers-reduced-transparency`) or the
+ * `reduce-transparency` class on an ancestor (an in-app "opaque" setting).
+ */
+@custom-variant transparency-reduce {
+  @media (prefers-reduced-transparency: reduce) {
+    @slot;
+  }
+
+  &:where(.reduce-transparency, .reduce-transparency *) {
+    @slot;
+  }
+}

@@ -93,6 +93,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </ComponentDemo>
 
+<div class="vp-raw">
 <MazDrawer variant="top" v-model="isOpenedTop">
   <template #title>
     Drawer top
@@ -110,7 +111,9 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </div>
   </template>
 </MazDrawer>
+</div>
 
+<div class="vp-raw">
 <MazDrawer variant="bottom" v-model="isOpenedBottom">
   <template #title>
     Drawer bottom
@@ -128,7 +131,9 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </div>
   </template>
 </MazDrawer>
+</div>
 
+<div class="vp-raw">
 <MazDrawer variant="start" v-model="isOpenedLeft">
   <template #title>
     Drawer left
@@ -146,7 +151,9 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </div>
   </template>
 </MazDrawer>
+</div>
 
+<div class="vp-raw">
 <MazDrawer variant="end" v-model="isOpenedRight">
   <template #title>
     Drawer right
@@ -164,6 +171,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </div>
   </template>
 </MazDrawer>
+</div>
 
 <script lang="ts" setup>
   import { ref } from 'vue'

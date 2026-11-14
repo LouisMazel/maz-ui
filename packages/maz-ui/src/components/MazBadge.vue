@@ -1,18 +1,21 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazNeutralColor, MazSize } from './types'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
+import MazIcon from './MazIcon.vue'
 import { getColor } from './types'
 
-export type MazBadgeColor = MazColor | 'surface'
+export type MazBadgeColor = MazColor | MazNeutralColor
 export type MazBadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 export type MazBadgeSize = MazSize
 
 export interface MazBadgeProps {
   /**
-   * Color of the badge
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'surface'`
+   * Color of the badge: `surface` and `container` are the neutral colors of the theme, with the foreground text
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface' | 'container'`
    * @default primary
    */
   color?: MazBadgeColor
@@ -44,6 +47,15 @@ export interface MazBadgeProps {
    * @default md
    */
   roundedSize?: MazBadgeRoundedSize
+  /**
+   * Will add a remove button at the end of the badge, which emits `remove`
+   * @default false
+   */
+  removable?: boolean
+  /**
+   * Accessible label of the remove button (translated "Remove" by default)
+   */
+  removeLabel?: string
 }
 
 const {
@@ -51,7 +63,19 @@ const {
   nowrap = true,
   outlined = false,
   pastel = false,
+  removable = false,
+  removeLabel,
 } = defineProps<MazBadgeProps>()
+
+const emits = defineEmits<{
+  /**
+   * Emitted when the remove button is clicked (`removable` only)
+   * @property {MouseEvent} event the click event
+   */
+  remove: [event: MouseEvent]
+}>()
+
+const { t } = useTranslations()
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazBadgeSize, roundedSize: MazBadgeRoundedSize }>('MazBadge', { size: 'md', roundedSize: 'md' })
 
@@ -77,7 +101,7 @@ const SIZE_CLASS = {
 
 const badgeStyle = computed<CSSProperties | undefined>(() => {
   const c = resolvedColor.value
-  if (c === 'surface' || c === 'transparent')
+  if (c === 'surface' || c === 'container' || c === 'transparent')
     return undefined
 
   return {
@@ -110,6 +134,16 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
   >
     <!-- @slot Badge content -->
     <slot />
+
+    <button
+      v-if="removable"
+      type="button"
+      class="m-badge__remove maz:inline-flex maz:cursor-pointer maz:flex-center"
+      :aria-label="removeLabel ?? t('aria.remove')"
+      @click="emits('remove', $event)"
+    >
+      <MazIcon :icon="MazXMark" aria-hidden="true" />
+    </button>
   </span>
 </template>
 
@@ -121,6 +155,11 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
    * OKLCh offset for foreground — mirrors SCALE_OFFSETS step -700). */
   --m-badge-pastel-bg: color-mix(in srgb, var(--m-badge-bg) 20%, transparent);
   --m-badge-pastel-fg: oklch(from var(--m-badge-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+
+  /* On a dark background the tint is dark too: the text goes lighter to stay readable (↔ scale -300). */
+  @variant dark {
+    --m-badge-pastel-fg: oklch(from var(--m-badge-bg) clamp(0, calc(l + 0.15), 1) c h);
+  }
 
   padding-block: 0.25em;
   padding-inline: 0.5em;
@@ -142,22 +181,62 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
     border-color: transparent;
   }
 
+  /* Neutral colors: a pastel neutral color has no meaning, it keeps the solid rendering */
   &.--surface {
-    @apply maz:bg-surface maz:text-foreground;
+    --m-badge-bg: var(--maz-surface);
+  }
 
-    border-color: var(--maz-surface);
+  &.--container {
+    --m-badge-bg: var(--maz-container-bg, var(--maz-surface));
+  }
+
+  &.--surface,
+  &.--container {
+    --m-badge-fg: var(--maz-foreground);
+
+    &.--pastel {
+      background-color: var(--m-badge-bg);
+      color: var(--m-badge-fg);
+      border-color: var(--m-badge-bg);
+    }
 
     &.--outlined {
       @apply maz:bg-transparent maz:border-divider;
-    }
 
-    &.--pastel {
-      @apply maz:bg-surface-600 maz:border-surface-600;
+      color: var(--m-badge-fg);
     }
+  }
+
+  &.--container,
+  &.--container.--pastel {
+    @apply maz:border-divider;
   }
 
   &.--transparent {
     @apply maz:bg-transparent maz:border-transparent;
+  }
+
+  & .m-badge__remove {
+    margin-inline: 0.25em -0.25em;
+    padding: 0.125em;
+    border-radius: 9999px;
+    color: inherit;
+    background-color: transparent;
+    opacity: 0.75;
+    transition:
+      opacity 150ms ease-in-out,
+      background-color 150ms ease-in-out;
+
+    &:hover {
+      opacity: 1;
+      background-color: color-mix(in srgb, currentcolor 20%, transparent);
+    }
+
+    &:focus-visible {
+      opacity: 1;
+      outline: 2px solid currentcolor;
+      outline-offset: 1px;
+    }
   }
 }
 </style>

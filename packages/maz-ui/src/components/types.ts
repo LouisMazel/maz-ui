@@ -1,6 +1,9 @@
-import type { colors, sizes } from './constants'
+import type { colors, neutralColors, sizes } from './constants'
 
 export type MazColor = (typeof colors)[number]
+
+/** `surface` (background of the page) or `container` (background of the cards, panels and fields), with `text-foreground` */
+export type MazNeutralColor = (typeof neutralColors)[number]
 
 export type MazSize = (typeof sizes)[number]
 
@@ -23,6 +26,6 @@ export type MazSizeUnit = `${number}${'rem' | 'px' | 'em' | 'vw' | 'vh' | 'vmin'
  * @param color The color to convert.
  * @returns The class name.
  */
-export function getColor(color: MazColor | 'surface' | 'muted' | 'inherit') {
+export function getColor(color: MazColor | MazNeutralColor | 'muted' | 'inherit') {
   return color
 }

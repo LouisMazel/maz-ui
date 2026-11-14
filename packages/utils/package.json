@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/utils",
   "type": "module",
-  "version": "5.6.0",
+  "version": "5.7.0-beta.6",
   "description": "Utils of maz-ui for JavaScript/TypeScript users",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -84,6 +84,9 @@
     "vue": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "fuzzysort": "^4.0.2"
   },
   "devDependencies": {
     "@codecov/vite-plugin": "catalog:",

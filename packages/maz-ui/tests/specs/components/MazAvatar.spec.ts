@@ -699,3 +699,89 @@ describe('MazAvatar extended branch coverage', () => {
     })
   })
 })
+
+describe('given a MazAvatar with an indicator', () => {
+  async function indicatorOf(props: Record<string, unknown>, slots?: Record<string, string>) {
+    const wrapper = mount(MazAvatar, {
+      props: { caption: 'A', ...props },
+      slots,
+    })
+    await vi.dynamicImportSettled()
+    return wrapper.find('.m-avatar__frame .m-indicator')
+  }
+
+  describe('when the indicator is the attribute alone', () => {
+    it('then it is a status dot at the bottom end', async () => {
+      const indicator = await indicatorOf({ indicator: '' })
+
+      expect(indicator.classes()).toContain('--dot')
+      expect(indicator.classes()).toContain('maz:bottom-0')
+    })
+  })
+
+  describe('when the indicator is a number', () => {
+    it('then it is a counter at the top end', async () => {
+      const indicator = await indicatorOf({ indicator: 3 })
+
+      expect(indicator.text()).toBe('3')
+      expect(indicator.classes()).toContain('maz:top-0')
+    })
+  })
+
+  describe('when the avatar is a circle', () => {
+    it('then the indicator sits on the edge of the circle', async () => {
+      const indicator = await indicatorOf({ indicator: true, roundedSize: 'full' })
+
+      expect(indicator.classes()).toContain('maz:bottom-[14.6%]')
+    })
+  })
+
+  describe('when the indicator is an object of props', () => {
+    it('then they override the defaults of the avatar', async () => {
+      const indicator = await indicatorOf({
+        indicator: {
+          content: 120,
+          color: 'destructive',
+          position: 'bottom-start',
+          label: '120 unread messages',
+        },
+      })
+
+      expect(indicator.text()).toBe('99+')
+      expect(indicator.classes()).toEqual(expect.arrayContaining(['--destructive', 'maz:bottom-0', 'maz:start-0']))
+      expect(indicator.attributes('aria-label')).toBe('120 unread messages')
+    })
+  })
+
+  describe('when the indicator slot is used', () => {
+    it('then it replaces the text of the counter', async () => {
+      const indicator = await indicatorOf({ indicator: 5 }, { indicator: '<b>new</b>' })
+
+      expect(indicator.html()).toContain('<b>new</b>')
+    })
+  })
+
+  describe('when the indicator is false, 0 or missing', () => {
+    it('then there is no indicator', async () => {
+      expect((await indicatorOf({ indicator: false })).exists()).toBe(false)
+      expect((await indicatorOf({ indicator: 0 })).exists()).toBe(false)
+      expect((await indicatorOf({})).exists()).toBe(false)
+    })
+  })
+})
+
+describe('given a MazAvatar with the auto color', () => {
+  describe('when two avatars share a caption and a third has another one', () => {
+    it('then the same caption gets the same hue and another caption a different one', () => {
+      const backgroundOf = (caption: string) => mount(MazAvatar, {
+        props: { caption, color: 'auto' },
+      })
+        .find('.m-avatar__wrapper')
+        .attributes('style')
+
+      expect(backgroundOf('maz-ui')).toBe(backgroundOf('maz-ui'))
+      expect(backgroundOf('maz-ui')).not.toBe(backgroundOf('relizy'))
+      expect(backgroundOf('maz-ui')).toMatch(/background-color: oklch\(0\.6 0\.13 \d+\)/)
+    })
+  })
+})

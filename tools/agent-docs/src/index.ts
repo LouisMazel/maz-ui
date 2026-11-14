@@ -3,6 +3,5 @@ export type { GeneratedFragment, GeneratedKnowledge, GenerateOptions } from './g
 export { findPackageDefinition, PACKAGE_DEFINITIONS } from './packages'
 export type { PackageDefinition } from './packages'
 export { getSourcePaths } from './paths'
-export { syncBundleVersions } from './sync-version'
 export * from './types'
 export { findOutdatedFiles, writeOutput } from './write'

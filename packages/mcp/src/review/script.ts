@@ -2,6 +2,7 @@ import type { ReviewContext, Severity } from './types'
 
 import { closest } from '../knowledge/resolve'
 import { checkClassStrings } from './classes'
+import { checkPresetColors } from './preset'
 
 interface ThirdPartyRule {
   /** Package names (exact or prefix ending with `/`) */
@@ -447,6 +448,7 @@ export function reviewScript(code: string, offset: number, context: ReviewContex
     }
   }
 
+  checkPresetColors(code, offset, context)
   checkClassStrings(code.replaceAll(/^\s*import\s[^\n]*$/gm, line => ' '.repeat(line.length)), offset, context)
 }
 
@@ -478,4 +480,28 @@ export function localComponents(scripts: string): Map<string, string | undefined
   }
 
   return components
+}
+
+/** Local names of the icons imported as SVG strings (`@maz-ui/icons/raw/MazTrash`): they are for `icon` props, not for tags */
+export function rawIcons(scripts: string): Set<string> {
+  const names = new Set<string>()
+
+  for (const [, clause, source] of scripts.matchAll(/import\s+(?!type\s)([^'";]*?)\s+from\s+["']([^"']+)["']/g)) {
+    if (!/^@maz-ui\/icons\/raw(?:\/|$)/.test(source))
+      continue
+
+    const defaultName = /^\s*([A-Z]\w*)/.exec(clause.replace(/\{[^}]*\}/, ''))?.[1]
+
+    if (defaultName)
+      names.add(defaultName)
+
+    for (const specifier of /\{([^}]*)\}/.exec(clause)?.[1].split(',') ?? []) {
+      const [imported, local = imported] = specifier.replace(/^\s*type\s+/, '').split(/\s+as\s+/).map(part => part.trim())
+
+      if (/^[A-Z]/.test(local ?? ''))
+        names.add(local)
+    }
+  }
+
+  return names
 }

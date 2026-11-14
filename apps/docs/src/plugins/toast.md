@@ -183,7 +183,7 @@ Toast can have a link or an action
 
 You can close a toast programmatically by using the `close` method returned by the `toast` function
 
-<div class="maz:flex maz:flex-wrap maz:gap-2">
+<div class="vp-raw maz:flex maz:flex-wrap maz:gap-2">
   <MazBtn color="primary" @click="showToastAutoCLose">
     Show toast
   </MazBtn>

@@ -18,6 +18,7 @@ export default {
     selectAll: 'すべての行を選択',
     selectRow: '行を選択',
     removeFile: 'ファイルを削除',
+    remove: '削除',
     sidebar: 'サイドバー',
     openSidebar: 'サイドバーを開く',
     closeSidebar: 'サイドバーを閉じる',
@@ -66,6 +67,12 @@ export default {
   },
   select: {
     searchPlaceholder: '検索',
+  },
+  inputAutocomplete: {
+    noResults: '結果がありません',
+    loading: '読み込み中...',
+    error: 'エラーが発生しました。もう一度お試しください',
+    results: '結果: {count}',
   },
   table: {
     noResults: '結果なし',
@@ -122,6 +129,17 @@ export default {
   codeHighlight: {
     copyToClipboard: 'クリップボードにコピー',
     copiedToClipboard: 'クリップボードにコピーされました',
+    scrollToBottom: '一番下へスクロール',
+  },
+  colorPicker: {
+    openPicker: 'カラーピッカーを開く',
+    area: '彩度と明度',
+    areaValue: '彩度 {saturation}%、明度 {brightness}%',
+    hue: '色相',
+    alpha: '不透明度',
+    eyeDropper: '画面から色を取得',
+    swatches: 'プリセットカラー',
+    selectSwatch: '{color} を選択',
   },
   windowMockup: {
     copyUrlToClipboard: 'URLをクリップボードにコピー',

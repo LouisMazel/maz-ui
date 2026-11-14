@@ -1,5 +1,61 @@
 # Change Log
 
+## v5.7.0-beta.6 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)
+
+No relevant changes since last release
+
+## v5.7.0-beta.5 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.4...v5.7.0-beta.5)
+
+No relevant changes since last release
+
+## v5.7.0-beta.4 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.3...v5.7.0-beta.4)
+
+No relevant changes since last release
+
+## v5.7.0-beta.3 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.2...v5.7.0-beta.3)
+
+No relevant changes since last release
+
+## v5.7.0-beta.2 (2026-11-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.1...v5.7.0-beta.2)
+
+No relevant changes since last release
+
+## v5.7.0-beta.1 (2026-11-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.0...v5.7.0-beta.1)
+
+### 🚀 Features
+
+- **themes:** Add the macos, windows and linux presets, the type scale, the glass material and the system colors ([1924acec0](https://github.com/LouisMazel/maz-ui/commit/1924acec0))
+
+  - `macos`, `windows` and `linux` presets: the look of a native desktop app (system fonts, 13px or 14px root font size, platform colors, arrow cursor on the controls), from `@maz-ui/themes/presets` or by name with `getPreset('macos')`
+  - `typography` option: the type scale by level (`display`, `title-1` to `title-4`, `body`, `label`, `caption`, `overline`, `code`...), emitted as `--maz-typography-*` variables. The bundled presets ship their own scale
+  - `components.glass` option: translucent material of the floating surfaces (`bg`, `border`, `blur`, `saturate`)
+  - `systemColors` option: system color keywords by role (`AccentColor`...), applied with `@supports` so the preset color stays the fallback
+  - `foundation['interactive-cursor']` token: the cursor of the interactive controls (default `pointer`)
+  - Preset colors accept the color keywords (`transparent`, `currentColor`, system colors), `hwb()`, `color-mix()` and `light-dark()`
+  - `resolvePreset(preset)`: every color of a preset per mode, as hex and oklch, with `getContrastRatio` and `getColorDistance`
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.7.0-beta.0 (2026-11-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)
+
+No relevant changes since last release
+
 ## v5.6.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...v5.6.0)

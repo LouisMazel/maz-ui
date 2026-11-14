@@ -116,4 +116,44 @@ describe('normalizeString', () => {
       expect(normalizeString('MazBtn', options)).toBe('maz-btn')
     })
   })
+
+  describe('given accented letters missing from the old accents map', () => {
+    describe('when the accents are removed', () => {
+      it.each([
+        ['Íle', 'ile'],
+        ['Ólafur', 'olafur'],
+        ['šěőą', 'seoa'],
+        ['Ýpsilon', 'ypsilon'],
+        ['Łódź', 'lodz'],
+        ['Œuvre', 'oeuvre'],
+        ['Straße', 'strasse'],
+        ['GROẞ', 'gross'],
+        ['Ærø', 'aero'],
+        ['Đorđe', 'dorde'],
+        ['Tiếng Việt', 'tieng-viet'],
+      ])('then %s gives %s', (input, expected) => {
+        expect(normalizeString(input)).toBe(expected)
+      })
+    })
+
+    describe('when the case is kept', () => {
+      it('then a lowercase accented letter stays lowercase', () => {
+        expect(normalizeString('íÍ', { caseSensitive: true })).toBe('iI')
+      })
+    })
+  })
+
+  describe('given non Latin scripts', () => {
+    describe('when the accents are removed', () => {
+      it.each([
+        ['Москва'],
+        ['東京'],
+        ['القاهرة'],
+      ])('then %s keeps its letters', (input) => {
+        expect(normalizeString(input, {
+          customNormalizationForms: ['NFC'],
+        })).toBe(input.toLowerCase())
+      })
+    })
+  })
 })

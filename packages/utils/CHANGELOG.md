@@ -1,5 +1,66 @@
 # Change Log
 
+## v5.7.0-beta.6 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)
+
+No relevant changes since last release
+
+## v5.7.0-beta.5 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.4...v5.7.0-beta.5)
+
+No relevant changes since last release
+
+## v5.7.0-beta.4 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.3...v5.7.0-beta.4)
+
+No relevant changes since last release
+
+## v5.7.0-beta.3 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.2...v5.7.0-beta.3)
+
+No relevant changes since last release
+
+## v5.7.0-beta.2 (2026-11-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.1...v5.7.0-beta.2)
+
+No relevant changes since last release
+
+## v5.7.0-beta.1 (2026-11-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.0...v5.7.0-beta.1)
+
+### 🚀 Features
+
+- **utils:** Add fuzzy search and string similarity helpers ([b6dc2c8ca](https://github.com/LouisMazel/maz-ui/commit/b6dc2c8ca))
+
+  - `fuzzySearch(items, query, options)` and `createFuzzySearch(items, options)`: tolerant search in a list, by relevance or in the original order (`sort: 'original'`), on several weighted keys, accents and case ignored, with a tolerance to typos (`typoThreshold`)
+  - `highlightMatches(text, indexes)` splits a result into highlighted and plain parts
+  - `levenshteinDistance`, `getMatchingScore` and `isStringMatching` in `@maz-ui/utils/helpers/stringMatching`
+  - `normalizeString` removes the accents of the letters without decomposition (`ø`, `ł`, `đ`, `æ`, `ß`...)
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.7.0-beta.0 (2026-11-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)
+
+### 🚀 Features
+
+- **utils:** Add the formatRelativeTime and getRelativeTime helpers ([3706c9942](https://github.com/LouisMazel/maz-ui/commit/3706c9942))
+
+  Localized relative time (3 minutes ago, in 2 days, yesterday) built on Intl.RelativeTimeFormat, with a compact form (3 min) from Intl.NumberFormat, configurable unit thresholds, an optional switch to an absolute date and the delay before the text changes.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.6.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...v5.6.0)

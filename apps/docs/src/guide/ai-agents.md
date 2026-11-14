@@ -136,7 +136,7 @@ The MCP server gives agents tools that work with the needs they have, and verify
 | `search_docs` | Find what maz-ui provides for a need ("confirm before delete", "phone input", "debounce search") |
 | `get_component_api` | Exact props, values, events, slots of up to 10 components |
 | `find_icons` | Icons by meaning ("delete", "settings", "france flag") with their imports |
-| `get_theme_tokens` | The theme of your project (preset, `@theme` tokens, variants, utilities) and every Tailwind class and CSS variable of maz-ui |
+| `get_theme_tokens` | The theme of your project (preset, `@theme` tokens, variants, utilities), its effective colors (every step in light and dark, contrasts, what to check) and every Tailwind class and CSS variable of maz-ui |
 | `get_doc` | Any page of the docs, or only some sections |
 | `list_docs` | The whole catalog |
 | `get_setup_guide` | Installation in a Vue or Nuxt app, with or without Tailwind |
@@ -200,6 +200,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers |
 | `theme-colors` | warning | Default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`) |
 | `hardcoded-color` | warning | `bg-[#1d90ff]`, `color: #fff` |
+| `pale-brand-color` | warning | A `primary` or `secondary` of `definePreset` under 3:1 against the surface: they are strong brand colors, not subtle backgrounds |
 | `internal-prefix` | error | The internal `maz:` prefix |
 | `tailwind-v3` | warning | `bg-opacity-50`, `flex-shrink-0`... |
 | `missing-reference` | error | `@apply` in a SFC style block without `@reference` |

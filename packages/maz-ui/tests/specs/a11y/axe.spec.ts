@@ -490,6 +490,15 @@ const cases: AxeCase[] = [
   },
   { name: 'MazInputPhoneNumber', component: components.MazInputPhoneNumber },
   {
+    name: 'MazInputPhoneNumber (invalid with assistive text)',
+    component: components.MazInputPhoneNumber,
+    props: {
+      modelValue: '0612',
+      countryCode: 'FR',
+      assistiveText: 'Your mobile phone number',
+    },
+  },
+  {
     name: 'MazSidebar',
     component: {
       components: {

@@ -18,6 +18,7 @@ export default {
     selectAll: 'Seleccionar todas las filas',
     selectRow: 'Seleccionar fila',
     removeFile: 'Eliminar archivo',
+    remove: 'Eliminar',
     sidebar: 'Barra lateral',
     openSidebar: 'Abrir la barra lateral',
     closeSidebar: 'Cerrar la barra lateral',
@@ -66,6 +67,12 @@ export default {
   },
   select: {
     searchPlaceholder: 'Buscar',
+  },
+  inputAutocomplete: {
+    noResults: 'Sin resultados',
+    loading: 'Cargando...',
+    error: 'Se produjo un error, inténtalo de nuevo',
+    results: 'Resultados: {count}',
   },
   table: {
     noResults: 'Sin resultados',
@@ -122,6 +129,17 @@ export default {
   codeHighlight: {
     copyToClipboard: 'Copiar al portapapeles',
     copiedToClipboard: 'Copiado al portapapeles',
+    scrollToBottom: 'Desplazarse al final',
+  },
+  colorPicker: {
+    openPicker: 'Abrir el selector de color',
+    area: 'Saturación y brillo',
+    areaValue: 'Saturación {saturation} %, brillo {brightness} %',
+    hue: 'Tono',
+    alpha: 'Opacidad',
+    eyeDropper: 'Tomar un color de la pantalla',
+    swatches: 'Colores predefinidos',
+    selectSwatch: 'Seleccionar {color}',
   },
   windowMockup: {
     copyUrlToClipboard: 'Copiar URL al portapapeles',

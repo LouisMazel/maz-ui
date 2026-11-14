@@ -1,5 +1,22 @@
 # Change Log
 
+## @maz-ui/eslint-config@5.6.0-beta.0 (2026-11-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/eslint-config@5.5.0...@maz-ui/eslint-config@5.6.0-beta.0)
+
+### 🚀 Features
+
+- **eslint-config:** Read noArbitraryPx.baseFontSize from a CSS size or a theme preset ([9f7f409e5](https://github.com/LouisMazel/maz-ui/commit/9f7f409e5))
+
+  - `tailwindcss.noArbitraryPx.baseFontSize` accepts a number of pixels, a CSS size in px (`'13px'`) or a `@maz-ui/themes` preset whose `foundation['base-font-size']` is read
+  - Set it to the root font size of your theme: with a 13px preset, `34px` becomes `2.615rem` instead of `2.125rem`
+  - An invalid value (`'1rem'`, `0`, a preset without `base-font-size`) throws a configuration error instead of producing wrong fixes
+  - The `maz/tailwind-no-arbitrary-px` message shows the root font size used
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## @maz-ui/eslint-config@5.5.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/eslint-config@5.4.0...@maz-ui/eslint-config@5.5.0)

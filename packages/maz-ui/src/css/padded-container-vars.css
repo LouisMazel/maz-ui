@@ -1,37 +1,25 @@
 @import '../tailwindcss/theme-breakpoints.css';
 
+/*
+ * Variables of the `padded-container` utilities (maz-ui/tailwindcss/utilities.css).
+ *
+ * The side padding is `--maz-container-padding-value`: mobile by default,
+ * tablet from `mob-l`, desktop from `lap-s` of the viewport. Inside a
+ * `@container` ancestor, the utility switches it on the width of that
+ * container instead. The content stops growing at `--maz-container-max-width`.
+ *
+ * `--maz-container-width` and `--maz-container-padding` are kept for the custom
+ * CSS that reads them: the utilities no longer use them.
+ */
 @layer theme {
   :root {
     --maz-container-padding-mobile: 1rem;
     --maz-container-padding-tablet: 2rem;
     --maz-container-padding-desktop: 2.5rem;
     --maz-container-padding-value: var(--maz-container-padding-mobile);
-    --maz-container-width: calc(100% - var(--maz-container-padding-value) * 2);
-    --maz-container-padding: calc(50% - var(--maz-container-width) / 2);
     --maz-container-max-width: 1440px;
-  }
-
-  /* .maz-padded-container {
-  width: 100%;
-  padding-left: var(--maz-container-padding);
-  padding-right: var(--maz-container-padding);
-
-  &.-no-p {
-    padding-left: calc(50% - var(--maz-container-max-width) / 2);
-    padding-right: calc(50% - var(--maz-container-max-width) / 2);
-  }
-} */
-
-  /*
-  Info: 2.5rem = 40px
-  ---
-  1520px = max-width + (padding-desktop * 2)
-  1520px = 1440px + (2.5rem * 2)
-*/
-  @media only screen and (width >= 1520px) {
-    :root {
-      --maz-container-width: var(--maz-container-max-width);
-    }
+    --maz-container-width: min(calc(100% - var(--maz-container-padding-value) * 2), var(--maz-container-max-width));
+    --maz-container-padding: max(var(--maz-container-padding-value), calc((100% - var(--maz-container-max-width)) / 2));
   }
 
   :root {

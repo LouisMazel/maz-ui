@@ -10,6 +10,9 @@ export const colors = [
   'transparent',
 ] as const
 
+/** The neutral colors of the theme: `surface` (background of the page) and `container` (background of the cards, panels and fields) */
+export const neutralColors = ['surface', 'container'] as const
+
 export const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 
 export const SIZE_TEXT_CLASS = {

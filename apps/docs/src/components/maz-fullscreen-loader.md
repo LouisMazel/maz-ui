@@ -11,6 +11,7 @@ description: MazFullscreenLoader covers the whole page with a backdrop and a spi
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazFullscreenLoader v-if="showLoader" @click="showLoader = false">
   <p class="maz:text-lg maz:text-surface">
     Loading...
@@ -19,10 +20,13 @@ description: MazFullscreenLoader covers the whole page with a backdrop and a spi
     (click to hide loader)
   </p>
 </MazFullscreenLoader>
+</div>
 
+<div class="vp-raw">
 <MazBtn @click="showLoader = true">
   Show loader
 </MazBtn>
+</div>
 
 ```vue
 <script lang="ts" setup>

@@ -216,7 +216,7 @@ function onClose(value: void) {
               <h2
                 v-if="hasTitle"
                 :id="titleId"
-                class="m-bottom-sheet__title maz:my-0 maz:truncate maz:font-display maz:text-lg maz:font-semibold"
+                class="m-bottom-sheet__title maz:my-0 maz:truncate maz:text-title-3"
               >
                 <!--
                   @slot Title slot in the header

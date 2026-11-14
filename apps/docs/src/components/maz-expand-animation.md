@@ -52,6 +52,7 @@ const visible = ref(false)
 
 - **duration**: `String` - default: `300ms` - Duration of the animation in ms
 - **timing-function**: `String` - default: `ease-in-out` - Timing function of the animation
+- **lazy**: `Boolean` - default: `false` - Render the content at the first opening only (see [Lazy content](#lazy-content))
 
 <ComponentDemo>
   <MazBtn @click="visible2 = !visible2"> Exec animation </MazBtn>
@@ -89,6 +90,18 @@ const visible = ref(false)
 
   </template>
 </ComponentDemo>
+
+## Lazy content
+
+The content is always rendered, even closed. Add `lazy` to render it at the first opening only: it is then kept mounted, so the closing animation still works. The default stays unchanged.
+
+```vue
+<template>
+  <MazExpandAnimation v-model="visible" lazy>
+    <HeavyContent />
+  </MazExpandAnimation>
+</template>
+```
 
 <script setup lang="ts">
   import { ref } from 'vue'

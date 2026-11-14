@@ -13,6 +13,7 @@ Useful to know if the user is displaying your website
 
 ## Demo
 
+<div class="vp-raw">
 <MazCard overflow-hidden style="width: 100%; margin-bottom: 1rem;">
   <h3 style="margin-top: 0; margin-bottom: 1rem;">Logs</h3>
 
@@ -20,8 +21,9 @@ Useful to know if the user is displaying your website
     isVisible: {{isVisible}}
   </div>
 </MazCard>
+</div>
 
-<div class="flex items-start gap-05 items-center flex-wrap">
+<div class="vp-raw flex items-start gap-05 items-center flex-wrap">
   <MazBtn @click="userVisibility.start()" color="info">
     Start
   </MazBtn>

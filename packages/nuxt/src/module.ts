@@ -5,15 +5,17 @@ import { createRequire } from 'node:module'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { detectAgentTargets, findProjectPackage, readPackageVersion, resolveAgentDocsDir, setupAgents } from '@maz-ui/node'
+import { readPackageVersion, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
-import { addCustomTab } from '@nuxt/devtools-kit'
+import { MazUiPurgeCss } from '@maz-ui/vite-plugin'
+import { onDevtoolsReady } from '@nuxt/devtools-kit'
 import {
   addComponent,
   addImports,
   addPlugin,
   addTemplate,
+  addVitePlugin,
   createResolver,
   defineNuxtModule,
   resolvePath,
@@ -47,7 +49,7 @@ type ComponentNames = keyof typeof import('maz-ui/components')
 
 const COMPONENT_NAMES: Omit<
   Record<ComponentNames, true>,
-  'useMazDialogConfirm' | 'mazSidebarKey'
+  'useMazDialogConfirm' | 'mazSidebarKey' | 'mazListKey'
 > = {
   MazAccordion: true,
   MazAlert: true,
@@ -60,6 +62,7 @@ const COMPONENT_NAMES: Omit<
   MazBottomSheet: true,
   MazBtn: true,
   MazBtnGroup: true,
+  MazBtnDropdown: true,
   MazCard: true,
   MazCardSpotlight: true,
   MazCarousel: true,
@@ -69,6 +72,7 @@ const COMPONENT_NAMES: Omit<
   MazContainer: true,
   MazCircularProgressBar: true,
   MazCodeHighlight: true,
+  MazColorPicker: true,
   MazDialog: true,
   MazDialogConfirm: true,
   MazDrawer: true,
@@ -78,7 +82,9 @@ const COMPONENT_NAMES: Omit<
   MazFullscreenLoader: true,
   MazGallery: true,
   MazIcon: true,
+  MazIndicator: true,
   MazInput: true,
+  MazInputAutocomplete: true,
   MazInputCode: true,
   MazInputNumber: true,
   MazInputPhoneNumber: true,
@@ -86,10 +92,13 @@ const COMPONENT_NAMES: Omit<
   MazInputTags: true,
   MazLazyImg: true,
   MazLink: true,
+  MazList: true,
+  MazListItem: true,
   MazLoadingBar: true,
   MazMarkdownEditor: true,
   MazPagination: true,
   MazDatePicker: true,
+  MazProgressBar: true,
   MazPullToRefresh: true,
   MazRadio: true,
   MazRadioButtons: true,
@@ -101,6 +110,7 @@ const COMPONENT_NAMES: Omit<
   MazSlider: true,
   MazSpinner: true,
   MazStepper: true,
+  MazSegmented: true,
   MazSwitch: true,
   MazSidebar: true,
   MazSidebarMenu: true,
@@ -140,11 +150,13 @@ const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDial
   useIdleTimeout: true,
   useDrag: true,
   useReadingTime: true,
+  useRelativeTime: true,
   useFormField: true,
   useWindowSize: true,
   useBreakpoints: true,
   useUserVisibility: true,
   useStringMatching: true,
+  useFuzzySearch: true,
   useTimer: true,
   useFormValidator: true,
   useDisplayNames: true,
@@ -168,6 +180,8 @@ const defaults = {
   },
   css: {
     injectCss: true,
+    injectUtilities: false,
+    purge: true,
   },
   theme: {
     preset: 'maz-ui',
@@ -226,15 +240,6 @@ function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult
   return messages.join(' ')
 }
 
-/** Version of the `@maz-ui/mcp` installed for the app, pinned in the `npx` command when the project root does not install it */
-function installedMcpVersion(rootDir: string): string | undefined {
-  const mcpDir = findProjectPackage(rootDir, '@maz-ui/mcp')
-
-  return mcpDir
-    ? readPackageVersion(mcpDir)
-    : undefined
-}
-
 /** Version of the maz-ui that Node.js resolves from a file, `undefined` when it does not resolve */
 function resolveMazUiVersion(from: string): string | undefined {
   try {
@@ -277,24 +282,18 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
     const projectDir = dir
       ? resolve(rootDir, dir)
       : (workspaceDir || rootDir)
-    const targets = requestedTargets ?? detectAgentTargets(projectDir)
 
-    if (targets.length === 0 || (!rules && !mcp))
+    if (!rules && !mcp)
       return
 
-    const mazUiDir = findProjectPackage(rootDir, 'maz-ui')
+    // The maz-ui and the @maz-ui/mcp of the app give the rules and the version pinned in the npx command
     const result = setupAgents({
       rootDir: projectDir,
-      targets,
+      appDir: rootDir,
+      targets: requestedTargets,
       rules,
       mcp,
       paths,
-      mcpVersion: installedMcpVersion(rootDir),
-      ...(mazUiDir
-        ? {
-            docsDir: resolveAgentDocsDir(mazUiDir),
-          }
-        : {}),
     })
     const applied = result.changes.filter(change => ['create', 'update', 'remove'].includes(change.action))
 
@@ -305,6 +304,17 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
   catch (error) {
     logger.warn(`Could not configure the AI agents for maz-ui: ${getErrorMessage(error)}`)
   }
+}
+
+/** The entries of maz-ui the plugins and directives enabled in the options install */
+function getModuleEntries(options: { plugins: NonNullable<MazUiNuxtOptions['plugins']>, directives: NonNullable<MazUiNuxtOptions['directives']> }): string[] {
+  const plugins = Object.entries(options.plugins).filter(([, enabled]) => enabled).map(([name]) => `plugins/${name}`)
+  const directives = Object.entries(options.directives).filter(([, enabled]) => enabled).map(([name]) => `directives/${name}`)
+
+  return [
+    ...plugins,
+    ...directives,
+  ]
 }
 
 function addMazUiComposableImport({
@@ -367,8 +377,27 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // CSS
 
+    if (moduleOptions.css.injectUtilities) {
+      nuxt.options.css.unshift('maz-ui/utilities.css')
+    }
+
     if (moduleOptions.css.injectCss) {
       nuxt.options.css.unshift('maz-ui/style.css')
+    }
+
+    if (moduleOptions.css.purge !== false && !nuxt.options.dev) {
+      const purgeOptions = typeof moduleOptions.css.purge === 'object'
+        ? moduleOptions.css.purge
+        : {}
+
+      addVitePlugin(MazUiPurgeCss({
+        ...purgeOptions,
+        // The plugins and directives of the module are installed from node_modules, where the purge does not look
+        entries: [
+          ...getModuleEntries(moduleOptions),
+          ...(purgeOptions.entries ?? []),
+        ],
+      }))
     }
 
     // cssnano's `postcss-calc` cannot parse the relative OKLCh values maz-ui
@@ -540,14 +569,14 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // Devtools
     if (moduleOptions.general.devtools) {
-      addCustomTab({
-        name: 'maz-ui',
-        title: 'maz-ui',
-        icon: 'https://maz-ui.com/img/icons/android-chrome-512x512.png',
-        view: {
+      onDevtoolsReady((ctx) => {
+        ctx.docks.register({
+          id: 'maz-ui',
           type: 'iframe',
-          src: 'https://maz-ui.com',
-        },
+          title: 'maz-ui',
+          icon: 'https://maz-ui.com/img/icons/android-chrome-512x512.png',
+          url: 'https://maz-ui.com',
+        })
       })
     }
   },

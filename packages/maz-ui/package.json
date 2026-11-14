@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "5.6.0",
+  "version": "5.7.0-beta.6",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -128,6 +128,7 @@
     "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",
     "./tailwindcss/theme-spacing.css": "./src/tailwindcss/theme-spacing.css",
     "./tailwindcss/theme-breakpoints.css": "./src/tailwindcss/theme-breakpoints.css",
+    "./tailwindcss/theme-containers.css": "./src/tailwindcss/theme-containers.css",
     "./tailwindcss/theme-shadows.css": "./src/tailwindcss/theme-shadows.css",
     "./tailwindcss/theme-z-index.css": "./src/tailwindcss/theme-z-index.css",
     "./tailwindcss/theme-typography.css": "./src/tailwindcss/theme-typography.css",
@@ -144,6 +145,8 @@
       "monorepo:dev": "./src/tailwindcss/tailwind.css",
       "default": "./dist/css/main.css"
     },
+    "./utilities.css": "./dist/css/utilities.css",
+    "./purge-manifest.json": "./dist/css/purge-manifest.json",
     "./aos.css": {
       "monorepo:dev": "./src/plugins/aos/scss/index.scss",
       "default": "./dist/css/aos.css"
@@ -155,9 +158,7 @@
     "README.md",
     "agent-docs",
     "dist",
-    "src/tailwindcss",
-    "svg",
-    "tailwindcss"
+    "src/tailwindcss"
   ],
   "engines": {
     "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
@@ -228,7 +229,7 @@
     "dayjs": "catalog:",
     "dompurify": "^3.4.17",
     "libphonenumber-js": "catalog:",
-    "marked": "^18.1.3"
+    "marked": "^18.2.0"
   },
   "devDependencies": {
     "@codecov/vite-plugin": "catalog:",
@@ -236,7 +237,8 @@
     "@maz-ui/node": "workspace:^",
     "@maz-ui/stylelint-config": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
-    "@tailwindcss/cli": "^4.3.4",
+    "@maz-ui/vite-plugin": "workspace:^",
+    "@tailwindcss/cli": "^4.3.5",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@types/node": "catalog:",
@@ -248,12 +250,12 @@
     "cross-env": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",
-    "jsdom": "^30.1.3",
+    "jsdom": "^31.0.0",
     "lightningcss": "^1.33.0",
     "nuxt": "catalog:",
     "postcss": "catalog:",
     "postcss-nested": "catalog:",
-    "sass": "^1.107.1",
+    "sass": "^1.108.2",
     "shiki": "catalog:",
     "stylelint": "catalog:",
     "tailwindcss": "catalog:",

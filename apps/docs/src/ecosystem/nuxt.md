@@ -125,7 +125,7 @@ export default defineNuxtConfig({
 
     // Theming System
     theme: {
-      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | 'folio' | custom object
+      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | 'folio' | 'macos' | 'windows' | 'linux' | custom object
       strategy: 'runtime', // 'runtime' | 'buildtime'
       darkModeStrategy: 'class', // 'class' | 'media'
       darkClass: 'dark', // class on <html> when colorMode === 'dark' (default: 'dark')
@@ -228,6 +228,25 @@ const general = {
 const css = {
   // Auto-inject Maz-UI base styles
   injectCss: true,
+
+  // Inject `maz-ui/utilities.css`: the maz-ui utilities (text-title-1, rich-text, padded-container, flex-center...)
+  // for projects WITHOUT Tailwind CSS. Keep it false with Tailwind and `maz-ui/tailwindcss/utilities.css`
+  injectUtilities: false,
+
+  // Remove from the CSS of maz-ui the rules of the components, plugins, directives and utilities the app does not use
+  // (build only). false disables it, an object sets the options (content, entries, safelist, report)
+  purge: true,
+}
+```
+
+`css.purge` adds [`@maz-ui/vite-plugin`](./vite-plugin.md) at build time, with the entries of the enabled `plugins` and `directives` of the module. On a Nuxt app of 2 pages (MazBtn, MazCard, MazBadge, LazyMazAccordion, MazInput, MazCheckbox, the toast plugin and vTooltip, `nuxi generate`), the CSS files go from 122.3 kB (21.0 kB gzip) to 78.6 kB (14.8 kB gzip), which is -36%. The gain depends on your app. To keep components the purge cannot find (names built at runtime, dependencies), pass the options of the plugin:
+
+```ts
+css: {
+  purge: {
+    entries: ['MazDialog'],
+    safelist: [/^rich-text/],
+  },
 }
 ```
 
@@ -275,7 +294,7 @@ const theme = {
   darkClass: 'dark',
 
   // Class added to <html> when colorMode === 'light' (default: 'light')
-  // Mirror of darkClass — used to force `color-scheme: only light`.
+  // Mirror of darkClass: used to force `color-scheme: only light`.
   lightClass: 'light',
 
   // Persist the active preset name in the `maz-preset` cookie so the

@@ -8,9 +8,8 @@ import { MazMagnifyingGlass } from '@maz-ui/icons/lazy/MazMagnifyingGlass'
 import { MazNoSymbol } from '@maz-ui/icons/lazy/MazNoSymbol'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { normalizeString } from '@maz-ui/utils/helpers/normalizeString'
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, shallowRef, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { useStringMatching } from '../composables/useStringMatching'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 import MazCheckbox from './MazCheckbox.vue'
@@ -51,8 +50,9 @@ export interface MazChecklistProps<T, O> {
    */
   search?: boolean | MazInputProps<string>
   /**
-   * The options to normalize the search query (used by the default search function)
-   * By default, the threshold is 0.75
+   * The options to normalize the query given to `searchFunction`. `threshold` is the tolerance of the default search to
+   * typos: the minimal similarity (from 0 to 1) of a whole item with the query, `1` disables it (default 0.75). The
+   * default search always ignores the case and the accents.
    */
   searchOptions?: NormalizeStringOptions & {
     threshold?: number
@@ -125,40 +125,46 @@ const messages = computed<MazUiTranslationsNestedSchema['checklist']>(() => ({
   },
 }))
 
+type FuzzySearchModule = typeof import('@maz-ui/utils/helpers/fuzzySearch')
+
+/** The search engine is loaded with the search input */
+const fuzzySearchModule = shallowRef<FuzzySearchModule>()
+
+watch(() => !!search, async (enabled) => {
+  if (enabled && !fuzzySearchModule.value) {
+    fuzzySearchModule.value = await import('@maz-ui/utils/helpers/fuzzySearch')
+  }
+}, { immediate: true })
+
+const itemsSearch = computed(() => fuzzySearchModule.value?.createFuzzySearch(items ?? [], {
+  keys: [
+    item => item.label,
+    {
+      key: item => item.value,
+      weight: 0.8,
+    },
+  ],
+  typoThreshold: searchOptions?.threshold,
+}))
+
+function searchInValue(value: unknown, query: string) {
+  return (typeof value === 'string' || typeof value === 'number') && normalizeString(value).includes(normalizeString(query))
+}
+
 const filteredItems = computed(() => {
   if (!internalQuery.value || !search) {
     return items
   }
 
-  const normalizedQuery = normalizeString(internalQuery.value, searchOptions)
-  return searchFunction
-    ? searchFunction(normalizedQuery, items ?? [])
-    : getFilteredOptionWithQuery(normalizedQuery)
+  if (searchFunction) {
+    return searchFunction(normalizeString(internalQuery.value, searchOptions), items ?? [])
+  }
+
+  const query = internalQuery.value
+
+  return itemsSearch.value?.search(query).map(result => result.item)
+    ?? items?.filter(({ label, value }) => searchInValue(label, query) || searchInValue(value, query))
 })
-
-function searchInValue(value?: string, query?: string) {
-  return query && value && normalizeString(value).includes(normalizeString(query))
-}
-
-function getFilteredOptionWithQuery(query: string) {
-  return items?.filter(({ label, value }) => {
-    const threshold = searchOptions?.threshold
-
-    const normalizedQuery = normalizeString(query, searchOptions)
-
-    const searchLabel = normalizeString(label, searchOptions)
-    const searchValue = normalizeString(value, searchOptions)
-
-    return (
-      searchInValue(searchLabel, normalizedQuery)
-      || searchInValue(searchValue, normalizedQuery)
-      || (typeof searchLabel === 'string'
-        && useStringMatching(searchLabel, normalizedQuery, threshold).isMatching.value)
-      || (typeof searchValue === 'string'
-        && useStringMatching(searchValue, normalizedQuery, threshold).isMatching.value)
-    )
-  })
-}
 
 function updateQuery(value?: string) {
   internalQuery.value = value
@@ -170,7 +176,7 @@ function updateQuery(value?: string) {
   <div class="m-checklist m-reset-css maz:flex maz:flex-col maz:gap-4">
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label :for="search ? `${id}-query` : undefined" class="search-label maz:flex maz:items-center maz:justify-between maz:gap-4">
-      <span v-if="hasSlotContent($slots.title) || title" class="title maz:flex-none maz:truncate">
+      <span v-if="hasSlotContent($slots.title) || title" class="title maz:flex-none maz:truncate maz:type-title-4">
         <!-- @slot use this slot to customize the title -->
         <slot name="title">
           {{ title }}
@@ -215,7 +221,7 @@ function updateQuery(value?: string) {
         v-for="(item) of filteredItems"
         :key="item.value"
         :for="`${id}-checklist-item-${item.value}`"
-        class="m-checklist-item m-reset-css maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-4 maz:rounded-md maz:px-3 maz:py-2 maz:text-start maz:hover:bg-surface-600"
+        class="m-checklist-item m-reset-css maz:flex maz:w-full maz:cursor-interactive maz:items-center maz:gap-4 maz:rounded-md maz:px-3 maz:py-2 maz:text-start maz:hover:bg-surface-600"
       >
         <MazCheckbox
           :id="`${id}-checklist-item-${item.value}`"
@@ -245,6 +251,6 @@ function updateQuery(value?: string) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-checklist :deep(.card-content) {
-  @apply maz:flex maz:flex-col maz:gap-2 maz:overflow-y-auto maz:bg-surface maz:px-3 maz:py-2;
+  @apply maz:flex maz:flex-col maz:gap-2 maz:overflow-y-auto maz:scrollbar-themed maz:bg-surface maz:px-3 maz:py-2;
 }
 </style>

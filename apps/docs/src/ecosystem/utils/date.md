@@ -9,7 +9,9 @@ description: The module formatDate is a function that formats dates with the nat
 
 > This module use the native api [Intl.DateTimeFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) from browsers
 
+<div class="vp-raw">
 <MazInput v-model="dateValue" type="date" />
+</div>
 
 <div
   style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"

@@ -1,5 +1,81 @@
 # Change Log
 
+## v5.7.0-beta.6 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)
+
+No relevant changes since last release
+
+## v5.7.0-beta.5 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.4...v5.7.0-beta.5)
+
+No relevant changes since last release
+
+## v5.7.0-beta.4 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.3...v5.7.0-beta.4)
+
+No relevant changes since last release
+
+## v5.7.0-beta.3 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.2...v5.7.0-beta.3)
+
+### 📦 Build
+
+- **deps:** Update 3 dependencies (major) ([13e9990eb](https://github.com/LouisMazel/maz-ui/commit/13e9990eb))
+
+  - @nuxt/devtools ^3.4.4 -> ^4.1.0
+  - @nuxt/devtools-kit ^3.4.4 -> ^4.1.0
+  - jsdom ^30.1.3 -> ^31.0.0
+
+  Code adapted to the new versions by an AI agent (Claude Code), then checked by the project's checks.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.7.0-beta.2 (2026-11-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.1...v5.7.0-beta.2)
+
+### 💅 Refactors
+
+- **nuxt:** Let setupAgents resolve the agents, the rules and the MCP version of the app ([0ce969446](https://github.com/LouisMazel/maz-ui/commit/0ce969446))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.7.0-beta.1 (2026-11-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.0...v5.7.0-beta.1)
+
+### 🚀 Features
+
+- **nuxt:** Purge the unused CSS of maz-ui and auto-import the new components ([3278e4bd7](https://github.com/LouisMazel/maz-ui/commit/3278e4bd7))
+
+  - `css.purge` (default `true`) adds `MazUiPurgeCss` of `@maz-ui/vite-plugin` to the production builds, with the enabled plugins and directives as entries. Set `false` to disable it, or an object for its options (`safelist`, `entries`) when components are resolved at runtime from strings
+  - `css.injectUtilities` (default `false`) injects `maz-ui/utilities.css`
+  - Auto-import of `MazInputAutocomplete`, `MazColorPicker`, `MazIndicator`, `MazList`, `MazListItem`, `MazProgressBar`, `MazSegmented` and `useFuzzySearch`
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.7.0-beta.0 (2026-11-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)
+
+### 🚀 Features
+
+- **nuxt:** Auto-import the useRelativeTime composable ([f636e114c](https://github.com/LouisMazel/maz-ui/commit/f636e114c))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.6.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...v5.6.0)

@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/nuxt",
   "type": "module",
-  "version": "5.6.0",
+  "version": "5.7.0-beta.6",
   "description": "Nuxt module for Maz-UI",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -78,7 +78,8 @@
     "@maz-ui/themes": "workspace:^",
     "@maz-ui/translations": "workspace:^",
     "@maz-ui/utils": "workspace:^",
-    "@nuxt/devtools-kit": "^3.4.4",
+    "@maz-ui/vite-plugin": "workspace:^",
+    "@nuxt/devtools-kit": "^4.1.0",
     "@nuxt/kit": "^4.6.4",
     "defu": "^6.1.7",
     "maz-ui": "workspace:^"
@@ -86,9 +87,9 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
     "@nuxt/devtools": "catalog:",
-    "@nuxt/module-builder": "^1.0.3",
+    "@nuxt/module-builder": "^1.0.4",
     "@nuxt/schema": "^4.6.4",
-    "@nuxt/test-utils": "^4.3.4",
+    "@nuxt/test-utils": "^4.4.0",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",
