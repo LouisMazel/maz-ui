@@ -26,9 +26,10 @@ function getPublishablePackages(cwd: string): PublishedPackage[] {
 /**
  * Builds the packages the release publishes (and their dependencies, `dependsOn: ['^build']`), after the bump: the
  * builds and the docs bundled for AI agents get the released version. Without a release (`relizy publish`), every
- * package. Fails before the publication when a published file is missing.
+ * package. Fails before the publication when a published file is missing. Also in dry run: `pnpm publish --dry-run`
+ * still runs the `prepack` scripts, which need the built packages (a fresh clone or worktree has none).
  */
-export function buildPublishedPackages(cwd: string, dryRun: boolean, context?: HookContext) {
+export function buildPublishedPackages(cwd: string, context?: HookContext) {
   const publishable = getPublishablePackages(cwd)
   const released = context?.release.groups.flatMap(group => group.packages).map(pkg => pkg.name)
   const packages = released
@@ -39,11 +40,6 @@ export function buildPublishedPackages(cwd: string, dryRun: boolean, context?: H
     return
 
   const names = packages.map(pkg => pkg.name)
-
-  if (dryRun) {
-    console.warn(`[dry-run] build of ${names.join(', ')}`)
-    return
-  }
 
   // eslint-disable-next-line sonarjs/no-os-command-from-path -- the pnpm of the release job, like the scripts of the repository
   execFileSync('pnpm', [

@@ -76,7 +76,7 @@ export default defineConfig({
   },
 
   hooks: {
-    'before:publish': (config, dryRun, context) => buildPublishedPackages(config.cwd, dryRun, context),
+    'before:publish': (config, _dryRun, context) => buildPublishedPackages(config.cwd, context),
   },
 
   commitlint: {
