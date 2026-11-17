@@ -340,9 +340,6 @@ importers:
 
   apps/docs:
     dependencies:
-      '@maz-ui/eslint-config':
-        specifier: workspace:^
-        version: link:../../packages/eslint-config
       '@maz-ui/icons':
         specifier: workspace:^
         version: link:../../packages/icons
@@ -383,6 +380,9 @@ importers:
         specifier: 'catalog:'
         version: 4.6.7
     devDependencies:
+      '@maz-ui/eslint-config':
+        specifier: workspace:^
+        version: link:../../packages/eslint-config
       '@maz-ui/vite-config':
         specifier: workspace:^
         version: link:../../tools/vite-config

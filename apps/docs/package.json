@@ -22,7 +22,6 @@
     "generate:docs": "tsx ../../tools/agent-docs/src/cli.ts --vitepress ./.vitepress/generated-docs --site ./.vitepress/agent-docs"
   },
   "dependencies": {
-    "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/icons": "workspace:^",
     "@maz-ui/node": "workspace:^",
     "@maz-ui/themes": "workspace:^",
@@ -38,6 +37,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
     "@samkirkland/ftp-deploy": "^1.2.5",
     "@tailwindcss/postcss": "catalog:",
