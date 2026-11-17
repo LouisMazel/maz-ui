@@ -29,6 +29,13 @@ describe('MazLink component', () => {
     })
   })
 
+  it('it follows the text alignment of its parent, even rendered as a button (browsers center the text of a button)', async () => {
+    await wrapper.setProps({ as: 'button' })
+
+    expect(wrapper.element.tagName).toBe('BUTTON')
+    expect(wrapper.classes()).toContain('maz:[text-align:inherit]')
+  })
+
   it('it renders the component correctly', async () => {
     await wrapper.setProps({ href: 'https://www.google.com' })
 
