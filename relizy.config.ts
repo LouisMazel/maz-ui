@@ -85,6 +85,15 @@ export default defineConfig({
     scopes: ['clean', 'deps', 'release'],
   },
 
+  sync: {
+    rules: [
+      {
+        from: 'main',
+        to: ['develop'],
+      },
+    ],
+  },
+
   social: {
     changelogUrl: 'https://maz-ui.com/changelog',
     twitter: { enabled: true },
