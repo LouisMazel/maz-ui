@@ -92,6 +92,7 @@ defaults: {
 | `size` | `MazSize` (`'mini' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`) | `MazBtn`, `MazBtnGroup`, `MazBtnDropdown`, `MazBadge`, `MazInput`, `MazSelect`, `MazSelectCountry`, `MazInputNumber`, `MazInputTags`, `MazInputPhoneNumber`, `MazCheckbox`, `MazRadio`, `MazRadioButtons`, `MazDropdown`, `MazPagination`, `MazTable`, `MazTimeline`, `MazSegmented`, `MazCodeHighlight` |
 | `bordered`, `elevation`, `padding`, `transparent`, `overflowHidden` | `boolean` | `MazContainer` |
 | `bordered`, `elevation`, `padding`, `radius`, `scale`, `overflowHidden` | `boolean` | `MazCard` |
+| `as`, `maxWidth`, `fullBleed`, `container` | `MazPageSectionTag`, `string \| number`, `boolean`, `boolean` | `MazPageSection` |
 | `lightTheme`, `darkTheme`, `theme` (shiki theme names), `colorMode` (`'auto' \| 'light' \| 'dark'`), `rounded`, `copyable`, `wrap`, `hideLanguage` | `string`, `boolean` | `MazCodeHighlight` (see [defaults for the whole app](../components/maz-code-highlight.md#defaults-for-the-whole-app)) |
 
 ::: tip Note

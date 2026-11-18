@@ -61,6 +61,10 @@ export const components = {
           text: withNewBadge('List'),
           link: '/components/maz-list',
         },
+        {
+          text: withNewBadge('PageSection'),
+          link: '/components/maz-page-section',
+        },
         { text: 'ReadMore', link: '/components/maz-read-more' },
       ],
     },
