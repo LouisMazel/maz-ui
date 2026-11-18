@@ -90,9 +90,7 @@
         "import": "./dist/icon-list.js",
         "default": "./dist/icon-list.js"
       },
-      "./svg/*": "./svg/*",
-      "./flags/*": "./flags/*",
-      "./logos/*": "./logos/*"
+      "./svg/*": "./svg/*"
     }
   },
   "exports": {
@@ -164,9 +162,7 @@
       "import": "./dist/icon-list.js",
       "default": "./dist/icon-list.js"
     },
-    "./svg/*": "./svg/*",
-    "./flags/*": "./flags/*",
-    "./logos/*": "./logos/*"
+    "./svg/*": "./svg/*"
   },
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -175,9 +171,7 @@
     "README.md",
     "agent-docs",
     "dist",
-    "flags",
     "icon-names.json",
-    "logos",
     "svg"
   ],
   "engines": {
