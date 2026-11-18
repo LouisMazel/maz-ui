@@ -275,6 +275,8 @@ The breakpoint names also exist as **container sizes** (`maz-ui/tailwindcss/them
 </section>
 ```
 
+In Vue, [`MazPageSection`](./../components/maz-page-section.md) renders this class for you (`<MazPageSection as="header">`), without `maz-ui/tailwindcss/utilities.css`.
+
 `padded-container-no-p` centers the content on the same column without the minimum side padding: for full-bleed children (a carousel, an image) aligned with the rest of the page.
 
 **Inside a container**: the side padding follows the viewport by default. Inside an `@container` ancestor, it follows the width of that container instead, so a layout with a sidebar keeps the right gutter:

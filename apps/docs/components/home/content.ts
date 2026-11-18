@@ -222,6 +222,12 @@ export const NEW_MODULES: HomeModule[] = [
     link: '/components/maz-list',
   },
   {
+    name: 'MazPageSection',
+    kind: 'Component',
+    description: 'Full-width page band with responsive side padding and centered content.',
+    link: '/components/maz-page-section',
+  },
+  {
     name: 'MazSegmented',
     kind: 'Component',
     description: 'Segmented control with a sliding indicator and keyboard navigation.',

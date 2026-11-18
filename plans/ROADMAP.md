@@ -80,3 +80,11 @@ En v6 :
 - [ ] Passer le défaut de `loading` à `'lazy'`.
 - [ ] Retirer `'intersecting'`, les événements `loading` et `intersecting` et la prop `hideLoader`.
 - [ ] Note dans le guide de migration.
+
+### Variables de `padded-container` hors de `style.css`
+
+`css/padded-container-vars.css` est dans `maz-ui/style.css`, même sans `padded-container` ni `MazPageSection`. Les utilitaires n'en dépendent plus (valeurs par défaut en fallback, padding calculé dans l'utilitaire).
+
+- [ ] Supprimer `css/padded-container-vars.css` : `--maz-container-padding-value`, `--maz-container-width` et `--maz-container-padding` disparaissent, et les variables surchargeables (`--maz-container-max-width`, `--maz-container-padding-<mobile|tablet|desktop>`) ne sont plus déclarées sur `:root` (lire `var(--maz-container-max-width)` dans un CSS custom demande un fallback).
+- [ ] `tools/agent-docs/src/sources/tokens.ts` lit les valeurs par défaut dans les fallbacks de `tailwindcss/utilities.css`.
+- [ ] À documenter dans le guide de migration.
