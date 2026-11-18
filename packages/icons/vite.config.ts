@@ -1,15 +1,18 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
 import { getExternalDependencies } from '@maz-ui/vite-config'
+import svgLoader from '@maz-ui/vite-svg-loader'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import SvgLoader from 'vite-svg-loader'
 
 import pkg from './package.json' with { type: 'json' }
 
-import { ViteGenerateIconsComponentsEntry } from './utils/ViteGenerateIconsComponentsEntry'
+import { generateIcons } from './utils/generateIcons'
+
+// Before the entries are listed: the variants of the icons are generated, not versioned
+generateIcons()
 
 function resolver(path: string) {
   return resolve(import.meta.dirname, path)
@@ -36,7 +39,7 @@ const moduleEntries = Object.fromEntries(
 export default defineConfig({
   plugins: [
     Vue(),
-    SvgLoader(),
+    svgLoader(),
     dts({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
@@ -44,7 +47,6 @@ export default defineConfig({
       // The build utilities of utils/ are typechecked, not published
       include: ['src'],
     }),
-    ViteGenerateIconsComponentsEntry(),
     codecovVitePlugin({
       enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
       bundleName: 'icons',
@@ -62,6 +64,7 @@ export default defineConfig({
         'index': resolver('./src/index.ts'),
         'resolvers': resolver('./src/resolvers.ts'),
         'icon-list': resolver('./src/icon-list.ts'),
+        'registry': resolver('./src/registry.ts'),
         'static/index': resolver('./src/static/index.ts'),
         'lazy/index': resolver('./src/lazy/index.ts'),
         'raw/index': resolver('./src/raw/index.ts'),

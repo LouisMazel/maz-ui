@@ -88,13 +88,23 @@
       "import": "./dist/resolvers.js",
       "default": "./dist/resolvers.js"
     },
+    "./registry": {
+      "monorepo:dev": "./src/registry.ts",
+      "types": "./dist/registry.d.ts",
+      "import": "./dist/registry.js",
+      "default": "./dist/registry.js"
+    },
+    "./icon-names.json": "./icon-names.json",
+    "./package.json": "./package.json",
     "./icon-list": {
       "monorepo:dev": "./src/icon-list.ts",
       "types": "./dist/icon-list.d.ts",
       "import": "./dist/icon-list.js",
       "default": "./dist/icon-list.js"
     },
-    "./svg/*": "./svg/*"
+    "./svg/*": "./svg/*",
+    "./flags/*": "./flags/*",
+    "./logos/*": "./logos/*"
   },
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -103,6 +113,9 @@
     "README.md",
     "agent-docs",
     "dist",
+    "flags",
+    "icon-names.json",
+    "logos",
     "svg"
   ],
   "engines": {
@@ -110,8 +123,9 @@
   },
   "scripts": {
     "build": "vite build && pnpm generate:agent-docs",
+    "generate": "node utils/generate.ts",
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/icons",
-    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck": "pnpm generate && tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix"
   },
@@ -133,6 +147,7 @@
     "@maz-ui/node": "workspace:^",
     "@maz-ui/utils": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
+    "@maz-ui/vite-svg-loader": "workspace:^",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "cross-env": "catalog:",
@@ -143,7 +158,6 @@
     "unplugin-vue-components": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
-    "vite-svg-loader": "catalog:",
     "vue": "catalog:"
   },
   "lint-staged": {
@@ -161,7 +175,13 @@
         ],
         "outputs": [
           "{projectRoot}/dist",
-          "{projectRoot}/agent-docs"
+          "{projectRoot}/agent-docs",
+          "{projectRoot}/icon-names.json",
+          "{projectRoot}/src/index.ts",
+          "{projectRoot}/src/icon-list.ts",
+          "{projectRoot}/src/static",
+          "{projectRoot}/src/lazy",
+          "{projectRoot}/src/raw"
         ]
       }
     }
