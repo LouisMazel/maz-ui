@@ -1,6 +1,28 @@
 import type { ResolverResult } from 'unplugin-auto-import/types'
 import { MazModulesResolver } from '@resolvers/MazModulesResolver'
 
+const exportsFiles: Record<string, unknown> = {
+  '@maz-ui/utils/exports.json': {
+    helpers: [
+      'IdleTimeout',
+      'capitalize',
+      'debounce',
+      'formatCurrency',
+      'isClient',
+      'sleep',
+    ],
+  },
+  'maz-ui/exports.json': {
+    components: ['MazBtn'],
+    composables: ['useBreakpoints', 'useTimer', 'useToast'],
+  },
+}
+
+vi.mock('node:module', async importOriginal => ({
+  ...await importOriginal<typeof import('node:module')>(),
+  createRequire: () => (id: string) => exportsFiles[id],
+}))
+
 describe('given MazModulesResolver', () => {
   describe('when resolver is created without options', () => {
     it('then it should return a resolver function', () => {
