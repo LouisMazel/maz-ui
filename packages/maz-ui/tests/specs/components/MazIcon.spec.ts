@@ -761,4 +761,40 @@ describe('MazIcon', () => {
       })
     })
   })
+
+  describe('given an SVG file with an XML prolog and a doctype', () => {
+    const PROLOG = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'
+
+    describe('when it is fetched from a URL', () => {
+      it('then its svg is rendered without the prolog', async () => {
+        globalThis.fetch = vi.fn().mockResolvedValue({
+          ok: true,
+          text: () => Promise.resolve(`${PROLOG}${RAW_SVG}`),
+        }) as unknown as typeof globalThis.fetch
+
+        const wrapper = mount(MazIcon, {
+          props: { icon: '/prolog/star.svg' },
+        })
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await nextTick()
+
+        expect(wrapper.html()).toContain('d="M0 0h24v24H0z"')
+        expect(wrapper.html()).not.toContain('DOCTYPE')
+      })
+    })
+
+    describe('when it is passed as a raw string', () => {
+      it('then its svg is rendered without the prolog and without request', () => {
+        globalThis.fetch = vi.fn() as unknown as typeof globalThis.fetch
+
+        const wrapper = mount(MazIcon, {
+          props: { icon: `${PROLOG}${RAW_SVG}` },
+        })
+
+        expect(globalThis.fetch).not.toHaveBeenCalled()
+        expect(wrapper.html()).toContain('d="M0 0h24v24H0z"')
+        expect(wrapper.html()).not.toContain('DOCTYPE')
+      })
+    })
+  })
 })

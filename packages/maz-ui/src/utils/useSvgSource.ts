@@ -2,7 +2,7 @@ import type { IconComponent } from '@maz-ui/icons'
 import { getRegisteredIcon } from '@maz-ui/icons/registry'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, inject, markRaw, ref, useAttrs, watch } from 'vue'
-import { decodeSvgDataUri, fetchSvgText, isIconName, isRawSvg, isStringIcon, isUrlLike, prefetchSvgText, svgTextCache } from './svg-utils'
+import { decodeSvgDataUri, extractSvgMarkup, fetchSvgText, isIconName, isStringIcon, isUrlLike, prefetchSvgText, svgTextCache } from './svg-utils'
 
 type SvgSourceValue = string | IconComponent
 
@@ -128,9 +128,7 @@ export function useSvgSource({ icon, fallback, prepare, watchSources, onError }:
     }
 
     // Raw SVGs and SVG data URIs are rendered synchronously, on the server too
-    const inlineSvg = isRawSvg(value)
-      ? value
-      : decodeSvgDataUri(value)
+    const inlineSvg = extractSvgMarkup(value) ?? decodeSvgDataUri(value)
     if (inlineSvg) {
       render(inlineSvg)
       return
