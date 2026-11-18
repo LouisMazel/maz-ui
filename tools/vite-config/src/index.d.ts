@@ -36,3 +36,5 @@ interface Options {
 
 export function getExternalDependencies(pkg: PackageJson, options?: Options): (id: string) => boolean
 export function VitePreNestedCss(): Plugin
+/** Writes `exports.json` (or `fileName`): for each key, the names of the values exported by an entry of the build (`include` keeps only the names it matches) */
+export function ViteExportNames(entries: Record<string, string | { entry: string, include: RegExp }>, options?: { fileName?: string }): Plugin
