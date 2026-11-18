@@ -18,22 +18,42 @@ Run `npx @maz-ui/upgrade ./` for the mechanical part of the migration, then foll
 ## Choose your framework
 
 <div class="vp-raw maz:grid maz:gap-4 maz:tab-m:grid-cols-2">
-  <MazCard href="/guide/vue" :gallery="{ images: ['/vue.png'], height: 160, width: '100%' }" bordered block>
-    <template #content-title>
-      <p class="maz:text-lg maz:font-semibold">Vue</p>
-    </template>
-    <template #content-body>
-      <p class="maz:text-sm maz:text-muted">The plugin, the Vite plugin and the imports</p>
-    </template>
-  </MazCard>
-  <MazCard href="/ecosystem/nuxt" :gallery="{ images: ['/nuxt.png'], height: 160, width: '100%' }" bordered block>
-    <template #content-title>
-      <p class="maz:text-lg maz:font-semibold">Nuxt</p>
-    </template>
-    <template #content-body>
-      <p class="maz:text-sm maz:text-muted">One module: auto-imports, icons, theme and translations</p>
-    </template>
-  </MazCard>
+  <MazCardSpotlight color="success" :padding="false" content-class="maz:h-full">
+    <a href="/guide/vue" class="maz:group maz:flex maz:h-full maz:flex-col maz:gap-4 maz:p-5">
+      <span class="maz:flex maz:items-center maz:gap-3">
+        <MazSvg icon="logo-vue" width="40" />
+        <span class="maz:flex maz:flex-col">
+          <span class="maz:text-lg maz:font-semibold maz:text-foreground">Vue</span>
+          <span class="maz:text-sm maz:text-muted">Vue 3 with Vite</span>
+        </span>
+        <MazIcon icon="arrow-right" class="maz:ms-auto maz:text-xl maz:text-muted maz:transition-transform maz:group-hover:translate-x-1 maz:group-hover:text-foreground" />
+      </span>
+      <code class="maz:rounded-md maz:border maz:border-divider maz:bg-surface maz:px-3 maz:py-2 maz:text-xs maz:text-foreground">npm install maz-ui @maz-ui/themes</code>
+      <span class="maz:flex maz:flex-col maz:gap-2 maz:text-sm maz:text-foreground">
+        <span class="maz:flex maz:items-start maz:gap-2"><MazIcon icon="check" class="maz:mt-0.5 maz:shrink-0 maz:text-success-700" /><span>Theme and translations in one plugin</span></span>
+        <span class="maz:flex maz:items-start maz:gap-2"><MazIcon icon="check" class="maz:mt-0.5 maz:shrink-0 maz:text-success-700" /><span>MazUi(): icons by name, less CSS</span></span>
+        <span class="maz:flex maz:items-start maz:gap-2"><MazIcon icon="check" class="maz:mt-0.5 maz:shrink-0 maz:text-success-700" /><span>Auto-import with the resolvers</span></span>
+      </span>
+    </a>
+  </MazCardSpotlight>
+  <MazCardSpotlight color="success" :padding="false" content-class="maz:h-full">
+    <a href="/ecosystem/nuxt" class="maz:group maz:flex maz:h-full maz:flex-col maz:gap-4 maz:p-5">
+      <span class="maz:flex maz:items-center maz:gap-3">
+        <MazSvg :icon="nuxtLogo" width="40" />
+        <span class="maz:flex maz:flex-col">
+          <span class="maz:text-lg maz:font-semibold maz:text-foreground">Nuxt</span>
+          <span class="maz:text-sm maz:text-muted">Nuxt 3 and 4, one module</span>
+        </span>
+        <MazIcon icon="arrow-right" class="maz:ms-auto maz:text-xl maz:text-muted maz:transition-transform maz:group-hover:translate-x-1 maz:group-hover:text-foreground" />
+      </span>
+      <code class="maz:rounded-md maz:border maz:border-divider maz:bg-surface maz:px-3 maz:py-2 maz:text-xs maz:text-foreground">npx nuxt module add @maz-ui/nuxt</code>
+      <span class="maz:flex maz:flex-col maz:gap-2 maz:text-sm maz:text-foreground">
+        <span class="maz:flex maz:items-start maz:gap-2"><MazIcon icon="check" class="maz:mt-0.5 maz:shrink-0 maz:text-success-700" /><span>Auto-imports, nothing to configure</span></span>
+        <span class="maz:flex maz:items-start maz:gap-2"><MazIcon icon="check" class="maz:mt-0.5 maz:shrink-0 maz:text-success-700" /><span>Icons by name, less CSS</span></span>
+        <span class="maz:flex maz:items-start maz:gap-2"><MazIcon icon="check" class="maz:mt-0.5 maz:shrink-0 maz:text-success-700" /><span>Theme and translations in nuxt.config</span></span>
+      </span>
+    </a>
+  </MazCardSpotlight>
 </div>
 
 ## A first form
@@ -157,6 +177,7 @@ With Renovate (`renovate.json`):
 <script setup>
 import { ref } from 'vue'
 import { useToast } from 'maz-ui/composables/useToast'
+import nuxtLogo from '../assets/frameworks/nuxt.svg?raw'
 
 const email = ref('')
 const toast = useToast()
