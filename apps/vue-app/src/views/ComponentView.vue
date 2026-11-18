@@ -39,7 +39,6 @@ const phoneValue = ref('+33612345678')
 const accordionValue = ref(1)
 const dateValue = ref('2026-03-20')
 const expandOpen = ref(true)
-const btnGroupValue = ref('center')
 const radioBtnValue = ref('b')
 const segmentedValue = ref('b')
 const colorPickerValue = ref('#3b82f6')
@@ -257,22 +256,22 @@ const checklistItems = [
         MazBtnGroup
       </h2>
       <div class="maz:flex maz:flex-col maz:gap-3 maz:mb-4">
-        <MazBtnGroup v-model="btnGroupValue" :items="btnGroupItems" />
-        <MazBtnGroup v-model="btnGroupValue" :items="btnGroupItems" orientation="col" />
-        <MazBtnGroup v-model="btnGroupValue" :items="btnGroupItems" outlined />
-        <MazBtnGroup v-model="btnGroupValue" :items="btnGroupItems" pastel />
+        <MazBtnGroup :items="btnGroupItems" />
+        <MazBtnGroup :items="btnGroupItems" orientation="col" />
+        <MazBtnGroup :items="btnGroupItems" outlined />
+        <MazBtnGroup :items="btnGroupItems" pastel />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
         Colors
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-2 maz:mb-4">
-        <MazBtnGroup v-for="c in colors" :key="c" v-model="btnGroupValue" :items="btnGroupItems" :color="c" />
+        <MazBtnGroup v-for="c in colors" :key="c" :items="btnGroupItems" :color="c" />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
         Sizes
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-2 maz:mb-4">
-        <MazBtnGroup v-for="s in sizes" :key="s" v-model="btnGroupValue" :items="btnGroupItems" :size="s" />
+        <MazBtnGroup v-for="s in sizes" :key="s" :items="btnGroupItems" :size="s" />
       </div>
     </section>
 
@@ -804,7 +803,7 @@ const checklistItems = [
       </div>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
         <MazAvatar :src="avatarPlaceholder" bordered />
-        <MazAvatar :src="avatarPlaceholder" elevation />
+        <MazAvatar :src="avatarPlaceholder" no-elevation />
         <MazAvatar :src="avatarPlaceholder" clickable />
         <MazAvatar caption="John Doe" />
       </div>
@@ -1303,7 +1302,7 @@ const checklistItems = [
         <MazSkeleton width="75%" />
         <MazSkeleton width="50%" />
         <div class="maz:flex maz:gap-3 maz:mt-2">
-          <MazSkeleton width="40px" height="40px" rounded />
+          <MazSkeleton shape="circle" size="40px" />
           <div class="maz:flex maz:flex-col maz:gap-2 maz:flex-1">
             <MazSkeleton width="60%" />
             <MazSkeleton width="40%" />

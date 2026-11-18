@@ -407,7 +407,7 @@ MazTimeline provides scoped slots for full customization.
 
 <ComponentDemo>
   <MazTimeline v-model="currentStep" :steps="steps" direction="horizontal">
-    <template #connector="{ index, state }">
+    <template #connector="{ index, isCompleted }">
       <div class="maz:text-center maz:text-xs maz:text-muted">---</div>
     </template>
   </MazTimeline>
@@ -417,7 +417,7 @@ MazTimeline provides scoped slots for full customization.
 ```vue
 <template>
   <MazTimeline v-model="currentStep" :steps="steps">
-    <template #connector="{ index, state }">
+    <template #connector="{ index, isCompleted }">
       <div class="text-center text-xs text-muted">---</div>
     </template>
   </MazTimeline>

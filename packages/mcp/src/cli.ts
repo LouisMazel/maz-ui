@@ -172,13 +172,13 @@ export async function runReview(values: Record<string, unknown>, positionals: st
       : undefined,
   })
   const framework = values.framework as Framework | undefined
-  const [{ countBySeverity, formatFindings }, { REVIEWABLE_EXTENSIONS, reviewFiles }] = await Promise.all([import('./review'), import('./review/files')])
+  const [{ countBySeverity, formatFindings }, { isIgnoredPath, REVIEWABLE_EXTENSIONS, reviewFiles }] = await Promise.all([import('./review'), import('./review/files')])
 
   if (values.hook) {
     const input = JSON.parse(await readStdin() || '{}') as { tool_input?: { file_path?: string }, cwd?: string }
     const file = input.tool_input?.file_path
 
-    if (!file || !REVIEWABLE_EXTENSIONS.includes(file.split('.').pop() ?? '') || /[\\/](?:node_modules|dist|\.nuxt|\.output)[\\/]/.test(file))
+    if (!file || !REVIEWABLE_EXTENSIONS.includes(file.split('.').pop() ?? '') || isIgnoredPath(file))
       return 0
 
     const { reviews } = await reviewFiles([file], {

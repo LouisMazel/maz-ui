@@ -115,8 +115,9 @@ async function askToUser() {
   </MazBtn>
 
   <MazDialogConfirm
-    :data="dataPromiseOne"
     identifier="one"
+    accept-text="Ok"
+    reject-text="Reject"
   />
 
   <MazDialogConfirm identifier="two" :buttons="buttons">

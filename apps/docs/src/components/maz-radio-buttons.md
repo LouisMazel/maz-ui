@@ -196,7 +196,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
     <MazRadioButtons
       v-model="selectedCompetition"
       :options="competitions"
-      orientation="col | row"
+      orientation="col"
       v-slot="{ option, selected }"
     >
       <div style="display: flex;">

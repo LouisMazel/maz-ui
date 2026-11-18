@@ -32,6 +32,8 @@ describe('given detectKind', () => {
       ['<template><div /></template>', 'vue'],
       ['<script setup>\n</script>', 'vue'],
       ['<MazBtn />', 'template'],
+      ['<MazCard>\n  <template #title>x</template>\n</MazCard>', 'template'],
+      ['<!-- demo -->\n<template>\n  <div />\n</template>', 'vue'],
       ['.a { color: red; }', 'style'],
       ['@import "tailwindcss";', 'style'],
       ['const a = 1', 'script'],
@@ -81,6 +83,33 @@ describe('given reviewCode', () => {
       const findings = review('<template>\n  <button>b</button>\n  <div class="bg-white" />\n</template>', 'A.vue')
 
       expect(findings.map(finding => finding.line)).toEqual([2, 3])
+    })
+  })
+})
+
+describe('given a file that cannot be parsed', () => {
+  describe('when the template is malformed', () => {
+    it('then it reports a parse error at its position instead of throwing', () => {
+      const findings = review('<template>\n  <div>\n    <MazBtn a"b="c" />\n</template>', 'A.vue')
+
+      expect(findings[0]).toMatchObject({ rule: 'parse-error', severity: 'error', line: 3 })
+      expect(findings[0].message).toContain('The file cannot be parsed')
+      expect(review('<div><span></div>', 'a.html').map(finding => finding.rule)).toEqual(['parse-error'])
+    })
+  })
+
+  describe('when the review fails for another reason', () => {
+    it('then the error is thrown', () => {
+      const knowledge = new Proxy(getKnowledge(), {
+        get: (target, property) => {
+          if (property === 'componentsByName')
+            throw new TypeError('broken knowledge')
+
+          return Reflect.get(target, property)
+        },
+      })
+
+      expect(() => reviewCode('<template><MazBtn /></template>', { knowledge, filename: 'A.vue' })).toThrow('broken knowledge')
     })
   })
 })
@@ -268,6 +297,18 @@ describe('given the file helpers', () => {
         join(project, 'src/A.vue'),
         join(project, 'src/b.ts'),
         join(project, 'styles/main.css'),
+      ])
+    })
+
+    it('then the folders outside of the working directory skip node_modules and coverage too', async () => {
+      const root = createTempDir()
+      writeFile(root, 'app/A.vue', '')
+      writeFile(root, 'app/node_modules/pkg/b.ts', '')
+      writeFile(root, 'app/coverage/base.css', '')
+      writeFile(root, 'cwd/.keep', '')
+
+      expect(await expandPaths(['../app'], join(root, 'cwd'))).toEqual([
+        join(root, 'app/A.vue'),
       ])
     })
 

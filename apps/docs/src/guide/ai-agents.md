@@ -193,12 +193,18 @@ The command exits with an error code when it finds errors (or more warnings than
 | `invalid-prop-value` | error | `color="red"` on a component that accepts `primary`, `secondary`... |
 | `boolean-prop-string` | error | `disabled="false"` (a truthy string) |
 | `unknown-model`, `unknown-event`, `unknown-slot` | error | `v-model:foo`, `@clik`, `<template #captions>` |
+| `unknown-slot-binding` | error | A slot prop the slot does not provide: `<template #trigger="{ isOpenn }">` |
+| `missing-required-prop` | warning | A required prop or `v-model` left out: `<MazSelect>` without `options` |
 | `unknown-icon` | error | An icon that does not exist in `@maz-ui/icons`, or a name (`icon="x-mak"`) that is neither an icon of maz-ui nor of the project |
 | `unregistered-icon-names` | info | Icon names in a project without `MazUi()` (`@maz-ui/vite-plugin`) nor `@maz-ui/nuxt`: they render the fallback |
 | `prefer-maz-component` | warning | `<button>`, `<input>`, `<select>`, `<textarea>`, `<dialog>`... (a `<button>` that is a clickable card, with a layout, a component or a title and a subtitle, or an empty hit area, is left alone) |
 | `inline-svg` | warning | SVG icons written inline |
 | `icon-button-label` | warning | A `MazBtn` that only shows an icon, without `text`, content nor `aria-label` |
-| `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers |
+| `input-label` | warning | A `MazInput`, `MazSelect`, `MazTextarea`... without `label`, `top-label`, `placeholder` nor `aria-label` |
+| `button-navigation` | warning | A `MazBtn` inside a link, or navigating from `@click` (`router.push`, `navigateTo`, `window.open`): use `to` or `href` |
+| `multiple-primary-actions` | info | Several solid primary `MazBtn` side by side |
+| `native-dialog` | warning | `alert()`, `confirm()`, `prompt()` instead of `useToast()` and `useDialog()` |
+| `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers, and hand-written code it provides (`Intl.NumberFormat` for a currency, a `setTimeout` debounce, `document.cookie`, a `resize` listener...) |
 | `theme-colors` | warning | Default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`) |
 | `hardcoded-color` | warning | `bg-[#1d90ff]`, `color: #fff` |
 | `pale-brand-color` | warning | A `primary` or `secondary` of `definePreset` under 3:1 against the surface: they are strong brand colors, not subtle backgrounds |
@@ -207,7 +213,8 @@ The command exits with an error code when it finds errors (or more warnings than
 | `missing-reference` | error | `@apply` in a SFC style block without `@reference` |
 | `manual-dark-mode` | warning | Dark mode handled by hand instead of `useTheme()` |
 | `root-import`, `internal-import` | error | Runtime imports from `maz-ui` (types only) or from `src`/`dist` |
-| `nuxt-auto-import` | info | Imports that `@maz-ui/nuxt` already auto-imports |
+| `nuxt-auto-import` | info | Imports that `@maz-ui/nuxt` already auto-imports (a component used in the script, `h(MazIcon)`, keeps its import) |
+| `parse-error` | error | A file the parser cannot read (an unclosed tag): it is not reviewed |
 
 When something is intended, ignore it with a comment on the line above (`<!-- maz-ui-review-ignore prefer-maz-component -->`, `// maz-ui-review-ignore theme-colors`), or `maz-ui-review-ignore-file` for a whole file. Give the reason after `--`: `<!-- maz-ui-review-ignore theme-colors -- frame over the video -->`.
 

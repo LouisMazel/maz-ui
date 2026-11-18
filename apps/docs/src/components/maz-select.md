@@ -366,6 +366,7 @@ const customOptions = [
 <template>
   <MazSelect
     v-model="selectedValueCustom"
+    label="Select a color"
     :options="options"
     :color="selectedValueCustom"
     option-value-key="valueOption"

@@ -33,6 +33,12 @@ export type RuleId
     | 'arbitrary-font-size'
     | 'multiple-primary-actions'
     | 'raw-icon-tag'
+    | 'missing-required-prop'
+    | 'unknown-slot-binding'
+    | 'button-navigation'
+    | 'input-label'
+    | 'native-dialog'
+    | 'parse-error'
 
 export interface Finding {
   rule: RuleId

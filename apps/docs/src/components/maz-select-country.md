@@ -398,10 +398,10 @@ A URL template, with `{code}` for the lowercase code and `{CODE}` for the upperc
 ```vue
 <template>
   <!-- public/flags/fr.svg, public/flags/de.svg... -->
-  <MazSelectCountry v-model="selectedCountry" flag-src="/flags/{code}.svg" />
+  <MazSelectCountry v-model="selectedCountry" label="Country" flag-src="/flags/{code}.svg" />
 
   <!-- another host, uppercase codes -->
-  <MazSelectCountry v-model="selectedCountry" flag-src="https://assets.example.com/flags/{CODE}.png" />
+  <MazSelectCountry v-model="selectedCountry" label="Country" flag-src="https://assets.example.com/flags/{CODE}.png" />
 </template>
 ```
 
@@ -420,7 +420,7 @@ function flagSrc(code: string) {
 </script>
 
 <template>
-  <MazSelectCountry v-model="selectedCountry" :flag-src="flagSrc" />
+  <MazSelectCountry v-model="selectedCountry" label="Country" :flag-src="flagSrc" />
 </template>
 ```
 

@@ -4,7 +4,7 @@ import type { Finding, Framework } from '../index'
 import { getKnowledge } from '../../__tests__/helpers'
 import { Knowledge } from '../../knowledge/load'
 import { reviewCode } from '../index'
-import { propSuggestions } from '../template'
+import { destructuredNames, propSuggestions } from '../template'
 
 function withoutTailwind(): Knowledge {
   return new Knowledge(getKnowledge().fragments.map(loaded => ({
@@ -105,11 +105,11 @@ describe('given the unknown-prop rule', () => {
 
   describe('when a prop name comes from another library', () => {
     it.each([
-      ['<MazSelect items="[]" />', '`options`'],
+      ['<MazSelect items="[]" :options="o" label="l" />', '`options`'],
       ['<MazBtn rounded>x</MazBtn>', '`rounded-size`'],
       ['<MazCheckbox checked />', '`v-model`'],
       ['<MazBtn is-loading>x</MazBtn>', '`loading`'],
-      ['<MazInput left-icon="x" />', '`start-icon`'],
+      ['<MazInput left-icon="x" label="l" />', '`start-icon`'],
     ])('then %s suggests %s', (markup, suggestion) => {
       const [finding] = review(template(markup))
 
@@ -130,9 +130,23 @@ describe('given the unknown-prop rule', () => {
     })
   })
 
+  describe('when the component forwards its attributes to another component', () => {
+    it('then the props of the receiving components are accepted', () => {
+      expect(rulesOf(template('<MazDropdown icon="trash" :items="items" outlined /><MazSelectCountry label="l" debounce /><MazDatePicker label="l" hint="h" error /><MazInputPhoneNumber label="l" hint="h" success />'))).toEqual([])
+    })
+
+    it('then the values of the forwarded props are checked', () => {
+      expect(rulesOf(template('<MazDropdown icon="trassh" :items="items" />'))).toEqual(['unknown-icon'])
+    })
+
+    it('then a prop of none of them is reported', () => {
+      expect(rulesOf(template('<MazDropdown :qwxzv="1" :items="items" />'))).toEqual(['unknown-prop'])
+    })
+  })
+
   describe('when an HTML attribute has a prop counterpart', () => {
     it('then it says the attribute is only forwarded and suggests the prop', () => {
-      const [finding] = review(template('<MazInput autofocus />'))
+      const [finding] = review(template('<MazInput label="l" autofocus />'))
 
       expect(finding.rule).toBe('unknown-prop')
       expect(finding.message).toContain('only forwarded as an HTML attribute')
@@ -197,7 +211,7 @@ describe('given the boolean-prop-string rule', () => {
 describe('given the unknown-model rule', () => {
   describe('when the v-model argument does not exist', () => {
     it('then it lists the available models', () => {
-      const [finding] = review(template('<MazSelect v-model:qwxzv="x" />'))
+      const [finding] = review(template('<MazSelect v-model:qwxzv="x" :options="o" label="l" />'))
 
       expect(finding.rule).toBe('unknown-model')
       expect(finding.suggestion).toContain('`v-model`')
@@ -212,7 +226,7 @@ describe('given the unknown-model rule', () => {
 
   describe('when the model exists', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf(template('<MazSelect v-model="x" v-model:open="o" :options="[]" />'))).toEqual([])
+      expect(rulesOf(template('<MazSelect v-model="x" v-model:open="o" :options="[]" label="l" />'))).toEqual([])
     })
   })
 })
@@ -704,6 +718,13 @@ describe('given the nuxt-auto-import rule', () => {
       expect(rulesOf(code, 'a.ts', 'vue')).toEqual([])
     })
   })
+
+  describe('when the script uses the imported component', () => {
+    it('then the import is kept, Nuxt only auto-imports the components of the templates', () => {
+      expect(rulesOf('import MazIcon from \'maz-ui/components/MazIcon\'\nimport { MazBtn as Action } from \'maz-ui/components\'\nconst icon = () => h(MazIcon)\nconst button = () => h(Action)', 'a.ts', 'nuxt')).toEqual([])
+      expect(rulesOf('import MazIcon from \'maz-ui/components/MazIcon\'\nconst name = \'x\'.MazIcon', 'a.ts', 'nuxt')).toEqual(['nuxt-auto-import'])
+    })
+  })
 })
 
 describe('given the missing-reference rule', () => {
@@ -877,6 +898,12 @@ describe('given the multiple-primary-actions rule', () => {
       expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn outlined>Draft</MazBtn><MazBtn color="secondary">x</MazBtn><MazBtn :color="c">y</MazBtn><MazBtn :pastel="true">z</MazBtn><MazBtn fab>w</MazBtn></div><div><MazBtn>Other group</MazBtn></div>'))).toEqual([])
     })
   })
+
+  describe('when the other solid primary buttons are alternatives, full width or disabled', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<div><MazBtn v-if="a">Save</MazBtn><MazBtn v-else-if="b">Publish</MazBtn><MazBtn v-else>Send</MazBtn></div><div><MazBtn loading>x</MazBtn><MazBtn disabled>y</MazBtn><MazBtn block>z</MazBtn></div>'))).toEqual([])
+    })
+  })
 })
 
 describe('given the background color name of shadcn', () => {
@@ -930,6 +957,163 @@ describe('given the raw-icon-tag rule', () => {
   describe('when a static or lazy icon is used as a tag or passed to an icon prop', () => {
     it('then nothing is reported', () => {
       expect(rulesOf(sfc('import { MazTrash } from \'@maz-ui/icons/static/MazTrash\'\nimport { MazStar } from \'@maz-ui/icons/lazy/MazStar\'', '<MazTrash /><MazBtn :icon="MazStar">x</MazBtn>'))).toEqual([])
+    })
+  })
+})
+
+describe('given the missing-required-prop rule', () => {
+  describe('when a required prop or model is missing', () => {
+    it('then it lists them', () => {
+      const [finding] = review(template('<MazSlider /><MazChart type="bar" />'))
+
+      expect(finding).toMatchObject({ rule: 'missing-required-prop', severity: 'warning', line: 2 })
+      expect(finding.message).toBe('MazSlider requires `v-model`.')
+      expect(review(template('<MazChart />'))[0].message).toBe('MazChart requires `type`, `data`.')
+    })
+  })
+
+  describe('when the props are given, bound, modeled or spread', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<MazSlider v-model="v" /><MazChart type="bar" :data="d" /><MazSelect v-bind="selectProps" /><MazTabsBar :items="tabs" />'))).toEqual([])
+    })
+  })
+})
+
+describe('given the unknown-slot-binding rule', () => {
+  describe('when a destructured slot prop does not exist', () => {
+    it('then it reports it with suggestions', () => {
+      const findings = review(template('<MazDropdown :items="items">\n  <template #trigger="{ isOpenn, toggle, close: hide, ...rest }">x</template>\n</MazDropdown>'))
+
+      expect(findings).toMatchObject([
+        { rule: 'unknown-slot-binding', severity: 'error', line: 3 },
+      ])
+      expect(findings[0].suggestion).toContain('Did you mean `isOpen`')
+    })
+
+    it('then a slot prop without close name lists the slot props', () => {
+      expect(review(template('<MazDropdown :items="items" #trigger="{ qwxzv }">x</MazDropdown>'))[0].suggestion).toBe('Slot props: `isOpen`, `toggle`, `close`, `open`.')
+    })
+  })
+
+  describe('when the slot props exist, are kebab-case, not destructured or unknown to the docs', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<MazDropdown :items="items"><template #trigger="{ \'is-open\': opened, toggle = noop }">x</template><template #dropdown="props">y</template><template #default="{ anything }">z</template></MazDropdown>'))).toEqual([])
+    })
+  })
+})
+
+describe('given destructuredNames', () => {
+  describe('when the slot props are destructured', () => {
+    it('then it returns their names, without the rest', () => {
+      expect(destructuredNames('{ item, index: i, active = false, nested: { a, b }, "quoted-name": q, ...rest }')).toEqual([
+        'item',
+        'index',
+        'active',
+        'nested',
+        'quoted-name',
+      ])
+    })
+  })
+
+  describe('when the slot props are not destructured', () => {
+    it('then there is no name', () => {
+      expect(destructuredNames('props')).toEqual([])
+    })
+  })
+})
+
+describe('given the button-navigation rule', () => {
+  describe('when a MazBtn is inside a link', () => {
+    it.each([
+      '<a href="/x"><MazBtn>Go</MazBtn></a>',
+      '<RouterLink to="/x"><span><MazBtn>Go</MazBtn></span></RouterLink>',
+      '<nuxt-link to="/x"><MazBtn>Go</MazBtn></nuxt-link>',
+      '<MazLink to="/x"><MazBtn>Go</MazBtn></MazLink>',
+    ])('then %s is reported', (markup) => {
+      const [finding] = review(template(markup))
+
+      expect(finding.rule).toBe('button-navigation')
+      expect(finding.message).toContain('inside `<')
+    })
+  })
+
+  describe('when a MazBtn navigates from its click handler', () => {
+    it.each([
+      '<MazBtn @click="router.push(\'/x\')">Go</MazBtn>',
+      '<MazBtn @click="$router.replace({ name: \'x\' })">Go</MazBtn>',
+      '<MazBtn @click="navigateTo(\'/x\')">Go</MazBtn>',
+      '<MazBtn @click="window.location.href = url">Go</MazBtn>',
+      '<MazBtn @click="window.open(url, \'_blank\')">Go</MazBtn>',
+    ])('then %s is reported', (markup) => {
+      expect(review(template(markup))[0]).toMatchObject({ rule: 'button-navigation', severity: 'warning' })
+    })
+  })
+
+  describe('when the button has a link or another click handler', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<MazBtn to="/x">Go</MazBtn><MazBtn outlined @click="save">Save</MazBtn><MazBtn outlined @click="location === \'x\'">Go</MazBtn><a href="/x">Go</a>'))).toEqual([])
+    })
+  })
+})
+
+describe('given the input-label rule', () => {
+  describe('when a form field has no accessible name', () => {
+    it('then it reports it', () => {
+      expect(review(template('<MazInput v-model="v" />'))).toMatchObject([
+        { rule: 'input-label', severity: 'warning' },
+      ])
+      expect(rulesOf(template('<MazSelect v-model="v" :options="o" /><MazTextarea v-model="t" />'))).toEqual(['input-label', 'input-label'])
+    })
+  })
+
+  describe('when the field is named, spread, inside a label or not a form field', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<MazInput label="Name" /><MazInput top-label="Name" /><MazInput placeholder="Search" /><MazInput :aria-label="t" /><MazInput id="name" /><MazInput v-bind="field" /><label>Name <MazInput /></label><MazCheckbox v-model="c">Accept</MazCheckbox>'))).toEqual([])
+      expect(rulesOf(template('<MazDatePicker v-model="d" inline /><MazDatePicker v-model="d"><template #trigger="{ isOpen }"><MazBtn>{{ isOpen }}</MazBtn></template></MazDatePicker><MazTextarea v-model="t"><template #label>Comment</template></MazTextarea>'))).toEqual([])
+    })
+  })
+})
+
+describe('given the native-dialog rule', () => {
+  describe('when the script opens a dialog of the browser', () => {
+    it('then alert, confirm and prompt are reported', () => {
+      expect(rulesOf('alert(\'Saved\')\nif (window.confirm(\'Delete?\')) remove()\nconst name = prompt(\'Name\')', 'a.ts')).toEqual(['native-dialog', 'native-dialog', 'native-dialog'])
+    })
+  })
+
+  describe('when the name is a method or defined by the file', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('toast.alert(\'x\')\ndialog.confirm()\nfunction confirm() {}\nconfirm()', 'a.ts')).toEqual([])
+      expect(rulesOf('import { prompt } from \'./ai\'\nprompt(\'x\')', 'a.ts')).toEqual([])
+    })
+  })
+})
+
+describe('given the hand-written helpers', () => {
+  describe('when the script re-implements a helper or a composable of maz-ui', () => {
+    it.each([
+      ['new Intl.NumberFormat(\'fr-FR\', { style: \'currency\', currency: \'EUR\' }).format(n)', 'prefer-utils', 'formatCurrency'],
+      ['price.toLocaleString(\'en-US\', { style: \'currency\', currency: \'USD\' })', 'prefer-utils', 'formatCurrency'],
+      ['date.toLocaleDateString(\'fr-FR\')', 'prefer-utils', 'formatDate'],
+      ['new Intl.RelativeTimeFormat(\'en\').format(-1, \'day\')', 'prefer-utils', 'formatRelativeTime'],
+      ['await new Promise(resolve => setTimeout(resolve, 300))', 'prefer-utils', 'sleep'],
+      ['clearTimeout(timer)\ntimer = setTimeout(search, 300)', 'prefer-utils', 'debounce'],
+      ['const token = document.cookie.split(\'; \')', 'prefer-utils', 'getCookie'],
+      ['window.addEventListener(\'resize\', onResize)', 'prefer-ecosystem', 'useBreakpoints'],
+      ['const mobile = window.matchMedia(\'(max-width: 768px)\')', 'prefer-ecosystem', 'useBreakpoints'],
+      ['document.addEventListener(\'visibilitychange\', onChange)', 'prefer-ecosystem', 'useUserVisibility'],
+      ['const observer = new MutationObserver(onMutation)', 'prefer-ecosystem', 'useMutationObserver'],
+    ])('then `%s` is reported', (code, rule, suggestion) => {
+      const [finding] = review(code, 'a.ts')
+
+      expect(finding).toMatchObject({ rule, severity: 'info' })
+      expect(finding.suggestion).toContain(suggestion)
+    })
+  })
+
+  describe('when the script uses the helpers', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('new Intl.NumberFormat(\'en\').format(n)\nsetTimeout(done, 100)\nclearTimeout(timer)\nwindow.addEventListener(\'scroll\', onScroll)', 'a.ts')).toEqual([])
     })
   })
 })
