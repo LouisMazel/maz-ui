@@ -6,16 +6,18 @@ import { ref } from 'vue'
 const props = withDefaults(defineProps<{
   title?: string
   expanded?: boolean
+  padding?: boolean
 }>(), {
   title: undefined,
   expanded: false,
+  padding: true,
 })
 
 const showCode = ref(props.expanded)
 </script>
 
 <template>
-  <MazCard class="component-demo" block footer-align="start">
+  <MazCard class="component-demo" block footer-align="start" :class="{ '--no-padding maz:overflow-hidden': !padding }">
     <template v-if="$slots.title || title" #title>
       <h3 class="vp-raw maz:text-lg maz:font-semibold">
         <slot name="title">
@@ -71,6 +73,10 @@ const showCode = ref(props.expanded)
     &:deep(div[class*='language']) {
       @apply maz:mob-l:rounded;
     }
+  }
+
+  &.--no-padding :deep(.m-card__content__wrapper) {
+    @apply maz:p-0;
   }
 
   :deep(div[class*='language']) {
