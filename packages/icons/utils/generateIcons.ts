@@ -274,9 +274,9 @@ export function generateIcons({ root, reservedNames = getReservedNames() }: Gene
       content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport _component from '${source}?component'\n\nexport const ${component} = _component\n`,
     })), `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\n${reexports}\n`)
 
-    writeModules(resolve(root, 'src/lazy'), components.map(({ component, source }) => ({
+    writeModules(resolve(root, 'src/lazy'), components.map(({ component }) => ({
       name: component,
-      content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport { defineAsyncComponent, markRaw } from 'vue'\n\nexport const ${component} = markRaw(defineAsyncComponent(() => import('${source}?component')))\n`,
+      content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport { defineAsyncComponent, markRaw } from 'vue'\n\nexport const ${component} = markRaw(defineAsyncComponent(() => import('../static/${component}').then(module => module.${component})))\n`,
     })), `${GENERATED_HEADER}\n\n${reexports}\n`)
 
     writeModules(resolve(root, 'src/raw'), components.map(({ component, source }) => ({

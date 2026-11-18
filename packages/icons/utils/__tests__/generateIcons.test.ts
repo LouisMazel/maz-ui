@@ -158,7 +158,7 @@ import _component from '../../svg/link.svg?component'
 
 export const MazLinkIcon = _component
 `)
-      expect(read('src/lazy/MazStar.ts')).toContain(`export const MazStar = markRaw(defineAsyncComponent(() => import('../../svg/star.svg?component')))`)
+      expect(read('src/lazy/MazStar.ts')).toContain(`export const MazStar = markRaw(defineAsyncComponent(() => import('../static/MazStar').then(module => module.MazStar)))`)
       expect(read('src/raw/MazFlagSquareFR.ts')).toContain(`import _raw from '../../flags/1x1/FR.svg?raw'\n\nexport const MazFlagSquareFR: string = _raw`)
     })
 

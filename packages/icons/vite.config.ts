@@ -38,6 +38,17 @@ const moduleEntries = Object.fromEntries(
 
 export default defineConfig({
   plugins: [
+    {
+      // A string literal export is copied by Rolldown (inlineConst) into each `??`, `||` or ternary of the consumers
+      name: 'maz-icons-raw-not-inlinable',
+      generateBundle(_, bundle) {
+        for (const chunk of Object.values(bundle)) {
+          if (chunk.type === 'chunk' && chunk.fileName.startsWith('raw/') && chunk.fileName !== 'raw/index.js') {
+            chunk.code = chunk.code.replace(/^var (\w+) = (".*");$/m, 'var $1 = /* @__PURE__ */ String($2);')
+          }
+        }
+      },
+    },
     Vue(),
     svgLoader(),
     dts({
@@ -75,6 +86,7 @@ export default defineConfig({
       name: '@maz-ui/icons',
     },
     rolldownOptions: {
+      preserveEntrySignatures: 'allow-extension',
       treeshake: {
         moduleSideEffects: false,
         propertyReadSideEffects: false,
@@ -90,9 +102,9 @@ export default defineConfig({
           mangle: false,
         },
         exports: 'named',
-        preserveModules: true,
-        preserveModulesRoot: 'src',
+        // Each icon is an entry: its SVG is inlined in it, instead of a module of its own (two files less per icon)
         entryFileNames: '[name].js',
+        chunkFileNames: 'chunks/[name]-[hash].js',
       },
     },
   },
