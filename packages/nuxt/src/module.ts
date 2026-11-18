@@ -47,101 +47,8 @@ declare module 'nuxt/schema' {
   }
 }
 
-type ComponentNames = keyof typeof import('maz-ui/components')
-
-const COMPONENT_NAMES: Omit<
-  Record<ComponentNames, true>,
-  'useMazDialogConfirm' | 'mazSidebarKey' | 'mazListKey'
-> = {
-  MazAccordion: true,
-  MazAlert: true,
-  MazAnimatedCounter: true,
-  MazAnimatedElement: true,
-  MazAnimatedText: true,
-  MazAvatar: true,
-  MazBackdrop: true,
-  MazBadge: true,
-  MazBottomSheet: true,
-  MazBtn: true,
-  MazBtnGroup: true,
-  MazBtnDropdown: true,
-  MazCard: true,
-  MazCardSpotlight: true,
-  MazCarousel: true,
-  MazChart: true,
-  MazCheckbox: true,
-  MazChecklist: true,
-  MazContainer: true,
-  MazCircularProgressBar: true,
-  MazCodeHighlight: true,
-  MazColorPicker: true,
-  MazDialog: true,
-  MazDialogConfirm: true,
-  MazDrawer: true,
-  MazDropdown: true,
-  MazDropzone: true,
-  MazExpandAnimation: true,
-  MazFullscreenLoader: true,
-  MazGallery: true,
-  MazIcon: true,
-  MazIndicator: true,
-  MazInput: true,
-  MazInputAutocomplete: true,
-  MazInputCode: true,
-  MazInputNumber: true,
-  MazInputPhoneNumber: true,
-  MazInputPrice: true,
-  MazInputTags: true,
-  MazLazyImg: true,
-  MazLink: true,
-  MazList: true,
-  MazListItem: true,
-  MazLoadingBar: true,
-  MazMarkdownEditor: true,
-  MazPageSection: true,
-  MazPagination: true,
-  MazDatePicker: true,
-  MazProgressBar: true,
-  MazPullToRefresh: true,
-  MazRadio: true,
-  MazRadioButtons: true,
-  MazReadMore: true,
-  MazReadingProgressBar: true,
-  MazSelect: true,
-  MazSelectCountry: true,
-  MazSkeleton: true,
-  MazSlider: true,
-  MazSpinner: true,
-  MazStepper: true,
-  MazSegmented: true,
-  MazSwitch: true,
-  MazSvg: true,
-  MazSidebar: true,
-  MazSidebarMenu: true,
-  MazSidebarMenuItem: true,
-  MazSidebarMenuSub: true,
-  MazSidebarFooter: true,
-  MazSidebarHeader: true,
-  MazSidebarContent: true,
-  MazSidebarGroup: true,
-  MazSidebarMenuButton: true,
-  MazSidebarSeparator: true,
-  MazSidebarTrigger: true,
-  MazTable: true,
-  MazTableCell: true,
-  MazTableRow: true,
-  MazTableTitle: true,
-  MazTabs: true,
-  MazTabsBar: true,
-  MazTabsContent: true,
-  MazTabsContentItem: true,
-  MazTicker: true,
-  MazTimeline: true,
-  MazTextarea: true,
-  MazUiProvider: true,
-  MazWindowMockup: true,
-  MazPopover: true,
-}
+/** The components and composables of maz-ui, written by its build (`maz-ui/exports.json`) */
+const mazUiExports: { components: string[], composables: string[] } = createRequire(import.meta.url)('maz-ui/exports.json')
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -150,30 +57,20 @@ const pluginComposables: Record<'useTheme' | 'useTranslations', true> = {
   useTranslations: true,
 }
 
-const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'> = {
-  useIdleTimeout: true,
-  useDrag: true,
-  useReadingTime: true,
-  useRelativeTime: true,
-  useFormField: true,
-  useWindowSize: true,
-  useBreakpoints: true,
-  useUserVisibility: true,
-  useStringMatching: true,
-  useFuzzySearch: true,
-  useTimer: true,
-  useFormValidator: true,
-  useDisplayNames: true,
-  useFreezeValue: true,
-  useInjectStrict: true,
-  useDropzone: true,
-  useInstanceUniqId: true,
-  useMountComponent: true,
-  useSwipe: true,
-  usePullToRefresh: true,
-  useMutationObserver: true,
-  useSidebar: true,
-}
+/** Auto-imported through their plugin (`mazUi.plugins`), or internal to the components */
+const NOT_AUTO_IMPORTED_COMPOSABLES = new Set([
+  'useAos',
+  'useDialog',
+  'useToast',
+  'useWait',
+  'useMazIconProps',
+])
+
+const mazUiComposables = Object.fromEntries(
+  mazUiExports.composables
+    .filter(name => !NOT_AUTO_IMPORTED_COMPOSABLES.has(name))
+    .map(name => [name, true]),
+) as Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'>
 
 const defaults = {
   general: {
@@ -527,7 +424,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     // Components
 
     if (moduleOptions.components.autoImport) {
-      for (const name of Object.keys(COMPONENT_NAMES)) {
+      for (const name of mazUiExports.components) {
         addComponent({
           name,
           filePath: `maz-ui/components/${name}`,

@@ -147,6 +147,7 @@
     },
     "./utilities.css": "./dist/css/utilities.css",
     "./purge-manifest.json": "./dist/css/purge-manifest.json",
+    "./exports.json": "./dist/exports.json",
     "./aos.css": {
       "monorepo:dev": "./src/plugins/aos/scss/index.scss",
       "default": "./dist/css/aos.css"
@@ -406,6 +407,7 @@
       },
       "./utilities.css": "./dist/css/utilities.css",
       "./purge-manifest.json": "./dist/css/purge-manifest.json",
+      "./exports.json": "./dist/exports.json",
       "./aos.css": {
         "default": "./dist/css/aos.css"
       },

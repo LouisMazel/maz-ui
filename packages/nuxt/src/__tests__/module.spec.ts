@@ -38,11 +38,14 @@ const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, MazUiThemePresets
     defineNuxtModule: vi.fn((config: any) => config),
     onDevtoolsReady: vi.fn(),
     register: vi.fn(),
-    createRequire: vi.fn((_from: string) => ({
-      resolve: (id: string): string => {
-        throw new Error(`Cannot find module '${id}'`)
+    createRequire: vi.fn((from: string) => Object.assign(
+      (id: string): unknown => process.getBuiltinModule('node:module').createRequire(from)(id),
+      {
+        resolve: (id: string): string => {
+          throw new Error(`Cannot find module '${id}'`)
+        },
       },
-    })),
+    )),
   }
 })
 
@@ -853,6 +856,18 @@ describe('nuxt module', () => {
         )
       })
 
+      it('registers the components of maz-ui/exports.json, not the other exports of the barrel', () => {
+        callSetup({
+          components: { autoImport: true },
+        })
+        const names = addComponent.mock.calls.map(([component]) => component.name)
+
+        expect(names).toContain('MazPagination')
+        expect(names).not.toContain('mazListKey')
+        expect(names).not.toContain('useMazDialogConfirm')
+        expect(names.every(name => /^Maz[A-Z]/.test(name))).toBe(true)
+      })
+
       it('should set correct filePath for components', () => {
         callSetup({
           components: { autoImport: true },
@@ -1438,18 +1453,21 @@ describe('nuxt module', () => {
 
     describe('given the maz-ui of the app and the maz-ui of the module', () => {
       function resolveMazUi({ app, module }: { app?: string, module?: string }) {
-        createRequire.mockImplementation((from: string) => ({
-          resolve: () => {
-            const version = from === '/project/package.json'
-              ? app
-              : module
+        createRequire.mockImplementation((from: string) => Object.assign(
+          (id: string): unknown => process.getBuiltinModule('node:module').createRequire(from)(id),
+          {
+            resolve: () => {
+              const version = from === '/project/package.json'
+                ? app
+                : module
 
-            if (!version)
-              throw new Error('Cannot find module \'maz-ui/package.json\'')
+              if (!version)
+                throw new Error('Cannot find module \'maz-ui/package.json\'')
 
-            return `/${version}/node_modules/maz-ui/package.json`
+              return `/${version}/node_modules/maz-ui/package.json`
+            },
           },
-        }))
+        ))
         readPackageVersion.mockImplementation((dir?: string) => dir?.split('/')[1])
       }
 

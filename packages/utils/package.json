@@ -43,7 +43,8 @@
       },
       "./ts-helpers/*": {
         "types": "./dist/ts-helpers/*.d.ts"
-      }
+      },
+      "./exports.json": "./dist/exports.json"
     }
   },
   "exports": {
@@ -75,7 +76,8 @@
     "./ts-helpers/*": {
       "monorepo:dev": "./src/ts-helpers/*.ts",
       "types": "./dist/ts-helpers/*.d.ts"
-    }
+    },
+    "./exports.json": "./dist/exports.json"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

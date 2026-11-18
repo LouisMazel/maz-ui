@@ -1,6 +1,6 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
-import { getExternalDependencies } from '@maz-ui/vite-config'
+import { getExternalDependencies, ViteExportNames } from '@maz-ui/vite-config'
 import vue from '@vitejs/plugin-vue'
 
 import { glob } from 'glob'
@@ -39,6 +39,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       vue(),
+      ViteExportNames({ helpers: 'index' }),
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
