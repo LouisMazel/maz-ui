@@ -12,7 +12,7 @@ import pkg from './package.json' with { type: 'json' }
 import { generateIcons } from './utils/generateIcons'
 
 // Before the entries are listed: the variants of the icons are generated, not versioned
-generateIcons()
+generateIcons({ root: import.meta.dirname })
 
 function resolver(path: string) {
   return resolve(import.meta.dirname, path)
