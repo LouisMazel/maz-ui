@@ -72,8 +72,8 @@ Changer le défaut est cassant pour un projet qui ne passe pas `loading` : le sp
 
 En 5.x (non cassant) :
 
-- [ ] Le `<img>` natif émet `loaded` (`@load`), comme `MazLazyImg`.
-- [ ] Déprécier `'intersecting'`, les événements `loading` et `intersecting` et la prop `hideLoader` : doc et JSDoc, avertissement en dev quand `loading="intersecting"` est passé explicitement (le défaut ne peut pas être détecté).
+- [x] Le `<img>` natif émet `loaded` (`@load`), comme `MazLazyImg`.
+- [x] Déprécier `'intersecting'`, les événements `loading` et `intersecting` et la prop `hideLoader` : doc et JSDoc, avertissement en dev quand `loading="intersecting"` est passé explicitement (le défaut ne peut pas être détecté).
 
 En v6 :
 

@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazIndicatorProps } from './MazIndicator.vue'
 import type { MazColor, MazRoundedSize, MazSize, MazSizeUnit } from './types'
 import { MazPencil } from '@maz-ui/icons/lazy/MazPencil'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 
@@ -24,7 +24,7 @@ const {
   buttonColor = 'info',
   letterCount = 2,
   fallbackSrc = undefined,
-  loading = 'intersecting',
+  loading,
   square,
   indicator,
 } = defineProps<MazAvatarProps>()
@@ -32,9 +32,15 @@ const {
 const emits = defineEmits<{
   /** Emitted when the avatar is clicked */
   (name: 'click', event: MouseEvent): void
-  /** Emitted when the image is intersecting */
+  /**
+   * Emitted when the image is intersecting
+   * @deprecated Only emitted with `loading="intersecting"`, removed in v6
+   */
   (name: 'intersecting', el: Element): void
-  /** Emitted when the image is loading */
+  /**
+   * Emitted when the image is loading
+   * @deprecated Only emitted with `loading="intersecting"`, removed in v6
+   */
   (name: 'loading', el: Element): void
   /** Emitted when the image is loaded */
   (name: 'loaded', el: Element): void
@@ -81,7 +87,10 @@ export interface MazAvatarProps {
   showCaption?: boolean
   /** Make the image height full */
   imageHeightFull?: boolean
-  /** Remove the loader */
+  /**
+   * Remove the loader
+   * @deprecated Only used with `loading="intersecting"`, removed in v6
+   */
   hideLoader?: boolean
   /**
    * The color of the clickable button
@@ -105,7 +114,8 @@ export interface MazAvatarProps {
   /** The fallback src to replace the src on loading error */
   fallbackSrc?: string
   /**
-   * The loading strategy of the image - lazy, eager or intersecting
+   * The loading strategy of the image - lazy, eager or intersecting. `'intersecting'` is deprecated: use `'lazy'`, the
+   * default in v6
    * @default 'intersecting'
    * @values `'lazy' | 'eager' | 'intersecting'`
    */
@@ -145,6 +155,12 @@ function getInitials(name: string, count = letterCount) {
 }
 
 const shouldDisplayImg = computed(() => src || (!src && !caption))
+
+onMounted(() => {
+  if (process.env.NODE_ENV !== 'production' && loading === 'intersecting') {
+    console.warn('[maz-ui][MazAvatar] `loading="intersecting"` is deprecated and removed in v6: use `loading="lazy"`, the native lazy loading.')
+  }
+})
 
 function handleImageError(event: Event) {
   emits('error', event.target as Element)
@@ -272,7 +288,7 @@ const fontSize = computed(() => {
       >
         <template v-if="shouldDisplayImg">
           <MazLazyImg
-            v-if="loading === 'intersecting'"
+            v-if="!loading || loading === 'intersecting'"
             v-bind="$attrs"
             class="m-avatar__picture maz:w-full maz:max-w-full"
             :src
@@ -294,6 +310,7 @@ const fontSize = computed(() => {
             :alt="alt"
             :loading
             decoding="async"
+            @load="emits('loaded', $event.target as Element)"
             @error="handleImageError"
           >
         </template>
