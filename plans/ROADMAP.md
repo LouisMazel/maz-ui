@@ -17,6 +17,10 @@ Ce qui reste à faire après la v5. Le travail déjà livré (virtualisation de 
 
 shadcn-vue et Nuxt UI v3 reposent sur Reka UI (ex-Radix Vue) pour l'ARIA, le focus trap, le roving tabindex, la détection de collision et la navigation clavier. Maz-UI les implémente à la main. Les tests axe et clavier sont maintenant en place (garde-fou), l'étape suivante serait d'adopter Reka UI comme socle des primitives complexes (`Popover`, `Dropdown`, `Dialog`, `Select`, `Tabs`, `Combobox`) en ne gardant que le style par-dessus.
 
+### Icônes par nom sans maz-ui
+
+Rendre `icon="x-mark"` disponible aux autres libs Vue, sans maz-ui et sans breaking change : le plugin, un composant de rendu d'un nom (`MazNamedIcon`, à wrapper) et les types des noms, tous dans `@maz-ui/icons`. Détail : [icons-by-name-standalone.md](./icons-by-name-standalone.md).
+
 ### API de variants déclarative
 
 Définir les variants (`color` x `size` x `variant`) via une config type-safe (`tailwind-variants` / CVA) plutôt que des chaînes de classes conditionnelles : lisibilité, slots de classes surchargeables, cohérence.
