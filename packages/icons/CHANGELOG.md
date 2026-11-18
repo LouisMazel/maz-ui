@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.7.0-beta.8 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.7...v5.7.0-beta.8)
+
+### 🚀 Features
+
+- **@maz-ui/icons:** Add 9 logos ([08f6b2f44](https://github.com/LouisMazel/maz-ui/commit/08f6b2f44))
+
+  Add the `MazBun`, `MazClaude`, `MazGitlab`, `MazMicrosoftTeams`, `MazPnpm`, `MazSlack`, `MazVercel`, `MazX` and `MazYarn` logos.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.7 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)

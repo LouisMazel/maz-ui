@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.7.0-beta.8 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.7...v5.7.0-beta.8)
+
+### 🔥 Performance
+
+- **maz-ui:** MazCodeHighlight highlights with the JavaScript regex engine of shiki, without WebAssembly ([aeb45f5f6](https://github.com/LouisMazel/maz-ui/commit/aeb45f5f6))
+
+  The `shiki` entry loaded the Oniguruma engine, a WebAssembly file of about 600 KB once the page is interactive. The highlighter is now built with `shiki/core` and `createJavaScriptRegexEngine`: about 150 KB less (gzip) per page that highlights code. The languages and themes are still loaded when a block uses them. The engine needs the `v` flag of regular expressions (Chrome 112, Safari 17, Firefox 116).
+
+### 🩹 Fixes
+
+- **maz-ui:** Load the images of MazAvatar and MazSelectCountry lazily with loading="lazy" ([364cfbfe2](https://github.com/LouisMazel/maz-ui/commit/364cfbfe2))
+
+  The `loading` attribute is now set before `src`, so the browser no longer fetches the images as soon as they are rendered.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.7 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)

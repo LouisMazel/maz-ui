@@ -1,5 +1,11 @@
 # Change Log
 
+## v5.7.0-beta.8 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.7...v5.7.0-beta.8)
+
+No relevant changes since last release
+
 ## v5.7.0-beta.7 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)

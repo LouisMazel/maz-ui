@@ -1,5 +1,39 @@
 # Change Log
 
+## v5.7.0-beta.8 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.7...v5.7.0-beta.8)
+
+### 🚀 Features
+
+- **@maz-ui/icons:** Add 9 logos ([08f6b2f44](https://github.com/LouisMazel/maz-ui/commit/08f6b2f44))
+
+  Add the `MazBun`, `MazClaude`, `MazGitlab`, `MazMicrosoftTeams`, `MazPnpm`, `MazSlack`, `MazVercel`, `MazX` and `MazYarn` logos.
+
+- **@maz-ui/mcp:** New review_code rules and fewer false positives ([1b132978c](https://github.com/LouisMazel/maz-ui/commit/1b132978c))
+
+  New rules: missing-required-prop, unknown-slot-binding, input-label, button-navigation, native-dialog (alert, confirm, prompt), parse-error (a file that cannot be parsed is reported instead of stopping the review), and prefer-utils / prefer-ecosystem for hand-written code that maz-ui provides (currency and date formatting, sleep, debounce, cookies, viewport, visibility, MutationObserver).
+
+### 🔥 Performance
+
+- **maz-ui:** MazCodeHighlight highlights with the JavaScript regex engine of shiki, without WebAssembly ([aeb45f5f6](https://github.com/LouisMazel/maz-ui/commit/aeb45f5f6))
+
+  The `shiki` entry loaded the Oniguruma engine, a WebAssembly file of about 600 KB once the page is interactive. The highlighter is now built with `shiki/core` and `createJavaScriptRegexEngine`: about 150 KB less (gzip) per page that highlights code. The languages and themes are still loaded when a block uses them. The engine needs the `v` flag of regular expressions (Chrome 112, Safari 17, Firefox 116).
+
+### 🩹 Fixes
+
+- **maz-ui:** Load the images of MazAvatar and MazSelectCountry lazily with loading="lazy" ([364cfbfe2](https://github.com/LouisMazel/maz-ui/commit/364cfbfe2))
+
+  The `loading` attribute is now set before `src`, so the browser no longer fetches the images as soon as they are rendered.
+
+- **@maz-ui/mcp:** Skip node_modules, dist and coverage in the folders outside of the working directory ([158bb4d01](https://github.com/LouisMazel/maz-ui/commit/158bb4d01))
+
+  review ../app went through node_modules and coverage, and stopped at the limit of 200 files.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.7 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)

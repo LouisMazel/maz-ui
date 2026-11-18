@@ -1,5 +1,25 @@
 # Changelog
 
+## v5.7.0-beta.8 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.7...v5.7.0-beta.8)
+
+### 🚀 Features
+
+- **@maz-ui/mcp:** New review_code rules and fewer false positives ([1b132978c](https://github.com/LouisMazel/maz-ui/commit/1b132978c))
+
+  New rules: missing-required-prop, unknown-slot-binding, input-label, button-navigation, native-dialog (alert, confirm, prompt), parse-error (a file that cannot be parsed is reported instead of stopping the review), and prefer-utils / prefer-ecosystem for hand-written code that maz-ui provides (currency and date formatting, sleep, debounce, cookies, viewport, visibility, MutationObserver).
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Skip node_modules, dist and coverage in the folders outside of the working directory ([158bb4d01](https://github.com/LouisMazel/maz-ui/commit/158bb4d01))
+
+  review ../app went through node_modules and coverage, and stopped at the limit of 200 files.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.7 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)
