@@ -2,7 +2,7 @@
   "name": "@maz-ui/vite-plugin",
   "type": "module",
   "version": "5.7.0-beta.6",
-  "description": "Vite plugins for Maz-UI: purge the CSS of the components and utilities your app does not use",
+  "description": "Vite plugins for Maz-UI: icons by name, and purge of the CSS of the components and utilities your app does not use",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
   "homepage": "https://maz-ui.com/ecosystem/vite-plugin",
@@ -16,6 +16,8 @@
     "vite",
     "vite-plugin",
     "maz-ui",
+    "icons",
+    "svg",
     "purge",
     "css",
     "tree-shaking"
@@ -64,6 +66,9 @@
     "vite": ">=6.0.0 <9.0.0"
   },
   "dependencies": {
+    "@maz-ui/icons": "workspace:^",
+    "@maz-ui/vite-svg-loader": "workspace:^",
+    "magic-string": "^0.30.21",
     "postcss": "catalog:",
     "tinyglobby": "catalog:"
   },
