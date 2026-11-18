@@ -1,3 +1,6 @@
+import MazIcon from '@components/MazIcon.vue'
+import { MazInformationCircle } from '@maz-ui/icons/lazy/MazInformationCircle'
+import { MazStar } from '@maz-ui/icons/lazy/MazStar'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import MazToast from '@plugins/toast/MazToast.vue'
 import { config, mount } from '@vue/test-utils'
@@ -279,6 +282,61 @@ describe('given MazToast component', () => {
       const progressBarInner = wrapper.find<HTMLDivElement>('.m-toast__progress-bar-inner')
       expect(progressBarInner.exists()).toBe(true)
       expect(progressBarInner.element.style.width).toMatch(/^\d+(\.\d+)?%$/)
+    })
+  })
+
+  describe('when rendering the icon', () => {
+    function getIcon() {
+      return wrapper.find('.m-toast__button').findComponent(MazIcon)
+    }
+
+    it('then the icon of the type is displayed by default', async () => {
+      wrapper = mount(MazToast, {
+        props: { message: 'Test message', type: 'info' },
+      })
+      await wrapper.vm.$nextTick()
+
+      expect(getIcon().props('icon')).toBe(MazInformationCircle)
+    })
+
+    it.each([
+      ['a name', 'bell'],
+      ['a component', MazStar],
+      ['a raw SVG', '<svg viewBox="0 0 24 24"></svg>'],
+    ])('then %s replaces the icon of the type', async (_, icon) => {
+      wrapper = mount(MazToast, {
+        props: { message: 'Test message', type: 'success', icon },
+      })
+      await wrapper.vm.$nextTick()
+
+      expect(getIcon().props('icon')).toBe(icon)
+    })
+
+    it('then a custom icon is displayed with a type without icon', async () => {
+      wrapper = mount(MazToast, {
+        props: { message: 'Test message', type: 'contrast', icon: 'bell' },
+      })
+      await wrapper.vm.$nextTick()
+
+      expect(getIcon().props('icon')).toBe('bell')
+    })
+
+    it.each([
+      [
+        'icon is false',
+        { type: 'info', icon: false },
+      ],
+      [
+        'the type has no icon',
+        { type: 'contrast' },
+      ],
+    ] as const)('then no icon is displayed when %s', async (_, props) => {
+      wrapper = mount(MazToast, {
+        props: { message: 'Test message', ...props },
+      })
+      await wrapper.vm.$nextTick()
+
+      expect(getIcon().exists()).toBe(false)
     })
   })
 })
