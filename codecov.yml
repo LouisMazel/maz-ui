@@ -50,6 +50,11 @@ component_management:
       paths:
         - packages/eslint-config/**
 
+    - component_id: icons
+      name: '@maz-ui/icons'
+      paths:
+        - packages/icons/**
+
     - component_id: mcp
       name: '@maz-ui/mcp'
       paths:
@@ -89,3 +94,13 @@ component_management:
       name: '@maz-ui/utils'
       paths:
         - packages/utils/**
+
+    - component_id: vite-plugin
+      name: '@maz-ui/vite-plugin'
+      paths:
+        - packages/vite-plugin/**
+
+    - component_id: vite-svg-loader
+      name: '@maz-ui/vite-svg-loader'
+      paths:
+        - packages/vite-svg-loader/**
