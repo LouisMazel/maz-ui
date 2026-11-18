@@ -4,7 +4,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { createSSRApp, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 
-vi.mock('shiki', () => ({
+const shiki = vi.hoisted(() => ({
   codeToHtml: vi.fn().mockResolvedValue('<pre class="shiki github-light"><code>highlighted code</code></pre>'),
   codeToTokens: vi.fn().mockImplementation((code: string, options: { grammarState?: { end: number } }) => Promise.resolve({
     tokens: code.split('\n').map(line => [
@@ -24,6 +24,10 @@ vi.mock('shiki', () => ({
   })),
 }))
 
+vi.mock('@components/MazCodeHighlight/shiki', () => ({
+  loadShiki: () => Promise.resolve(shiki),
+}))
+
 describe('given MazCodeHighlight component', () => {
   describe('when rendered with code prop', () => {
     it('then it renders the highlighted html', async () => {
@@ -36,7 +40,7 @@ describe('given MazCodeHighlight component', () => {
     })
 
     it('then it calls shiki codeToHtml with the code', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       const wrapper = mount(MazCodeHighlight, {
         props: { code: 'const x = 1', language: 'typescript' },
       })
@@ -51,7 +55,7 @@ describe('given MazCodeHighlight component', () => {
 
   describe('when rendered with default slot', () => {
     it('then it uses slot text as code when code prop is not set', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       mount(MazCodeHighlight, {
@@ -63,7 +67,7 @@ describe('given MazCodeHighlight component', () => {
     })
 
     it('then it extracts nested text from slot children arrays', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       mount(MazCodeHighlight, {
@@ -86,7 +90,7 @@ describe('given MazCodeHighlight component', () => {
     })
 
     it('then code prop takes priority over slot content', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       mount(MazCodeHighlight, {
@@ -101,7 +105,7 @@ describe('given MazCodeHighlight component', () => {
 
   describe('when rendered with language prop', () => {
     it('then it passes language to shiki', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       mount(MazCodeHighlight, {
@@ -117,7 +121,7 @@ describe('given MazCodeHighlight component', () => {
 
   describe('when rendered with theme prop', () => {
     it('then it uses the provided theme', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       mount(MazCodeHighlight, {
@@ -178,7 +182,7 @@ describe('given MazCodeHighlight component', () => {
 
   describe('when shiki fails to load', () => {
     it('then it falls back to plain pre/code', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockRejectedValueOnce(new Error('shiki error'))
 
       const wrapper = mount(MazCodeHighlight, {
@@ -190,7 +194,7 @@ describe('given MazCodeHighlight component', () => {
     })
 
     it('then it escapes html entities in the fallback to prevent xss', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockRejectedValueOnce(new Error('shiki error'))
 
       const wrapper = mount(MazCodeHighlight, {
@@ -387,7 +391,7 @@ describe('given MazCodeHighlight component', () => {
       themeState?: ReturnType<typeof themeStateProvide>
       htmlDark?: boolean
     } = {}) {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
       document.documentElement.classList.toggle('dark', !!options.htmlDark)
       const parent = document.createElement('div')
@@ -444,7 +448,7 @@ describe('given MazCodeHighlight component', () => {
 
       it('then it reacts when the ancestor class changes', async () => {
         const { theme, parent } = await lastTheme()
-        const { codeToHtml } = await import('shiki')
+        const { codeToHtml } = shiki
         expect(theme).toBe('github-light')
 
         parent.classList.add('dark')
@@ -482,7 +486,7 @@ describe('given MazCodeHighlight component', () => {
       it('then it follows the state changes', async () => {
         const themeState = themeStateProvide(false)
         await lastTheme({ themeState })
-        const { codeToHtml } = await import('shiki')
+        const { codeToHtml } = shiki
         themeState.value = { isDark: true }
         await vi.waitFor(() => expect(vi.mocked(codeToHtml).mock.calls.at(-1)?.[1]).toMatchObject({ theme: 'tokyo-night' }))
       })
@@ -571,7 +575,7 @@ describe('given MazCodeHighlight component', () => {
 
   describe('when following streamed code', () => {
     it('then only the appended lines are tokenized, from the grammar state of the previous ones', async () => {
-      const { codeToHtml, codeToTokens } = await import('shiki')
+      const { codeToHtml, codeToTokens } = shiki
       vi.mocked(codeToHtml).mockClear()
       vi.mocked(codeToTokens).mockClear()
 
@@ -602,7 +606,7 @@ describe('given MazCodeHighlight component', () => {
     })
 
     it('then a code that is not an extension of the previous one is highlighted again from the start', async () => {
-      const { codeToTokens } = await import('shiki')
+      const { codeToTokens } = shiki
       const wrapper = mount(MazCodeHighlight, {
         props: { code: 'one\ntwo', follow: true },
       })
@@ -634,7 +638,7 @@ describe('given MazCodeHighlight component', () => {
     })
 
     it('then it falls back to plain text when tokenizing fails', async () => {
-      const { codeToTokens } = await import('shiki')
+      const { codeToTokens } = shiki
       vi.mocked(codeToTokens).mockRejectedValueOnce(new Error('no shiki'))
       const wrapper = mount(MazCodeHighlight, {
         props: { code: 'a\nb', follow: true },
@@ -824,7 +828,7 @@ describe('given MazUi global defaults for MazCodeHighlight', () => {
 
   describe('when no prop is passed', () => {
     it('then the component defaults apply, before the global ones', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       const wrapper = mountWithDefaults()
@@ -846,7 +850,7 @@ describe('given MazUi global defaults for MazCodeHighlight', () => {
 
   describe('when the props are passed on the instance', () => {
     it('then the instance props win over the defaults', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       const wrapper = mountWithDefaults({
@@ -886,7 +890,7 @@ describe('given MazUi global defaults for MazCodeHighlight', () => {
       ['light', 'one-light'],
       ['dark', 'github-dark-default'],
     ])('then the %s mode uses its theme', async (colorMode, expected) => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       mountWithThemes({ colorMode })
@@ -896,7 +900,7 @@ describe('given MazUi global defaults for MazCodeHighlight', () => {
     })
 
     it('then the theme of the instance wins over both', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       mountWithThemes({ colorMode: 'dark', theme: 'dracula' })
@@ -906,7 +910,7 @@ describe('given MazUi global defaults for MazCodeHighlight', () => {
     })
 
     it('then a dark theme of the instance wins over the app one', async () => {
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = shiki
       vi.mocked(codeToHtml).mockClear()
 
       mountWithThemes({ colorMode: 'dark', darkTheme: 'vitesse-dark' })

@@ -2,7 +2,7 @@
 import type { ThemeState } from '@maz-ui/themes'
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
-import type { GrammarState, ThemedToken, TokensResult } from 'shiki'
+import type { GrammarState, ThemedToken, TokensResult } from 'shiki/core'
 import type { Ref, VNode } from 'vue'
 import type { MazSize } from './types'
 import { MazArrowDown } from '@maz-ui/icons/lazy/MazArrowDown'
@@ -12,6 +12,7 @@ import { useTranslations } from '@maz-ui/translations/composables/useTranslation
 import { computed, defineAsyncComponent, getCurrentInstance, inject, nextTick, onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { vTooltip } from '../directives/vTooltip'
+import { loadShiki } from './MazCodeHighlight/shiki'
 
 export interface MazCodeHighlightProps {
   /** Source code to highlight */
@@ -252,7 +253,7 @@ function preOpen(result: TokensResult): string {
 }
 
 async function highlightStream(src: string): Promise<string> {
-  const { codeToTokens } = await import('shiki')
+  const { codeToTokens } = await loadShiki()
   const options = { lang: language, theme: resolvedTheme.value }
   const key = `${language}|${resolvedTheme.value}`
   if (!stream || stream.key !== key || !src.startsWith(stream.code))
@@ -317,7 +318,7 @@ async function highlightFull() {
     return
   }
   try {
-    const { codeToHtml } = await import('shiki')
+    const { codeToHtml } = await loadShiki()
     const html = await codeToHtml(src, {
       lang: language,
       theme: resolvedTheme.value,
