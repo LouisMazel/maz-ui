@@ -114,6 +114,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - A new published package needs an entry in `tools/agent-docs/src/packages.ts` and a `generate:agent-docs` script in its `build`.
 - The agent rules live in `tools/agent-docs/content/rules.md` (also included in `apps/docs/src/guide/ai-agents.md`).
 - The generator warns about broken internal links and unknown alias ids: keep `pnpm -F agent-docs generate --bundle /tmp/x --strict` clean.
+- Docs (site and agent docs): simple and easy to understand but complete, in short sentences, the common case first.
 - Docs examples (code fences) must use plain Tailwind classes, never the internal `maz:` prefix (only live demos rendered by the docs site use it).
 
 ### Branch Strategy
