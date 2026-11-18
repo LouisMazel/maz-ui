@@ -1,9 +1,10 @@
 import type { Knowledge } from '../knowledge/load'
-import type { Finding, Framework, Severity } from './types'
+import type { Finding, Framework, IconNames, Severity } from './types'
 
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
 import { glob } from 'tinyglobby'
+import { loadIconNames } from './icons'
 import { filterBySeverity, reviewCode } from './index'
 
 export const REVIEWABLE_EXTENSIONS = [
@@ -26,23 +27,44 @@ export interface FileReview {
   findings: Finding[]
 }
 
-/** Detects a Nuxt project by walking up from a directory to the closest `package.json` */
-export function detectFramework(fromDirectory: string): Framework {
+const NUXT_CONFIGS = ['nuxt.config.ts', 'nuxt.config.js', 'nuxt.config.mjs']
+
+/** The closest directory with a `package.json` or a Nuxt config, walking up from a directory */
+export function findProjectRoot(fromDirectory: string): string | undefined {
   let directory = fromDirectory
 
   for (;;) {
-    if (['nuxt.config.ts', 'nuxt.config.js', 'nuxt.config.mjs'].some(file => existsSync(join(directory, file))))
-      return 'nuxt'
-    if (existsSync(join(directory, 'package.json')))
-      return 'vue'
+    if ([...NUXT_CONFIGS, 'package.json'].some(file => existsSync(join(directory, file))))
+      return directory
 
     const parent = dirname(directory)
 
     if (parent === directory)
-      return 'vue'
+      return undefined
 
     directory = parent
   }
+}
+
+/** Detects a Nuxt project by walking up from a directory to the closest `package.json` */
+export function detectFramework(fromDirectory: string): Framework {
+  const root = findProjectRoot(fromDirectory)
+
+  return root && NUXT_CONFIGS.some(file => existsSync(join(root, file)))
+    ? 'nuxt'
+    : 'vue'
+}
+
+/** The icon names of the project of a directory, `undefined` outside of a project */
+export function projectIconNames(fromDirectory: string, knowledge: Knowledge, cache = new Map<string, IconNames>()): IconNames | undefined {
+  const root = findProjectRoot(fromDirectory)
+
+  if (!root)
+    return undefined
+  if (!cache.has(root))
+    cache.set(root, loadIconNames(root, detectFramework(root), knowledge))
+
+  return cache.get(root)
 }
 
 export async function expandPaths(patterns: string[], cwd: string): Promise<string[]> {
@@ -99,13 +121,19 @@ export interface ReviewFilesOptions {
 
 export async function reviewFiles(patterns: string[], { knowledge, cwd, framework, minSeverity = 'info' }: ReviewFilesOptions): Promise<{ reviews: FileReview[], truncated: boolean }> {
   const files = await expandPaths(patterns, cwd)
+  const icons = new Map<string, IconNames>()
 
   return {
     truncated: files.length > MAX_REVIEWED_FILES,
     reviews: files.slice(0, MAX_REVIEWED_FILES).map(file => ({
       file: displayPath(cwd, file),
       findings: filterBySeverity(
-        reviewCode(readFileSync(file, 'utf8'), { knowledge, filename: file, framework: framework ?? detectFramework(dirname(file)) }),
+        reviewCode(readFileSync(file, 'utf8'), {
+          knowledge,
+          filename: file,
+          framework: framework ?? detectFramework(dirname(file)),
+          icons: projectIconNames(dirname(file), knowledge, icons),
+        }),
         minSeverity,
       ),
     })),

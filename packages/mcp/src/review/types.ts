@@ -13,6 +13,7 @@ export type RuleId
     | 'unknown-event'
     | 'unknown-slot'
     | 'unknown-icon'
+    | 'unregistered-icon-names'
     | 'prefer-maz-component'
     | 'inline-svg'
     | 'icon-button-label'
@@ -45,12 +46,21 @@ export interface Finding {
 
 export type Framework = 'vue' | 'nuxt'
 
+export interface IconNames {
+  /** The names an `icon` prop accepts: the icons of maz-ui and of the project (`x-mark`, `app:hero`) */
+  names: ReadonlySet<string>
+  /** `MazUi()` of @maz-ui/vite-plugin or @maz-ui/nuxt registers the names: without it, a name renders the fallback */
+  registered: boolean
+}
+
 export interface ReviewOptions {
   knowledge: Knowledge
   /** Used to pick the parser (`.vue`, `.ts`, `.css`...) */
   filename?: string
   /** `nuxt` reports explicit imports of auto-imported components and composables */
   framework?: Framework
+  /** The icon names of the project, the ones of maz-ui by default */
+  icons?: IconNames
 }
 
 export interface ReviewContext extends ReviewOptions {
@@ -59,4 +69,8 @@ export interface ReviewContext extends ReviewOptions {
   localComponents?: Map<string, string | undefined>
   /** Icons imported as SVG strings from `@maz-ui/icons/raw`: local names */
   rawIcons?: Set<string>
+  /** The names of `icons`, or of maz-ui */
+  iconNames?: ReadonlySet<string>
+  /** `unregistered-icon-names` is reported once per file */
+  reportedUnregisteredIcons?: boolean
 }

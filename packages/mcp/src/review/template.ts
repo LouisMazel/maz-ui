@@ -63,7 +63,50 @@ export function mazTagName(tag: string): string | undefined {
     : undefined
 }
 
+const ICON_PROP_TYPE = /\bMazIcon(?:Like|Value|String)\b|\bIconComponent\b/
+const ICON_NAME_PATTERN = /^[a-z\d]+(?:-[a-z\d]+)*(?::[a-z\d]+(?:-[a-z\d]+)*)?$/i
+
+/** An icon name (`icon="x-mark"`, `icon="app:hero"`) of maz-ui or of the project, not checked with an unknown prefix */
+function checkIconName(value: string, offset: number, component: ComponentApi, context: ReviewContext): void {
+  const names = context.iconNames ?? new Set()
+  const prefix = value.includes(':')
+    ? `${value.split(':')[0]}:`
+    : undefined
+
+  if (!ICON_NAME_PATTERN.test(value) || names.size === 0 || (prefix && ![...names].some(name => name.startsWith(prefix))))
+    return
+
+  if (context.icons && !context.icons.registered && !context.reportedUnregisteredIcons) {
+    context.reportedUnregisteredIcons = true
+    context.report({
+      rule: 'unregistered-icon-names',
+      severity: 'info',
+      message: `"${value}" is an icon name: the names only render when \`MazUi()\` of @maz-ui/vite-plugin or @maz-ui/nuxt registers them, the project has neither.`,
+      suggestion: 'Add `MazUi()` to the plugins of vite.config (or the module @maz-ui/nuxt), or pass the icon: `:icon="MazTrash"` with `import { MazTrash } from \'@maz-ui/icons/raw/MazTrash\'`.',
+    }, offset)
+  }
+
+  if (names.has(value))
+    return
+
+  const near = closest(value, names, { max: 2, limit: 3 })
+
+  context.report({
+    rule: 'unknown-icon',
+    severity: 'error',
+    message: `"${value}" is neither an icon of @maz-ui/icons nor of the project: ${component.name} renders the fallback icon.`,
+    suggestion: near.length > 0
+      ? `Did you mean ${near.map(name => `"${name}"`).join(' or ')}? Search with \`find_icons\`.`
+      : 'Search with `find_icons({ query: "..." })`, or add the SVG to the icons folder of the project (`src/icons`).',
+  }, offset)
+}
+
 function checkPropValue(prop: PropApi, value: string, offset: number, component: ComponentApi, context: ReviewContext): void {
+  if (ICON_PROP_TYPE.test(prop.type)) {
+    checkIconName(value, offset, component, context)
+    return
+  }
+
   if (prop.type === 'boolean' && (value === 'false' || value === 'true')) {
     context.report({
       rule: 'boolean-prop-string',

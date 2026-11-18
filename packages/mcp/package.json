@@ -93,6 +93,15 @@
   "nx": {
     "targets": {
       "build": {
+        "dependsOn": [
+          "^build",
+          {
+            "projects": [
+              "@maz-ui/icons"
+            ],
+            "target": "build"
+          }
+        ],
         "inputs": [
           "production",
           "^production",
@@ -112,6 +121,15 @@
         ]
       },
       "test:unit": {
+        "dependsOn": [
+          "^build",
+          {
+            "projects": [
+              "@maz-ui/icons"
+            ],
+            "target": "build"
+          }
+        ],
         "inputs": [
           "default",
           "^production",
@@ -127,6 +145,15 @@
         ]
       },
       "test:unit:coverage": {
+        "dependsOn": [
+          "^build",
+          {
+            "projects": [
+              "@maz-ui/icons"
+            ],
+            "target": "build"
+          }
+        ],
         "inputs": [
           "default",
           "^production",

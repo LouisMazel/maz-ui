@@ -2,12 +2,13 @@ import type { ElementNode, RootNode } from '@vue/compiler-dom'
 import type { Finding, ReviewContext, ReviewOptions, RuleId, Severity } from './types'
 
 import { NodeTypes, parse } from '@vue/compiler-dom'
+import { mazIconNames } from './icons'
 import { localComponents, rawIcons, reviewScript } from './script'
 import { reviewStyle } from './style'
 import { reviewTemplate } from './template'
 import { SEVERITY_ORDER } from './types'
 
-export type { Finding, Framework, ReviewOptions, RuleId, Severity } from './types'
+export type { Finding, Framework, IconNames, ReviewOptions, RuleId, Severity } from './types'
 
 type FileKind = 'vue' | 'script' | 'style' | 'template'
 
@@ -153,6 +154,7 @@ export function reviewCode(code: string, options: ReviewOptions): Finding[] {
   const seen = new Set<string>()
   const context: ReviewContext = {
     ...options,
+    iconNames: options.icons?.names ?? mazIconNames(options.knowledge),
     report: (finding, offset) => {
       const position = locate(starts, offset)
       const key = `${finding.rule}:${position.line}:${position.column}:${finding.message}`

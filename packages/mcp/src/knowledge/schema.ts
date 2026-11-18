@@ -129,6 +129,8 @@ export const fragmentSchema = z.object({
   tailwind: tailwindSchema.optional(),
   icons: z.object({
     names: z.array(z.string()),
+    /** The name of `<MazIcon icon>` of each component (`MazTrash`: `trash`), since maz-ui 5.7 */
+    ids: z.record(z.string(), z.string()).optional(),
   }).optional(),
 })
 
