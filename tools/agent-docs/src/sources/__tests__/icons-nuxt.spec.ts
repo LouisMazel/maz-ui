@@ -94,12 +94,14 @@ describe('given groupIcons', () => {
 
 describe('given collectNuxtAutoImports', () => {
   describe('when reading the Nuxt module source', () => {
-    const result = collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts'))
+    const result = collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts'), join(paths.libRoot, 'src'))
 
     it('then lists the auto-imported components and composables', () => {
       expect(result.components).toContain('MazBtn')
       expect(result.components).not.toContain('useMazDialogConfirm')
       expect(result.composables).toEqual(expect.arrayContaining(['useBreakpoints', 'useTheme', 'useTranslations']))
+      expect(result.composables).not.toContain('useToast')
+      expect(result.composables).not.toContain('useMazIconProps')
       expect(result.pluginComposables.useToast).toBe('toast')
     })
   })
@@ -119,7 +121,7 @@ describe('given collectNuxtAutoImports', () => {
       const file = join(directory, 'module.ts')
       writeFileSync(file, 'export default {}')
 
-      expect(collectNuxtAutoImports(file)).toMatchObject({ components: [], composables: [] })
+      expect(collectNuxtAutoImports(file, directory)).toMatchObject({ components: [], composables: [] })
     })
   })
 })

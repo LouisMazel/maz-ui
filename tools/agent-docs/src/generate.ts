@@ -208,7 +208,7 @@ async function createGenerationContext(paths: SourcePaths, withComponents: boole
       api,
     ])),
     pages,
-    autoImports: collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts')),
+    autoImports: collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts'), join(paths.libRoot, 'src')),
     knownIds: new Set([
       ...pages.map(page => page.id),
       ...componentIds,
