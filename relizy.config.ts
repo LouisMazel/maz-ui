@@ -35,6 +35,10 @@ export default defineConfig({
     lib: 'maz-ui',
   },
 
+  prComment: {
+    mode: 'recreate',
+  },
+
   monorepo: {
     // Explicit lists: a new published package must be put in a group
     groups: [
