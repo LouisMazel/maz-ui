@@ -23,6 +23,7 @@
     "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/stylelint-config": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
+    "@maz-ui/vite-svg-loader": "workspace:^",
     "@nuxt/devtools": "catalog:",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/vite": "catalog:",
@@ -33,7 +34,6 @@
     "postcss-nested": "catalog:",
     "stylelint": "catalog:",
     "tailwindcss": "catalog:",
-    "vite-svg-loader": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
   },

@@ -17,6 +17,16 @@ export const routes = [
     component: () => import('../views/ColorView.vue'),
   },
   {
+    path: '/icons',
+    name: 'icons',
+    component: () => import('../views/IconsView.vue'),
+  },
+  {
+    path: '/icons-lazy',
+    name: 'icons-lazy',
+    component: () => import('../views/IconsLazyView.vue'),
+  },
+  {
     path: '/component',
     name: 'component',
     component: () => import('../views/ComponentView.vue'),
