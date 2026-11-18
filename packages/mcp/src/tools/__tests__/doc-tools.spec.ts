@@ -243,6 +243,14 @@ describe('given get_component_api', () => {
     })
   })
 
+  describe('when a component forwards its attributes', () => {
+    it('then it names the component receiving them', () => {
+      expect(getComponentApi(getContext(), {
+        names: ['MazDropdown'],
+      })).toContain('Forwards its attributes to `MazBtn`')
+    })
+  })
+
   describe('when some names are unknown', () => {
     it('then they are listed with suggestions', () => {
       const output = getComponentApi(getContext(), {

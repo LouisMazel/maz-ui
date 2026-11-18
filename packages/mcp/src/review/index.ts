@@ -42,7 +42,8 @@ export function detectKind(code: string, filename?: string): FileKind {
   if (extension === 'html')
     return 'template'
 
-  if (/<template[\s>]|<script[\s>]/.test(code))
+  // the blocks of a SFC start their line, a nested `<template #slot>` belongs to a template
+  if (/^<(?:template|script|style)[\s>]/m.test(code))
     return 'vue'
   if (/^\s*</.test(code))
     return 'template'
@@ -148,29 +149,13 @@ function blockContent(block: ElementNode): { content: string, offset: number } {
   }
 }
 
-export function reviewCode(code: string, options: ReviewOptions): Finding[] {
-  const starts = lineStarts(code)
-  const findings: Finding[] = []
-  const seen = new Set<string>()
-  const context: ReviewContext = {
-    ...options,
-    iconNames: options.icons?.names ?? mazIconNames(options.knowledge),
-    report: (finding, offset) => {
-      const position = locate(starts, offset)
-      const key = `${finding.rule}:${position.line}:${position.column}:${finding.message}`
+/** A syntax error of `@vue/compiler-dom`, with its position */
+function isSyntaxError(error: unknown): error is SyntaxError & { loc?: { start: { offset: number } } } {
+  return error instanceof SyntaxError
+}
 
-      if (seen.has(key))
-        return
-
-      seen.add(key)
-      findings.push({
-        ...finding,
-        ...position,
-      })
-    },
-  }
-
-  const kind = detectKind(code, options.filename)
+function reviewByKind(code: string, filename: string | undefined, context: ReviewContext): void {
+  const kind = detectKind(code, filename)
 
   if (kind === 'script') {
     reviewScript(code, 0, context)
@@ -203,6 +188,44 @@ export function reviewCode(code: string, options: ReviewOptions): Finding[] {
         reviewStyle(content, offset, context, { sfc: true })
       }
     }
+  }
+}
+
+export function reviewCode(code: string, options: ReviewOptions): Finding[] {
+  const starts = lineStarts(code)
+  const findings: Finding[] = []
+  const seen = new Set<string>()
+  const context: ReviewContext = {
+    ...options,
+    iconNames: options.icons?.names ?? mazIconNames(options.knowledge),
+    report: (finding, offset) => {
+      const position = locate(starts, offset)
+      const key = `${finding.rule}:${position.line}:${position.column}:${finding.message}`
+
+      if (seen.has(key))
+        return
+
+      seen.add(key)
+      findings.push({
+        ...finding,
+        ...position,
+      })
+    },
+  }
+
+  try {
+    reviewByKind(code, options.filename, context)
+  }
+  catch (error) {
+    if (!isSyntaxError(error))
+      throw error
+
+    context.report({
+      rule: 'parse-error',
+      severity: 'error',
+      message: `The file cannot be parsed, it is not reviewed: ${error.message.split('\n')[0]}`,
+      suggestion: 'Fix the syntax (an unclosed tag, a quote in an attribute name...), then review it again.',
+    }, error.loc?.start.offset ?? 0)
   }
 
   const { file, byLine } = ignoredRules(code.split('\n'))

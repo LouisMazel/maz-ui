@@ -36,9 +36,12 @@ export function getComponentApi(context: ServerContext, { names }: GetComponentA
     const parent = component.parent
       ? `\n\nBuilding block of \`${component.parent}\`: see \`get_doc({ id: "${context.knowledge.componentsByName.get(component.parent)?.docId}" })\` for complete examples.`
       : ''
+    const forwarded = component.forwardsAttrs
+      ? `\n\nForwards its attributes to \`${component.forwardsAttrs}\`: the props and events of \`${component.forwardsAttrs}\` work on ${component.name} too (\`get_component_api({ names: ["${component.forwardsAttrs}"] })\`).`
+      : ''
 
     docIds.push(component.docId)
-    blocks.push(`${api}${parent}\n\nExamples: \`get_doc({ id: "${component.docId}" })\``)
+    blocks.push(`${api}${parent}${forwarded}\n\nExamples: \`get_doc({ id: "${component.docId}" })\``)
   }
 
   if (blocks.length === 0) {

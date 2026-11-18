@@ -62,6 +62,7 @@ export const componentApiSchema = z.object({
   description: z.string().optional(),
   import: z.string(),
   parent: z.string().optional(),
+  forwardsAttrs: z.string().optional(),
   props: z.array(propApiSchema),
   events: z.array(z.object({
     name: z.string(),
