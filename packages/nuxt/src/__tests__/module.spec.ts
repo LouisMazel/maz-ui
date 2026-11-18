@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, MazUiIcons, generateIconTypes, loadIconNames, addImports, addTemplate, addTypeTemplate, updateTemplates, resolvePath, createResolver, defineNuxtModule, onDevtoolsReady, register, useLogger, logger, setupAgents, readPackageVersion, createRequire } = vi.hoisted(() => {
+const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, MazUiThemePresets, MazUiIcons, generateIconTypes, loadIconNames, addImports, addTemplate, addTypeTemplate, updateTemplates, resolvePath, createResolver, defineNuxtModule, onDevtoolsReady, register, useLogger, logger, setupAgents, readPackageVersion, createRequire } = vi.hoisted(() => {
   const logger = {
     info: vi.fn(),
     warn: vi.fn(),
@@ -26,6 +26,7 @@ const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, MazUiIcons, gener
     MazUiIcons: vi.fn((options: Record<string, unknown>) => ({ name: 'maz-ui:icons', options })),
     generateIconTypes: vi.fn((names: string[], options: Record<string, unknown>) => `types of ${names.join(', ')} ${JSON.stringify(options)}`),
     loadIconNames: vi.fn((_options: Record<string, unknown>) => ['x-mark', 'app:hero']),
+    MazUiThemePresets: vi.fn((options: Record<string, unknown>) => ({ name: 'maz-ui:theme-presets', options })),
     addTemplate: vi.fn(),
     addTypeTemplate: vi.fn(),
     updateTemplates: vi.fn(),
@@ -69,6 +70,7 @@ vi.mock('@maz-ui/vite-plugin', () => ({
   MazUiIcons,
   generateIconTypes,
   loadIconNames,
+  MazUiThemePresets,
 }))
 
 vi.mock('@maz-ui/node', () => ({
@@ -543,6 +545,82 @@ describe('nuxt module', () => {
             callSetup({}, {}, { dev: true })
 
             expect(MazUiPurgeCss).not.toHaveBeenCalled()
+          })
+        })
+      })
+
+      describe('given the theme presets', () => {
+        function getManifestHook(nuxt: { hook: ReturnType<typeof vi.fn> }) {
+          const call = nuxt.hook.mock.calls.find(([name]) => name === 'build:manifest')
+
+          return call?.[1] as (manifest: Record<string, { src?: string, prefetch?: boolean }>) => void
+        }
+
+        describe('when the client manifest is built', () => {
+          it('then the chunks of the presets are not prefetched', () => {
+            const { nuxt } = callSetup()
+            const manifest: Record<string, { src?: string, prefetch?: boolean }> = {
+              'node_modules/@maz-ui/themes/dist/presets/ocean.js': { src: 'node_modules/@maz-ui/themes/dist/presets/ocean.js', prefetch: true },
+              '../../packages/themes/src/presets/nova.ts': { prefetch: true },
+              'pages/index.vue': { src: 'pages/index.vue', prefetch: true },
+            }
+
+            getManifestHook(nuxt)(manifest)
+
+            expect(manifest['node_modules/@maz-ui/themes/dist/presets/ocean.js']!.prefetch).toBe(false)
+            expect(manifest['../../packages/themes/src/presets/nova.ts']!.prefetch).toBe(false)
+            expect(manifest['pages/index.vue']!.prefetch).toBe(true)
+          })
+        })
+
+        describe('when theme.presets is not set', () => {
+          it('then every preset stays in the build', () => {
+            callSetup()
+
+            expect(MazUiThemePresets).not.toHaveBeenCalled()
+          })
+        })
+
+        describe('when theme.presets is set with a named preset', () => {
+          it('then the presets plugin keeps them with the configured preset', () => {
+            const { nuxt } = callSetup({
+              theme: {
+                preset: 'nova',
+                presets: ['ocean'],
+              },
+            })
+
+            expect(MazUiThemePresets).toHaveBeenCalledWith({
+              presets: ['ocean', 'nova'],
+            })
+            expect(addVitePlugin).toHaveBeenCalledWith({
+              name: 'maz-ui:theme-presets',
+              options: {
+                presets: ['ocean', 'nova'],
+              },
+            })
+            expect((nuxt.options.runtimeConfig.public.mazUi as any).theme).toEqual({ preset: 'nova' })
+          })
+        })
+
+        describe('when theme.presets is empty with a preset object', () => {
+          it('then the presets plugin keeps no preset', () => {
+            callSetup({
+              theme: {
+                preset: { name: 'brand' },
+                presets: [],
+              },
+            })
+
+            expect(MazUiThemePresets).toHaveBeenCalledWith({ presets: [] })
+          })
+        })
+
+        describe('when the theme is not configured', () => {
+          it('then the runtime config has an empty theme', () => {
+            const { nuxt } = callSetup({ theme: undefined })
+
+            expect((nuxt.options.runtimeConfig.public.mazUi as any).theme).toEqual({})
           })
         })
       })

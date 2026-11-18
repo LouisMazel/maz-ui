@@ -66,6 +66,13 @@ export interface MazUiNuxtOptions {
      * @default 'maz-ui'
      */
     preset?: ThemePreset | ThemePresetName
+    /**
+     * Named presets the app loads by name (`updateTheme('ocean')`, `definePreset({ base: 'ocean' })`): only these
+     * presets are in the build, with the one of `preset` when it is a name. `[]` keeps none, for an app that only
+     * uses preset objects. Loading another preset by name throws an error.
+     * @default undefined (every preset)
+     */
+    presets?: ThemePresetName[]
   }
 
   /**
