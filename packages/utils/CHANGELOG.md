@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.7.0-beta.7 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)
+
+### 🚀 Features
+
+- **utils:** Publish exports.json, the names of the helpers ([3ac85eaaf](https://github.com/LouisMazel/maz-ui/commit/3ac85eaaf))
+
+  @maz-ui/utils/exports.json lists the helpers exported by @maz-ui/utils, written by the build from the exports of the package: the tools that need them (auto-import resolvers) read it instead of keeping their own list.
+
+### 🩹 Fixes
+
+- Publish the exports without the monorepo:dev condition ([61fd61c82](https://github.com/LouisMazel/maz-ui/commit/61fd61c82))
+
+  The published package.json no longer has the monorepo:dev condition of the monorepo, which pointed to sources that are not published.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.6 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)

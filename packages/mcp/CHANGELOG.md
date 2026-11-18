@@ -1,5 +1,20 @@
 # Changelog
 
+## v5.7.0-beta.7 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)
+
+### 🚀 Features
+
+- **mcp:** Give the icon names in find_icons and report the unknown icon names in review_code ([8b6f1acee](https://github.com/LouisMazel/maz-ui/commit/8b6f1acee))
+
+  - find_icons gives the name of each icon (`trash`) and its use by name, `<MazBtn start-icon="trash">`
+  - review_code reports an icon name of an icon prop that is neither an icon of @maz-ui/icons nor of the project (`icon="x-mak"`, did you mean "x-mark"?), from the generated types of the names or the icons folder, and the icon names in a project without `MazUi()` nor @maz-ui/nuxt
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.6 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)

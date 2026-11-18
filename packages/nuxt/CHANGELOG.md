@@ -1,5 +1,30 @@
 # Change Log
 
+## v5.7.0-beta.7 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)
+
+### 🚀 Features
+
+- **nuxt:** Auto-import MazBtnDropdown ([534a71a8e](https://github.com/LouisMazel/maz-ui/commit/534a71a8e))
+- **nuxt:** Icons by name with the `icons` option ([3eaf4e252](https://github.com/LouisMazel/maz-ui/commit/3eaf4e252))
+
+  Every icon of @maz-ui/icons and every SVG of `<srcDir>/icons` (`app/icons` with Nuxt 4) is available by name in the icon props, `<MazBtn start-icon="moon">`, enabled by default. Only the icons of each page are bundled, and in the HTML of the server. The types of the names are generated in `.nuxt/types/maz-icons.d.ts`. Options: `dir`, `prefix`, `safelist`, `strict`, `svgoConfig`, or `icons: false`.
+
+- **nuxt:** The theme presets never prefetched, theme.presets keeps only the ones loaded by name ([4c3bdb0f1](https://github.com/LouisMazel/maz-ui/commit/4c3bdb0f1))
+
+  The pages no longer prefetch the chunks of the named presets of @maz-ui/themes: they are downloaded when the app loads them. The new theme.presets option keeps only the listed presets in the build (with theme.preset when it is a name), through MazUiThemePresets of @maz-ui/vite-plugin.
+
+- **nuxt:** Auto-import MazPageSection ([ef94342fd](https://github.com/LouisMazel/maz-ui/commit/ef94342fd))
+
+### 💅 Refactors
+
+- **nuxt:** Read the components and composables to auto-import from maz-ui/exports.json ([63b11acaa](https://github.com/LouisMazel/maz-ui/commit/63b11acaa))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.6 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)

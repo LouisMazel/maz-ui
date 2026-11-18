@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.7.0-beta.7 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)
+
+### 🔥 Performance
+
+- **themes:** The named presets loaded from a registry the build can replace ([3609bc6a3](https://github.com/LouisMazel/maz-ui/commit/3609bc6a3))
+
+  getPreset reads the loaders of the named presets from utils/preset-loaders, which MazUiThemePresets (@maz-ui/vite-plugin) replaces at build time to keep only the presets of the app. Loading a preset out of this list throws an error naming the option, and a maz-preset cookie that names it falls back to the configured preset with a warning.
+
+### 🩹 Fixes
+
+- Publish the exports without the monorepo:dev condition ([61fd61c82](https://github.com/LouisMazel/maz-ui/commit/61fd61c82))
+
+  The published package.json no longer has the monorepo:dev condition of the monorepo, which pointed to sources that are not published.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.6 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)

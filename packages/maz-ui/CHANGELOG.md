@@ -1,5 +1,81 @@
 # Change Log
 
+## v5.7.0-beta.7 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)
+
+### 🚀 Features
+
+- **maz-ui:** Add MazBtnDropdown, a button with a main action and a menu of its variants ([290cb871c](https://github.com/LouisMazel/maz-ui/commit/290cb871c))
+
+  `MazBtnDropdown` is a split button: the main action on the left emits `click`, the chevron on the right opens a menu of its variants ("Save", then "Save as draft"). Both parts share the `color`, `size`, `rounded-size`, `outlined` and `pastel` of `MazBtn`, the menu takes the `items` of `MazDropdown`.
+
+  It supports `trigger` (click, hover, adaptive), `position`, `loading`, `disabled`, `action-disabled`, `menu-disabled`, `type`, `start-icon`, `block`, a `tooltip` on the main action, and the global defaults of `size` and `roundedSize`.
+
+  ```vue
+  <template>
+    <MazBtnDropdown :items="items" menu-label="Other save options" @click="save">
+      Save
+    </MazBtnDropdown>
+  </template>
+  ```
+
+- **maz-ui:** MazDrawer - add border ([5dcf84c06](https://github.com/LouisMazel/maz-ui/commit/5dcf84c06))
+- **maz-ui:** Icons by name in every icon prop, and add MazSvg ([c13e0b086](https://github.com/LouisMazel/maz-ui/commit/c13e0b086))
+
+  - `<MazIcon icon="x-mark" />`, `<MazBtn start-icon="moon">`: the icons of @maz-ui/icons and the SVG of the project by name, registered by `MazUi()` of @maz-ui/vite-plugin or @maz-ui/nuxt, with the autocompletion of the names (`MazIconNames`, `MazIconString`). The components, raw SVG strings, URLs and data URIs keep working.
+  - MazSvg: renders an SVG (name, component, URL, raw string) at its own size and with its own colors, for illustrations, logos and flags
+  - MazIcon is vertically aligned with the text
+  - The components with an icon prop are generic: type their template refs with `GenericInstanceType` of @maz-ui/utils
+
+- **maz-ui:** Icons by name in MazAlert and in the steps of MazStepper ([74f7fecdd](https://github.com/LouisMazel/maz-ui/commit/74f7fecdd))
+
+  `<MazAlert icon="bell">` and `steps: [{ icon: 'check' }]` take the formats of MazIcon: a name of @maz-ui/icons or of the project, a component, a URL or a raw SVG.
+
+- **maz-ui:** Icon of the toasts in the formats of MazIcon ([9a795d241](https://github.com/LouisMazel/maz-ui/commit/9a795d241))
+
+  The `icon` option of the toasts takes a name (`toast.success('Saved', { icon: 'cloud-arrow-up' })`), a component, a URL or a raw SVG, and replaces the icon of the type. An icon component passed in this option was ignored.
+
+- **maz-ui:** MazAvatar - loaded emitted by the native image, intersecting deprecated ([cb1fa66cf](https://github.com/LouisMazel/maz-ui/commit/cb1fa66cf))
+
+  With `loading="lazy"` or `"eager"`, the native image emits `loaded`, like the default `intersecting` mode.
+
+  `loading="intersecting"` is deprecated: set `loading="lazy"`, the native lazy loading. In v6, `lazy` becomes the default and `intersecting` is removed, with the `loading` and `intersecting` events and the `hideLoader` prop. In dev, a warning is logged when `loading="intersecting"` is set.
+
+- **maz-ui:** Add MazPageSection, a full-width page band with the padded-container gutter ([804060919](https://github.com/LouisMazel/maz-ui/commit/804060919))
+
+  MazPageSection renders the padded-container utility (padded-container-no-p with full-bleed), with the as, full-bleed, max-width and container props, each one with a default for the whole app through the defaults option of MazUi. Its styles are in maz-ui/style.css: it works with or without Tailwind CSS, without importing the utilities.
+
+  The padded-container utilities no longer need the variables of maz-ui/style.css: they read their defaults as fallbacks and switch the side padding on the viewport themselves, so maz-ui/utilities.css works alone, and a --maz-container-padding-<mobile|tablet|desktop> set on a parent now applies to the sections inside.
+
+- **maz-ui:** Publish exports.json, the names of the components and composables ([4e2c158fd](https://github.com/LouisMazel/maz-ui/commit/4e2c158fd))
+
+  maz-ui/exports.json lists the components and the composables exported by maz-ui, written by the build from the exports of maz-ui/components and maz-ui/composables. MazModulesResolver reads it, with @maz-ui/utils/exports.json, instead of keeping its own lists: a new composable or helper is resolved without a change of the resolver.
+
+### 🩹 Fixes
+
+- **maz-ui:** MazLink - add text align inherit ([70f489cb8](https://github.com/LouisMazel/maz-ui/commit/70f489cb8))
+- **maz-ui:** MazIcon - keep a URL already under mazIconPath ([767586cee](https://github.com/LouisMazel/maz-ui/commit/767586cee))
+
+  With `mazIconPath: '/icons'`, `icon="/icons/star.svg"` is fetched from `/icons/star.svg`, not `/icons/icons/star.svg`. Same with an absolute base: `https://cdn.app.com/icons` and `/icons/star.svg` give `https://cdn.app.com/icons/star.svg`.
+
+- Publish the exports without the monorepo:dev condition ([61fd61c82](https://github.com/LouisMazel/maz-ui/commit/61fd61c82))
+
+  The published package.json no longer has the monorepo:dev condition of the monorepo, which pointed to sources that are not published.
+
+- **maz-ui:** UseToast - return the accent method of the toast plugin ([7bf0ddb45](https://github.com/LouisMazel/maz-ui/commit/7bf0ddb45))
+- **maz-ui:** MazIcon - render the SVG files that start with an XML prolog ([3b84b2dfa](https://github.com/LouisMazel/maz-ui/commit/3b84b2dfa))
+
+  An SVG file starting with an XML prolog, a doctype or comments (as exported by design tools) rendered the fallback icon, from a URL, a raw string or a data URI. A data URI with an unencoded `%` or a percent-encoded base64 payload is decoded too, without request.
+
+### 🧪 Tests
+
+- **maz-ui:** Update coverage treesholds ([6c74d439e](https://github.com/LouisMazel/maz-ui/commit/6c74d439e))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.6 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)

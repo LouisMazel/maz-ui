@@ -1,5 +1,161 @@
 # Change Log
 
+## v5.7.0-beta.7 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)
+
+### 🚀 Features
+
+- **maz-ui:** Add MazBtnDropdown, a button with a main action and a menu of its variants ([290cb871c](https://github.com/LouisMazel/maz-ui/commit/290cb871c))
+
+  `MazBtnDropdown` is a split button: the main action on the left emits `click`, the chevron on the right opens a menu of its variants ("Save", then "Save as draft"). Both parts share the `color`, `size`, `rounded-size`, `outlined` and `pastel` of `MazBtn`, the menu takes the `items` of `MazDropdown`.
+
+  It supports `trigger` (click, hover, adaptive), `position`, `loading`, `disabled`, `action-disabled`, `menu-disabled`, `type`, `start-icon`, `block`, a `tooltip` on the main action, and the global defaults of `size` and `roundedSize`.
+
+  ```vue
+  <template>
+    <MazBtnDropdown :items="items" menu-label="Other save options" @click="save">
+      Save
+    </MazBtnDropdown>
+  </template>
+  ```
+
+- **nuxt:** Auto-import MazBtnDropdown ([534a71a8e](https://github.com/LouisMazel/maz-ui/commit/534a71a8e))
+- **maz-ui:** MazDrawer - add border ([5dcf84c06](https://github.com/LouisMazel/maz-ui/commit/5dcf84c06))
+- **icons:** Add the registry of the icon names, the list of the names and the files of the flags and logos ([baf1fefc2](https://github.com/LouisMazel/maz-ui/commit/baf1fefc2))
+
+  - `@maz-ui/icons/registry`: `registerIcons({ star: MazStar })`, the names used by `<MazIcon icon="star" />`
+  - `@maz-ui/icons/icon-names.json`: the name and the SVG file of each icon (`x-mark`, `flag-fr`, `logo-vue`), read by `MazUi()` of @maz-ui/vite-plugin
+  - `@maz-ui/icons/flags/*` and `@maz-ui/icons/logos/*`: the SVG files of the flags and logos, for an `<img>` (`@maz-ui/icons/flags/3x2/FR.svg`)
+
+- **maz-ui:** Icons by name in every icon prop, and add MazSvg ([c13e0b086](https://github.com/LouisMazel/maz-ui/commit/c13e0b086))
+
+  - `<MazIcon icon="x-mark" />`, `<MazBtn start-icon="moon">`: the icons of @maz-ui/icons and the SVG of the project by name, registered by `MazUi()` of @maz-ui/vite-plugin or @maz-ui/nuxt, with the autocompletion of the names (`MazIconNames`, `MazIconString`). The components, raw SVG strings, URLs and data URIs keep working.
+  - MazSvg: renders an SVG (name, component, URL, raw string) at its own size and with its own colors, for illustrations, logos and flags
+  - MazIcon is vertically aligned with the text
+  - The components with an icon prop are generic: type their template refs with `GenericInstanceType` of @maz-ui/utils
+
+- **vite-plugin:** Add MazUi(), the icons by name and the SVG of the project, with the CSS purge ([21629edc4](https://github.com/LouisMazel/maz-ui/commit/21629edc4))
+
+  `MazUi()` holds two plugins, both enabled by default:
+
+  - `icons` (`MazUiIcons()`): registers in each chunk the icons its files use by name, so only the icons of each page are bundled, and in the HTML of the server. The SVG of `src/icons` are names too (`hero`, or `app:hero` with a `prefix`), optimized by svgo. It writes `src/maz-icons.d.ts`, the types of the names, and rewrites the imports from the root of @maz-ui/icons to the module of each icon.
+  - `purge` (`MazUiPurgeCss()`): removes the unused CSS of maz-ui at build time
+
+- **nuxt:** Icons by name with the `icons` option ([3eaf4e252](https://github.com/LouisMazel/maz-ui/commit/3eaf4e252))
+
+  Every icon of @maz-ui/icons and every SVG of `<srcDir>/icons` (`app/icons` with Nuxt 4) is available by name in the icon props, `<MazBtn start-icon="moon">`, enabled by default. Only the icons of each page are bundled, and in the HTML of the server. The types of the names are generated in `.nuxt/types/maz-icons.d.ts`. Options: `dir`, `prefix`, `safelist`, `strict`, `svgoConfig`, or `icons: false`.
+
+- **mcp:** Give the icon names in find_icons and report the unknown icon names in review_code ([8b6f1acee](https://github.com/LouisMazel/maz-ui/commit/8b6f1acee))
+
+  - find_icons gives the name of each icon (`trash`) and its use by name, `<MazBtn start-icon="trash">`
+  - review_code reports an icon name of an icon prop that is neither an icon of @maz-ui/icons nor of the project (`icon="x-mak"`, did you mean "x-mark"?), from the generated types of the names or the icons folder, and the icon names in a project without `MazUi()` nor @maz-ui/nuxt
+
+- **maz-ui:** Icons by name in MazAlert and in the steps of MazStepper ([74f7fecdd](https://github.com/LouisMazel/maz-ui/commit/74f7fecdd))
+
+  `<MazAlert icon="bell">` and `steps: [{ icon: 'check' }]` take the formats of MazIcon: a name of @maz-ui/icons or of the project, a component, a URL or a raw SVG.
+
+- **maz-ui:** Icon of the toasts in the formats of MazIcon ([9a795d241](https://github.com/LouisMazel/maz-ui/commit/9a795d241))
+
+  The `icon` option of the toasts takes a name (`toast.success('Saved', { icon: 'cloud-arrow-up' })`), a component, a URL or a raw SVG, and replaces the icon of the type. An icon component passed in this option was ignored.
+
+- **icons:** Icon-names.json gives the component of each name ([59f2f3ce5](https://github.com/LouisMazel/maz-ui/commit/59f2f3ce5))
+
+  Each name of `icon-names.json` gives its component and its file: `{ "x-mark": { "component": "MazXMark", "file": "svg/x-mark.svg" } }`.
+
+- **maz-ui:** MazAvatar - loaded emitted by the native image, intersecting deprecated ([cb1fa66cf](https://github.com/LouisMazel/maz-ui/commit/cb1fa66cf))
+
+  With `loading="lazy"` or `"eager"`, the native image emits `loaded`, like the default `intersecting` mode.
+
+  `loading="intersecting"` is deprecated: set `loading="lazy"`, the native lazy loading. In v6, `lazy` becomes the default and `intersecting` is removed, with the `loading` and `intersecting` events and the `hideLoader` prop. In dev, a warning is logged when `loading="intersecting"` is set.
+
+- **vite-plugin:** MazUiThemePresets keeps in the build only the presets loaded by name ([512215cb3](https://github.com/LouisMazel/maz-ui/commit/512215cb3))
+
+  getPreset of @maz-ui/themes imports each named preset on demand, so every preset is a chunk of the build. MazUi({ presets: ['maz-ui', 'ocean'] }), or MazUiThemePresets({ presets }) alone, keeps only the listed ones, `[]` none for an app that only uses preset objects. It also applies to the dependency optimizer, so a missing preset fails in dev as in production.
+
+- **nuxt:** The theme presets never prefetched, theme.presets keeps only the ones loaded by name ([4c3bdb0f1](https://github.com/LouisMazel/maz-ui/commit/4c3bdb0f1))
+
+  The pages no longer prefetch the chunks of the named presets of @maz-ui/themes: they are downloaded when the app loads them. The new theme.presets option keeps only the listed presets in the build (with theme.preset when it is a name), through MazUiThemePresets of @maz-ui/vite-plugin.
+
+- **maz-ui:** Add MazPageSection, a full-width page band with the padded-container gutter ([804060919](https://github.com/LouisMazel/maz-ui/commit/804060919))
+
+  MazPageSection renders the padded-container utility (padded-container-no-p with full-bleed), with the as, full-bleed, max-width and container props, each one with a default for the whole app through the defaults option of MazUi. Its styles are in maz-ui/style.css: it works with or without Tailwind CSS, without importing the utilities.
+
+  The padded-container utilities no longer need the variables of maz-ui/style.css: they read their defaults as fallbacks and switch the side padding on the viewport themselves, so maz-ui/utilities.css works alone, and a --maz-container-padding-<mobile|tablet|desktop> set on a parent now applies to the sections inside.
+
+- **nuxt:** Auto-import MazPageSection ([ef94342fd](https://github.com/LouisMazel/maz-ui/commit/ef94342fd))
+- **utils:** Publish exports.json, the names of the helpers ([3ac85eaaf](https://github.com/LouisMazel/maz-ui/commit/3ac85eaaf))
+
+  @maz-ui/utils/exports.json lists the helpers exported by @maz-ui/utils, written by the build from the exports of the package: the tools that need them (auto-import resolvers) read it instead of keeping their own list.
+
+- **maz-ui:** Publish exports.json, the names of the components and composables ([4e2c158fd](https://github.com/LouisMazel/maz-ui/commit/4e2c158fd))
+
+  maz-ui/exports.json lists the components and the composables exported by maz-ui, written by the build from the exports of maz-ui/components and maz-ui/composables. MazModulesResolver reads it, with @maz-ui/utils/exports.json, instead of keeping its own lists: a new composable or helper is resolved without a change of the resolver.
+
+### 🔥 Performance
+
+- **icons:** Inline the SVG of each icon in its entry ([dc1549d90](https://github.com/LouisMazel/maz-ui/commit/dc1549d90))
+
+  The static and raw entries of an icon hold its component and its SVG, instead of importing them from a module of their own: 1,736 files less in the package, faster to publish and to install. The imports and their types do not change.
+
+  The raw string of an icon is wrapped in a pure String() call: Rolldown does not copy it in each `??`, `||` or ternary that uses it.
+
+- **icons:** The types of the icons in five files ([bd414762d](https://github.com/LouisMazel/maz-ui/commit/bd414762d))
+
+  The types of the icons are declared by their entries and by one file of modules (`declare module '@maz-ui/icons/static/MazStar'`), instead of one file per module: 2,604 files less in the package, and TypeScript loads 80 files instead of 2,683. Each import keeps its exact types: a wrong name is still an error.
+
+  The root types import their entries with an extension: `import { MazTrash } from '@maz-ui/icons'` is typed with `moduleResolution: nodenext`.
+
+- **icons:** No SVG file of the flags and logos in the package ([e750b8343](https://github.com/LouisMazel/maz-ui/commit/e750b8343))
+
+  The flags and the logos are published as components and raw strings only (533 files less): `./flags/*` and `./logos/*`, never released in a stable version, are removed. `./svg/*` stays.
+
+- **themes:** The named presets loaded from a registry the build can replace ([3609bc6a3](https://github.com/LouisMazel/maz-ui/commit/3609bc6a3))
+
+  getPreset reads the loaders of the named presets from utils/preset-loaders, which MazUiThemePresets (@maz-ui/vite-plugin) replaces at build time to keep only the presets of the app. Loading a preset out of this list throws an error naming the option, and a maz-preset cookie that names it falls back to the configured preset with a warning.
+
+### 🩹 Fixes
+
+- **maz-ui:** MazLink - add text align inherit ([70f489cb8](https://github.com/LouisMazel/maz-ui/commit/70f489cb8))
+- **maz-ui:** MazIcon - keep a URL already under mazIconPath ([767586cee](https://github.com/LouisMazel/maz-ui/commit/767586cee))
+
+  With `mazIconPath: '/icons'`, `icon="/icons/star.svg"` is fetched from `/icons/star.svg`, not `/icons/icons/star.svg`. Same with an absolute base: `https://cdn.app.com/icons` and `/icons/star.svg` give `https://cdn.app.com/icons/star.svg`.
+
+- Publish the exports without the monorepo:dev condition ([61fd61c82](https://github.com/LouisMazel/maz-ui/commit/61fd61c82))
+
+  The published package.json no longer has the monorepo:dev condition of the monorepo, which pointed to sources that are not published.
+
+- **maz-ui:** UseToast - return the accent method of the toast plugin ([7bf0ddb45](https://github.com/LouisMazel/maz-ui/commit/7bf0ddb45))
+- **maz-ui:** MazIcon - render the SVG files that start with an XML prolog ([3b84b2dfa](https://github.com/LouisMazel/maz-ui/commit/3b84b2dfa))
+
+  An SVG file starting with an XML prolog, a doctype or comments (as exported by design tools) rendered the fallback icon, from a URL, a raw string or a data URI. A data URI with an unencoded `%` or a percent-encoded base64 payload is decoded too, without request.
+
+- **vite-plugin:** An icon used by name shares the raw module of maz-ui ([a7448f3b3](https://github.com/LouisMazel/maz-ui/commit/a7448f3b3))
+
+  `MazUi()` imports an icon of `@maz-ui/icons` used by name from its `raw` module, resolved from maz-ui like the imports of its components: an icon used by name and by a component of maz-ui (the close cross of the toasts) is bundled once, instead of twice.
+
+- **vite-plugin:** The SVG of an icon of maz-ui read from its built raw module ([064a47773](https://github.com/LouisMazel/maz-ui/commit/064a47773))
+
+  When the `raw` module of an icon of `@maz-ui/icons` is not resolved, `MazUi()` reads its SVG from `dist/raw` instead of its SVG file, identical byte for byte: the flags and the logos need no file in the package.
+
+### 💅 Refactors
+
+- **icons:** Testable icon generator ([c9551f7d3](https://github.com/LouisMazel/maz-ui/commit/c9551f7d3))
+
+  One function per rule (component names, SVG cleaning, icon files), the root of the package passed by the build: the generated files are unchanged.
+
+- **nuxt:** Read the components and composables to auto-import from maz-ui/exports.json ([63b11acaa](https://github.com/LouisMazel/maz-ui/commit/63b11acaa))
+
+### 🧪 Tests
+
+- **maz-ui:** Update coverage treesholds ([6c74d439e](https://github.com/LouisMazel/maz-ui/commit/6c74d439e))
+- **icons:** Unit tests and coverage of the registry, the resolver and the icon generator ([f6a567eb0](https://github.com/LouisMazel/maz-ui/commit/f6a567eb0))
+- **vite-plugin:** Icons of a variable with a type annotation ([935faf353](https://github.com/LouisMazel/maz-ui/commit/935faf353))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.6 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)

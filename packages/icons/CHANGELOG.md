@@ -1,5 +1,59 @@
 # Change Log
 
+## v5.7.0-beta.7 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)
+
+### 🚀 Features
+
+- **icons:** Add the registry of the icon names, the list of the names and the files of the flags and logos ([baf1fefc2](https://github.com/LouisMazel/maz-ui/commit/baf1fefc2))
+
+  - `@maz-ui/icons/registry`: `registerIcons({ star: MazStar })`, the names used by `<MazIcon icon="star" />`
+  - `@maz-ui/icons/icon-names.json`: the name and the SVG file of each icon (`x-mark`, `flag-fr`, `logo-vue`), read by `MazUi()` of @maz-ui/vite-plugin
+  - `@maz-ui/icons/flags/*` and `@maz-ui/icons/logos/*`: the SVG files of the flags and logos, for an `<img>` (`@maz-ui/icons/flags/3x2/FR.svg`)
+
+- **icons:** Icon-names.json gives the component of each name ([59f2f3ce5](https://github.com/LouisMazel/maz-ui/commit/59f2f3ce5))
+
+  Each name of `icon-names.json` gives its component and its file: `{ "x-mark": { "component": "MazXMark", "file": "svg/x-mark.svg" } }`.
+
+### 🔥 Performance
+
+- **icons:** Inline the SVG of each icon in its entry ([dc1549d90](https://github.com/LouisMazel/maz-ui/commit/dc1549d90))
+
+  The static and raw entries of an icon hold its component and its SVG, instead of importing them from a module of their own: 1,736 files less in the package, faster to publish and to install. The imports and their types do not change.
+
+  The raw string of an icon is wrapped in a pure String() call: Rolldown does not copy it in each `??`, `||` or ternary that uses it.
+
+- **icons:** The types of the icons in five files ([bd414762d](https://github.com/LouisMazel/maz-ui/commit/bd414762d))
+
+  The types of the icons are declared by their entries and by one file of modules (`declare module '@maz-ui/icons/static/MazStar'`), instead of one file per module: 2,604 files less in the package, and TypeScript loads 80 files instead of 2,683. Each import keeps its exact types: a wrong name is still an error.
+
+  The root types import their entries with an extension: `import { MazTrash } from '@maz-ui/icons'` is typed with `moduleResolution: nodenext`.
+
+- **icons:** No SVG file of the flags and logos in the package ([e750b8343](https://github.com/LouisMazel/maz-ui/commit/e750b8343))
+
+  The flags and the logos are published as components and raw strings only (533 files less): `./flags/*` and `./logos/*`, never released in a stable version, are removed. `./svg/*` stays.
+
+### 🩹 Fixes
+
+- Publish the exports without the monorepo:dev condition ([61fd61c82](https://github.com/LouisMazel/maz-ui/commit/61fd61c82))
+
+  The published package.json no longer has the monorepo:dev condition of the monorepo, which pointed to sources that are not published.
+
+### 💅 Refactors
+
+- **icons:** Testable icon generator ([c9551f7d3](https://github.com/LouisMazel/maz-ui/commit/c9551f7d3))
+
+  One function per rule (component names, SVG cleaning, icon files), the root of the package passed by the build: the generated files are unchanged.
+
+### 🧪 Tests
+
+- **icons:** Unit tests and coverage of the registry, the resolver and the icon generator ([f6a567eb0](https://github.com/LouisMazel/maz-ui/commit/f6a567eb0))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.6 (2026-11-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)
