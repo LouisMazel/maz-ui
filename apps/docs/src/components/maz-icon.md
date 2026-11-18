@@ -20,7 +20,7 @@ Pass an `icon` prop in any of the supported formats, the component detects what 
 | **Name** | `'star'`, `'app:logo'` | Every icon of `@maz-ui/icons` and the SVG of your project, with [`MazUi()`](../ecosystem/vite-plugin.md#icons-by-name) or [`@maz-ui/nuxt`](../ecosystem/nuxt.md#icons). Only the icons of each page are bundled. |
 | **Vue component** | `import { MazStar } from '@maz-ui/icons/static/MazStar'` | Always-rendered icons that you also want available as a standalone component (`<MazStar />`). |
 | **Raw SVG string** | `import { MazStar } from '@maz-ui/icons/raw/MazStar'` | Without the plugin: the lightest format, no Vue component overhead. |
-| **URL or `data:` URI** | `'/icons/star.svg'`, `'data:image/svg+xml,…'` | SVGs hosted in your `public/` folder or external CDN. Fetched and cached on demand. |
+| **URL or `data:` URI** | `'/icons/star.svg'`, `'data:image/svg+xml,…'` | SVGs hosted in your `public/` folder or external CDN, fetched and cached on demand. An SVG `data:` URI is decoded, without request. |
 
 ```vue
 <script setup>
@@ -93,7 +93,7 @@ A name the plugin can not find in the code (built at runtime) goes in its [`safe
 
 ### URL (fetched at runtime)
 
-Place your SVG file in your `public/` folder, then point `icon` to its path. The component caches the fetched payload and shares it across instances.
+Place your SVG file in your `public/` folder, then point `icon` to its path. The component caches the fetched payload and shares it across instances. The file can start with an XML prolog, a doctype or comments, as exported by design tools.
 
 <ComponentDemo>
 
