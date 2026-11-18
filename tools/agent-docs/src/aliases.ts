@@ -410,6 +410,13 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'steps',
     'onboarding',
   ],
+  'components/maz-svg': [
+    'svg',
+    'illustration',
+    'inline svg',
+    'svg image',
+    'responsive svg',
+  ],
   'components/maz-switch': [
     'switch',
     'toggle',
@@ -690,6 +697,20 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'tree shaking css',
     'bundle size',
     'smaller css',
+    'icons by name',
+    'icon name',
+    'custom icons',
+    'svg of the project',
+  ],
+  'ecosystem/vite-svg-loader': [
+    'vite-svg-loader',
+    'svg loader',
+    'import svg',
+    'svg component',
+    'svg as component',
+    'raw svg',
+    'svgo',
+    'optimize svg',
   ],
   'ecosystem/eslint-config': ['eslint', 'lint', 'linting config'],
   'ecosystem/stylelint-config': ['stylelint', 'css lint'],
@@ -805,6 +826,7 @@ export const RELATED_DOCS: Array<[string, string]> = [
   ['components/maz-input-phone-number', 'ecosystem/utils/format-phone-number'],
   ['components/maz-input-price', 'ecosystem/utils/currency'],
   ['components/maz-icon', 'ecosystem/icons'],
+  ['components/maz-svg', 'components/maz-icon'],
   ['components/maz-lazy-img', 'directives/lazy-img'],
   ['components/maz-progress-bar', 'components/maz-circular-progress-bar'],
   ['components/maz-popover', 'directives/tooltip'],
@@ -824,6 +846,7 @@ export const RELATED_DOCS: Array<[string, string]> = [
   ['guide/ai-agents', 'ecosystem/mcp'],
   ['ecosystem/vite-plugin', 'ecosystem/nuxt'],
   ['ecosystem/vite-plugin', 'guide/vue'],
+  ['ecosystem/vite-plugin', 'ecosystem/icons'],
 ]
 
 /** Symbols and canonical imports of the ecosystem pages (their examples import many unrelated symbols) */
@@ -854,18 +877,23 @@ export const ECOSYSTEM_SYMBOLS: Record<string, { symbols: string[], imports: str
     ],
   },
   'ecosystem/icons': {
-    symbols: ['MazIconsResolver'],
+    symbols: ['MazIconsResolver', 'registerIcon', 'registerIcons'],
     imports: [
       `import { MazCheck } from '@maz-ui/icons/static/MazCheck'`,
       `import { MazIconsResolver } from '@maz-ui/icons/resolvers'`,
+      `import { registerIcons } from '@maz-ui/icons/registry'`,
     ],
   },
   'ecosystem/icons/icon-set': { symbols: [], imports: [] },
   'ecosystem/nuxt': { symbols: [], imports: [] },
   'ecosystem/mcp': { symbols: [], imports: [] },
   'ecosystem/vite-plugin': {
-    symbols: ['MazUiPurgeCss'],
-    imports: [`import { MazUiPurgeCss } from '@maz-ui/vite-plugin'`],
+    symbols: ['MazUi', 'MazUiIcons', 'MazUiPurgeCss'],
+    imports: [`import { MazUi } from '@maz-ui/vite-plugin'`],
+  },
+  'ecosystem/vite-svg-loader': {
+    symbols: ['svgLoader', 'optimizeSvg'],
+    imports: [`import svgLoader from '@maz-ui/vite-svg-loader'`],
   },
   'ecosystem/utils': { symbols: [], imports: [] },
   'ecosystem/node': { symbols: [], imports: [] },

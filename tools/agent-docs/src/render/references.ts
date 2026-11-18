@@ -295,13 +295,13 @@ import { MazXMark } from '@maz-ui/icons/lazy/MazXMark' // lazy-loaded async comp
 
 <template>
   <MazTrash class="size-5 text-destructive" />
-  <MazBtn :start-icon="MazTrash" color="destructive">Delete</MazBtn>
+  <MazBtn start-icon="trash" color="destructive">Delete</MazBtn>
 </template>
 \`\`\`
 
 - Barrel import: \`import { MazTrash, LazyMazTrash } from '@maz-ui/icons'\`. Raw SVG string: \`import { MazTrash } from '@maz-ui/icons/raw/MazTrash'\`.
 - Auto-import with unplugin-vue-components: \`import { MazIconsResolver } from '@maz-ui/icons/resolvers'\`.
-- maz-ui components accept icons as props (\`start-icon\`, \`end-icon\`, \`icon\`...): pass the component itself, not a string.
+- maz-ui components accept icons as props (\`start-icon\`, \`end-icon\`, \`icon\`...): the name (\`start-icon="trash"\`, given by \`find_icons\`) with \`MazUi()\` of \`@maz-ui/vite-plugin\` or \`@maz-ui/nuxt\`, otherwise the raw SVG string or the component (\`:start-icon="MazTrash"\`).
 - Size and color come from CSS: \`class="size-5 text-primary"\` (icons use \`currentColor\`).
 
 ${sections.join('\n\n')}

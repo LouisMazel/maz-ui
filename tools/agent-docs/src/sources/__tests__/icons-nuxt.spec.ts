@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { getSourcePaths } from '../../paths'
-import { collectIconNames, groupIcons } from '../icons'
+import { collectIconIds, collectIconNames, groupIcons } from '../icons'
 import { collectNuxtAutoImports } from '../nuxt'
 
 const paths = getSourcePaths()
@@ -36,6 +36,44 @@ describe('given collectIconNames', () => {
       writeFileSync(file, 'export const iconList = []')
 
       expect(() => collectIconNames(file)).toThrow(/No icon found/)
+    })
+  })
+})
+
+describe('given collectIconIds', () => {
+  describe('when reading the names and the static icons of @maz-ui/icons', () => {
+    const ids = collectIconIds(paths.iconNames, paths.iconStatic)
+
+    it('then each static icon has the name of its SVG file', () => {
+      expect(Object.keys(ids).length).toBeGreaterThan(800)
+      expect(ids).toMatchObject({
+        MazTrash: 'trash',
+        MazCog6Tooth: 'cog-6-tooth',
+        MazH1: 'h1',
+        MazFlagFR: 'flag-fr',
+        MazFlagSquareFR: 'flag-square-fr',
+      })
+    })
+  })
+
+  describe('when a static icon imports a file without name', () => {
+    let directory: string
+
+    beforeEach(() => {
+      directory = mkdtempSync(join(tmpdir(), 'agent-docs-icon-ids-'))
+    })
+
+    afterEach(() => {
+      rmSync(directory, { recursive: true, force: true })
+    })
+
+    it('then it has no name', () => {
+      writeFileSync(join(directory, 'icon-names.json'), JSON.stringify({ star: 'svg/star.svg' }))
+      writeFileSync(join(directory, 'MazStar.ts'), 'import _component from \'../../svg/star.svg?component\'')
+      writeFileSync(join(directory, 'MazMoon.ts'), 'import _component from \'../../svg/moon.svg?component\'')
+      writeFileSync(join(directory, 'index.ts'), 'export {}')
+
+      expect(collectIconIds(join(directory, 'icon-names.json'), directory)).toEqual({ MazStar: 'star' })
     })
   })
 })

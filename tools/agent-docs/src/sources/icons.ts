@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
+import { basename, join } from 'node:path'
 
 /** Reads the static icon names (`MazTrash`...) from the generated `@maz-ui/icons` list */
 export function collectIconNames(iconListPath: string): string[] {
@@ -54,4 +55,24 @@ export function groupIcons(names: string[]): IconGroup[] {
       names: squareFlags,
     },
   ]
+}
+
+/**
+ * The name of `<MazIcon icon="trash" />` of each static icon (`MazTrash`: `trash`), joined by their SVG file:
+ * `icon-names.json` gives the file of each name, the static component imports it
+ */
+export function collectIconIds(iconNamesPath: string, staticDir: string): Record<string, string> {
+  const fileToName = new Map(Object.entries(JSON.parse(readFileSync(iconNamesPath, 'utf8')) as Record<string, string>)
+    .map(([name, file]) => [file, name]))
+  const ids: Record<string, string> = {}
+
+  for (const file of readdirSync(staticDir).filter(file => file.endsWith('.ts')).sort()) {
+    const svg = /'\.\.\/\.\.\/([^'?]+\.svg)\?component'/.exec(readFileSync(join(staticDir, file), 'utf8'))?.[1]
+    const name = svg && fileToName.get(svg)
+
+    if (name)
+      ids[basename(file, '.ts')] = name
+  }
+
+  return ids
 }

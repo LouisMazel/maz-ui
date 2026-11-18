@@ -18,7 +18,7 @@ import { CATEGORY_ORDER, renderBundleIndex, renderFragmentIndex, renderLlmsFullT
 import { renderIconsReference, renderTailwindReference } from './render/references'
 import { renderVitepressApis } from './render/vitepress'
 import { listComponentFiles } from './sources/component-files'
-import { collectIconNames, groupIcons } from './sources/icons'
+import { collectIconIds, collectIconNames, groupIcons } from './sources/icons'
 import { collectNuxtAutoImports } from './sources/nuxt'
 import { collectSourcePages, sourcePathToId } from './sources/pages'
 import { resolvePageSymbols } from './sources/symbols'
@@ -531,6 +531,9 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths(), o
   const iconNames = built.has('@maz-ui/icons')
     ? collectIconNames(paths.iconList)
     : undefined
+  const iconIds = built.has('@maz-ui/icons')
+    ? collectIconIds(paths.iconNames, paths.iconStatic)
+    : undefined
   const agentContent = loadAgentContent(paths.content)
   const pageDrafts = context.pages.filter(page => built.has(page.package)).map(page => pageDraft(context, page))
 
@@ -594,7 +597,7 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths(), o
         : {}),
       ...(iconNames && definition.name === '@maz-ui/icons'
         ? {
-            icons: { names: iconNames },
+            icons: { names: iconNames, ids: iconIds },
           }
         : {}),
     }
