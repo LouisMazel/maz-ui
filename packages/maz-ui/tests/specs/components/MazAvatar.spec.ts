@@ -785,3 +785,54 @@ describe('given a MazAvatar with the auto color', () => {
     })
   })
 })
+
+describe('given the deprecated intersecting loading', () => {
+  describe('when the loading is not set', () => {
+    it('then the image is lazy loaded by MazLazyImg without warning', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      const wrapper = mount(MazAvatar, {
+        props: { src: 'https://example.com/photo.jpg' },
+      })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazLazyImg).exists()).toBe(true)
+      expect(warn).not.toHaveBeenCalled()
+      warn.mockRestore()
+    })
+  })
+
+  describe('when avatars set loading to intersecting', () => {
+    it('then a deprecation is warned in dev', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      mount(MazAvatar, {
+        props: { src: 'https://example.com/a.jpg', loading: 'intersecting' },
+      })
+      const wrapper = mount(MazAvatar, {
+        props: { src: 'https://example.com/b.jpg', loading: 'intersecting' },
+      })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazLazyImg).exists()).toBe(true)
+      expect(warn).toHaveBeenCalledTimes(2)
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('`loading="intersecting"` is deprecated'))
+      warn.mockRestore()
+    })
+  })
+})
+
+describe('given a native image', () => {
+  describe('when the image is loaded', () => {
+    it('then the loaded event is emitted with the image', async () => {
+      const wrapper = mount(MazAvatar, {
+        props: { src: 'https://example.com/photo.jpg', loading: 'lazy' },
+      })
+
+      await wrapper.find('img').trigger('load')
+
+      expect(wrapper.emitted('loaded')).toHaveLength(1)
+      expect(wrapper.emitted('loaded')?.[0]?.[0]).toBe(wrapper.find('img').element)
+    })
+  })
+})

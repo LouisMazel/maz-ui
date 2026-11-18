@@ -169,23 +169,18 @@ When no `src` (and no `caption`) is provided, or when the image fails to load, `
 
 ## Loading
 
-The props `loading` has 3 possible values: `intersecting`, `lazy`, or `eager`.
+The prop `loading` takes `lazy`, `eager` or `intersecting`.
 
-By default, the value is `intersecting` which means the image will be loaded when it's intersecting with the `IntersectionObserver` browser API. This mode uses the [`MazLazyImg`](./maz-lazy-img.md) component with [`vLazyImg`](./../directives/lazy-img.md) directive to handle the lazy loading.
+- `lazy`: the image loads when it gets close to the viewport (native lazy loading)
+- `eager`: the image loads immediately
 
-Native modes:
+Both use an `<img>` with its native [`loading` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading): no JavaScript to load the image, and the image is in the HTML rendered on the server. Use `lazy` for avatars in a list, `eager` for the ones visible at first render.
 
-- `lazy`: The image will be loaded only when it's in the viewport
-- `eager`: The image will be loaded immediately
-
-These modes are native use an `HTMLImageElement` with the `loading` attribute. (see [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading)). **Useful for SSR (Server Side Rendering) or when you want to load the image immediately.**
+::: warning `intersecting` is deprecated
+`intersecting`, the current default, loads the image with [`MazLazyImg`](./maz-lazy-img.md) and an `IntersectionObserver`. It is deprecated: set `loading="lazy"`. In v6, `lazy` becomes the default and `intersecting` is removed, with the `loading` and `intersecting` events and the `hide-loader` prop, which only work with it.
+:::
 
 <div class="vp-raw flex gap-05 items-center flex-wrap">
-  <MazAvatar
-    class="vp-raw"
-    loading="intersecting"
-    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
-  />
   <MazAvatar
     class="vp-raw"
     loading="lazy"
@@ -199,10 +194,6 @@ These modes are native use an `HTMLImageElement` with the `loading` attribute. (
 </div>
 
 ```html
-<MazAvatar
-  loading="intersecting"
-  src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
-/>
 <MazAvatar loading="lazy" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123" />
 <MazAvatar loading="eager" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123" />
 ```
