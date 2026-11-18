@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { iconList } from '@maz-ui/icons/icon-list'
 import iconFiles from '@maz-ui/icons/icon-names.json'
 import MazBtn from 'maz-ui/components/MazBtn'
 import MazDialog from 'maz-ui/components/MazDialog'
@@ -34,12 +33,6 @@ const svgLoaders = import.meta.glob<string>('../../../../../packages/icons/{svg,
   import: 'default',
 })
 
-const normalize = (value: string) => value.toLowerCase().replaceAll(/[^a-z\d]/g, '')
-/** A few components end with `Icon` (`MazLinkIcon`), not to clash with a component of maz-ui or a global of JavaScript */
-const components = new Map(iconList.filter(name => name.startsWith('Maz')).map(name => [
-  normalize(name.slice(3)),
-  name,
-]))
 const regions = new Intl.DisplayNames(['en'], { type: 'region' })
 
 function getCategory(name: string): Category {
@@ -68,12 +61,12 @@ function getLabel(name: string, category: Category): string {
   }
 }
 
-const icons: IconEntry[] = Object.entries(iconFiles as Record<string, string>).map(([name, file]) => {
+const icons: IconEntry[] = Object.entries(iconFiles as Record<string, { component: string, file: string }>).map(([name, { component, file }]) => {
   const category = getCategory(name)
 
   return {
     name,
-    component: components.get(normalize(name)) ?? components.get(`${normalize(name)}icon`) ?? '',
+    component,
     file,
     category,
     label: getLabel(name, category),
