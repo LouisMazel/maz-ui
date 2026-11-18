@@ -1,5 +1,37 @@
 # Change Log
 
+## v5.7.0 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0)
+
+### 🚀 Features
+
+- **themes:** Add the macos, windows and linux presets, the type scale, the glass material and the system colors ([1924acec0](https://github.com/LouisMazel/maz-ui/commit/1924acec0))
+
+  - `macos`, `windows` and `linux` presets: the look of a native desktop app (system fonts, 13px or 14px root font size, platform colors, arrow cursor on the controls), from `@maz-ui/themes/presets` or by name with `getPreset('macos')`
+  - `typography` option: the type scale by level (`display`, `title-1` to `title-4`, `body`, `label`, `caption`, `overline`, `code`...), emitted as `--maz-typography-*` variables. The bundled presets ship their own scale
+  - `components.glass` option: translucent material of the floating surfaces (`bg`, `border`, `blur`, `saturate`)
+  - `systemColors` option: system color keywords by role (`AccentColor`...), applied with `@supports` so the preset color stays the fallback
+  - `foundation['interactive-cursor']` token: the cursor of the interactive controls (default `pointer`)
+  - Preset colors accept the color keywords (`transparent`, `currentColor`, system colors), `hwb()`, `color-mix()` and `light-dark()`
+  - `resolvePreset(preset)`: every color of a preset per mode, as hex and oklch, with `getContrastRatio` and `getColorDistance`
+
+### 🔥 Performance
+
+- **themes:** The named presets loaded from a registry the build can replace ([3609bc6a3](https://github.com/LouisMazel/maz-ui/commit/3609bc6a3))
+
+  getPreset reads the loaders of the named presets from utils/preset-loaders, which MazUiThemePresets (@maz-ui/vite-plugin) replaces at build time to keep only the presets of the app. Loading a preset out of this list throws an error naming the option, and a maz-preset cookie that names it falls back to the configured preset with a warning.
+
+### 🩹 Fixes
+
+- Publish the exports without the monorepo:dev condition ([61fd61c82](https://github.com/LouisMazel/maz-ui/commit/61fd61c82))
+
+  The published package.json no longer has the monorepo:dev condition of the monorepo, which pointed to sources that are not published.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.8 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.7...v5.7.0-beta.8)

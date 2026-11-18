@@ -1,5 +1,358 @@
 # Change Log
 
+## v5.7.0 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0)
+
+### 🚀 Features
+
+- **utils:** Add the formatRelativeTime and getRelativeTime helpers ([3706c9942](https://github.com/LouisMazel/maz-ui/commit/3706c9942))
+
+  Localized relative time (3 minutes ago, in 2 days, yesterday) built on Intl.RelativeTimeFormat, with a compact form (3 min) from Intl.NumberFormat, configurable unit thresholds, an optional switch to an absolute date and the delay before the text changes.
+
+- **maz-ui:** Add the useRelativeTime composable ([21eabc6d5](https://github.com/LouisMazel/maz-ui/commit/21eabc6d5))
+
+  Reactive localized relative time refreshed with a single timer scheduled at the next change, paused while the page is hidden and never started on the server.
+
+- **nuxt:** Auto-import the useRelativeTime composable ([f636e114c](https://github.com/LouisMazel/maz-ui/commit/f636e114c))
+- **utils:** Add fuzzy search and string similarity helpers ([b6dc2c8ca](https://github.com/LouisMazel/maz-ui/commit/b6dc2c8ca))
+
+  - `fuzzySearch(items, query, options)` and `createFuzzySearch(items, options)`: tolerant search in a list, by relevance or in the original order (`sort: 'original'`), on several weighted keys, accents and case ignored, with a tolerance to typos (`typoThreshold`)
+  - `highlightMatches(text, indexes)` splits a result into highlighted and plain parts
+  - `levenshteinDistance`, `getMatchingScore` and `isStringMatching` in `@maz-ui/utils/helpers/stringMatching`
+  - `normalizeString` removes the accents of the letters without decomposition (`ø`, `ł`, `đ`, `æ`, `ß`...)
+
+- **translations:** Add the color picker, autocomplete and remove keys ([a85284b09](https://github.com/LouisMazel/maz-ui/commit/a85284b09))
+
+  - `colorPicker.*`: labels of the area, hue, alpha, eyedropper and swatches of `MazColorPicker`
+  - `inputAutocomplete.*`: `noResults`, `loading`, `error` and `results` of `MazInputAutocomplete`
+  - `aria.remove`: label of the remove buttons (`MazBadge`, `MazInputTags`)
+
+- **icons:** Add git, sidebar and wifi-slash icons ([c1181309d](https://github.com/LouisMazel/maz-ui/commit/c1181309d))
+
+  - New icons: `MazGitBranch`, `MazGitPullRequest`, `MazSidebarLeft`, `MazSidebarLeftCompact`, `MazSidebarLeftHidden`, `MazSidebarRight`, `MazWifiSlash`
+  - Available from `@maz-ui/icons/raw/*`, `@maz-ui/icons/static/*`, `@maz-ui/icons/lazy/*` and as `LazyMaz*` exports of the package root
+
+- **themes:** Add the macos, windows and linux presets, the type scale, the glass material and the system colors ([1924acec0](https://github.com/LouisMazel/maz-ui/commit/1924acec0))
+
+  - `macos`, `windows` and `linux` presets: the look of a native desktop app (system fonts, 13px or 14px root font size, platform colors, arrow cursor on the controls), from `@maz-ui/themes/presets` or by name with `getPreset('macos')`
+  - `typography` option: the type scale by level (`display`, `title-1` to `title-4`, `body`, `label`, `caption`, `overline`, `code`...), emitted as `--maz-typography-*` variables. The bundled presets ship their own scale
+  - `components.glass` option: translucent material of the floating surfaces (`bg`, `border`, `blur`, `saturate`)
+  - `systemColors` option: system color keywords by role (`AccentColor`...), applied with `@supports` so the preset color stays the fallback
+  - `foundation['interactive-cursor']` token: the cursor of the interactive controls (default `pointer`)
+  - Preset colors accept the color keywords (`transparent`, `currentColor`, system colors), `hwb()`, `color-mix()` and `light-dark()`
+  - `resolvePreset(preset)`: every color of a preset per mode, as hex and oklch, with `getContrastRatio` and `getColorDistance`
+
+- **vite-plugin:** Add MazUiPurgeCss to remove the unused CSS of maz-ui ([7b32087ec](https://github.com/LouisMazel/maz-ui/commit/7b32087ec))
+
+  New package `@maz-ui/vite-plugin`, released with the other packages of maz-ui. `MazUiPurgeCss()` removes at build time the CSS of the components, plugins, directives and utilities of maz-ui that the app does not use, from the `purge-manifest.json` written by the build of maz-ui.
+
+  Options: `content` (files to scan), `entries` (modules used at runtime), `safelist` and `report`. See https://maz-ui.com/ecosystem/vite-plugin
+
+- **maz-ui:** Add type scale, rich text, glass and container query utilities ([0e88ef7a5](https://github.com/LouisMazel/maz-ui/commit/0e88ef7a5))
+
+  - Type scale: `text-display`, `text-title-1` to `text-title-4`, `text-body-lg`, `text-body`, `text-body-sm`, `text-label`, `text-caption`, `text-overline`, `text-code`, driven by the `typography` of the preset, and the `type-*` variants without the font size
+  - `rich-text`, `rich-text-sm` and `rich-text-lg` style raw HTML (Markdown, CMS), `not-rich-text` opts a block out
+  - `glass` utility and `bg-glass` / `border-glass` colors, `scrollbar-themed` and `cursor-interactive` utilities, `transparency-reduce:` variant
+  - Container query sizes named like the breakpoints (`@tab-m:`, `max-w-lap-s`) in `maz-ui/tailwindcss/theme-containers.css`
+  - `padded-container` follows the closest `@container` ancestor, `padded-container-no-p` no longer computes a negative padding
+  - New exports: `maz-ui/utilities.css` (the utilities for projects without Tailwind CSS) and `maz-ui/purge-manifest.json` (for `@maz-ui/vite-plugin`)
+
+- **maz-ui:** Add fuzzy search to MazSelect, MazChecklist and MazTable, and MazInputAutocomplete ([bcd91c14e](https://github.com/LouisMazel/maz-ui/commit/bcd91c14e))
+
+  The search of `MazSelect`, `MazChecklist` and `MazTable` tolerates typos and ignores the accents and the case. `MazSelect` and `MazChecklist` sort the results by relevance (the groups of options keep their order), `MazTable` keeps the order of its rows. The search engine is loaded with the search input only.
+
+  New `MazInputAutocomplete`: suggestions from `items` or an async `source(query, { signal })`, debounced and cancelled when the query changes, with `minChars`, `limit` and the highlight of the matches. `Enter` picks the active or the first suggestion. `v-model` holds the text, `v-model:selected` the picked item.
+
+  New `useFuzzySearch(items, query, options)` composable for your own lists. `useStringMatching` keeps its API. See https://maz-ui.com/components/maz-input-autocomplete
+
+- **maz-ui:** Add MazColorPicker, MazIndicator, MazList, MazListItem, MazProgressBar and MazSegmented ([d1abc6f88](https://github.com/LouisMazel/maz-ui/commit/d1abc6f88))
+
+  - `MazColorPicker`: inline or in a popover, saturation area, hue and alpha sliders, `hex`, `rgb` and `hsl` formats, swatches and eyedropper
+  - `MazIndicator`: dot or counter attached to a corner of its content (`max`, `pulse`, `overlap`, `position`)
+  - `MazList` and `MazListItem`: lists with title, footer and dividers, clickable or collapsible items with `lazy` content
+  - `MazProgressBar`: progress bar or meter, with a single value or stacked colored `segments`, and an accessible value text
+  - `MazSegmented`: segmented control with icons, configurable in the global config
+
+- **maz-ui:** Rewrite MazInputTags with badges and the sizes of MazInput ([3634cfa6c](https://github.com/LouisMazel/maz-ui/commit/3634cfa6c))
+
+  - The tags are removable `MazBadge` of the size of the field, and the field has the height of a `MazInput` of the same `size`
+  - `top-label`, `assistive-text`, `rounded-size` and `id` props
+  - `,` adds a tag like `Enter`, comma separated values add several tags, the duplicates are ignored
+  - A first `Backspace` in the empty input marks the last tag, a second one removes it
+  - There is no floating label any more: `label` is the placeholder and the accessible name of the input, use `top-label` for a visible label
+  - The DOM changes: the root wraps the label, the field (`.m-input-tags__field`) and the assistive text
+
+- **maz-ui:** Add the floating variant of MazSidebar ([c276d3549](https://github.com/LouisMazel/maz-ui/commit/c276d3549))
+
+  - `variant="floating"`: an inset and rounded glass panel, without borders
+  - Neutral selection, accent-colored icons and plain counts in `MazSidebarMenuButton`
+  - Collapsed to icons: hairline separators between the groups and an indicator dot for the badges
+
+- **maz-ui:** Add the container color, a promise to dialog.confirm and improve the components ([c58eae23a](https://github.com/LouisMazel/maz-ui/commit/c58eae23a))
+
+  - `container` neutral color (`MazNeutralColor` type) on `MazBtn`, `MazBtnGroup`, `MazBadge`, `MazLink`, `MazDropdown` and `MazRadioButtons`. `MazPopover` defaults to it, `MazPagination` uses `container` buttons and a `contrast` active page
+  - `surface` and `container` stay solid with `pastel`, and use foreground tints on hover
+  - `dialog.confirm()` returns a promise, accepts rich `content` and reactive button props
+  - `lazy` prop on `MazAccordion`, `MazExpandAnimation` and `MazListItem`: the content is rendered on the first opening
+  - `MazBadge`: `removable` with a `remove` event
+  - `MazAvatar`: `indicator` prop and slot, `color="auto"` for a stable color per caption
+  - `MazTabsBar`: `indicator` per item, a `true` badge renders a dot and `false` hides it. `MazCodeHighlight`: `colorMode` prop (`auto` follows the closest `.dark` ancestor)
+  - Titles, labels and hints use the type scale of the theme, `MazMarkdownEditor` previews with `rich-text`, controls use the themable cursor and scroll areas the themed scrollbar
+
+- **nuxt:** Purge the unused CSS of maz-ui and auto-import the new components ([3278e4bd7](https://github.com/LouisMazel/maz-ui/commit/3278e4bd7))
+
+  - `css.purge` (default `true`) adds `MazUiPurgeCss` of `@maz-ui/vite-plugin` to the production builds, with the enabled plugins and directives as entries. Set `false` to disable it, or an object for its options (`safelist`, `entries`) when components are resolved at runtime from strings
+  - `css.injectUtilities` (default `false`) injects `maz-ui/utilities.css`
+  - Auto-import of `MazInputAutocomplete`, `MazColorPicker`, `MazIndicator`, `MazList`, `MazListItem`, `MazProgressBar`, `MazSegmented` and `useFuzzySearch`
+
+- **mcp:** Show the effective theme colors and review brand colors, type scale and raw icons ([8f4074c9f](https://github.com/LouisMazel/maz-ui/commit/8f4074c9f))
+
+  - `get_theme_tokens` shows the effective colors of the project preset, or of a bundled one with `preset`: every color and step in light and dark, with the WCAG contrasts and what to check. `colors` and `steps` narrow the output
+  - New `maz-ui-mcp colors [preset]` command
+  - New `get_theme_tokens` topics: `container-queries`, `layout`, `type-scale` and `rich-text`
+  - New review rules: `pale-brand-color`, `type-scale`, `arbitrary-font-size`, `multiple-primary-actions` and `raw-icon-tag` (a `@maz-ui/icons/raw` import used as a tag renders nothing)
+  - `theme-colors` flags `bg-background` and suggests `surface`
+  - More search synonyms, and the `base-font-size` hint points to `noArbitraryPx.baseFontSize` of `@maz-ui/eslint-config`
+
+- **maz-ui:** Add size, max height, wrap and log follow mode to MazCodeHighlight ([284768c60](https://github.com/LouisMazel/maz-ui/commit/284768c60))
+
+  - `size` (`mini`, `xs`, `sm`, `md`, `lg`) sets the size of the code and its padding
+  - `max-height` caps the height of the block, `wrap` breaks long lines, `hide-language` hides the language badge
+  - `follow` keeps the block scrolled to the last line of a code that grows (logs, build output) and highlights only the appended lines; the exposed `scrollToBottom()` follows again
+
+- **translations:** Add the scroll to bottom label of MazCodeHighlight ([f6a747254](https://github.com/LouisMazel/maz-ui/commit/f6a747254))
+- **maz-ui:** Add app-wide defaults, light and dark themes and a scroll to bottom button to MazCodeHighlight ([1d5abce9b](https://github.com/LouisMazel/maz-ui/commit/1d5abce9b))
+
+  - `light-theme` and `dark-theme` choose the shiki theme of each color mode (`theme` still forces one for both)
+  - Every display prop (`size`, themes, `color-mode`, `rounded`, `copyable`, `wrap`, `hide-language`) can be set for the whole app with `defaults.MazCodeHighlight` of the MazUi plugin, and `size` also follows `defaults.global.size`
+  - A button scrolls a long block back to its last line once the user scrolled up
+  - `size` accepts `xl`
+
+- **maz-ui:** Add MazBtnDropdown, a button with a main action and a menu of its variants ([290cb871c](https://github.com/LouisMazel/maz-ui/commit/290cb871c))
+
+  `MazBtnDropdown` is a split button: the main action on the left emits `click`, the chevron on the right opens a menu of its variants ("Save", then "Save as draft"). Both parts share the `color`, `size`, `rounded-size`, `outlined` and `pastel` of `MazBtn`, the menu takes the `items` of `MazDropdown`.
+
+  It supports `trigger` (click, hover, adaptive), `position`, `loading`, `disabled`, `action-disabled`, `menu-disabled`, `type`, `start-icon`, `block`, a `tooltip` on the main action, and the global defaults of `size` and `roundedSize`.
+
+  ```vue
+  <template>
+    <MazBtnDropdown :items="items" menu-label="Other save options" @click="save">
+      Save
+    </MazBtnDropdown>
+  </template>
+  ```
+
+- **nuxt:** Auto-import MazBtnDropdown ([534a71a8e](https://github.com/LouisMazel/maz-ui/commit/534a71a8e))
+- **maz-ui:** MazDrawer - add border ([5dcf84c06](https://github.com/LouisMazel/maz-ui/commit/5dcf84c06))
+- **icons:** Add the registry of the icon names, the list of the names and the files of the flags and logos ([baf1fefc2](https://github.com/LouisMazel/maz-ui/commit/baf1fefc2))
+
+  - `@maz-ui/icons/registry`: `registerIcons({ star: MazStar })`, the names used by `<MazIcon icon="star" />`
+  - `@maz-ui/icons/icon-names.json`: the name and the SVG file of each icon (`x-mark`, `flag-fr`, `logo-vue`), read by `MazUi()` of @maz-ui/vite-plugin
+  - `@maz-ui/icons/flags/*` and `@maz-ui/icons/logos/*`: the SVG files of the flags and logos, for an `<img>` (`@maz-ui/icons/flags/3x2/FR.svg`)
+
+- **maz-ui:** Icons by name in every icon prop, and add MazSvg ([c13e0b086](https://github.com/LouisMazel/maz-ui/commit/c13e0b086))
+
+  - `<MazIcon icon="x-mark" />`, `<MazBtn start-icon="moon">`: the icons of @maz-ui/icons and the SVG of the project by name, registered by `MazUi()` of @maz-ui/vite-plugin or @maz-ui/nuxt, with the autocompletion of the names (`MazIconNames`, `MazIconString`). The components, raw SVG strings, URLs and data URIs keep working.
+  - MazSvg: renders an SVG (name, component, URL, raw string) at its own size and with its own colors, for illustrations, logos and flags
+  - MazIcon is vertically aligned with the text
+  - The components with an icon prop are generic: type their template refs with `GenericInstanceType` of @maz-ui/utils
+
+- **vite-plugin:** Add MazUi(), the icons by name and the SVG of the project, with the CSS purge ([21629edc4](https://github.com/LouisMazel/maz-ui/commit/21629edc4))
+
+  `MazUi()` holds two plugins, both enabled by default:
+
+  - `icons` (`MazUiIcons()`): registers in each chunk the icons its files use by name, so only the icons of each page are bundled, and in the HTML of the server. The SVG of `src/icons` are names too (`hero`, or `app:hero` with a `prefix`), optimized by svgo. It writes `src/maz-icons.d.ts`, the types of the names, and rewrites the imports from the root of @maz-ui/icons to the module of each icon.
+  - `purge` (`MazUiPurgeCss()`): removes the unused CSS of maz-ui at build time
+
+- **nuxt:** Icons by name with the `icons` option ([3eaf4e252](https://github.com/LouisMazel/maz-ui/commit/3eaf4e252))
+
+  Every icon of @maz-ui/icons and every SVG of `<srcDir>/icons` (`app/icons` with Nuxt 4) is available by name in the icon props, `<MazBtn start-icon="moon">`, enabled by default. Only the icons of each page are bundled, and in the HTML of the server. The types of the names are generated in `.nuxt/types/maz-icons.d.ts`. Options: `dir`, `prefix`, `safelist`, `strict`, `svgoConfig`, or `icons: false`.
+
+- **mcp:** Give the icon names in find_icons and report the unknown icon names in review_code ([8b6f1acee](https://github.com/LouisMazel/maz-ui/commit/8b6f1acee))
+
+  - find_icons gives the name of each icon (`trash`) and its use by name, `<MazBtn start-icon="trash">`
+  - review_code reports an icon name of an icon prop that is neither an icon of @maz-ui/icons nor of the project (`icon="x-mak"`, did you mean "x-mark"?), from the generated types of the names or the icons folder, and the icon names in a project without `MazUi()` nor @maz-ui/nuxt
+
+- **maz-ui:** Icons by name in MazAlert and in the steps of MazStepper ([74f7fecdd](https://github.com/LouisMazel/maz-ui/commit/74f7fecdd))
+
+  `<MazAlert icon="bell">` and `steps: [{ icon: 'check' }]` take the formats of MazIcon: a name of @maz-ui/icons or of the project, a component, a URL or a raw SVG.
+
+- **maz-ui:** Icon of the toasts in the formats of MazIcon ([9a795d241](https://github.com/LouisMazel/maz-ui/commit/9a795d241))
+
+  The `icon` option of the toasts takes a name (`toast.success('Saved', { icon: 'cloud-arrow-up' })`), a component, a URL or a raw SVG, and replaces the icon of the type. An icon component passed in this option was ignored.
+
+- **icons:** Icon-names.json gives the component of each name ([59f2f3ce5](https://github.com/LouisMazel/maz-ui/commit/59f2f3ce5))
+
+  Each name of `icon-names.json` gives its component and its file: `{ "x-mark": { "component": "MazXMark", "file": "svg/x-mark.svg" } }`.
+
+- **maz-ui:** MazAvatar - loaded emitted by the native image, intersecting deprecated ([cb1fa66cf](https://github.com/LouisMazel/maz-ui/commit/cb1fa66cf))
+
+  With `loading="lazy"` or `"eager"`, the native image emits `loaded`, like the default `intersecting` mode.
+
+  `loading="intersecting"` is deprecated: set `loading="lazy"`, the native lazy loading. In v6, `lazy` becomes the default and `intersecting` is removed, with the `loading` and `intersecting` events and the `hideLoader` prop. In dev, a warning is logged when `loading="intersecting"` is set.
+
+- **vite-plugin:** MazUiThemePresets keeps in the build only the presets loaded by name ([512215cb3](https://github.com/LouisMazel/maz-ui/commit/512215cb3))
+
+  getPreset of @maz-ui/themes imports each named preset on demand, so every preset is a chunk of the build. MazUi({ presets: ['maz-ui', 'ocean'] }), or MazUiThemePresets({ presets }) alone, keeps only the listed ones, `[]` none for an app that only uses preset objects. It also applies to the dependency optimizer, so a missing preset fails in dev as in production.
+
+- **nuxt:** The theme presets never prefetched, theme.presets keeps only the ones loaded by name ([4c3bdb0f1](https://github.com/LouisMazel/maz-ui/commit/4c3bdb0f1))
+
+  The pages no longer prefetch the chunks of the named presets of @maz-ui/themes: they are downloaded when the app loads them. The new theme.presets option keeps only the listed presets in the build (with theme.preset when it is a name), through MazUiThemePresets of @maz-ui/vite-plugin.
+
+- **maz-ui:** Add MazPageSection, a full-width page band with the padded-container gutter ([804060919](https://github.com/LouisMazel/maz-ui/commit/804060919))
+
+  MazPageSection renders the padded-container utility (padded-container-no-p with full-bleed), with the as, full-bleed, max-width and container props, each one with a default for the whole app through the defaults option of MazUi. Its styles are in maz-ui/style.css: it works with or without Tailwind CSS, without importing the utilities.
+
+  The padded-container utilities no longer need the variables of maz-ui/style.css: they read their defaults as fallbacks and switch the side padding on the viewport themselves, so maz-ui/utilities.css works alone, and a --maz-container-padding-<mobile|tablet|desktop> set on a parent now applies to the sections inside.
+
+- **nuxt:** Auto-import MazPageSection ([ef94342fd](https://github.com/LouisMazel/maz-ui/commit/ef94342fd))
+- **utils:** Publish exports.json, the names of the helpers ([3ac85eaaf](https://github.com/LouisMazel/maz-ui/commit/3ac85eaaf))
+
+  @maz-ui/utils/exports.json lists the helpers exported by @maz-ui/utils, written by the build from the exports of the package: the tools that need them (auto-import resolvers) read it instead of keeping their own list.
+
+- **maz-ui:** Publish exports.json, the names of the components and composables ([4e2c158fd](https://github.com/LouisMazel/maz-ui/commit/4e2c158fd))
+
+  maz-ui/exports.json lists the components and the composables exported by maz-ui, written by the build from the exports of maz-ui/components and maz-ui/composables. MazModulesResolver reads it, with @maz-ui/utils/exports.json, instead of keeping its own lists: a new composable or helper is resolved without a change of the resolver.
+
+- **@maz-ui/icons:** Add 9 logos ([08f6b2f44](https://github.com/LouisMazel/maz-ui/commit/08f6b2f44))
+
+  Add the `MazBun`, `MazClaude`, `MazGitlab`, `MazMicrosoftTeams`, `MazPnpm`, `MazSlack`, `MazVercel`, `MazX` and `MazYarn` logos.
+
+- **@maz-ui/mcp:** New review_code rules and fewer false positives ([1b132978c](https://github.com/LouisMazel/maz-ui/commit/1b132978c))
+
+  New rules: missing-required-prop, unknown-slot-binding, input-label, button-navigation, native-dialog (alert, confirm, prompt), parse-error (a file that cannot be parsed is reported instead of stopping the review), and prefer-utils / prefer-ecosystem for hand-written code that maz-ui provides (currency and date formatting, sleep, debounce, cookies, viewport, visibility, MutationObserver).
+
+### 🔥 Performance
+
+- **icons:** Inline the SVG of each icon in its entry ([dc1549d90](https://github.com/LouisMazel/maz-ui/commit/dc1549d90))
+
+  The static and raw entries of an icon hold its component and its SVG, instead of importing them from a module of their own: 1,736 files less in the package, faster to publish and to install. The imports and their types do not change.
+
+  The raw string of an icon is wrapped in a pure String() call: Rolldown does not copy it in each `??`, `||` or ternary that uses it.
+
+- **icons:** The types of the icons in five files ([bd414762d](https://github.com/LouisMazel/maz-ui/commit/bd414762d))
+
+  The types of the icons are declared by their entries and by one file of modules (`declare module '@maz-ui/icons/static/MazStar'`), instead of one file per module: 2,604 files less in the package, and TypeScript loads 80 files instead of 2,683. Each import keeps its exact types: a wrong name is still an error.
+
+  The root types import their entries with an extension: `import { MazTrash } from '@maz-ui/icons'` is typed with `moduleResolution: nodenext`.
+
+- **icons:** No SVG file of the flags and logos in the package ([e750b8343](https://github.com/LouisMazel/maz-ui/commit/e750b8343))
+
+  The flags and the logos are published as components and raw strings only (533 files less): `./flags/*` and `./logos/*`, never released in a stable version, are removed. `./svg/*` stays.
+
+- **themes:** The named presets loaded from a registry the build can replace ([3609bc6a3](https://github.com/LouisMazel/maz-ui/commit/3609bc6a3))
+
+  getPreset reads the loaders of the named presets from utils/preset-loaders, which MazUiThemePresets (@maz-ui/vite-plugin) replaces at build time to keep only the presets of the app. Loading a preset out of this list throws an error naming the option, and a maz-preset cookie that names it falls back to the configured preset with a warning.
+
+- **maz-ui:** MazCodeHighlight highlights with the JavaScript regex engine of shiki, without WebAssembly ([aeb45f5f6](https://github.com/LouisMazel/maz-ui/commit/aeb45f5f6))
+
+  The `shiki` entry loaded the Oniguruma engine, a WebAssembly file of about 600 KB once the page is interactive. The highlighter is now built with `shiki/core` and `createJavaScriptRegexEngine`: about 150 KB less (gzip) per page that highlights code. The languages and themes are still loaded when a block uses them. The engine needs the `v` flag of regular expressions (Chrome 112, Safari 17, Firefox 116).
+
+### 🩹 Fixes
+
+- **maz-ui:** MazInputPhoneNumber applies the v-model set right after mount ([ab5a90025](https://github.com/LouisMazel/maz-ui/commit/ab5a90025))
+
+  The component ignored a v-model value set by the parent right after the mount (data loaded one tick after the render): the value is now compared with the last emitted value instead of a time-based flag.
+
+  Fixes:
+  - the country code set by the parent right after the mount is applied, and a stale country code sent back by the parent no longer overrides the country of the phone number
+  - the parent can reset the country code (`v-model:country-code` set to `undefined`)
+  - `@data` returns the country of the phone number after typing an international number of another country
+  - the country of `fetch-country` no longer overrides a country or a phone number set during the request, and still replaces the country of the browser locale
+  - the detected country (browser locale or IP address) is only selected when it belongs to `only-countries` / `ignored-countries`
+  - the browser locale is resolved to its region (`ca` gave Canada, `ar` Argentina, `be` Belgium, `zh` or `ko` an error)
+  - an empty input no longer shows a valid state when the parent does not update the v-model
+  - a `null` or `''` v-model is no longer rewritten to `undefined` on mount or on reset
+  - an invalid `country-locale` (`''`, `fr_FR`) no longer crashes the render
+  - full-width and arabic-indic digits are kept while typing
+  - an incomplete phone number emits the typed value instead of an invalid E.164 (`+3306585858`)
+  - a valid phone number with an extension set by the parent is no longer rewritten without it
+
+  Improvements:
+  - `focus()` and `results` are exposed
+  - `aria-invalid` on the inputs, `aria-describedby` linking the phone number input to the assistive text, `aria-live` on the assistive text
+  - new `ext` field in the results
+  - `country-list-code`, `country-list-name`, `start-icon`, `end-icon` and `loader` slots
+  - the list of countries is cached by locale, and built on the client only without `country-locale` (no hydration mismatch of the country names)
+  - the focus after selecting a country is cancelled on unmount
+  - no more duplicated warning for an unavailable country
+
+- **maz-ui:** Fix MazSwitch accessibility, the autofill of the inputs and dark mode details ([f9b3598dd](https://github.com/LouisMazel/maz-ui/commit/f9b3598dd))
+
+  - `MazSwitch` keeps an `aria-label` attribute, its track is visible in both modes and its disabled state uses the opacity
+  - `MazInput` and `MazTextarea` tint the whole field on browser autofill and keep the text color of the theme
+  - `MazDatePicker` and `MazSelect` inputs no longer stretch in height
+  - Dark mode: `MazLink` lightens on hover, the pastel text of `MazBtn` and `MazBadge` is lighter, the `MazSkeleton` gradient follows the foreground
+  - `MazAccordion` applies its `duration`
+  - `MazSelectCountry` loads the flags natively when they become visible
+
+- **mcp:** Name Codex, Cline and Zed as the agents without a project MCP config in init ([32752a7f4](https://github.com/LouisMazel/maz-ui/commit/32752a7f4))
+- Build the published packages in dry run too ([587b8170a](https://github.com/LouisMazel/maz-ui/commit/587b8170a))
+
+  `pnpm publish --dry-run` still runs the `prepack` scripts, which need the built packages: a dry run from a fresh clone or worktree failed on the `prepack` of @maz-ui/nuxt.
+
+- **maz-ui:** MazLink - add text align inherit ([70f489cb8](https://github.com/LouisMazel/maz-ui/commit/70f489cb8))
+- **maz-ui:** MazIcon - keep a URL already under mazIconPath ([767586cee](https://github.com/LouisMazel/maz-ui/commit/767586cee))
+
+  With `mazIconPath: '/icons'`, `icon="/icons/star.svg"` is fetched from `/icons/star.svg`, not `/icons/icons/star.svg`. Same with an absolute base: `https://cdn.app.com/icons` and `/icons/star.svg` give `https://cdn.app.com/icons/star.svg`.
+
+- Publish the exports without the monorepo:dev condition ([61fd61c82](https://github.com/LouisMazel/maz-ui/commit/61fd61c82))
+
+  The published package.json no longer has the monorepo:dev condition of the monorepo, which pointed to sources that are not published.
+
+- **maz-ui:** UseToast - return the accent method of the toast plugin ([7bf0ddb45](https://github.com/LouisMazel/maz-ui/commit/7bf0ddb45))
+- **maz-ui:** MazIcon - render the SVG files that start with an XML prolog ([3b84b2dfa](https://github.com/LouisMazel/maz-ui/commit/3b84b2dfa))
+
+  An SVG file starting with an XML prolog, a doctype or comments (as exported by design tools) rendered the fallback icon, from a URL, a raw string or a data URI. A data URI with an unencoded `%` or a percent-encoded base64 payload is decoded too, without request.
+
+- **vite-plugin:** An icon used by name shares the raw module of maz-ui ([a7448f3b3](https://github.com/LouisMazel/maz-ui/commit/a7448f3b3))
+
+  `MazUi()` imports an icon of `@maz-ui/icons` used by name from its `raw` module, resolved from maz-ui like the imports of its components: an icon used by name and by a component of maz-ui (the close cross of the toasts) is bundled once, instead of twice.
+
+- **vite-plugin:** The SVG of an icon of maz-ui read from its built raw module ([064a47773](https://github.com/LouisMazel/maz-ui/commit/064a47773))
+
+  When the `raw` module of an icon of `@maz-ui/icons` is not resolved, `MazUi()` reads its SVG from `dist/raw` instead of its SVG file, identical byte for byte: the flags and the logos need no file in the package.
+
+- **maz-ui:** Load the images of MazAvatar and MazSelectCountry lazily with loading="lazy" ([364cfbfe2](https://github.com/LouisMazel/maz-ui/commit/364cfbfe2))
+
+  The `loading` attribute is now set before `src`, so the browser no longer fetches the images as soon as they are rendered.
+
+- **@maz-ui/mcp:** Skip node_modules, dist and coverage in the folders outside of the working directory ([158bb4d01](https://github.com/LouisMazel/maz-ui/commit/158bb4d01))
+
+  review ../app went through node_modules and coverage, and stopped at the limit of 200 files.
+
+### 💅 Refactors
+
+- **nuxt:** Let setupAgents resolve the agents, the rules and the MCP version of the app ([0ce969446](https://github.com/LouisMazel/maz-ui/commit/0ce969446))
+- **icons:** Testable icon generator ([c9551f7d3](https://github.com/LouisMazel/maz-ui/commit/c9551f7d3))
+
+  One function per rule (component names, SVG cleaning, icon files), the root of the package passed by the build: the generated files are unchanged.
+
+- **nuxt:** Read the components and composables to auto-import from maz-ui/exports.json ([63b11acaa](https://github.com/LouisMazel/maz-ui/commit/63b11acaa))
+
+### 📦 Build
+
+- **deps:** Update 3 dependencies (major) ([13e9990eb](https://github.com/LouisMazel/maz-ui/commit/13e9990eb))
+
+  - @nuxt/devtools ^3.4.4 -> ^4.1.0
+  - @nuxt/devtools-kit ^3.4.4 -> ^4.1.0
+  - jsdom ^30.1.3 -> ^31.0.0
+
+  Code adapted to the new versions by an AI agent (Claude Code), then checked by the project's checks.
+
+- **maz-ui:** Resolve the colors of MazSwitch without light-dark() ([2ab6c0351](https://github.com/LouisMazel/maz-ui/commit/2ab6c0351))
+
+### 🧪 Tests
+
+- **maz-ui:** Update coverage treesholds ([6c74d439e](https://github.com/LouisMazel/maz-ui/commit/6c74d439e))
+- **icons:** Unit tests and coverage of the registry, the resolver and the icon generator ([f6a567eb0](https://github.com/LouisMazel/maz-ui/commit/f6a567eb0))
+- **vite-plugin:** Icons of a variable with a type annotation ([935faf353](https://github.com/LouisMazel/maz-ui/commit/935faf353))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.8 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.7...v5.7.0-beta.8)
