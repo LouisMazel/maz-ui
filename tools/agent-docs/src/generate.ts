@@ -532,7 +532,7 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths(), o
     ? collectIconNames(paths.iconList)
     : undefined
   const iconIds = built.has('@maz-ui/icons')
-    ? collectIconIds(paths.iconNames, paths.iconStatic)
+    ? collectIconIds(paths.iconNames)
     : undefined
   const agentContent = loadAgentContent(paths.content)
   const pageDrafts = context.pages.filter(page => built.has(page.package)).map(page => pageDraft(context, page))
