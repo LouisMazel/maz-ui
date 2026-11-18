@@ -732,5 +732,33 @@ describe('MazIcon', () => {
       expect(fetchMock).toHaveBeenCalledWith('https://cdn.example.com/icons/remount.svg')
       expect(remounted.html()).toContain('viewBox="0 0 24 24"')
     })
+
+    describe('when resolving relative URLs', () => {
+      it.each([
+        ['/icons', '/star.svg', '/icons/star.svg'],
+        ['/icons/', '/icons/star.svg', '/icons/star.svg'],
+        ['/icons', '/icons-v2/star.svg', '/icons/icons-v2/star.svg'],
+        ['https://cdn.example.com/icons', '/icons/star.svg', 'https://cdn.example.com/icons/star.svg'],
+        ['https://cdn.example.com/icons', '/star.svg', 'https://cdn.example.com/icons/star.svg'],
+        ['https://cdn.example.com', '/icons/star.svg', 'https://cdn.example.com/icons/star.svg'],
+      ])('then with the path %s, %s is fetched from %s', async (mazIconPath, icon, url) => {
+        const fetchMock = vi.fn().mockResolvedValue({
+          ok: true,
+          text: () => Promise.resolve(RAW_SVG),
+        })
+        const query = `?base=${mazIconPath}&icon=${icon}`
+        globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch
+
+        mount(MazIcon, {
+          props: { icon: `${icon}${query}` },
+          global: {
+            provide: { mazIconPath },
+          },
+        })
+        await new Promise(resolve => setTimeout(resolve, 0))
+
+        expect(fetchMock).toHaveBeenCalledWith(`${url}${query}`)
+      })
+    })
   })
 })

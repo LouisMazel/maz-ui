@@ -32,6 +32,8 @@ function warnUnknownName(name: string): Error {
   return error
 }
 
+const URL_ORIGIN = /^(?:[a-z][a-z\d+\-.]*:)?\/\/[^/]+/i
+
 function isRelativeUrl(value: string): boolean {
   return value.startsWith('/') && !value.startsWith('//')
 }
@@ -86,14 +88,20 @@ export function useSvgSource({ icon, fallback, prepare, watchSources, onError }:
     rawSvgContent.value = prepare(svg)
   }
 
+  /** `/star.svg` is `${mazIconPath}/star.svg`, a URL already under its path (`/icons/star.svg` with `/icons`) keeps it */
   function resolveUrl(value: string): string {
-    if (mazIconPath && isRelativeUrl(value)) {
-      const base = mazIconPath.endsWith('/')
-        ? mazIconPath.slice(0, -1)
-        : mazIconPath
-      return `${base}/${value.slice(1)}`
-    }
-    return value
+    if (!mazIconPath || !isRelativeUrl(value))
+      return value
+
+    const base = mazIconPath.endsWith('/')
+      ? mazIconPath.slice(0, -1)
+      : mazIconPath
+    const origin = URL_ORIGIN.exec(base)?.[0] ?? ''
+    const basePath = base.slice(origin.length)
+
+    return basePath && (value === basePath || value.startsWith(`${basePath}/`))
+      ? `${origin}${value}`
+      : `${base}${value}`
   }
 
   async function fail(error: Error, value: string): Promise<void> {
