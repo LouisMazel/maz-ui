@@ -65,6 +65,7 @@ export default defineConfig({
           'packages/node',
           'packages/stylelint-config',
           'packages/upgrade',
+          'packages/vite-svg-loader',
         ],
         changelog: { rootChangelog: false },
       },

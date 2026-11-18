@@ -1,0 +1,110 @@
+{
+  "name": "@maz-ui/vite-svg-loader",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "Vite plugin to import SVG files as Vue components, optimized strings or URLs, with svgo 4",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "homepage": "https://maz-ui.com/ecosystem/vite-svg-loader",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git",
+    "directory": "packages/vite-svg-loader"
+  },
+  "bugs": "https://github.com/LouisMazel/maz-ui/issues",
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "svg",
+    "svgo",
+    "vue",
+    "loader",
+    "vite-svg-loader"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "monorepo:dev": "./src/index.ts",
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
+    "./optimize": {
+      "monorepo:dev": "./src/optimize.ts",
+      "types": "./dist/optimize.d.mts",
+      "import": "./dist/optimize.mjs",
+      "default": "./dist/optimize.mjs"
+    },
+    "./client": {
+      "types": "./client.d.ts"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "agent-docs",
+    "client.d.ts",
+    "dist"
+  ],
+  "engines": {
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
+  },
+  "scripts": {
+    "build": "unbuild && pnpm generate:agent-docs",
+    "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/vite-svg-loader",
+    "dev": "unbuild --stub",
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage"
+  },
+  "peerDependencies": {
+    "vite": ">=6.0.0 <9.0.0",
+    "vue": ">=3.5.0 <4.0.0"
+  },
+  "dependencies": {
+    "svgo": "^4.1.0"
+  },
+  "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:^",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "sharp": "^0.34.5",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
+    "vue": "catalog:"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [
+      "eslint --fix"
+    ]
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "inputs": [
+          "production",
+          "^production",
+          "{workspaceRoot}/tools/agent-docs/src/**/*",
+          "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/apps/docs/src/**/*"
+        ],
+        "outputs": [
+          "{projectRoot}/dist",
+          "{projectRoot}/agent-docs"
+        ]
+      }
+    }
+  }
+}
