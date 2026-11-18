@@ -31,6 +31,8 @@ yarn add shiki
 
 If `shiki` is not installed, the component falls back to a plain `<pre><code>` block.
 
+shiki is loaded on the first highlight, with its JavaScript regex engine: no WebAssembly is downloaded, only the grammar of each language and the themes used by the page. The engine relies on the `v` flag of regular expressions (Chrome 112, Safari 17, Firefox 116 and later).
+
 ## Basic usage
 
 <ComponentDemo>
