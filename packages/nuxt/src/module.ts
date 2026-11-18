@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url'
 import { readPackageVersion, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
-import { generateIconTypes, loadIconNames, MazUiIcons, MazUiPurgeCss } from '@maz-ui/vite-plugin'
+import { generateIconTypes, loadIconNames, MazUiIcons, MazUiPurgeCss, MazUiThemePresets } from '@maz-ui/vite-plugin'
 import { onDevtoolsReady } from '@nuxt/devtools-kit'
 import {
   addComponent,
@@ -350,6 +350,9 @@ function getModuleEntries(options: { plugins: NonNullable<MazUiNuxtOptions['plug
   ]
 }
 
+/** Chunks of the named presets of @maz-ui/themes (`dist` when installed, `src` in the monorepo) */
+const THEME_PRESET_CHUNK = /[\\/]themes[\\/](?:dist|src)[\\/]presets[\\/]/
+
 function addMazUiComposableImport({
   name,
   from,
@@ -392,6 +395,10 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     // The messages go through a template, not the runtime config (serialized in the payload of every page)
     const { messages: translationsMessages, ...translationsOptions } = moduleOptions.translations ?? {}
     moduleOptions.translations = translationsOptions
+
+    // The presets of the build are a build option, not a runtime one
+    const { presets: themePresets, ...themeOptions }: NonNullable<MazUiNuxtOptions['theme']> = moduleOptions.theme ?? {}
+    moduleOptions.theme = themeOptions as typeof moduleOptions.theme
 
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
 
@@ -448,6 +455,27 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         ...(optimizeDeps.exclude ?? []),
         '@maz-ui/icons',
       ]
+    }
+
+    // Theme presets
+
+    // `getPreset` imports each named preset on demand: the renderer would prefetch all of them on every page
+    nuxt.hook('build:manifest', (manifest) => {
+      for (const [id, chunk] of Object.entries(manifest)) {
+        if (THEME_PRESET_CHUNK.test(chunk.src ?? id))
+          chunk.prefetch = false
+      }
+    })
+
+    if (themePresets) {
+      addVitePlugin(MazUiThemePresets({
+        presets: typeof themeOptions.preset === 'string'
+          ? [
+              ...themePresets,
+              themeOptions.preset,
+            ]
+          : themePresets,
+      }))
     }
 
     // cssnano's `postcss-calc` cannot parse the relative OKLCh values maz-ui

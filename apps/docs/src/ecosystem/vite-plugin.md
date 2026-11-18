@@ -1,10 +1,10 @@
 ---
 title: Vite plugin
-description: "@maz-ui/vite-plugin brings icons by name (<MazIcon icon=\"x-mark\" />, only the icons of each page bundled) and removes the unused CSS of maz-ui at build time."
+description: "@maz-ui/vite-plugin brings icons by name (<MazIcon icon=\"x-mark\" />, only the icons of each page bundled), removes the unused CSS of maz-ui at build time and keeps only the theme presets your app loads."
 head:
   - - meta
     - name: keywords
-      content: vite, vite plugin, icons, svg, icon names, purge css, unused css, css size, bundle size, tree shaking css, maz-ui
+      content: vite, vite plugin, icons, svg, icon names, purge css, unused css, css size, bundle size, tree shaking css, theme presets, maz-ui
 ---
 
 # {{ $frontmatter.title }}
@@ -13,13 +13,14 @@ head:
 
 <NpmBadge package="@maz-ui/vite-plugin" />
 
-`MazUi()` holds both plugins:
+`MazUi()` holds the plugins of maz-ui:
 
 - **Icons by name**: `icon="x-mark"` without an import, with the SVG of your project and the types of the names.
 - **CSS purge**: removes from the CSS of maz-ui what your app does not use.
+- **Theme presets**: keeps in the build only the theme presets your app loads by name.
 
 ::: tip Nuxt
-With `@maz-ui/nuxt`, you do not install anything: the module adds both, see [`icons`](./nuxt.md#icons) and [`css.purge`](./nuxt.md#css-configuration).
+With `@maz-ui/nuxt`, you do not install anything: the module adds them, see [`icons`](./nuxt.md#icons), [`css.purge`](./nuxt.md#css-configuration) and [`theme.presets`](./nuxt.md#theme-system).
 :::
 
 ## Installation
@@ -64,6 +65,7 @@ export default defineConfig({
 | --- | --- | --- | --- |
 | `icons` | `boolean \| object` | `true` | [Icons by name](#icons-by-name) |
 | `purge` | `boolean \| object` | `true` | [CSS purge](#css-purge) |
+| `presets` | `string[]` | every preset | [Theme presets](#theme-presets) |
 
 ## Icons by name
 
@@ -268,3 +270,17 @@ Keep `@import 'maz-ui/tailwindcss/utilities.css'` in your Tailwind entry and do 
 - Build only: the dev server keeps the whole CSS.
 - Entries are found by name in the files of the project: names built at runtime need `entries` or `safelist`.
 - Only the CSS of maz-ui is purged, not the CSS of your app.
+
+## Theme presets
+
+`getPreset` of `@maz-ui/themes` (used by the theme plugin, `useTheme` and `definePreset`) imports each named preset on demand: every preset is a chunk of your build, even the ones your app never loads. They are only downloaded when loaded, but a service worker that precaches every JS file (PWA) downloads all of them. `presets` keeps only the presets you list:
+
+```ts
+MazUi({
+  presets: ['maz-ui', 'ocean'],
+})
+```
+
+`presets` lists the presets your app loads by name: `theme.preset`, `updateTheme('ocean')`, `definePreset({ base: 'ocean' })`. `[]` keeps none, for an app that only uses preset objects. Without `presets`, every preset stays in the build. The plugin alone is `MazUiThemePresets({ presets })`.
+
+The plugin also applies to the dev server, so a missing preset fails in dev as in production: `updateTheme('nova')` rejects with an error naming the option, and a `maz-preset` cookie with a removed preset falls back to the configured one with a warning. See [Presets in the build](./themes.md#presets-in-the-build).
