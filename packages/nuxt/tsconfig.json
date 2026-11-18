@@ -17,6 +17,7 @@
     "../stylelint-config/**/*",
     "../maz-cli/**/*",
     "../vite-plugin/**/*",
+    "../vite-svg-loader/**/*",
     "../../apps/**/*"
   ]
 }

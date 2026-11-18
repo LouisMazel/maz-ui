@@ -8,17 +8,19 @@ import { fileURLToPath } from 'node:url'
 import { readPackageVersion, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
-import { MazUiPurgeCss } from '@maz-ui/vite-plugin'
+import { generateIconTypes, loadIconNames, MazUiIcons, MazUiPurgeCss } from '@maz-ui/vite-plugin'
 import { onDevtoolsReady } from '@nuxt/devtools-kit'
 import {
   addComponent,
   addImports,
   addPlugin,
   addTemplate,
+  addTypeTemplate,
   addVitePlugin,
   createResolver,
   defineNuxtModule,
   resolvePath,
+  updateTemplates,
   useLogger,
 } from '@nuxt/kit'
 import { defu } from 'defu'
@@ -112,6 +114,7 @@ const COMPONENT_NAMES: Omit<
   MazStepper: true,
   MazSegmented: true,
   MazSwitch: true,
+  MazSvg: true,
   MazSidebar: true,
   MazSidebarMenu: true,
   MazSidebarMenuItem: true,
@@ -197,6 +200,7 @@ const defaults = {
   },
   defaults: {},
   flags: 'cdn',
+  icons: true,
   components: {
     autoImport: true,
   },
@@ -241,6 +245,35 @@ function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult
 }
 
 /** Version of the maz-ui that Node.js resolves from a file, `undefined` when it does not resolve */
+const ICON_TYPES_TEMPLATE = 'types/maz-icons.d.ts'
+
+function setupIcons(options: MazUiNuxtOptions['icons'], nuxt: Nuxt) {
+  const iconsOptions = typeof options === 'object'
+    ? options
+    : {}
+  const dir = resolve(nuxt.options.rootDir, iconsOptions.dir ?? join(nuxt.options.srcDir, 'icons'))
+
+  addVitePlugin(MazUiIcons({ ...iconsOptions, dir, dts: false }))
+
+  // Written by Nuxt, `nuxi prepare` and `nuxi typecheck` have them without running Vite
+  addTypeTemplate({
+    filename: ICON_TYPES_TEMPLATE,
+    getContents: () => generateIconTypes(
+      loadIconNames({ root: nuxt.options.rootDir, dir, prefix: iconsOptions.prefix }),
+      { strict: iconsOptions.strict },
+    ),
+  })
+
+  nuxt.hook('builder:watch', async (event, relativePath) => {
+    const path = resolve(nuxt.options.srcDir, relativePath)
+    if ((event === 'add' || event === 'unlink') && path.startsWith(`${dir}/`) && path.endsWith('.svg')) {
+      await updateTemplates({
+        filter: template => template.filename === ICON_TYPES_TEMPLATE,
+      })
+    }
+  })
+}
+
 function resolveMazUiVersion(from: string): string | undefined {
   try {
     return readPackageVersion(dirname(createRequire(from).resolve('maz-ui/package.json')))
@@ -398,6 +431,23 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           ...(purgeOptions.entries ?? []),
         ],
       }))
+    }
+
+    // Icons by name: each file registers the icons it uses, in its chunk
+
+    if (moduleOptions.icons !== false) {
+      setupIcons(moduleOptions.icons, nuxt)
+    }
+
+    // Icons are one ESM module each: pre-bundled, every new one found while browsing reloads the page
+    nuxt.options.vite ??= {}
+    nuxt.options.vite.optimizeDeps ??= {}
+    const optimizeDeps = nuxt.options.vite.optimizeDeps
+    if (!optimizeDeps.include?.includes('@maz-ui/icons') && !optimizeDeps.exclude?.includes('@maz-ui/icons')) {
+      optimizeDeps.exclude = [
+        ...(optimizeDeps.exclude ?? []),
+        '@maz-ui/icons',
+      ]
     }
 
     // cssnano's `postcss-calc` cannot parse the relative OKLCh values maz-ui
