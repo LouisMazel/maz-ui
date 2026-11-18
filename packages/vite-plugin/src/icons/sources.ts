@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, join, relative, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { globSync } from 'tinyglobby'
 import { ICON_NAME_PATTERN } from './scan'
 
@@ -9,6 +10,8 @@ export interface IconSource {
   file: string
   /** Root of the ids of the SVG (`prefixIds` of svgo): the package of the icons, or the project */
   root: string
+  /** Its component in `@maz-ui/icons` (`MazXMark`): the name imports its `raw` module, shared with the imports */
+  component?: string
 }
 
 export interface ProjectIconsOptions {
@@ -33,15 +36,26 @@ export interface IconSources extends ProjectIcons {
  * it), then the one of the project, then the one of this plugin.
  */
 export function resolveIconsPackage(root: string): string | undefined {
+  return locateIconsPackage(root)?.packageDir
+}
+
+/** The folder of `@maz-ui/icons`, and the file it is resolved from: its modules are resolved from it too */
+export function locateIconsPackage(root: string): { packageDir: string, importer: string } | undefined {
   const candidates = [
-    () => createRequire(createRequire(join(root, 'package.json')).resolve('maz-ui/package.json')),
-    () => createRequire(join(root, 'package.json')),
-    () => createRequire(import.meta.url),
+    () => createRequire(join(root, 'package.json')).resolve('maz-ui/package.json'),
+    () => join(root, 'package.json'),
+    () => import.meta.url,
   ]
 
-  for (const getRequire of candidates) {
+  for (const getImporter of candidates) {
     try {
-      return dirname(getRequire().resolve('@maz-ui/icons/package.json'))
+      const importer = getImporter()
+      return {
+        packageDir: dirname(createRequire(importer).resolve('@maz-ui/icons/package.json')),
+        importer: importer.startsWith('file:')
+          ? fileURLToPath(importer)
+          : importer,
+      }
     }
     catch {}
   }
@@ -51,13 +65,14 @@ export function resolveIconsPackage(root: string): string | undefined {
 
 /** The icons of `@maz-ui/icons`, by name (`x-mark`, `flag-fr`, `logo-vue`) */
 export function loadPackageIcons(packageDir: string): Map<string, IconSource> {
-  const names = JSON.parse(readFileSync(join(packageDir, 'icon-names.json'), 'utf8')) as Record<string, string>
+  const names = JSON.parse(readFileSync(join(packageDir, 'icon-names.json'), 'utf8')) as Record<string, { component: string, file: string }>
 
-  return new Map(Object.entries(names).map(([name, file]) => [
+  return new Map(Object.entries(names).map(([name, { component, file }]) => [
     name,
     {
       file: join(packageDir, file),
       root: packageDir,
+      component,
     },
   ]))
 }

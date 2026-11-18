@@ -1,4 +1,5 @@
-import { loadIconNames, resolveIconsPackage } from '../sources'
+import { fileURLToPath } from 'node:url'
+import { loadIconNames, locateIconsPackage, resolveIconsPackage } from '../sources'
 
 const { resolvable } = vi.hoisted(() => ({
   resolvable: { fromPlugin: true },
@@ -24,6 +25,7 @@ describe('given a project that resolves neither maz-ui nor @maz-ui/icons', () =>
       resolvable.fromPlugin = true
 
       expect(resolveIconsPackage('/project')).toBe('/plugin/node_modules/@maz-ui/icons')
+      expect(locateIconsPackage('/project')?.importer).toBe(fileURLToPath(new URL('../sources.ts', import.meta.url)))
     })
   })
 

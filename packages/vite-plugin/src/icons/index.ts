@@ -7,7 +7,7 @@ import { optimizeSvg } from '@maz-ui/vite-svg-loader/optimize'
 import MagicString from 'magic-string'
 import { ICONS_PACKAGE, loadIconIds, rewriteIconImports } from './imports'
 import { scanIconNames } from './scan'
-import { loadPackageIcons, loadProjectIcons, mergeIconSources, resolveIconsPackage } from './sources'
+import { loadPackageIcons, loadProjectIcons, locateIconsPackage, mergeIconSources } from './sources'
 import { generateIconTypes, writeIfChanged } from './types'
 
 export interface MazUiIconsOptions {
@@ -104,6 +104,8 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
   let root = process.cwd()
   let logger!: Logger
   let packageIcons = new Map<string, IconSource>()
+  /** The file `@maz-ui/icons` is resolved from: the one of `maz-ui` first, whose components import the same modules */
+  let iconsImporter: string | undefined
   let iconIds = new Set<string>()
   /** Not when the app pre-bundles `@maz-ui/icons`: the scan of the pre-bundling only sees the original imports */
   let rewritesImports = false
@@ -225,10 +227,11 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
 
       rewritesImports = config.command === 'build' || (config.optimizeDeps?.exclude ?? []).includes(ICONS_PACKAGE)
 
-      const packageDir = resolveIconsPackage(root)
-      if (packageDir) {
-        packageIcons = loadPackageIcons(packageDir)
-        iconIds = loadIconIds(packageDir)
+      const iconsPackage = locateIconsPackage(root)
+      if (iconsPackage) {
+        packageIcons = loadPackageIcons(iconsPackage.packageDir)
+        iconIds = loadIconIds(iconsPackage.packageDir)
+        iconsImporter = iconsPackage.importer
       }
       else {
         warn(`${ICONS_PACKAGE} not found: only the SVG of the project can be used by name`)
@@ -279,7 +282,7 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
 
     load: {
       filter: { id: RESOLVED_PATTERN },
-      handler(id) {
+      async handler(id) {
         if (!RESOLVED_PATTERN.test(id))
           return undefined
 
@@ -290,6 +293,13 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
         // A project SVG removed while a module still imports it: the name renders the fallback
         if (!source)
           return 'export default ""\n'
+
+        // The `raw` module of maz-ui: the SVG is bundled once, for the name and for the imports of the components
+        const raw = source.component && iconsImporter
+          ? await this.resolve(`${ICONS_PACKAGE}/raw/${source.component}`, iconsImporter)
+          : null
+        if (raw && !raw.external)
+          return `export { ${source.component} as default } from ${JSON.stringify(raw.id)}\n`
 
         this.addWatchFile(source.file)
         iconFiles.add(source.file)

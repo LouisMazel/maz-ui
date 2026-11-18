@@ -30,7 +30,10 @@ export function createProject({ icons = 'maz-ui', files = {} }: ProjectFixture =
       : join(root, 'node_modules/@maz-ui/icons')
 
     write(join(packageDir, 'package.json'), '{"name":"@maz-ui/icons","version":"5.7.0"}')
-    write(join(packageDir, 'icon-names.json'), JSON.stringify({ 'home': 'svg/home.svg', 'x-mark': 'svg/x-mark.svg' }))
+    write(join(packageDir, 'icon-names.json'), JSON.stringify({
+      'home': { component: 'MazHome', file: 'svg/home.svg' },
+      'x-mark': { component: 'MazXMark', file: 'svg/x-mark.svg' },
+    }))
     write(join(packageDir, 'svg/x-mark.svg'), X_MARK_SVG)
     write(join(packageDir, 'svg/home.svg'), HOME_SVG)
     write(join(packageDir, 'dist/raw/MazHome.js'), 'export const MazHome = ""')
