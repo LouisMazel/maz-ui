@@ -235,6 +235,8 @@ app.provide('mazIconPath', 'https://cdn.your-app.com')
 
 In Nuxt, set `mazUi.general.defaultMazIconPath` in `nuxt.config` and `@maz-ui/nuxt` wires the provide for you.
 
+Every URL starting with `/` is relative to it: with `'/icons'`, `/star.svg` is `/icons/star.svg`, and `/icons/star.svg` stays `/icons/star.svg`. For a file outside of it, pass a full URL, or import the SVG (`logo.svg?raw`).
+
 ## Forwarding `MazIconProps` from a consumer
 
 Most icon-aware components in maz-ui (`MazBtn`, `MazInput`, `MazLink`, `MazContainer`, `MazDropdown`) accept a flexible icon prop on their `startIcon`, `endIcon`, `icon` or `dropdownIcon` slots. You can pass either a bare value (the same shape as `MazIcon`'s `icon` prop) or a full `MazIconProps` object when you need fine-grained control:

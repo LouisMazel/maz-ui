@@ -207,13 +207,13 @@ rg "rounded-?size\s*=\s*['\"]base['\"]" src/
 <MazIcon :icon="MazStar" />
 
 <!-- v5 -->
-<MazIcon icon="/home.svg" />            <!-- relative URL — `mazIconPath` is prepended in SSR -->
-<MazIcon icon="/icons/home.svg" />      <!-- absolute path -->
+<MazIcon icon="/home.svg" />            <!-- relative URL: `mazIconPath` is prepended -->
+<MazIcon icon="/icons/home.svg" />      <!-- already under `mazIconPath` (`/icons`): kept -->
 <MazIcon icon="/assets/star.svg" />
 <MazIcon :icon="MazStar" />              <!-- unchanged -->
 ```
 
-The `mazIconPath` `provide` (and Nuxt's `mazUi.general.defaultMazIconPath`) is still honored — it now acts as a **base URL prefix** for relative URL icons, mainly useful in SSR where `fetch('/icons/home.svg')` cannot resolve without a host.
+The `mazIconPath` `provide` (and Nuxt's `mazUi.general.defaultMazIconPath`) is still honored: it now acts as a **base URL prefix** for relative URL icons, mainly useful in SSR where `fetch('/icons/home.svg')` cannot resolve without a host.
 
 New props:
 
@@ -296,7 +296,7 @@ If you target maz-ui's internal selectors from your own CSS, also rename:
 ```
 
 ::: warning Icon names
-In v4, a string icon prop (`left-icon="user"`) was an icon **name**, resolved to `${mazIconPath}/user.svg`. In v5, a string is a **URL** or a raw SVG: a bare name renders nothing. Use the URL of the same file (`start-icon="/user.svg"`, `mazIconPath` is still prepended to relative URLs) or an icon component. The `@maz-ui/upgrade` codemod rewrites the static values for you.
+In v4, a string icon prop (`left-icon="user"`) was an icon **name**, resolved to `${mazIconPath}/user.svg`. In v5, a string is a **URL**, a raw SVG or, since 5.7, a **name** of `@maz-ui/icons` or of the SVG of your project, registered by [`MazUi()`](../ecosystem/vite-plugin.md#icons-by-name) or `@maz-ui/nuxt`. For the files of your `mazIconPath`, use their URL (`start-icon="/user.svg"`, `mazIconPath` is still prepended to relative URLs), or move them to `src/icons` to use them by name. The `@maz-ui/upgrade` codemod rewrites the static values to URLs.
 :::
 
 ```bash
