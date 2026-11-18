@@ -171,6 +171,41 @@ describe('get-preset', () => {
       })
     })
 
+    describe('when macos string is provided', () => {
+      it('then it returns macos preset', async () => {
+        const result = await getPreset('macos')
+
+        expect(result.name).toBe('macos')
+        expect(result.foundation['interactive-cursor']).toBe('default')
+      })
+    })
+
+    describe('when windows string is provided', () => {
+      it('then it returns windows preset', async () => {
+        const result = await getPreset('windows')
+
+        expect(result.name).toBe('windows')
+        expect(result.foundation['interactive-cursor']).toBe('default')
+      })
+    })
+
+    describe('when linux string is provided', () => {
+      it('then it returns linux preset', async () => {
+        const result = await getPreset('linux')
+
+        expect(result.name).toBe('linux')
+        expect(result.foundation['interactive-cursor']).toBe('default')
+      })
+    })
+
+    describe('when maz-ui string is provided', () => {
+      it('then it returns the mazUi preset', async () => {
+        const result = await getPreset('maz-ui')
+
+        expect(result.name).toBe('maz-ui')
+      })
+    })
+
     describe('when unknown preset string is provided', () => {
       it('then it throws TypeError', async () => {
         await expect(getPreset('unknown' as never)).rejects.toThrow(

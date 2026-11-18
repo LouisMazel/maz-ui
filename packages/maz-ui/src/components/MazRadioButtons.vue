@@ -1,6 +1,6 @@
 <script lang="ts" setup generic="T extends string | number | boolean, Option extends MazRadioButtonsOption<T>">
-import type { HTMLAttributes } from 'vue'
-import type { MazColor, MazSize } from './types'
+import type { CSSProperties, HTMLAttributes } from 'vue'
+import type { MazColor, MazNeutralColor, MazSize } from './types'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { computed } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
@@ -29,8 +29,8 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
    * @default a unique name per instance
    */
   name?: string
-  /** The color of the selected radio buttons */
-  color?: MazColor | 'surface'
+  /** The color of the selected radio buttons: with a neutral color (`surface`, `container`), the selected one gets a foreground border */
+  color?: MazColor | MazNeutralColor
   /** Add elevation to the radio buttons */
   elevation?: boolean
   /**
@@ -106,6 +106,29 @@ const { size } = useGlobalConfig<{ size: MazSize }>('MazRadioButtons', { size: '
 
 const instanceId = useInstanceUniqId({ componentName: 'MazRadioButtons' })
 
+const NEUTRAL_BG: Partial<Record<NonNullable<MazRadioButtonsProps<T, Option>['color']>, string>> = {
+  surface: 'var(--maz-surface)',
+  container: 'var(--maz-container-bg, var(--maz-surface))',
+}
+
+const selectedStyle = computed<{ item: CSSProperties, selector: CSSProperties }>(() => {
+  const neutralBg = NEUTRAL_BG[color]
+
+  if (neutralBg) {
+    return {
+      item: { color: 'var(--maz-foreground)', backgroundColor: neutralBg, borderColor: 'var(--maz-foreground)' },
+      selector: { backgroundColor: 'var(--maz-foreground)', color: neutralBg },
+    }
+  }
+
+  const c = getColor(color)
+
+  return {
+    item: { color: `var(--maz-${c}-foreground)`, backgroundColor: `var(--maz-${c})`, borderColor: `var(--maz-${c})` },
+    selector: { backgroundColor: `oklch(from var(--maz-${c}) clamp(0, calc(l - 0.05), 1) c h)`, color: `var(--maz-${c}-foreground)` },
+  }
+})
+
 // A shared default name would merge the native radios of every instance of the page in one group
 const groupName = computed(() => name ?? instanceId.value)
 const hintId = computed(() => `${instanceId.value}-hint`)
@@ -160,8 +183,8 @@ const SIZE_CLASS: Record<MazSize, string> = {
         v-for="(option, i) in options"
         :key="getOptionId(option, i)"
         :for="getOptionId(option, i)"
-        class="m-radio-buttons__items maz:group maz:flex maz:cursor-pointer maz:items-center maz:gap-4 maz:rounded-md maz:border
-        maz:border-divider maz:bg-surface maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300"
+        class="m-radio-buttons__items maz:group maz:flex maz:cursor-interactive maz:items-center maz:gap-4 maz:rounded-md maz:border
+        maz:border-divider maz:bg-surface maz:px-4 maz:py-2 maz:type-label maz:transition-colors maz:duration-300"
         :class="[
           `--size-${size}`,
           SIZE_CLASS[size],
@@ -173,13 +196,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
           option.classes,
         ]"
         :style="[
-          isSelected(option.value)
-            ? {
-              color: `var(--maz-${getColor(color)}-foreground)`,
-              backgroundColor: `var(--maz-${getColor(color)})`,
-              borderColor: `var(--maz-${getColor(color)})`,
-            }
-            : {},
+          isSelected(option.value) ? selectedStyle.item : {},
           option.style,
         ]"
       >
@@ -201,12 +218,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
               '--is-selected': isSelected(option.value),
             }"
             :style="[
-              isSelected(option.value)
-                ? {
-                  backgroundColor: `oklch(from var(--maz-${getColor(color)}) clamp(0, calc(l - 0.05), 1) c h)`,
-                  color: `var(--maz-${getColor(color)}-foreground)`,
-                }
-                : {},
+              isSelected(option.value) ? selectedStyle.selector : {},
             ]"
           >
             <Transition name="maz-radio-buttons-scale">
@@ -228,7 +240,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
     <span
       v-if="hint"
       :id="hintId"
-      class="m-radio-buttons__hint maz:text-sm" :class="{
+      class="m-radio-buttons__hint maz:text-body-sm" :class="{
         '--error': error,
         '--success': success,
         '--warning': warning,

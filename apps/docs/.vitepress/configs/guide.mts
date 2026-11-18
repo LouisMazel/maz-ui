@@ -10,6 +10,10 @@ export const guide = {
     { text: 'Nuxt', link: '/ecosystem/nuxt' },
     { text: 'Theming', link: '/ecosystem/themes' },
     { text: 'Tailwind CSS', link: '/guide/tailwind' },
+    {
+      text: withNewBadge('Typography'),
+      link: '/guide/typography',
+    },
     { text: 'Translations (i18n)', link: '/ecosystem/translations' },
     {
       text: withNewBadge('Global component defaults'),

@@ -1,6 +1,6 @@
 import type { ComponentMeta, EventMeta, PropertyMeta, SlotMeta } from 'vue-component-meta'
 
-import { attributeProps, cleanType, dynamicSlots, propValues, slotBindings, toComponentApi, toEventApi, toPropApi, toSlotApi, unionMembers } from '../components'
+import { attributeProps, attrsNames, attrsTarget, cleanType, dynamicSlots, propValues, slotBindings, toComponentApi, toEventApi, toPropApi, toSlotApi, unionMembers } from '../components'
 
 function prop(overrides: Partial<PropertyMeta> = {}): PropertyMeta {
   return {
@@ -421,6 +421,54 @@ describe('given attributeProps', () => {
   describe('when the component does not read attributes', () => {
     it('then there is nothing to document', () => {
       expect(attributeProps('const attrs = useAttrs()', [])).toEqual([])
+    })
+  })
+})
+
+describe('given attrsNames', () => {
+  describe('when the component does not call useAttrs', () => {
+    it('then only $attrs holds the attributes', () => {
+      expect(attrsNames('<template><div v-bind="$attrs" /></template>')).toEqual(['$attrs'])
+    })
+  })
+})
+
+describe('given attrsTarget', () => {
+  describe('when the template binds $attrs on a Maz component', () => {
+    it('then it returns this component', () => {
+      expect(attrsTarget('<template>\n  <div v-bind="$attrs">\n    <MazBtn\n      :color\n      v-bind="$attrs"\n    />\n  </div>\n</template>')).toBe('MazBtn')
+      expect(attrsTarget('<template><MazDialog v-bind="{ ...$attrs, ...dialogProps }" /></template>')).toBe('MazDialog')
+      expect(attrsTarget('<template><MazInput v-bind="{ ...inputProps, ...$attrs }" /></template>')).toBe('MazInput')
+      expect(attrsTarget('<MazLazyImg v-bind="$attrs" />')).toBe('MazLazyImg')
+    })
+  })
+
+  describe('when the attributes come from useAttrs', () => {
+    it('then the variable and the values computed from it are followed', () => {
+      const script = '<script setup>\nconst attrs = useAttrs()\nconst rootAttrs = computed(() => ({ class: attrs.class }))\nconst other = computed(() => 1)\n</script>\n'
+
+      expect(attrsTarget(`${script}<template><div v-bind="rootAttrs"><MazInput v-bind="attrs" /></div></template>`)).toBe('MazInput')
+      expect(attrsTarget(`${script}<template><div><MazInput v-bind="{ ...rootAttrs, size }" /></div></template>`)).toBe('MazInput')
+      expect(attrsTarget(`${script}<template><MazInput v-bind="other" /></template>`)).toBeUndefined()
+    })
+  })
+
+  describe('when $attrs go through an internal component', () => {
+    it('then it follows its import to the Maz component', () => {
+      const files: Record<string, string> = {
+        './Phone/PhoneInput.vue': '<template><MazInput v-bind="{ ...$attrs, ...inputProps }" /></template>',
+      }
+
+      expect(attrsTarget('<script setup>\nimport PhoneInput from \'./Phone/PhoneInput.vue\'\n</script>\n<template><PhoneInput v-bind="$attrs" /></template>', specifier => files[specifier])).toBe('MazInput')
+      expect(attrsTarget('<script setup>\nimport Other from \'./Other.vue\'\n</script>\n<template><Other v-bind="$attrs" /></template>', specifier => files[specifier])).toBeUndefined()
+    })
+  })
+
+  describe('when $attrs go to a native element or nowhere', () => {
+    it('then there is no target', () => {
+      expect(attrsTarget('<template><input v-bind="$attrs"></template>')).toBeUndefined()
+      expect(attrsTarget('<template><MazBtn v-bind="attrs" /></template>')).toBeUndefined()
+      expect(attrsTarget('<script setup>\nimport Other from \'./Other.vue\'\n</script>\n<template><Other v-bind="$attrs" /></template>')).toBeUndefined()
     })
   })
 })

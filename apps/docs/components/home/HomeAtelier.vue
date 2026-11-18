@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { ThemePresetName } from '@maz-ui/themes'
 import type { HomeData } from '../../.vitepress/data/home.data'
+import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
 import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import { useToast } from 'maz-ui/composables/useToast'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -141,6 +142,10 @@ async function applyToDocs() {
               Reset
             </MazBtn>
           </div>
+
+          <MazBtn href="/theme-editor" size="sm" color="contrast" block :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">
+            Open the theme editor
+          </MazBtn>
         </form>
       </MazCard>
 

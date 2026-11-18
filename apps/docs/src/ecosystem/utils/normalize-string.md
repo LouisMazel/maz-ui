@@ -40,7 +40,7 @@ function normalizeString(
 
 | Option                     | Type         | Default            | Description                                                                                  |
 | -------------------------- | ------------ | ------------------ | -------------------------------------------------------------------------------------------- |
-| `removeAccents`            | `boolean`    | `true`             | Strip diacritics (`é → e`, `ç → c`, …)                                                       |
+| `removeAccents`            | `boolean`    | `true`             | Strip diacritics in every script (`é → e`, `ç → c`, `ś → s`, `ά → α`), and the letters without decomposition (`æ → ae`, `ø → o`, `ł → l`, `ß → ss`) |
 | `caseSensitive`            | `boolean`    | `false`            | When `false`, lowercases the result unless `case` is set                                     |
 | `replaceSpaces`            | `boolean`    | `true`             | Replace spaces with `-`                                                                      |
 | `removeSpecialCharacters`  | `boolean`    | `false`            | Strip non-alphanumeric / non-dash characters (Latin alphabet only)                           |

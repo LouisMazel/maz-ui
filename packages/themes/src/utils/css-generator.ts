@@ -1,4 +1,4 @@
-import type { RoundedScaleKey, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
+import type { RoundedScaleKey, ThemeColors, ThemeComponentBg, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults'
 import { normalizeColor } from './color-parser'
@@ -54,6 +54,41 @@ export const PERCEPTUAL_COLOR_SCALE = {
   },
 } as const
 
+/**
+ * Steps of the `relative` scale: a fixed lightness offset from the base and a
+ * share of its chroma. `maz-ui/tailwindcss/theme-colors.css` declares them.
+ */
+export const RELATIVE_COLOR_SCALE = {
+  50: { lightness: 0.4, chroma: 0.1 },
+  100: { lightness: 0.32, chroma: 0.35 },
+  200: { lightness: 0.22, chroma: 0.7 },
+  300: { lightness: 0.13, chroma: 1 },
+  400: { lightness: 0.06, chroma: 1 },
+  600: { lightness: -0.05, chroma: 1 },
+  700: { lightness: -0.1, chroma: 1 },
+  800: { lightness: -0.16, chroma: 0.9 },
+  900: { lightness: -0.22, chroma: 0.7 },
+  950: { lightness: -0.3, chroma: 0.5 },
+} as const
+
+/**
+ * CSS values of the 50..950 relative steps (500 excluded: it is the base).
+ * @param base - any CSS color, usually a variable (`var(--maz-primary)`)
+ */
+export function getRelativeColorScale(base: string): Record<string, string> {
+  const scale: Record<string, string> = {}
+  for (const [step, { lightness, chroma }] of Object.entries(RELATIVE_COLOR_SCALE)) {
+    const l = lightness < 0
+      ? `calc(l - ${-lightness})`
+      : `calc(l + ${lightness})`
+    const c = chroma === 1
+      ? 'c'
+      : `calc(c * ${chroma})`
+    scale[step] = `oklch(from ${base} clamp(0, ${l}, 1) ${c} h)`
+  }
+  return scale
+}
+
 /** Dark bound of the shades, always below the base lightness. */
 export function getPerceptualDarkBound(lightness: number): number {
   return Math.min(0.2, lightness * 0.5)
@@ -104,11 +139,13 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   appendFoundation(lines, preset.foundation, prefix)
   appendScales(lines, preset.scales, prefix)
   appendComponents(lines, preset, prefix, mode)
+  appendTypography(lines, preset.typography, prefix)
   appendColorVariables(lines, preset.colors, mode, prefix)
 
   lines.push('  }')
 
   appendPerceptualColorScale(lines, preset.scales, prefix)
+  appendSystemColors(lines, preset.systemColors, prefix)
 
   if (options.darkSelectorStrategy === 'class' && mode === 'both') {
     lines.push(`  .${options.darkClass} { color-scheme: only dark; }`)
@@ -189,6 +226,45 @@ function appendPerceptualColorScale(lines: string[], scales: ThemePreset['scales
 }
 
 /**
+ * One `@supports` block per system color keyword: the keyword replaces the
+ * color of its roles where the browser knows it, the color of the preset
+ * stays the fallback elsewhere. Emitted after the colors so it wins the
+ * cascade at equal specificity.
+ */
+function appendSystemColors(lines: string[], systemColors: ThemePreset['systemColors'], prefix: string): void {
+  if (!systemColors)
+    return
+
+  const rolesByKeyword = new Map<string, string[]>()
+  for (const [role, keyword] of Object.entries(systemColors)) {
+    if (!keyword)
+      continue
+    const value = normalizeColor(keyword)
+    rolesByKeyword.set(value, [
+      ...(rolesByKeyword.get(value) ?? []),
+      role,
+    ])
+  }
+
+  for (const [keyword, roles] of rolesByKeyword) {
+    lines.push(`  @supports (color: ${keyword}) {`, '    :root {')
+    for (const role of roles) {
+      lines.push(`      --${prefix}-${role}: ${keyword};`)
+    }
+    lines.push('    }', '  }')
+  }
+}
+
+function appendTypography(lines: string[], typography: ThemePreset['typography'], prefix: string): void {
+  for (const [level, tokens] of Object.entries(typography ?? {})) {
+    for (const [key, value] of Object.entries(tokens ?? {})) {
+      if (value)
+        lines.push(`    --${prefix}-typography-${level}-${key}: ${value};`)
+    }
+  }
+}
+
+/**
  * Emit per-component bg vars. In `both` mode, values are wrapped in `light-dark()`
  * so they switch with `color-scheme`. Otherwise the matching side is emitted.
  */
@@ -208,8 +284,7 @@ function appendComponents(lines: string[], preset: ThemePreset, prefix: string, 
     lines.push(`    --${prefix}-dialog-min-width: ${components.dialog['min-width']};`)
   }
 
-  const emitBg = (componentKey: 'container' | 'input', cssKey: string) => {
-    const bg = components[componentKey]?.bg
+  const emitBg = (bg: ThemeComponentBg | undefined, cssKey: string) => {
     if (!bg)
       return
     if (mode === 'both') {
@@ -227,8 +302,17 @@ function appendComponents(lines: string[], preset: ThemePreset, prefix: string, 
       lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg[mode]!)};`)
     }
   }
-  emitBg('container', 'container-bg')
-  emitBg('input', 'input-bg')
+  emitBg(components.container?.bg, 'container-bg')
+  emitBg(components.input?.bg, 'input-bg')
+  emitBg(components.glass?.bg, 'glass-bg')
+  emitBg(components.glass?.border, 'glass-border')
+
+  if (components.glass?.blur) {
+    lines.push(`    --${prefix}-glass-blur: ${components.glass.blur};`)
+  }
+  if (components.glass?.saturate) {
+    lines.push(`    --${prefix}-glass-saturate: ${components.glass.saturate};`)
+  }
 
   const inputTopLabelFw = components.input?.['top-label-font-weight']
   if (inputTopLabelFw) {

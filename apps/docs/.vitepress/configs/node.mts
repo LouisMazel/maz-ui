@@ -8,5 +8,6 @@ export const node = {
     { text: 'logger / createLogger', link: '/ecosystem/node/logger' },
     { text: 'printBanner', link: '/ecosystem/node/print-banner' },
     { text: 'setupAgents', link: '/ecosystem/node/setup-agents' },
+    { text: 'Project helpers', link: '/ecosystem/node/project' },
   ],
 } satisfies DefaultTheme.SidebarItem

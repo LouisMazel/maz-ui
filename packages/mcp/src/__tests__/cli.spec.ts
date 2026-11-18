@@ -61,6 +61,36 @@ describe('given the maz-ui-mcp CLI', () => {
     })
   })
 
+  describe('when the colors command is run', () => {
+    it('then it prints the effective colors of the project presets', async () => {
+      const cwd = createTempDir()
+
+      writeFile(cwd, 'package.json', '{}')
+      writeFile(cwd, 'src/preset.ts', 'export const brand = definePreset({ base: \'ocean\', overrides: { name: \'brand\' } })')
+
+      expect(await runCli(['colors', '--cwd', cwd])).toBe(0)
+      expect(logged()).toContain('### Effective colors of `brand` (`src/preset.ts`)')
+    })
+
+    it('then it prints a bundled preset with the given colors and steps', async () => {
+      expect(await runCli([
+        'colors',
+        'nova',
+        '--colors',
+        'primary, accent',
+        '--steps',
+        '100,900',
+      ])).toBe(0)
+      expect(logged()).toContain('| `accent-900` |')
+      expect(logged()).not.toContain('| `accent-500` |')
+    })
+
+    it('then an unknown preset is an error', async () => {
+      expect(await runCli(['colors', 'nope'])).toBe(1)
+      expect(errored()).toContain('Unknown preset "nope"')
+    })
+  })
+
   describe('when no command is given', () => {
     it('then it starts the stdio server and keeps the process alive', async () => {
       const cwd = createTempDir()
@@ -275,7 +305,7 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(logged()).toContain('created')
       expect(readFileSync(join(cwd, '.cursor/mcp.json'), 'utf8')).toContain('@maz-ui/mcp')
       expect(readFileSync(join(cwd, 'AGENTS.md'), 'utf8')).toContain('<!-- BEGIN:maz-ui -->')
-      expect(logged()).toContain('Codex and Windsurf read AGENTS.md')
+      expect(logged()).toContain('Codex, Cline and Zed read AGENTS.md')
     })
 
     it('then explicit targets, --no-mcp and --remove are applied', async () => {
@@ -307,7 +337,7 @@ describe('given the maz-ui-mcp CLI', () => {
 
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(logged()).toContain('removed')
-      expect(logged()).not.toContain('Codex and Windsurf')
+      expect(logged()).not.toContain('Codex, Cline and Zed')
     })
 
     it('then --paths scopes the Claude rule with a frontmatter and reports it', async () => {
@@ -365,7 +395,7 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(existsSync(join(cwd, '.mcp.json'))).toBe(true)
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
-      expect(logged()).not.toContain('Codex and Windsurf')
+      expect(logged()).not.toContain('Codex, Cline and Zed')
     })
 
     it('then a project without maz-ui only gets the MCP server', async () => {
@@ -382,7 +412,7 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
       expect(logged()).toContain('maz-ui is not installed in this project: only the MCP server is registered')
-      expect(logged()).not.toContain('Codex and Windsurf')
+      expect(logged()).not.toContain('Codex, Cline and Zed')
     })
 
     it('then a project without maz-ui gets the rules of an explicit docs bundle', async () => {

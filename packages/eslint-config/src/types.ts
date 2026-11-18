@@ -64,11 +64,13 @@ export interface MazTailwindcssOptions {
    */
   noArbitraryPx?: boolean | {
     /**
-     * Root font size, in pixels, used to convert `Npx` to `rem`/`em`.
+     * Root font size used to convert `Npx` to `rem`/`em`: a number of pixels, a CSS size (`'13px'`) or a
+     * `@maz-ui/themes` preset, whose `foundation['base-font-size']` is read (`baseFontSize: macos`). Set it to the
+     * root font size of your theme: with a 13px preset, `34px` must become `2.615rem`, not `2.125rem`.
      *
      * @default 16
      */
-    baseFontSize?: number
+    baseFontSize?: number | string | BaseFontSizeSource
 
     /**
      * Output unit for the autofix.
@@ -84,6 +86,11 @@ export interface MazTailwindcssOptions {
      */
     severity?: 'off' | 'warn' | 'error'
   }
+}
+
+/** Anything that carries a root font size, like a `@maz-ui/themes` preset (no dependency on the themes package). */
+export interface BaseFontSizeSource {
+  foundation?: { 'base-font-size'?: string }
 }
 
 export interface MazESLintOptions extends OptionsConfig {

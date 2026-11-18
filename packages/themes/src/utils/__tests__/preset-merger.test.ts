@@ -1,4 +1,5 @@
 import type { ThemePreset, ThemePresetOverrides } from '../../types'
+import { mazUi } from '../../presets/mazUi'
 import { deepMerge, mergePresets } from '../preset-merger'
 
 describe('preset-merger', () => {
@@ -249,6 +250,67 @@ describe('preset-merger', () => {
           sm: 'shadow-base-sm',
           md: 'shadow-override-md',
         })
+      })
+    })
+
+    describe('when the base and the overrides both set system colors and glass', () => {
+      const basePreset = {
+        name: 'base',
+        colors: { light: {}, dark: {} },
+        foundation: {},
+        scales: {
+          rounded: { md: '0.5rem' },
+          shadow: {},
+        },
+        components: {
+          glass: {
+            bg: { light: 'white', dark: 'black' },
+            blur: '20px',
+          },
+        },
+        systemColors: { primary: 'AccentColor', foreground: 'CanvasText' },
+      } as unknown as ThemePreset
+
+      const result = mergePresets(basePreset, {
+        components: {
+          glass: {
+            bg: { dark: 'gray' },
+            saturate: '1.2',
+          },
+        },
+        systemColors: { primary: '-apple-system-control-accent' },
+      })
+
+      it('then the system colors are merged by role', () => {
+        expect(result.systemColors).toEqual({ primary: '-apple-system-control-accent', foreground: 'CanvasText' })
+      })
+
+      it('then the glass material is merged key by key', () => {
+        expect(result.components?.glass).toEqual({
+          bg: { light: 'white', dark: 'gray' },
+          border: {},
+          blur: '20px',
+          saturate: '1.2',
+        })
+      })
+    })
+
+    describe('when neither the base nor the overrides set system colors and glass', () => {
+      it('then the merged preset has none', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: {
+            rounded: { md: '0.5rem' },
+            shadow: {},
+          },
+        } as unknown as ThemePreset
+
+        const result = mergePresets(basePreset, { name: 'next' })
+
+        expect(result.systemColors).toBeUndefined()
+        expect(result.components?.glass).toBeUndefined()
       })
     })
 
@@ -568,6 +630,83 @@ describe('preset-merger', () => {
 
         expect(result).toEqual({ a: 'string' })
       })
+    })
+  })
+})
+
+describe('given mergePresets with a typography', () => {
+  describe('when the base and the overrides set levels', () => {
+    const merged = mergePresets(
+      {
+        ...mazUi,
+        typography: {
+          'title-1': { size: '2rem', weight: '700' },
+          'body': { size: '1rem' },
+        },
+      },
+      {
+        typography: {
+          'title-1': { size: '3rem' },
+          'caption': { tracking: '0.02em' },
+        },
+      },
+    )
+
+    it('then merges each level key by key', () => {
+      expect(merged.typography).toEqual({
+        'title-1': { size: '3rem', weight: '700' },
+        'body': { size: '1rem' },
+        'caption': { tracking: '0.02em' },
+      })
+    })
+  })
+
+  describe('when only the overrides set a typography', () => {
+    it('then it is used as is', () => {
+      expect(mergePresets({ ...mazUi, typography: undefined }, {
+        typography: {
+          label: { weight: '600' },
+        },
+      }).typography).toEqual({
+        label: { weight: '600' },
+      })
+    })
+  })
+
+  describe('when only the base sets a typography', () => {
+    it('then it is kept', () => {
+      expect(mergePresets({
+        ...mazUi,
+        typography: {
+          label: { weight: '600' },
+        },
+      }, {}).typography).toEqual({
+        label: { weight: '600' },
+      })
+    })
+  })
+
+  describe('when the base is a bundled preset', () => {
+    it('then the overrides change some keys of its scale', () => {
+      const typography = mergePresets(mazUi, {
+        typography: {
+          'title-1': { weight: '800' },
+        },
+      }).typography
+
+      expect(typography?.['title-1']).toEqual({
+        size: '2rem',
+        weight: '800',
+        leading: '1.2',
+        tracking: '-0.02em',
+      })
+      expect(typography?.caption?.color).toBe('var(--maz-muted)')
+    })
+  })
+
+  describe('when neither sets a typography', () => {
+    it('then the preset has none', () => {
+      expect(mergePresets({ ...mazUi, typography: undefined }, {})).not.toHaveProperty('typography')
     })
   })
 })

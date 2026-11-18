@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/themes",
   "type": "module",
-  "version": "5.6.0",
+  "version": "5.7.0-beta.8",
   "description": "Theme system for Maz-UI with TypeScript support and CSS variables",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -20,7 +20,59 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./presets": {
+        "types": "./dist/presets/index.d.ts",
+        "import": "./dist/presets/index.js",
+        "default": "./dist/presets/index.js"
+      },
+      "./presets/*": {
+        "types": "./dist/presets/*.d.ts",
+        "import": "./dist/presets/*.js",
+        "default": "./dist/presets/*.js"
+      },
+      "./composables": {
+        "types": "./dist/composables/index.d.ts",
+        "import": "./dist/composables/index.js",
+        "default": "./dist/composables/index.js"
+      },
+      "./composables/*": {
+        "types": "./dist/composables/*.d.ts",
+        "import": "./dist/composables/*.js",
+        "default": "./dist/composables/*.js"
+      },
+      "./utils": {
+        "types": "./dist/utils/index.d.ts",
+        "import": "./dist/utils/index.js",
+        "default": "./dist/utils/index.js"
+      },
+      "./utils/*": {
+        "types": "./dist/utils/*.d.ts",
+        "import": "./dist/utils/*.js",
+        "default": "./dist/utils/*.js"
+      },
+      "./build": {
+        "types": "./dist/build/index.d.ts",
+        "import": "./dist/build/index.js",
+        "default": "./dist/build/index.js"
+      },
+      "./build/*": {
+        "types": "./dist/build/*.d.ts",
+        "import": "./dist/build/*.js",
+        "default": "./dist/build/*.js"
+      },
+      "./plugin": {
+        "types": "./dist/plugin.d.ts",
+        "import": "./dist/plugin.js",
+        "default": "./dist/plugin.js"
+      }
+    }
   },
   "exports": {
     ".": {

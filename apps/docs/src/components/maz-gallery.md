@@ -11,10 +11,12 @@ description: MazGallery is a standalone component used to display images in a co
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazGallery
   :images
   :height="320"
 />
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -40,11 +42,13 @@ const images: MazGalleryImage[] = [
 
 ## Set height by CSS
 
+<div class="vp-raw">
 <MazGallery
   :images="images2"
   class="maz:h-48 maz:mob-l:h-60 maz:tab-s:h-80"
   :height="false"
 />
+</div>
 
 ```html
 <MazGallery :images="images" class="h-48 md:h-60 lg:h-80" :height="false" />

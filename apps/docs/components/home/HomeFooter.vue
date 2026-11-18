@@ -125,8 +125,8 @@ function scrollToTop() {
 
       <div class="maz:mt-16 maz:flex maz:flex-wrap maz:items-center maz:justify-between maz:gap-4 maz:border-t maz:border-divider maz:pt-8 maz:text-sm maz:text-muted">
         <p class="maz:m-0">
-          MIT License · © {{ data.year }} <MazLink href="https://github.com/LouisMazel" target="_blank" rel="noopener" color="contrast" :auto-external="false">
-            LouisMazel
+          MIT License · © {{ data.year }} <MazLink href="https://www.loicmazuel.com" target="_blank" rel="noopener" color="contrast" :auto-external="false">
+            Loïc Mazuel
           </MazLink> · v{{ data.version }}
         </p>
         <MazBtn size="sm" color="transparent" :start-icon="MazArrowUp" @click="scrollToTop">

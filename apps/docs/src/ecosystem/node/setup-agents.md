@@ -31,6 +31,15 @@ The content comes from the `docs/agents` folder of the `maz-ui` package installe
 | `agents-md` | A section between `<!-- BEGIN:maz-ui -->` and `<!-- END:maz-ui -->` in `AGENTS.md` (Codex, Cursor, Copilot, Windsurf, Zed...) |
 | `cursor` | The `maz-ui` server in `.cursor/mcp.json` |
 | `vscode` | The `maz-ui` server in `.vscode/mcp.json` (GitHub Copilot) |
+| `gemini` | The `maz-ui` server in `.gemini/settings.json` (Gemini CLI). With `agents-md`, `AGENTS.md` is also added to its `context.fileName`: Gemini CLI only reads `GEMINI.md` by default |
+| `opencode` | The `maz-ui` server in `opencode.json`, or in the `opencode.jsonc` of the project (OpenCode) |
+| `junie` | The `maz-ui` server in `.junie/mcp/mcp.json` (JetBrains Junie) |
+| `windsurf` | The `maz-ui` server in `.devin/mcp_config.json` (Windsurf, Devin) |
+| `warp` | The `maz-ui` server in `.warp/.mcp.json` (Warp), not written with `claude`: Warp also reads `.mcp.json` |
+| `kiro` | The `maz-ui` server in `.kiro/settings/mcp.json` (Kiro) |
+| `roo` | The `maz-ui` server in `.roo/mcp.json` (Roo Code) |
+
+Every agent but Claude Code reads the rules from `AGENTS.md`: add `agents-md` to the targets to give them the rules. Codex, Cline and Zed have no project MCP config: `agents-md` gives them the rules.
 
 Guarantees:
 
@@ -63,7 +72,10 @@ setupAgents({
   remove: false,
   // Folder of the maz-ui agent docs, default: node_modules/maz-ui/agent-docs
   docsDir: undefined,
-  // Version pinned in the npx command when the project does not install @maz-ui/mcp, default: latest
+  // Folder of the app that installs maz-ui and @maz-ui/mcp (a Nuxt app of a monorepo), default: rootDir
+  appDir: undefined,
+  // Version pinned in the npx command when the project does not install @maz-ui/mcp,
+  // default: the @maz-ui/mcp installed from appDir, else latest
   mcpVersion: '5.1.0',
   // Command of the MCP server, default: mcpServerCommand(rootDir, mcpVersion, tool)
   mcpServer: undefined,
@@ -142,13 +154,13 @@ setupAgents({
 | Command, package installed with pnpm | `pnpm exec relizy mcp` | `pnpm exec maz-ui-mcp` |
 | Command, package not installed | `npx -y relizy@<mcpVersion> mcp` | `npx -y @maz-ui/mcp@<mcpVersion>` |
 
-Each tool only manages its own files, section and server entry: maz-ui and relizy can be set up in the same project, and removing one (`remove: true` with its `tool`) keeps the other. `mcpServerCommand`, `installsMcpPackage`, `readManagedVersion` and `isEditedManagedContent` also take the tool as last argument.
+Each tool only manages its own files, section and server entry: maz-ui and relizy can be set up in the same project, and removing one (`remove: true` with its `tool`) keeps the other. `mcpServerCommand` also takes the tool as last argument.
 
-Set `marker` to keep recognizing files generated under a different marker than the name of the tool (e.g. `'Managed by @acme/mcp'` for a tool named `acme`): the header, the owned files and the version are all read from it. With `legacyMcpPackages`, an entry of the MCP config files (`.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`) that references a former package is replaced in place by the entry of the tool, only when the tool has no entry yet. `remove` never touches it.
+Set `marker` to keep recognizing files generated under a different marker than the name of the tool (e.g. `'Managed by @acme/mcp'` for a tool named `acme`): the header, the owned files and the version are all read from it. With `legacyMcpPackages`, an entry of the MCP config files (`.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`...) that references a former package is replaced in place by the entry of the tool, only when the tool has no entry yet. `remove` never touches it.
 
 ## Lightweight entry
 
-`@maz-ui/node/agents` exports `setupAgents` and its helpers without the rest of the package: it does not load `consola` nor `figlet` (logger and banner), and its types do not reference them. Use it in tools that only configure agents.
+`@maz-ui/node/agents` exports `setupAgents`, the detection of the agents and the [project helpers](./project.md) without the rest of the package: it does not load `consola` nor `figlet` (logger and banner), and its types do not reference them. Use it in tools that only configure agents.
 
 ```ts
 import { setupAgents } from '@maz-ui/node/agents'
@@ -191,15 +203,39 @@ result.changes // [{ file: '.mcp.json', action: 'create' | 'update' | 'remove' |
 ```ts
 import { detectAgentTargets } from '@maz-ui/node'
 
-detectAgentTargets(process.cwd()) // ['claude', 'agents-md']
+detectAgentTargets(process.cwd()) //  ['claude', 'agents-md', 'cursor', 'vscode', 'gemini', 'opencode', 'junie', 'windsurf', 'warp', 'kiro', 'roo']
 ```
+
+`detectAgentTargets` is the default of `targets`. It reads the files of the project, never the home folder nor the environment: every developer and the CI get the same result. `agents-md` is added as soon as an agent other than Claude Code is detected, since they read their rules from `AGENTS.md`.
 
 | Target | Detected from |
 | --- | --- |
 | `claude` | `.claude/`, `CLAUDE.md`, `CLAUDE.local.md`, `.mcp.json` |
+| `agents-md` | `AGENTS.md`, `.agents/`, `.agent/` (Antigravity), `.codex/` (Codex), `.cline/`, `.clinerules` (Cline), `.zed/`, `.rules` (Zed), or any other agent below |
 | `cursor` | `.cursor/`, `.cursorrules` |
 | `vscode` | `.vscode/mcp.json`, `.github/copilot-instructions.md`, `.github/instructions/` |
-| `agents-md` | `AGENTS.md`, `GEMINI.md`, `.codex/`, `.windsurf/`, `.devin/`, `.windsurfrules`, or any of `cursor` and `vscode` |
+| `gemini` | `.gemini/`, `GEMINI.md` |
+| `opencode` | `opencode.json`, `opencode.jsonc`, `.opencode/` |
+| `junie` | `.junie/` |
+| `windsurf` | `.windsurf/`, `.windsurfrules`, `.devin/` |
+| `warp` | `.warp/`, `WARP.md` |
+| `kiro` | `.kiro/` |
+| `roo` | `.roo/`, `.roorules` |
+
+## Monorepos
+
+The agents read their files at the root of the repository, while maz-ui is often installed in an app only. Set `rootDir` to the root of the repository and `appDir` to the app: the rules come from the maz-ui of the app, and the npx command pins the version of its `@maz-ui/mcp`. The [Nuxt module](./../nuxt.md#ai-agents) does it for you.
+
+```ts
+import { setupAgents } from '@maz-ui/node'
+
+setupAgents({
+  rootDir: '/repo',
+  appDir: '/repo/apps/web',
+})
+```
+
+Without any detected agent (and without `targets`), nothing is written and the rules are not read: maz-ui does not need to be installed.
 
 ## Errors
 

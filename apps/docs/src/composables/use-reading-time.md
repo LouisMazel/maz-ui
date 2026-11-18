@@ -35,6 +35,7 @@ This method is not SSR friendly (only on client side, with Nuxt use this composa
 
 Time to read this page: <strong>{{ durationSelector }} minutes</strong>
 
+<div class="vp-raw">
 <MazCard collapsible class="maz:w-full" title="Content to read">
   <div id="content-to-read" class="maz:px-4">
     <p>
@@ -48,6 +49,7 @@ Time to read this page: <strong>{{ durationSelector }} minutes</strong>
     </p>
   </div>
 </MazCard>
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -97,7 +99,9 @@ onMounted(() => {
 
 **Velocity**: {{ velocity ?? 150 }} words per minute
 
+<div class="vp-raw">
 <MazInputNumber v-model="velocity" placeholder="Velocity" />
+</div>
 
 Time to read this page: <strong>{{ durationSelector }} minutes</strong>
 

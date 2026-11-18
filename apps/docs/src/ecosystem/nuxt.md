@@ -76,8 +76,8 @@ const { toggleDarkMode, isDark } = useTheme()
 
 <template>
   <div class="bg-surface p-8 text-foreground">
-    <!-- Components are auto-imported -->
-    <MazBtn color="primary" @click="start">
+    <!-- Components are auto-imported, icons are used by name -->
+    <MazBtn color="primary" start-icon="clock" @click="start">
       Start timer ({{ remainingTime }}ms)
     </MazBtn>
 
@@ -125,7 +125,7 @@ export default defineNuxtConfig({
 
     // Theming System
     theme: {
-      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | 'folio' | custom object
+      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | 'folio' | 'macos' | 'windows' | 'linux' | custom object
       strategy: 'runtime', // 'runtime' | 'buildtime'
       darkModeStrategy: 'class', // 'class' | 'media'
       darkClass: 'dark', // class on <html> when colorMode === 'dark' (default: 'dark')
@@ -166,6 +166,9 @@ export default defineNuxtConfig({
 
     // Country flags of MazSelectCountry and MazInputPhoneNumber: 'cdn' (default), 'local' (offline) or '/flags/{code}.svg'
     flags: 'local',
+
+    // Icons by name (<MazIcon icon="x-mark" />), with the SVG of app/icons (default: true)
+    icons: { prefix: 'app' },
 
     // Plugins (not enabled by default)
     plugins: {
@@ -228,8 +231,57 @@ const general = {
 const css = {
   // Auto-inject Maz-UI base styles
   injectCss: true,
+
+  // Inject `maz-ui/utilities.css`: the maz-ui utilities (text-title-1, rich-text, padded-container, flex-center...)
+  // for projects WITHOUT Tailwind CSS. Keep it false with Tailwind and `maz-ui/tailwindcss/utilities.css`
+  injectUtilities: false,
+
+  // Remove from the CSS of maz-ui the rules of the components, plugins, directives and utilities the app does not use
+  // (build only). false disables it, an object sets the options (content, entries, safelist, report)
+  purge: true,
 }
 ```
+
+`css.purge` adds [`@maz-ui/vite-plugin`](./vite-plugin.md) at build time, with the entries of the enabled `plugins` and `directives` of the module. On a Nuxt app of 2 pages (MazBtn, MazCard, MazBadge, LazyMazAccordion, MazInput, MazCheckbox, the toast plugin and vTooltip, `nuxi generate`), the CSS files go from 122.3 kB (21.0 kB gzip) to 78.6 kB (14.8 kB gzip), which is -36%. The gain depends on your app. To keep components the purge cannot find (names built at runtime, dependencies), pass the options of the plugin:
+
+```ts
+css: {
+  purge: {
+    entries: ['MazDialog'],
+    safelist: [/^rich-text/],
+  },
+}
+```
+
+### Icons
+
+```ts
+const icons = {
+  // Folder of the SVG of the project (default: `<srcDir>/icons`, `app/icons` with Nuxt 4)
+  dir: 'app/icons',
+  // Prefix of their names: `app/icons/hero.svg` is `app:hero`
+  prefix: 'app',
+  // Names built at runtime, that the module can not find in the code
+  safelist: ['flag-fr', 'flag-de'],
+  // `icon` only accepts the known names, URLs and raw SVG: a typo is a type error (default: false)
+  strict: false,
+}
+// icons: false disables the icons by name
+```
+
+Every icon of [@maz-ui/icons](./icons/index.md) (find them in the [icon set](./icons/icon-set.md)) and every SVG of `app/icons` is available by name, in every icon prop:
+
+```vue
+<template>
+  <MazIcon icon="x-mark" />
+  <MazBtn start-icon="moon">
+    Dark mode
+  </MazBtn>
+  <MazSvg icon="app:hero" />
+</template>
+```
+
+Only the icons of each page are bundled, and they are in the HTML of the server. The types of the names are generated in `.nuxt/types/maz-icons.d.ts`: nothing to commit. See [Icons by name](./vite-plugin.md#icons-by-name) for the names the module finds.
 
 ### Theme System
 
@@ -275,14 +327,20 @@ const theme = {
   darkClass: 'dark',
 
   // Class added to <html> when colorMode === 'light' (default: 'light')
-  // Mirror of darkClass — used to force `color-scheme: only light`.
+  // Mirror of darkClass: used to force `color-scheme: only light`.
   lightClass: 'light',
 
   // Persist the active preset name in the `maz-preset` cookie so the
   // user's last-used theme is restored on reload. Default: true.
   persistPreset: true,
+
+  // Named presets the app loads by name (updateTheme('ocean')...): only these
+  // ones are in the build, with `preset` when it is a name. Default: every preset.
+  presets: ['ocean'],
 }
 ```
+
+Each named preset is a chunk loaded on demand, never prefetched by the pages. `presets` removes the other ones from the build: `[]` keeps none, for an app that only uses preset objects, and loading another preset by name throws an error. See [Presets in the build](/ecosystem/themes#presets-in-the-build).
 
 The server renders the theme of the user: the preset and the color mode come from the `maz-color-mode` and `maz-preset` cookies, and the system preference from the `Sec-CH-Prefers-Color-Scheme` client hint (or the cookie of the previous visit). A blocking script applies the live system preference before the first paint. See the [persistence of the user preferences](/ecosystem/themes#persistence-of-the-user-preferences).
 

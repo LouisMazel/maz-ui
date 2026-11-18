@@ -529,3 +529,58 @@ describe('given MazSidebar component', () => {
     })
   })
 })
+
+describe('given MazSidebar with the floating variant', () => {
+  describe('when rendered in push mode', () => {
+    it('then the content sits in an inset glass panel without border', () => {
+      const wrapper = mount(MazSidebar, {
+        props: { variant: 'floating', persist: false },
+        slots: { default: '<p class="content">Menu</p>' },
+      })
+
+      expect(wrapper.classes()).toContain('--floating')
+      expect(wrapper.classes()).toContain('maz:p-2')
+      expect(wrapper.classes()).not.toContain('maz:border-e')
+      expect(wrapper.classes()).not.toContain('maz:bg-container')
+      expect(wrapper.find('.m-sidebar__panel').classes()).toContain('maz:glass')
+      expect(wrapper.find('.m-sidebar__panel .content').exists()).toBe(true)
+    })
+  })
+
+  describe('when collapsed off-canvas', () => {
+    it('then the inset padding is removed so nothing of the panel stays visible', () => {
+      const wrapper = mount(MazSidebar, {
+        props: {
+          variant: 'floating',
+          open: false,
+          collapsible: 'offcanvas',
+          persist: false,
+        },
+      })
+
+      expect(wrapper.classes()).toContain('maz:w-0')
+      expect(wrapper.classes()).not.toContain('maz:p-2')
+    })
+  })
+
+  describe('when rendered', () => {
+    it('then it exposes the inset of the menu buttons', () => {
+      const wrapper = mount(MazSidebar, {
+        props: { variant: 'floating', persist: false },
+      })
+
+      expect(wrapper.classes()).toContain('maz:[--maz-sidebar-inset:1.5rem]')
+    })
+  })
+  describe('when rendered with the default variant', () => {
+    it('then there is no panel', () => {
+      const wrapper = mount(MazSidebar, {
+        props: { persist: false },
+        slots: { default: '<p class="content">Menu</p>' },
+      })
+
+      expect(wrapper.classes()).toContain('--sidebar')
+      expect(wrapper.find('.m-sidebar__panel').exists()).toBe(false)
+    })
+  })
+})

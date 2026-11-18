@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { MazIconValue } from '../../components/MazIcon.vue'
 import type { ToastButton, ToastOptions } from './types'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnSquare'
 import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
@@ -6,7 +7,7 @@ import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
 import { MazExclamationTriangle } from '@maz-ui/icons/lazy/MazExclamationTriangle'
 import { MazInformationCircle } from '@maz-ui/icons/lazy/MazInformationCircle'
 import { MazLinkIcon } from '@maz-ui/icons/lazy/MazLinkIcon'
-import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import MazIcon from '../../components/MazIcon.vue'
@@ -86,9 +87,11 @@ export interface MazToastProps extends ToastOptions {
   destroy?: () => void
 }
 
-const iconComponent = computed(() => {
+const currentIcon = computed<MazIconValue | undefined>(() => {
   if (!icon)
     return undefined
+  if (icon !== true)
+    return icon
 
   switch (type) {
     case 'destructive': {
@@ -380,9 +383,9 @@ onMounted(() => {
         @touchend.passive="toggleTimer(false)"
         @click.stop="click($event)"
       >
-        <component :is="iconComponent" v-if="iconComponent" class="maz:text-2xl" />
+        <MazIcon v-if="currentIcon" :icon="currentIcon" class="maz:shrink-0 maz:text-2xl" />
 
-        <div class="m-toast__message maz:m-0 maz:flex-1 maz:py-3 maz:text-start maz:font-medium" v-text="html ? undefined : message" v-html="html ? message : undefined" />
+        <div class="m-toast__message maz:m-0 maz:flex-1 maz:py-3 maz:text-start maz:type-label" v-text="html ? undefined : message" v-html="html ? message : undefined" />
 
         <MazBtn
           v-for="(toastButton, index) in internalButtons"

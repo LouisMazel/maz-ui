@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { IconComponent } from '@maz-ui/icons'
 import type { Component } from 'vue'
-import type { MazColor } from './types'
+import type { MazIconValue } from './MazIcon.vue'
+import type { MazColor, MazIconString } from './types'
 import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
 import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
 import { MazExclamationTriangle } from '@maz-ui/icons/lazy/MazExclamationTriangle'
@@ -38,7 +38,8 @@ export interface MazStepperStep {
   error?: boolean
   success?: boolean
   warning?: boolean
-  icon?: string | IconComponent
+  /** In the formats of MazIcon: a name (`'check'`, `'app:logo'`), a component, a URL or a raw SVG */
+  icon?: MazIconValue
 }
 
 export interface MazStepperProps {
@@ -115,7 +116,7 @@ function getStepStateData(step: number): { icon?: Component, class: string } {
   return { class: '--normal' }
 }
 
-function getStepIcon(step: number): IconComponent | string | undefined {
+function getStepIcon(step: number): MazIconValue | undefined {
   return steps?.[step - 1]?.icon
 }
 
@@ -200,7 +201,7 @@ function isLastStep(step: number): boolean {
         :aria-expanded="isStepOpen(step) ? 'true' : 'false'"
         :aria-controls="getContentId(step)"
         :disabled="isStepDisabled(step)"
-        class="m-stepper__header maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200 maz:select-text"
+        class="m-stepper__header maz:flex maz:w-full maz:cursor-interactive maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200 maz:select-text"
         :class="[
           {
             '--is-current-step maz:cursor-default': step === currentStep || allStepsOpened,
@@ -230,7 +231,7 @@ function isLastStep(step: number): boolean {
                   <template v-if="getStepIcon(step)">
                     <MazIcon
                       v-if="typeof getStepIcon(step) === 'string'"
-                      :icon="getStepIcon(step) as string"
+                      :icon="getStepIcon(step) as MazIconString"
                     />
                     <component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
                   </template>
@@ -251,7 +252,7 @@ function isLastStep(step: number): boolean {
                 <span v-if="getPropertyInStep('title', step)" v-html="getPropertyInStep('title', step)" />
               </slot>
             </span>
-            <span v-if="hasDataForStep('subtitle', step)" class="m-stepper__subtitle maz:mt-1 maz:text-sm maz:text-muted">
+            <span v-if="hasDataForStep('subtitle', step)" class="m-stepper__subtitle maz:mt-1 maz:text-body-sm maz:text-muted">
               <!--
                 @slot title-${step} - Subtitle of the step
               -->
@@ -262,7 +263,7 @@ function isLastStep(step: number): boolean {
           </div>
         </div>
 
-        <span v-if="hasDataForStep('titleInfo', step)" class="m-stepper__right maz:truncate maz:text-end maz:text-sm maz:text-primary">
+        <span v-if="hasDataForStep('titleInfo', step)" class="m-stepper__right maz:truncate maz:text-end maz:text-body-sm maz:text-primary">
           <!--
             @slot title-info-${step} - Info of the right of the step
           -->
@@ -322,7 +323,7 @@ function isLastStep(step: number): boolean {
 }
 
 .m-stepper__title {
-  @apply maz:text-lg;
+  @apply maz:text-title-4;
 }
 
 .m-stepper__header {

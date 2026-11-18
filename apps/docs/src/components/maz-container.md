@@ -11,6 +11,8 @@ description: MazContainer is a lightweight component to wrap content with option
 
 ::: tip
 MazContainer is designed to be a lighter alternative to [MazCard](/components/maz-card.html). Use it when you need a simple container with basic styling options without the extra features like galleries, collapsible content, or actions.
+
+For a full-width band of a page (header, section, footer) with the page gutter, use [MazPageSection](/components/maz-page-section.html).
 :::
 
 ## Basic usage

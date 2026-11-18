@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/utils",
   "type": "module",
-  "version": "5.6.0",
+  "version": "5.7.0-beta.8",
   "description": "Utils of maz-ui for JavaScript/TypeScript users",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -18,7 +18,34 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "module": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./helpers": {
+        "types": "./dist/helpers/index.d.ts",
+        "import": "./dist/helpers/index.js",
+        "module": "./dist/helpers/index.js",
+        "default": "./dist/helpers/index.js"
+      },
+      "./helpers/*": {
+        "types": "./dist/helpers/*.d.ts",
+        "import": "./dist/helpers/*.js",
+        "module": "./dist/helpers/*.js",
+        "default": "./dist/helpers/*.js"
+      },
+      "./ts-helpers": {
+        "types": "./dist/ts-helpers/index.d.ts"
+      },
+      "./ts-helpers/*": {
+        "types": "./dist/ts-helpers/*.d.ts"
+      },
+      "./exports.json": "./dist/exports.json"
+    }
   },
   "exports": {
     ".": {
@@ -49,7 +76,8 @@
     "./ts-helpers/*": {
       "monorepo:dev": "./src/ts-helpers/*.ts",
       "types": "./dist/ts-helpers/*.d.ts"
-    }
+    },
+    "./exports.json": "./dist/exports.json"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -84,6 +112,9 @@
     "vue": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "fuzzysort": "^4.0.2"
   },
   "devDependencies": {
     "@codecov/vite-plugin": "catalog:",

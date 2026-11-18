@@ -1,1 +1,7 @@
 agent-docs
+icon-names.json
+src/index.ts
+src/icon-list.ts
+src/static
+src/lazy
+src/raw

@@ -49,12 +49,13 @@ description: Convert country code in unicode flag
   <span class="maz:text-7xl">{{ flag }}</span>
 </div>
 
+<div class="vp-raw">
 <MazSelect
   v-model="countryCode"
   :options="countryOptions"
   label="Select country"
   search
-  search-placeholder="Search country"
+  :translations="{ searchPlaceholder: 'Search country' }"
   @selected-option="(option) => console.log('option', option)"
 >
   <template #default="{ option, isSelected }">
@@ -66,7 +67,7 @@ description: Convert country code in unicode flag
       </span>
       <MazBadge
         pastel
-        size="0.7rem"
+        size="xs"
         class="maz:w-9"
         :class="{ 'maz:text-muted': !isSelected }"
       >
@@ -78,6 +79,7 @@ description: Convert country code in unicode flag
     </div>
   </template>
 </MazSelect>
+</div>
 
 <script lang="ts" setup>
   import { computed, ref, onMounted } from 'vue'
@@ -144,7 +146,7 @@ description: Convert country code in unicode flag
     :options="countryOptions"
     label="Select country"
     search
-    search-placeholder="Search country"
+    :translations="{ searchPlaceholder: 'Search country' }"
     @selected-option="(option) => console.log('option', option)"
   >
     <template #default="{ option, isSelected }">
@@ -156,7 +158,7 @@ description: Convert country code in unicode flag
         </span>
         <MazBadge
           pastel
-          size="0.7rem"
+          size="xs"
           class="w-9"
           :class="{ 'text-muted': !isSelected }"
         >

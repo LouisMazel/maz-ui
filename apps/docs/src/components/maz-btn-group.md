@@ -124,7 +124,7 @@ Use the `size` prop to apply a size to all buttons in the group.
 
 ## Colors
 
-Use the `color` prop to apply a color to all buttons in the group.
+Use the `color` prop to apply a color to all buttons in the group. Neutral colors (`surface`, `container`) are supported, see the [surface vs container tip](./maz-btn.md#colors).
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
@@ -141,6 +141,8 @@ Use the `color` prop to apply a color to all buttons in the group.
   <MazBtnGroup :items="items" color="success" />
   <MazBtnGroup :items="items" color="warning" />
   <MazBtnGroup :items="items" color="destructive" />
+  <MazBtnGroup :items="items" color="surface" />
+  <MazBtnGroup :items="items" color="container" />
 </template>
 ```
 
@@ -265,9 +267,12 @@ Add click handlers to buttons using the `onClick` property in items.
 <script lang="ts" setup>
 import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
+import { useToast } from 'maz-ui/composables/useToast'
+
+const toast = useToast()
 
 const items: MazButtonGroupOption[] = [
-  { text: 'Alert', onClick: () => alert('Clicked Alert!') },
+  { text: 'Toast', onClick: () => toast.info('Clicked Toast!') },
   { text: 'Console', onClick: () => console.log('Clicked Console!') },
 ]
 </script>
@@ -417,7 +422,7 @@ interface MazButtonGroupProps {
    * The color of all buttons (only applies to props-based buttons)
    * @default 'primary'
    */
-  color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent'
+  color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent' | 'surface' | 'container'
 }
 ```
 
@@ -429,9 +434,10 @@ import { MazArrowLeft } from '@maz-ui/icons/raw/MazArrowLeft'
 import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
 import { MazBars3 } from '@maz-ui/icons/raw/MazBars3'
 import { MazSquares2x2 } from '@maz-ui/icons/raw/MazSquares2x2'
+import { useToast } from 'maz-ui/composables/useToast'
 
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
-const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive'] as const
+const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'surface', 'container'] as const
 
 const basicItems: MazButtonGroupOption[] = [
   { text: 'Day' },
@@ -451,8 +457,10 @@ const pastelItems: MazButtonGroupOption[] = [
   { text: 'Month', pastel: true },
 ]
 
+const toast = useToast()
+
 const clickableItems: MazButtonGroupOption[] = [
-  { text: 'Alert', onClick: () => alert('Clicked Alert!') },
+  { text: 'Toast', onClick: () => toast.info('Clicked Toast!') },
   { text: 'Console', onClick: () => console.log('Clicked Console!') },
 ]
 

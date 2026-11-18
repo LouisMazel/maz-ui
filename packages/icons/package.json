@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/icons",
   "type": "module",
-  "version": "5.6.0",
+  "version": "5.7.0-beta.8",
   "description": "Icons set in SVG and Vue components",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -31,7 +31,67 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./*": {
+        "types": "./dist/icons.d.ts",
+        "import": "./dist/static/*.js",
+        "default": "./dist/static/*.js"
+      },
+      "./static": {
+        "types": "./dist/static/index.d.ts",
+        "import": "./dist/static/index.js",
+        "default": "./dist/static/index.js"
+      },
+      "./static/*": {
+        "types": "./dist/icons.d.ts",
+        "import": "./dist/static/*.js",
+        "default": "./dist/static/*.js"
+      },
+      "./lazy": {
+        "types": "./dist/lazy/index.d.ts",
+        "import": "./dist/lazy/index.js",
+        "default": "./dist/lazy/index.js"
+      },
+      "./lazy/*": {
+        "types": "./dist/icons.d.ts",
+        "import": "./dist/lazy/*.js",
+        "default": "./dist/lazy/*.js"
+      },
+      "./raw": {
+        "types": "./dist/raw/index.d.ts",
+        "import": "./dist/raw/index.js",
+        "default": "./dist/raw/index.js"
+      },
+      "./raw/*": {
+        "types": "./dist/icons.d.ts",
+        "import": "./dist/raw/*.js",
+        "default": "./dist/raw/*.js"
+      },
+      "./resolvers": {
+        "types": "./dist/resolvers.d.ts",
+        "import": "./dist/resolvers.js",
+        "default": "./dist/resolvers.js"
+      },
+      "./registry": {
+        "types": "./dist/registry.d.ts",
+        "import": "./dist/registry.js",
+        "default": "./dist/registry.js"
+      },
+      "./icon-names.json": "./icon-names.json",
+      "./package.json": "./package.json",
+      "./icon-list": {
+        "types": "./dist/icon-list.d.ts",
+        "import": "./dist/icon-list.js",
+        "default": "./dist/icon-list.js"
+      },
+      "./svg/*": "./svg/*"
+    }
   },
   "exports": {
     ".": {
@@ -42,7 +102,7 @@
     },
     "./*": {
       "monorepo:dev": "./src/static/*.ts",
-      "types": "./dist/static/*.d.ts",
+      "types": "./dist/icons.d.ts",
       "import": "./dist/static/*.js",
       "default": "./dist/static/*.js"
     },
@@ -54,7 +114,7 @@
     },
     "./static/*": {
       "monorepo:dev": "./src/static/*.ts",
-      "types": "./dist/static/*.d.ts",
+      "types": "./dist/icons.d.ts",
       "import": "./dist/static/*.js",
       "default": "./dist/static/*.js"
     },
@@ -66,7 +126,7 @@
     },
     "./lazy/*": {
       "monorepo:dev": "./src/lazy/*.ts",
-      "types": "./dist/lazy/*.d.ts",
+      "types": "./dist/icons.d.ts",
       "import": "./dist/lazy/*.js",
       "default": "./dist/lazy/*.js"
     },
@@ -78,7 +138,7 @@
     },
     "./raw/*": {
       "monorepo:dev": "./src/raw/*.ts",
-      "types": "./dist/raw/*.d.ts",
+      "types": "./dist/icons.d.ts",
       "import": "./dist/raw/*.js",
       "default": "./dist/raw/*.js"
     },
@@ -88,6 +148,14 @@
       "import": "./dist/resolvers.js",
       "default": "./dist/resolvers.js"
     },
+    "./registry": {
+      "monorepo:dev": "./src/registry.ts",
+      "types": "./dist/registry.d.ts",
+      "import": "./dist/registry.js",
+      "default": "./dist/registry.js"
+    },
+    "./icon-names.json": "./icon-names.json",
+    "./package.json": "./package.json",
     "./icon-list": {
       "monorepo:dev": "./src/icon-list.ts",
       "types": "./dist/icon-list.d.ts",
@@ -103,6 +171,7 @@
     "README.md",
     "agent-docs",
     "dist",
+    "icon-names.json",
     "svg"
   ],
   "engines": {
@@ -110,10 +179,14 @@
   },
   "scripts": {
     "build": "vite build && pnpm generate:agent-docs",
+    "generate": "node utils/generate.ts",
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/icons",
-    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck": "pnpm generate && tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "pnpm lint --fix"
+    "lint:fix": "pnpm lint --fix",
+    "test:unit": "pnpm generate && vitest run",
+    "test:unit:watch": "pnpm generate && vitest watch",
+    "test:unit:coverage": "pnpm generate && vitest run --coverage"
   },
   "peerDependencies": {
     "unplugin-vue-components": ">=28.0.0 <33.0.0",
@@ -133,8 +206,10 @@
     "@maz-ui/node": "workspace:^",
     "@maz-ui/utils": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
+    "@maz-ui/vite-svg-loader": "workspace:^",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",
@@ -143,7 +218,7 @@
     "unplugin-vue-components": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
-    "vite-svg-loader": "catalog:",
+    "vitest": "catalog:",
     "vue": "catalog:"
   },
   "lint-staged": {
@@ -161,7 +236,13 @@
         ],
         "outputs": [
           "{projectRoot}/dist",
-          "{projectRoot}/agent-docs"
+          "{projectRoot}/agent-docs",
+          "{projectRoot}/icon-names.json",
+          "{projectRoot}/src/index.ts",
+          "{projectRoot}/src/icon-list.ts",
+          "{projectRoot}/src/static",
+          "{projectRoot}/src/lazy",
+          "{projectRoot}/src/raw"
         ]
       }
     }

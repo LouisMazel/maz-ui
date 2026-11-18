@@ -40,9 +40,11 @@ export default defineNuxtConfig({
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazBtn @click="submitData" :loading="wait.isLoading('DATA_SUBMITTING')">
   Submit Data
 </MazBtn>
+</div>
 
 <br />
 
@@ -52,16 +54,13 @@ export default defineNuxtConfig({
 
 ```vue
 <script lang="ts" setup>
+import { sleep } from '@maz-ui/utils/helpers/sleep'
 import { useWait } from 'maz-ui/composables'
 import { ref } from 'vue'
 
 const wait = useWait()
 
 const submitted = ref(false)
-
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
 
 async function submitData() {
   submitted.value = false
@@ -86,16 +85,13 @@ async function submitData() {
 ```
 
 <script lang="ts" setup>
+  import { sleep } from '@maz-ui/utils/helpers/sleep'
   import { ref } from 'vue'
   import { useWait } from 'maz-ui/composables/useWait'
 
   const wait = useWait()
 
   const submitted = ref(false)
-
-  function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
   const submitData = async () => {
     submitted.value = false

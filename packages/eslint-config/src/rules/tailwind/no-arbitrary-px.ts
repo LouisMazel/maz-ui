@@ -113,7 +113,7 @@ const rule: Rule.RuleModule = {
       },
     ],
     messages: {
-      preferRelativeUnit: 'Tailwind class uses px; replace `{{original}}` with `{{fixed}}`.',
+      preferRelativeUnit: 'Tailwind class uses px; replace `{{original}}` with `{{fixed}}` (root font size {{base}}px, `baseFontSize` option).',
     },
   },
   create(context) {
@@ -132,7 +132,11 @@ const rule: Rule.RuleModule = {
         context.report({
           node: node as Rule.Node,
           messageId: 'preferRelativeUnit',
-          data: { original: r.original, fixed: r.fixed },
+          data: {
+            original: r.original,
+            fixed: r.fixed,
+            base: String(base),
+          },
           fix: fixer => fixer.replaceText(node as Rule.Node, fixedRaw),
         })
       }

@@ -1,14 +1,14 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
-import { getExternalDependencies, VitePreNestedCss } from '@maz-ui/vite-config'
+import { getExternalDependencies, ViteExportNames, VitePreNestedCss } from '@maz-ui/vite-config'
+import SvgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 
+import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
-import SvgLoader from 'vite-svg-loader'
 
 import { ViteCompileStyles } from './build/index.ts'
 
@@ -51,6 +51,10 @@ export default defineConfig(({ mode }) => {
       // and lightningcss can't parse `&-X` concatenation. Consumers do
       // not need this plugin — they get the already-flattened dist.
       VitePreNestedCss(),
+      ViteExportNames({
+        components: { entry: 'components/index', include: /^Maz[A-Z]/ },
+        composables: 'composables/index',
+      }),
       Vue(),
       tailwindcss(),
       SvgLoader(),
@@ -110,6 +114,9 @@ export default defineConfig(({ mode }) => {
           // Bundle dayjs plugins to avoid CJS interop issues
           if (id.startsWith('dayjs/plugin/'))
             return false
+          // The resolvers run in Node.js (`node:module`)
+          if (id.startsWith('node:'))
+            return true
           return isExternal(id)
         },
         output: {

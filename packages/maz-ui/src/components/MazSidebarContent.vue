@@ -6,7 +6,7 @@ useInjectStrict(mazSidebarKey, undefined, '[maz-ui](MazSidebarContent) Must be u
 </script>
 
 <template>
-  <div class="m-sidebar-content m-reset-css maz:flex-1 maz:overflow-x-hidden maz:overflow-y-auto maz:p-1">
+  <div class="m-sidebar-content m-reset-css maz:flex-1 maz:scrollbar-themed maz:overflow-x-hidden maz:overflow-y-auto maz:p-1">
     <slot />
   </div>
 </template>

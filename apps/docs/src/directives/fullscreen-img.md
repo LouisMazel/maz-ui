@@ -10,10 +10,12 @@ description: vFullscreenImg is a Vue directive that opens an image in fullscreen
 
 ## Basic usage
 
+<div class="vp-raw">
 <img
   v-fullscreen-img
   src="https://placedog.net/1000/500"
 />
+</div>
 
 ```vue
 <template>
@@ -50,11 +52,13 @@ description: vFullscreenImg is a Vue directive that opens an image in fullscreen
 
 ## On custom element
 
+<div class="vp-raw">
 <MazBtn
   v-fullscreen-img="'https://placedog.net/1000/700'"
 >
   Click me to show image
 </MazBtn>
+</div>
 
 ```html
 <MazBtn

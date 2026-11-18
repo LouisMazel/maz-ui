@@ -143,6 +143,7 @@ const inputValue = ref()
 
 ## Icons
 
+<div class="vp-raw">
 <MazInput
   v-model="inputValue"
   label="label icons"
@@ -150,14 +151,21 @@ const inputValue = ref()
   end-icon="/user.svg"
   autocomplete="off"
 />
+</div>
 
 ### Use icon name
 
+With [`MazUi()`](./../ecosystem/vite-plugin.md#icons-by-name) of `@maz-ui/vite-plugin` (included in `@maz-ui/nuxt`), every icon of [@maz-ui/icons](./../ecosystem/icons/index.md) is available by name, without import:
+
+```html
+<MazInput v-model="inputValue" label="label icons" start-icon="banknotes" end-icon="user" />
+```
+
+### Use icon path
+
 ::: details View code
 
-When you use the properties `end-icon`, `start-icon` or `icon` with the icon name (string), the component uses `<MazIcon icon="..." />` component.
-
-Check out how [MazIcon](./maz-icon.md) works, see all available icons and download them to put them in your public folder.
+A path renders the SVG file of your `public/` folder with [MazIcon](./maz-icon.md), which fetches it.
 
 ```html
 <MazInput v-model="inputValue" label="label icons" start-icon="/banknotes.svg" end-icon="/user.svg" />
@@ -205,14 +213,14 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 :::
 
-### Use [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader)
+### Use [@maz-ui/vite-svg-loader](./../ecosystem/vite-svg-loader.md)
 
 ::: details View code
 
 ```vue
 <script lang="ts" setup>
-import MazBanknotes from '@maz-ui/svg/banknotes.svg'
-import MazUser from '@maz-ui/svg/user.svg'
+import MazBanknotes from '@maz-ui/icons/svg/banknotes.svg?component'
+import MazUser from '@maz-ui/icons/svg/user.svg?component'
 import MazInput from 'maz-ui/components/MazInput'
 import { ref } from 'vue'
 

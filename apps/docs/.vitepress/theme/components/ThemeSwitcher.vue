@@ -5,18 +5,17 @@ import { useTheme } from '@maz-ui/themes/composables/useTheme'
 
 const { presetName, updateTheme } = useTheme()
 
-const presets = [
+const presets: Array<{ label: string, value: ThemePresetName }> = [
   { label: 'Folio', value: 'folio' },
   { label: 'Maz UI', value: 'maz-ui' },
   { label: 'Ocean', value: 'ocean' },
   { label: 'Obsidian', value: 'obsidian' },
   { label: 'Pristine', value: 'pristine' },
   { label: 'Nova', value: 'nova' },
+  { label: 'MacOS', value: 'macos' },
+  { label: 'Linux', value: 'linux' },
+  { label: 'Windows', value: 'windows' },
 ]
-
-function selectPreset(name: string) {
-  updateTheme(name as ThemePresetName)
-}
 </script>
 
 <template>
@@ -42,7 +41,7 @@ function selectPreset(name: string) {
           :model-value="presetName"
           orientation="vertical"
           :options="presets"
-          @update:model-value="selectPreset"
+          @update:model-value="updateTheme"
         />
       </div>
     </template>

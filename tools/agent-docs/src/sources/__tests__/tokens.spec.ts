@@ -48,7 +48,7 @@ describe('given parseColors', () => {
           variable: '--maz-primary',
           foreground: true,
           scale: ['50', '950'],
-          usage: 'Brand primary: main actions, links, focus',
+          usage: 'Main brand color: main actions, links, focus rings, selected states. Strong enough to read as text or border on surface (3:1 minimum)',
         },
         {
           name: 'custom',
@@ -81,6 +81,15 @@ describe('given parseUtilities', () => {
       expect(parseUtilities(css)).toEqual([
         { name: 'flex-center', css: 'align-items: center; justify-content: center;' },
         { name: 'cap-f', css: '&::first-letter { text-transform: capitalize; }' },
+      ])
+    })
+
+    it('then the comment right above a utility is its description', () => {
+      const css = '/* File header */\n\n/* Centers\n * the children */\n@utility flex-center {\n  align-items: center;\n}\n\n/* Not a description */\n\n.a {}\n@utility cap-f {\n  /* inner */\n  color: red;\n}'
+
+      expect(parseUtilities(css)).toEqual([
+        { name: 'flex-center', css: 'align-items: center;', description: 'Centers the children' },
+        { name: 'cap-f', css: 'color: red;' },
       ])
     })
   })

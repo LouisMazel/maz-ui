@@ -9,6 +9,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazTabs>
   <MazTabsBar :items="tabs" />
 
@@ -24,6 +25,7 @@ description: MazTabs is a standalone component to display content in tabs with a
     </MazTabsContentItem>
   </MazTabsContent>
 </MazTabs>
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -57,6 +59,7 @@ const tabs: MazTabsBarItem[] = [
 
 ## With model-value
 
+<div class="vp-raw">
 <MazTabs v-model="currentTab">
   <MazTabsBar :items="tabs" />
 
@@ -72,12 +75,15 @@ const tabs: MazTabsBarItem[] = [
     </MazTabsContentItem>
   </MazTabsContent>
 </MazTabs>
+</div>
 
 <br />
 
+<div class="vp-raw">
 <MazBtn @click="currentTab = currentTab === 1 ? 2 : 1">
 Set model-value to {{currentTab === 1 ? 2 : 1}}
 </MazBtn>
+</div>
 
 ::: details View code
 
@@ -125,6 +131,7 @@ The component will save the current table index in the URL of the page via a que
 
 You can choose the name of this query parameter with the props `query-param` `@default 'tab'`
 
+<div class="vp-raw">
 <MazTabs>
   <MazTabsBar :items="tabs2" persistent />
 
@@ -140,9 +147,11 @@ You can choose the name of this query parameter with the props `query-param` `@d
     </MazTabsContentItem>
   </MazTabsContent>
 </MazTabs>
+</div>
 
 ## Custom tabs with slot
 
+<div class="vp-raw">
 <MazTabs>
   <MazTabsBar :items="tabs2">
     <template #item="{ item, index, active }">
@@ -157,6 +166,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
     </template>
   </MazTabsBar>
 </MazTabs>
+</div>
 
 ```html
 <MazTabs>
@@ -183,6 +193,19 @@ You can choose the name of this query parameter with the props `query-param` `@d
 
   const tabs2: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab', 'Fourth Tab', 'Fifth Tab', 'Sixth Tab', 'Seventh Tab', 'Eighth Tab', 'Ninth Tab', 'Tenth Tab']
 
+  const badgeTabs: MazTabsBarItem[] = [
+    { label: 'Inbox', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+    { label: 'Mentions', badge: { content: true, color: 'destructive' } },
+    { label: 'Archive' },
+  ]
+
+  const indicatorTabs: MazTabsBarItem[] = [
+    { label: 'Activity', indicator: true },
+    { label: 'Messages', indicator: { content: 128, max: 99, color: 'destructive' } },
+    { label: 'Updates', indicator: { color: 'success', pulse: true, label: 'New updates' } },
+    { label: 'Settings' },
+  ]
+
   const standaloneModel = ref('weekly')
 
   const standaloneItems = [
@@ -192,15 +215,55 @@ You can choose the name of this query parameter with the props `query-param` `@d
   ]
 </script>
 
+## Badges and indicators
+
+Each item can show a **badge** next to its label, or an **indicator** on the top end corner of the tab.
+
+- `badge` renders a [`MazBadge`](./maz-badge.md) (all its props are accepted) with a `content`: a number or a text, `true` for a small dot without text, `false` to hide it.
+- `indicator` renders a [`MazIndicator`](./maz-indicator.md) attached to the tab: `true` for a dot, a number or a text for a counter (`99+` above `max`), or an object with all the props of `MazIndicator` (`color`, `max`, `pulse`, `position`, `label`...). Give it a `label` when the indicator carries a meaning the tab label does not say.
+
+<div class="vp-raw maz:flex maz:flex-col maz:items-start maz:gap-4">
+  <MazTabsBar :items="badgeTabs" standalone />
+  <MazTabsBar :items="indicatorTabs" standalone />
+</div>
+
+```vue
+<script lang="ts" setup>
+import type { MazTabsBarItem } from 'maz-ui/components'
+
+const badgeTabs: MazTabsBarItem[] = [
+  { label: 'Inbox', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+  { label: 'Mentions', badge: { content: true, color: 'destructive' } },
+  { label: 'Archive' },
+]
+
+const indicatorTabs: MazTabsBarItem[] = [
+  { label: 'Activity', indicator: true },
+  { label: 'Messages', indicator: { content: 128, max: 99, color: 'destructive' } },
+  { label: 'Updates', indicator: { color: 'success', pulse: true, label: 'New updates' } },
+  { label: 'Settings' },
+]
+</script>
+
+<template>
+  <MazTabsBar :items="badgeTabs" />
+  <MazTabsBar :items="indicatorTabs" />
+</template>
+```
+
+Use the `badge-content` slot to replace the content of a badge, and the `indicator` slot (`{ text, index }`) to replace the text of a counter indicator.
+
 ## Size and rounded size
 
 Each tab is rendered with a [`MazBtn`](./maz-btn.md), so you can control its `size` (`MazSize`) and `rounded-size` (`MazRoundedSize`, applied to the bar, the indicator and each tab).
 
 These props can be set on `MazTabsBar` directly, or on `MazTabs` which forwards them to its `MazTabsBar`. They are also globalizable through the [global defaults](./../guide/global-defaults.md) (`MazTabsBar` or `global` entry).
 
+<div class="vp-raw">
 <MazTabs size="sm" rounded-size="lg">
   <MazTabsBar :items="tabs2" />
 </MazTabs>
+</div>
 
 ```vue
 <template>
@@ -221,9 +284,11 @@ Each item can also override the `size` and `rounded-size` (and accepts every oth
 
 The active tab is highlighted by the indicator. Use the `color` prop (`MazColor`) on `MazTabsBar` (or on `MazTabs`, which forwards it) to color it. When omitted, the default neutral indicator is used.
 
+<div class="vp-raw">
 <MazTabs>
   <MazTabsBar :items="tabs2" color="primary" />
 </MazTabs>
+</div>
 
 ```vue
 <template>
@@ -245,7 +310,9 @@ If your page is already wrapped by a `MazTabs`, a nested `MazTabsBar` would othe
 
 The model returns the `1`-based index of the selected tab, unless the items provide a `value` (`string | number`), in which case that value is returned. The model type is inferred from the items passed: declare the items `as const` (or with literal `value`s) to get a strict union type for the model and the `@update:model-value` event.
 
+<div class="vp-raw">
 <MazTabsBar v-model="standaloneModel" :items="standaloneItems" color="secondary" rounded-size="full" />
+</div>
 
 <br />
 
@@ -306,15 +373,20 @@ type MazTabsBarItem<Value extends string | number = string | number>
      */
     disabled?: boolean
     /**
-     * Badge to display in the tab
+     * Badge to display in the tab, next to its label
      * Inherit all props of MazBadge component
      */
     badge?: MazBadgeProps & {
       /**
-       * Content of the badge
+       * Content of the badge. `true` renders a dot without text, `false` hides the badge
        */
       content: string | number | boolean
     }
+    /**
+     * Indicator on the top end corner of the tab: `true` for a dot,
+     * a number or a text for a counter, or the props of MazIndicator
+     */
+    indicator?: boolean | number | string | MazIndicatorProps
   })
   | string
 ```

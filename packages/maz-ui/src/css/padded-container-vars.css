@@ -1,37 +1,24 @@
 @import '../tailwindcss/theme-breakpoints.css';
 
+/*
+ * Variables of the page layout (`padded-container` of maz-ui/tailwindcss/utilities.css, MazPageSection).
+ *
+ * The utilities read `--maz-container-max-width` and `--maz-container-padding-<mobile|tablet|desktop>`
+ * with these values as fallbacks, and switch the side padding on the viewport (or the closest
+ * `@container`) themselves: they no longer need this file.
+ *
+ * `--maz-container-padding-value`, `--maz-container-width` and `--maz-container-padding` are kept for
+ * the custom CSS that reads them (removed in v6, see plans/ROADMAP.md).
+ */
 @layer theme {
   :root {
     --maz-container-padding-mobile: 1rem;
     --maz-container-padding-tablet: 2rem;
     --maz-container-padding-desktop: 2.5rem;
     --maz-container-padding-value: var(--maz-container-padding-mobile);
-    --maz-container-width: calc(100% - var(--maz-container-padding-value) * 2);
-    --maz-container-padding: calc(50% - var(--maz-container-width) / 2);
     --maz-container-max-width: 1440px;
-  }
-
-  /* .maz-padded-container {
-  width: 100%;
-  padding-left: var(--maz-container-padding);
-  padding-right: var(--maz-container-padding);
-
-  &.-no-p {
-    padding-left: calc(50% - var(--maz-container-max-width) / 2);
-    padding-right: calc(50% - var(--maz-container-max-width) / 2);
-  }
-} */
-
-  /*
-  Info: 2.5rem = 40px
-  ---
-  1520px = max-width + (padding-desktop * 2)
-  1520px = 1440px + (2.5rem * 2)
-*/
-  @media only screen and (width >= 1520px) {
-    :root {
-      --maz-container-width: var(--maz-container-max-width);
-    }
+    --maz-container-width: min(calc(100% - var(--maz-container-padding-value) * 2), var(--maz-container-max-width));
+    --maz-container-padding: max(var(--maz-container-padding-value), calc((100% - var(--maz-container-max-width)) / 2));
   }
 
   :root {

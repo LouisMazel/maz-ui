@@ -62,6 +62,7 @@ import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 ### Date and Number Formatting
 
 - **formatDate** - Format dates with locale support
+- **formatRelativeTime** / **getRelativeTime** - Localized relative time (`3 minutes ago`) with `Intl`
 - **formatNumber** - Format numbers with locale support
 - **formatCurrency** - Format currency values with locale support
 

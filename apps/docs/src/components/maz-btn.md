@@ -57,6 +57,10 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 ## Colors
 
+::: tip Surface vs container
+`surface` is the background of the page and `container` the background of cards, panels and fields. With presets like macOS the surface is light grey and the container is white in light mode: use `container` for a white button on a grey page. Both are neutral colors (`MazNeutralColor`): text uses the foreground color, hover and active states tint the background with the foreground, and `container` has a divider border by default. Outlined neutral buttons are transparent with a divider border, and pastel neutral buttons fall back to the solid rendering.
+:::
+
 <ComponentDemo>
   <div class="flex items-start gap-05 flex-wrap">
     <MazBtn v-for="color of colors" :key="color" :color="color">{{ color }}</MazBtn>
@@ -74,6 +78,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 <MazBtn color="contrast">contrast</MazBtn>
 <MazBtn color="accent">accent</MazBtn>
 <MazBtn color="surface">surface</MazBtn>
+<MazBtn color="container">container</MazBtn>
 <MazBtn color="transparent">transparent</MazBtn>
 ```
 
@@ -101,6 +106,7 @@ Transform the button into an outlined button with the attribute `outlined`
 <MazBtn color="contrast" outlined>contrast</MazBtn>
 <MazBtn color="accent" outlined>accent</MazBtn>
 <MazBtn color="surface" outlined>surface</MazBtn>
+<MazBtn color="container" outlined>container</MazBtn>
 <MazBtn color="transparent" outlined>transparent</MazBtn>
 ```
 
@@ -142,6 +148,7 @@ const colors = [
   'accent',
   'transparent',
   'surface',
+  'container',
 ]
 </script>
 
@@ -186,6 +193,7 @@ Better in light mode
 <MazBtn color="contrast" pastel>contrast</MazBtn>
 <MazBtn color="accent" pastel>accent</MazBtn>
 <MazBtn color="surface" pastel>surface</MazBtn>
+<MazBtn color="container" pastel>container</MazBtn>
 <MazBtn color="transparent" pastel>transparent</MazBtn>
 ```
 
@@ -311,6 +319,46 @@ By default, the justify is `center`
   </template>
 </ComponentDemo>
 
+## Active
+
+`active` applies the pressed look (same background as `:active`, `--active` class) permanently. Use it for the current item of a group, like a tab bar of transparent buttons.
+
+<ComponentDemo>
+  <div class="maz:flex maz:gap-2">
+    <MazBtn color="transparent" active>Overview</MazBtn>
+    <MazBtn color="transparent">Activity</MazBtn>
+    <MazBtn color="transparent">Settings</MazBtn>
+  </div>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBtn from 'maz-ui/components/MazBtn'
+import { ref } from 'vue'
+
+const tabs = ['Overview', 'Activity', 'Settings']
+const current = ref('Overview')
+</script>
+
+<template>
+  <div class="flex gap-2">
+    <MazBtn
+      v-for="tab in tabs"
+      :key="tab"
+      color="transparent"
+      :active="current === tab"
+      @click="current = tab"
+    >
+      {{ tab }}
+    </MazBtn>
+  </div>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Icons
 
 <ComponentDemo>
@@ -391,6 +439,16 @@ By default, the justify is `center`
 
   </template>
 </ComponentDemo>
+
+### Use icon names
+
+With [`MazUi()`](./../ecosystem/vite-plugin.md#icons-by-name) of `@maz-ui/vite-plugin` (included in `@maz-ui/nuxt`), every icon of [@maz-ui/icons](./../ecosystem/icons/index.md) is available by name, without import:
+
+```html
+<MazBtn start-icon="check" size="sm"> start-icon </MazBtn>
+<MazBtn end-icon="home"> end-icon </MazBtn>
+<MazBtn icon="command-line" fab size="lg" />
+```
 
 ### Use icon path
 
@@ -484,7 +542,7 @@ import { MazCommandLine } from '@maz-ui/icons/raw/MazCommandLine'
 
 :::
 
-### Use [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader)
+### Use [@maz-ui/vite-svg-loader](./../ecosystem/vite-svg-loader.md)
 
 ::: details View code
 
@@ -530,7 +588,7 @@ import { MazBtn, MazSpinner } from 'maz-ui/components'
 
 ### Pass a full `MazIconProps` object
 
-`startIcon`, `endIcon` and `icon` accept either a bare value (Vue component, URL, raw SVG string) **or** a full `MazIconProps` object. The latter is useful when you want to override the auto-derived size, set a `<title>` for screen readers, flip a directional icon for RTL, or attach extra SVG attributes.
+`startIcon`, `endIcon` and `icon` accept either a bare value (icon name, Vue component, URL, raw SVG string) **or** a full `MazIconProps` object. The latter is useful when you want to override the auto-derived size, set a `<title>` for screen readers, flip a directional icon for RTL, or attach extra SVG attributes.
 
 ::: details View code
 
@@ -541,7 +599,7 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 </script>
 
 <template>
-  <!-- The button picks an icon size from its own size — `sm` defaults to a small icon. -->
+  <!-- The button picks an icon size from its own size: `sm` defaults to a small icon. -->
   <MazBtn size="sm" :start-icon="MazStar">favorite</MazBtn>
 
   <!-- Pass an object to override per-icon. -->
@@ -567,7 +625,9 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 When `href` attribute is provided, the component automatically becomes a `<a href="..." />`
 :::
 
+<div class="vp-raw">
 <MazBtn class="vp-raw" href="https://www.google.com" target="_blank">Is Button Link</MazBtn>
+</div>
 
 ```html
 <MazBtn href="https://www.google.com" target="_blank"> Is Button Link </MazBtn>
@@ -579,7 +639,9 @@ When `href` attribute is provided, the component automatically becomes a `<a hre
 When `to` attribute is provided, the component automatically becomes a `<RouterLink to="..." />`
 :::
 
+<div class="vp-raw">
 <MazBtn class="vp-raw" :to="{ path: '/made-with-maz-ui.html' }">Is Router Link</MazBtn>
+</div>
 
 ```html
 <MazBtn :to="{ path: '/made-with-maz-ui.html' }"> Is RouterLink </MazBtn>
@@ -602,6 +664,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
     'destructive',
     'contrast',
     'surface',
+    'container',
     'transparent',
   ]
 

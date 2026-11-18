@@ -14,7 +14,7 @@ aside: false
 Propose your website by opening an [issue](https://github.com/LouisMazel/maz-ui/issues/new?assignees=LouisMazel&labels=enhancement&projects=&template=feature_request.md&title=%5BFEATURE%5D) or a [pull request](https://github.com/LouisMazel/maz-ui/edit/master/apps/docs/src/made-with-maz-ui.md) and editing this page.
 :::
 
-<div class="flex flex-col" style="display: flex; flex-direction: column; gap: 2rem">
+<div class="vp-raw flex flex-col" style="display: flex; flex-direction: column; gap: 2rem">
   <MazCard zoom v-for="({images, description, link, title, github }, i) in projects" :key="i" class="maz:w-full" elevation :gallery="{ images, height: 350 }">
     <h1 class="maz:m-0" style="margin-bottom: 16px;">
       {{ title }}

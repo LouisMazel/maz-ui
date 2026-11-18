@@ -33,6 +33,7 @@ describe('given MazBadge component', () => {
         'destructive',
         'contrast',
         'surface',
+        'container',
       ] as MazBadgeColor[],
     )('then it applies the %s color classes', (color) => {
       const wrapper = mount(MazBadge, {
@@ -165,6 +166,57 @@ describe('given a MazUi global default for size', () => {
 
       expect(wrapper.classes()).toContain('--sm')
       expect(wrapper.classes()).not.toContain('--xl')
+    })
+  })
+})
+
+describe('given MazBadge with the removable prop', () => {
+  describe('when removable is not set', () => {
+    it('then no remove button is rendered', () => {
+      const wrapper = mount(MazBadge, {
+        slots: { default: 'Tag' },
+      })
+
+      expect(wrapper.find('.m-badge__remove').exists()).toBe(false)
+    })
+  })
+
+  describe('when removable is set', () => {
+    it('then a labelled remove button with a hidden icon is rendered', () => {
+      const wrapper = mount(MazBadge, {
+        props: { removable: true },
+        slots: { default: 'Tag' },
+      })
+      const button = wrapper.find('.m-badge__remove')
+
+      expect(button.exists()).toBe(true)
+      expect(button.attributes('type')).toBe('button')
+      expect(button.attributes('aria-label')).toBeTruthy()
+      expect(button.find('svg').exists()).toBe(true)
+      expect(wrapper.text()).toBe('Tag')
+    })
+
+    it('then the remove button emits remove with the click event', async () => {
+      const wrapper = mount(MazBadge, {
+        props: { removable: true },
+      })
+
+      await wrapper.find('.m-badge__remove').trigger('click')
+
+      const emitted = wrapper.emitted('remove')
+
+      expect(emitted).toHaveLength(1)
+      expect(emitted?.[0][0]).toBeInstanceOf(MouseEvent)
+    })
+  })
+
+  describe('when removeLabel is set', () => {
+    it('then it is the aria-label of the remove button', () => {
+      const wrapper = mount(MazBadge, {
+        props: { removable: true, removeLabel: 'Delete tag' },
+      })
+
+      expect(wrapper.find('.m-badge__remove').attributes('aria-label')).toBe('Delete tag')
     })
   })
 })

@@ -446,9 +446,156 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
   </template>
 </ComponentDemo>
 
+## Floating variant
+
+`variant="floating"` turns the sidebar into a rounded panel inset from the edges of the window, drawn with the translucent [glass material](./../ecosystem/themes.md#glass-material) of the theme. It follows the sidebars of macOS and iPadOS: the selected item is neutral (a soft highlight, no brand color) and the icons carry the accent color. Without `variant`, the sidebar keeps its flat, edge-to-edge look (`variant="sidebar"`).
+
+The blur only shows when something is behind the panel, so give the layout a background (an image, a gradient) and let it extend under the sidebar. `width` and `iconWidth` include the inset.
+
+<ComponentDemo>
+  <div
+    class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex"
+    style="background: linear-gradient(135deg, var(--maz-primary-300), var(--maz-accent-300), var(--maz-secondary-300))"
+  >
+    <MazSidebar v-model:open="floatingOpen" variant="floating" collapsible="icon" class="maz:h-full">
+      <MazSidebarHeader>
+        <div class="maz:flex maz:items-center maz:gap-2 maz:p-3 maz:font-semibold">
+          <MazIcon :icon="MazSidebarLeft" class="maz:size-5 maz:shrink-0 maz:text-primary" />
+          <span class="maz:truncate">Library</span>
+        </div>
+      </MazSidebarHeader>
+      <MazSidebarContent>
+        <MazSidebarMenu>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazHome" label="Home" tooltip="Home" :active="true" />
+          </MazSidebarMenuItem>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazGitBranch" label="Branches" tooltip="Branches" />
+          </MazSidebarMenuItem>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazGitPullRequest" label="Pull requests" tooltip="Pull requests" />
+          </MazSidebarMenuItem>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazCog6Tooth" label="Settings" tooltip="Settings" />
+          </MazSidebarMenuItem>
+        </MazSidebarMenu>
+      </MazSidebarContent>
+      <MazSidebarFooter>
+        <MazSidebarTrigger />
+      </MazSidebarFooter>
+    </MazSidebar>
+    <main class="maz:flex-1 maz:p-4 maz:font-medium maz:text-primary-foreground">Content behind and next to the panel</main>
+  </div>
+
+<template #code>
+
+```html
+<script setup>
+import { MazGitBranch } from '@maz-ui/icons/lazy/MazGitBranch'
+import { MazGitPullRequest } from '@maz-ui/icons/lazy/MazGitPullRequest'
+import { MazHome } from '@maz-ui/icons/lazy/MazHome'
+
+const isOpen = ref(true)
+</script>
+
+<template>
+  <div class="flex h-screen bg-linear-to-br from-primary-300 to-accent-300">
+    <MazSidebar v-model:open="isOpen" variant="floating" collapsible="icon">
+      <MazSidebarContent>
+        <MazSidebarMenu>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazHome" label="Home" tooltip="Home" active />
+          </MazSidebarMenuItem>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazGitBranch" label="Branches" tooltip="Branches" />
+          </MazSidebarMenuItem>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazGitPullRequest" label="Pull requests" tooltip="Pull requests" />
+          </MazSidebarMenuItem>
+        </MazSidebarMenu>
+      </MazSidebarContent>
+      <MazSidebarFooter>
+        <MazSidebarTrigger />
+      </MazSidebarFooter>
+    </MazSidebar>
+
+    <main class="flex-1 p-4">...</main>
+  </div>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+The glass material comes from `components.glass` of the preset: native presets such as `macos` and `windows` ship a real blur, `linux` an opaque panel. When the user asks for reduced transparency (system setting, or a `reduce-transparency` class on an ancestor), the panel becomes opaque. The variant also works in `mode="overlay"`.
+
+## Three states: full, icons, hidden
+
+`collapsible` is a prop like any other, so it can change at runtime. Combined with `open`, it gives three states, like the sidebar of a Mac app: the **full** sidebar, a rail of **icons**, and **hidden** altogether. With `collapsible="icon"` a closed sidebar shrinks to icons, with `collapsible="offcanvas"` it disappears.
+
+<ComponentDemo>
+  <div class="maz:mb-3">
+    <MazSegmented v-model="sidebarState" :options="sidebarStates" aria-label="Sidebar state" size="sm" />
+  </div>
+  <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[20rem] maz:flex">
+    <MazSidebar v-model:open="stateOpen" :collapsible="stateCollapsible" class="maz:h-full">
+      <MazSidebarContent>
+        <MazSidebarMenu>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazHome" label="Dashboard" tooltip="Dashboard" :active="true" />
+          </MazSidebarMenuItem>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazCog6Tooth" label="Settings" tooltip="Settings" />
+          </MazSidebarMenuItem>
+        </MazSidebarMenu>
+      </MazSidebarContent>
+    </MazSidebar>
+    <main class="maz:flex-1 maz:p-4">State: {{ sidebarState }}</main>
+  </div>
+
+<template #code>
+
+```html
+<script setup>
+import { MazCog6Tooth } from '@maz-ui/icons/lazy/MazCog6Tooth'
+import { MazHome } from '@maz-ui/icons/lazy/MazHome'
+import { computed, ref } from 'vue'
+
+const state = ref<'full' | 'icons' | 'hidden'>('full')
+
+// Icons and hidden are both "closed": only `collapsible` tells them apart
+const collapsible = computed(() => state.value === 'hidden' ? 'offcanvas' : 'icon')
+
+const open = computed({
+  get: () => state.value === 'full',
+  set: (value) => { state.value = value ? 'full' : 'icons' },
+})
+</script>
+
+<template>
+  <MazSidebar v-model:open="open" :collapsible="collapsible">
+    <MazSidebarContent>
+      <MazSidebarMenu>
+        <MazSidebarMenuItem>
+          <MazSidebarMenuButton :icon="MazHome" label="Dashboard" tooltip="Dashboard" active />
+        </MazSidebarMenuItem>
+        <MazSidebarMenuItem>
+          <MazSidebarMenuButton :icon="MazCog6Tooth" label="Settings" tooltip="Settings" />
+        </MazSidebarMenuItem>
+      </MazSidebarMenu>
+    </MazSidebarContent>
+  </MazSidebar>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+When the sidebar is hidden, keep a control to bring it back somewhere else (a button in the header of the page, a menu item, a keyboard shortcut): the sidebar trigger lives inside the sidebar and is hidden with it.
+
 ## Badges
 
-`badge` accepts a `string`, a `number`, or a full `MazBadgeProps` object (with an optional `text`) to fine-tune color, size, outlined, etc.
+`badge` accepts a `string`, a `number`, or a full `MazBadgeProps` object (with an optional `text`) to fine-tune color, size, outlined, etc. When the sidebar is collapsed to its icons, the badge is hidden and leaves a dot of its color on the icon (a [MazIndicator](./maz-indicator.md) attached to it), so the user still sees that something is pending.
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[22rem] maz:flex">
@@ -471,7 +618,7 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
       </MazSidebarContent>
     </MazSidebar>
     <main class="maz:flex-1 maz:flex maz:flex-col maz:gap-4 maz:p-4">
-      Badges are hidden in icon-collapsed mode.
+      Badges are hidden in icon-collapsed mode, and leave a dot of their color on the icon.
       <MazBtn @click="badgesOpen = !badgesOpen">Toggle sidebar</MazBtn>
     </main>
   </div>
@@ -702,11 +849,26 @@ Customize the sidebar width using these CSS custom properties (also settable via
 <!--@include: ./../../.vitepress/generated-docs/maz-sidebar-group.doc.md-->
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { MazHome } from '@maz-ui/icons/lazy/MazHome'
 import { MazCog6Tooth } from '@maz-ui/icons/lazy/MazCog6Tooth'
+import { MazGitBranch } from '@maz-ui/icons/lazy/MazGitBranch'
+import { MazGitPullRequest } from '@maz-ui/icons/lazy/MazGitPullRequest'
+import { MazSidebarLeft } from '@maz-ui/icons/lazy/MazSidebarLeft'
 
+const floatingOpen = ref(true)
+const sidebarState = ref('full')
+const sidebarStates = [
+  { label: 'Full', value: 'full' },
+  { label: 'Icons', value: 'icons' },
+  { label: 'Hidden', value: 'hidden' },
+]
+const stateCollapsible = computed(() => sidebarState.value === 'hidden' ? 'offcanvas' : 'icon')
+const stateOpen = computed({
+  get: () => sidebarState.value === 'full',
+  set: (value) => { sidebarState.value = value ? 'full' : 'icons' },
+})
 const overlayOpen = ref(false)
 const offcanvasOpen = ref(true)
 const userMenuOpen = ref(true)

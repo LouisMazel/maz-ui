@@ -29,6 +29,7 @@ describe('given PACKAGE_DEFINITIONS', () => {
         '@maz-ui/eslint-config',
         '@maz-ui/stylelint-config',
         '@maz-ui/upgrade',
+        '@maz-ui/vite-svg-loader',
       ])
     })
   })

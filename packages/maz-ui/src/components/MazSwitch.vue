@@ -84,6 +84,10 @@ const bgColorClassVar = computed(() => {
   return `var(--maz-${color})`
 })
 
+const fgColorClassVar = computed(() => {
+  return `var(--maz-${color}-foreground, var(--maz-foreground))`
+})
+
 function emit() {
   emits('update:model-value', !modelValue)
   emits('change', !modelValue)
@@ -100,9 +104,9 @@ function onFocus(event: FocusEvent) {
 <template>
   <label
     :for="instanceId"
-    class="m-switch m-reset-css maz:relative maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:align-top"
+    class="m-switch m-reset-css maz:relative maz:inline-flex maz:cursor-interactive maz:items-center maz:gap-2 maz:align-top"
     :class="[{ '--is-disabled': disabled, 'maz:disabled-cursor': disabled }, classProp]"
-    :style="[style, { '--switch-color': bgColorClassVar }]"
+    :style="[style, { '--switch-color': bgColorClassVar, '--switch-foreground': fgColorClassVar }]"
   >
     <input
       :id="instanceId"
@@ -111,7 +115,7 @@ function onFocus(event: FocusEvent) {
       role="switch"
       :name="name"
       :checked="modelValue"
-      :aria-label="label"
+      :aria-label="$attrs['aria-label'] as string ?? label"
       :disabled="disabled"
       class="m-switch__input maz:absolute"
       @change="emit"
@@ -131,7 +135,7 @@ function onFocus(event: FocusEvent) {
 
       <span
         v-if="hint"
-        class="m-switch__hint maz:text-sm" :class="{
+        class="m-switch__hint maz:text-body-sm" :class="{
           '--error': error,
           '--success': success,
           '--warning': warning,
@@ -148,16 +152,8 @@ function onFocus(event: FocusEvent) {
 <style>
 @reference "../tailwindcss/tailwind.css";
 
-.m-switch__input:disabled + .m-switch__toggle {
-  &::before {
-    @apply maz:bg-surface-600 maz:dark:bg-surface-400;
-  }
-
-  &::after {
-    @apply maz:bg-surface-700 maz:dark:bg-surface-300;
-
-    box-shadow: none;
-  }
+.m-switch.--is-disabled {
+  @apply maz:disabled-opacity;
 }
 
 .m-switch__input:focus-visible + .m-switch__toggle::before {
@@ -165,31 +161,52 @@ function onFocus(event: FocusEvent) {
   outline-offset: 2px;
 }
 
+.m-switch:not(.--is-disabled):hover .m-switch__input:not(:checked) + .m-switch__toggle::before {
+  box-shadow: 0 0 0 0.125rem color-mix(in srgb, var(--switch-color) 60%, transparent);
+}
+
 .m-switch__input:checked + .m-switch__toggle {
   &::after {
     @apply maz:translate-x-6;
+
+    background-color: var(--switch-foreground);
   }
 
   &::before {
+    border-color: var(--switch-color);
     background-color: var(--switch-color);
   }
 }
 
 .m-switch__toggle {
+  /* No light-dark() here: the build rewrites it into variables that only exist with a color-scheme rule */
+  --m-switch-track: color-mix(in srgb, var(--maz-foreground) 16%, transparent);
+  --m-switch-thumb: oklch(100% 0 0deg);
+
+  @variant dark {
+    --m-switch-track: color-mix(in srgb, var(--maz-foreground) 24%, transparent);
+    --m-switch-thumb: var(--maz-foreground);
+  }
+
   &::before {
     content: '';
     transition: all 200ms ease-in-out;
 
     @apply maz:relative maz:left-0 maz:top-0.5 maz:block maz:h-6 maz:w-12 maz:rounded-full;
-    @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:border maz:border-solid maz:border-divider;
+    @apply maz:border maz:border-solid;
+
+    /* Translucent foreground so the track stays visible on any background, in both modes */
+    border-color: transparent;
+    background-color: var(--m-switch-track);
   }
 
   &::after {
     content: '';
 
-    @apply maz:absolute maz:left-0.5 maz:top-1 maz:block maz:h-5 maz:w-5 maz:rounded-full maz:bg-input;
+    @apply maz:absolute maz:left-0.5 maz:top-1 maz:block maz:h-5 maz:w-5 maz:rounded-full;
 
-    box-shadow: 0 0 4px 0 hsl(0deg 0% 0% / 20%);
+    background-color: var(--m-switch-thumb);
+    box-shadow: 0 1px 3px 0 hsl(0deg 0% 0% / 25%);
     transition: all 200ms ease-in-out;
   }
 }

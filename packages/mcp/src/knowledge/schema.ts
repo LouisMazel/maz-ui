@@ -62,6 +62,7 @@ export const componentApiSchema = z.object({
   description: z.string().optional(),
   import: z.string(),
   parent: z.string().optional(),
+  forwardsAttrs: z.string().optional(),
   props: z.array(propApiSchema),
   events: z.array(z.object({
     name: z.string(),
@@ -98,6 +99,8 @@ export const tailwindSchema = z.object({
   radius: z.array(namedTokenSchema),
   shadows: z.array(namedTokenSchema),
   breakpoints: z.array(namedTokenSchema),
+  /** Since maz-ui 5.7 */
+  containers: z.array(namedTokenSchema).optional(),
   zIndex: z.array(namedTokenSchema),
   fonts: z.array(namedTokenSchema),
   durations: z.array(namedTokenSchema),
@@ -106,6 +109,7 @@ export const tailwindSchema = z.object({
   utilities: z.array(z.object({
     name: z.string(),
     css: z.string(),
+    description: z.string().optional(),
   })),
   variants: z.array(namedTokenSchema),
   containerVariables: z.array(namedTokenSchema),
@@ -126,6 +130,8 @@ export const fragmentSchema = z.object({
   tailwind: tailwindSchema.optional(),
   icons: z.object({
     names: z.array(z.string()),
+    /** The name of `<MazIcon icon>` of each component (`MazTrash`: `trash`), since maz-ui 5.7 */
+    ids: z.record(z.string(), z.string()).optional(),
   }).optional(),
 })
 

@@ -1,9 +1,10 @@
+import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstanceType'
 import type { VueWrapper } from '@vue/test-utils'
 import MazLink from '@components/MazLink.vue'
 import { mount, shallowMount } from '@vue/test-utils'
 
 describe('MazLink component', () => {
-  let wrapper: VueWrapper<InstanceType<typeof MazLink>>
+  let wrapper: VueWrapper<GenericInstanceType<typeof MazLink>>
 
   beforeEach(() => {
     wrapper = shallowMount(MazLink, {
@@ -27,6 +28,13 @@ describe('MazLink component', () => {
         },
       },
     })
+  })
+
+  it('it follows the text alignment of its parent, even rendered as a button (browsers center the text of a button)', async () => {
+    await wrapper.setProps({ as: 'button' })
+
+    expect(wrapper.element.tagName).toBe('BUTTON')
+    expect(wrapper.classes()).toContain('maz:[text-align:inherit]')
   })
 
   it('it renders the component correctly', async () => {
@@ -77,6 +85,19 @@ describe('MazLink component', () => {
 
     expect(inheritWrapper.classes('--inherit')).toBe(true)
     expect(inheritWrapper.classes()).not.toContain('maz:not-disabled:text-primary')
+  })
+
+  it('lightens a theme color on hover in dark mode instead of darkening it', () => {
+    const wrapper = shallowMount(MazLink, {
+      props: { color: 'primary' },
+      slots: { default: 'Link' },
+      global: {
+        stubs: { RouterLink: true },
+      },
+    })
+
+    expect(wrapper.classes()).toContain('maz:not-disabled:hover:text-primary-700')
+    expect(wrapper.classes()).toContain('maz:not-disabled:dark:hover:text-primary-300')
   })
 
   it('applies underline-hover modifier when underline is false', () => {

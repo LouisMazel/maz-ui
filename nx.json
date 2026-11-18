@@ -7,6 +7,7 @@
     ],
     "sharedGlobals": [
       "{workspaceRoot}/tsconfig*.json",
+      "{workspaceRoot}/.nvmrc",
       "{workspaceRoot}/pnpm-lock.yaml"
     ],
     "production": [

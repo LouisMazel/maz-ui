@@ -24,7 +24,7 @@ It registers the server and writes the maz-ui rules for the agents of your proje
 | `search_docs` | Find what maz-ui provides for a need, described in plain words ("user avatar with initials", "confirm before delete", "debounce search") or by name. Understands the vocabulary of other libraries ("modal", "snackbar", "combobox") |
 | `get_component_api` | Exact API of up to 10 components: props with types, defaults and accepted values, `v-model`, events with payload, slots with bindings, exposed methods |
 | `find_icons` | Icons of `@maz-ui/icons` by meaning ("delete", "settings", "france flag") with their imports |
-| `get_theme_tokens` | The theme of your project (preset values, `@theme` tokens, variants, utilities, read from your files) and every Tailwind class and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints, fonts, z-index, utilities |
+| `get_theme_tokens` | The theme of your project (preset values, `@theme` tokens, variants, utilities, read from your files), its effective colors (hex of every color and step in light and dark, contrast ratios, low contrasts and steps that look the same) and every Tailwind class and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints, fonts, z-index, utilities |
 | `get_doc` | Any documentation page by id or name (`components/maz-btn`, `useToast`, `guide/tailwind`), whole or by sections |
 | `list_docs` | Catalog of the components, composables, directives, plugins, helpers, packages and guides |
 | `get_setup_guide` | Installation steps for Vue or Nuxt, with or without Tailwind |
@@ -171,6 +171,7 @@ npx @maz-ui/mcp                   # start the MCP server (stdio)
 npx @maz-ui/mcp init              # configure the AI agents of the project
 npx @maz-ui/mcp review <paths...> # review files against maz-ui (CI)
 npx @maz-ui/mcp search <query>    # search the docs from the terminal
+npx @maz-ui/mcp colors [preset]   # effective colors of the project presets, with their contrasts
 npx @maz-ui/mcp --help
 ```
 

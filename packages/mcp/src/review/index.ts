@@ -2,12 +2,13 @@ import type { ElementNode, RootNode } from '@vue/compiler-dom'
 import type { Finding, ReviewContext, ReviewOptions, RuleId, Severity } from './types'
 
 import { NodeTypes, parse } from '@vue/compiler-dom'
-import { localComponents, reviewScript } from './script'
+import { mazIconNames } from './icons'
+import { localComponents, rawIcons, reviewScript } from './script'
 import { reviewStyle } from './style'
 import { reviewTemplate } from './template'
 import { SEVERITY_ORDER } from './types'
 
-export type { Finding, Framework, ReviewOptions, RuleId, Severity } from './types'
+export type { Finding, Framework, IconNames, ReviewOptions, RuleId, Severity } from './types'
 
 type FileKind = 'vue' | 'script' | 'style' | 'template'
 
@@ -41,7 +42,8 @@ export function detectKind(code: string, filename?: string): FileKind {
   if (extension === 'html')
     return 'template'
 
-  if (/<template[\s>]|<script[\s>]/.test(code))
+  // the blocks of a SFC start their line, a nested `<template #slot>` belongs to a template
+  if (/^<(?:template|script|style)[\s>]/m.test(code))
     return 'vue'
   if (/^\s*</.test(code))
     return 'template'
@@ -147,12 +149,55 @@ function blockContent(block: ElementNode): { content: string, offset: number } {
   }
 }
 
+/** A syntax error of `@vue/compiler-dom`, with its position */
+function isSyntaxError(error: unknown): error is SyntaxError & { loc?: { start: { offset: number } } } {
+  return error instanceof SyntaxError
+}
+
+function reviewByKind(code: string, filename: string | undefined, context: ReviewContext): void {
+  const kind = detectKind(code, filename)
+
+  if (kind === 'script') {
+    reviewScript(code, 0, context)
+  }
+  else if (kind === 'style') {
+    reviewStyle(code, 0, context)
+  }
+  else if (kind === 'template') {
+    reviewTemplate(parse(code), code, context)
+  }
+  else {
+    const root = parse(code, { parseMode: 'sfc' })
+    const blocks = blocksOf(root)
+
+    const scripts = blocks.filter(block => block.tag === 'script').map(block => blockContent(block).content).join('\n')
+
+    context.localComponents = localComponents(scripts)
+    context.rawIcons = rawIcons(scripts)
+
+    for (const block of blocks) {
+      if (block.tag === 'template') {
+        reviewTemplate(block, code, context)
+      }
+      else if (block.tag === 'script') {
+        const { content, offset } = blockContent(block)
+        reviewScript(content, offset, context)
+      }
+      else if (block.tag === 'style') {
+        const { content, offset } = blockContent(block)
+        reviewStyle(content, offset, context, { sfc: true })
+      }
+    }
+  }
+}
+
 export function reviewCode(code: string, options: ReviewOptions): Finding[] {
   const starts = lineStarts(code)
   const findings: Finding[] = []
   const seen = new Set<string>()
   const context: ReviewContext = {
     ...options,
+    iconNames: options.icons?.names ?? mazIconNames(options.knowledge),
     report: (finding, offset) => {
       const position = locate(starts, offset)
       const key = `${finding.rule}:${position.line}:${position.column}:${finding.message}`
@@ -168,36 +213,19 @@ export function reviewCode(code: string, options: ReviewOptions): Finding[] {
     },
   }
 
-  const kind = detectKind(code, options.filename)
-
-  if (kind === 'script') {
-    reviewScript(code, 0, context)
+  try {
+    reviewByKind(code, options.filename, context)
   }
-  else if (kind === 'style') {
-    reviewStyle(code, 0, context)
-  }
-  else if (kind === 'template') {
-    reviewTemplate(parse(code), code, context)
-  }
-  else {
-    const root = parse(code, { parseMode: 'sfc' })
-    const blocks = blocksOf(root)
+  catch (error) {
+    if (!isSyntaxError(error))
+      throw error
 
-    context.localComponents = localComponents(blocks.filter(block => block.tag === 'script').map(block => blockContent(block).content).join('\n'))
-
-    for (const block of blocks) {
-      if (block.tag === 'template') {
-        reviewTemplate(block, code, context)
-      }
-      else if (block.tag === 'script') {
-        const { content, offset } = blockContent(block)
-        reviewScript(content, offset, context)
-      }
-      else if (block.tag === 'style') {
-        const { content, offset } = blockContent(block)
-        reviewStyle(content, offset, context, { sfc: true })
-      }
-    }
+    context.report({
+      rule: 'parse-error',
+      severity: 'error',
+      message: `The file cannot be parsed, it is not reviewed: ${error.message.split('\n')[0]}`,
+      suggestion: 'Fix the syntax (an unclosed tag, a quote in an attribute name...), then review it again.',
+    }, error.loc?.start.offset ?? 0)
   }
 
   const { file, byLine } = ignoredRules(code.split('\n'))

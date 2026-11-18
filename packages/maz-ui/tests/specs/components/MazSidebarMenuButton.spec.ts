@@ -215,6 +215,21 @@ describe('given MazSidebarMenuButton component', () => {
     })
   })
 
+  describe('when the sidebar is floating and the badge is a simple count', () => {
+    it('then the count is plain secondary text, an object badge stays a MazBadge', async () => {
+      const count = mountWithSidebar({ label: 'Inbox', badge: 4 }, { open: true, variant: 'floating' })
+      const object = mountWithSidebar({
+        label: 'Inbox',
+        badge: { text: 4, color: 'destructive' },
+      }, { open: true, variant: 'floating' })
+      await vi.dynamicImportSettled()
+
+      expect(count.find('.m-sidebar-menu-btn__badge .maz\\:text-muted').text()).toBe('4')
+      expect(count.find('.m-sidebar-menu-btn__badge .m-badge').exists()).toBe(false)
+      expect(object.find('.m-sidebar-menu-btn__badge .m-badge').exists()).toBe(true)
+    })
+  })
+
   describe('when sidebar is icon-collapsed', () => {
     it('then the label has opacity-0 class', () => {
       const wrapper = mountWithSidebar(
@@ -238,6 +253,22 @@ describe('given MazSidebarMenuButton component', () => {
         { open: false, collapsible: 'icon' },
       )
       expect(wrapper.find('.m-sidebar-menu-btn__badge').exists()).toBe(false)
+    })
+
+    it('then the badge leaves a dot of its color on the icon', async () => {
+      const wrapper = mountWithSidebar(
+        {
+          label: 'Inbox',
+          icon: 'i',
+          badge: { text: 3, color: 'destructive' },
+        },
+        { open: false, collapsible: 'icon' },
+      )
+      await vi.dynamicImportSettled()
+
+      const dot = wrapper.find('.m-sidebar-menu-btn__icon .m-indicator')
+      expect(dot.exists()).toBe(true)
+      expect(dot.classes()).toEqual(expect.arrayContaining(['--dot', '--destructive']))
     })
 
     it('then the button has --icon-collapsed modifier class', () => {
@@ -316,6 +347,27 @@ describe('given MazSidebarMenuButton component', () => {
         props: { label: 'X' },
       })).toThrow()
       consoleSpy.mockRestore()
+    })
+  })
+})
+
+describe('given MazSidebarMenuButton inside a floating sidebar', () => {
+  describe('when the button is active', () => {
+    it('then it uses the neutral selection and an accent-colored icon', () => {
+      const wrapper = mountWithSidebar({ label: 'Home', active: true, icon: '<svg></svg>' }, { open: true, variant: 'floating', persist: false })
+      const button = wrapper.find('.m-sidebar-menu-btn')
+
+      expect(button.classes()).toContain('maz:bg-foreground/9')
+      expect(button.classes()).not.toContain('maz:bg-primary/10')
+      expect(wrapper.find('.m-sidebar-menu-btn__icon').classes()).toContain('maz:text-primary')
+    })
+  })
+
+  describe('when the button is not active', () => {
+    it('then it has no hover fill', () => {
+      const wrapper = mountWithSidebar({ label: 'Home' }, { open: true, variant: 'floating', persist: false })
+
+      expect(wrapper.find('.m-sidebar-menu-btn').classes().some(name => name.includes('hover'))).toBe(false)
     })
   })
 })

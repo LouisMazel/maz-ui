@@ -19,7 +19,7 @@ export async function reviewCodeTool(context: ServerContext, { paths, code, file
     throw new ToolInputError('Pass `paths` (files, folders or globs, relative to the project) or `code` (with `filename` to pick the parser).')
 
   // The Vue compiler and Babel load on the first review, not when the server starts
-  const [{ countBySeverity, filterBySeverity, formatFindings, reviewCode }, { detectFramework, MAX_REVIEWED_FILES, reviewFiles }] = await Promise.all([
+  const [{ countBySeverity, filterBySeverity, formatFindings, reviewCode }, { detectFramework, MAX_REVIEWED_FILES, projectIconNames, reviewFiles }] = await Promise.all([
     import('../review'),
     import('../review/files'),
   ])
@@ -27,7 +27,12 @@ export async function reviewCodeTool(context: ServerContext, { paths, code, file
 
   if (code) {
     const findings = filterBySeverity(
-      reviewCode(code, { knowledge: context.knowledge, filename, framework: framework ?? detectFramework(context.cwd) }),
+      reviewCode(code, {
+        knowledge: context.knowledge,
+        filename,
+        framework: framework ?? detectFramework(context.cwd),
+        icons: projectIconNames(context.cwd, context.knowledge),
+      }),
       minSeverity,
     )
     sections.push(formatFindings(findings, filename ?? 'code'))
@@ -61,7 +66,7 @@ export async function reviewCodeTool(context: ServerContext, { paths, code, file
 export const reviewCodeToolDefinition = defineTool({
   name: 'review_code',
   title: 'Review code against maz-ui',
-  description: 'Static review of Vue SFCs, TS/JS and CSS against the installed maz-ui: unknown components, props, v-model, events or slots, invalid prop values, unknown icons, native elements or third-party libraries that maz-ui already covers (buttons, inputs, dialogs, toasts, icons, date pickers, lodash debounce...), default Tailwind palette and hard-coded colors instead of theme tokens, the internal `maz:` prefix, Tailwind v3 utilities, manual dark mode, wrong imports. Run it on the files you created or changed before finishing.',
+  description: 'Static review of Vue SFCs, TS/JS and CSS against the installed maz-ui: unknown components, props, v-model, events, slots or slot props, missing required props, invalid prop values, unknown icons, unlabeled fields, buttons in links or navigating from @click, native elements or third-party libraries that maz-ui already covers (buttons, inputs, dialogs, toasts, icons, date pickers, lodash debounce, alert/confirm, hand-written currency formatting...), default Tailwind palette and hard-coded colors instead of theme tokens, the internal `maz:` prefix, Tailwind v3 utilities, manual dark mode, wrong imports. Run it on the files you created or changed before finishing.',
   inputSchema: {
     paths: z.array(z.string()).max(50).optional().describe('Files, folders or globs relative to the project root: ["src/components/LoginForm.vue", "app/pages/**/*.vue"]'),
     code: z.string().optional().describe('Source to review when it is not on disk'),

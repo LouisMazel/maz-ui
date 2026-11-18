@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { MazBtnProps } from './MazBtn.vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazNeutralColor, MazSize } from './types'
 import { MazEllipsisHorizontal } from '@maz-ui/icons/lazy/MazEllipsisHorizontal'
 import { MazChevronDoubleLeft } from '@maz-ui/icons/raw/MazChevronDoubleLeft'
 import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
@@ -14,7 +14,7 @@ const {
   modelValue = 1,
   buttonProps,
   pageRange = 1,
-  activeColor = 'surface',
+  activeColor = 'contrast',
   totalPages,
   loading,
 } = defineProps<MazPaginationProps>()
@@ -29,8 +29,7 @@ const emits = defineEmits<
 
 const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
   size: 'md',
-  color: 'surface',
-  outlined: true,
+  color: 'container',
   fab: true,
 }
 
@@ -49,10 +48,10 @@ export interface MazPaginationProps {
   buttonProps?: Partial<MazBtnProps>
   /**
    * Color of the active button.
-   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'surface'
-   * @default 'surface'
+   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'surface', 'container'
+   * @default 'contrast'
    */
-  activeColor?: MazColor | 'surface'
+  activeColor?: MazColor | MazNeutralColor
   /**
    * Size of the buttons.
    * @values 'mini', 'xs', 'sm', 'md', 'lg', 'xl'

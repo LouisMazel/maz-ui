@@ -127,3 +127,56 @@ describe('mazExpandAnimation', () => {
     expect(() => wrapper.unmount()).not.toThrow()
   })
 })
+
+describe('given MazExpandAnimation with the lazy prop', () => {
+  describe('when it is closed at mount', () => {
+    it('then the content is not rendered', () => {
+      const wrapper = mount(MazExpandAnimation, {
+        props: { modelValue: false, lazy: true },
+        slots: { default: '<p class="content">x</p>' },
+      })
+
+      expect(wrapper.find('.content').exists()).toBe(false)
+      expect(wrapper.find('.m-expand-animation__inner').exists()).toBe(true)
+    })
+  })
+
+  describe('when it is open at mount', () => {
+    it('then the content is rendered', () => {
+      const wrapper = mount(MazExpandAnimation, {
+        props: { modelValue: true, lazy: true },
+        slots: { default: '<p class="content">x</p>' },
+      })
+
+      expect(wrapper.find('.content').exists()).toBe(true)
+    })
+  })
+
+  describe('when it is opened then closed', () => {
+    it('then the content is rendered at the opening and kept after the closing', async () => {
+      const wrapper = mount(MazExpandAnimation, {
+        props: { modelValue: false, lazy: true },
+        slots: { default: '<p class="content">x</p>' },
+      })
+
+      await wrapper.setProps({ modelValue: true })
+      expect(wrapper.find('.content').exists()).toBe(true)
+      expect(wrapper.classes()).toContain('m-expand-animation--expanded')
+
+      await wrapper.setProps({ modelValue: false })
+      expect(wrapper.find('.content').exists()).toBe(true)
+      expect(wrapper.attributes('aria-hidden')).toBe('true')
+    })
+  })
+
+  describe('when lazy is not set and it is closed', () => {
+    it('then the content is rendered', () => {
+      const wrapper = mount(MazExpandAnimation, {
+        props: { modelValue: false },
+        slots: { default: '<p class="content">x</p>' },
+      })
+
+      expect(wrapper.find('.content').exists()).toBe(true)
+    })
+  })
+})

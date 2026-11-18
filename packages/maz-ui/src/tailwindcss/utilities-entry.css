@@ -1,0 +1,18 @@
+/*
+ * Compiled by build/ViteCompileStyles into dist/css/utilities.css (`maz-ui/utilities.css`): the public utilities of
+ * ./utilities.css without prefix, for the projects without Tailwind CSS. They live in the `maz` sub-layer of
+ * `utilities`, which lets @maz-ui/vite-plugin purge the unused ones even when this file is imported by another one.
+ * Keep the `@source inline()` list in sync with the `@utility` of ./utilities.css (a unit test checks it).
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import './theme.css';
+@import './utilities.css';
+
+@layer utilities {
+  @layer maz {
+    @tailwind utilities source(none);
+  }
+}
+
+@source inline("flex-center z-default-backdrop padded-container-no-p padded-container cap-f disabled-cursor disabled-opacity disabled-state text-display text-title-1 text-title-2 text-title-3 text-title-4 text-body-lg text-body text-body-sm text-label text-caption text-overline text-code type-display type-title-1 type-title-2 type-title-3 type-title-4 type-body-lg type-body type-body-sm type-label type-caption type-overline type-code rich-text scrollbar-themed rich-text-sm rich-text-lg cursor-interactive glass");

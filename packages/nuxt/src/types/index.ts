@@ -1,6 +1,7 @@
 import type { AgentTarget } from '@maz-ui/node'
 import type { MazUiThemeOptions, ThemePreset, ThemePresetName } from '@maz-ui/themes'
 import type { MazUiTranslationsOptions, MazUiTranslationsSchema } from '@maz-ui/translations'
+import type { MazUiIconsOptions, MazUiPurgeCssOptions } from '@maz-ui/vite-plugin'
 import type { MazUiDefaultsOptions } from 'maz-ui/composables/useGlobalConfig'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
@@ -65,6 +66,13 @@ export interface MazUiNuxtOptions {
      * @default 'maz-ui'
      */
     preset?: ThemePreset | ThemePresetName
+    /**
+     * Named presets the app loads by name (`updateTheme('ocean')`, `definePreset({ base: 'ocean' })`): only these
+     * presets are in the build, with the one of `preset` when it is a name. `[]` keeps none, for an app that only
+     * uses preset objects. Loading another preset by name throws an error.
+     * @default undefined (every preset)
+     */
+    presets?: ThemePresetName[]
   }
 
   /**
@@ -110,6 +118,14 @@ export interface MazUiNuxtOptions {
   flags?: 'cdn' | 'local' | (string & {})
 
   /**
+   * Icons by name: `<MazIcon icon="x-mark" />`, `<MazBtn start-icon="moon">`, with the SVG of the project
+   * (`app/icons/hero.svg` is `hero`, or `app:hero` with `prefix: 'app'`). Only the icons a page uses are in its chunk.
+   * The types of the names are generated. `false` disables it.
+   * @default true
+   */
+  icons?: boolean | Omit<MazUiIconsOptions, 'dts'>
+
+  /**
    * CSS and styles configuration
    */
   css?: {
@@ -119,6 +135,20 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     injectCss?: boolean
+    /**
+     * Inject `maz-ui/utilities.css`: the maz-ui utilities (`text-title-1`, `type-label`, `rich-text`, `padded-container`,
+     * `flex-center`, `glass`...) without Tailwind CSS. Keep it disabled when your project uses Tailwind CSS and
+     * imports `maz-ui/tailwindcss/utilities.css`.
+     * @default false
+     */
+    injectUtilities?: boolean
+    /**
+     * Remove from the CSS of maz-ui the rules of the components, plugins, directives and utilities the app does not use,
+     * at build time (@maz-ui/vite-plugin). `false` disables it, an object sets its options (`content`, `entries`,
+     * `safelist`, `report`).
+     * @default true
+     */
+    purge?: boolean | MazUiPurgeCssOptions
   }
 
   /**
@@ -212,6 +242,13 @@ export interface MazUiNuxtOptions {
     useReadingTime?: boolean
 
     /**
+     * Enable auto-import of useRelativeTime composable
+     * @description Reactive localized relative time (`3 minutes ago`) refreshed at the right moment
+     * @default true
+     */
+    useRelativeTime?: boolean
+
+    /**
      * Enable auto-import of useWindowSize composable
      * @description Reactive window dimensions tracking
      * @default true
@@ -238,6 +275,13 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     useStringMatching?: boolean
+
+    /**
+     * Enable auto-import of useFuzzySearch composable
+     * @description Fuzzy search in a list (prefixes, words in any order, typos, accents)
+     * @default true
+     */
+    useFuzzySearch?: boolean
 
     /**
      * Enable auto-import of useTimer composable

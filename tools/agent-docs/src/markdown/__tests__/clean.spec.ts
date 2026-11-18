@@ -193,6 +193,21 @@ describe('given cleanMarkdown', () => {
     })
   })
 
+  describe('when a comment of an html block spans several lines', () => {
+    it('then the tags of the comment do not change the end of the block', () => {
+      const source = [
+        '<div class="demo">',
+        '  <!-- a comment',
+        '  with <div> on several lines -->',
+        '</div>',
+        '',
+        'Kept paragraph',
+      ].join('\n')
+
+      expect(cleanMarkdown(source, createContext())).toBe('Kept paragraph\n')
+    })
+  })
+
   describe('when an html block is never closed', () => {
     it('then drops the rest of the page', () => {
       expect(cleanMarkdown('Text\n\n<div>\n  unclosed', createContext())).toBe('Text\n')

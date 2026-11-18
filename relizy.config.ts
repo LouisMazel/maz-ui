@@ -1,5 +1,5 @@
 import { defineConfig } from 'relizy'
-import { syncBundleVersions } from './tools/agent-docs/src/sync-version'
+import { buildPublishedPackages } from './scripts/release'
 
 export default defineConfig({
   projectName: 'maz-ui',
@@ -35,6 +35,10 @@ export default defineConfig({
     lib: 'maz-ui',
   },
 
+  prComment: {
+    mode: 'recreate',
+  },
+
   monorepo: {
     // Explicit lists: a new published package must be put in a group
     groups: [
@@ -42,7 +46,7 @@ export default defineConfig({
         // The library and its ecosystem: every package released at once on the same version (a consumer keeps all of
         // them on one version, so a single copy of maz-ui), the `v*` tags and the version of the root package.json
         name: 'ecosystem',
-        title: 'maz-ui',
+        title: 'Ecosystem',
         versionMode: 'unified',
         packages: [
           'packages/icons',
@@ -52,6 +56,7 @@ export default defineConfig({
           'packages/themes',
           'packages/translations',
           'packages/utils',
+          'packages/vite-plugin',
         ],
       },
       {
@@ -64,6 +69,7 @@ export default defineConfig({
           'packages/node',
           'packages/stylelint-config',
           'packages/upgrade',
+          'packages/vite-svg-loader',
         ],
         changelog: { rootChangelog: false },
       },
@@ -72,20 +78,24 @@ export default defineConfig({
 
   publish: {
     access: 'public',
-    buildCmd: process.env.CI ? undefined : 'pnpm build:packages',
   },
 
   hooks: {
-    // The packages are built before the bump: the docs bundled for AI agents get the released version
-    'success:bump': (_config, dryRun) => {
-      if (!dryRun)
-        syncBundleVersions()
-    },
+    'before:publish': (config, _dryRun, context) => buildPublishedPackages(config.cwd, context),
   },
 
   commitlint: {
     changelogLinter: 'oxc',
     scopes: ['clean', 'deps', 'release'],
+  },
+
+  sync: {
+    rules: [
+      {
+        from: 'main',
+        to: ['develop'],
+      },
+    ],
   },
 
   social: {

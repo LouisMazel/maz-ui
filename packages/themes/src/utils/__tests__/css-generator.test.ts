@@ -392,6 +392,119 @@ describe('given generateCSS function', () => {
     })
   })
 
+  describe('given system colors', () => {
+    describe('when two roles share a keyword and another role has its own', () => {
+      const preset = {
+        ...mazUi,
+        systemColors: {
+          primary: '-apple-system-control-accent',
+          accent: '-apple-system-control-accent',
+          foreground: '-apple-system-label',
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then the preset colors stay the fallback', () => {
+        expect(css).toContain(`--maz-primary: light-dark(${mazUi.colors.light.primary}, ${mazUi.colors.dark.primary});`)
+      })
+
+      it('then one @supports block groups the roles of each keyword', () => {
+        expect(css).toContain('@supports (color: -apple-system-control-accent) {\n    :root {\n      --maz-primary: -apple-system-control-accent;\n      --maz-accent: -apple-system-control-accent;\n    }\n  }')
+        expect(css).toContain('@supports (color: -apple-system-label) {\n    :root {\n      --maz-foreground: -apple-system-label;\n    }\n  }')
+      })
+
+      it('then the system colors come after the preset colors', () => {
+        expect(css.indexOf('@supports')).toBeGreaterThan(css.indexOf('--maz-primary: light-dark('))
+      })
+    })
+
+    describe('when the preset has no system colors', () => {
+      it('then no @supports block is emitted', () => {
+        const css = generateCSS(mazUi, {
+          prefix: 'maz',
+          mode: 'both',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).not.toContain('@supports')
+      })
+    })
+
+    describe('when a role has no keyword', () => {
+      it('then only the roles with a keyword are emitted', () => {
+        const css = generateCSS({
+          ...mazUi,
+          systemColors: {
+            primary: undefined,
+            foreground: '-apple-system-label',
+          },
+        }, {
+          prefix: 'maz',
+          mode: 'both',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).toContain('@supports (color: -apple-system-label) {\n    :root {\n      --maz-foreground: -apple-system-label;\n    }\n  }')
+        expect(css).not.toContain('--maz-primary: undefined')
+      })
+    })
+  })
+
+  describe('given the glass material', () => {
+    describe('when components.glass is set and mode=both', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          glass: {
+            bg: { light: 'rgb(255 255 255 / 0.7)', dark: 'rgb(40 40 40 / 0.6)' },
+            border: { light: 'rgb(0 0 0 / 0.08)' },
+            blur: '20px' as const,
+            saturate: '1.5',
+          },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then --maz-glass-bg is wrapped in light-dark()', () => {
+        expect(css).toContain('--maz-glass-bg: light-dark(rgb(255 255 255 / 0.7), rgb(40 40 40 / 0.6));')
+      })
+
+      it('then --maz-glass-border reuses its only value for both modes', () => {
+        expect(css).toContain('--maz-glass-border: rgb(0 0 0 / 0.08);')
+      })
+
+      it('then the blur and the saturation are emitted', () => {
+        expect(css).toContain('--maz-glass-blur: 20px;')
+        expect(css).toContain('--maz-glass-saturate: 1.5;')
+      })
+    })
+
+    describe('when components.glass is not set', () => {
+      it('then no glass variable is emitted', () => {
+        const css = generateCSS(mazUi, {
+          prefix: 'maz',
+          mode: 'both',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).not.toContain('--maz-glass')
+      })
+    })
+  })
+
   describe('given per-component bg vars', () => {
     describe('when components.container.bg and components.input.bg are set and mode=both', () => {
       const preset = {
@@ -1020,6 +1133,45 @@ describe('given removeCSS function', () => {
       removeCSS(CSS_ID)
 
       expect(document.querySelectorAll(`#${CSS_ID}`)).toHaveLength(0)
+    })
+  })
+})
+
+describe('given a preset typography', () => {
+  describe('when generating CSS', () => {
+    const css = generateCSS({
+      ...mazUi,
+      typography: {
+        'title-1': { size: '2.5rem', weight: '800', leading: '' },
+        'caption': { color: 'var(--maz-foreground)' },
+        'body': undefined,
+      },
+    }, {
+      prefix: 'maz',
+      mode: 'both',
+      darkSelectorStrategy: 'class',
+      darkClass: 'dark',
+    })
+
+    it('then emits one variable per level and key that is set', () => {
+      expect(css).toContain('--maz-typography-title-1-size: 2.5rem;')
+      expect(css).toContain('--maz-typography-title-1-weight: 800;')
+      expect(css).toContain('--maz-typography-caption-color: var(--maz-foreground);')
+      expect(css).not.toContain('--maz-typography-title-1-leading')
+      expect(css).not.toContain('--maz-typography-body-')
+    })
+  })
+
+  describe('when the preset has no typography', () => {
+    it('then no typography variable is emitted', () => {
+      const css = generateCSS({ ...mazUi, typography: undefined }, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      expect(css).not.toContain('--maz-typography-')
     })
   })
 })

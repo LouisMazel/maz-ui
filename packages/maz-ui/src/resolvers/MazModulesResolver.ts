@@ -1,78 +1,26 @@
 import type { ResolverFunction } from 'unplugin-auto-import/types'
+import { createRequire } from 'node:module'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 
-type Modules = keyof typeof import('@maz-ui/utils')
-type Composables = keyof typeof import('./../composables/index')
-
-const composablesMap: Record<Composables, true> = {
-  useInjectStrict: true,
-  useAos: true,
-  useBreakpoints: true,
-  useFormField: true,
-  useFormValidator: true,
-  useIdleTimeout: true,
-  useInstanceUniqId: true,
-  useReadingTime: true,
-  useStringMatching: true,
-  usePullToRefresh: true,
-  useSwipe: true,
-  useTimer: true,
-  useToast: true,
-  useUserVisibility: true,
-  useWait: true,
-  useWindowSize: true,
-  useDisplayNames: true,
-  useFreezeValue: true,
-  useDialog: true,
-  useDrag: true,
-  useMountComponent: true,
-  useDropzone: true,
-  useMutationObserver: true,
-  useMazIconProps: true,
-  useSidebar: true,
+interface ExportNames {
+  modules: Set<string>
+  composables: Set<string>
 }
 
-const modulesMap: Record<Modules, true> = {
-  capitalize: true,
-  getErrorMessage: true,
-  checkAvailability: true,
-  getCookie: true,
-  setCookie: true,
-  deleteCookie: true,
-  countryCodeToUnicodeFlag: true,
-  formatCurrency: true,
-  formatDate: true,
-  debounce: true,
-  isClient: true,
-  isServer: true,
-  normalizeString: true,
-  formatNumber: true,
-  sleep: true,
-  throttle: true,
-  truthyFilter: true,
-  IdleTimeout: true,
-  throttleId: true,
-  pascalCase: true,
-  camelCase: true,
-  isStandaloneMode: true,
-  isIos: true,
-  preventIosInputZoom: true,
-  addViewportMaximumScale: true,
-  debounceId: true,
-  getCountryFlagUrl: true,
-  isEqual: true,
-  debounceCallback: true,
-  ScriptLoader: true,
-  Swipe: true,
-  UserVisibility: true,
-  TextareaAutogrow: true,
-  kebabCase: true,
-  snakeCase: true,
-  upperFirst: true,
-  formatJson: true,
-  fetchLocaleIp: true,
-  formatPhoneNumber: true,
-  getBrowserLocale: true,
+let exportNames: ExportNames | undefined
+
+/** The helpers of `@maz-ui/utils` and the composables of maz-ui, written by their builds (`exports.json`) */
+function getExportNames(): ExportNames {
+  if (!exportNames) {
+    const require = createRequire(import.meta.url)
+
+    exportNames = {
+      modules: new Set((require('@maz-ui/utils/exports.json') as { helpers: string[] }).helpers),
+      composables: new Set((require('maz-ui/exports.json') as { composables: string[] }).composables),
+    }
+  }
+
+  return exportNames
 }
 
 /**
@@ -87,8 +35,9 @@ const useRegex = /^use/
 export function MazModulesResolver(options?: { prefix?: string }): ResolverFunction {
   return (name) => {
     const { prefix = '' } = options || {}
+    const { modules, composables } = getExportNames()
 
-    if (modulesMap[name as keyof typeof modulesMap] === true) {
+    if (modules.has(name)) {
       return {
         from: '@maz-ui/utils',
         name,
@@ -96,7 +45,7 @@ export function MazModulesResolver(options?: { prefix?: string }): ResolverFunct
       }
     }
 
-    if (composablesMap[name as keyof typeof composablesMap] === true) {
+    if (composables.has(name)) {
       return {
         from: 'maz-ui/composables',
         name,

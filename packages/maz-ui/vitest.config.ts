@@ -1,8 +1,8 @@
 /// <reference types="vitest" />
 
 import { fileURLToPath } from 'node:url'
+import SvgLoader from '@maz-ui/vite-svg-loader'
 import Vue from '@vitejs/plugin-vue'
-import SvgLoader from 'vite-svg-loader'
 
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 import { ViteBuildIcons, ViteBuildThemes } from './build'
@@ -64,10 +64,10 @@ export default defineConfig({
         'src/**/types.ts',
       ],
       thresholds: {
-        lines: 93.2,
-        functions: 92.04,
-        branches: 86.11,
-        statements: 93.3,
+        lines: 95,
+        functions: 94,
+        branches: 89.76,
+        statements: 95,
         autoUpdate: !process.env.CI,
       },
     },

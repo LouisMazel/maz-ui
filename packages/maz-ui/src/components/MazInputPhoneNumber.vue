@@ -10,10 +10,13 @@ import { useTranslations } from '@maz-ui/translations/composables/useTranslation
 import {
   computed,
   nextTick,
-  onBeforeMount,
+  onBeforeUnmount,
   onMounted,
   provide,
+  readonly,
   ref,
+  useAttrs,
+  useTemplateRef,
   watch,
 } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
@@ -124,6 +127,7 @@ export interface MazInputPhoneNumberData {
   rfc3966?: string
   possibleCountries?: CountryCode[]
   phoneNumber?: string | null
+  ext?: string
 }
 
 export interface MazInputPhoneNumberProps {
@@ -388,6 +392,7 @@ const { size, flagSrc } = useGlobalConfig<{ size: MazSize, flagSrc: MazCountryFl
 
 const phoneNumber = ref<string | undefined | null>()
 const selectedCountry = ref<CountryCode | undefined>()
+const isMounted = ref(false)
 
 /** State */
 const { t } = useTranslations()
@@ -403,46 +408,59 @@ const messages = computed(() => ({
     example: translations?.phoneInput?.example,
   },
 } satisfies DeepPartial<MazUiTranslationsNestedSchema['inputPhoneNumber']>))
-const isPhoneNumberInternalUpdate = ref(false)
-const isCountryInternalUpdate = ref(false)
+let lastEmittedPhoneNumber: string | null | undefined
 
 const results = ref<MazInputPhoneNumberData>({
   isValid: false,
   countryCode,
   phoneNumber: modelValue,
 })
-const PhoneInputRef = ref<InstanceType<typeof PhoneInput>>()
+const phoneInputRef = useTemplateRef('phoneInput')
 
 /** Logic */
 
-onBeforeMount(async () => {
-  if (countryCode && !selectedCountry.value) {
-    onCountryChanged({ countryCode })
+function setBrowserLocaleCountry() {
+  if (selectedCountry.value || !useBrowserLocale) {
+    return
   }
 
-  if (fetchCountry && !selectedCountry.value) {
-    const { data: countryCode, error } = await fetchCountryCode()
+  const countryCode = getBrowserLocale()?.locale
 
-    if (error) {
-      console.error(`[MazInputPhoneNumber](onBeforeMount) Error while fetching country code - ${error.message}`)
-      return
-    }
+  if (countryCode && isCountryInList(countryCode)) {
+    onCountryChanged({ countryCode: countryCode as CountryCode })
+  }
+}
 
+async function setFetchedCountry() {
+  const countryBeforeFetch = selectedCountry.value
+  const phoneNumberBeforeFetch = phoneNumber.value
+
+  const { data: countryCode, error } = await fetchCountryCode()
+
+  if (error) {
+    console.error(`[MazInputPhoneNumber](onMounted) Error while fetching country code - ${error.message}`)
+    return
+  }
+
+  if (selectedCountry.value === countryBeforeFetch && phoneNumber.value === phoneNumberBeforeFetch && isCountryInList(countryCode)) {
     onCountryChanged({ countryCode })
   }
-})
+}
 
 onMounted(() => {
-  if (!selectedCountry.value && useBrowserLocale) {
-    const countryCode = getBrowserLocale()?.locale
-    if (countryCode && isCountryAvailable(countryCode)) {
-      onCountryChanged({ countryCode: countryCode as CountryCode })
-    }
+  isMounted.value = true
+
+  const shouldFetchCountry = fetchCountry && !selectedCountry.value
+
+  setBrowserLocaleCountry()
+
+  if (shouldFetchCountry) {
+    setFetchedCountry()
   }
 })
 
 function updateTheResults({
-  phone = phoneNumber.value || modelValue,
+  phone = phoneNumber.value,
   countryCode = selectedCountry.value,
   checkCountryCode = false,
 }: {
@@ -457,34 +475,40 @@ function updateTheResults({
   })
 }
 
+let focusPhoneNumberInputTimeout: ReturnType<typeof setTimeout> | undefined
+
+function focus() {
+  phoneInputRef.value?.focus()
+}
+
 async function selectPhoneNumberInput() {
   await nextTick()
 
-  setTimeout(() => {
-    PhoneInputRef.value?.focus()
-  }, 100)
+  clearTimeout(focusPhoneNumberInputTimeout)
+  focusPhoneNumberInputTimeout = setTimeout(focus, 100)
 }
+
+onBeforeUnmount(() => clearTimeout(focusPhoneNumberInputTimeout))
 
 function setSelectedCountry(countryCode?: string | undefined | null) {
   if (!countryCode) {
-    return
-  }
-
-  if (!isCountryAvailable(countryCode)) {
-    console.warn(`[MazInputPhoneNumber] Country code not available: "${countryCode}"`)
     selectedCountry.value = undefined
     return
   }
 
-  selectedCountry.value = countryCode as CountryCode
+  selectedCountry.value = isCountryAvailable(countryCode)
+    ? countryCode as CountryCode
+    : undefined
 }
 
 const isLetterRegex = /\D/g
 
 function onPhoneNumberChanged({
   newPhoneNumber,
+  isExternal = false,
 }: {
   newPhoneNumber?: string | null
+  isExternal?: boolean
 }) {
   updateTheResults({ phone: newPhoneNumber })
 
@@ -493,6 +517,7 @@ function onPhoneNumberChanged({
       countryCode: results.value.parsedCountryCode,
       updateResults: false,
     })
+    updateTheResults({ phone: newPhoneNumber })
   }
 
   if (results.value.isValid && (autoFormat === 'blur' || autoFormat === 'typing')) {
@@ -502,18 +527,13 @@ function onPhoneNumberChanged({
     phoneNumber.value = newPhoneNumber
   }
 
-  isPhoneNumberInternalUpdate.value = true
-
-  if (results.value.e164) {
-    emits('update:model-value', results.value.e164)
-  }
-  else {
-    emits('update:model-value', results.value.phoneNumber)
+  if (isExternal && (!newPhoneNumber || (results.value.isValid && results.value.ext))) {
+    lastEmittedPhoneNumber = newPhoneNumber
+    return
   }
 
-  setTimeout(() => {
-    isPhoneNumberInternalUpdate.value = false
-  }, 0)
+  lastEmittedPhoneNumber = results.value.isValid ? results.value.e164 : results.value.phoneNumber
+  emits('update:model-value', lastEmittedPhoneNumber)
 }
 
 function onCountryChanged({
@@ -521,17 +541,10 @@ function onCountryChanged({
   updateResults = true,
   selectPhoneNumber = false,
 }: {
-  countryCode?: CountryCode
+  countryCode?: CountryCode | null
   updateResults?: boolean
   selectPhoneNumber?: boolean
 }) {
-  if (!countryCode) {
-    selectedCountry.value = undefined
-    return
-  }
-
-  isCountryInternalUpdate.value = true
-
   if (countryCode !== selectedCountry.value) {
     setSelectedCountry(countryCode)
   }
@@ -547,68 +560,57 @@ function onCountryChanged({
   emits('country-code', code)
   emits('update:country-code', code)
 
-  if (selectPhoneNumber && !results.value.isValid) {
+  if (selectPhoneNumber && code && !results.value.isValid) {
     selectPhoneNumberInput()
   }
-
-  setTimeout(() => {
-    isCountryInternalUpdate.value = false
-  }, 0)
 }
 
 const countriesList = computed(() => {
+  if (!countryLocale && !isMounted.value) {
+    return []
+  }
+
   let list = getCountryList(countryLocale, customCountriesList)
 
-  // preferredCountries, onlyCountries, ignoredCountries
-
   if (onlyCountries) {
-    list = list?.filter(country => onlyCountries?.includes(country.code))
+    list = list.filter(country => onlyCountries.includes(country.code))
   }
 
   if (ignoredCountries) {
-    list = list?.filter(country => !ignoredCountries?.includes(country.code))
+    list = list.filter(country => !ignoredCountries.includes(country.code))
   }
 
   if (preferredCountries) {
-    list = list?.sort((a, b) => {
-      const indexA = preferredCountries?.indexOf(a.code) ?? -1
-      const indexB = preferredCountries?.indexOf(b.code) ?? -1
+    const getRank = (code: CountryCode) => {
+      const index = preferredCountries.indexOf(code)
+      return index === -1
+        ? preferredCountries.length
+        : index
+    }
 
-      if (indexA >= 0 && indexB >= 0) {
-        return indexA - indexB
-      }
-
-      if (indexA >= 0) {
-        return -1
-      }
-
-      if (indexB >= 0) {
-        return 1
-      }
-
-      return 0
-    })
+    list.sort((a, b) => getRank(a.code) - getRank(b.code))
   }
 
-  return list ?? []
+  return list
 })
+
+function isCountryInList(countryCode: string) {
+  return countriesList.value.some(country => country.code === countryCode)
+}
 
 /** Watchers */
 
 watch(
-  () => modelValue,
-  (value, oldValue) => {
-    if (!isPhoneNumberInternalUpdate.value && value !== oldValue && value !== phoneNumber.value) {
-      onPhoneNumberChanged({ newPhoneNumber: value })
+  () => [modelValue, countryCode] as const,
+  ([phone, country], oldValues) => {
+    const [oldPhone, oldCountry] = oldValues ?? []
+
+    if ((country || selectedCountry.value) && country !== oldCountry && country !== selectedCountry.value) {
+      onCountryChanged({ countryCode: country })
     }
-  },
-  { immediate: true },
-)
-watch(
-  () => countryCode,
-  (value, oldValue) => {
-    if (!isCountryInternalUpdate.value && value && value !== oldValue && value !== selectedCountry.value) {
-      onCountryChanged({ countryCode: value })
+
+    if (phone !== oldPhone && phone !== lastEmittedPhoneNumber && phone !== phoneNumber.value) {
+      onPhoneNumberChanged({ newPhoneNumber: phone, isExternal: true })
     }
   },
   { immediate: true },
@@ -648,6 +650,15 @@ const stateLabelColor = computed(() => [
   },
 ])
 
+const attrs = useAttrs()
+const assistiveTextId = computed(() => `${instanceId.value}-assistive-text`)
+const phoneInputDescribedBy = computed(() => [
+  attrs['aria-describedby'],
+  assistiveText ? assistiveTextId.value : undefined,
+]
+  .filter(Boolean)
+  .join(' ') || undefined)
+
 const assistiveTextStateColor = computed(() => [
   {
     'maz:text-destructive-600': countryState.value.error || phoneState.value.error,
@@ -656,6 +667,17 @@ const assistiveTextStateColor = computed(() => [
     'maz:text-muted': !(countryState.value.error || phoneState.value.error) && !(countryState.value.success && phoneState.value.success) && !warning,
   },
 ])
+
+defineExpose({
+  /**
+   * Focus the phone number input
+   */
+  focus,
+  /**
+   * Metadata of the current phone number (same as the `data` event)
+   */
+  results: readonly(results),
+})
 
 provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
   selectedCountry,
@@ -709,8 +731,9 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
         :flag-src="flagSrc"
         :search
         :block
-        :error="error || (validationError ? !!phoneNumber && !selectedCountry : false)"
-        :success="success || (validationSuccess ? results?.isValid : false)"
+        :error="countryState.error"
+        :success="countryState.success"
+        :aria-invalid="countryState.error || undefined"
         :translations="messages.countrySelect"
         :hint="!!phoneNumber && !selectedCountry ? messages.countrySelect.error : undefined"
         :options="countriesList"
@@ -750,16 +773,31 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
             :is-selected="isSelected"
           />
         </template>
-        <template #country-list-code="{ option }">
-          <span class="m-input-phone-number__country-list-code maz:min-w-8 maz:text-center maz:text-muted">
-            +{{ option.dialCode }}
-          </span>
+        <template #country-list-code="{ option, isSelected }">
+          <!--
+         @slot Country list calling code
+           @binding {{ code: string; dialCode: string; name: string; }} option country data
+           @binding {Boolean} is-selected `true` if option is selected
+       -->
+          <slot name="country-list-code" :option="option" :is-selected="isSelected">
+            <span class="m-input-phone-number__country-list-code maz:min-w-8 maz:text-center maz:text-muted">
+              +{{ option.dialCode }}
+            </span>
+          </slot>
+        </template>
+        <template #country-list-name="{ option, isSelected }">
+          <!--
+         @slot Country list name
+           @binding {{ code: string; dialCode: string; name: string; }} option country data
+           @binding {Boolean} is-selected `true` if option is selected
+       -->
+          <slot name="country-list-name" :option="option" :is-selected="isSelected" />
         </template>
       </MazSelectCountry>
 
       <PhoneInput
         :id="`${instanceId}-phone`"
-        ref="PhoneInputRef"
+        ref="phoneInput"
         class="m-input-phone-number__phone-input"
         :model-value="phoneNumber"
         v-bind="{ ...$attrs, ...phoneInputAttributes }"
@@ -774,17 +812,32 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
         :hint
         :name="phoneInputAttributes.name"
         :has-radius="!hideCountrySelect"
-        :success="success || (validationSuccess ? results.isValid : false)"
-        :error="error || (validationError ? !!phoneNumber && !results.isValid : false)"
+        :success="phoneState.success"
+        :error="phoneState.error"
+        :aria-invalid="phoneState.error || undefined"
+        :aria-describedby="phoneInputDescribedBy"
         :locales="messages.phoneInput"
         :label
         :placeholder
         @update:model-value="onPhoneNumberChanged({ newPhoneNumber: $event })"
-      />
+      >
+        <template v-if="$slots['start-icon']" #start-icon>
+          <!-- @slot Custom content for the inline-start edge of the phone number input -->
+          <slot name="start-icon" />
+        </template>
+        <template v-if="$slots['end-icon']" #end-icon>
+          <!-- @slot Custom content for the inline-end edge of the phone number input -->
+          <slot name="end-icon" />
+        </template>
+        <template v-if="$slots.loader" #loader>
+          <!-- @slot Custom loader of the phone number input -->
+          <slot name="loader" />
+        </template>
+      </PhoneInput>
     </div>
 
     <div
-      v-if="assistiveText" class="m-input-phone-number__bottom-text maz:mt-1 maz:text-sm" :class="assistiveTextStateColor"
+      v-if="assistiveText" :id="assistiveTextId" aria-live="polite" class="m-input-phone-number__bottom-text maz:mt-1 maz:text-body-sm" :class="assistiveTextStateColor"
     >
       {{ assistiveText }}
     </div>

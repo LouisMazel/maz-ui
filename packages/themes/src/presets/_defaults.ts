@@ -1,4 +1,4 @@
-import type { RoundedScaleKey, ThemeComponentBg, ThemeComponents, ThemeFoundation, ThemeScales } from '../types'
+import type { RoundedScaleKey, ThemeComponentBg, ThemeComponents, ThemeFoundation, ThemeScales, ThemeTypography, TypographyLevel } from '../types'
 
 /**
  * Defaults shared across the bundled presets. Each preset can spread these
@@ -87,3 +87,96 @@ export const DEFAULT_BTN_FONT_WEIGHT = '500'
  */
 export const DEFAULT_DIALOG_MAX_WIDTH: NonNullable<ThemeComponents['dialog']>['max-width'] = '38rem'
 export const DEFAULT_DIALOG_MIN_WIDTH: NonNullable<ThemeComponents['dialog']>['min-width'] = '32rem'
+
+/**
+ * Default type scale, the values of the `text-<level>` utilities of
+ * `maz-ui/tailwindcss/utilities.css` (their CSS fallbacks are the same). Sizes
+ * are in `rem`: they follow `base-font-size`. `font` is left out: titles use
+ * the display font and the other levels the sans font of the foundation.
+ */
+export const DEFAULT_TYPOGRAPHY = {
+  'display': {
+    size: 'clamp(2.25rem, 1.6rem + 2.4vw, 3.25rem)',
+    weight: '700',
+    leading: '1.1',
+    tracking: '-0.025em',
+  },
+  'title-1': {
+    size: '2rem',
+    weight: '700',
+    leading: '1.2',
+    tracking: '-0.02em',
+  },
+  'title-2': {
+    size: '1.5rem',
+    weight: '600',
+    leading: '1.25',
+    tracking: '-0.015em',
+  },
+  'title-3': {
+    size: '1.25rem',
+    weight: '600',
+    leading: '1.3',
+    tracking: '-0.01em',
+  },
+  'title-4': {
+    size: '1.0625rem',
+    weight: '600',
+    leading: '1.4',
+    tracking: '0',
+  },
+  'body-lg': {
+    size: '1.125rem',
+    weight: '400',
+    leading: '1.65',
+    tracking: '0',
+  },
+  'body': {
+    size: '1rem',
+    weight: '400',
+    leading: '1.6',
+    tracking: '0',
+  },
+  'body-sm': {
+    size: '0.875rem',
+    weight: '400',
+    leading: '1.5',
+    tracking: '0',
+  },
+  'label': {
+    size: '0.875rem',
+    weight: '500',
+    leading: '1.4',
+    tracking: '0',
+  },
+  'caption': {
+    size: '0.75rem',
+    weight: '400',
+    leading: '1.4',
+    tracking: '0.01em',
+    color: 'var(--maz-muted)',
+  },
+  'overline': {
+    size: '0.75rem',
+    weight: '600',
+    leading: '1.4',
+    tracking: '0.08em',
+  },
+  'code': {
+    size: '0.875em',
+    weight: '400',
+    leading: '1.5',
+    tracking: '0',
+  },
+} as const satisfies Required<ThemeTypography>
+
+/** The default type scale with some keys of some levels changed */
+export function typographyWith(overrides: ThemeTypography): ThemeTypography {
+  return Object.fromEntries((Object.keys(DEFAULT_TYPOGRAPHY) as TypographyLevel[]).map(level => [
+    level,
+    {
+      ...DEFAULT_TYPOGRAPHY[level],
+      ...overrides[level],
+    },
+  ]))
+}

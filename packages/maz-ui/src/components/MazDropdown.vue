@@ -1,10 +1,10 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="_T">
 import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazNeutralColor, MazSize } from './types'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
@@ -15,66 +15,12 @@ import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazPopover from './MazPopover.vue'
 
-defineOptions({
-  inheritAttrs: false,
-})
-
-const {
-  class: classProp,
-  style: styleProp,
-  id,
-  items = [],
-  trigger = 'adaptive',
-  color = 'transparent',
-  position = 'auto',
-  screenReaderDescription,
-  dropdownIconAnimation = true,
-  closeOnClick = false,
-  chevron = true,
-  disabled = false,
-  closeOnClickOutside = true,
-  trapFocus = true,
-  closeOnEscape = true,
-  transition = 'scale-pop',
-  preferPosition = 'bottom-start',
-  dropdownIcon,
-} = defineProps<MazDropdownProps>()
-
-const emits = defineEmits<{
-  /**
-   * Emitted when a menu item is clicked
-   * @property {Event} event - The native click event from the menu item interaction
-   */
-  'menuitem-clicked': [event: Event]
-  /**
-   * Emitted when the dropdown open state changes
-   * @property {boolean} value - The new open state (true when opened, false when closed)
-   */
-  'update:model-value': [value: boolean]
-}>()
-
-const { size } = useGlobalConfig<{ size: MazSize }>('MazDropdown', { size: 'md' })
-
-const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
-
-const { iconProps: dropdownIconProps } = useMazIconProps(() => dropdownIcon ?? MazChevronDown)
-
-const instanceId = useInstanceUniqId({
-  componentName: 'MazDropdown',
-  providedId: id,
-})
-
-const { t } = useTranslations()
-
-type MazDropdownItemBase = Record<string, unknown> & {
+export type MazDropdownMenuItem = Record<string, unknown> & {
   label: string
   class?: unknown
   color?: MazColor
   onClick?: () => unknown
-}
-
-export type MazDropdownMenuItem = MazDropdownItemBase & MazBtnProps & {
+} & MazBtnProps & {
   target?: string
   href?: string
   to?: RouteLocationRaw
@@ -132,10 +78,10 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
   /**
    * Color theme for the dropdown button
    * @type {MazColor}
-   * @values primary, secondary, info, success, warning, destructive, transparent, contrast, accent
+   * @values primary, secondary, info, success, warning, destructive, transparent, contrast, accent, surface, container
    * @default 'transparent'
    */
-  color?: MazColor
+  color?: MazColor | MazNeutralColor
   /**
    * Position of the menu relative to trigger
    * @values auto, top, bottom, left, right, top-start, top-end, bottom-start, bottom-end, left-start, left-end, right-start, right-end
@@ -214,6 +160,58 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
    */
   transition?: MazPopoverProps['transition']
 }
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+const {
+  class: classProp,
+  style: styleProp,
+  id,
+  items = [],
+  trigger = 'adaptive',
+  color = 'transparent',
+  position = 'auto',
+  screenReaderDescription,
+  dropdownIconAnimation = true,
+  closeOnClick = false,
+  chevron = true,
+  disabled = false,
+  closeOnClickOutside = true,
+  trapFocus = true,
+  closeOnEscape = true,
+  transition = 'scale-pop',
+  preferPosition = 'bottom-start',
+  dropdownIcon,
+} = defineProps<MazDropdownProps>()
+
+const emits = defineEmits<{
+  /**
+   * Emitted when a menu item is clicked
+   * @property {Event} event - The native click event from the menu item interaction
+   */
+  'menuitem-clicked': [event: Event]
+  /**
+   * Emitted when the dropdown open state changes
+   * @property {boolean} value - The new open state (true when opened, false when closed)
+   */
+  'update:model-value': [value: boolean]
+}>()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazDropdown', { size: 'md' })
+
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+
+const { iconProps: dropdownIconProps } = useMazIconProps(() => dropdownIcon ?? MazChevronDown)
+
+const instanceId = useInstanceUniqId({
+  componentName: 'MazDropdown',
+  providedId: id,
+})
+
+const { t } = useTranslations()
 
 const isOpen = defineModel<boolean>({
   default: false,
@@ -346,7 +344,7 @@ watch(
     role="menu"
     :style="styleProp"
     :prefer-position
-    color="surface"
+    color="container"
     :position
     :transition
     :disabled
@@ -437,7 +435,7 @@ watch(
       <div
         :id="`${instanceId}-menu`"
         role="none"
-        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2"
+        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:scrollbar-themed maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2"
         tabindex="-1"
         :class="menuPanelClass"
         :style="menuPanelStyle"

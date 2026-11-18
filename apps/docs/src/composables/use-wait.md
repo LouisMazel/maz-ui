@@ -17,10 +17,12 @@ More info about the [wait plugin](./../plugins/wait.md) in its documentation
 
 ## Usage
 
+<div class="vp-raw">
 <MazFullscreenLoader v-if="wait.isLoading('MAIN_LOADER')">
   Loading
 </MazFullscreenLoader>
 <p v-else> Loaded </p>
+</div>
 
 ```vue
 <script lang="ts" setup>

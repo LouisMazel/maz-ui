@@ -22,6 +22,17 @@ describe('given the review_code tool', () => {
       expect(output).toContain('maz-ui-review-ignore')
     })
 
+    it('then the icon names are the ones of the project', async () => {
+      const project = createTempDir()
+      writeFile(project, 'package.json', '{}')
+      writeFile(project, 'vite.config.ts', 'MazUi()')
+      writeFile(project, 'src/icons/hero.svg', '<svg />')
+
+      const output = await reviewCodeTool(createContextFor(project), { code: '<template><MazIcon icon="hero" /></template>', filename: 'A.vue' })
+
+      expect(output).toContain('A.vue: no issue found.')
+    })
+
     it('then it labels anonymous code and applies the minimum severity', async () => {
       const output = await reviewCodeTool(getContext(), { code: '<table></table>', minSeverity: 'warning', framework: 'vue' })
 

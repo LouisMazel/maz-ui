@@ -10,6 +10,7 @@ import {
   DEFAULT_INPUT_BG,
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SPACE,
+  typographyWith,
 } from './_defaults'
 
 /**
@@ -55,6 +56,11 @@ export const pristine: ThemePreset = {
       elevation: '0 4px 12px -2px rgb(0 0 0 / 0.06), 0 2px 4px -1px rgb(0 0 0 / 0.04)',
     },
   },
+  typography: typographyWith({
+    'display': { weight: '700', tracking: '-0.03em' },
+    'title-1': { tracking: '-0.025em' },
+    'title-2': { weight: '700', tracking: '-0.02em' },
+  }),
   components: {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },

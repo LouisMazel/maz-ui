@@ -180,10 +180,10 @@ function toggleCollapse() {
     <component
       :is="collapsible ? 'button' : 'div'"
       v-if="hasSlotContent(slots.title) || title || collapsible"
-      class="m-card__header maz:flex maz:items-center maz:border-b maz:border-solid maz:px-4 maz:py-3 maz:transition-colors maz:duration-200"
+      class="m-card__header maz:flex maz:items-center maz:border-b maz:border-solid maz:px-4 maz:py-3 maz:text-title-3 maz:text-foreground maz:transition-colors maz:duration-200"
       :class="[
         collapseOpenModel ? 'maz:rounded-t-md maz:border-divider' : 'maz:border-transparent',
-        { '--is-collapsible maz:cursor-pointer maz:hover:bg-surface-600': collapsible },
+        { '--is-collapsible maz:cursor-interactive maz:hover:bg-surface-600': collapsible },
         { 'maz:justify-end': !hasSlotContent(slots.title) && !title && collapsible },
         { 'maz:justify-between': hasSlotContent(slots.title) || title },
       ]"
@@ -233,14 +233,14 @@ function toggleCollapse() {
             :class="[wrapperClass, { 'maz:p-4': padding }]"
             class="m-card__content__wrapper maz:relative maz:flex maz:h-full maz:max-w-full maz:flex-col maz:gap-2"
           >
-            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title maz:font-display maz:text-xl maz:text-foreground">
+            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title maz:text-title-3 maz:text-foreground">
               <!--
               @slot content-title - The title of the card
               @binding collapse-open - The collapse open state of the card
             -->
               <slot name="content-title" :collapse-open="collapseOpenModel" />
             </div>
-            <div v-if="hasSlotContent(slots['content-subtitle'])" class="m-card__subtitle maz:text-lg maz:text-muted">
+            <div v-if="hasSlotContent(slots['content-subtitle'])" class="m-card__subtitle maz:text-body-lg maz:text-muted">
               <!--
               @slot content-subtitle - The subtitle of the card
             -->
@@ -263,7 +263,7 @@ function toggleCollapse() {
     </component>
     <div
       v-if="hasSlotContent(slots.footer)"
-      class="m-card__footer maz:overflow-x-auto maz:p-3"
+      class="m-card__footer maz:scrollbar-themed maz:overflow-x-auto maz:p-3"
       :class="[
         {
           'maz:border-t maz:border-divider': isColumnVariant && haveSomeContent,

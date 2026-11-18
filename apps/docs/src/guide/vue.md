@@ -60,6 +60,41 @@ app.use(MazUi, {
 - **`messages`** -- By default, Maz-UI does not bundle any translations. If you don't provide messages for the current locale, components will briefly show raw translation keys instead of actual text until the async loading completes.
 :::
 
+### Add the Vite plugin
+
+[`MazUi()`](../ecosystem/vite-plugin.md) of `@maz-ui/vite-plugin` gives the icons by name (`<MazIcon icon="x-mark" />`, only the icons of each page are bundled) and removes the unused CSS of maz-ui at build time:
+
+::: code-group
+
+```bash [pnpm]
+pnpm add -D @maz-ui/vite-plugin
+```
+
+```bash [npm]
+npm install -D @maz-ui/vite-plugin
+```
+
+```bash [yarn]
+yarn add -D @maz-ui/vite-plugin
+```
+
+:::
+
+```ts
+// vite.config.ts
+import { MazUi } from '@maz-ui/vite-plugin'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [vue(), MazUi()],
+})
+```
+
+It writes `src/maz-icons.d.ts`, the types of the names: commit it, the CI and a fresh clone get the names without running Vite. See [icons by name](../ecosystem/vite-plugin.md#icons-by-name) and [CSS purge](../ecosystem/vite-plugin.md#css-purge).
+
+Without Tailwind CSS, import `maz-ui/utilities.css` for the maz-ui utilities (`text-title-1`, `rich-text`, `padded-container`, `flex-center`...), the plugin purges it too. With Tailwind CSS, keep `@import 'maz-ui/tailwindcss/utilities.css'` in your Tailwind entry instead.
+
 ## Advanced Integration
 
 You must the MazUi plugin to initialize the theme and translations.
@@ -84,7 +119,7 @@ app.use(MazUi, {
    * @see https://maz-ui.com/ecosystem/themes
    */
   theme: {
-    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian' | 'nova' | 'folio'
+    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian' | 'nova' | 'folio' | 'macos' | 'windows' | 'linux'
     overrides: {
       foundation: {
         'space': '0.25rem',
@@ -135,11 +170,15 @@ function handleClick() {
 </script>
 
 <template>
-  <MazBtn color="primary" @click="handleClick">
-    Hello Maz-UI! 👋
+  <MazBtn color="primary" start-icon="sparkles" @click="handleClick">
+    Hello Maz-UI!
   </MazBtn>
 </template>
 ```
+
+## Icons
+
+860+ icons by name, as components or as SVG: see [@maz-ui/icons](../ecosystem/icons/index.md) and the [icon set](../ecosystem/icons/icon-set.md).
 
 ## Theming
 

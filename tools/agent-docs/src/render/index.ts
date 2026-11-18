@@ -70,7 +70,7 @@ function renderSections(docs: DocEntry[], href: (doc: DocEntry) => string): stri
     .join('\n\n')
 }
 
-const SUMMARY = 'Vue 3 and Nuxt UI library: components, composables, directives and plugins, with an ecosystem of packages for theming (@maz-ui/themes), icons (@maz-ui/icons), helpers (@maz-ui/utils), translations (@maz-ui/translations), Nuxt (@maz-ui/nuxt) and AI agents (@maz-ui/mcp). Styling is powered by Tailwind CSS v4 theme tokens.'
+const SUMMARY = 'Vue 3 and Nuxt UI library: components, composables, directives and plugins, with an ecosystem of packages for theming (@maz-ui/themes), icons (@maz-ui/icons), helpers (@maz-ui/utils), translations (@maz-ui/translations), Nuxt (@maz-ui/nuxt), CSS purge for Vite (@maz-ui/vite-plugin) and AI agents (@maz-ui/mcp). Styling is powered by Tailwind CSS v4 theme tokens.'
 
 /** `README.md` of maz-ui.com: every page of the ecosystem */
 export function renderBundleIndex(docs: DocEntry[]): string {

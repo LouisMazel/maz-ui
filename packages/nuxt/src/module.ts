@@ -5,18 +5,22 @@ import { createRequire } from 'node:module'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { detectAgentTargets, findProjectPackage, readPackageVersion, resolveAgentDocsDir, setupAgents } from '@maz-ui/node'
+import { readPackageVersion, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
-import { addCustomTab } from '@nuxt/devtools-kit'
+import { generateIconTypes, loadIconNames, MazUiIcons, MazUiPurgeCss, MazUiThemePresets } from '@maz-ui/vite-plugin'
+import { onDevtoolsReady } from '@nuxt/devtools-kit'
 import {
   addComponent,
   addImports,
   addPlugin,
   addTemplate,
+  addTypeTemplate,
+  addVitePlugin,
   createResolver,
   defineNuxtModule,
   resolvePath,
+  updateTemplates,
   useLogger,
 } from '@nuxt/kit'
 import { defu } from 'defu'
@@ -43,91 +47,8 @@ declare module 'nuxt/schema' {
   }
 }
 
-type ComponentNames = keyof typeof import('maz-ui/components')
-
-const COMPONENT_NAMES: Omit<
-  Record<ComponentNames, true>,
-  'useMazDialogConfirm' | 'mazSidebarKey'
-> = {
-  MazAccordion: true,
-  MazAlert: true,
-  MazAnimatedCounter: true,
-  MazAnimatedElement: true,
-  MazAnimatedText: true,
-  MazAvatar: true,
-  MazBackdrop: true,
-  MazBadge: true,
-  MazBottomSheet: true,
-  MazBtn: true,
-  MazBtnGroup: true,
-  MazCard: true,
-  MazCardSpotlight: true,
-  MazCarousel: true,
-  MazChart: true,
-  MazCheckbox: true,
-  MazChecklist: true,
-  MazContainer: true,
-  MazCircularProgressBar: true,
-  MazCodeHighlight: true,
-  MazDialog: true,
-  MazDialogConfirm: true,
-  MazDrawer: true,
-  MazDropdown: true,
-  MazDropzone: true,
-  MazExpandAnimation: true,
-  MazFullscreenLoader: true,
-  MazGallery: true,
-  MazIcon: true,
-  MazInput: true,
-  MazInputCode: true,
-  MazInputNumber: true,
-  MazInputPhoneNumber: true,
-  MazInputPrice: true,
-  MazInputTags: true,
-  MazLazyImg: true,
-  MazLink: true,
-  MazLoadingBar: true,
-  MazMarkdownEditor: true,
-  MazPagination: true,
-  MazDatePicker: true,
-  MazPullToRefresh: true,
-  MazRadio: true,
-  MazRadioButtons: true,
-  MazReadMore: true,
-  MazReadingProgressBar: true,
-  MazSelect: true,
-  MazSelectCountry: true,
-  MazSkeleton: true,
-  MazSlider: true,
-  MazSpinner: true,
-  MazStepper: true,
-  MazSwitch: true,
-  MazSidebar: true,
-  MazSidebarMenu: true,
-  MazSidebarMenuItem: true,
-  MazSidebarMenuSub: true,
-  MazSidebarFooter: true,
-  MazSidebarHeader: true,
-  MazSidebarContent: true,
-  MazSidebarGroup: true,
-  MazSidebarMenuButton: true,
-  MazSidebarSeparator: true,
-  MazSidebarTrigger: true,
-  MazTable: true,
-  MazTableCell: true,
-  MazTableRow: true,
-  MazTableTitle: true,
-  MazTabs: true,
-  MazTabsBar: true,
-  MazTabsContent: true,
-  MazTabsContentItem: true,
-  MazTicker: true,
-  MazTimeline: true,
-  MazTextarea: true,
-  MazUiProvider: true,
-  MazWindowMockup: true,
-  MazPopover: true,
-}
+/** The components and composables of maz-ui, written by its build (`maz-ui/exports.json`) */
+const mazUiExports: { components: string[], composables: string[] } = createRequire(import.meta.url)('maz-ui/exports.json')
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -136,28 +57,20 @@ const pluginComposables: Record<'useTheme' | 'useTranslations', true> = {
   useTranslations: true,
 }
 
-const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'> = {
-  useIdleTimeout: true,
-  useDrag: true,
-  useReadingTime: true,
-  useFormField: true,
-  useWindowSize: true,
-  useBreakpoints: true,
-  useUserVisibility: true,
-  useStringMatching: true,
-  useTimer: true,
-  useFormValidator: true,
-  useDisplayNames: true,
-  useFreezeValue: true,
-  useInjectStrict: true,
-  useDropzone: true,
-  useInstanceUniqId: true,
-  useMountComponent: true,
-  useSwipe: true,
-  usePullToRefresh: true,
-  useMutationObserver: true,
-  useSidebar: true,
-}
+/** Auto-imported through their plugin (`mazUi.plugins`), or internal to the components */
+const NOT_AUTO_IMPORTED_COMPOSABLES = new Set([
+  'useAos',
+  'useDialog',
+  'useToast',
+  'useWait',
+  'useMazIconProps',
+])
+
+const mazUiComposables = Object.fromEntries(
+  mazUiExports.composables
+    .filter(name => !NOT_AUTO_IMPORTED_COMPOSABLES.has(name))
+    .map(name => [name, true]),
+) as Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'>
 
 const defaults = {
   general: {
@@ -168,6 +81,8 @@ const defaults = {
   },
   css: {
     injectCss: true,
+    injectUtilities: false,
+    purge: true,
   },
   theme: {
     preset: 'maz-ui',
@@ -183,6 +98,7 @@ const defaults = {
   },
   defaults: {},
   flags: 'cdn',
+  icons: true,
   components: {
     autoImport: true,
   },
@@ -226,16 +142,36 @@ function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult
   return messages.join(' ')
 }
 
-/** Version of the `@maz-ui/mcp` installed for the app, pinned in the `npx` command when the project root does not install it */
-function installedMcpVersion(rootDir: string): string | undefined {
-  const mcpDir = findProjectPackage(rootDir, '@maz-ui/mcp')
+/** Version of the maz-ui that Node.js resolves from a file, `undefined` when it does not resolve */
+const ICON_TYPES_TEMPLATE = 'types/maz-icons.d.ts'
 
-  return mcpDir
-    ? readPackageVersion(mcpDir)
-    : undefined
+function setupIcons(options: MazUiNuxtOptions['icons'], nuxt: Nuxt) {
+  const iconsOptions = typeof options === 'object'
+    ? options
+    : {}
+  const dir = resolve(nuxt.options.rootDir, iconsOptions.dir ?? join(nuxt.options.srcDir, 'icons'))
+
+  addVitePlugin(MazUiIcons({ ...iconsOptions, dir, dts: false }))
+
+  // Written by Nuxt, `nuxi prepare` and `nuxi typecheck` have them without running Vite
+  addTypeTemplate({
+    filename: ICON_TYPES_TEMPLATE,
+    getContents: () => generateIconTypes(
+      loadIconNames({ root: nuxt.options.rootDir, dir, prefix: iconsOptions.prefix }),
+      { strict: iconsOptions.strict },
+    ),
+  })
+
+  nuxt.hook('builder:watch', async (event, relativePath) => {
+    const path = resolve(nuxt.options.srcDir, relativePath)
+    if ((event === 'add' || event === 'unlink') && path.startsWith(`${dir}/`) && path.endsWith('.svg')) {
+      await updateTemplates({
+        filter: template => template.filename === ICON_TYPES_TEMPLATE,
+      })
+    }
+  })
 }
 
-/** Version of the maz-ui that Node.js resolves from a file, `undefined` when it does not resolve */
 function resolveMazUiVersion(from: string): string | undefined {
   try {
     return readPackageVersion(dirname(createRequire(from).resolve('maz-ui/package.json')))
@@ -277,24 +213,18 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
     const projectDir = dir
       ? resolve(rootDir, dir)
       : (workspaceDir || rootDir)
-    const targets = requestedTargets ?? detectAgentTargets(projectDir)
 
-    if (targets.length === 0 || (!rules && !mcp))
+    if (!rules && !mcp)
       return
 
-    const mazUiDir = findProjectPackage(rootDir, 'maz-ui')
+    // The maz-ui and the @maz-ui/mcp of the app give the rules and the version pinned in the npx command
     const result = setupAgents({
       rootDir: projectDir,
-      targets,
+      appDir: rootDir,
+      targets: requestedTargets,
       rules,
       mcp,
       paths,
-      mcpVersion: installedMcpVersion(rootDir),
-      ...(mazUiDir
-        ? {
-            docsDir: resolveAgentDocsDir(mazUiDir),
-          }
-        : {}),
     })
     const applied = result.changes.filter(change => ['create', 'update', 'remove'].includes(change.action))
 
@@ -306,6 +236,20 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
     logger.warn(`Could not configure the AI agents for maz-ui: ${getErrorMessage(error)}`)
   }
 }
+
+/** The entries of maz-ui the plugins and directives enabled in the options install */
+function getModuleEntries(options: { plugins: NonNullable<MazUiNuxtOptions['plugins']>, directives: NonNullable<MazUiNuxtOptions['directives']> }): string[] {
+  const plugins = Object.entries(options.plugins).filter(([, enabled]) => enabled).map(([name]) => `plugins/${name}`)
+  const directives = Object.entries(options.directives).filter(([, enabled]) => enabled).map(([name]) => `directives/${name}`)
+
+  return [
+    ...plugins,
+    ...directives,
+  ]
+}
+
+/** Chunks of the named presets of @maz-ui/themes (`dist` when installed, `src` in the monorepo) */
+const THEME_PRESET_CHUNK = /[\\/]themes[\\/](?:dist|src)[\\/]presets[\\/]/
 
 function addMazUiComposableImport({
   name,
@@ -350,6 +294,10 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     const { messages: translationsMessages, ...translationsOptions } = moduleOptions.translations ?? {}
     moduleOptions.translations = translationsOptions
 
+    // The presets of the build are a build option, not a runtime one
+    const { presets: themePresets, ...themeOptions }: NonNullable<MazUiNuxtOptions['theme']> = moduleOptions.theme ?? {}
+    moduleOptions.theme = themeOptions as typeof moduleOptions.theme
+
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
 
     addTemplate({
@@ -367,8 +315,65 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // CSS
 
+    if (moduleOptions.css.injectUtilities) {
+      nuxt.options.css.unshift('maz-ui/utilities.css')
+    }
+
     if (moduleOptions.css.injectCss) {
       nuxt.options.css.unshift('maz-ui/style.css')
+    }
+
+    if (moduleOptions.css.purge !== false && !nuxt.options.dev) {
+      const purgeOptions = typeof moduleOptions.css.purge === 'object'
+        ? moduleOptions.css.purge
+        : {}
+
+      addVitePlugin(MazUiPurgeCss({
+        ...purgeOptions,
+        // The plugins and directives of the module are installed from node_modules, where the purge does not look
+        entries: [
+          ...getModuleEntries(moduleOptions),
+          ...(purgeOptions.entries ?? []),
+        ],
+      }))
+    }
+
+    // Icons by name: each file registers the icons it uses, in its chunk
+
+    if (moduleOptions.icons !== false) {
+      setupIcons(moduleOptions.icons, nuxt)
+    }
+
+    // Icons are one ESM module each: pre-bundled, every new one found while browsing reloads the page
+    nuxt.options.vite ??= {}
+    nuxt.options.vite.optimizeDeps ??= {}
+    const optimizeDeps = nuxt.options.vite.optimizeDeps
+    if (!optimizeDeps.include?.includes('@maz-ui/icons') && !optimizeDeps.exclude?.includes('@maz-ui/icons')) {
+      optimizeDeps.exclude = [
+        ...(optimizeDeps.exclude ?? []),
+        '@maz-ui/icons',
+      ]
+    }
+
+    // Theme presets
+
+    // `getPreset` imports each named preset on demand: the renderer would prefetch all of them on every page
+    nuxt.hook('build:manifest', (manifest) => {
+      for (const [id, chunk] of Object.entries(manifest)) {
+        if (THEME_PRESET_CHUNK.test(chunk.src ?? id))
+          chunk.prefetch = false
+      }
+    })
+
+    if (themePresets) {
+      addVitePlugin(MazUiThemePresets({
+        presets: typeof themeOptions.preset === 'string'
+          ? [
+              ...themePresets,
+              themeOptions.preset,
+            ]
+          : themePresets,
+      }))
     }
 
     // cssnano's `postcss-calc` cannot parse the relative OKLCh values maz-ui
@@ -419,7 +424,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     // Components
 
     if (moduleOptions.components.autoImport) {
-      for (const name of Object.keys(COMPONENT_NAMES)) {
+      for (const name of mazUiExports.components) {
         addComponent({
           name,
           filePath: `maz-ui/components/${name}`,
@@ -540,14 +545,14 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // Devtools
     if (moduleOptions.general.devtools) {
-      addCustomTab({
-        name: 'maz-ui',
-        title: 'maz-ui',
-        icon: 'https://maz-ui.com/img/icons/android-chrome-512x512.png',
-        view: {
+      onDevtoolsReady((ctx) => {
+        ctx.docks.register({
+          id: 'maz-ui',
           type: 'iframe',
-          src: 'https://maz-ui.com',
-        },
+          title: 'maz-ui',
+          icon: 'https://maz-ui.com/img/icons/android-chrome-512x512.png',
+          url: 'https://maz-ui.com',
+        })
       })
     }
   },

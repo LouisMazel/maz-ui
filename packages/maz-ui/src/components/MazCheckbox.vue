@@ -220,7 +220,7 @@ function onFocus(event: FocusEvent) {
     :for="instanceId"
     class="m-checkbox m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
     :class="[
-      { '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled },
+      { '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-interactive': !disabled },
       classProp,
     ]"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
@@ -246,7 +246,7 @@ function onFocus(event: FocusEvent) {
 
       <span
         v-if="hint"
-        class="m-checkbox__hint maz:text-sm" :class="{
+        class="m-checkbox__hint maz:text-body-sm" :class="{
           '--error': error,
           '--success': success,
           '--warning': warning,

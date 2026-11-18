@@ -176,7 +176,7 @@ onUnmounted(() => {
 
     <!-- Content area -->
     <div
-      class="m-window-mockup__content maz:flex maz:min-h-0 maz:flex-1 maz:flex-col maz:overflow-auto"
+      class="m-window-mockup__content maz:flex maz:min-h-0 maz:flex-1 maz:scrollbar-themed maz:flex-col maz:overflow-auto"
       :style="minHeight ? { minHeight } : undefined"
     >
       <!--
@@ -192,7 +192,7 @@ onUnmounted(() => {
         <div class="m-window-mockup__placeholder maz:relative maz:flex maz:flex-1 maz:flex-center maz:overflow-hidden maz:p-4">
           <span
             v-if="label"
-            class="m-window-mockup__placeholder-label maz:font-mono maz:text-sm maz:text-muted"
+            class="m-window-mockup__placeholder-label maz:type-code maz:text-sm maz:text-muted"
           >
             {{ label }}
           </span>

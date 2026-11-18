@@ -23,19 +23,21 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     steps:
+      # The full history: nx compares the pull request with its base branch
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js, pnpm and Nx cache
+        id: setup
         uses: ./.github/actions/setup
 
-      - name: Build packages
-        run: pnpm build:packages
+      # The packages and the docs changed by the pull request, and their dependents (the demo apps are not built)
+      - name: Build
+        run: pnpm exec nx ${{ steps.setup.outputs.nx-scope }} -t build --exclude=vue-app,nuxt-app
 
       - name: Check the packages imported by the published files
         run: node .github/scripts/check-dist-imports.mjs
 
-      - name: Typecheck packages
-        run: pnpm typecheck:all
-
-      - name: Build docs
-        run: pnpm exec nx run docs:build
+      - name: Typecheck
+        run: pnpm exec nx ${{ steps.setup.outputs.nx-scope }} -t typecheck

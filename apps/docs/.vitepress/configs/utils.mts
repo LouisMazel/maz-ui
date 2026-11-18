@@ -10,6 +10,7 @@ export const utils = {
       items: [
         { text: 'camelCase', link: '/ecosystem/utils/camel-case' },
         { text: 'capitalize', link: '/ecosystem/utils/capitalize' },
+        { text: 'fuzzySearch', link: '/ecosystem/utils/fuzzy-search' },
         { text: 'kebabCase', link: '/ecosystem/utils/kebab-case' },
         { text: 'normalizeString', link: '/ecosystem/utils/normalize-string' },
         { text: 'pascalCase', link: '/ecosystem/utils/pascal-case' },
@@ -30,6 +31,7 @@ export const utils = {
       collapsed: false,
       items: [
         { text: 'formatDate', link: '/ecosystem/utils/date' },
+        { text: 'formatRelativeTime', link: '/ecosystem/utils/relative-time' },
       ],
     },
     {

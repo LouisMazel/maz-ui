@@ -992,13 +992,13 @@ describe('given MazSelect component (branch coverage)', () => {
       await wrapper.find('input').trigger('click')
       await nextTick()
 
-      const list = wrapper.find('.m-select-list')
+      const list = wrapper.find<HTMLElement>('.m-select-list')
       if (list.exists()) {
-        const style = list.attributes('style') || ''
-        expect(style).toContain('max-height: 300px')
-        expect(style).toContain('max-width: 400px')
-        expect(style).toContain('min-height: 100px')
-        expect(style).toContain('min-width: 200px')
+        const { style } = list.element
+        expect(style.maxHeight).toBe('300px')
+        expect(style.maxWidth).toBe('400px')
+        expect(style.minHeight).toBe('100px')
+        expect(style.minWidth).toBe('200px')
       }
     })
   })

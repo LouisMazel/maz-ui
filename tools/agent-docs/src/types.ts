@@ -95,6 +95,8 @@ export interface ComponentApi {
   import: string
   /** Parent component when this one is a building block (`MazSidebarGroup` -> `MazSidebar`) */
   parent?: string
+  /** Maz component receiving the attributes (`v-bind="$attrs"`): its props work too (`MazDropdown` -> `MazBtn`) */
+  forwardsAttrs?: string
   props: PropApi[]
   events: EventApi[]
   slots: SlotApi[]
@@ -122,6 +124,8 @@ export interface NamedToken {
 export interface TailwindUtility {
   name: string
   css: string
+  /** The comment right above the `@utility` */
+  description?: string
 }
 
 export interface TailwindManifest {
@@ -131,6 +135,8 @@ export interface TailwindManifest {
   radius: NamedToken[]
   shadows: NamedToken[]
   breakpoints: NamedToken[]
+  /** Container query sizes (`@tab-m:`), from `theme-containers.css` */
+  containers: NamedToken[]
   zIndex: NamedToken[]
   fonts: NamedToken[]
   durations: NamedToken[]
@@ -163,8 +169,8 @@ export interface AgentDocsFragment {
   components: ComponentApi[]
   /** Only in the fragment of maz-ui */
   tailwind?: TailwindManifest
-  /** Only in the fragment of @maz-ui/icons */
-  icons?: { names: string[] }
+  /** Only in the fragment of @maz-ui/icons: the static components, and the name of each one (`MazTrash`: `trash`) */
+  icons?: { names: string[], ids?: Record<string, string> }
 }
 
 /** `index.json` of the `agent-docs` folder of `@maz-ui/mcp`: one subfolder per fragment */

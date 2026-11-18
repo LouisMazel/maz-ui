@@ -243,6 +243,14 @@ describe('given get_component_api', () => {
     })
   })
 
+  describe('when a component forwards its attributes', () => {
+    it('then it names the component receiving them', () => {
+      expect(getComponentApi(getContext(), {
+        names: ['MazDropdown'],
+      })).toContain('Forwards its attributes to `MazBtn`')
+    })
+  })
+
   describe('when some names are unknown', () => {
     it('then they are listed with suggestions', () => {
       const output = getComponentApi(getContext(), {
@@ -318,6 +326,41 @@ describe('given find_icons', () => {
     })
   })
 
+  describe('when the query is the name of an icon prop', () => {
+    it('then the icon comes first, with its use by name', () => {
+      const output = findIcons(getContext(), { query: 'x-mark', limit: 2 })
+
+      expect(output).toMatch(/^- `MazXMark` \(`x-mark`\)$/m)
+      expect(output).toContain('<MazIcon icon="x-mark" />')
+      expect(output).toContain('@maz-ui/icons/raw/MazXMark\' // icon props (<MazBtn :start-icon>, <MazIcon :icon>) without the plugin')
+    })
+  })
+
+  describe('when the bundle has no names of icon props', () => {
+    afterEach(() => {
+      cleanTempDirs()
+    })
+
+    it('then it lists the components and their imports only', () => {
+      const directory = createTempDir()
+      const fragment = fakeFragment({
+        icons: {
+          names: ['MazTrash'],
+        },
+      })
+      writeFakeFragment(directory, fragment)
+
+      const output = findIcons(createContext({
+        knowledge: fakeKnowledge(fragment, directory),
+        cwd: directory,
+      }), { query: 'trash' })
+
+      expect(output).toContain('- `MazTrash`\n')
+      expect(output).not.toContain('## By name')
+      expect(output).toContain('// icon props (<MazBtn :start-icon>, <MazIcon :icon>): SVG string')
+    })
+  })
+
   describe('when no icon matches', () => {
     it('then it suggests close names', () => {
       expect(findIcons(getContext(), { query: 'Trahs' })).toContain('Close names: MazTrash')
@@ -387,6 +430,32 @@ describe('given get_theme_tokens', () => {
     it('then it can be left out', async () => {
       expect(await getThemeTokens(projectContext(), { project: false })).not.toContain('## Your project theme')
       cleanTempDirs()
+    })
+  })
+
+  describe('when a bundled preset, colors and steps are given', () => {
+    it('then it details the effective colors of these steps of the preset', async () => {
+      const output = await getThemeTokens(getContext(), {
+        project: false,
+        preset: 'ocean',
+        colors: ['accent'],
+        steps: ['300'],
+      })
+
+      expect(output).toContain('### Effective colors of the `ocean` preset')
+      expect(output).toContain('| `accent-300` |')
+      expect(output).not.toContain('| `accent-500` |')
+      expect(output).not.toContain('## Your project theme')
+    })
+  })
+
+  describe('when the topics leave the colors out', () => {
+    it('then the effective colors are not rendered', async () => {
+      const output = await getThemeTokens(getContext(), {
+        topics: ['radius'],
+      })
+
+      expect(output).not.toContain('Effective colors')
     })
   })
 

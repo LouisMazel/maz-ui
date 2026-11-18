@@ -13,6 +13,10 @@ export const composables = {
       link: '/composables/use-drag',
     },
     { text: 'useFormValidator', link: '/composables/use-form-validator' },
+    {
+      text: withNewBadge('useFuzzySearch'),
+      link: '/composables/use-fuzzy-search',
+    },
     { text: 'useIdleTimeout', link: '/composables/use-idle-timeout' },
     { text: 'useDisplayNames', link: '/composables/use-display-names' },
     {
@@ -20,6 +24,10 @@ export const composables = {
       link: '/composables/use-pull-to-refresh',
     },
     { text: 'useReadingTime', link: '/composables/use-reading-time' },
+    {
+      text: withNewBadge('useRelativeTime'),
+      link: '/composables/use-relative-time',
+    },
     { text: 'useStringMatching', link: '/composables/use-string-matching' },
     { text: 'useSwipe', link: '/composables/use-swipe' },
     { text: 'useTimer', link: '/composables/use-timer' },

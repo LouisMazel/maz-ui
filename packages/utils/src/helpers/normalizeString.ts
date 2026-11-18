@@ -69,6 +69,27 @@ const defaultOptions: NormalizeStringOptions = {
   customNormalizationForms: ['NFC', 'NFKD'],
 }
 
+/** Latin letters without a canonical decomposition: `NFD` does not split them into a base letter and an accent */
+const UNDECOMPOSABLE_LETTERS: Record<string, string> = {
+  Æ: 'AE',
+  æ: 'ae',
+  Œ: 'OE',
+  œ: 'oe',
+  Ø: 'O',
+  ø: 'o',
+  Ł: 'L',
+  ł: 'l',
+  Đ: 'D',
+  đ: 'd',
+  Ħ: 'H',
+  ħ: 'h',
+  ı: 'i',
+  ß: 'ss',
+  ẞ: 'SS',
+}
+
+const UNDECOMPOSABLE_LETTERS_PATTERN = /[æđħıłßøœ]/giu
+
 /**
  * Apply case transformation to string
  */
@@ -100,56 +121,6 @@ export function normalizeString(
     ...options,
   }
 
-  const accentsMap: Record<string, string> = {
-    À: 'A',
-    Á: 'A',
-    Â: 'A',
-    Ã: 'A',
-    Ä: 'A',
-    Å: 'A',
-    à: 'a',
-    á: 'a',
-    â: 'a',
-    ã: 'a',
-    ä: 'a',
-    å: 'a',
-    È: 'E',
-    É: 'E',
-    Ê: 'E',
-    Ë: 'E',
-    è: 'e',
-    é: 'e',
-    ê: 'e',
-    ë: 'e',
-    Î: 'I',
-    Ï: 'I',
-    í: 'I',
-    î: 'i',
-    ï: 'i',
-    Ô: 'O',
-    Õ: 'O',
-    Ö: 'O',
-    Ø: 'O',
-    ô: 'o',
-    õ: 'o',
-    ö: 'o',
-    ø: 'o',
-    Ù: 'U',
-    Ú: 'U',
-    Û: 'U',
-    Ü: 'U',
-    ù: 'u',
-    ú: 'u',
-    û: 'u',
-    ü: 'u',
-    Ç: 'C',
-    ç: 'c',
-    ÿ: 'y',
-    Ñ: 'N',
-    ñ: 'n',
-    ó: 'o',
-  }
-
   let result = input.toString()
 
   if (finalOptions.trim) {
@@ -169,11 +140,10 @@ export function normalizeString(
   }
 
   if (finalOptions.removeAccents) {
-    result = result.replaceAll(/[ÀÁÂÃÄÅÇÈÉÊËÎÏÑÔÕÖØÙÚÛÜàáâãäåçèéêëíîïñóôõöøùúûüÿ]/g, (char) => {
-      return accentsMap[char] || char
-    })
-
-    result = result.replaceAll(/[\u0300-\u036F]/g, '')
+    result = result
+      .normalize('NFD')
+      .replaceAll(/[\u0300-\u036F]/g, '')
+      .replaceAll(UNDECOMPOSABLE_LETTERS_PATTERN, char => UNDECOMPOSABLE_LETTERS[char] ?? char)
   }
 
   // Apply case transformation BEFORE caseSensitive check

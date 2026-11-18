@@ -55,3 +55,14 @@ export function groupIcons(names: string[]): IconGroup[] {
     },
   ]
 }
+
+/** The name of `<MazIcon icon="trash" />` of each icon component (`MazTrash`: `trash`), from `icon-names.json` */
+export function collectIconIds(iconNamesPath: string): Record<string, string> {
+  const names = JSON.parse(readFileSync(iconNamesPath, 'utf8')) as Record<string, { component: string }>
+
+  return Object.fromEntries(Object.entries(names)
+    .map(([name, { component }]) => [component, name] as const)
+    .sort(([a], [b]) => a < b
+      ? -1
+      : 1))
+}

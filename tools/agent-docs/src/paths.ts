@@ -17,6 +17,7 @@ export interface SourcePaths {
   utilsHelpers: string
   utilsTsHelpers: string
   iconList: string
+  iconNames: string
   content: string
 }
 
@@ -35,6 +36,7 @@ export function getSourcePaths(root = ROOT): SourcePaths {
     utilsHelpers: resolve(root, 'packages/utils/src/helpers'),
     utilsTsHelpers: resolve(root, 'packages/utils/src/ts-helpers'),
     iconList: resolve(root, 'packages/icons/src/icon-list.ts'),
+    iconNames: resolve(root, 'packages/icons/icon-names.json'),
     content: resolve(root, 'tools/agent-docs/content'),
   }
 }

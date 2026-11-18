@@ -44,6 +44,7 @@ import MazLink from 'maz-ui/components/MazLink'
     <MazLink color="accent"> View product detail (accent) </MazLink>
     <MazLink color="contrast"> View product detail (contrast) </MazLink>
     <MazLink color="surface"> View product detail (surface) </MazLink>
+    <MazLink color="container"> View product detail (container) </MazLink>
     <MazLink color="muted"> View product detail (muted) </MazLink>
   </div>
 

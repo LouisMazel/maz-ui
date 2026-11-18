@@ -1,5 +1,83 @@
 # Change Log
 
+## v5.7.0-beta.8 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.7...v5.7.0-beta.8)
+
+No relevant changes since last release
+
+## v5.7.0-beta.7 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.6...v5.7.0-beta.7)
+
+### 🩹 Fixes
+
+- Publish the exports without the monorepo:dev condition ([61fd61c82](https://github.com/LouisMazel/maz-ui/commit/61fd61c82))
+
+  The published package.json no longer has the monorepo:dev condition of the monorepo, which pointed to sources that are not published.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.7.0-beta.6 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.5...v5.7.0-beta.6)
+
+No relevant changes since last release
+
+## v5.7.0-beta.5 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.4...v5.7.0-beta.5)
+
+### 🚀 Features
+
+- **translations:** Add the scroll to bottom label of MazCodeHighlight ([f6a747254](https://github.com/LouisMazel/maz-ui/commit/f6a747254))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.7.0-beta.4 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.3...v5.7.0-beta.4)
+
+No relevant changes since last release
+
+## v5.7.0-beta.3 (2026-11-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.2...v5.7.0-beta.3)
+
+No relevant changes since last release
+
+## v5.7.0-beta.2 (2026-11-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.1...v5.7.0-beta.2)
+
+No relevant changes since last release
+
+## v5.7.0-beta.1 (2026-11-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.0...v5.7.0-beta.1)
+
+### 🚀 Features
+
+- **translations:** Add the color picker, autocomplete and remove keys ([a85284b09](https://github.com/LouisMazel/maz-ui/commit/a85284b09))
+
+  - `colorPicker.*`: labels of the area, hue, alpha, eyedropper and swatches of `MazColorPicker`
+  - `inputAutocomplete.*`: `noResults`, `loading`, `error` and `results` of `MazInputAutocomplete`
+  - `aria.remove`: label of the remove buttons (`MazBadge`, `MazInputTags`)
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.7.0-beta.0 (2026-11-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0-beta.0)
+
+No relevant changes since last release
+
 ## v5.6.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.5.0...v5.6.0)

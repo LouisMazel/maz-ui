@@ -18,7 +18,7 @@ import { CATEGORY_ORDER, renderBundleIndex, renderFragmentIndex, renderLlmsFullT
 import { renderIconsReference, renderTailwindReference } from './render/references'
 import { renderVitepressApis } from './render/vitepress'
 import { listComponentFiles } from './sources/component-files'
-import { collectIconNames, groupIcons } from './sources/icons'
+import { collectIconIds, collectIconNames, groupIcons } from './sources/icons'
 import { collectNuxtAutoImports } from './sources/nuxt'
 import { collectSourcePages, sourcePathToId } from './sources/pages'
 import { resolvePageSymbols } from './sources/symbols'
@@ -208,7 +208,7 @@ async function createGenerationContext(paths: SourcePaths, withComponents: boole
       api,
     ])),
     pages,
-    autoImports: collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts')),
+    autoImports: collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts'), join(paths.libRoot, 'src')),
     knownIds: new Set([
       ...pages.map(page => page.id),
       ...componentIds,
@@ -405,7 +405,7 @@ function referenceDrafts(tailwind: TailwindManifest | undefined, iconNames: stri
     ...(tailwind
       ? [
           {
-            entry: referenceEntry('reference/tailwind-tokens', 'Tailwind CSS theme reference', 'Every Tailwind class, variant and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints, typography, z-index, custom utilities.', 'maz-ui'),
+            entry: referenceEntry('reference/tailwind-tokens', 'Tailwind CSS theme reference', 'Every Tailwind class, variant and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints and container queries, layout (padded-container), type scale, rich text, z-index, custom utilities.', 'maz-ui'),
             content: renderTailwindReference(tailwind),
           },
         ]
@@ -531,6 +531,9 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths(), o
   const iconNames = built.has('@maz-ui/icons')
     ? collectIconNames(paths.iconList)
     : undefined
+  const iconIds = built.has('@maz-ui/icons')
+    ? collectIconIds(paths.iconNames)
+    : undefined
   const agentContent = loadAgentContent(paths.content)
   const pageDrafts = context.pages.filter(page => built.has(page.package)).map(page => pageDraft(context, page))
 
@@ -594,7 +597,7 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths(), o
         : {}),
       ...(iconNames && definition.name === '@maz-ui/icons'
         ? {
-            icons: { names: iconNames },
+            icons: { names: iconNames, ids: iconIds },
           }
         : {}),
     }

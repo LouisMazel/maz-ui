@@ -232,6 +232,18 @@ describe('MazAvatar extended branch coverage', () => {
       expect(img.attributes('loading')).toBe('lazy')
     })
 
+    it('sets the loading attribute before the src attribute', async () => {
+      const wrapper = mount(MazAvatar, {
+        props: {
+          src: 'https://example.com/photo.jpg',
+          loading: 'lazy',
+        },
+      })
+      await vi.dynamicImportSettled()
+      const attributeNames = wrapper.find('img').element.getAttributeNames()
+      expect(attributeNames.indexOf('loading')).toBeLessThan(attributeNames.indexOf('src'))
+    })
+
     it('uses native img when loading is eager', async () => {
       const wrapper = mount(MazAvatar, {
         props: {
@@ -696,6 +708,143 @@ describe('MazAvatar extended branch coverage', () => {
       const wrapper = mount(MazAvatar)
       const style = wrapper.attributes('style') || ''
       expect(style).not.toContain('font-size')
+    })
+  })
+})
+
+describe('given a MazAvatar with an indicator', () => {
+  async function indicatorOf(props: Record<string, unknown>, slots?: Record<string, string>) {
+    const wrapper = mount(MazAvatar, {
+      props: { caption: 'A', ...props },
+      slots,
+    })
+    await vi.dynamicImportSettled()
+    return wrapper.find('.m-avatar__frame .m-indicator')
+  }
+
+  describe('when the indicator is the attribute alone', () => {
+    it('then it is a status dot at the bottom end', async () => {
+      const indicator = await indicatorOf({ indicator: '' })
+
+      expect(indicator.classes()).toContain('--dot')
+      expect(indicator.classes()).toContain('maz:bottom-0')
+    })
+  })
+
+  describe('when the indicator is a number', () => {
+    it('then it is a counter at the top end', async () => {
+      const indicator = await indicatorOf({ indicator: 3 })
+
+      expect(indicator.text()).toBe('3')
+      expect(indicator.classes()).toContain('maz:top-0')
+    })
+  })
+
+  describe('when the avatar is a circle', () => {
+    it('then the indicator sits on the edge of the circle', async () => {
+      const indicator = await indicatorOf({ indicator: true, roundedSize: 'full' })
+
+      expect(indicator.classes()).toContain('maz:bottom-[14.6%]')
+    })
+  })
+
+  describe('when the indicator is an object of props', () => {
+    it('then they override the defaults of the avatar', async () => {
+      const indicator = await indicatorOf({
+        indicator: {
+          content: 120,
+          color: 'destructive',
+          position: 'bottom-start',
+          label: '120 unread messages',
+        },
+      })
+
+      expect(indicator.text()).toBe('99+')
+      expect(indicator.classes()).toEqual(expect.arrayContaining(['--destructive', 'maz:bottom-0', 'maz:start-0']))
+      expect(indicator.attributes('aria-label')).toBe('120 unread messages')
+    })
+  })
+
+  describe('when the indicator slot is used', () => {
+    it('then it replaces the text of the counter', async () => {
+      const indicator = await indicatorOf({ indicator: 5 }, { indicator: '<b>new</b>' })
+
+      expect(indicator.html()).toContain('<b>new</b>')
+    })
+  })
+
+  describe('when the indicator is false, 0 or missing', () => {
+    it('then there is no indicator', async () => {
+      expect((await indicatorOf({ indicator: false })).exists()).toBe(false)
+      expect((await indicatorOf({ indicator: 0 })).exists()).toBe(false)
+      expect((await indicatorOf({})).exists()).toBe(false)
+    })
+  })
+})
+
+describe('given a MazAvatar with the auto color', () => {
+  describe('when two avatars share a caption and a third has another one', () => {
+    it('then the same caption gets the same hue and another caption a different one', () => {
+      const backgroundOf = (caption: string) => mount(MazAvatar, {
+        props: { caption, color: 'auto' },
+      })
+        .find('.m-avatar__wrapper')
+        .attributes('style')
+
+      expect(backgroundOf('maz-ui')).toBe(backgroundOf('maz-ui'))
+      expect(backgroundOf('maz-ui')).not.toBe(backgroundOf('relizy'))
+      expect(backgroundOf('maz-ui')).toMatch(/background-color: oklch\(0\.6 0\.13 \d+\)/)
+    })
+  })
+})
+
+describe('given the deprecated intersecting loading', () => {
+  describe('when the loading is not set', () => {
+    it('then the image is lazy loaded by MazLazyImg without warning', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      const wrapper = mount(MazAvatar, {
+        props: { src: 'https://example.com/photo.jpg' },
+      })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazLazyImg).exists()).toBe(true)
+      expect(warn).not.toHaveBeenCalled()
+      warn.mockRestore()
+    })
+  })
+
+  describe('when avatars set loading to intersecting', () => {
+    it('then a deprecation is warned in dev', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      mount(MazAvatar, {
+        props: { src: 'https://example.com/a.jpg', loading: 'intersecting' },
+      })
+      const wrapper = mount(MazAvatar, {
+        props: { src: 'https://example.com/b.jpg', loading: 'intersecting' },
+      })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazLazyImg).exists()).toBe(true)
+      expect(warn).toHaveBeenCalledTimes(2)
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('`loading="intersecting"` is deprecated'))
+      warn.mockRestore()
+    })
+  })
+})
+
+describe('given a native image', () => {
+  describe('when the image is loaded', () => {
+    it('then the loaded event is emitted with the image', async () => {
+      const wrapper = mount(MazAvatar, {
+        props: { src: 'https://example.com/photo.jpg', loading: 'lazy' },
+      })
+
+      await wrapper.find('img').trigger('load')
+
+      expect(wrapper.emitted('loaded')).toHaveLength(1)
+      expect(wrapper.emitted('loaded')?.[0]?.[0]).toBe(wrapper.find('img').element)
     })
   })
 })

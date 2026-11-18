@@ -204,7 +204,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'autocomplete',
-    expected: ['components/maz-select'],
+    expected: ['components/maz-input-autocomplete', 'components/maz-select'],
     rank: 1,
   },
   {
@@ -535,7 +535,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'fuzzy string matching',
-    expected: ['composables/use-string-matching'],
+    expected: ['ecosystem/utils/fuzzy-search', 'composables/use-string-matching'],
     rank: 1,
   },
   {

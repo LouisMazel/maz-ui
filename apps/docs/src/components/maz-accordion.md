@@ -11,6 +11,7 @@ description: MazAccordion is a standalone component that allows you to create an
 
 ## Basic usage
 
+<div class="vp-raw">
 <MazAccordion class="maz:w-full">
   <template #title-1>
     Title 1
@@ -37,6 +38,7 @@ description: MazAccordion is a standalone component that allows you to create an
     Content 4
   </template>
 </MazAccordion>
+</div>
 
 ```vue
 <script lang="ts" setup>
@@ -74,6 +76,23 @@ import MazAccordion from 'maz-ui/components/MazAccordion'
     </template>
     <MazAccordion />
   </mazaccordion>
+</template>
+```
+
+## Lazy content
+
+The content of every panel is rendered even closed. Add `lazy` to render a panel at its first opening only: it is then kept mounted. The default stays unchanged.
+
+```vue
+<template>
+  <MazAccordion lazy>
+    <template #title-1>
+      Title 1
+    </template>
+    <template #content-1>
+      <HeavyContent />
+    </template>
+  </MazAccordion>
 </template>
 ```
 

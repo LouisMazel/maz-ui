@@ -2,6 +2,7 @@ import type { ReviewContext, Severity } from './types'
 
 import { closest } from '../knowledge/resolve'
 import { checkClassStrings } from './classes'
+import { checkPresetColors } from './preset'
 
 interface ThirdPartyRule {
   /** Package names (exact or prefix ending with `/`) */
@@ -252,6 +253,8 @@ const THIRD_PARTY_RULES: ThirdPartyRule[] = [
 interface ParsedImport {
   specifier: string
   names: string[]
+  /** Local names of the bindings (`import { MazBtn as Action }` -> `Action`) */
+  locals: string[]
   typeOnly: boolean
   offset: number
 }
@@ -263,17 +266,22 @@ export function parseImports(code: string): ParsedImport[] {
     ...code.matchAll(IMPORT_REGEX),
   ].map((match) => {
     const [, typeKeyword, defaultName, named, specifier, sideEffect] = match
-    const names = (named ?? '')
+    const bindings = (named ?? '')
       .split(',')
       .map(entry => entry.trim())
       .filter(entry => entry && !entry.startsWith('type '))
-      .map(entry => entry.split(/\s+as\s+/)[0].trim())
+      .map(entry => entry.split(/\s+as\s+/).map(name => name.trim()))
+    const names = bindings.map(([name]) => name)
+    const locals = bindings.map(binding => binding.at(-1) as string)
 
     return {
       specifier: specifier ?? sideEffect,
       names: defaultName
         ? [defaultName, ...names]
         : names,
+      locals: defaultName
+        ? [defaultName, ...locals]
+        : locals,
       typeOnly: !!typeKeyword,
       offset: match.index ?? 0,
     }
@@ -365,14 +373,20 @@ function isNuxtAutoImported(entry: ParsedImport): boolean {
     && entry.names.some(name => ['useTheme', 'useTranslations'].includes(name))
 }
 
-function checkEcosystemImport(entry: ParsedImport, offset: number, context: ReviewContext): void {
+/** A component used in the script (`h(MazIcon)`, `components: { MazBtn }`): Nuxt only auto-imports the components of the templates */
+function isComponentUsedInScript(entry: ParsedImport, body: string): boolean {
+  return entry.specifier.startsWith('maz-ui/components')
+    && entry.locals.some(name => new RegExp(`(?<![\\w$.])${name.replaceAll('$', '\\$')}(?![\\w$])`).test(body))
+}
+
+function checkEcosystemImport(entry: ParsedImport, offset: number, body: string, context: ReviewContext): void {
   if (checkEntryPoint(entry, offset, context))
     return
 
   checkComponentImport(entry, offset, context)
   checkIconImport(entry, offset, context)
 
-  if (context.framework === 'nuxt' && !entry.typeOnly && isNuxtAutoImported(entry)) {
+  if (context.framework === 'nuxt' && !entry.typeOnly && isNuxtAutoImported(entry) && !isComponentUsedInScript(entry, body)) {
     context.report({
       rule: 'nuxt-auto-import',
       severity: 'info',
@@ -426,12 +440,127 @@ const DARK_MODE_PATTERNS: Array<{ regex: RegExp, message: string }> = [
   { regex: /matchMedia\(\s*['"`]\(prefers-color-scheme/g, message: 'Reads `prefers-color-scheme` by hand.' },
 ]
 
+interface HandwrittenPattern {
+  regex: RegExp
+  rule: 'native-dialog' | 'prefer-utils' | 'prefer-ecosystem'
+  severity: 'warning' | 'info'
+  message: string
+  suggestion: string
+}
+
+/** Code written by hand that maz-ui already provides; `(?<![\w$.])` skips the methods of other objects (`toast.confirm()`) */
+const HANDWRITTEN_PATTERNS: HandwrittenPattern[] = [
+  {
+    regex: /(?<![\w$.])(?:window\.)?alert\(/g,
+    rule: 'native-dialog',
+    severity: 'warning',
+    message: '`alert()` blocks the page with a dialog of the browser.',
+    suggestion: '`useToast()` from `maz-ui/composables/useToast`: `toast.success("Saved")`, `toast.error(...)` (ToastPlugin).',
+  },
+  {
+    regex: /(?<![\w$.])(?:window\.)?(?:confirm|prompt)\(/g,
+    rule: 'native-dialog',
+    severity: 'warning',
+    message: '`confirm()` / `prompt()` block the page with a dialog of the browser.',
+    suggestion: '`useDialog()` from `maz-ui/composables/useDialog`: `dialog.open({ title, message, buttons })` (DialogPlugin), or a `MazDialogConfirm`.',
+  },
+  {
+    regex: /\bnew\s+Intl\.NumberFormat\([^;]*?\bcurrency\b|\.toLocaleString\([^;]*?\bcurrency\b/g,
+    rule: 'prefer-utils',
+    severity: 'info',
+    message: 'Formats a currency by hand.',
+    suggestion: '`formatCurrency(value, locale, { currency: "EUR" })` from `@maz-ui/utils/helpers/formatCurrency`.',
+  },
+  {
+    regex: /\bnew\s+Intl\.DateTimeFormat\(|\.toLocaleDateString\(/g,
+    rule: 'prefer-utils',
+    severity: 'info',
+    message: 'Formats a date by hand.',
+    suggestion: '`formatDate(date, locale, options)` from `@maz-ui/utils/helpers/formatDate`.',
+  },
+  {
+    regex: /\bnew\s+Intl\.RelativeTimeFormat\(/g,
+    rule: 'prefer-utils',
+    severity: 'info',
+    message: 'Formats a relative time by hand.',
+    suggestion: '`formatRelativeTime(date)` from `@maz-ui/utils/helpers/formatRelativeTime`, or `useRelativeTime()` from `maz-ui/composables/useRelativeTime` (updates itself).',
+  },
+  {
+    regex: /\bnew\s+Promise\(\s*\(?\s*(\w+)\s*\)?\s*=>\s*setTimeout\(\s*\1\b/g,
+    rule: 'prefer-utils',
+    severity: 'info',
+    message: 'Waits with a hand-made promise.',
+    suggestion: '`await sleep(ms)` from `@maz-ui/utils/helpers/sleep`.',
+  },
+  {
+    regex: /\bclearTimeout\([^)]*\)\s*;?\s*(?:[\w$.]+\s*=\s*)?setTimeout\(/g,
+    rule: 'prefer-utils',
+    severity: 'info',
+    message: 'Debounces by hand with `clearTimeout` and `setTimeout`.',
+    suggestion: '`debounce(fn, ms)` from `@maz-ui/utils/helpers/debounce`.',
+  },
+  {
+    regex: /\bdocument\.cookie\b/g,
+    rule: 'prefer-utils',
+    severity: 'info',
+    message: 'Reads or writes `document.cookie` by hand.',
+    suggestion: '`getCookie`, `setCookie` and `deleteCookie` from `@maz-ui/utils/helpers/cookie` (SSR aware).',
+  },
+  {
+    regex: /addEventListener\(\s*['"`]resize['"`]|matchMedia\(\s*['"`]\((?:min|max)-width/g,
+    rule: 'prefer-ecosystem',
+    severity: 'info',
+    message: 'Tracks the viewport size by hand.',
+    suggestion: '`useBreakpoints()` from `maz-ui/composables/useBreakpoints` (`isMobile`...), or `useWindowSize()` from `maz-ui/composables/useWindowSize`; in templates, the `mob-*`, `tab-*`, `lap-*` breakpoints.',
+  },
+  {
+    regex: /addEventListener\(\s*['"`]visibilitychange['"`]/g,
+    rule: 'prefer-ecosystem',
+    severity: 'info',
+    message: 'Tracks the visibility of the page by hand.',
+    suggestion: '`useUserVisibility()` from `maz-ui/composables/useUserVisibility`.',
+  },
+  {
+    regex: /\bnew\s+MutationObserver\(/g,
+    rule: 'prefer-ecosystem',
+    severity: 'info',
+    message: 'Creates a `MutationObserver` by hand.',
+    suggestion: '`useMutationObserver()` from `maz-ui/composables/useMutationObserver` (disconnects itself).',
+  },
+]
+
+/** `confirm` defined or imported by the file (`function confirm()`, `const { confirm } = ...`) is not the one of the browser */
+function definesName(code: string, name: string): boolean {
+  return new RegExp(`(?:\\b(?:function|const|let|var|import)\\s+|[{,]\\s*)${name}\\b`).test(code)
+}
+
+/** `body` is the code without its imports, `code` keeps them for the names they define */
+function checkHandwrittenCode(code: string, body: string, offset: number, context: ReviewContext): void {
+  for (const pattern of HANDWRITTEN_PATTERNS) {
+    for (const match of body.matchAll(pattern.regex)) {
+      const name = /(alert|confirm|prompt)\($/.exec(match[0])?.[1]
+
+      if (name && !match[0].startsWith('window.') && definesName(code, name))
+        continue
+
+      context.report({
+        rule: pattern.rule,
+        severity: pattern.severity,
+        message: pattern.message,
+        suggestion: pattern.suggestion,
+      }, offset + (match.index ?? 0))
+    }
+  }
+}
+
 export function reviewScript(code: string, offset: number, context: ReviewContext): void {
+  const body = code.replaceAll(/^\s*import\s[^\n]*$/gm, line => ' '.repeat(line.length))
+
   for (const entry of parseImports(code)) {
     const position = offset + entry.offset
 
     if (/^(?:maz-ui|@maz-ui\/)/.test(entry.specifier))
-      checkEcosystemImport(entry, position, context)
+      checkEcosystemImport(entry, position, body, context)
     else
       checkThirdPartyImport(entry, position, context)
   }
@@ -447,7 +576,9 @@ export function reviewScript(code: string, offset: number, context: ReviewContex
     }
   }
 
-  checkClassStrings(code.replaceAll(/^\s*import\s[^\n]*$/gm, line => ' '.repeat(line.length)), offset, context)
+  checkPresetColors(code, offset, context)
+  checkHandwrittenCode(code, body, offset, context)
+  checkClassStrings(body, offset, context)
 }
 
 /** Real name of an imported binding when it comes from maz-ui (`maz-ui/components/MazBtn`, `@maz-ui/icons/static/MazTrash`) */
@@ -478,4 +609,28 @@ export function localComponents(scripts: string): Map<string, string | undefined
   }
 
   return components
+}
+
+/** Local names of the icons imported as SVG strings (`@maz-ui/icons/raw/MazTrash`): they are for `icon` props, not for tags */
+export function rawIcons(scripts: string): Set<string> {
+  const names = new Set<string>()
+
+  for (const [, clause, source] of scripts.matchAll(/import\s+(?!type\s)([^'";]*?)\s+from\s+["']([^"']+)["']/g)) {
+    if (!/^@maz-ui\/icons\/raw(?:\/|$)/.test(source))
+      continue
+
+    const defaultName = /^\s*([A-Z]\w*)/.exec(clause.replace(/\{[^}]*\}/, ''))?.[1]
+
+    if (defaultName)
+      names.add(defaultName)
+
+    for (const specifier of /\{([^}]*)\}/.exec(clause)?.[1].split(',') ?? []) {
+      const [imported, local = imported] = specifier.replace(/^\s*type\s+/, '').split(/\s+as\s+/).map(part => part.trim())
+
+      if (/^[A-Z]/.test(local ?? ''))
+        names.add(local)
+    }
+  }
+
+  return names
 }

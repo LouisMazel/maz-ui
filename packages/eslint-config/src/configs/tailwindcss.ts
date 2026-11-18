@@ -1,5 +1,5 @@
 import type { Linter } from 'eslint'
-import type { MazTailwindcssOptions, TailwindcssPreset } from '../types'
+import type { BaseFontSizeSource, MazTailwindcssOptions, TailwindcssPreset } from '../types'
 import betterTailwindcss from 'eslint-plugin-better-tailwindcss'
 import { mazPlugin } from '../plugin'
 
@@ -14,6 +14,26 @@ export const TAILWINDCSS_DEFAULT_FILES = TAILWINDCSS_FILES
 interface NoArbitraryPxResolved {
   severity: 'off' | 'warn' | 'error'
   options: { baseFontSize: number, unit: 'rem' | 'em' }
+}
+
+const DEFAULT_BASE_FONT_SIZE = 16
+
+/** Root font size in pixels, from a number, a CSS size (`'13px'`) or a preset (`foundation['base-font-size']`). */
+export function resolveBaseFontSize(value: number | string | BaseFontSizeSource | undefined): number {
+  if (value === undefined) {
+    return DEFAULT_BASE_FONT_SIZE
+  }
+  const raw = typeof value === 'object'
+    ? value.foundation?.['base-font-size']
+    : value
+  const size = typeof raw === 'number'
+    ? raw
+    : /^\s*(\d+(?:\.\d+)?)(?:px)?\s*$/.exec(raw ?? '')?.[1]
+  const pixels = Number(size)
+  if (!size || !Number.isFinite(pixels) || pixels <= 0) {
+    throw new Error(`[@maz-ui/eslint-config] noArbitraryPx.baseFontSize must be a number of pixels, a size in px ('13px') or a preset with a 'base-font-size' in px, received ${JSON.stringify(raw ?? value)}`)
+  }
+  return pixels
 }
 
 function resolveNoArbitraryPx(setting: MazTailwindcssOptions['noArbitraryPx']): NoArbitraryPxResolved {
@@ -32,7 +52,7 @@ function resolveNoArbitraryPx(setting: MazTailwindcssOptions['noArbitraryPx']): 
   return {
     severity: setting.severity ?? 'error',
     options: {
-      baseFontSize: setting.baseFontSize ?? 16,
+      baseFontSize: resolveBaseFontSize(setting.baseFontSize),
       unit: setting.unit ?? 'rem',
     },
   }

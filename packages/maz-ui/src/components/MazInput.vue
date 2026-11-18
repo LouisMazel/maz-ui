@@ -563,7 +563,7 @@ const ROUNDED_CLASS = {
     </div>
 
     <div
-      v-if="assistiveText" class="m-input-bottom-text maz:mt-1 maz:text-sm" :class="[
+      v-if="assistiveText" class="m-input-bottom-text maz:mt-1 maz:text-body-sm" :class="[
         {
           'maz:text-destructive-600': error,
           'maz:text-success-600': success,
@@ -677,8 +677,22 @@ const ROUNDED_CLASS = {
   transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 }
 
+/* The browsers only paint the autofilled <input>: the whole field gets an autofill tint instead */
+.m-input-wrapper:has(.m-input-input:-webkit-autofill) {
+  background-color: color-mix(in oklab, var(--maz-primary) 12%, var(--maz-input-bg, var(--maz-surface)));
+}
+
 .m-input-input {
   transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+
+  &:-webkit-autofill {
+    -webkit-text-fill-color: var(--maz-foreground);
+    caret-color: var(--maz-foreground);
+    transition:
+      padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+      background-color 0s 600000s,
+      color 0s 600000s;
+  }
 
   &::placeholder {
     @apply maz:text-muted;

@@ -2,7 +2,7 @@ import type { Finding } from '../index'
 
 import { join } from 'node:path'
 import { cleanTempDirs, createTempDir, getKnowledge, writeFile } from '../../__tests__/helpers'
-import { detectFramework, displayPath, expandPaths, MAX_REVIEWED_FILES, reviewFiles } from '../files'
+import { detectFramework, displayPath, expandPaths, findProjectRoot, MAX_REVIEWED_FILES, projectIconNames, reviewFiles } from '../files'
 import { countBySeverity, detectKind, filterBySeverity, formatFindings, reviewCode } from '../index'
 
 function review(code: string, filename?: string): Finding[] {
@@ -32,6 +32,8 @@ describe('given detectKind', () => {
       ['<template><div /></template>', 'vue'],
       ['<script setup>\n</script>', 'vue'],
       ['<MazBtn />', 'template'],
+      ['<MazCard>\n  <template #title>x</template>\n</MazCard>', 'template'],
+      ['<!-- demo -->\n<template>\n  <div />\n</template>', 'vue'],
       ['.a { color: red; }', 'style'],
       ['@import "tailwindcss";', 'style'],
       ['const a = 1', 'script'],
@@ -81,6 +83,33 @@ describe('given reviewCode', () => {
       const findings = review('<template>\n  <button>b</button>\n  <div class="bg-white" />\n</template>', 'A.vue')
 
       expect(findings.map(finding => finding.line)).toEqual([2, 3])
+    })
+  })
+})
+
+describe('given a file that cannot be parsed', () => {
+  describe('when the template is malformed', () => {
+    it('then it reports a parse error at its position instead of throwing', () => {
+      const findings = review('<template>\n  <div>\n    <MazBtn a"b="c" />\n</template>', 'A.vue')
+
+      expect(findings[0]).toMatchObject({ rule: 'parse-error', severity: 'error', line: 3 })
+      expect(findings[0].message).toContain('The file cannot be parsed')
+      expect(review('<div><span></div>', 'a.html').map(finding => finding.rule)).toEqual(['parse-error'])
+    })
+  })
+
+  describe('when the review fails for another reason', () => {
+    it('then the error is thrown', () => {
+      const knowledge = new Proxy(getKnowledge(), {
+        get: (target, property) => {
+          if (property === 'componentsByName')
+            throw new TypeError('broken knowledge')
+
+          return Reflect.get(target, property)
+        },
+      })
+
+      expect(() => reviewCode('<template><MazBtn /></template>', { knowledge, filename: 'A.vue' })).toThrow('broken knowledge')
     })
   })
 })
@@ -209,6 +238,45 @@ describe('given the file helpers', () => {
     })
   })
 
+  describe('when loading the icon names of a project', () => {
+    it('then the generated types give the names and mean they are registered', () => {
+      const project = createTempDir()
+      writeFile(project, 'package.json', '{}')
+      writeFile(project, 'src/maz-icons.d.ts', 'declare module \'maz-ui\' {\n  interface MazIconNames {\n    \'app:hero\': true\n  }\n}\n')
+
+      const icons = projectIconNames(join(project, 'src'), getKnowledge())
+
+      expect(icons?.registered).toBe(true)
+      expect(icons?.names.has('app:hero')).toBe(true)
+      expect(icons?.names.has('x-mark')).toBe(true)
+    })
+
+    it('then the SVG of the default folder are names, registered by MazUi() in the config', () => {
+      const vue = createTempDir()
+      writeFile(vue, 'package.json', '{}')
+      writeFile(vue, 'vite.config.ts', 'export default { plugins: [MazUi()] }')
+      writeFile(vue, 'src/icons/brand/LogoDark.svg', '<svg />')
+
+      const nuxt = createTempDir()
+      writeFile(nuxt, 'nuxt.config.ts', 'export default { modules: [\'@maz-ui/nuxt\'] }')
+      writeFile(nuxt, 'app/icons/hero.svg', '<svg />')
+
+      expect(projectIconNames(vue, getKnowledge())).toMatchObject({ registered: true })
+      expect(projectIconNames(vue, getKnowledge())?.names.has('brand-logo-dark')).toBe(true)
+      expect(projectIconNames(nuxt, getKnowledge())).toMatchObject({ registered: true })
+      expect(projectIconNames(nuxt, getKnowledge())?.names.has('hero')).toBe(true)
+    })
+
+    it('then a project without MazUi() does not register the names, a directory outside of a project has none', () => {
+      const project = createTempDir()
+      writeFile(project, 'package.json', '{}')
+
+      expect(projectIconNames(project, getKnowledge())?.registered).toBe(false)
+      expect(findProjectRoot('/')).toBeUndefined()
+      expect(projectIconNames('/', getKnowledge())).toBeUndefined()
+    })
+  })
+
   describe('when expanding paths', () => {
     it('then files, folders and globs are expanded without node_modules and unsupported files', async () => {
       const project = createTempDir()
@@ -229,6 +297,18 @@ describe('given the file helpers', () => {
         join(project, 'src/A.vue'),
         join(project, 'src/b.ts'),
         join(project, 'styles/main.css'),
+      ])
+    })
+
+    it('then the folders outside of the working directory skip node_modules and coverage too', async () => {
+      const root = createTempDir()
+      writeFile(root, 'app/A.vue', '')
+      writeFile(root, 'app/node_modules/pkg/b.ts', '')
+      writeFile(root, 'app/coverage/base.css', '')
+      writeFile(root, 'cwd/.keep', '')
+
+      expect(await expandPaths(['../app'], join(root, 'cwd'))).toEqual([
+        join(root, 'app/A.vue'),
       ])
     })
 
@@ -275,6 +355,20 @@ describe('given the file helpers', () => {
       })
 
       expect(reviews[0].findings.map(finding => finding.rule)).toEqual(['nuxt-auto-import'])
+    })
+
+    it('then the icon names are the ones of the project of each file', async () => {
+      const project = createTempDir()
+      writeFile(project, 'package.json', '{}')
+      writeFile(project, 'src/icons/hero.svg', '<svg />')
+      writeFile(project, 'src/A.vue', '<template><MazIcon icon="hero" /><MazIcon icon="heroo" /></template>')
+
+      const { reviews } = await reviewFiles(['src'], {
+        knowledge: getKnowledge(),
+        cwd: project,
+      })
+
+      expect(reviews[0].findings.map(finding => finding.rule)).toEqual(['unregistered-icon-names', 'unknown-icon'])
     })
 
     it('then it stops after the maximum number of files', async () => {

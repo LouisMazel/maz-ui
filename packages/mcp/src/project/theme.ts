@@ -101,7 +101,7 @@ export function readProjectTheme(rootDir: string): ProjectTheme {
 }
 
 const FOUNDATION_USAGE: Record<string, { topic: ThemeTopic, usage: string }> = {
-  'base-font-size': { topic: 'typography', usage: 'root font size: every `rem` and the `text-*` sizes' },
+  'base-font-size': { topic: 'typography', usage: 'root font size: every `rem` and the `text-*` sizes; give it to `tailwindcss.noArbitraryPx.baseFontSize` of @maz-ui/eslint-config (the preset itself works) so its px to rem autofix keeps the sizes' },
   'border-width': { topic: 'typography', usage: '`border` (default width)' },
   'font-family': { topic: 'typography', usage: '`font-sans` (default font)' },
   'font-mono-stack': { topic: 'typography', usage: '`font-mono`' },
@@ -246,6 +246,16 @@ function presetComponents(preset: ProjectPreset): string[] {
     : []
 }
 
+function presetTypography(preset: ProjectPreset): string[] {
+  const rows = Object.entries(asRecord(preset.overrides.typography)).flatMap(([level, tokens]) =>
+    Object.entries(asRecord(tokens)).map(([key, value]) => `| ${code(`text-${level}`)} | \`${key}\` | \`--maz-typography-${level}-${key}\` | ${display(value)} |`),
+  )
+
+  return rows.length > 0
+    ? ['| Class | Key | CSS variable | Value |', '| --- | --- | --- | --- |', ...rows]
+    : []
+}
+
 function renderPreset(preset: ProjectPreset, wanted: (topic: ThemeTopic) => boolean, filtered: boolean): string | undefined {
   const name = typeof preset.overrides.name === 'string'
     ? ` \`${preset.overrides.name}\``
@@ -260,6 +270,9 @@ function renderPreset(preset: ProjectPreset, wanted: (topic: ThemeTopic) => bool
       : [],
     presetFoundation(preset, wanted),
     presetScales(preset, wanted),
+    wanted('type-scale')
+      ? presetTypography(preset)
+      : [],
     wanted('colors')
       ? presetComponents(preset)
       : [],
@@ -289,6 +302,7 @@ export function mazUiThemeVariables(tailwind: TailwindTokens): Map<string, strin
   named(tailwind.radius, name => name.replace(/^rounded-/, '--radius-'))
   named(tailwind.shadows, name => `--${name}`)
   named(tailwind.breakpoints, name => `--breakpoint-${name.replace(/:$/, '')}`)
+  named(tailwind.containers ?? [], name => `--container-${name.replace(/^@|:$/g, '')}`)
   named(tailwind.easings, name => `--${name}`)
   named(tailwind.zIndex, name => `--${name}`)
   named(tailwind.durations, name => /--duration-[\w-]+/.exec(name)?.[0] ?? name)

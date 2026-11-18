@@ -51,4 +51,20 @@ describe('given MazSidebarHeader component', () => {
       consoleSpy.mockRestore()
     })
   })
+
+  describe('when the sidebar is floating', () => {
+    it('then the header has no border', () => {
+      const wrapper = mount(MazSidebar, {
+        props: { open: true, variant: 'floating' },
+        slots: {
+          default: {
+            template: '<MazSidebarHeader>Title</MazSidebarHeader>',
+            components: { MazSidebarHeader },
+          },
+        },
+      })
+
+      expect(wrapper.find('header').classes()).not.toContain('maz:border-b')
+    })
+  })
 })

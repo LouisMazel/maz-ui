@@ -1,15 +1,19 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
 import { getExternalDependencies } from '@maz-ui/vite-config'
+import svgLoader from '@maz-ui/vite-svg-loader'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import SvgLoader from 'vite-svg-loader'
 
 import pkg from './package.json' with { type: 'json' }
 
-import { ViteGenerateIconsComponentsEntry } from './utils/ViteGenerateIconsComponentsEntry'
+import { generateIcons } from './utils/generateIcons'
+import { writeIconTypes } from './utils/writeIconTypes'
+
+// Before the entries are listed: the variants of the icons are generated, not versioned
+generateIcons({ root: import.meta.dirname })
 
 function resolver(path: string) {
   return resolve(import.meta.dirname, path)
@@ -35,16 +39,44 @@ const moduleEntries = Object.fromEntries(
 
 export default defineConfig({
   plugins: [
+    {
+      // A string literal export is copied by Rolldown (inlineConst) into each `??`, `||` or ternary of the consumers
+      name: 'maz-icons-raw-not-inlinable',
+      generateBundle(_, bundle) {
+        for (const chunk of Object.values(bundle)) {
+          if (chunk.type === 'chunk' && chunk.fileName.startsWith('raw/') && chunk.fileName !== 'raw/index.js') {
+            chunk.code = chunk.code.replace(/^var (\w+) = (".*");$/m, 'var $1 = /* @__PURE__ */ String($2);')
+          }
+        }
+      },
+    },
+    {
+      // One file of types per variant, instead of one per icon
+      name: 'maz-icons-types',
+      writeBundle() {
+        writeIconTypes(resolver('dist'), Object.keys(moduleEntries).flatMap(entry => entry.startsWith('static/')
+          ? [
+              entry.slice('static/'.length),
+            ]
+          : []))
+      },
+    },
     Vue(),
-    SvgLoader(),
+    svgLoader(),
     dts({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
       outDirs: resolver('dist'),
-      // The build utilities of utils/ are typechecked, not published
+      // The build utilities of utils/ are typechecked, not published. The types of the icons are written by `maz-icons-types`
       include: ['src'],
+      exclude: [
+        'src/**/__tests__/**/*',
+        'src/index.ts',
+        'src/static/**',
+        'src/lazy/**',
+        'src/raw/**',
+      ],
     }),
-    ViteGenerateIconsComponentsEntry(),
     codecovVitePlugin({
       enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
       bundleName: 'icons',
@@ -62,6 +94,7 @@ export default defineConfig({
         'index': resolver('./src/index.ts'),
         'resolvers': resolver('./src/resolvers.ts'),
         'icon-list': resolver('./src/icon-list.ts'),
+        'registry': resolver('./src/registry.ts'),
         'static/index': resolver('./src/static/index.ts'),
         'lazy/index': resolver('./src/lazy/index.ts'),
         'raw/index': resolver('./src/raw/index.ts'),
@@ -71,6 +104,7 @@ export default defineConfig({
       name: '@maz-ui/icons',
     },
     rolldownOptions: {
+      preserveEntrySignatures: 'allow-extension',
       treeshake: {
         moduleSideEffects: false,
         propertyReadSideEffects: false,
@@ -86,9 +120,9 @@ export default defineConfig({
           mangle: false,
         },
         exports: 'named',
-        preserveModules: true,
-        preserveModulesRoot: 'src',
+        // Each icon is an entry: its SVG is inlined in it, instead of a module of its own (two files less per icon)
         entryFileNames: '[name].js',
+        chunkFileNames: 'chunks/[name]-[hash].js',
       },
     },
   },

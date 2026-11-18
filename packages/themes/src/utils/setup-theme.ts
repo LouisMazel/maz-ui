@@ -4,7 +4,7 @@ import type { ColorMode, ThemePreset, ThemePresetName, ThemeState } from '../typ
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
 import { injectColorSchemeMeta, resolveColorSchemeContent } from './color-scheme-meta'
-import { getPreset } from './get-preset'
+import { getPreset, warnSavedPresetFallback } from './get-preset'
 import { injectThemeCSS } from './inject-theme-css'
 import { mergePresets } from './preset-merger'
 import { DEFAULT_PRESET_NAME, resolveThemePresets } from './theme-head'
@@ -207,7 +207,10 @@ function applySavedPreset(themeState: ThemeStateRef, config: ResolvedConfig, bas
 
   getPreset(name as ThemePresetName)
     .then(preset => swapPreset(themeState, preset, config, baseName))
-    .catch(() => savePresetPreference(baseName, themeState.value.preset?.name as string))
+    .catch((error) => {
+      warnSavedPresetFallback(error)
+      savePresetPreference(baseName, themeState.value.preset?.name as string)
+    })
 }
 
 /**
@@ -296,7 +299,10 @@ export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
     if (activeName !== baseName && activeName !== presetObject?.name) {
       getPreset(activeName as ThemePresetName)
         .then(preset => swapPreset(themeState, preset, config, baseName))
-        .catch(() => savePresetPreference(baseName, baseName))
+        .catch((error) => {
+          warnSavedPresetFallback(error)
+          savePresetPreference(baseName, baseName)
+        })
     }
     return { themeState: themeState as Ref<ThemeState>, cleanup }
   }

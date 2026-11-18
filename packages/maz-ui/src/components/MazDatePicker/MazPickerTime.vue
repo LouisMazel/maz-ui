@@ -312,7 +312,7 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
     <div
       v-for="({ values, identifier }, i) in columns"
       :key="i"
-      class="m-date-picker-time__column maz:flex maz:flex-col maz:overflow-y-auto maz:px-1"
+      class="m-date-picker-time__column maz:flex maz:scrollbar-themed maz:flex-col maz:overflow-y-auto maz:px-1"
       :class="[`m-date-picker-time__column__${identifier}`]"
     >
       <div :style="{ height: `${spacerHeight}px` }" class="m-date-picker-time__column__spacer maz:w-full maz:flex-none" />

@@ -11,6 +11,7 @@ import {
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SHADOW,
   DEFAULT_SPACE,
+  typographyWith,
 } from './_defaults'
 
 /**
@@ -63,6 +64,14 @@ export const folio: ThemePreset = {
     rounded: { md: '0.625rem' },
     shadow: DEFAULT_SHADOW,
   },
+  typography: typographyWith({
+    'display': { weight: '600', tracking: '-0.01em' },
+    'title-1': { weight: '600', tracking: '-0.01em' },
+    'title-2': { tracking: '-0.005em' },
+    'title-3': { tracking: '0' },
+    'body-lg': { leading: '1.75' },
+    'body': { leading: '1.7' },
+  }),
   components: {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },

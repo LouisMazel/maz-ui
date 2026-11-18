@@ -266,6 +266,88 @@ function openAndCloseDialog() {
   </template>
 </ComponentDemo>
 
+## Await the choice with confirm
+
+`dialog.confirm(options)` returns a `Promise<boolean>`: `true` when the user accepts, `false` otherwise (reject button, close button, escape key, click on the backdrop, `close()` or a newer dialog with the same `identifier` replacing it). The promise always resolves exactly once and never rejects, so a `try/catch` is not needed. It takes the same options as `open`, except `onAccept`, `onReject` and `onClose`.
+
+```vue
+<script lang="ts" setup>
+import { useDialog } from 'maz-ui/composables/useDialog'
+
+const dialog = useDialog()
+
+async function removeUser() {
+  const confirmed = await dialog.confirm({
+    title: 'Delete user',
+    message: 'This action cannot be undone.',
+    acceptText: 'Delete',
+    rejectText: 'Keep',
+  })
+
+  if (confirmed) {
+    await deleteUser()
+  }
+}
+</script>
+```
+
+## Rich content
+
+Use `content` to render a component (or a functional component / render function) in the body instead of the `message`. It receives the props of `contentProps`, plus the `accept` and `reject` functions of the dialog. `contentProps` can be a ref, a getter or a reactive object: the content stays up to date while the dialog is open.
+
+```vue
+<script lang="ts" setup>
+import { useDialog } from 'maz-ui/composables/useDialog'
+import { h, ref } from 'vue'
+import MazAlert from 'maz-ui/components/MazAlert'
+import ChangesList from './ChangesList.vue'
+
+const dialog = useDialog()
+const files = ref(['a.ts', 'b.ts'])
+
+async function publish() {
+  const confirmed = await dialog.confirm({
+    title: 'Publish changes',
+    content: ChangesList,
+    contentProps: () => ({ files: files.value }),
+  })
+}
+
+function warn() {
+  dialog.open({
+    title: 'Warning',
+    content: () => h(MazAlert, { color: 'warning' }, () => 'Check your settings first'),
+  })
+}
+</script>
+```
+
+## Reactive buttons
+
+`acceptProps` and `rejectProps` can be a ref, a getter or a reactive object. The buttons update while the dialog is open, for example to block the confirmation until a condition is met.
+
+```vue
+<script lang="ts" setup>
+import { useDialog } from 'maz-ui/composables/useDialog'
+import { computed, ref } from 'vue'
+
+const dialog = useDialog()
+const hasIdentity = ref(false)
+
+async function commit() {
+  const confirmed = await dialog.confirm({
+    title: 'Commit',
+    message: 'Commit all the changes?',
+    acceptProps: computed(() => ({
+      type: 'accept',
+      color: 'success',
+      disabled: !hasIdentity.value,
+    })),
+  })
+}
+</script>
+```
+
 ## Options
 
 ### Usage
@@ -287,8 +369,9 @@ dialog.open(options)
 
 ```ts
 import type { MazBtnProps } from 'maz-ui/components/MazBtn'
+import type { Component, MaybeRefOrGetter } from 'vue'
 
-type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue'>> & {
+type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'acceptProps' | 'rejectProps'>> & {
   /**
    * Dialog identifier - identifier to manage multiple dialogs
    * @default 'main-dialog'
@@ -299,6 +382,23 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue'>> & {
    * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
    */
   buttons?: MazDialogConfirmButton[]
+  /**
+   * Props of the accept button, a ref, a getter or a reactive object to update the button while the dialog is open
+   */
+  acceptProps?: MaybeRefOrGetter<MazDialogConfirmProps['acceptProps']>
+  /**
+   * Props of the reject button, a ref, a getter or a reactive object to update the button while the dialog is open
+   */
+  rejectProps?: MaybeRefOrGetter<MazDialogConfirmProps['rejectProps']>
+  /**
+   * Component (or functional component / render function) rendered in the body instead of the message
+   * It receives `contentProps`, `accept` and `reject`
+   */
+  content?: Component
+  /**
+   * Props of the content component, a ref, a getter or a reactive object
+   */
+  contentProps?: MaybeRefOrGetter<Record<string, unknown>>
   /**
    * Function to execute when the dialog is accepted (when the user click on the confirm button)
    * Only available if the button type is 'accept'

@@ -12,6 +12,7 @@ describe('given DialogPlugin', () => {
       expect(provideSpy).toHaveBeenCalledWith('mazDialog', expect.any(Object))
       expect(app.config.globalProperties.$mazDialog).toBeDefined()
       expect(app.config.globalProperties.$mazDialog.open).toBeDefined()
+      expect(app.config.globalProperties.$mazDialog.confirm).toBeDefined()
     })
   })
 

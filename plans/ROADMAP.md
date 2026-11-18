@@ -37,3 +37,53 @@ Définir les variants (`color` x `size` x `variant`) via une config type-safe (`
 - **Distribution "registry" à la shadcn** : `npx maz add button` qui copie le code dans le projet. Point de départ : `maz-cli`.
 - **Tests de régression visuelle** (Playwright screenshots, éventuellement Histoire / Storybook).
 - **Container queries** (`@container` de Tailwind v4) pour rendre `MazCard` / `MazTable` responsives à leur conteneur.
+
+## v6 (breaking)
+
+### `@maz-ui/icons` : moins d'exports
+
+868 icônes, 2 964 fichiers publiés en 5.7 (7 836 en 5.6, la validation npm dépassait 30 min). Chaque icône existe en trois formats (`raw`, `static`, `lazy`), avec des points d'entrée qui se recoupent. Le nom (`icon="x-mark"`, avec `MazUi()` ou `@maz-ui/nuxt`) est la voie recommandée, sans import.
+
+On garde `./raw/*` (le format de référence : les noms, les props `icon` et maz-ui reposent dessus), `./static/*` (composant dans un template, `MazIconsResolver`), `./icon-names.json`, `./registry` et `./resolvers`.
+
+- [ ] Supprimer `./*` (`@maz-ui/icons/MazX`) : doublon de `./static/*`, une suggestion d'auto-import de plus.
+- [ ] La racine `.` n'exporte plus que les types (`IconComponent`, `IconName`) : le barrel charge les 868 composants en dev, `MazUi()` n'aura plus à réécrire ces imports.
+- [ ] Supprimer les barrels `./static` et `./lazy`.
+- [ ] Supprimer `./svg/*` (336 fichiers) : `?component` est remplacé par `./static/*`, `<img>` par la chaîne raw en data URI.
+- [ ] Supprimer `./icon-list` : `icon-names.json` donne déjà les composants (`MazIconsResolver`, `MazComponentsResolver` et la home de la doc la lisent).
+- [ ] À trancher, le format lazy (868 fichiers pour un wrapper d'une ligne) : maz-ui l'utilise beaucoup (91 imports dans 25 composants : `MazAlert`, `MazAvatar`...). Mesurer d'abord le passage de ces imports en raw avec `MazIcon` (poids des chunks des composants contre les requêtes en moins). Sans lui, environ 1 750 fichiers ; avec, 2 630.
+- [ ] À trancher, le barrel `./raw` : le garder pour les sélecteurs d'icônes (`import * as icons from '@maz-ui/icons/raw'`), ou les renvoyer vers `icon-names.json` et `registerIcons()`.
+- [ ] Migration dans `@maz-ui/upgrade` : `@maz-ui/icons/MazX` et les imports des barrels vers le module de chaque icône, `svg/x.svg?component` vers `./static/MazX`, `?raw` vers `./raw/MazX`, `?url` signalé (data URI à écrire), et selon la décision `./lazy/MazX` vers un `defineAsyncComponent` du static.
+
+### Styles des composants dans `@layer components`
+
+Les styles scoped des composants sont compilés hors de toute `@layer` (`dist/assets/*.css`) : ils gagnent toujours sur les utilitaires Tailwind du consommateur, qui doit passer par `!` (`text-white!` sur un `MazBtn`) ou par la prop `textColor`. Relevé par un projet qui utilise maz-ui (couleur de texte de `MazBtn color="transparent"`).
+
+- [ ] Compiler les styles des composants dans `@layer components`, pour toute la lib (pas composant par composant).
+- [ ] Sortir des templates les classes `maz:` qui fixent ce que le CSS du composant surcharge (`maz:bg-transparent`, `maz:text-foreground`, `maz:border-transparent` de `MazBtn`...) : en `@layer utilities`, elles l'emporteraient sinon sur le CSS du composant.
+- [ ] Breaking : un CSS global non layéré du consommateur (reset `button { background: none }`) l'emportera alors sur les composants. À documenter dans le guide de migration.
+
+### `MazAvatar` : chargement natif par défaut
+
+`loading="intersecting"` (le défaut) passe par `MazLazyImg` (async chunk, directive `vLazyImg`, un `IntersectionObserver` par avatar) alors que `loading="lazy"` utilise déjà un `<img>` natif. `MazSelectCountry` est déjà passé au natif.
+
+Changer le défaut est cassant pour un projet qui ne passe pas `loading` : le spinner de `MazLazyImg` disparaît (`hideLoader` ne sert plus), les événements `loading` et `intersecting` ne sont plus émis, et les `$attrs` ne vont plus au même élément.
+
+En 5.x (non cassant) :
+
+- [x] Le `<img>` natif émet `loaded` (`@load`), comme `MazLazyImg`.
+- [x] Déprécier `'intersecting'`, les événements `loading` et `intersecting` et la prop `hideLoader` : doc et JSDoc, avertissement en dev quand `loading="intersecting"` est passé explicitement (le défaut ne peut pas être détecté).
+
+En v6 :
+
+- [ ] Passer le défaut de `loading` à `'lazy'`.
+- [ ] Retirer `'intersecting'`, les événements `loading` et `intersecting` et la prop `hideLoader`.
+- [ ] Note dans le guide de migration.
+
+### Variables de `padded-container` hors de `style.css`
+
+`css/padded-container-vars.css` est dans `maz-ui/style.css`, même sans `padded-container` ni `MazPageSection`. Les utilitaires n'en dépendent plus (valeurs par défaut en fallback, padding calculé dans l'utilitaire).
+
+- [ ] Supprimer `css/padded-container-vars.css` : `--maz-container-padding-value`, `--maz-container-width` et `--maz-container-padding` disparaissent, et les variables surchargeables (`--maz-container-max-width`, `--maz-container-padding-<mobile|tablet|desktop>`) ne sont plus déclarées sur `:root` (lire `var(--maz-container-max-width)` dans un CSS custom demande un fallback).
+- [ ] `tools/agent-docs/src/sources/tokens.ts` lit les valeurs par défaut dans les fallbacks de `tailwindcss/utilities.css`.
+- [ ] À documenter dans le guide de migration.

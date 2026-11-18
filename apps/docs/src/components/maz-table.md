@@ -14,7 +14,7 @@ description: MazTable is designed to be a reusable data table with advanced feat
 1. Pagination (prop `pagination`)
    * The component supports pagination with buttons to go to the first, previous, next, and last page.
    * You can display only the pagination elements (input and buttons) and make API calls to your server to get elements by using the prop `pagination` with `no-paginate-rows`.
-2. Search (prop `search`): It includes a search feature with a search bar where users can enter a query to filter displayed data. You can choose the column where the search will be activated.
+2. Search (prop `search`): It includes a search feature with a search bar where users can enter a query to filter displayed data. You can choose the column where the search will be activated. The search is a fuzzy search ([fuzzySearch](./../ecosystem/utils/fuzzy-search.md)): prefixes, words in any order, typos, accents and case, the rows keep their order.
 3. Column Sorting (prop: `sortable`): Columns are sortable, indicated by arrow icons. Sorting can be activated by clicking on the column header.
 4. Row Selection (prop `select-value="key"`): There is a dedicated column for selection with a checkbox for each row. Users can individually or collectively select/deselect rows.
 5. Customizable Page Size: Users can choose the number of items to display per page using a dropdown list.

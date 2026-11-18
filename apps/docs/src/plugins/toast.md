@@ -179,11 +179,54 @@ Toast can have a link or an action
   </template>
 </ComponentDemo>
 
+### Icon
+
+The `icon` option replaces the icon of the type, in the formats of [MazIcon](../components/maz-icon.md): a name (with [`MazUi()`](../ecosystem/vite-plugin.md) or [`@maz-ui/nuxt`](../ecosystem/nuxt.md)), a component, a URL or a raw SVG. `false` hides it.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
+    <MazBtn color="success" @click="toast.success('Profile saved', { icon: 'cloud-arrow-up' })">
+      Success with a name
+    </MazBtn>
+    <MazBtn color="contrast" @click="toast.message('3 new messages', { icon: MazBellAlert })">
+      Message with a component
+    </MazBtn>
+    <MazBtn color="info" @click="toast.info('Info without icon', { icon: false })">
+      Info without icon
+    </MazBtn>
+  </div>
+
+  <template #code>
+
+  ```vue
+  <script lang="ts" setup>
+    import { MazBellAlert } from '@maz-ui/icons/raw/MazBellAlert'
+    import { useToast } from 'maz-ui/composables/useToast'
+
+    const toast = useToast()
+  </script>
+
+  <template>
+    <MazBtn color="success" @click="toast.success('Profile saved', { icon: 'cloud-arrow-up' })">
+      Success with a name
+    </MazBtn>
+    <MazBtn color="contrast" @click="toast.message('3 new messages', { icon: MazBellAlert })">
+      Message with a component
+    </MazBtn>
+    <MazBtn color="info" @click="toast.info('Info without icon', { icon: false })">
+      Info without icon
+    </MazBtn>
+  </template>
+  ```
+
+  </template>
+</ComponentDemo>
+
 ## Close toast programmatically
 
 You can close a toast programmatically by using the `close` method returned by the `toast` function
 
-<div class="maz:flex maz:flex-wrap maz:gap-2">
+<div class="vp-raw maz:flex maz:flex-wrap maz:gap-2">
   <MazBtn color="primary" @click="showToastAutoCLose">
     Show toast
   </MazBtn>
@@ -220,10 +263,11 @@ interface ToastOptions {
    */
   persistent?: boolean
   /**
-   * Display an icon in the toast
+   * Icon of the toast, in the formats of MazIcon: a name, a component, a URL or a raw SVG.
+   * `true` displays the icon of the type (none for `contrast` and `accent`), `false` hides it
    * @default true
    */
-  icon?: boolean
+  icon?: boolean | MazIconValue
   /**
    * The action will be displayed as a button in the toast
    * @default undefined
@@ -272,6 +316,7 @@ interface ToastOptions {
 ```
 
 <script lang="ts" setup>
+  import { MazBellAlert } from '@maz-ui/icons/raw/MazBellAlert'
   import { useToast } from 'maz-ui/composables/useToast'
   import { sleep } from '@maz-ui/utils'
 

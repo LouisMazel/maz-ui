@@ -13,7 +13,9 @@ This module uses the native api [Intl.NumberFormat](https://developer.mozilla.or
 
 Enter only numbers
 
-<MazInput v-model="numberValue" type="number" />
+<div class="vp-raw">
+<MazInput v-model="numberValue" type="number" label="Amount" />
+</div>
 
 <div
   style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
@@ -35,7 +37,7 @@ const priceFormatted = computed(() =>
 </script>
 
 <template>
-  <MazInput v-model="numberValue" type="number" />
+  <MazInput v-model="numberValue" type="number" label="Amount" />
 
   <div
     style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"

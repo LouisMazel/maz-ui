@@ -7,12 +7,12 @@
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",
   "scripts": {
-    "dev": "vitepress dev",
+    "dev": "pnpm generate:docs && vitepress dev",
     "build": "pnpm generate:docs && vitepress build",
     "generate:components-docs": "tsx ../../tools/agent-docs/src/cli.ts --vitepress ./.vitepress/generated-docs",
     "build:test": "cross-env TEST_ENV=true pnpm build",
     "build:watch": "pnpm build:test --watch",
-    "preview": "vitepress preview",
+    "preview": "pnpm generate:docs && vitepress preview",
     "serve": "vitepress serve",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
@@ -22,7 +22,6 @@
     "generate:docs": "tsx ../../tools/agent-docs/src/cli.ts --vitepress ./.vitepress/generated-docs --site ./.vitepress/agent-docs"
   },
   "dependencies": {
-    "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/icons": "workspace:^",
     "@maz-ui/node": "workspace:^",
     "@maz-ui/themes": "workspace:^",
@@ -38,7 +37,10 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
+    "@maz-ui/vite-plugin": "workspace:^",
+    "@maz-ui/vite-svg-loader": "workspace:^",
     "@samkirkland/ftp-deploy": "^1.2.5",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/vite": "catalog:",
@@ -57,7 +59,6 @@
     "typescript": "catalog:",
     "unplugin-vue-components": "catalog:",
     "vite": "catalog:",
-    "vite-svg-loader": "catalog:",
     "vitepress": "2.0.0-alpha.21",
     "vue": "catalog:",
     "vue-tsc": "catalog:"

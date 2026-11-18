@@ -19,13 +19,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # The full history: nx compares the pull request with its base branch
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js, pnpm and Nx cache
+        id: setup
         uses: ./.github/actions/setup
 
       - name: Run linters
-        run: pnpm lint:all
+        run: pnpm exec nx ${{ steps.setup.outputs.nx-scope }} -t lint
 
       - name: Run relizy commitlint
         run: pnpm relizy commitlint

@@ -1,56 +1,17 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { normalizeString } from '@maz-ui/utils/helpers/normalizeString'
+import { getMatchingScore, isStringMatching } from '@maz-ui/utils/helpers/stringMatching'
 import { computed, toValue } from 'vue'
 
-function levenshteinDistance(string1: string, string2: string): number {
-  const length1 = string1.length
-  const length2 = string2.length
-
-  const matrix: number[][] = []
-
-  for (let index = 0; index <= length1; index++) {
-    matrix[index] = [index]
-  }
-  for (let index = 0; index <= length2; index++) {
-    matrix[0][index] = index
-  }
-
-  // Calcul de la distance de Levenshtein
-  for (let index = 1; index <= length1; index++) {
-    for (let index_ = 1; index_ <= length2; index_++) {
-      const cost = string1[index - 1] === string2[index_ - 1]
-        ? 0
-        : 1
-      matrix[index][index_] = Math.min(
-        matrix[index - 1][index_] + 1,
-        matrix[index][index_ - 1] + 1,
-        matrix[index - 1][index_ - 1] + cost,
-      )
-    }
-  }
-
-  return matrix[length1][length2]
-}
-
-function getMatchingScore(string1: string, string2: string): number {
-  const distance = levenshteinDistance(string1, string2)
-
-  const maxLength = Math.max(string1.length, string2.length)
-
-  // Handle case where both strings are empty
-  if (maxLength === 0) {
-    return 1 // Perfect match for two empty strings
-  }
-
-  return 1 - distance / maxLength
-}
-
-function getMatchingResults(string1: string, string2: string, threshold = 0.75): boolean {
-  const score = getMatchingScore(string1, string2)
-
-  return score >= threshold
-}
-
+/**
+ * Similarity of two whole strings, case and accents ignored: `score` from 0 to 1, and `isMatching` when it reaches the
+ * threshold (clamped between 0 and 1). It compares whole strings (`maz` is far from `mazvan`): to search in a list, use
+ * `useFuzzySearch`.
+ * @param string1 The first string
+ * @param string2 The second string
+ * @param threshold The minimal similarity, between 0 and 1
+ * @returns The reactive `score` and `isMatching`
+ */
 export function useStringMatching(
   string1: MaybeRefOrGetter<string>,
   string2: MaybeRefOrGetter<string>,
@@ -66,7 +27,7 @@ export function useStringMatching(
   const score = computed(() => getMatchingScore(_string1.value, _string2.value))
 
   const isMatching = computed(() =>
-    getMatchingResults(_string1.value, _string2.value, toValue(threshold)),
+    isStringMatching(_string1.value, _string2.value, toValue(threshold)),
   )
 
   return {

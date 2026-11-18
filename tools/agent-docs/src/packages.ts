@@ -40,6 +40,14 @@ export const PACKAGE_DEFINITIONS: PackageDefinition[] = [
     mainDocId: 'ecosystem/mcp',
   },
   {
+    name: '@maz-ui/vite-plugin',
+    dir: 'vite-plugin',
+    short: 'vite-plugin',
+    description: 'Vite plugins of maz-ui (MazUi): icons by name, removal of the CSS of the components, plugins, directives and utilities the app does not use (build only), and only the theme presets the app loads by name in the build.',
+    group: 'ecosystem',
+    mainDocId: 'ecosystem/vite-plugin',
+  },
+  {
     name: '@maz-ui/node',
     dir: 'node',
     short: 'node',
@@ -102,6 +110,14 @@ export const PACKAGE_DEFINITIONS: PackageDefinition[] = [
     description: 'CLI that rewrites a project from Maz-UI v4 to v5 (imports, props, CSS, config, dependencies).',
     group: 'tooling',
     mainDocId: 'ecosystem/upgrade',
+  },
+  {
+    name: '@maz-ui/vite-svg-loader',
+    dir: 'vite-svg-loader',
+    short: 'vite-svg-loader',
+    description: 'Vite plugin that imports SVG files as Vue components, optimized strings or URLs, with svgo 4 (replaces vite-svg-loader).',
+    group: 'tooling',
+    mainDocId: 'ecosystem/vite-svg-loader',
   },
 ]
 

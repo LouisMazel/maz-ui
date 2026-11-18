@@ -4,18 +4,18 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 const COLOR_USAGES: Record<string, string> = {
-  primary: 'Brand primary: main actions, links, focus',
-  secondary: 'Brand secondary',
-  accent: 'Brand accent, highlights',
-  info: 'Informational state',
-  success: 'Success state',
-  warning: 'Warning state',
-  destructive: 'Error / danger state, destructive actions',
+  primary: 'Main brand color: main actions, links, focus rings, selected states. Strong enough to read as text or border on surface (3:1 minimum)',
+  secondary: 'Second strong brand color (MazBtn color="secondary", badges, identity accents), not a muted surface and never pale: for discreet backgrounds use surface, container, muted or the -50/-100 steps',
+  accent: 'Highlights and tertiary emphasis, distinct from primary and secondary',
+  info: 'Informational state (alerts, badges, hints)',
+  success: 'Success state (confirmations, valid fields)',
+  warning: 'Warning state (caution, pending attention)',
+  destructive: 'Error / danger state, invalid fields, destructive actions',
   contrast: 'Neutral high-contrast color (near black in light mode, near white in dark mode)',
-  surface: 'Page and container backgrounds',
-  foreground: 'Body text',
+  surface: 'Page background (cards, dialogs and inputs use container and input)',
+  foreground: 'Body text on surface',
   divider: 'Borders and separators',
-  muted: 'Secondary text, placeholders, disabled content',
+  muted: 'Secondary text, placeholders, disabled content, discreet backgrounds (bg-muted/10)',
   overlay: 'Backdrops and scrims behind dialogs',
   shadow: 'Shadow tint (used by the shadow-* utilities)',
   elevation: 'Alias of shadow',
@@ -71,11 +71,21 @@ export function parseColors(css: string): ThemeColorToken[] {
 }
 
 export function parseUtilities(css: string): TailwindUtility[] {
+  const descriptions: string[] = []
+  const marked = css.replaceAll(/\/\*([\s\S]*?)\*\/(\s*)/g, (_, comment: string, space: string, offset: number, source: string) => {
+    if (comment.includes('@utility') || !source.startsWith('@utility', offset + _.length))
+      return space
+
+    descriptions.push(comment.replaceAll(/^\s*\*\s?/gm, '').replaceAll(/\s+/g, ' ').trim())
+    return `@description ${descriptions.length - 1}\n`
+  })
+
   return [
-    ...stripCssComments(css).matchAll(/@utility\s+([\w-]+)\s*\{([\s\S]*?)\n\}/g),
-  ].map(match => ({
-    name: match[1],
-    css: match[2].replaceAll(/\s+/g, ' ').trim(),
+    ...marked.matchAll(/(?:@description (\d+)\n)?@utility\s+([\w-]+)\s*\{([\s\S]*?)\n\}/g),
+  ].map(([, index, name, body]) => ({
+    name,
+    css: body.replaceAll(/\s+/g, ' ').trim(),
+    ...(index && { description: descriptions[Number(index)] }),
   }))
 }
 
@@ -127,12 +137,13 @@ export function collectTailwindTokens(tailwindDir: string, cssDir: string): Tail
 
   return {
     entries: [
-      { path: 'maz-ui/tailwindcss/theme.css', description: 'Every theme token (colors, spacing, radius, breakpoints, shadows, z-index, typography, component surfaces, dark variant)' },
-      { path: 'maz-ui/tailwindcss/utilities.css', description: 'maz-ui custom utilities (flex-center, padded-container, cap-f, disabled-*...)' },
+      { path: 'maz-ui/tailwindcss/theme.css', description: 'Every theme token (colors, spacing, radius, breakpoints, container sizes, shadows, z-index, typography, component surfaces, dark variant)' },
+      { path: 'maz-ui/tailwindcss/utilities.css', description: 'maz-ui custom utilities: layout (padded-container, flex-center), type scale (text-display, text-title-1..4, text-body, text-caption...), rich-text, cap-f, disabled-*' },
       { path: 'maz-ui/tailwindcss/theme-colors.css', description: 'Colors only' },
       { path: 'maz-ui/tailwindcss/theme-spacing.css', description: 'Spacing scale only' },
       { path: 'maz-ui/tailwindcss/theme-radius.css', description: 'Border radius only' },
       { path: 'maz-ui/tailwindcss/theme-breakpoints.css', description: 'Breakpoints only' },
+      { path: 'maz-ui/tailwindcss/theme-containers.css', description: 'Container query sizes only (`@tab-m:`, `max-w-tab-m`)' },
       { path: 'maz-ui/tailwindcss/theme-shadows.css', description: 'Shadows only' },
       { path: 'maz-ui/tailwindcss/theme-z-index.css', description: 'z-index scale only' },
       { path: 'maz-ui/tailwindcss/theme-typography.css', description: 'Fonts, border width, durations and easings only' },
@@ -145,6 +156,7 @@ export function collectTailwindTokens(tailwindDir: string, cssDir: string): Tail
       : 'rounded')),
     shadows: prefixed(parseDeclarations(read('theme-shadows.css')), /^--shadow-/, name => `shadow-${name}`),
     breakpoints: prefixed(parseDeclarations(read('theme-breakpoints.css')), /^--breakpoint-/, name => `${name}:`),
+    containers: prefixed(parseDeclarations(read('theme-containers.css')), /^--container-/, name => `@${name}:`),
     zIndex: prefixed(parseDeclarations(read('theme-z-index.css')), /^--z-/, name => `z-${name}`),
     fonts: prefixed(typography, /^--font-/, name => `font-${name}`),
     durations: prefixed(typography, /^--duration-/, name => `duration-(--duration-${name})`),

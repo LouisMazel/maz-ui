@@ -11,6 +11,7 @@ import {
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SHADOW,
   DEFAULT_SPACE,
+  DEFAULT_TYPOGRAPHY,
 } from './_defaults'
 
 const FONT_FAMILY = `Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
@@ -37,6 +38,7 @@ export const mazUi: ThemePreset = {
     rounded: { md: '0.7rem' },
     shadow: DEFAULT_SHADOW,
   },
+  typography: DEFAULT_TYPOGRAPHY,
   components: {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },

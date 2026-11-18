@@ -21,6 +21,7 @@ export default {
     selectAll: 'Select all rows',
     selectRow: 'Select row',
     removeFile: 'Remove file',
+    remove: 'Remove',
     sidebar: 'Sidebar',
     openSidebar: 'Open sidebar',
     closeSidebar: 'Close sidebar',
@@ -113,6 +114,20 @@ export default {
    */
   select: {
     searchPlaceholder: 'Search',
+  },
+  /**
+   * This is the translation for the input autocomplete component.
+   * The keys are:
+   * - noResults: The translation for the no results text.
+   * - loading: The translation for the loading text.
+   * - error: The translation for the error text, when the source fails.
+   * - results: The number of results announced to the screen readers.
+   */
+  inputAutocomplete: {
+    noResults: 'No results',
+    loading: 'Loading...',
+    error: 'An error occurred, try again',
+    results: 'Results: {count}',
   },
   /**
    * This is the translation for the table component.
@@ -222,10 +237,31 @@ export default {
    * The keys are:
    * - copyToClipboard: Label/tooltip for the copy button (default state).
    * - copiedToClipboard: Label/tooltip for the copy button after a successful copy.
+   * - scrollToBottom: Label/tooltip for the button that scrolls a long block back to its last line.
    */
   codeHighlight: {
     copyToClipboard: 'Copy to clipboard',
     copiedToClipboard: 'Copied to clipboard',
+    scrollToBottom: 'Scroll to bottom',
+  },
+  /**
+   * This is the translation for the color picker component.
+   * The keys are:
+   * - openPicker: Accessible label of the button that opens the picker.
+   * - area / areaValue: Name and value of the saturation and brightness area.
+   * - hue / alpha: Names of the hue and opacity sliders.
+   * - eyeDropper: Label of the button that picks a color on the screen.
+   * - swatches / selectSwatch: Name of the presets list and label of a preset.
+   */
+  colorPicker: {
+    openPicker: 'Open the color picker',
+    area: 'Saturation and brightness',
+    areaValue: 'Saturation {saturation}%, brightness {brightness}%',
+    hue: 'Hue',
+    alpha: 'Opacity',
+    eyeDropper: 'Pick a color on the screen',
+    swatches: 'Color presets',
+    selectSwatch: 'Select {color}',
   },
   /**
    * This is the translation for the window mockup component.

@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { getSourcePaths } from '../../paths'
-import { collectIconNames, groupIcons } from '../icons'
+import { collectIconIds, collectIconNames, groupIcons } from '../icons'
 import { collectNuxtAutoImports } from '../nuxt'
 
 const paths = getSourcePaths()
@@ -36,6 +36,24 @@ describe('given collectIconNames', () => {
       writeFileSync(file, 'export const iconList = []')
 
       expect(() => collectIconNames(file)).toThrow(/No icon found/)
+    })
+  })
+})
+
+describe('given collectIconIds', () => {
+  describe('when reading the names of @maz-ui/icons', () => {
+    const ids = collectIconIds(paths.iconNames)
+
+    it('then each component has its name', () => {
+      expect(Object.keys(ids).length).toBeGreaterThan(800)
+      expect(ids).toMatchObject({
+        MazTrash: 'trash',
+        MazCog6Tooth: 'cog-6-tooth',
+        MazH1: 'h1',
+        MazLinkIcon: 'link',
+        MazFlagFR: 'flag-fr',
+        MazFlagSquareFR: 'flag-square-fr',
+      })
     })
   })
 })
@@ -76,12 +94,14 @@ describe('given groupIcons', () => {
 
 describe('given collectNuxtAutoImports', () => {
   describe('when reading the Nuxt module source', () => {
-    const result = collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts'))
+    const result = collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts'), join(paths.libRoot, 'src'))
 
     it('then lists the auto-imported components and composables', () => {
       expect(result.components).toContain('MazBtn')
       expect(result.components).not.toContain('useMazDialogConfirm')
       expect(result.composables).toEqual(expect.arrayContaining(['useBreakpoints', 'useTheme', 'useTranslations']))
+      expect(result.composables).not.toContain('useToast')
+      expect(result.composables).not.toContain('useMazIconProps')
       expect(result.pluginComposables.useToast).toBe('toast')
     })
   })
@@ -101,7 +121,7 @@ describe('given collectNuxtAutoImports', () => {
       const file = join(directory, 'module.ts')
       writeFileSync(file, 'export default {}')
 
-      expect(collectNuxtAutoImports(file)).toMatchObject({ components: [], composables: [] })
+      expect(collectNuxtAutoImports(file, directory)).toMatchObject({ components: [], composables: [] })
     })
   })
 })

@@ -1,6 +1,8 @@
 import { fileURLToPath, URL } from 'node:url'
 import { MazIconsResolver } from '@maz-ui/icons/resolvers'
 import { VitePreNestedCss } from '@maz-ui/vite-config'
+import { MazUi } from '@maz-ui/vite-plugin'
+import svgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import { MazComponentsResolver } from 'maz-ui/resolvers/MazComponentsResolver'
@@ -12,7 +14,6 @@ import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import VueSvgLoader from 'vite-svg-loader'
 
 export default defineConfig(({ mode }) => {
   const isDev = mode === 'development'
@@ -26,7 +27,10 @@ export default defineConfig(({ mode }) => {
       vue(),
       tailwindcss(),
       vueDevTools(),
-      VueSvgLoader(),
+      svgLoader(),
+      MazUi({
+        icons: { prefix: 'app' },
+      }),
       dts({
         compilerOptions: {
           noEmit: true,
@@ -45,7 +49,9 @@ export default defineConfig(({ mode }) => {
       }),
       AutoImport({
         imports: ['vue', 'vue-router'],
-        resolvers: [MazModulesResolver()],
+        resolvers: [
+          MazModulesResolver(),
+        ],
         dts: true,
       }),
       visualizer(),
@@ -58,8 +64,19 @@ export default defineConfig(({ mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
       conditions: isDev
-        ? ['monorepo:dev', 'import', 'browser', 'module', 'default']
-        : ['import', 'browser', 'module', 'default'],
+        ? [
+            'monorepo:dev',
+            'import',
+            'browser',
+            'module',
+            'default',
+          ]
+        : [
+            'import',
+            'browser',
+            'module',
+            'default',
+          ],
     },
     build: {
       rolldownOptions: {

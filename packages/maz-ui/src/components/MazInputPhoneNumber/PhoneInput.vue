@@ -128,7 +128,17 @@ defineExpose({
     :style="styleAttributes"
     @focus="inputFocused = true"
     @blur="inputFocused = false"
-  />
+  >
+    <template v-if="$slots['start-icon']" #start-icon>
+      <slot name="start-icon" />
+    </template>
+    <template v-if="$slots['end-icon']" #end-icon>
+      <slot name="end-icon" />
+    </template>
+    <template v-if="$slots.loader" #loader>
+      <slot name="loader" />
+    </template>
+  </MazInput>
 </template>
 
 <style scoped>

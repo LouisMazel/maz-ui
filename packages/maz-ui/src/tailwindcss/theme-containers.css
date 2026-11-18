@@ -1,0 +1,23 @@
+/*
+ * Container query sizes.
+ *
+ * Same names and values as the breakpoints of theme-breakpoints.css, for the
+ * container query variants of Tailwind: inside an element with the `@container`
+ * class, `@tab-m:grid-cols-2` applies when that element is at least 768px wide,
+ * whatever the viewport. Also gives `max-w-tab-m`, `w-lap-s`... Additive: the
+ * Tailwind sizes (`@md:`, `max-w-3xl`...) keep working.
+ */
+@theme inline {
+  --container-mob-s: 320px;
+  --container-mob-m: 425px;
+  --container-mob-l: 576px;
+  --container-tab-s: 640px;
+  --container-tab-m: 768px;
+  --container-tab-l: 992px;
+  --container-lap-s: 1024px;
+  --container-lap-m: 1280px;
+  --container-lap-l: 1366px;
+  --container-lap-xl: 1440px;
+  --container-lap-2xl: 1680px;
+  --container-lap-3xl: 1920px;
+}
