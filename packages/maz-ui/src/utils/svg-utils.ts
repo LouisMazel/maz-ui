@@ -4,15 +4,18 @@
  * pinned to `1em`, optional `<title>` injection, custom attribute merging).
  */
 
-const RAW_SVG_PATTERN = /^\s*<svg[\s>]/i
+const RAW_SVG_PATTERN = /^<svg[\s>/]/i
+/** What an SVG file can have before its `<svg>`: whitespace, an XML prolog, a doctype, comments */
+const RE_SVG_PROLOG = /^(?:\s|<\?xml[^>]*\?>|<!--[\s\S]*?-->|<!doctype[^>]*>)*/i
 const URL_PATTERN = /^(?:[a-z][a-z\d+\-.]*:|\/)/i
+const ICON_NAME_PATTERN = /^[a-z\d]+(?:-[a-z\d]+)*(?::[a-z\d]+(?:-[a-z\d]+)*)?$/i
 
 const RE_SVG_OPEN = /<svg\b/i
 const RE_SVG_TAG_FULL = /(<svg\b[^>]*>)/i
 const RE_SVG_TAG_WITH_CLOSE = /<svg\b([^>]*)>/i
 const RE_SVG_DIMENSIONS = /\s(?:width|height)\s*=\s*(?:"[^"]*"|'[^']*')/gi
 const RE_TITLE_TAG = /<title\b[^>]*>[\s\S]*?<\/title>/i
-const RE_SVG_DATA_URI = /^data:image\/svg\+xml[^,]*,/i
+const RE_SVG_DATA_URI = /^\s*data:image\/svg\+xml((?:;[^,;]*)*),/i
 
 /**
  * Module-level cache shared across every {@link MazIcon} instance. Keyed by
@@ -27,39 +30,59 @@ export const svgTextCache = new Map<string, string>()
  */
 export const svgFetchInflight = new Map<string, Promise<string>>()
 
+/** The `<svg>` markup of an SVG file, without its XML prolog, doctype and leading comments */
+export function extractSvgMarkup(content: string): string | undefined {
+  const svg = content.replace(RE_SVG_PROLOG, '')
+
+  return RAW_SVG_PATTERN.test(svg)
+    ? svg
+    : undefined
+}
+
 export function isRawSvg(value: unknown): value is string {
-  return typeof value === 'string' && RAW_SVG_PATTERN.test(value)
+  return typeof value === 'string' && extractSvgMarkup(value) !== undefined
 }
 
 export function isUrlLike(value: unknown): value is string {
   return typeof value === 'string' && URL_PATTERN.test(value) && !isRawSvg(value)
 }
 
+/** An icon name (`x-mark`, `app:logo`): URLs and file paths have a `/` or a `.` */
+export function isIconName(value: unknown): value is string {
+  return typeof value === 'string' && ICON_NAME_PATTERN.test(value)
+}
+
 export function isStringIcon(value: unknown): value is string {
   return typeof value === 'string'
 }
 
+function decodeUri(value: string): string {
+  try {
+    return decodeURIComponent(value)
+  }
+  catch {
+    // An unencoded payload (`data:image/svg+xml;utf8,<svg width="100%">`): a lone `%` is not an escape
+    return value
+  }
+}
+
 /**
  * Decode an SVG `data:` URI (e.g. a small asset inlined by a `?url` import),
- * base64 or percent-encoded. Returns `undefined` when the value is not a
- * decodable SVG data URI, so it can still go through `fetch`.
+ * base64 or percent-encoded, with or without parameters (`;charset=utf-8`).
+ * Returns `undefined` when the value is not a decodable SVG data URI, so it
+ * can still go through `fetch`.
  */
 export function decodeSvgDataUri(value: string): string | undefined {
-  if (!RE_SVG_DATA_URI.test(value))
+  const header = RE_SVG_DATA_URI.exec(value)
+  if (!header)
     return undefined
 
-  const commaIndex = value.indexOf(',')
-  const header = value.slice(0, commaIndex)
-  const data = value.slice(commaIndex + 1)
+  const data = decodeUri(value.slice(header[0].length))
 
   try {
-    const text = /;base64$/i.test(header)
+    return extractSvgMarkup(/;base64$/i.test(header[1] ?? '')
       ? new TextDecoder().decode(Uint8Array.from(atob(data), char => char.charCodeAt(0)))
-      : decodeURIComponent(data)
-
-    return isRawSvg(text)
-      ? text
-      : undefined
+      : data)
   }
   catch {
     return undefined
@@ -73,21 +96,44 @@ export function stripSvgRootDimensions(svg: string): string {
   })
 }
 
+function escapeAttribute(value: string | number): string {
+  return String(value).replace(/"/g, '&quot;')
+}
+
+export interface SvgDimensions {
+  width?: string | number
+  height?: string | number
+}
+
 interface PrepareOptions {
   title?: string
   svgAttributes?: Record<string, string | number>
+  /**
+   * Dimensions of the root `<svg>`, `false` keeps its own
+   * @default { width: '1em', height: '1em' } (scaled by the font size)
+   */
+  dimensions?: SvgDimensions | false
 }
 
 export function prepareSvgString(svg: string, options: PrepareOptions = {}): string {
-  let result = stripSvgRootDimensions(svg)
+  const { dimensions = { width: '1em', height: '1em' } } = options
+  let result = svg
 
-  // Force 1em / 1em — the consumer scales via font-size.
-  result = result.replace(RE_SVG_OPEN, '<svg width="1em" height="1em"')
+  if (dimensions) {
+    result = stripSvgRootDimensions(result)
+    const attributes = Object.entries(dimensions)
+      .filter(([, value]) => value !== undefined && value !== '')
+      .map(([name, value]) => `${name}="${escapeAttribute(value as string | number)}"`)
+      .join(' ')
+
+    if (attributes)
+      result = result.replace(RE_SVG_OPEN, `<svg ${attributes}`)
+  }
 
   if (options.svgAttributes) {
     const attrStr = Object.entries(options.svgAttributes)
       .filter(([, v]) => typeof v === 'string' || typeof v === 'number')
-      .map(([k, v]) => `${k}="${String(v).replace(/"/g, '&quot;')}"`)
+      .map(([k, v]) => `${k}="${escapeAttribute(v)}"`)
       .join(' ')
 
     if (attrStr)
@@ -127,12 +173,12 @@ export async function fetchSvgText(url: string, init?: RequestInit): Promise<str
     if (!response.ok)
       throw new Error(`[MazIcon] Could not fetch icon at ${url} (${response.status})`)
 
-    const text = await response.text()
-    if (!isRawSvg(text) || text.includes('<parsererror'))
+    const svg = extractSvgMarkup(await response.text())
+    if (!svg || svg.includes('<parsererror'))
       throw new Error(`[MazIcon] Response at ${url} is not a valid SVG`)
 
-    svgTextCache.set(url, text)
-    return text
+    svgTextCache.set(url, svg)
+    return svg
   })()
 
   svgFetchInflight.set(url, promise)

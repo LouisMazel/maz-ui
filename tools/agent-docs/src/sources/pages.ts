@@ -40,6 +40,7 @@ const ECOSYSTEM_PACKAGES: Record<string, string> = {
   'ecosystem/eslint-config': '@maz-ui/eslint-config',
   'ecosystem/stylelint-config': '@maz-ui/stylelint-config',
   'ecosystem/upgrade': '@maz-ui/upgrade',
+  'ecosystem/vite-svg-loader': '@maz-ui/vite-svg-loader',
 }
 
 function walk(directory: string): string[] {

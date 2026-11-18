@@ -321,6 +321,57 @@ describe('given the unknown-icon rule', () => {
   })
 })
 
+describe('given the icon names of the icon props', () => {
+  function reviewIcons(markup: string, registered = true): Finding[] {
+    return reviewCode(template(markup), {
+      knowledge: getKnowledge(),
+      filename: 'Test.vue',
+      icons: {
+        names: new Set(['x-mark', 'trash', 'app:hero']),
+        registered,
+      },
+    })
+  }
+
+  describe('when a name does not exist', () => {
+    it('then it is reported with the closest names', () => {
+      const [finding] = reviewIcons('<MazIcon icon="x-mak" />')
+
+      expect(finding.rule).toBe('unknown-icon')
+      expect(finding.severity).toBe('error')
+      expect(finding.message).toContain('MazIcon renders the fallback icon')
+      expect(finding.suggestion).toContain('"x-mark"')
+    })
+
+    it('then a bound string and the other icon props are checked', () => {
+      expect(reviewIcons('<MazBtn :start-icon="\'trashh\'" end-icon="qwxzvqwxzv">x</MazBtn>').map(finding => finding.suggestion)).toEqual([
+        'Did you mean "trash"? Search with `find_icons`.',
+        'Search with `find_icons({ query: "..." })`, or add the SVG to the icons folder of the project (`src/icons`).',
+      ])
+    })
+  })
+
+  describe('when the names exist, have an unknown prefix or are not names', () => {
+    it('then nothing is reported', () => {
+      expect(reviewIcons('<MazIcon icon="x-mark" fallback="app:hero" /><MazSvg icon="mdi:home" /><MazIcon icon="/icons/star.svg" /><MazIcon :icon="MazStar" />')).toEqual([])
+    })
+  })
+
+  describe('when no names are given', () => {
+    it('then the names of maz-ui are checked', () => {
+      expect(rulesOf(template('<MazIcon icon="x-mark" /><MazIcon icon="x-marc" />'))).toEqual(['unknown-icon'])
+    })
+  })
+
+  describe('when the project does not register the names', () => {
+    it('then it is reported once per file', () => {
+      expect(reviewIcons('<MazIcon icon="x-mark" /><MazIcon icon="trash" />', false).map(finding => [finding.rule, finding.severity])).toEqual([
+        ['unregistered-icon-names', 'info'],
+      ])
+    })
+  })
+})
+
 describe('given the prefer-maz-component rule', () => {
   describe('when native elements are used', () => {
     it.each([

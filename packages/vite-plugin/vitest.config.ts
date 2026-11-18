@@ -27,6 +27,7 @@ export default defineConfig({
         ...coverageConfigDefaults.exclude,
         'src/index.ts',
         'src/manifest.ts',
+        'src/**/__tests__/**',
       ],
       thresholds: {
         lines: 100,

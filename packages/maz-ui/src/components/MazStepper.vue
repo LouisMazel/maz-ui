@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { IconComponent } from '@maz-ui/icons'
 import type { Component } from 'vue'
-import type { MazColor } from './types'
+import type { MazIconValue } from './MazIcon.vue'
+import type { MazColor, MazIconString } from './types'
 import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
 import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
 import { MazExclamationTriangle } from '@maz-ui/icons/lazy/MazExclamationTriangle'
@@ -38,7 +38,8 @@ export interface MazStepperStep {
   error?: boolean
   success?: boolean
   warning?: boolean
-  icon?: string | IconComponent
+  /** In the formats of MazIcon: a name (`'check'`, `'app:logo'`), a component, a URL or a raw SVG */
+  icon?: MazIconValue
 }
 
 export interface MazStepperProps {
@@ -115,7 +116,7 @@ function getStepStateData(step: number): { icon?: Component, class: string } {
   return { class: '--normal' }
 }
 
-function getStepIcon(step: number): IconComponent | string | undefined {
+function getStepIcon(step: number): MazIconValue | undefined {
   return steps?.[step - 1]?.icon
 }
 
@@ -230,7 +231,7 @@ function isLastStep(step: number): boolean {
                   <template v-if="getStepIcon(step)">
                     <MazIcon
                       v-if="typeof getStepIcon(step) === 'string'"
-                      :icon="getStepIcon(step) as string"
+                      :icon="getStepIcon(step) as MazIconString"
                     />
                     <component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
                   </template>

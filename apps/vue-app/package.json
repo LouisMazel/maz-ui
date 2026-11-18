@@ -23,6 +23,8 @@
     "@maz-ui/themes": "workspace:^",
     "@maz-ui/translations": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
+    "@maz-ui/vite-plugin": "workspace:^",
+    "@maz-ui/vite-svg-loader": "workspace:^",
     "@tailwindcss/vite": "catalog:",
     "@tsconfig/node22": "^22.0.7",
     "@types/node": "catalog:",
@@ -38,7 +40,6 @@
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
     "vite-plugin-vue-devtools": "^8.2.1",
-    "vite-svg-loader": "catalog:",
     "vue": "catalog:",
     "vue-tsc": "catalog:"
   }

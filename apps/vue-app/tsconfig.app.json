@@ -5,7 +5,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node", "vite-svg-loader", "vite/client"],
+    "types": ["node", "@maz-ui/vite-svg-loader/client", "vite/client"],
     "allowJs": true
   },
   "include": ["env.d.ts", "src/**/*", "./components.d.ts", "./auto-imports.d.ts"],

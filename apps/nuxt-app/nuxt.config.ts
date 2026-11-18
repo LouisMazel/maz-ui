@@ -1,7 +1,7 @@
 import process from 'node:process'
 import { VitePreNestedCss } from '@maz-ui/vite-config'
+import svgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
-import svgLoader from 'vite-svg-loader'
 import mazUiModule from './../../packages/nuxt/src/module'
 
 const enableLocalMonorepoDev = false
@@ -67,6 +67,7 @@ export default defineNuxtConfig({
 
   mazUi: {
     css: { injectCss: !isDev },
+    icons: { prefix: 'app' },
     theme: {
       preset: 'maz-ui',
       mode: 'both',

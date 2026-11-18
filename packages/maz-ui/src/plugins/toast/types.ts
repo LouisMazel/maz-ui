@@ -1,6 +1,6 @@
-import type { IconComponent } from '@maz-ui/icons'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazBtnProps } from '../../components/MazBtn.vue'
+import type { MazIconValue } from '../../components/MazIcon.vue'
 
 export type ToastPosition
   = | 'top'
@@ -95,10 +95,11 @@ export interface ToastOptions {
    */
   persistent?: boolean
   /**
-   * Display an icon in the toast
+   * Icon of the toast, in the formats of MazIcon: a name (`'bell'`, `'app:logo'`), a component, a URL or a raw SVG.
+   * `true` displays the icon of the type (none for `contrast` and `accent`), `false` hides it.
    * @default true
    */
-  icon?: false | IconComponent
+  icon?: boolean | MazIconValue
   /**
    * The action will be displayed as a button in the toast
    * @default undefined

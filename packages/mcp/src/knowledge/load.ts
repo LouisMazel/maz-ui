@@ -64,6 +64,8 @@ export class Knowledge {
   readonly components: ComponentApi[]
   readonly componentsByName: Map<string, ComponentApi>
   readonly iconNames: Set<string>
+  /** The name of `<MazIcon icon>` of each icon component (`MazTrash`: `trash`) */
+  readonly iconIds: Map<string, string>
   readonly tailwind: TailwindTokens | undefined
   private readonly owners = new Map<string, LoadedFragment>()
   private readonly cache = new Map<string, string>()
@@ -97,6 +99,7 @@ export class Knowledge {
     this.components = fragments.flatMap(loaded => loaded.fragment.components)
     this.componentsByName = new Map(this.components.map(component => [component.name, component]))
     this.iconNames = new Set(fragments.flatMap(loaded => loaded.fragment.icons?.names ?? []))
+    this.iconIds = new Map(fragments.flatMap(loaded => Object.entries(loaded.fragment.icons?.ids ?? {})))
     this.tailwind = fragments.find(loaded => loaded.fragment.tailwind)?.fragment.tailwind
   }
 

@@ -1,8 +1,8 @@
 /// <reference types="vitest" />
 
 import { fileURLToPath } from 'node:url'
+import SvgLoader from '@maz-ui/vite-svg-loader'
 import Vue from '@vitejs/plugin-vue'
-import SvgLoader from 'vite-svg-loader'
 
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 import { ViteBuildIcons, ViteBuildThemes } from './build'

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup generic="_T">
 import type { Component, HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazIconLike } from '../composables/useMazIconProps'
@@ -8,31 +8,6 @@ import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
 import { useMazIconProps } from '../composables/useMazIconProps'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
-
-defineOptions({
-  inheritAttrs: false,
-})
-
-const {
-  class: classProp,
-  style: styleProp,
-  as,
-  id,
-  href,
-  to,
-  color = 'primary',
-  target = '_self',
-  autoExternal = true,
-  underline = false,
-  underlineHover = true,
-  startIcon,
-  endIcon,
-} = defineProps<MazLinkProps>()
-
-const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
-
-const { iconProps: startIconProps } = useMazIconProps(() => startIcon)
-const { iconProps: endIconProps } = useMazIconProps(() => endIcon)
 
 export interface MazLinkProps {
   /**
@@ -127,6 +102,31 @@ export interface MazLinkProps {
    */
   disabled?: boolean
 }
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+const {
+  class: classProp,
+  style: styleProp,
+  as,
+  id,
+  href,
+  to,
+  color = 'primary',
+  target = '_self',
+  autoExternal = true,
+  underline = false,
+  underlineHover = true,
+  startIcon,
+  endIcon,
+} = defineProps<MazLinkProps>()
+
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+
+const { iconProps: startIconProps } = useMazIconProps(() => startIcon)
+const { iconProps: endIconProps } = useMazIconProps(() => endIcon)
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazLink',

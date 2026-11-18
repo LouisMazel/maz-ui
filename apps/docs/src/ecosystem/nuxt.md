@@ -76,8 +76,8 @@ const { toggleDarkMode, isDark } = useTheme()
 
 <template>
   <div class="bg-surface p-8 text-foreground">
-    <!-- Components are auto-imported -->
-    <MazBtn color="primary" @click="start">
+    <!-- Components are auto-imported, icons are used by name -->
+    <MazBtn color="primary" start-icon="clock" @click="start">
       Start timer ({{ remainingTime }}ms)
     </MazBtn>
 
@@ -167,6 +167,9 @@ export default defineNuxtConfig({
     // Country flags of MazSelectCountry and MazInputPhoneNumber: 'cdn' (default), 'local' (offline) or '/flags/{code}.svg'
     flags: 'local',
 
+    // Icons by name (<MazIcon icon="x-mark" />), with the SVG of app/icons (default: true)
+    icons: { prefix: 'app' },
+
     // Plugins (not enabled by default)
     plugins: {
       aos: true,
@@ -249,6 +252,36 @@ css: {
   },
 }
 ```
+
+### Icons
+
+```ts
+const icons = {
+  // Folder of the SVG of the project (default: `<srcDir>/icons`, `app/icons` with Nuxt 4)
+  dir: 'app/icons',
+  // Prefix of their names: `app/icons/hero.svg` is `app:hero`
+  prefix: 'app',
+  // Names built at runtime, that the module can not find in the code
+  safelist: ['flag-fr', 'flag-de'],
+  // `icon` only accepts the known names, URLs and raw SVG: a typo is a type error (default: false)
+  strict: false,
+}
+// icons: false disables the icons by name
+```
+
+Every icon of [@maz-ui/icons](./icons/index.md) (find them in the [icon set](./icons/icon-set.md)) and every SVG of `app/icons` is available by name, in every icon prop:
+
+```vue
+<template>
+  <MazIcon icon="x-mark" />
+  <MazBtn start-icon="moon">
+    Dark mode
+  </MazBtn>
+  <MazSvg icon="app:hero" />
+</template>
+```
+
+Only the icons of each page are bundled, and they are in the HTML of the server. The types of the names are generated in `.nuxt/types/maz-icons.d.ts`: nothing to commit. See [Icons by name](./vite-plugin.md#icons-by-name) for the names the module finds.
 
 ### Theme System
 

@@ -21,7 +21,19 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.mjs",
+        "default": "./dist/index.mjs"
+      },
+      "./agents": {
+        "types": "./dist/agents.d.ts",
+        "import": "./dist/agents.mjs",
+        "default": "./dist/agents.mjs"
+      }
+    }
   },
   "exports": {
     ".": {

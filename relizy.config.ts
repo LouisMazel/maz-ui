@@ -65,6 +65,7 @@ export default defineConfig({
           'packages/node',
           'packages/stylelint-config',
           'packages/upgrade',
+          'packages/vite-svg-loader',
         ],
         changelog: { rootChangelog: false },
       },
@@ -82,6 +83,15 @@ export default defineConfig({
   commitlint: {
     changelogLinter: 'oxc',
     scopes: ['clean', 'deps', 'release'],
+  },
+
+  sync: {
+    rules: [
+      {
+        from: 'main',
+        to: ['develop'],
+      },
+    ],
   },
 
   social: {

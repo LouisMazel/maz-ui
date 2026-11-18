@@ -37,8 +37,24 @@ Définir les variants (`color` x `size` x `variant`) via une config type-safe (`
 - **Distribution "registry" à la shadcn** : `npx maz add button` qui copie le code dans le projet. Point de départ : `maz-cli`.
 - **Tests de régression visuelle** (Playwright screenshots, éventuellement Histoire / Storybook).
 - **Container queries** (`@container` de Tailwind v4) pour rendre `MazCard` / `MazTable` responsives à leur conteneur.
+- **Icônes plus légères** : un format `{ body }` (le contenu du `<svg>` seul, les attributs communs posés par `MazIcon` au rendu), 243 o contre 378 o gzip par icône. Interne seulement (le registre des noms généré par `MazUi()`) : la chaîne raw reste un SVG complet, utilisable hors `MazIcon`, donc pas cassant.
 
 ## v6 (breaking)
+
+### `@maz-ui/icons` : moins d'exports
+
+868 icônes, 2 964 fichiers publiés en 5.7 (7 836 en 5.6, la validation npm dépassait 30 min). Chaque icône existe en trois formats (`raw`, `static`, `lazy`), avec des points d'entrée qui se recoupent. Le nom (`icon="x-mark"`, avec `MazUi()` ou `@maz-ui/nuxt`) est la voie recommandée, sans import.
+
+On garde `./raw/*` (le format de référence : les noms, les props `icon` et maz-ui reposent dessus), `./static/*` (composant dans un template, `MazIconsResolver`), `./icon-names.json`, `./registry` et `./resolvers`.
+
+- [ ] Supprimer `./*` (`@maz-ui/icons/MazX`) : doublon de `./static/*`, une suggestion d'auto-import de plus.
+- [ ] La racine `.` n'exporte plus que les types (`IconComponent`, `IconName`) : le barrel charge les 868 composants en dev, `MazUi()` n'aura plus à réécrire ces imports.
+- [ ] Supprimer les barrels `./static` et `./lazy`.
+- [ ] Supprimer `./svg/*` (336 fichiers) : `?component` est remplacé par `./static/*`, `<img>` par la chaîne raw en data URI.
+- [ ] Supprimer `./icon-list` : `icon-names.json` donne déjà les composants (`MazIconsResolver`, `MazComponentsResolver` et la home de la doc la lisent).
+- [ ] À trancher, le format lazy (868 fichiers pour un wrapper d'une ligne) : maz-ui l'utilise beaucoup (91 imports dans 25 composants : `MazAlert`, `MazAvatar`...). Mesurer d'abord le passage de ces imports en raw avec `MazIcon` (poids des chunks des composants contre les requêtes en moins). Sans lui, environ 1 750 fichiers ; avec, 2 630.
+- [ ] À trancher, le barrel `./raw` : le garder pour les sélecteurs d'icônes (`import * as icons from '@maz-ui/icons/raw'`), ou les renvoyer vers `icon-names.json` et `registerIcons()`.
+- [ ] Migration dans `@maz-ui/upgrade` : `@maz-ui/icons/MazX` et les imports des barrels vers le module de chaque icône, `svg/x.svg?component` vers `./static/MazX`, `?raw` vers `./raw/MazX`, `?url` signalé (data URI à écrire), et selon la décision `./lazy/MazX` vers un `defineAsyncComponent` du static.
 
 ### Styles des composants dans `@layer components`
 

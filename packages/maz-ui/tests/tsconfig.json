@@ -11,7 +11,7 @@
       "@plugins/*": ["./../src/plugins/*"],
       "@resolvers/*": ["./../src/resolvers/*"]
     },
-    "types": ["node", "vite-svg-loader", "vitest/globals", "vue"]
+    "types": ["node", "@maz-ui/vite-svg-loader/client", "vitest/globals", "vue"]
   },
   "include": ["./../types/*", "**/*", "./../src/**/*"]
 }

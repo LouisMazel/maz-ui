@@ -11,8 +11,9 @@ export interface FindIconsArgs {
 }
 
 export function findIcons(context: ServerContext, { query, limit = 24 }: FindIconsArgs): string {
-  const { iconNames } = context.knowledge
-  const exact = [...iconNames].find(name => name.toLowerCase() === query.trim().toLowerCase())
+  const { iconIds, iconNames } = context.knowledge
+  const normalized = query.trim().toLowerCase()
+  const exact = [...iconNames].find(name => name.toLowerCase() === normalized || iconIds.get(name) === normalized)
   const names = exact
     ? [
         exact,
@@ -35,28 +36,44 @@ export function findIcons(context: ServerContext, { query, limit = 24 }: FindIco
   }
 
   const [first] = names
+  const id = iconIds.get(first)
 
   return [
     `# @maz-ui/icons matching "${query}"`,
     '',
-    names.map(name => `- \`${name}\``).join('\n'),
+    names.map(name => iconIds.has(name)
+      ? `- \`${name}\` (\`${iconIds.get(name)}\`)`
+      : `- \`${name}\``).join('\n'),
     '',
+    ...(id
+      ? [
+          '## By name',
+          '',
+          'In the icon props, when the project has `MazUi()` of `@maz-ui/vite-plugin` in its Vite config, or `@maz-ui/nuxt`: no import, only the icons used are bundled.',
+          '',
+          '```vue',
+          `<MazIcon icon="${id}" />`,
+          `<MazBtn start-icon="${id}">Label</MazBtn>`,
+          '```',
+          '',
+        ]
+      : []),
     '## Import',
     '',
     '```ts',
-    `import { ${first} } from '@maz-ui/icons/raw/${first}' // icon props (<MazBtn :start-icon>, <MazIcon :icon>): SVG string, the lightest`,
+    `import { ${first} } from '@maz-ui/icons/raw/${first}' // icon props (<MazBtn :start-icon>, <MazIcon :icon>)${id ? ' without the plugin' : ''}: SVG string, the lightest`,
     `import { ${first} } from '@maz-ui/icons/static/${first}' // directly in a template: <${first} class="size-5 text-primary" />`,
     `import { ${first} } from '@maz-ui/icons/lazy/${first}' // only for icons not visible at first render (v-if, menus, dialogs)`,
     '```',
     '',
-    `Size and color come from the text (\`1em\`, \`currentColor\`). For an \`<img>\` (multicolor flags and logos only): \`@maz-ui/icons/svg/<name>.svg\`. Never inline SVG markup nor add another icon library.`,
+    `Size and color come from the text (\`1em\`, \`currentColor\`). Multicolor flags and logos at their own colors: \`<MazSvg icon="flag-fr" width="32" />\`. Never inline SVG markup nor add another icon library.`,
   ].join('\n')
 }
 
 export const findIconsTool = defineTool({
   name: 'find_icons',
   title: 'Find @maz-ui/icons',
-  description: 'Find icons in @maz-ui/icons (860+ heroicons-based icons, brand logos and country flags) from what they represent ("delete", "close", "settings", "user", "france flag", "github") and get their import. Use it instead of inline SVG or another icon library.',
+  description: 'Find icons in @maz-ui/icons (860+ heroicons-based icons, brand logos and country flags) from what they represent ("delete", "close", "settings", "user", "france flag", "github") and get their name and import. Use it instead of inline SVG or another icon library.',
   inputSchema: {
     query: z.string().min(1).describe('What the icon represents, in English, or an icon name'),
     limit: z.number().int().min(1).max(60).optional().describe('Maximum number of icons (default 24)'),

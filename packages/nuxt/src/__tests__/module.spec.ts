@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, addImports, addTemplate, resolvePath, createResolver, defineNuxtModule, onDevtoolsReady, register, useLogger, logger, setupAgents, readPackageVersion, createRequire } = vi.hoisted(() => {
+const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, MazUiIcons, generateIconTypes, loadIconNames, addImports, addTemplate, addTypeTemplate, updateTemplates, resolvePath, createResolver, defineNuxtModule, onDevtoolsReady, register, useLogger, logger, setupAgents, readPackageVersion, createRequire } = vi.hoisted(() => {
   const logger = {
     info: vi.fn(),
     warn: vi.fn(),
@@ -23,7 +23,12 @@ const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, addImports, addTe
     addPlugin: vi.fn(),
     addVitePlugin: vi.fn(),
     MazUiPurgeCss: vi.fn((options: Record<string, unknown>) => ({ name: 'maz-ui:purge-css', options })),
+    MazUiIcons: vi.fn((options: Record<string, unknown>) => ({ name: 'maz-ui:icons', options })),
+    generateIconTypes: vi.fn((names: string[], options: Record<string, unknown>) => `types of ${names.join(', ')} ${JSON.stringify(options)}`),
+    loadIconNames: vi.fn((_options: Record<string, unknown>) => ['x-mark', 'app:hero']),
     addTemplate: vi.fn(),
+    addTypeTemplate: vi.fn(),
+    updateTemplates: vi.fn(),
     resolvePath: vi.fn((path: string) => Promise.resolve(`/project/${path.replace('~/', '')}`)),
     addImports: vi.fn(),
     createResolver: vi.fn(() => ({
@@ -51,6 +56,8 @@ vi.mock('@nuxt/kit', () => ({
   addVitePlugin,
   addImports,
   addTemplate,
+  addTypeTemplate,
+  updateTemplates,
   resolvePath,
   createResolver,
   defineNuxtModule,
@@ -59,6 +66,9 @@ vi.mock('@nuxt/kit', () => ({
 
 vi.mock('@maz-ui/vite-plugin', () => ({
   MazUiPurgeCss,
+  MazUiIcons,
+  generateIconTypes,
+  loadIconNames,
 }))
 
 vi.mock('@maz-ui/node', () => ({
@@ -189,10 +199,13 @@ describe('nuxt module', () => {
   describe('setup', () => {
     function createNuxtMock(overrides: Record<string, any> = {}, nuxtOptions: Record<string, any> = {}) {
       return {
+        hook: vi.fn(),
         options: {
           rootDir: '/project',
+          srcDir: '/project/app',
           dev: false,
           build: { transpile: [] },
+          vite: {} as Record<string, any>,
           runtimeConfig: {
             public: {
               mazUi: {},
@@ -319,6 +332,143 @@ describe('nuxt module', () => {
         expect(nuxt.options.css).not.toContain('maz-ui/style.css')
       })
 
+      describe('given the icons option', () => {
+        describe('when it is not set', () => {
+          it('then the icons plugin reads the icons folder of the app, without writing types', () => {
+            callSetup()
+
+            expect(MazUiIcons).toHaveBeenCalledWith({ dir: '/project/app/icons', dts: false })
+            expect(addVitePlugin).toHaveBeenCalledWith({
+              name: 'maz-ui:icons',
+              options: { dir: '/project/app/icons', dts: false },
+            })
+          })
+
+          it('then the types of the names are a type template', () => {
+            callSetup()
+
+            const template = addTypeTemplate.mock.calls[0]![0] as { filename: string, getContents: () => string }
+            expect(template.filename).toBe('types/maz-icons.d.ts')
+            expect(template.getContents()).toBe('types of x-mark, app:hero {}')
+            expect(loadIconNames).toHaveBeenCalledWith({ root: '/project', dir: '/project/app/icons', prefix: undefined })
+          })
+        })
+
+        describe('when it sets a folder, a prefix and the strict mode', () => {
+          it('then the plugin and the types use them', () => {
+            callSetup({
+              icons: {
+                dir: 'assets/svg',
+                prefix: 'app',
+                strict: true,
+                safelist: ['home'],
+              },
+            })
+
+            expect(MazUiIcons).toHaveBeenCalledWith({
+              dir: '/project/assets/svg',
+              prefix: 'app',
+              strict: true,
+              safelist: ['home'],
+              dts: false,
+            })
+            const template = addTypeTemplate.mock.calls[0]![0] as { getContents: () => string }
+            template.getContents()
+            expect(loadIconNames).toHaveBeenCalledWith({ root: '/project', dir: '/project/assets/svg', prefix: 'app' })
+            expect(generateIconTypes).toHaveBeenCalledWith(['x-mark', 'app:hero'], { strict: true })
+          })
+        })
+
+        describe('when it is false', () => {
+          it('then neither the plugin nor the types are added', () => {
+            callSetup({ icons: false })
+
+            expect(MazUiIcons).not.toHaveBeenCalled()
+            expect(addTypeTemplate).not.toHaveBeenCalled()
+          })
+        })
+
+        describe('when a SVG is added to the icons folder', () => {
+          it('then the types are generated again', async () => {
+            const { nuxt } = callSetup()
+            const [hookName, onWatch] = nuxt.hook.mock.calls[0]!
+
+            await onWatch('add', 'icons/hero.svg')
+
+            expect(hookName).toBe('builder:watch')
+            expect(updateTemplates).toHaveBeenCalledTimes(1)
+            const { filter } = updateTemplates.mock.calls[0]![0] as { filter: (template: { filename: string }) => boolean }
+            expect(filter({ filename: 'types/maz-icons.d.ts' })).toBe(true)
+            expect(filter({ filename: 'types/other.d.ts' })).toBe(false)
+          })
+        })
+
+        describe('when a SVG of the icons folder changes, or another file is added', () => {
+          it('then the types are kept', async () => {
+            const { nuxt } = callSetup()
+            const onWatch = nuxt.hook.mock.calls[0]![1]
+
+            await onWatch('change', 'icons/hero.svg')
+            await onWatch('add', 'pages/index.vue')
+            await onWatch('unlink', 'assets/hero.svg')
+
+            expect(updateTemplates).not.toHaveBeenCalled()
+          })
+        })
+      })
+
+      describe('given the icons pre-bundling', () => {
+        describe('when the vite config has no optimizeDeps', () => {
+          it('then @maz-ui/icons is excluded from the pre-bundling', () => {
+            const { nuxt } = callSetup()
+
+            expect(nuxt.options.vite.optimizeDeps.exclude).toEqual(['@maz-ui/icons'])
+          })
+        })
+
+        describe('when the vite config already excludes other dependencies', () => {
+          it('then @maz-ui/icons is added to them', () => {
+            const { nuxt } = callSetup({}, {}, {
+              vite: {
+                optimizeDeps: {
+                  exclude: ['onnxruntime-web'],
+                },
+              },
+            })
+
+            expect(nuxt.options.vite.optimizeDeps.exclude).toEqual(['onnxruntime-web', '@maz-ui/icons'])
+          })
+        })
+
+        describe('when the vite config already excludes @maz-ui/icons', () => {
+          it('then it is not added twice', () => {
+            const { nuxt } = callSetup({}, {}, {
+              vite: {
+                optimizeDeps: {
+                  exclude: ['@maz-ui/icons'],
+                },
+              },
+            })
+
+            expect(nuxt.options.vite.optimizeDeps.exclude).toEqual(['@maz-ui/icons'])
+          })
+        })
+
+        describe('when the vite config includes @maz-ui/icons', () => {
+          it('then the choice of the user is kept', () => {
+            const { nuxt } = callSetup({}, {}, {
+              vite: {
+                optimizeDeps: {
+                  include: ['@maz-ui/icons'],
+                },
+              },
+            })
+
+            expect(nuxt.options.vite.optimizeDeps.exclude).toBeUndefined()
+          })
+        })
+      })
+
       describe('given the utilities option', () => {
         describe('when injectUtilities is enabled', () => {
           it('then maz-ui/utilities.css is injected after maz-ui/style.css', () => {
@@ -384,7 +534,7 @@ describe('nuxt module', () => {
               css: { purge: false },
             })
 
-            expect(addVitePlugin).not.toHaveBeenCalled()
+            expect(MazUiPurgeCss).not.toHaveBeenCalled()
           })
         })
 
@@ -392,7 +542,7 @@ describe('nuxt module', () => {
           it('then the purge plugin is not added', () => {
             callSetup({}, {}, { dev: true })
 
-            expect(addVitePlugin).not.toHaveBeenCalled()
+            expect(MazUiPurgeCss).not.toHaveBeenCalled()
           })
         })
       })
@@ -442,7 +592,7 @@ describe('nuxt module', () => {
       })
 
       it('should initialize postcss options when absent', () => {
-        const { nuxt } = callSetup({}, {
+        const { nuxt } = callSetup({ icons: false }, {
           options: {
             build: { transpile: [] },
             runtimeConfig: {

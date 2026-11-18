@@ -111,6 +111,14 @@ export const PACKAGE_DEFINITIONS: PackageDefinition[] = [
     group: 'tooling',
     mainDocId: 'ecosystem/upgrade',
   },
+  {
+    name: '@maz-ui/vite-svg-loader',
+    dir: 'vite-svg-loader',
+    short: 'vite-svg-loader',
+    description: 'Vite plugin that imports SVG files as Vue components, optimized strings or URLs, with svgo 4 (replaces vite-svg-loader).',
+    group: 'tooling',
+    mainDocId: 'ecosystem/vite-svg-loader',
+  },
 ]
 
 export function findPackageDefinition(name: string): PackageDefinition | undefined {

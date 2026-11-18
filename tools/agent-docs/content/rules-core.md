@@ -10,7 +10,7 @@ Never guess an API: only use documented props, events, slots and imports.
 ### Rules
 
 - `Maz*` components instead of native elements or hand-made widgets (`MazBtn` not `<button>`, `MazInput`, `MazSelect`, `MazDialog`, `MazCard`...). A button with only an icon needs an `aria-label`.
-- Icons from `@maz-ui/icons` (`find_icons`), never inline SVG nor another icon library.
+- Icons from `@maz-ui/icons` (`find_icons`), never inline SVG nor another icon library. With `MazUi()` of `@maz-ui/vite-plugin` or `@maz-ui/nuxt`, by name in the icon props: `<MazBtn start-icon="trash">`.
 - `@maz-ui/utils` and the maz-ui composables instead of lodash, VueUse or hand-written helpers. `useToast()` for notifications, `useDialog()` for confirmations (they need their plugin).
 - Theme (brand colors, dark mode) through a `@maz-ui/themes` preset and `useTheme()`, never by hand.
 
@@ -25,7 +25,7 @@ Only use theme tokens (`bg-surface text-foreground border-divider`, `bg-primary 
 ### Imports
 
 - Deep imports: `maz-ui/components/MazBtn`, `maz-ui/composables/useToast`, `@maz-ui/utils/helpers/debounce`, `@maz-ui/icons/raw/MazTrash`. The `maz-ui` root entry only exports types. Never import from `maz-ui/src` or `maz-ui/dist`.
-- With `@maz-ui/nuxt`, components and composables are auto-imported (icons are not).
+- With `@maz-ui/nuxt`, components and composables are auto-imported, icons are used by name.
 
 ### Before you finish
 

@@ -4,7 +4,7 @@
     "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo",
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
     "rootDir": ".",
-    "types": ["node", "vite-svg-loader", "vite/client", "vue"],
+    "types": ["node", "@maz-ui/vite-svg-loader/client", "vite/client", "vue"],
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true

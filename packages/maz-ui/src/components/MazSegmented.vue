@@ -88,7 +88,7 @@ const emits = defineEmits<{
 
 defineSlots<{
   /** Content of a segment */
-  item: (props: {
+  item?: (props: {
     /** The option of the segment */
     option: MazSegmentedOption<T>
     /** `true` if the segment is selected */

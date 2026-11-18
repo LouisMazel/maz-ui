@@ -150,6 +150,10 @@ export const components = {
         { text: 'LazyImg', link: '/components/maz-lazy-img' },
         { text: 'Carousel', link: '/components/maz-carousel' },
         { text: 'Icon', link: '/components/maz-icon' },
+        {
+          text: withNewBadge('Svg'),
+          link: '/components/maz-svg',
+        },
       ],
     },
     {

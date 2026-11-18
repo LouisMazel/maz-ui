@@ -34,10 +34,10 @@ Never guess an API: only use documented props, events, slots and imports.
 
 Use `@maz-ui/icons`, never inline SVG nor another icon library. Pick the format by usage:
 
-- **Icon props** (`<MazBtn :start-icon>`, `<MazIcon :icon>`...): the raw SVG string, the lightest, `@maz-ui/icons/raw/MazTrash`. A raw icon is a string: used as a tag (`<MazTrash />`) it renders nothing, without error.
+- **Icon props** (`<MazBtn start-icon>`, `<MazIcon icon>`, `<MazSvg icon>`...): the name, `start-icon="trash"`, when the project has `MazUi()` of `@maz-ui/vite-plugin` in its Vite config, or `@maz-ui/nuxt`: no import, only the icons used are bundled. The SVG of its icons folder are names too (`src/icons/hero.svg` is `hero`); a name built at runtime (`` `flag-${code}` ``) goes in the `safelist` of the plugin. Without the plugin, the raw SVG string, the lightest, `@maz-ui/icons/raw/MazTrash`. A raw icon is a string: used as a tag (`<MazTrash />`) it renders nothing, without error.
 - **Directly in a template**: the component, `@maz-ui/icons/static/MazTrash`, then `<MazTrash class="size-5 text-muted" />` (size and color from the text: `1em`, `currentColor`).
 - **Not visible at first render** (`v-if`, menus, dialogs, tabs): the lazy component, `@maz-ui/icons/lazy/MazTrash`. Never for icons visible on load: each one is an extra request.
-- `<img>` or CSS only for multicolor icons (flags, logos): `@maz-ui/icons/svg/<name>.svg`, the text color does not apply there.
+- **Illustrations, logos, flags** at their own size and colors: `<MazSvg icon="flag-fr" width="32" />`. `<img>` or CSS only for multicolor icons, the text color does not apply there: the files are `@maz-ui/icons/svg/star.svg`, `@maz-ui/icons/flags/3x2/FR.svg` (`flags/1x1` for the square ones) and `@maz-ui/icons/logos/vue.svg`.
 
 ### Helpers
 
@@ -69,7 +69,7 @@ Brand colors, fonts, radius and spacing come from a `@maz-ui/themes` preset (`de
 ### Imports
 
 - Deep imports: `maz-ui/components/MazBtn`, `maz-ui/composables/useToast`, `maz-ui/directives/vTooltip`, `maz-ui/plugins/toast`, `@maz-ui/utils/helpers/debounce`, `@maz-ui/icons/raw/MazTrash`. The `maz-ui` root entry only exports types. Never import from `maz-ui/src` or `maz-ui/dist`.
-- With `@maz-ui/nuxt`, components and composables are auto-imported: do not import them. Icons are not: import them. The theme and the translations are set in the `mazUi` options of `nuxt.config`, not with the `MazUi` Vue plugin.
+- With `@maz-ui/nuxt`, components and composables are auto-imported: do not import them. Icons are used by name (`icon="trash"`). The theme and the translations are set in the `mazUi` options of `nuxt.config`, not with the `MazUi` Vue plugin.
 
 ### Before you finish
 

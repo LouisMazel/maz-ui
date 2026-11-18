@@ -7,7 +7,7 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "types": ["node", "vite-svg-loader", "vite/client"]
+    "types": ["node", "@maz-ui/vite-svg-loader/client", "vite/client"]
   },
   "include": [
     ".vitepress/**/*",

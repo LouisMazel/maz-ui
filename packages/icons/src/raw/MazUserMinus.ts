@@ -1,9 +1,0 @@
-/// <reference types="vite-svg-loader" />
-
-/**
- * This file is generated automatically, do not manually modify it
- */
-
-import _raw from '../../svg/user-minus.svg?raw'
-
-export const MazUserMinus: string = _raw

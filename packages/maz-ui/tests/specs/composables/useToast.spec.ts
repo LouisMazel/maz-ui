@@ -10,6 +10,7 @@ describe('given useToast composable', () => {
         error: vi.fn(),
         info: vi.fn(),
         warning: vi.fn(),
+        accent: vi.fn(),
       }
 
       const [toast] = withSetup(() => useToast(), {
@@ -21,6 +22,7 @@ describe('given useToast composable', () => {
       expect(toast.error).toBeDefined()
       expect(toast.info).toBeDefined()
       expect(toast.warning).toBeDefined()
+      expect(toast.accent).toBeDefined()
     })
   })
 
@@ -32,6 +34,7 @@ describe('given useToast composable', () => {
         error: vi.fn(),
         info: vi.fn(),
         warning: vi.fn(),
+        accent: vi.fn(),
       }
 
       const [toast] = withSetup(() => useToast(), {
@@ -52,6 +55,9 @@ describe('given useToast composable', () => {
 
       toast.warning('Warning message')
       expect(mockToastHandler.warning).toHaveBeenCalledWith('Warning message')
+
+      toast.accent('Accent message')
+      expect(mockToastHandler.accent).toHaveBeenCalledWith('Accent message')
     })
   })
 
@@ -71,6 +77,7 @@ describe('given useToast composable', () => {
         error: vi.fn(),
         info: vi.fn(),
         warning: vi.fn(),
+        accent: vi.fn(),
       }
 
       const [toast] = withSetup(() => useToast(), {

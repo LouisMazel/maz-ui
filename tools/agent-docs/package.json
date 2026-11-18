@@ -35,5 +35,31 @@
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  },
+  "nx": {
+    "targets": {
+      "test:unit": {
+        "dependsOn": [
+          "^build",
+          {
+            "projects": [
+              "@maz-ui/icons"
+            ],
+            "target": "build"
+          }
+        ]
+      },
+      "test:unit:coverage": {
+        "dependsOn": [
+          "^build",
+          {
+            "projects": [
+              "@maz-ui/icons"
+            ],
+            "target": "build"
+          }
+        ]
+      }
+    }
   }
 }

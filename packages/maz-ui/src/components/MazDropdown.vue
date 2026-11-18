@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="_T">
 import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazIconLike } from '../composables/useMazIconProps'
@@ -15,66 +15,12 @@ import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazPopover from './MazPopover.vue'
 
-defineOptions({
-  inheritAttrs: false,
-})
-
-const {
-  class: classProp,
-  style: styleProp,
-  id,
-  items = [],
-  trigger = 'adaptive',
-  color = 'transparent',
-  position = 'auto',
-  screenReaderDescription,
-  dropdownIconAnimation = true,
-  closeOnClick = false,
-  chevron = true,
-  disabled = false,
-  closeOnClickOutside = true,
-  trapFocus = true,
-  closeOnEscape = true,
-  transition = 'scale-pop',
-  preferPosition = 'bottom-start',
-  dropdownIcon,
-} = defineProps<MazDropdownProps>()
-
-const emits = defineEmits<{
-  /**
-   * Emitted when a menu item is clicked
-   * @property {Event} event - The native click event from the menu item interaction
-   */
-  'menuitem-clicked': [event: Event]
-  /**
-   * Emitted when the dropdown open state changes
-   * @property {boolean} value - The new open state (true when opened, false when closed)
-   */
-  'update:model-value': [value: boolean]
-}>()
-
-const { size } = useGlobalConfig<{ size: MazSize }>('MazDropdown', { size: 'md' })
-
-const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
-
-const { iconProps: dropdownIconProps } = useMazIconProps(() => dropdownIcon ?? MazChevronDown)
-
-const instanceId = useInstanceUniqId({
-  componentName: 'MazDropdown',
-  providedId: id,
-})
-
-const { t } = useTranslations()
-
-type MazDropdownItemBase = Record<string, unknown> & {
+export type MazDropdownMenuItem = Record<string, unknown> & {
   label: string
   class?: unknown
   color?: MazColor
   onClick?: () => unknown
-}
-
-export type MazDropdownMenuItem = MazDropdownItemBase & MazBtnProps & {
+} & MazBtnProps & {
   target?: string
   href?: string
   to?: RouteLocationRaw
@@ -214,6 +160,58 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
    */
   transition?: MazPopoverProps['transition']
 }
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+const {
+  class: classProp,
+  style: styleProp,
+  id,
+  items = [],
+  trigger = 'adaptive',
+  color = 'transparent',
+  position = 'auto',
+  screenReaderDescription,
+  dropdownIconAnimation = true,
+  closeOnClick = false,
+  chevron = true,
+  disabled = false,
+  closeOnClickOutside = true,
+  trapFocus = true,
+  closeOnEscape = true,
+  transition = 'scale-pop',
+  preferPosition = 'bottom-start',
+  dropdownIcon,
+} = defineProps<MazDropdownProps>()
+
+const emits = defineEmits<{
+  /**
+   * Emitted when a menu item is clicked
+   * @property {Event} event - The native click event from the menu item interaction
+   */
+  'menuitem-clicked': [event: Event]
+  /**
+   * Emitted when the dropdown open state changes
+   * @property {boolean} value - The new open state (true when opened, false when closed)
+   */
+  'update:model-value': [value: boolean]
+}>()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazDropdown', { size: 'md' })
+
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+
+const { iconProps: dropdownIconProps } = useMazIconProps(() => dropdownIcon ?? MazChevronDown)
+
+const instanceId = useInstanceUniqId({
+  componentName: 'MazDropdown',
+  providedId: id,
+})
+
+const { t } = useTranslations()
 
 const isOpen = defineModel<boolean>({
   default: false,

@@ -34,6 +34,10 @@ export const ecosystem = {
       link: '/ecosystem/vite-plugin',
     },
     {
+      text: withNewBadge('@maz-ui/vite-svg-loader'),
+      link: '/ecosystem/vite-svg-loader',
+    },
+    {
       text: withNewBadge('@maz-ui/upgrade'),
       link: '/ecosystem/upgrade',
     },

@@ -1,7 +1,7 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="_T">
 import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties } from 'vue'
-import type { MazIconProps } from './MazIcon.vue'
+import type { MazIconProps, MazIconValue } from './MazIcon.vue'
 import type { MazColor } from './types'
 import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
 import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
@@ -24,10 +24,10 @@ export interface MazAlertProps {
    */
   content?: string
   /**
-   * Icon of the alert - can be a component or icon name string
-   * @type {IconComponent | string}
+   * Icon of the alert, in the formats of MazIcon: a name (`'bell'`, `'app:logo'`), a component, a URL or a raw SVG.
+   * By default, the icon of the color.
    */
-  icon?: IconComponent | string
+  icon?: MazIconValue
   /**
    * Hide the icon
    * @default false

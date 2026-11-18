@@ -167,8 +167,8 @@ export interface AgentDocsFragment {
   components: ComponentApi[]
   /** Only in the fragment of maz-ui */
   tailwind?: TailwindManifest
-  /** Only in the fragment of @maz-ui/icons */
-  icons?: { names: string[] }
+  /** Only in the fragment of @maz-ui/icons: the static components, and the name of each one (`MazTrash`: `trash`) */
+  icons?: { names: string[], ids?: Record<string, string> }
 }
 
 /** `index.json` of the `agent-docs` folder of `@maz-ui/mcp`: one subfolder per fragment */

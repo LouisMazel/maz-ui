@@ -1,7 +1,7 @@
 import type { AgentTarget } from '@maz-ui/node'
 import type { MazUiThemeOptions, ThemePreset, ThemePresetName } from '@maz-ui/themes'
 import type { MazUiTranslationsOptions, MazUiTranslationsSchema } from '@maz-ui/translations'
-import type { MazUiPurgeCssOptions } from '@maz-ui/vite-plugin'
+import type { MazUiIconsOptions, MazUiPurgeCssOptions } from '@maz-ui/vite-plugin'
 import type { MazUiDefaultsOptions } from 'maz-ui/composables/useGlobalConfig'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
@@ -109,6 +109,14 @@ export interface MazUiNuxtOptions {
    * @default 'cdn'
    */
   flags?: 'cdn' | 'local' | (string & {})
+
+  /**
+   * Icons by name: `<MazIcon icon="x-mark" />`, `<MazBtn start-icon="moon">`, with the SVG of the project
+   * (`app/icons/hero.svg` is `hero`, or `app:hero` with `prefix: 'app'`). Only the icons a page uses are in its chunk.
+   * The types of the names are generated. `false` disables it.
+   * @default true
+   */
+  icons?: boolean | Omit<MazUiIconsOptions, 'dts'>
 
   /**
    * CSS and styles configuration

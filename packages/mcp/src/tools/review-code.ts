@@ -19,7 +19,7 @@ export async function reviewCodeTool(context: ServerContext, { paths, code, file
     throw new ToolInputError('Pass `paths` (files, folders or globs, relative to the project) or `code` (with `filename` to pick the parser).')
 
   // The Vue compiler and Babel load on the first review, not when the server starts
-  const [{ countBySeverity, filterBySeverity, formatFindings, reviewCode }, { detectFramework, MAX_REVIEWED_FILES, reviewFiles }] = await Promise.all([
+  const [{ countBySeverity, filterBySeverity, formatFindings, reviewCode }, { detectFramework, MAX_REVIEWED_FILES, projectIconNames, reviewFiles }] = await Promise.all([
     import('../review'),
     import('../review/files'),
   ])
@@ -27,7 +27,12 @@ export async function reviewCodeTool(context: ServerContext, { paths, code, file
 
   if (code) {
     const findings = filterBySeverity(
-      reviewCode(code, { knowledge: context.knowledge, filename, framework: framework ?? detectFramework(context.cwd) }),
+      reviewCode(code, {
+        knowledge: context.knowledge,
+        filename,
+        framework: framework ?? detectFramework(context.cwd),
+        icons: projectIconNames(context.cwd, context.knowledge),
+      }),
       minSeverity,
     )
     sections.push(formatFindings(findings, filename ?? 'code'))

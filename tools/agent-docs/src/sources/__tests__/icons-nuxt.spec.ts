@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { getSourcePaths } from '../../paths'
-import { collectIconNames, groupIcons } from '../icons'
+import { collectIconIds, collectIconNames, groupIcons } from '../icons'
 import { collectNuxtAutoImports } from '../nuxt'
 
 const paths = getSourcePaths()
@@ -36,6 +36,24 @@ describe('given collectIconNames', () => {
       writeFileSync(file, 'export const iconList = []')
 
       expect(() => collectIconNames(file)).toThrow(/No icon found/)
+    })
+  })
+})
+
+describe('given collectIconIds', () => {
+  describe('when reading the names of @maz-ui/icons', () => {
+    const ids = collectIconIds(paths.iconNames)
+
+    it('then each component has its name', () => {
+      expect(Object.keys(ids).length).toBeGreaterThan(800)
+      expect(ids).toMatchObject({
+        MazTrash: 'trash',
+        MazCog6Tooth: 'cog-6-tooth',
+        MazH1: 'h1',
+        MazLinkIcon: 'link',
+        MazFlagFR: 'flag-fr',
+        MazFlagSquareFR: 'flag-square-fr',
+      })
     })
   })
 })

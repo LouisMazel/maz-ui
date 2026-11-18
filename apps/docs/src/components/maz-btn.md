@@ -440,6 +440,16 @@ const current = ref('Overview')
   </template>
 </ComponentDemo>
 
+### Use icon names
+
+With [`MazUi()`](./../ecosystem/vite-plugin.md#icons-by-name) of `@maz-ui/vite-plugin` (included in `@maz-ui/nuxt`), every icon of [@maz-ui/icons](./../ecosystem/icons/index.md) is available by name, without import:
+
+```html
+<MazBtn start-icon="check" size="sm"> start-icon </MazBtn>
+<MazBtn end-icon="home"> end-icon </MazBtn>
+<MazBtn icon="command-line" fab size="lg" />
+```
+
 ### Use icon path
 
 ::: details View code
@@ -532,7 +542,7 @@ import { MazCommandLine } from '@maz-ui/icons/raw/MazCommandLine'
 
 :::
 
-### Use [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader)
+### Use [@maz-ui/vite-svg-loader](./../ecosystem/vite-svg-loader.md)
 
 ::: details View code
 
@@ -578,7 +588,7 @@ import { MazBtn, MazSpinner } from 'maz-ui/components'
 
 ### Pass a full `MazIconProps` object
 
-`startIcon`, `endIcon` and `icon` accept either a bare value (Vue component, URL, raw SVG string) **or** a full `MazIconProps` object. The latter is useful when you want to override the auto-derived size, set a `<title>` for screen readers, flip a directional icon for RTL, or attach extra SVG attributes.
+`startIcon`, `endIcon` and `icon` accept either a bare value (icon name, Vue component, URL, raw SVG string) **or** a full `MazIconProps` object. The latter is useful when you want to override the auto-derived size, set a `<title>` for screen readers, flip a directional icon for RTL, or attach extra SVG attributes.
 
 ::: details View code
 
@@ -589,7 +599,7 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 </script>
 
 <template>
-  <!-- The button picks an icon size from its own size — `sm` defaults to a small icon. -->
+  <!-- The button picks an icon size from its own size: `sm` defaults to a small icon. -->
   <MazBtn size="sm" :start-icon="MazStar">favorite</MazBtn>
 
   <!-- Pass an object to override per-icon. -->
