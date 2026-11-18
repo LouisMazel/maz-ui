@@ -3,7 +3,7 @@ import { EventEmitter } from 'node:events'
 import { existsSync, readFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { build } from 'vite'
-import { generateRegistration, generateRuntime, MazUiIcons } from '../index'
+import { generateRegistration, generateRuntime, MazUiIcons, readRawIcon } from '../index'
 import { createProject, HERO_SVG, write } from './fixtures'
 
 const { packageMissing } = vi.hoisted(() => ({
@@ -374,9 +374,14 @@ describe('given the virtual modules', () => {
   })
 
   describe('when the raw module of an icon is not resolved, or is external', () => {
-    it('then it exports the optimized SVG', async () => {
-      const { plugin } = setup({ dts: false }, root)
-      const load = hook(plugin, 'load')
+    it('then it exports the SVG of the built raw module, or of the file without it', async () => {
+      const packageRoot = project({
+        files: {
+          'node_modules/maz-ui/node_modules/@maz-ui/icons/dist/raw/MazXMark.js': 'var MazXMark = /* @__PURE__ */ String("<svg id=\\"built\\"/>");\nexport { MazXMark };\n',
+        },
+      })
+      const load = hook(setup({ dts: false }, packageRoot).plugin, 'load')
+      const loadWithoutBuild = hook(setup({ dts: false }, root).plugin, 'load')
       const unresolved = {
         addWatchFile: vi.fn(),
         resolve: vi.fn(() => Promise.resolve(null)),
@@ -386,9 +391,24 @@ describe('given the virtual modules', () => {
         resolve: vi.fn(() => Promise.resolve({ id: '@maz-ui/icons/raw/MazXMark', external: true })),
       }
 
-      expect(await load.call(unresolved, '\0virtual:maz-icon/x-mark')).toMatch(/^export default "<svg/)
-      expect(await load.call(external, '\0virtual:maz-icon/x-mark')).toMatch(/^export default "<svg/)
-      expect(unresolved.addWatchFile).toHaveBeenCalledWith(join(root, 'node_modules/maz-ui/node_modules/@maz-ui/icons/svg/x-mark.svg'))
+      expect(await load.call(unresolved, '\0virtual:maz-icon/x-mark')).toBe('export default "<svg id=\\"built\\"/>"\n')
+      expect(await load.call(external, '\0virtual:maz-icon/x-mark')).toBe('export default "<svg id=\\"built\\"/>"\n')
+      expect(await loadWithoutBuild.call(unresolved, '\0virtual:maz-icon/x-mark')).toMatch(/^export default "<svg xmlns/)
+      expect(await loadWithoutBuild.call(unresolved, '\0virtual:maz-icon/home')).toMatch(/^export default "<svg xmlns/)
+      expect(unresolved.addWatchFile).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('when the built raw module of an icon has no string', () => {
+    it('then its SVG is not read from it', () => {
+      const packageDir = join(project({
+        files: {
+          'node_modules/maz-ui/node_modules/@maz-ui/icons/dist/raw/MazXMark.js': 'export { MazXMark } from "./other.js"\n',
+        },
+      }), 'node_modules/maz-ui/node_modules/@maz-ui/icons')
+
+      expect(readRawIcon(packageDir, 'MazXMark')).toBeUndefined()
+      expect(readRawIcon(packageDir, 'MazMissing')).toBeUndefined()
     })
   })
 

@@ -42,6 +42,8 @@ const VIRTUAL_PATTERN = /^virtual:maz-icon(?:-runtime$|\/)/
 const RESOLVED_PATTERN = /^\0virtual:maz-icon(?:-runtime$|\/)/
 const SCRIPT_PATTERN = /\.(?:vue|md|[mc]?[jt]sx?)(?:$|\?)/
 const EXCLUDED_PATTERN = /node_modules|^\0|[?&]type=style/
+/** The string of a built `raw` module: `var MazStar = /* @__PURE__ *\/ String("<svg ...")` */
+const RAW_ICON_PATTERN = /=\s*(?:\/\*.*?\*\/\s*)?(?:String\()?("(?:[^"\\]|\\.)*")\)?;?\s*$/m
 
 /** Same key and shape as `@maz-ui/icons/registry`, that `MazIcon` reads */
 const RUNTIME_CODE = `const registry = (globalThis[Symbol.for('maz-ui.icons.v1')] ??= new Map())
@@ -85,6 +87,18 @@ export function generateRuntime(safelist: readonly string[]): string {
       : []),
     '',
   ].join('\n')
+}
+
+/** The SVG of the built `raw` module of an icon of `@maz-ui/icons`: the package does not publish its flags and logos as files */
+export function readRawIcon(packageDir: string, component: string): string | undefined {
+  const file = join(packageDir, 'dist/raw', `${component}.js`)
+  if (!existsSync(file))
+    return undefined
+
+  const literal = RAW_ICON_PATTERN.exec(readFileSync(file, 'utf8'))?.[1]
+  return literal
+    ? JSON.parse(literal) as string
+    : undefined
 }
 
 function getDefaultDts(root: string): string {
@@ -154,6 +168,12 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
     const cached = svgCache.get(source.file)
     if (cached !== undefined)
       return cached
+
+    const packageSvg = source.component && readRawIcon(source.root, source.component)
+    if (packageSvg) {
+      svgCache.set(source.file, packageSvg)
+      return packageSvg
+    }
 
     const isProjectIcon = source.root === root
     const svg = optimizeSvg(readFileSync(source.file, 'utf8'), {
@@ -301,8 +321,10 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
         if (raw && !raw.external)
           return `export { ${source.component} as default } from ${JSON.stringify(raw.id)}\n`
 
-        this.addWatchFile(source.file)
-        iconFiles.add(source.file)
+        if (!source.component) {
+          this.addWatchFile(source.file)
+          iconFiles.add(source.file)
+        }
         return `export default ${JSON.stringify(readIcon(source))}\n`
       },
     },
