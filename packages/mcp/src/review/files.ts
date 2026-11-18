@@ -22,6 +22,19 @@ export const REVIEWABLE_EXTENSIONS = [
 ]
 export const MAX_REVIEWED_FILES = 200
 
+const IGNORED_DIRECTORIES = [
+  'node_modules',
+  'dist',
+  '.nuxt',
+  '.output',
+  'coverage',
+]
+
+/** A file of a dependency or of a build output (`node_modules`, `dist`, `coverage`...) */
+export function isIgnoredPath(path: string): boolean {
+  return path.split(/[\\/]/).some(segment => IGNORED_DIRECTORIES.includes(segment))
+}
+
 export interface FileReview {
   file: string
   findings: Finding[]
@@ -88,16 +101,11 @@ export async function expandPaths(patterns: string[], cwd: string): Promise<stri
     const matches = await glob(globs, {
       cwd,
       absolute: true,
-      ignore: [
-        '**/node_modules/**',
-        '**/dist/**',
-        '**/.nuxt/**',
-        '**/.output/**',
-        '**/coverage/**',
-      ],
+      ignore: IGNORED_DIRECTORIES.map(directory => `**/${directory}/**`),
     })
 
-    for (const match of matches) files.add(match)
+    // the ignore patterns do not apply to the patterns outside of cwd (`../app`)
+    for (const match of matches.filter(entry => !isIgnoredPath(relative(cwd, entry)))) files.add(match)
   }
 
   return [...files].filter(file => REVIEWABLE_EXTENSIONS.includes(file.split('.').pop() ?? '')).sort()
