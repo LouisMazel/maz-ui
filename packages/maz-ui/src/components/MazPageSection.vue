@@ -12,17 +12,22 @@ export interface MazPageSectionProps {
    */
   as?: MazPageSectionTag
   /**
-   * Center the content on the page column without the minimum side padding, for full-bleed children (carousel, image)
+   * Side padding that grows with the screen; `false` removes it, the content keeps the width of the column
+   * @default true
+   */
+  gutter?: boolean
+  /**
+   * Content edge to edge at every screen width: no side padding, no maximum width (`gutter` and `maxWidth` are ignored)
    * @default false
    */
   fullBleed?: boolean
   /**
-   * Maximum width of the content column (a number is in pixels), instead of `--maz-container-max-width` (`1440px`)
+   * Width of the column (a number is in pixels), `--maz-container-max-width` (`1440px`) by default
    * @default undefined
    */
   maxWidth?: string | number
   /**
-   * Make the section a container (`@container`): the `padded-container` and the container query variants (`@tab-m:`) of its children follow its width
+   * Make the section a container (`@container`) for the `@tab-m:` classes of its content; its own padding does not change
    * @default false
    */
   container?: boolean
@@ -30,20 +35,29 @@ export interface MazPageSectionProps {
 
 defineProps<MazPageSectionProps>()
 
-const { as, fullBleed, maxWidth, container } = useGlobalConfig<{
+const { as, gutter, fullBleed, maxWidth, container } = useGlobalConfig<{
   as: MazPageSectionTag
+  gutter: boolean
   fullBleed: boolean
   maxWidth: string | number | undefined
   container: boolean
 }>('MazPageSection', {
   as: 'div',
+  gutter: true,
   fullBleed: false,
   maxWidth: undefined,
   container: false,
 })
 
+const layoutClass = computed(() => {
+  if (fullBleed.value)
+    return 'maz:w-full'
+
+  return gutter.value ? 'maz:padded-container' : 'maz:padded-container-no-p'
+})
+
 const style = computed<StyleValue>(() => {
-  if (maxWidth.value === undefined)
+  if (fullBleed.value || maxWidth.value === undefined)
     return undefined
 
   return {
@@ -58,7 +72,7 @@ const style = computed<StyleValue>(() => {
   <component
     :is="as"
     class="m-page-section maz:box-border"
-    :class="[fullBleed ? 'maz:padded-container-no-p' : 'maz:padded-container', { 'maz:@container': container }]"
+    :class="[layoutClass, { 'maz:@container': container }]"
     :style
   >
     <!-- @slot Content of the section -->

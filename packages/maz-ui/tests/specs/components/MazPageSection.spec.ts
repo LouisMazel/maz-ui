@@ -19,6 +19,7 @@ describe('given MazPageSection component', () => {
       expect(wrapper.classes()).not.toContain('maz:padded-container-no-p')
       expect(wrapper.classes()).not.toContain('maz:@container')
       expect(wrapper.attributes('style')).toBeUndefined()
+      expect(wrapper.classes()).not.toContain('maz:w-full')
       expect(wrapper.find('p').text()).toBe('Content')
     })
   })
@@ -33,14 +34,27 @@ describe('given MazPageSection component', () => {
     })
   })
 
-  describe('when fullBleed is set', () => {
+  describe('when gutter is false', () => {
     it('then it centers the content without the minimum side padding', () => {
       const wrapper = mount(MazPageSection, {
-        props: { fullBleed: true },
+        props: { gutter: false },
       })
 
       expect(wrapper.classes()).toContain('maz:padded-container-no-p')
       expect(wrapper.classes()).not.toContain('maz:padded-container')
+    })
+  })
+
+  describe('when fullBleed is set', () => {
+    it('then it has no side padding nor maximum width', () => {
+      const wrapper = mount(MazPageSection, {
+        props: { fullBleed: true, gutter: false, maxWidth: 960 },
+      })
+
+      expect(wrapper.classes()).toContain('maz:w-full')
+      expect(wrapper.classes()).not.toContain('maz:padded-container')
+      expect(wrapper.classes()).not.toContain('maz:padded-container-no-p')
+      expect(wrapper.attributes('style')).toBeUndefined()
     })
   })
 
@@ -93,7 +107,7 @@ describe('given MazUi defaults for MazPageSection', () => {
   const config = {
     MazPageSection: {
       as: 'section',
-      fullBleed: true,
+      gutter: false,
       maxWidth: 960,
       container: true,
     },
@@ -118,7 +132,7 @@ describe('given MazUi defaults for MazPageSection', () => {
       const wrapper = mount(MazPageSection, {
         props: {
           as: 'footer',
-          fullBleed: false,
+          gutter: true,
           maxWidth: '50rem',
           container: false,
         },
