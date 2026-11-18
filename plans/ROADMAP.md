@@ -37,6 +37,7 @@ Définir les variants (`color` x `size` x `variant`) via une config type-safe (`
 - **Distribution "registry" à la shadcn** : `npx maz add button` qui copie le code dans le projet. Point de départ : `maz-cli`.
 - **Tests de régression visuelle** (Playwright screenshots, éventuellement Histoire / Storybook).
 - **Container queries** (`@container` de Tailwind v4) pour rendre `MazCard` / `MazTable` responsives à leur conteneur.
+- **Icônes plus légères** : un format `{ body }` (le contenu du `<svg>` seul, les attributs communs posés par `MazIcon` au rendu), 243 o contre 378 o gzip par icône.
 
 ## v6 (breaking)
 
