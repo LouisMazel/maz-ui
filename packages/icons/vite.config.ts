@@ -10,6 +10,7 @@ import dts from 'vite-plugin-dts'
 import pkg from './package.json' with { type: 'json' }
 
 import { generateIcons } from './utils/generateIcons'
+import { writeIconTypes } from './utils/writeIconTypes'
 
 // Before the entries are listed: the variants of the icons are generated, not versioned
 generateIcons({ root: import.meta.dirname })
@@ -49,15 +50,32 @@ export default defineConfig({
         }
       },
     },
+    {
+      // One file of types per variant, instead of one per icon
+      name: 'maz-icons-types',
+      writeBundle() {
+        writeIconTypes(resolver('dist'), Object.keys(moduleEntries).flatMap(entry => entry.startsWith('static/')
+          ? [
+              entry.slice('static/'.length),
+            ]
+          : []))
+      },
+    },
     Vue(),
     svgLoader(),
     dts({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
       outDirs: resolver('dist'),
-      // The build utilities of utils/ are typechecked, not published
+      // The build utilities of utils/ are typechecked, not published. The types of the icons are written by `maz-icons-types`
       include: ['src'],
-      exclude: ['src/**/__tests__/**/*'],
+      exclude: [
+        'src/**/__tests__/**/*',
+        'src/index.ts',
+        'src/static/**',
+        'src/lazy/**',
+        'src/raw/**',
+      ],
     }),
     codecovVitePlugin({
       enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,

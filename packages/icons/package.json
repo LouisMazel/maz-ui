@@ -39,7 +39,7 @@
         "default": "./dist/index.js"
       },
       "./*": {
-        "types": "./dist/static/*.d.ts",
+        "types": "./dist/icons.d.ts",
         "import": "./dist/static/*.js",
         "default": "./dist/static/*.js"
       },
@@ -49,7 +49,7 @@
         "default": "./dist/static/index.js"
       },
       "./static/*": {
-        "types": "./dist/static/*.d.ts",
+        "types": "./dist/icons.d.ts",
         "import": "./dist/static/*.js",
         "default": "./dist/static/*.js"
       },
@@ -59,7 +59,7 @@
         "default": "./dist/lazy/index.js"
       },
       "./lazy/*": {
-        "types": "./dist/lazy/*.d.ts",
+        "types": "./dist/icons.d.ts",
         "import": "./dist/lazy/*.js",
         "default": "./dist/lazy/*.js"
       },
@@ -69,7 +69,7 @@
         "default": "./dist/raw/index.js"
       },
       "./raw/*": {
-        "types": "./dist/raw/*.d.ts",
+        "types": "./dist/icons.d.ts",
         "import": "./dist/raw/*.js",
         "default": "./dist/raw/*.js"
       },
@@ -104,7 +104,7 @@
     },
     "./*": {
       "monorepo:dev": "./src/static/*.ts",
-      "types": "./dist/static/*.d.ts",
+      "types": "./dist/icons.d.ts",
       "import": "./dist/static/*.js",
       "default": "./dist/static/*.js"
     },
@@ -116,7 +116,7 @@
     },
     "./static/*": {
       "monorepo:dev": "./src/static/*.ts",
-      "types": "./dist/static/*.d.ts",
+      "types": "./dist/icons.d.ts",
       "import": "./dist/static/*.js",
       "default": "./dist/static/*.js"
     },
@@ -128,7 +128,7 @@
     },
     "./lazy/*": {
       "monorepo:dev": "./src/lazy/*.ts",
-      "types": "./dist/lazy/*.d.ts",
+      "types": "./dist/icons.d.ts",
       "import": "./dist/lazy/*.js",
       "default": "./dist/lazy/*.js"
     },
@@ -140,7 +140,7 @@
     },
     "./raw/*": {
       "monorepo:dev": "./src/raw/*.ts",
-      "types": "./dist/raw/*.d.ts",
+      "types": "./dist/icons.d.ts",
       "import": "./dist/raw/*.js",
       "default": "./dist/raw/*.js"
     },
