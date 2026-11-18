@@ -232,6 +232,18 @@ describe('MazAvatar extended branch coverage', () => {
       expect(img.attributes('loading')).toBe('lazy')
     })
 
+    it('sets the loading attribute before the src attribute', async () => {
+      const wrapper = mount(MazAvatar, {
+        props: {
+          src: 'https://example.com/photo.jpg',
+          loading: 'lazy',
+        },
+      })
+      await vi.dynamicImportSettled()
+      const attributeNames = wrapper.find('img').element.getAttributeNames()
+      expect(attributeNames.indexOf('loading')).toBeLessThan(attributeNames.indexOf('src'))
+    })
+
     it('uses native img when loading is eager', async () => {
       const wrapper = mount(MazAvatar, {
         props: {

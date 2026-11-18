@@ -429,12 +429,12 @@ const flagUrl = computed(() => {
               <img
                 v-if="option.code && getFlagSrc(option.code)"
                 :ref="element => observeFlag(element, option.code)"
+                loading="lazy"
+                decoding="async"
                 :src="getFlagSrc(option.code)"
                 :alt="`${option.name} flag`"
                 width="20"
                 height="20"
-                loading="lazy"
-                decoding="async"
                 class="m-select-country__flag maz:size-5 maz:rounded-md"
                 @error="onFlagError(option.code)"
               >

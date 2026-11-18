@@ -306,10 +306,10 @@ const fontSize = computed(() => {
             v-else
             class="m-avatar__picture"
             :class="[imageHeightFull ? 'maz:h-full maz:max-h-full maz:w-auto maz:max-w-none' : 'maz:w-full maz:max-w-full']"
-            :src="src ?? fallbackSrc"
-            :alt="alt"
             :loading
             decoding="async"
+            :src="src ?? fallbackSrc"
+            :alt="alt"
             @load="emits('loaded', $event.target as Element)"
             @error="handleImageError"
           >
