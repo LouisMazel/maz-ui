@@ -22,4 +22,10 @@ describe('given the MazUi plugin', () => {
       expect(MazUi({ purge: false }).map(plugin => plugin.name)).toEqual(['maz-ui:icons'])
     })
   })
+
+  describe('when it has presets', () => {
+    it('then it keeps only these theme presets', () => {
+      expect(MazUi({ presets: [] }).map(plugin => plugin.name)).toEqual(['maz-ui:icons', 'maz-ui:purge-css', 'maz-ui:theme-presets'])
+    })
+  })
 })

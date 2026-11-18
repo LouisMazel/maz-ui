@@ -3,6 +3,7 @@ import type { MazUiIconsOptions } from './icons'
 import type { MazUiPurgeCssOptions } from './purge-css'
 import { MazUiIcons } from './icons'
 import { MazUiPurgeCss } from './purge-css'
+import { MazUiThemePresets } from './theme-presets'
 
 export interface MazUiOptions {
   /**
@@ -16,6 +17,12 @@ export interface MazUiOptions {
    * @default true
    */
   purge?: boolean | MazUiPurgeCssOptions
+  /**
+   * Named presets of @maz-ui/themes the app loads by name: the other presets are not in the build. `[]` keeps none,
+   * for an app that only uses preset objects.
+   * @default undefined (every preset)
+   */
+  presets?: string[]
 }
 
 function getOptions<T extends object>(value: boolean | T | undefined): T | undefined {
@@ -27,7 +34,7 @@ function getOptions<T extends object>(value: boolean | T | undefined): T | undef
     : {} as T
 }
 
-/** The Vite plugins of maz-ui: icons by name and CSS purge */
+/** The Vite plugins of maz-ui: icons by name, CSS purge and theme presets */
 export function MazUi(options: MazUiOptions = {}): Plugin[] {
   const icons = getOptions(options.icons)
   const purge = getOptions(options.purge)
@@ -41,6 +48,11 @@ export function MazUi(options: MazUiOptions = {}): Plugin[] {
     ...(purge
       ? [
           MazUiPurgeCss(purge),
+        ]
+      : []),
+    ...(options.presets
+      ? [
+          MazUiThemePresets({ presets: options.presets }),
         ]
       : []),
   ]
