@@ -125,6 +125,50 @@ describe('given a vite build with MazUiIcons', () => {
   })
 })
 
+describe('given a vite build of TypeScript with MazUiIcons', () => {
+  let code: string
+
+  beforeAll(async () => {
+    const root = project({
+      files: {
+        'src/entry.ts': [
+          'type Kind = \'invite\' | \'close\'',
+          'const ICONS: Record<Kind, string> = { invite: \'home\', close: \'x-mark\' }',
+          'console.log(ICONS)',
+          '',
+        ].join('\n'),
+      },
+    })
+
+    const output = await build({
+      root,
+      configFile: false,
+      logLevel: 'silent',
+      plugins: [
+        MazUiIcons({ dts: false }),
+      ],
+      build: {
+        write: false,
+        minify: false,
+        rollupOptions: {
+          input: join(root, 'src/entry.ts'),
+        },
+      },
+    }) as Rollup.RollupOutput
+
+    code = output.output.map(file => file.type === 'chunk'
+      ? file.code
+      : '').join('\n')
+  })
+
+  describe('when a variable has a type annotation', () => {
+    it('then its icons are registered: the types are removed before the scan', () => {
+      expect(code).toContain('"home": "<svg')
+      expect(code).toContain('"x-mark": "<svg')
+    })
+  })
+})
+
 describe('given the generated code', () => {
   describe('when a file uses icons', () => {
     it('then it imports and registers them', () => {
