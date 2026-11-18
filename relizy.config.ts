@@ -111,6 +111,10 @@ export default defineConfig({
     ],
   },
 
+  prComment: {
+    mode: 'recreate',
+  },
+
   social: {
     changelogUrl: 'https://maz-ui.com/changelog',
     twitter: { enabled: true },
