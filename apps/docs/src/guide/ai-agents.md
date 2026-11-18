@@ -193,7 +193,8 @@ The command exits with an error code when it finds errors (or more warnings than
 | `invalid-prop-value` | error | `color="red"` on a component that accepts `primary`, `secondary`... |
 | `boolean-prop-string` | error | `disabled="false"` (a truthy string) |
 | `unknown-model`, `unknown-event`, `unknown-slot` | error | `v-model:foo`, `@clik`, `<template #captions>` |
-| `unknown-icon` | error | An icon that does not exist in `@maz-ui/icons` |
+| `unknown-icon` | error | An icon that does not exist in `@maz-ui/icons`, or a name (`icon="x-mak"`) that is neither an icon of maz-ui nor of the project |
+| `unregistered-icon-names` | info | Icon names in a project without `MazUi()` (`@maz-ui/vite-plugin`) nor `@maz-ui/nuxt`: they render the fallback |
 | `prefer-maz-component` | warning | `<button>`, `<input>`, `<select>`, `<textarea>`, `<dialog>`... (a `<button>` that is a clickable card, with a layout, a component or a title and a subtitle, or an empty hit area, is left alone) |
 | `inline-svg` | warning | SVG icons written inline |
 | `icon-button-label` | warning | A `MazBtn` that only shows an icon, without `text`, content nor `aria-label` |

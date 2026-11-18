@@ -9,12 +9,13 @@ import { fileURLToPath } from 'node:url'
 
 import { CSS_ID, generateCSS, mergePresets } from '@maz-ui/themes/utils'
 import { VitePreNestedCss } from '@maz-ui/vite-config'
+import { MazUiIcons } from '@maz-ui/vite-plugin'
+import svgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 import { MazComponentsResolver } from 'maz-ui/resolvers'
 import postcssUrl from 'postcss-url'
 import Components from 'unplugin-vue-components/vite'
 import { defaultClientConditions } from 'vite'
-import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { getHtaccess, head, nav, redirectMiddleware, sidebar, writeAgentSkills, writeHomeMarkdown } from './configs/index.mjs'
 import { getOgImage } from './og-image.tsx'
@@ -216,6 +217,7 @@ export default defineConfig<DefaultTheme.Config>({
         : []),
       tailwindcss(),
       svgLoader(),
+      MazUiIcons({ dts: false }),
       {
         // A page named like its component (maz-btn.md) compiles `<MazBtn>` to a self reference that the resolver skips
         name: 'docs:maz-self-reference',

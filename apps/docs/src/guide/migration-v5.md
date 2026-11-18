@@ -242,7 +242,7 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 </template>
 ```
 
-The existing `static/` (eager Vue component) and `lazy/` (async Vue component) entries are still available — pick what fits the situation. See the [icons guide](../ecosystem/icons/index.md#raw-svg-strings-new-in-v5) for the full decision matrix.
+The existing `static/` (eager Vue component) and `lazy/` (async Vue component) entries are still available — pick what fits the situation. See the [icons guide](../ecosystem/icons/index.md#imports) for the full decision matrix.
 
 ### 6. Logical direction props — `left-icon`/`right-icon` → `start-icon`/`end-icon`
 

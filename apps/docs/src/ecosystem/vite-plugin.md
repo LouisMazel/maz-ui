@@ -1,10 +1,10 @@
 ---
 title: Vite plugin
-description: "@maz-ui/vite-plugin removes from the CSS of maz-ui the rules of the components, plugins, directives and utilities your app does not use, at build time."
+description: "@maz-ui/vite-plugin brings icons by name (<MazIcon icon=\"x-mark\" />, only the icons of each page bundled) and removes the unused CSS of maz-ui at build time."
 head:
   - - meta
     - name: keywords
-      content: vite, vite plugin, purge css, unused css, css size, bundle size, tree shaking css, maz-ui
+      content: vite, vite plugin, icons, svg, icon names, purge css, unused css, css size, bundle size, tree shaking css, maz-ui
 ---
 
 # {{ $frontmatter.title }}
@@ -13,10 +13,13 @@ head:
 
 <NpmBadge package="@maz-ui/vite-plugin" />
 
-`maz-ui/style.css` holds the styles of every component. Most apps use a few of them: the plugin keeps the rules of what your code uses and removes the rest, in the CSS of your production build. It is the first plugin of the package, others may come.
+`MazUi()` holds both plugins:
+
+- **Icons by name**: `icon="x-mark"` without an import, with the SVG of your project and the types of the names.
+- **CSS purge**: removes from the CSS of maz-ui what your app does not use.
 
 ::: tip Nuxt
-With `@maz-ui/nuxt`, you do not install anything: the module adds the plugin for you, see [`css.purge`](./nuxt.md#css-configuration).
+With `@maz-ui/nuxt`, you do not install anything: the module adds both, see [`icons`](./nuxt.md#icons) and [`css.purge`](./nuxt.md#css-configuration).
 :::
 
 ## Installation
@@ -39,22 +42,118 @@ yarn add -D @maz-ui/vite-plugin
 
 :::
 
-It requires `maz-ui >= 5.7.0`, which ships the manifest the plugin reads. Keep both on the same version.
+It requires `maz-ui >= 5.7.0`. Keep both on the same version.
 
 ## Usage
 
 ```ts
 // vite.config.ts
+import { MazUi } from '@maz-ui/vite-plugin'
 import vue from '@vitejs/plugin-vue'
-import { MazUiPurgeCss } from '@maz-ui/vite-plugin'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
     vue(),
-    MazUiPurgeCss(),
+    MazUi(),
   ],
 })
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icons` | `boolean \| object` | `true` | [Icons by name](#icons-by-name) |
+| `purge` | `boolean \| object` | `true` | [CSS purge](#css-purge) |
+
+## Icons by name
+
+```vue
+<template>
+  <MazIcon icon="x-mark" />
+  <MazIcon :icon="isDark ? 'moon' : 'sun'" />
+  <MazBtn start-icon="arrow-right">
+    Next
+  </MazBtn>
+  <MazSvg icon="flag-fr" width="32" />
+  <MazSvg icon="hero" /> <!-- src/icons/hero.svg -->
+</template>
+```
+
+Every icon of [@maz-ui/icons](./icons/index.md) (`x-mark`, `logo-vue`, `flag-fr`) and every SVG of `src/icons` is available by name, in every prop that takes an icon (`icon`, `start-icon`, `end-icon`...).
+
+- **Only the icons of each page are bundled**: the plugin finds the names a file uses and adds them to the chunk of this file. An icon of a single route is not in the entry chunk.
+- **SSR**: the icon is in the HTML of the server.
+- **Typed**: the plugin writes `src/maz-icons.d.ts`, for the autocompletion of the names.
+- **No reload in dev** when a page uses a new icon.
+- **Imports from the root**: `import { MazStar, LazyMazHome } from '@maz-ui/icons'` is rewritten to the module of each icon (`@maz-ui/icons/static/MazStar`), the dev server does not load the 860+ icons.
+
+### Which names are found
+
+The plugin reads the strings of the keys, variables and attributes whose name contains `icon`, and the strings with your `prefix`:
+
+```ts
+const items = [{ label: 'Home', icon: 'home' }] // found
+const icon = computed(() => isDark.value ? 'moon' : 'sun') // found
+h(MazIcon, { icon: 'bell' }) // found
+const names = ['home', 'user'] // not found: no icon context
+```
+
+A name built at runtime (from an API, `` `flag-${code}` ``) is not found: add it to `safelist`. An unknown name renders the `fallback` of MazIcon, with a warning in the console.
+
+### SVG of the project
+
+`src/icons/hero.svg` is `hero`, `src/icons/brand/logo.svg` is `brand-logo`. They are optimized with the [default svgo config](./vite-svg-loader.md#default-svgo-config). A file with the name of an icon of maz-ui replaces it, with a warning. Set a `prefix` to keep them apart:
+
+```ts
+MazUi({
+  icons: { dir: 'src/assets/svg', prefix: 'app' },
+})
+```
+
+```vue
+<MazSvg icon="app:hero" />
+```
+
+### Options
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `dir` | `string` | `'src/icons'` | Folder of the SVG of the project |
+| `prefix` | `string` | | Prefix of their names: `app` gives `app:hero` |
+| `safelist` | `string[]` | `[]` | Names the plugin can not find (built at runtime): registered wherever icons are used |
+| `dts` | `string \| boolean` | `'src/maz-icons.d.ts'` | File of the types of the names, `false` to not write it |
+| `strict` | `boolean` | `false` | `icon` only accepts the known names, URLs and raw SVG: a typo is a type error |
+| `svgoConfig` | `Config \| (defaults) => Config` | | svgo config of the SVG of the project |
+
+The types augment `maz-ui`: keep `src/maz-icons.d.ts` in the `include` of your `tsconfig.json` (it is under `src`). Commit it, like the `components.d.ts` of unplugin-vue-components: `vue-tsc` in the CI and a fresh clone have the names without running Vite (without the file, `icon` is a plain `string`). It only changes when you add an SVG or upgrade maz-ui.
+
+::: details Your own components with an icon prop
+Type the prop with `MazIconString` (a string, from `maz-ui`) or `MazIconValue` (a string or a component, from `maz-ui/components/MazIcon`), and make the component generic:
+
+```vue
+<script setup lang="ts" generic="_T">
+import type { MazIconValue } from 'maz-ui/components/MazIcon'
+
+defineProps<{ icon?: MazIconValue }>()
+</script>
+```
+
+Passed as a `Component` (`h()`, a route), a component that is not generic fails with `TS2590: Expression produces a union type that is too complex to represent`: TypeScript compares its props with the 860+ names. The components of maz-ui with an icon prop are generic for this reason: type their template refs with [`GenericInstanceType`](./utils/types/generic-instance-type.md), `InstanceType` does not work with a generic component.
+:::
+
+## CSS purge
+
+`maz-ui/style.css` holds the styles of every component. Most apps use a few of them: the plugin keeps the rules of what your code uses and removes the rest, in the CSS of your production build.
+
+```ts
+MazUi({
+  purge: { safelist: ['text-title-1'] },
+})
+
+// or alone
+import { MazUiPurgeCss } from '@maz-ui/vite-plugin'
+
+MazUiPurgeCss()
 ```
 
 Keep importing `maz-ui/style.css` as usual. The build prints a report:
@@ -63,7 +162,7 @@ Keep importing `maz-ui/style.css` as usual. The build prints a report:
 [maz-ui:purge-css] 86.9 kB -> 32.8 kB of maz-ui CSS (-62%, 412 unused classes removed)
 ```
 
-## How it works
+### How it works
 
 1. At the build of maz-ui, `dist/css/purge-manifest.json` lists every class of `style.css`, the public utilities, and for each entry (`components/MazBtn`, `plugins/toast`, `directives/vTooltip`...) the classes it renders, with the entries it imports.
 2. In your build, the plugin scans the source files of the project and finds the entries you use by their names: `MazBtn`, `<maz-btn>`, `LazyMazBtn`, `useToast`, `v-tooltip`, `ToastPlugin`... A namespace import of a barrel (`import * as components from 'maz-ui/components'`) keeps every component. It also finds the public utilities used (`text-title-1`, `padded-container`...).
@@ -72,7 +171,7 @@ Keep importing `maz-ui/style.css` as usual. The build prints a report:
 
 The plugin only touches the CSS of maz-ui. The CSS of your own app is never modified.
 
-## Gains
+### Gains
 
 Measured with `vite build`, the maz-ui preset, on the CSS assets of the app. Every Vue app imports `maz-ui/style.css`.
 
@@ -92,7 +191,7 @@ With Nuxt (2 pages using MazBtn, MazCard, MazBadge, LazyMazAccordion, MazInput, 
 They come from the demo apps above and this setup (preset, Tailwind or not, components used). The more components you use, the smaller the gain.
 :::
 
-## Options
+### Purge options
 
 All options are optional.
 
@@ -105,7 +204,7 @@ All options are optional.
 
 By default, the plugin scans every source file of the project (`vue`, `js`, `jsx`, `ts`, `tsx`, `html`, `md`, `mdx`, `astro`, `svelte`...), and ignores `node_modules`, `dist`, `.output`, `.nuxt`, `coverage` and `.d.ts` files.
 
-### Monorepo
+#### Monorepo
 
 When your app uses components written in another package of the monorepo, add its sources:
 
@@ -115,7 +214,7 @@ MazUiPurgeCss({
 })
 ```
 
-### Dependency built on maz-ui
+#### Dependency built on maz-ui
 
 The default scan ignores `node_modules`, the globs of `content` do not: add the files of a dependency that renders maz-ui components (a design system of your company), or list the entries it uses with `entries`:
 
@@ -127,7 +226,7 @@ MazUiPurgeCss({
 })
 ```
 
-### Names built at runtime
+#### Names built at runtime
 
 A component resolved from a dynamic name, or a class that only appears in HTML loaded at runtime (a CMS, an API), is not found in the source. Keep it explicitly:
 
@@ -138,7 +237,7 @@ MazUiPurgeCss({
 })
 ```
 
-## Bundle check
+### Bundle check
 
 At the end of the build, the plugin looks for the purged classes in the final JS and HTML. If one is found, a component of maz-ui is used by a file the plugin does not scan (a dependency, a package of your monorepo), and the build warns:
 
@@ -150,7 +249,7 @@ Add its files to the `content` option, or the component to `entries`.
 
 Fix it with `content` (the files that use the component) or `entries`, then rebuild.
 
-## Projects without Tailwind
+### Projects without Tailwind
 
 `maz-ui/utilities.css` contains the public utilities of maz-ui without prefix: the `text-*` and `type-*` type scale, `rich-text`, `padded-container`, `flex-center`, `glass`, `scrollbar-themed`, `disabled-*`, `cursor-interactive`, `cap-f` and `z-default-backdrop`. It weighs 19.7 kB (2.6 kB gzip) and the plugin purges it like `style.css`.
 
@@ -163,7 +262,7 @@ import 'maz-ui/utilities.css'
 Keep `@import 'maz-ui/tailwindcss/utilities.css'` in your Tailwind entry and do not import `maz-ui/utilities.css`: you would get duplicates, and no variants (`hover:`, `tab-m:`...). See [Tailwind CSS](./../guide/tailwind.md).
 :::
 
-## Limitations
+### Limitations
 
 - Vite only for now (no webpack, Rollup alone or other bundlers).
 - Build only: the dev server keeps the whole CSS.

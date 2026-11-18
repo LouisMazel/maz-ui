@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Build Vue and Nuxt applications faster with Maz-UI v5 - The modern, modular component library
+description: Build Vue and Nuxt applications faster with maz-ui - 50+ components, themes, icons and translations, tree-shakable and typed
 head:
   - - meta
     - name: keywords
@@ -9,186 +9,114 @@ head:
 
 # {{ $frontmatter.title }}
 
-{{ $frontmatter.description }}
-
-::: tip **Why Maz-UI?**
-
-- 🌱 **Tree-shaking** - Import only what you need
-- 🛠️ **TypeScript-first** - Full type safety out of the box
-- 🚀 **Performance** - Tree-shaking benefits and maximum optimization
-- 🎨 **Theming system** - Customizable themes and dark mode support (5 presets available) - [@maz-ui/themes](../ecosystem/themes.md)
-- 💨 **Optional Tailwind bridge** - Already have a Tailwind v4 setup? Expose your active maz-ui theme tokens (colors, radius, breakpoints, custom utilities) to your own Tailwind config - [Tailwind integration](./tailwind.md)
-- 🌐 **Internationalization** - Locale management and tree-shakable imports - [@maz-ui/translations](../ecosystem/translations.md)
-- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (860+ icons) - [@maz-ui/icons](../ecosystem/icons/index.md)
-- 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports - [@maz-ui/nuxt](../ecosystem/nuxt.md)
-- 🤖 **AI agents** - Make Claude Code, Cursor, Copilot and Codex use maz-ui instead of re-implementing it - [AI agents](./ai-agents.md), [@maz-ui/mcp](../ecosystem/mcp.md)
-
-:::
+maz-ui gives you 50+ Vue 3 components, with composables, directives and plugins, and the packages around them: themes, icons, translations, helpers, a Nuxt module and the tools for AI agents. Import only what you use, everything is typed.
 
 ::: tip Migrating from v4?
-Run `npx @maz-ui/upgrade ./` to handle the mechanical part of the migration (CSS subpath imports, prop renames, CSS var renames, Nuxt config keys, custom preset color keys, and `package.json` version bumps). See the [v5 migration guide](./migration-v5.md) for the rest.
+Run `npx @maz-ui/upgrade ./` for the mechanical part of the migration, then follow the [v5 migration guide](./migration-v5.md).
 :::
 
-## Guides
+## Choose your framework
 
-Start by choosing your framework:
-
-<div class="maz:flex maz:gap-4 maz:w-full maz:flex-col maz:tab-m:flex-row vp-raw">
-  <MazCard
-    href="/guide/vue"
-    class="maz:flex-1"
-    :gallery="{
-      images: ['/vue.png'],
-      height: 200,
-      width: '100%',
-    }"
-  >
+<div class="vp-raw maz:grid maz:gap-4 maz:tab-m:grid-cols-2">
+  <MazCard href="/guide/vue" :gallery="{ images: ['/vue.png'], height: 160, width: '100%' }" bordered block>
     <template #content-title>
-      <h3>
-        Vue Users Guide
-      </h3>
+      <p class="maz:text-lg maz:font-semibold">Vue</p>
     </template>
-    <template #footer>
-      <MazBtn color="contrast" href="/guide/vue">
-        Vue guide
-      </MazBtn>
+    <template #content-body>
+      <p class="maz:text-sm maz:text-muted">The plugin, the Vite plugin and the imports</p>
     </template>
   </MazCard>
-  <MazCard
-    href="/ecosystem/nuxt"
-    class="maz:flex-1"
-    content-title="Nuxt Users Guide"
-    :gallery="{
-      images: ['/nuxt.png'],
-      height: 200,
-      width: '100%',
-    }"
-  >
+  <MazCard href="/ecosystem/nuxt" :gallery="{ images: ['/nuxt.png'], height: 160, width: '100%' }" bordered block>
     <template #content-title>
-      <h3>
-        Nuxt Users Guide
-      </h3>
+      <p class="maz:text-lg maz:font-semibold">Nuxt</p>
     </template>
-    <template #footer>
-      <MazBtn color="contrast" href="/ecosystem/nuxt">
-        Nuxt guide
-      </MazBtn>
+    <template #content-body>
+      <p class="maz:text-sm maz:text-muted">One module: auto-imports, icons, theme and translations</p>
     </template>
   </MazCard>
 </div>
 
-## Ecosystem Packages
+## A first form
 
-Extend Maz-UI with our specialized companion packages:
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-3 maz:tab-m:flex-row maz:tab-m:items-start">
+    <MazInput v-model="email" label="Email" type="email" start-icon="envelope" class="maz:flex-1" />
+    <MazBtn color="primary" end-icon="arrow-right" size="lg" @click="signUp">
+      Sign up
+    </MazBtn>
+  </div>
 
-### @maz-ui/themes
+  <template #code>
 
-**Advanced Theming System**
+```vue
+<script setup lang="ts">
+import MazBtn from 'maz-ui/components/MazBtn'
+import MazInput from 'maz-ui/components/MazInput'
+import { useToast } from 'maz-ui/composables/useToast'
 
-Modern theme system with OKLCh color scales, runtime preset switching, and dark mode support.
+const email = ref('')
+const toast = useToast()
 
-```bash
-npm install @maz-ui/themes
+function signUp() {
+  toast.success(`Welcome ${email.value}`)
+}
+</script>
+
+<template>
+  <MazInput v-model="email" label="Email" type="email" start-icon="envelope" />
+  <MazBtn color="primary" end-icon="arrow-right" size="lg" @click="signUp">
+    Sign up
+  </MazBtn>
+</template>
 ```
 
-**Features:**
+  </template>
+</ComponentDemo>
 
-- 🎨 Native `light-dark()` + `color-scheme` + OKLCh scales via relative color syntax
-- 🌓 Smart dark mode: `class` or `media` strategies, with smooth transitions on toggle
-- ✨ Optional animated theme switch via View Transitions (`setColorMode(..., { animate: true })`)
-- ⚡ `runtime` and `buildtime` rendering strategies
-- 🍪 Active preset persisted across reloads (opt-out)
-- 🛡️ Full TypeScript support
+Each component, composable and helper has its own import (`maz-ui/components/MazBtn`, `@maz-ui/utils/helpers/debounce`): only what you import is bundled. The icons are used by name, with [`MazUi()`](../ecosystem/vite-plugin.md) or [`@maz-ui/nuxt`](../ecosystem/nuxt.md).
 
-[→ View Theme Documentation](../ecosystem/themes.md)
+## Ecosystem
 
----
-
-### @maz-ui/translations
-
-**Internationalization (i18n)**
-
-Internationalization library for Maz-UI.
-
-```bash
-npm install @maz-ui/translations
-```
-
-**Features:**
-
-- 🌐 Internationalization of Maz-UI components
-- 🔄 Locale management
-- 📦 Tree-shakable imports
-- 🛠️ TypeScript support
-
-[→ View Translations Documentation](../ecosystem/translations.md)
-
----
-
-### @maz-ui/icons
-
-**Optimized Icon Library**
-
-Comprehensive collection of SVG icons designed for performance and flexibility.
-
-```bash
-npm install @maz-ui/icons
-```
-
-**Features:**
-
-- 860+ icons
-- Usable as Vue components (e.g. `<MazStar />`)
-- Tree-shakable imports
-- Multiple sizes and variants
-- Full TypeScript definitions
-
-[→ Browse Icon Library](../ecosystem/icons/index.md)
-
----
-
-### @maz-ui/mcp
-
-**Make your AI coding agents use maz-ui**
-
-```bash
-npx @maz-ui/mcp init
-```
-
-**Features:**
-
-- Rules for Claude Code, Cursor, GitHub Copilot, Codex... without touching your own instructions
-- MCP server: search by need, component APIs, icons, Tailwind theme tokens, docs of the installed version
-- Code review against the installed maz-ui, in the agent loop and in CI
-- Claude Code plugin and automatic setup with the Nuxt module
-
-[→ View AI agents guide](./ai-agents.md)
-
----
-
-### @maz-ui/vite-plugin
-
-**Ship less CSS**
-
-```bash
-npm install -D @maz-ui/vite-plugin
-```
-
-**Features:**
-
-- Removes from the CSS of maz-ui the rules of the components, plugins, directives and utilities your app does not use
-- Build only, with a bundle check and a report of the CSS saved
-- Included in `@maz-ui/nuxt` (`css.purge`)
-
-[→ View the Vite plugin](./../ecosystem/vite-plugin.md)
-
----
+<div class="vp-raw maz:grid maz:gap-4 maz:mob-l:grid-cols-2 maz:tab-l:grid-cols-3">
+  <MazCard href="/ecosystem/themes" bordered block>
+    <MazIcon icon="swatch" class="maz:text-2xl maz:text-primary" />
+    <p class="maz:mt-2 maz:font-semibold">Themes</p>
+    <p class="maz:text-sm maz:text-muted">Presets, dark mode, color scales</p>
+  </MazCard>
+  <MazCard href="/ecosystem/icons/" bordered block>
+    <MazIcon icon="star" class="maz:text-2xl maz:text-primary" />
+    <p class="maz:mt-2 maz:font-semibold">Icons</p>
+    <p class="maz:text-sm maz:text-muted">860+ icons, logos and flags, by name</p>
+  </MazCard>
+  <MazCard href="/ecosystem/translations" bordered block>
+    <MazIcon icon="language" class="maz:text-2xl maz:text-primary" />
+    <p class="maz:mt-2 maz:font-semibold">Translations</p>
+    <p class="maz:text-sm maz:text-muted">The texts of the components in your languages</p>
+  </MazCard>
+  <MazCard href="/ecosystem/utils/" bordered block>
+    <MazIcon icon="wrench-screwdriver" class="maz:text-2xl maz:text-primary" />
+    <p class="maz:mt-2 maz:font-semibold">Utils</p>
+    <p class="maz:text-sm maz:text-muted">Debounce, formatters, cookies, helpers</p>
+  </MazCard>
+  <MazCard href="/ecosystem/vite-plugin" bordered block>
+    <MazIcon icon="bolt" class="maz:text-2xl maz:text-primary" />
+    <p class="maz:mt-2 maz:font-semibold">Vite plugin</p>
+    <p class="maz:text-sm maz:text-muted">Icons by name and less CSS</p>
+  </MazCard>
+  <MazCard href="/guide/ai-agents" bordered block>
+    <MazIcon icon="sparkles" class="maz:text-2xl maz:text-primary" />
+    <p class="maz:mt-2 maz:font-semibold">AI agents</p>
+    <p class="maz:text-sm maz:text-muted">MCP server and rules for your coding agents</p>
+  </MazCard>
+</div>
 
 ### Keep the packages on the same version
 
-`maz-ui` and the packages of its ecosystem (`@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/icons`, `@maz-ui/utils`, `@maz-ui/nuxt`, `@maz-ui/node`, `@maz-ui/mcp`, `@maz-ui/vite-plugin`) are released together, always on the same version. When you install several of them, keep them on this version: two versions of a package install two copies of it, which make your bundle heavier, and two copies of `maz-ui` do not share the global configuration (`@maz-ui/nuxt` warns about it when it starts).
+`maz-ui` and its packages are released together, on the same version: keep them on it. Two versions of a package install two copies, a heavier bundle, and two copies of `maz-ui` do not share their configuration.
 
-Group their updates in a single pull request. With Dependabot (`.github/dependabot.yml`):
+::: details Group their updates in one pull request
+
+With Dependabot (`.github/dependabot.yml`):
 
 ```yaml
 version: 2
@@ -217,140 +145,23 @@ With Renovate (`renovate.json`):
 }
 ```
 
-## Performance Optimizations
-
-### Tree-Shaking Benefits
-
-Maz-UI v5 is built with tree-shaking in mind. Import only what you need for optimal bundle sizes:
-
-```typescript
-/**
- * Components
- */
-
-// ✅ Import specific components (good)
-import { MazBtn, MazCard, MazInput } from 'maz-ui/components'
-// ✅✅ Direct component import (most optimized)
-import MazBtn from 'maz-ui/components/MazBtn'
-import MazCard from 'maz-ui/components/MazCard'
-import MazInput from 'maz-ui/components/MazInput'
-
-/**
- * Composables
- */
-
-// ✅ Import composable from index file
-import { useBreakpoints, useToast } from 'maz-ui/composables'
-
-// ✅✅ Direct composable import (most optimized)
-import { useToast } from 'maz-ui/composables/useToast'
-import { useBreakpoints } from 'maz-ui/composables/useBreakpoints'
-
-/**
- * Directives
- */
-
-// ✅ Import directive from index file
-import { vClickOutside } from 'maz-ui/directives'
-
-// ✅✅ Direct directive import (most optimized)
-import { vClickOutside } from 'maz-ui/directives/vClickOutside'
-
-// ✅✅✅ Even better: auto-import does this automatically
-// Components, composables, and utilities are imported only when used
-
-/**
- * Plugins
- */
-
-// ✅ Import plugin from index file
-import { MazUi } from 'maz-ui/plugins'
-// ✅✅ Direct plugin import (most optimized)
-import { MazUi } from 'maz-ui/plugins/maz-ui'
-
-/**
- * Utilities
- */
-
-// ❌ Avoid importing everything
-import { formatCurrency, debounce } from '@maz-ui/utils'
-// ✅ Import from @maz-ui/utils
-import { debounce } from '@maz-ui/utils/helpers/debounce'
-import { formatCurrency } from '@maz-ui/utils/helpers/formatCurrency'
-```
-
-::: tip Maximum Optimization
-**Direct imports** (e.g., `import MazBtn from 'maz-ui/components/MazBtn'`) are the most optimized approach as they bypass index files completely. This ensures the smallest possible bundle size and fastest build times.
 :::
 
-## Next Steps
+## Next steps
 
-<div class="next-steps">
+- [Components](../components/maz-btn.md): live examples and API of each component
+- [Tailwind CSS](./tailwind.md): the theme tokens of maz-ui in your Tailwind classes
+- [MazUiProvider](./maz-ui-provider.md): load maz-ui only on the pages that use it
+- [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) and [issues](https://github.com/LouisMazel/maz-ui/issues) for help
 
-### Explore Components
+<script setup>
+import { ref } from 'vue'
+import { useToast } from 'maz-ui/composables/useToast'
 
-Browse the [component library](./../components/maz-btn.md) with live examples and API documentation.
+const email = ref('')
+const toast = useToast()
 
-### Customize Themes
-
-Learn about [theming and customization](../ecosystem/themes.md) to match your brand.
-
-### Internationalization
-
-Learn about [internationalization](../ecosystem/translations.md) to support multiple languages.
-
-### Lazy Loading with MazUiProvider
-
-Use [`MazUiProvider`](./maz-ui-provider.md) to defer Maz-UI initialization to lazy-loaded pages for zero entry-bundle overhead.
-
-### Get Help
-
-Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or open an issue on [GitHub](https://github.com/LouisMazel/maz-ui/issues).
-
-</div>
-
-<style scoped>
-@reference "../../.vitepress/theme/main.css";
-.hero-section {
-  @apply maz:rounded-md maz:p-8 maz:my-12 maz:from-primary-400 maz:to-secondary-700 maz:bg-linear-to-br;
+function signUp() {
+  toast.success(`Welcome ${email.value}`)
 }
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin: 2rem 0;
-
-  h3 {
-    margin-top: 0;
-  }
-  ul {
-    margin-top: 0;
-  }
-}
-
-.next-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin: 2rem 0;
-
-  h3 {
-    margin-top: 0;
-  }
-  p {
-    margin-top: 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .hero-btn {
-    width: 200px;
-  }
-}
-</style>
+</script>

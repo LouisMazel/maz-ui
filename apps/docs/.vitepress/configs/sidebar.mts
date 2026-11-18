@@ -20,6 +20,7 @@ export const sidebar: DefaultTheme.Sidebar = {
   '/ecosystem/themes': [ecosystem],
   '/ecosystem/translations': [ecosystem],
   '/ecosystem/vite-plugin': [ecosystem],
+  '/ecosystem/vite-svg-loader': [ecosystem],
   '/': [
     guide,
     components,
