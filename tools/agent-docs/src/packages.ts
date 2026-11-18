@@ -43,7 +43,7 @@ export const PACKAGE_DEFINITIONS: PackageDefinition[] = [
     name: '@maz-ui/vite-plugin',
     dir: 'vite-plugin',
     short: 'vite-plugin',
-    description: 'Vite plugin that removes from the CSS of maz-ui the rules of the components, plugins, directives and utilities the app does not use (build only).',
+    description: 'Vite plugins of maz-ui (MazUi): icons by name, removal of the CSS of the components, plugins, directives and utilities the app does not use (build only), and only the theme presets the app loads by name in the build.',
     group: 'ecosystem',
     mainDocId: 'ecosystem/vite-plugin',
   },

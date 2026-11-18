@@ -465,6 +465,38 @@ With Tauri, switch on the value returned by the `platform()` function of the OS 
 These presets only declare system font stacks (`-apple-system`, `Segoe UI Variable`, `Adwaita Sans`...): nothing to load, the platform provides them. On another system, the stacks fall back to `system-ui`.
 :::
 
+### Presets in the build
+
+A preset object (`import { ocean } from '@maz-ui/themes/presets'`, `definePreset`) is part of your code. A preset name (`preset: 'ocean'`, `updateTheme('ocean')`, `definePreset({ base: 'ocean' })`, the `maz-preset` cookie) is loaded on demand: each named preset is a chunk of your build, downloaded only when the app loads it.
+
+Every named preset is in the build, even if your app uses one. A chunk that is never loaded costs nothing to your users, except with a service worker that precaches every JS file (PWA). To keep only the presets your app loads by name, set `presets` in the `MazUi()` plugin of [@maz-ui/vite-plugin](./vite-plugin.md#theme-presets):
+
+```ts
+// vite.config.ts
+import { MazUi } from '@maz-ui/vite-plugin'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    MazUi({ presets: ['maz-ui', 'ocean'] }),
+  ],
+})
+```
+
+`presets: []` keeps none, for an app that only uses preset objects. With Nuxt, set [`theme.presets`](./nuxt.md#theme-system) instead.
+
+Loading another preset by name then fails:
+
+- `updateTheme('nova')` and `definePreset({ base: 'nova' })` reject with this error:
+
+  ```txt
+  [@maz-ui/themes] Preset "nova" is not in the presets of the app: add it to the "presets" option of MazUi (@maz-ui/vite-plugin), or to "theme.presets" with @maz-ui/nuxt
+  ```
+
+- A `maz-preset` cookie that names a preset out of the list (saved before you removed it) falls back to the configured preset, with the same message as a console warning. The cookie is rewritten on the next save.
+
 ## Rendering Strategies
 
 ### ⚡ Runtime (Recommended)

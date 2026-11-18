@@ -198,6 +198,14 @@ describe('get-preset', () => {
       })
     })
 
+    describe('when maz-ui string is provided', () => {
+      it('then it returns the mazUi preset', async () => {
+        const result = await getPreset('maz-ui')
+
+        expect(result.name).toBe('maz-ui')
+      })
+    })
+
     describe('when unknown preset string is provided', () => {
       it('then it throws TypeError', async () => {
         await expect(getPreset('unknown' as never)).rejects.toThrow(

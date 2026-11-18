@@ -4,7 +4,7 @@ import type { CookieReader, SystemColorMode } from './theme-preferences'
 import { getCookie } from '@maz-ui/utils/helpers/cookie'
 import { resolveColorSchemeContent } from './color-scheme-meta'
 import { CSS_ID, generateCSS } from './css-generator'
-import { getPreset } from './get-preset'
+import { getPreset, warnSavedPresetFallback } from './get-preset'
 import { mergePresets } from './preset-merger'
 import {
   COLOR_MODE_COOKIE,
@@ -106,7 +106,10 @@ export async function resolveThemePresets(options: ThemeResolveOptions, readCook
   let preset = basePreset
   if (activeName !== presetBase) {
     // A stale active name falls back to the configured preset (the cookie is healed on the next write)
-    preset = await getPreset(activeName as ThemePresetName).catch(() => basePreset)
+    preset = await getPreset(activeName as ThemePresetName).catch((error) => {
+      warnSavedPresetFallback(error)
+      return basePreset
+    })
   }
 
   return {
