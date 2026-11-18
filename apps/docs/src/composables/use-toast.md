@@ -39,6 +39,7 @@ toast.success('success message', {
 })
 toast.warning('warning message')
 toast.error('error message')
+toast.accent('accent message')
 toast.message('3 new messages', { icon: 'bell' })
 </script>
 ```
@@ -66,6 +67,7 @@ toast.message('3 new messages', { icon: 'bell' })
     })
     toast.warning('warning message')
     toast.error('error message')
+    toast.accent('accent message')
     toast.message('3 new messages', { icon: 'bell' })
   })
 
