@@ -333,8 +333,14 @@ const theme = {
   // Persist the active preset name in the `maz-preset` cookie so the
   // user's last-used theme is restored on reload. Default: true.
   persistPreset: true,
+
+  // Named presets the app loads by name (updateTheme('ocean')...): only these
+  // ones are in the build, with `preset` when it is a name. Default: every preset.
+  presets: ['ocean'],
 }
 ```
+
+Each named preset is a chunk loaded on demand, never prefetched by the pages. `presets` removes the other ones from the build: `[]` keeps none, for an app that only uses preset objects, and loading another preset by name throws an error. See [Presets in the build](/ecosystem/themes#presets-in-the-build).
 
 The server renders the theme of the user: the preset and the color mode come from the `maz-color-mode` and `maz-preset` cookies, and the system preference from the `Sec-CH-Prefers-Color-Scheme` client hint (or the cookie of the previous visit). A blocking script applies the live system preference before the first paint. See the [persistence of the user preferences](/ecosystem/themes#persistence-of-the-user-preferences).
 
