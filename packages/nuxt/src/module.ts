@@ -98,6 +98,7 @@ const COMPONENT_NAMES: Omit<
   MazListItem: true,
   MazLoadingBar: true,
   MazMarkdownEditor: true,
+  MazPageSection: true,
   MazPagination: true,
   MazDatePicker: true,
   MazProgressBar: true,
