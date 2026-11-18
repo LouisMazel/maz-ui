@@ -301,5 +301,115 @@
         ]
       }
     }
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "module": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./components": {
+        "types": "./dist/components/index.d.ts",
+        "import": "./dist/components/index.js",
+        "module": "./dist/components/index.js",
+        "default": "./dist/components/index.js"
+      },
+      "./components/*": {
+        "types": "./dist/components/*.vue.d.ts",
+        "import": "./dist/components/*.js",
+        "module": "./dist/components/*.js",
+        "default": "./dist/components/*.js"
+      },
+      "./composables": {
+        "types": "./dist/composables/index.d.ts",
+        "import": "./dist/composables/index.js",
+        "module": "./dist/composables/index.js",
+        "default": "./dist/composables/index.js"
+      },
+      "./composables/*": {
+        "types": "./dist/composables/*.d.ts",
+        "import": "./dist/composables/*.js",
+        "module": "./dist/composables/*.js",
+        "default": "./dist/composables/*.js"
+      },
+      "./plugins": {
+        "types": "./dist/plugins/index.d.ts",
+        "import": "./dist/plugins/index.js",
+        "module": "./dist/plugins/index.js",
+        "default": "./dist/plugins/index.js"
+      },
+      "./plugins/*": {
+        "types": "./dist/plugins/*.d.ts",
+        "import": "./dist/plugins/*.js",
+        "module": "./dist/plugins/*.js",
+        "default": "./dist/plugins/*.js"
+      },
+      "./directives": {
+        "types": "./dist/directives/index.d.ts",
+        "import": "./dist/directives/index.js",
+        "module": "./dist/directives/index.js",
+        "default": "./dist/directives/index.js"
+      },
+      "./directives/*": {
+        "types": "./dist/directives/*.d.ts",
+        "import": "./dist/directives/*.js",
+        "module": "./dist/directives/*.js",
+        "default": "./dist/directives/*.js"
+      },
+      "./resolvers": {
+        "types": "./dist/resolvers/index.d.ts",
+        "import": "./dist/resolvers/index.js",
+        "module": "./dist/resolvers/index.js",
+        "default": "./dist/resolvers/index.js"
+      },
+      "./resolvers/*": {
+        "types": "./dist/resolvers/*.d.ts",
+        "import": "./dist/resolvers/*.js",
+        "module": "./dist/resolvers/*.js",
+        "default": "./dist/resolvers/*.js"
+      },
+      "./country-flags": {
+        "types": "./dist/utils/country-flags.d.ts",
+        "import": "./dist/country-flags.js",
+        "module": "./dist/country-flags.js",
+        "default": "./dist/country-flags.js"
+      },
+      "./tailwindcss": {
+        "types": "./dist/tailwindcss/index.d.ts",
+        "import": "./dist/tailwindcss/index.js",
+        "module": "./dist/tailwindcss/index.js",
+        "default": "./dist/tailwindcss/index.js"
+      },
+      "./tailwindcss/theme.css": "./src/tailwindcss/theme.css",
+      "./tailwindcss/theme-colors.css": "./src/tailwindcss/theme-colors.css",
+      "./tailwindcss/theme-components.css": "./src/tailwindcss/theme-components.css",
+      "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",
+      "./tailwindcss/theme-spacing.css": "./src/tailwindcss/theme-spacing.css",
+      "./tailwindcss/theme-breakpoints.css": "./src/tailwindcss/theme-breakpoints.css",
+      "./tailwindcss/theme-containers.css": "./src/tailwindcss/theme-containers.css",
+      "./tailwindcss/theme-shadows.css": "./src/tailwindcss/theme-shadows.css",
+      "./tailwindcss/theme-z-index.css": "./src/tailwindcss/theme-z-index.css",
+      "./tailwindcss/theme-typography.css": "./src/tailwindcss/theme-typography.css",
+      "./tailwindcss/theme-variants.css": "./src/tailwindcss/theme-variants.css",
+      "./tailwindcss/utilities.css": "./src/tailwindcss/utilities.css",
+      "./tailwindcss/tailwind.css": "./src/tailwindcss/tailwind.css",
+      "./tailwindcss/*": {
+        "types": "./dist/tailwindcss/*.d.ts",
+        "import": "./dist/tailwindcss/*.js",
+        "module": "./dist/tailwindcss/*.js",
+        "default": "./dist/tailwindcss/*.js"
+      },
+      "./style.css": {
+        "default": "./dist/css/main.css"
+      },
+      "./utilities.css": "./dist/css/utilities.css",
+      "./purge-manifest.json": "./dist/css/purge-manifest.json",
+      "./aos.css": {
+        "default": "./dist/css/aos.css"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }

@@ -104,6 +104,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - CSS is extracted and processed with PostCSS
 - Icons are dynamically generated from SVG files
 - Supports both ESM and CommonJS outputs
+- The `exports` keep a `monorepo:dev` condition (sources for the apps of the monorepo), `publishConfig.exports` is the published copy without it: run `node .github/scripts/publish-exports.mjs` after changing the `exports` of a package (checked in CI).
 
 ### Agent knowledge bundle (`tools/agent-docs`)
 

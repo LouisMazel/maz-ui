@@ -31,7 +31,69 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./*": {
+        "types": "./dist/static/*.d.ts",
+        "import": "./dist/static/*.js",
+        "default": "./dist/static/*.js"
+      },
+      "./static": {
+        "types": "./dist/static/index.d.ts",
+        "import": "./dist/static/index.js",
+        "default": "./dist/static/index.js"
+      },
+      "./static/*": {
+        "types": "./dist/static/*.d.ts",
+        "import": "./dist/static/*.js",
+        "default": "./dist/static/*.js"
+      },
+      "./lazy": {
+        "types": "./dist/lazy/index.d.ts",
+        "import": "./dist/lazy/index.js",
+        "default": "./dist/lazy/index.js"
+      },
+      "./lazy/*": {
+        "types": "./dist/lazy/*.d.ts",
+        "import": "./dist/lazy/*.js",
+        "default": "./dist/lazy/*.js"
+      },
+      "./raw": {
+        "types": "./dist/raw/index.d.ts",
+        "import": "./dist/raw/index.js",
+        "default": "./dist/raw/index.js"
+      },
+      "./raw/*": {
+        "types": "./dist/raw/*.d.ts",
+        "import": "./dist/raw/*.js",
+        "default": "./dist/raw/*.js"
+      },
+      "./resolvers": {
+        "types": "./dist/resolvers.d.ts",
+        "import": "./dist/resolvers.js",
+        "default": "./dist/resolvers.js"
+      },
+      "./registry": {
+        "types": "./dist/registry.d.ts",
+        "import": "./dist/registry.js",
+        "default": "./dist/registry.js"
+      },
+      "./icon-names.json": "./icon-names.json",
+      "./package.json": "./package.json",
+      "./icon-list": {
+        "types": "./dist/icon-list.d.ts",
+        "import": "./dist/icon-list.js",
+        "default": "./dist/icon-list.js"
+      },
+      "./svg/*": "./svg/*",
+      "./flags/*": "./flags/*",
+      "./logos/*": "./logos/*"
+    }
   },
   "exports": {
     ".": {

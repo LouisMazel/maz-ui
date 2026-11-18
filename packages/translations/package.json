@@ -21,7 +21,49 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./plugin": {
+        "types": "./dist/plugin.d.ts",
+        "import": "./dist/plugin.js",
+        "default": "./dist/plugin.js"
+      },
+      "./utils": {
+        "types": "./dist/utils/index.d.ts",
+        "import": "./dist/utils/index.js",
+        "default": "./dist/utils/index.js"
+      },
+      "./utils/*": {
+        "types": "./dist/utils/*.d.ts",
+        "import": "./dist/utils/*.js",
+        "default": "./dist/utils/*.js"
+      },
+      "./locales": {
+        "types": "./dist/locales/index.d.ts",
+        "import": "./dist/locales/index.js",
+        "default": "./dist/locales/index.js"
+      },
+      "./locales/*": {
+        "types": "./dist/locales/*.d.ts",
+        "import": "./dist/locales/*.js",
+        "default": "./dist/locales/*.js"
+      },
+      "./composables": {
+        "types": "./dist/composables/useTranslations.d.ts",
+        "import": "./dist/composables/useTranslations.js",
+        "default": "./dist/composables/useTranslations.js"
+      },
+      "./composables/*": {
+        "types": "./dist/composables/*.d.ts",
+        "import": "./dist/composables/*.js",
+        "default": "./dist/composables/*.js"
+      }
+    }
   },
   "exports": {
     ".": {

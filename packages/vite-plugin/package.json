@@ -24,7 +24,19 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.mts",
+        "import": "./dist/index.mjs",
+        "default": "./dist/index.mjs"
+      },
+      "./manifest": {
+        "types": "./dist/manifest.d.mts",
+        "import": "./dist/manifest.mjs",
+        "default": "./dist/manifest.mjs"
+      }
+    }
   },
   "exports": {
     ".": {

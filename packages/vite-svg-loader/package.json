@@ -23,7 +23,22 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.mts",
+        "import": "./dist/index.mjs",
+        "default": "./dist/index.mjs"
+      },
+      "./optimize": {
+        "types": "./dist/optimize.d.mts",
+        "import": "./dist/optimize.mjs",
+        "default": "./dist/optimize.mjs"
+      },
+      "./client": {
+        "types": "./client.d.ts"
+      }
+    }
   },
   "exports": {
     ".": {

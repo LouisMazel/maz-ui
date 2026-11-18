@@ -22,3 +22,6 @@ jobs:
 
       - name: Check the catalog and the peer dependencies
         run: node .github/scripts/check-deps.mjs
+
+      - name: Check the published exports
+        run: node .github/scripts/publish-exports.mjs --check
