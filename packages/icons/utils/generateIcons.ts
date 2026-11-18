@@ -227,10 +227,16 @@ function writeModules(dir: string, modules: { name: string, content: string }[],
   writeFileSync(resolve(dir, 'index.ts'), index)
 }
 
-/** `icon-names.json`: the name of each icon and its file, read by `MazUi()` of `@maz-ui/vite-plugin` */
-function getIconNames(icons: IconFile[]): string {
+/**
+ * `icon-names.json`: the component and the file of each name, read by `MazUi()` of `@maz-ui/vite-plugin` (a name
+ * imports the `raw` module of its component)
+ */
+function getIconNames(icons: (IconFile & { component: string })[]): string {
   const entries = icons
-    .map(({ file, iconName, dir }) => [iconName, `${dir}/${file}`] as const)
+    .map(({ component, file, iconName, dir }) => [
+      iconName,
+      { component, file: `${dir}/${file}` },
+    ] as const)
     .sort(([a], [b]) => compareCodePoints(a, b))
 
   const duplicates = entries.filter(([name], index) => index > 0 && entries[index - 1][0] === name)
@@ -250,13 +256,13 @@ export function generateIcons({ root, reservedNames = getReservedNames() }: Gene
     logger.log('[generateIcons] ✅ starting to generate icons components entry')
 
     const icons = listIconFiles(root)
-    const iconNames = getIconNames(icons)
     const reserved = new Set(reservedNames)
     const components = icons.map(icon => ({
       ...icon,
       component: getComponentName(icon.name, reserved),
       source: `../../${icon.dir}/${icon.file}`,
     }))
+    const iconNames = getIconNames(components)
 
     for (const { dir, file } of icons.filter(icon => icon.dir === 'svg')) {
       const path = resolve(root, dir, file)

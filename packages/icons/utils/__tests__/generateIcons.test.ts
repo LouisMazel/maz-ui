@@ -180,14 +180,14 @@ export const MazLinkIcon = _component
       expect(read('src/icon-list.ts')).toContain(`'MazStar',\n  'MazLogoVue',\n  'MazFlagSquareFR',\n  'MazFlagFR',\n  'LazyMazCheck'`)
     })
 
-    it('then icon-names.json gives the file of each name, sorted', () => {
+    it('then icon-names.json gives the component and the file of each name, sorted', () => {
       expect(read('icon-names.json')).toBe(`${JSON.stringify({
-        'check': 'svg/check.svg',
-        'flag-fr': 'flags/3x2/FR.svg',
-        'flag-square-fr': 'flags/1x1/FR.svg',
-        'link': 'svg/link.svg',
-        'logo-vue': 'logos/vue.svg',
-        'star': 'svg/star.svg',
+        'check': { component: 'MazCheck', file: 'svg/check.svg' },
+        'flag-fr': { component: 'MazFlagFR', file: 'flags/3x2/FR.svg' },
+        'flag-square-fr': { component: 'MazFlagSquareFR', file: 'flags/1x1/FR.svg' },
+        'link': { component: 'MazLinkIcon', file: 'svg/link.svg' },
+        'logo-vue': { component: 'MazLogoVue', file: 'logos/vue.svg' },
+        'star': { component: 'MazStar', file: 'svg/star.svg' },
       }, null, 2)}\n`)
     })
 
