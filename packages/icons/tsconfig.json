@@ -4,6 +4,7 @@
     "rootDir": ".",
     "types": [
       "vite",
+      "vitest/globals",
       "@maz-ui/vite-svg-loader/client"
     ]
   },

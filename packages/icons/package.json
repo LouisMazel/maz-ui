@@ -189,7 +189,10 @@
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/icons",
     "typecheck": "pnpm generate && tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "pnpm lint --fix"
+    "lint:fix": "pnpm lint --fix",
+    "test:unit": "pnpm generate && vitest run",
+    "test:unit:watch": "pnpm generate && vitest watch",
+    "test:unit:coverage": "pnpm generate && vitest run --coverage"
   },
   "peerDependencies": {
     "unplugin-vue-components": ">=28.0.0 <33.0.0",
@@ -212,6 +215,7 @@
     "@maz-ui/vite-svg-loader": "workspace:^",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",
@@ -220,6 +224,7 @@
     "unplugin-vue-components": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
+    "vitest": "catalog:",
     "vue": "catalog:"
   },
   "lint-staged": {

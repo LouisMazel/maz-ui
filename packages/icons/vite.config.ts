@@ -46,6 +46,7 @@ export default defineConfig({
       outDirs: resolver('dist'),
       // The build utilities of utils/ are typechecked, not published
       include: ['src'],
+      exclude: ['src/**/__tests__/**/*'],
     }),
     codecovVitePlugin({
       enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
