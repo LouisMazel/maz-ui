@@ -1,5 +1,6 @@
 {
   "name": "nuxt-app",
+  "type": "module",
   "version": "4.1.8-beta.3",
   "private": true,
   "scripts": {
@@ -10,7 +11,8 @@
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:js": "cross-env NODE_ENV=production eslint --fix .",
     "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
-    "types:check": "nuxi typecheck"
+    "types:check": "nuxi typecheck",
+    "build:analyze": "nuxt analyze"
   },
   "dependencies": {
     "@maz-ui/icons": "workspace:^",
