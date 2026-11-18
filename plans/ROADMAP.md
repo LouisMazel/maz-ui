@@ -68,6 +68,15 @@ Les styles scoped des composants sont compilés hors de toute `@layer` (`dist/as
 
 `loading="intersecting"` (le défaut) passe par `MazLazyImg` (async chunk, directive `vLazyImg`, un `IntersectionObserver` par avatar) alors que `loading="lazy"` utilise déjà un `<img>` natif. `MazSelectCountry` est déjà passé au natif.
 
+Changer le défaut est cassant pour un projet qui ne passe pas `loading` : le spinner de `MazLazyImg` disparaît (`hideLoader` ne sert plus), les événements `loading` et `intersecting` ne sont plus émis, et les `$attrs` ne vont plus au même élément.
+
+En 5.x (non cassant) :
+
+- [ ] Le `<img>` natif émet `loaded` (`@load`), comme `MazLazyImg`.
+- [ ] Déprécier `'intersecting'`, les événements `loading` et `intersecting` et la prop `hideLoader` : doc et JSDoc, avertissement en dev quand `loading="intersecting"` est passé explicitement (le défaut ne peut pas être détecté).
+
+En v6 :
+
 - [ ] Passer le défaut de `loading` à `'lazy'`.
-- [ ] Déprécier `'intersecting'` en 5.x, le retirer en v6, avec les événements `loading` et `intersecting` qui en dépendent. Le `<img>` natif n'émet aujourd'hui que `error` : ajouter un `@load` pour garder `loaded`.
+- [ ] Retirer `'intersecting'`, les événements `loading` et `intersecting` et la prop `hideLoader`.
 - [ ] Note dans le guide de migration.
