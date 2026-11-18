@@ -39,6 +39,7 @@ toast.success('success message', {
 })
 toast.warning('warning message')
 toast.error('error message')
+toast.message('3 new messages', { icon: 'bell' })
 </script>
 ```
 
@@ -65,7 +66,7 @@ toast.error('error message')
     })
     toast.warning('warning message')
     toast.error('error message')
-    toast.message('message')
+    toast.message('3 new messages', { icon: 'bell' })
   })
 
 </script>
