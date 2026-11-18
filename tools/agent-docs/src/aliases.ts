@@ -322,6 +322,14 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'text editor',
     'comment editor',
   ],
+  'components/maz-page-section': [
+    'page layout',
+    'page section',
+    'page gutter',
+    'content width',
+    'centered layout',
+    'full-width band',
+  ],
   'components/maz-pagination': [
     'pagination',
     'pager',
