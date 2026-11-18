@@ -85,7 +85,7 @@ Each icon also has four imports. The [icon set](./icon-set.md) gives them for ea
 | Raw SVG string | `@maz-ui/icons/raw/MazStar` | The icon props without the plugin (`:start-icon="MazStar"`): the lightest, no component |
 | Component | `@maz-ui/icons/static/MazStar` | Directly in a template: `<MazStar class="size-5" />` |
 | Lazy component | `@maz-ui/icons/lazy/MazStar` | Icons not visible at first render (`v-if`, menus, dialogs): a separate request |
-| SVG file | `@maz-ui/icons/svg/star.svg`, `@maz-ui/icons/flags/3x2/FR.svg`, `@maz-ui/icons/logos/vue.svg` | `<img>` or CSS, for multicolor icons: an `<img>` does not take the color of the text |
+| SVG file | `@maz-ui/icons/svg/star.svg` | `<img>` or CSS, for the interface icons. The flags and the logos keep their colors with the other imports: `<MazFlagFR class="h-5 w-auto" />` |
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
@@ -97,7 +97,7 @@ Each icon also has four imports. The [icon set](./icon-set.md) gives them for ea
       Settings
     </MazBtn>
     <LazyMazCog6Tooth v-if="showSettings" class="maz:size-6 maz:animate-spin" />
-    <img :src="flagFr" alt="France" class="maz:h-5">
+    <MazFlagFR class="maz:h-5 maz:w-auto" />
   </div>
 
   <template #code>
@@ -106,8 +106,8 @@ Each icon also has four imports. The [icon set](./icon-set.md) gives them for ea
 <script setup lang="ts">
 import { MazCog6Tooth } from '@maz-ui/icons/lazy/MazCog6Tooth'
 import { MazStar } from '@maz-ui/icons/raw/MazStar'
+import { MazFlagFR } from '@maz-ui/icons/static/MazFlagFR'
 import { MazHeart } from '@maz-ui/icons/static/MazHeart'
-import flagFr from '@maz-ui/icons/flags/3x2/FR.svg?url'
 
 const showSettings = ref(false)
 </script>
@@ -121,7 +121,7 @@ const showSettings = ref(false)
     Settings
   </MazBtn>
   <MazCog6Tooth v-if="showSettings" class="size-6 animate-spin" />
-  <img :src="flagFr" alt="France" class="h-5">
+  <MazFlagFR class="h-5 w-auto" />
 </template>
 ```
 
@@ -192,8 +192,8 @@ An icon is `1em` (the size of the text), takes the color of the text (`currentCo
 import { ref } from 'vue'
 import { MazCog6Tooth as LazyMazCog6Tooth } from '@maz-ui/icons/lazy/MazCog6Tooth'
 import { MazStar as MazStarRaw } from '@maz-ui/icons/raw/MazStar'
+import { MazFlagFR } from '@maz-ui/icons/static/MazFlagFR'
 import { MazHeart } from '@maz-ui/icons/static/MazHeart'
-import flagFr from '@maz-ui/icons/flags/3x2/FR.svg?url'
 
 const isOn = ref(true)
 const showSettings = ref(false)

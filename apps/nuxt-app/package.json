@@ -12,7 +12,7 @@
     "lint:js": "cross-env NODE_ENV=production eslint --fix .",
     "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
     "types:check": "nuxi typecheck",
-    "build:analyze": "nuxt analyze"
+    "build:analyze": "nuxt analyze --no-serve"
   },
   "dependencies": {
     "@maz-ui/icons": "workspace:^",

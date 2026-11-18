@@ -1,6 +1,6 @@
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
-import { loadIconNames, loadPackageIcons, loadProjectIcons, mergeIconSources, resolveIconsPackage, toIconName } from '../sources'
+import { loadIconNames, loadPackageIcons, loadProjectIcons, locateIconsPackage, mergeIconSources, resolveIconsPackage, toIconName } from '../sources'
 import { createProject, HERO_SVG } from './fixtures'
 
 const roots: string[] = []
@@ -35,6 +35,17 @@ describe('given a project with maz-ui', () => {
     })
   })
 
+  describe('when @maz-ui/icons is located', () => {
+    it('then its modules are resolved from maz-ui', () => {
+      const root = project({ icons: 'maz-ui' })
+
+      expect(locateIconsPackage(root)).toEqual({
+        packageDir: join(root, 'node_modules/maz-ui/node_modules/@maz-ui/icons'),
+        importer: join(root, 'node_modules/maz-ui/package.json'),
+      })
+    })
+  })
+
   describe('when @maz-ui/icons is a dependency of the project', () => {
     it('then it is found from the project', () => {
       const root = project({ icons: 'root' })
@@ -44,7 +55,7 @@ describe('given a project with maz-ui', () => {
   })
 
   describe('when the icons of the package are loaded', () => {
-    it('then each name points to its file', () => {
+    it('then each name points to its file and its component', () => {
       const root = project()
       const packageDir = resolveIconsPackage(root)!
 
@@ -54,6 +65,7 @@ describe('given a project with maz-ui', () => {
           {
             file: join(packageDir, 'svg/home.svg'),
             root: packageDir,
+            component: 'MazHome',
           },
         ],
         [
@@ -61,6 +73,7 @@ describe('given a project with maz-ui', () => {
           {
             file: join(packageDir, 'svg/x-mark.svg'),
             root: packageDir,
+            component: 'MazXMark',
           },
         ],
       ]))

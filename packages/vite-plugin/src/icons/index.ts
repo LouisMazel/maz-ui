@@ -7,7 +7,7 @@ import { optimizeSvg } from '@maz-ui/vite-svg-loader/optimize'
 import MagicString from 'magic-string'
 import { ICONS_PACKAGE, loadIconIds, rewriteIconImports } from './imports'
 import { scanIconNames } from './scan'
-import { loadPackageIcons, loadProjectIcons, mergeIconSources, resolveIconsPackage } from './sources'
+import { loadPackageIcons, loadProjectIcons, locateIconsPackage, mergeIconSources } from './sources'
 import { generateIconTypes, writeIfChanged } from './types'
 
 export interface MazUiIconsOptions {
@@ -42,6 +42,8 @@ const VIRTUAL_PATTERN = /^virtual:maz-icon(?:-runtime$|\/)/
 const RESOLVED_PATTERN = /^\0virtual:maz-icon(?:-runtime$|\/)/
 const SCRIPT_PATTERN = /\.(?:vue|md|[mc]?[jt]sx?)(?:$|\?)/
 const EXCLUDED_PATTERN = /node_modules|^\0|[?&]type=style/
+/** The string of a built `raw` module: `var MazStar = /* @__PURE__ *\/ String("<svg ...")` */
+const RAW_ICON_PATTERN = /=\s*(?:\/\*.*?\*\/\s*)?(?:String\()?("(?:[^"\\]|\\.)*")\)?;?\s*$/m
 
 /** Same key and shape as `@maz-ui/icons/registry`, that `MazIcon` reads */
 const RUNTIME_CODE = `const registry = (globalThis[Symbol.for('maz-ui.icons.v1')] ??= new Map())
@@ -87,6 +89,18 @@ export function generateRuntime(safelist: readonly string[]): string {
   ].join('\n')
 }
 
+/** The SVG of the built `raw` module of an icon of `@maz-ui/icons`: the package does not publish its flags and logos as files */
+export function readRawIcon(packageDir: string, component: string): string | undefined {
+  const file = join(packageDir, 'dist/raw', `${component}.js`)
+  if (!existsSync(file))
+    return undefined
+
+  const literal = RAW_ICON_PATTERN.exec(readFileSync(file, 'utf8'))?.[1]
+  return literal
+    ? JSON.parse(literal) as string
+    : undefined
+}
+
 function getDefaultDts(root: string): string {
   return existsSync(join(root, 'src'))
     ? 'src/maz-icons.d.ts'
@@ -104,6 +118,8 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
   let root = process.cwd()
   let logger!: Logger
   let packageIcons = new Map<string, IconSource>()
+  /** The file `@maz-ui/icons` is resolved from: the one of `maz-ui` first, whose components import the same modules */
+  let iconsImporter: string | undefined
   let iconIds = new Set<string>()
   /** Not when the app pre-bundles `@maz-ui/icons`: the scan of the pre-bundling only sees the original imports */
   let rewritesImports = false
@@ -152,6 +168,12 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
     const cached = svgCache.get(source.file)
     if (cached !== undefined)
       return cached
+
+    const packageSvg = source.component && readRawIcon(source.root, source.component)
+    if (packageSvg) {
+      svgCache.set(source.file, packageSvg)
+      return packageSvg
+    }
 
     const isProjectIcon = source.root === root
     const svg = optimizeSvg(readFileSync(source.file, 'utf8'), {
@@ -225,10 +247,11 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
 
       rewritesImports = config.command === 'build' || (config.optimizeDeps?.exclude ?? []).includes(ICONS_PACKAGE)
 
-      const packageDir = resolveIconsPackage(root)
-      if (packageDir) {
-        packageIcons = loadPackageIcons(packageDir)
-        iconIds = loadIconIds(packageDir)
+      const iconsPackage = locateIconsPackage(root)
+      if (iconsPackage) {
+        packageIcons = loadPackageIcons(iconsPackage.packageDir)
+        iconIds = loadIconIds(iconsPackage.packageDir)
+        iconsImporter = iconsPackage.importer
       }
       else {
         warn(`${ICONS_PACKAGE} not found: only the SVG of the project can be used by name`)
@@ -279,7 +302,7 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
 
     load: {
       filter: { id: RESOLVED_PATTERN },
-      handler(id) {
+      async handler(id) {
         if (!RESOLVED_PATTERN.test(id))
           return undefined
 
@@ -291,8 +314,17 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
         if (!source)
           return 'export default ""\n'
 
-        this.addWatchFile(source.file)
-        iconFiles.add(source.file)
+        // The `raw` module of maz-ui: the SVG is bundled once, for the name and for the imports of the components
+        const raw = source.component && iconsImporter
+          ? await this.resolve(`${ICONS_PACKAGE}/raw/${source.component}`, iconsImporter)
+          : null
+        if (raw && !raw.external)
+          return `export { ${source.component} as default } from ${JSON.stringify(raw.id)}\n`
+
+        if (!source.component) {
+          this.addWatchFile(source.file)
+          iconFiles.add(source.file)
+        }
         return `export default ${JSON.stringify(readIcon(source))}\n`
       },
     },
