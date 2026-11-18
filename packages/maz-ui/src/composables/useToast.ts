@@ -10,5 +10,6 @@ export function useToast() {
     error: toast.error.bind(toast),
     info: toast.info.bind(toast),
     warning: toast.warning.bind(toast),
+    accent: toast.accent.bind(toast),
   }
 }
