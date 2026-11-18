@@ -3,7 +3,7 @@ import type { ComponentDoc } from 'vue-docgen-api'
 import type { ComponentApi, EventApi, PropApi, SlotApi } from '../types'
 
 import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { createChecker } from 'vue-component-meta'
 import { parseMulti } from 'vue-docgen-api'
 import { normalizeDashes } from '../markdown/clean'
@@ -256,6 +256,46 @@ export function attributeProps(source: string, props: PropApi[]): PropApi[] {
     }))
 }
 
+/** Names holding the attributes: `$attrs`, the `useAttrs()` variable and the values computed from it on one line (`const inputAttrs = computed(() => ... attrs ...)`) */
+export function attrsNames(source: string): string[] {
+  const variable = /const\s+(\w+)\s*=\s*useAttrs\(\)/.exec(source)?.[1]
+
+  if (!variable)
+    return ['$attrs']
+
+  const derived = [
+    ...source.matchAll(/^\s*const\s+(\w+)\s*=(.*)$/gm),
+  ]
+    .filter(([, name, value]) => name !== variable && new RegExp(`\\b${variable}\\b`).test(value))
+    .map(([, name]) => name)
+
+  return ['$attrs', variable, ...derived]
+}
+
+/**
+ * The Maz component of the template receiving the attributes (`v-bind="$attrs"`, `v-bind="{ ...props, ...$attrs }"`, `v-bind="inputAttrs"`),
+ * through the internal components it imports (`MazInputPhoneNumber` -> `PhoneInput` -> `MazInput`)
+ */
+export function attrsTarget(source: string, readImport?: (specifier: string) => string | undefined): string | undefined {
+  const template = /<template>([\s\S]*)<\/template>/.exec(source)?.[1] ?? source
+  const names = attrsNames(source).map(name => name.replace('$', '\\$')).join('|')
+
+  for (const match of template.matchAll(new RegExp(`v-bind="(?:(?:${names})|\\{[^"]*\\.\\.\\.(?:${names})\\b[^"]*)"`, 'g'))) {
+    const tag = /<([\w-]+)(?:\s[^<]*)?$/.exec(template.slice(0, match.index))?.[1]
+
+    if (tag && /^Maz[A-Z]/.test(tag))
+      return tag
+
+    const specifier = tag && new RegExp(`import\\s+${tag}\\s+from\\s+'(\\.[^']+\\.vue)'`).exec(source)?.[1]
+    const imported = specifier && readImport?.(specifier)
+
+    if (imported)
+      return attrsTarget(imported, readImport)
+  }
+
+  return undefined
+}
+
 /**
  * Slots with a computed name (`<slot :name="\`cell-${key}\`">`), which vue-component-meta leaves out.
  * They are named with their variable part in braces (`cell-{key}`) and take the bindings of the slot named like their prefix.
@@ -428,9 +468,13 @@ export function collectComponentApis(componentsDir: string, tsconfig: string): P
     const api = mergeDescriptions(toComponentApi(checker.getComponentMeta(path), file.replace(/\.vue$/, '')), docgenDescriptions(doc))
 
     const source = readFileSync(path, 'utf8')
+    const forwardsAttrs = attrsTarget(source, specifier => readFileSync(join(dirname(path), specifier), 'utf8'))
 
     return {
       ...api,
+      ...(forwardsAttrs
+        ? { forwardsAttrs }
+        : {}),
       props: [
         ...api.props,
         ...attributeProps(source, api.props),

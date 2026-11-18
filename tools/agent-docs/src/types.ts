@@ -95,6 +95,8 @@ export interface ComponentApi {
   import: string
   /** Parent component when this one is a building block (`MazSidebarGroup` -> `MazSidebar`) */
   parent?: string
+  /** Maz component receiving the attributes (`v-bind="$attrs"`): its props work too (`MazDropdown` -> `MazBtn`) */
+  forwardsAttrs?: string
   props: PropApi[]
   events: EventApi[]
   slots: SlotApi[]
