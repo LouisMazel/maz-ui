@@ -529,9 +529,17 @@ Once you've configured the plugin, you can control the language in your Vue comp
 ```vue
 <script setup>
 import { useTranslations } from '@maz-ui/translations'
+import { ref } from 'vue'
 
 // Get the translation tools
 const { locale, setLocale } = useTranslations()
+
+const name = ref('')
+const country = ref()
+const countries = [
+  { label: 'France', value: 'FR' },
+  { label: 'Spain', value: 'ES' },
+]
 
 // Functions to change language
 function switchToFrench() {
@@ -566,9 +574,9 @@ function switchToEnglish() {
     <p>Current language: {{ locale }}</p>
 
     <!-- Your Maz-UI components will automatically use the right language! -->
-    <MazInput />
-    <MazBtn />
-    <MazSelect />
+    <MazInput v-model="name" label="Name" />
+    <MazSelect v-model="country" :options="countries" label="Country" />
+    <MazBtn>Save</MazBtn>
   </div>
 </template>
 ```

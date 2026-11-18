@@ -8,7 +8,7 @@ description: The module capitalize is a function that adds a capital letter to a
 {{ $frontmatter.description }}
 
 <div class="vp-raw">
-<MazInput v-model="stringValue" />
+<MazInput v-model="stringValue" label="Text" />
 </div>
 
 <div
@@ -30,7 +30,7 @@ const stringFormatted = computed(() =>
 </script>
 
 <template>
-  <MazInput v-model="stringValue" />
+  <MazInput v-model="stringValue" label="Text" />
 
   <div
     class="flex flex-center rounded-md gap-0.5 p-4 mt-16 bg-surface-300"

@@ -137,7 +137,7 @@ const multipleSildersLabels = ['Small', 'Middle', 'Big']
   :labels="logSildersLabels"
   :min="50"
   :max="50000"
-  logs
+  log
 />
 </div>
 
@@ -155,7 +155,7 @@ const logSildersLabels: ['Micro', 'Small', 'Middle', 'Big']
     :labels="logSildersLabels"
     :min="50"
     :max="50000"
-    logs
+    log
   />
 </template>
 ```

@@ -267,9 +267,12 @@ Add click handlers to buttons using the `onClick` property in items.
 <script lang="ts" setup>
 import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
+import { useToast } from 'maz-ui/composables/useToast'
+
+const toast = useToast()
 
 const items: MazButtonGroupOption[] = [
-  { text: 'Alert', onClick: () => alert('Clicked Alert!') },
+  { text: 'Toast', onClick: () => toast.info('Clicked Toast!') },
   { text: 'Console', onClick: () => console.log('Clicked Console!') },
 ]
 </script>
@@ -431,6 +434,7 @@ import { MazArrowLeft } from '@maz-ui/icons/raw/MazArrowLeft'
 import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
 import { MazBars3 } from '@maz-ui/icons/raw/MazBars3'
 import { MazSquares2x2 } from '@maz-ui/icons/raw/MazSquares2x2'
+import { useToast } from 'maz-ui/composables/useToast'
 
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'surface', 'container'] as const
@@ -453,8 +457,10 @@ const pastelItems: MazButtonGroupOption[] = [
   { text: 'Month', pastel: true },
 ]
 
+const toast = useToast()
+
 const clickableItems: MazButtonGroupOption[] = [
-  { text: 'Alert', onClick: () => alert('Clicked Alert!') },
+  { text: 'Toast', onClick: () => toast.info('Clicked Toast!') },
   { text: 'Console', onClick: () => console.log('Clicked Console!') },
 ]
 

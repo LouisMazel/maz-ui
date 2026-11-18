@@ -831,6 +831,7 @@ const { value, errorMessage, hasError } = useFormField<string>('email', {
   <MazInput
     ref="emailRef"
     v-model="value"
+    label="Email"
     :hint="errorMessage"
     :error="hasError"
   />
@@ -857,6 +858,7 @@ const { value, errorMessage, hasError } = useFormField<string>('email', {
     v-if="isVisible"
     ref="emailRef"
     v-model="value"
+    label="Email"
     :hint="errorMessage"
     :error="hasError"
   />
@@ -955,7 +957,7 @@ const schema = {
     .min(3, 'Min 3 characters')
     .refine(async (value) => {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      await sleep(2000)
       return value !== 'taken'
     }, 'Username is already taken'),
 }
@@ -984,6 +986,7 @@ const schema = {
 ```vue
 <script lang="ts" setup>
 import { useFormValidator, useFormField } from 'maz-ui/composables'
+import { sleep } from '@maz-ui/utils/helpers/sleep'
 import { pipeAsync, string, nonEmpty, minLength, checkAsync } from 'valibot'
 import { useTemplateRef } from 'vue'
 
@@ -994,7 +997,7 @@ const schema = {
     minLength(3, 'Min 3 characters'),
     checkAsync(async (value) => {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      await sleep(2000)
       return value !== 'taken' // Return true if valid
     }, 'Username is already taken'),
   ),
@@ -1021,6 +1024,7 @@ const {
   <MazInput
     ref="usernameRef"
     v-model="username"
+    label="Username"
     :hint="errorMessage"
     :error="hasError"
     :success="isValid"

@@ -130,9 +130,9 @@ const options = ['Option 1', 'Option 2']
     Button
   </MazBtn>
   <MazInput v-model="text" placeholder="Type here..." />
-  <MazSelect v-model="selected" :options="options" />
+  <MazSelect v-model="selected" :options="options" label="Option" />
   <MazCard>
-    <template #header>
+    <template #title>
       Card Title
     </template>
     <p>Content goes here</p>
@@ -416,7 +416,7 @@ const columns = [
 ]
 
 const roleOptions = ['Admin', 'User', 'Moderator']
-const totalUsers = computed(() => users.value.length)
+const totalPages = computed(() => Math.ceil(users.value.length / perPage.value))
 
 // Methods
 function refreshData() {
@@ -443,7 +443,7 @@ function saveUser() {
   <div class="dashboard">
     <!-- Auto-imported components -->
     <MazCard class="stats-card">
-      <template #header>
+      <template #title>
         <div class="flex items-center justify-between">
           <h2>Statistics</h2>
           <MazBtn
@@ -470,21 +470,20 @@ function saveUser() {
 
     <!-- Data table with pagination -->
     <MazCard>
-      <template #header>
+      <template #title>
         Users
       </template>
 
       <MazTable
-        :data="paginatedUsers"
-        :columns="columns"
+        :rows="paginatedUsers"
+        :headers="columns"
         :loading="isLoading"
       />
 
       <template #footer>
         <MazPagination
-          v-model:current-page="currentPage"
-          :total="totalUsers"
-          :per-page="perPage"
+          v-model="currentPage"
+          :total-pages="totalPages"
         />
       </template>
     </MazCard>
@@ -639,7 +638,7 @@ const toast = useToast()
 
 <template>
   <MazBtn>Click me</MazBtn>
-  <MazInput v-model="name" />
+  <MazInput v-model="name" label="Name" />
   <MazCard>
     <p class="text-sm text-muted">
       Hello World!
@@ -659,7 +658,7 @@ const toast = useToast()
 
 <template>
   <MazBtn>Click me</MazBtn>
-  <MazInput v-model="name" />
+  <MazInput v-model="name" label="Name" />
   <MazCard>
     <p class="text-sm text-muted">
       Hello World!

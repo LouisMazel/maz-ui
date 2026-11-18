@@ -81,7 +81,7 @@ description: MazCard is a standalone component to display some texts and images 
         Cute Kitten
       </h3>
     </template>
-    <template #subtitle>
+    <template #content-subtitle>
       <span>
         Cat
       </span>
