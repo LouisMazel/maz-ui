@@ -24,6 +24,7 @@ vi.mock('../theme-preferences', async importOriginal => ({
 
 vi.mock('../get-preset', () => ({
   getPreset: vi.fn(),
+  warnSavedPresetFallback: vi.fn(),
 }))
 
 vi.mock('../inject-theme-css', () => ({
@@ -48,7 +49,7 @@ vi.mock('../use-mutation-observer', () => ({
   })),
 }))
 
-const { getPreset } = await import('../get-preset')
+const { getPreset, warnSavedPresetFallback } = await import('../get-preset')
 const { injectThemeCSS } = await import('../inject-theme-css')
 const { mergePresets } = await import('../preset-merger')
 const { updateDocumentClass } = await import('../update-document-class')
@@ -948,7 +949,8 @@ describe('setup-theme', () => {
     describe('when a restored switch active fails to resolve on an object preset', () => {
       it('then the object stays and the cookie is healed to the base', async () => {
         vi.mocked(getSavedPreset).mockReturnValueOnce({ base: 'custom-app-theme', active: 'disappeared' })
-        vi.mocked(getPreset).mockRejectedValueOnce(new Error('not found'))
+        const error = new Error('not found')
+        vi.mocked(getPreset).mockRejectedValueOnce(error)
         const customPreset = { ...mockPreset, name: 'custom-app-theme' }
 
         const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
@@ -956,6 +958,7 @@ describe('setup-theme', () => {
         await new Promise(resolve => setTimeout(resolve, 0))
         await new Promise(resolve => setTimeout(resolve, 0))
 
+        expect(warnSavedPresetFallback).toHaveBeenCalledWith(error)
         expect(savePreset).toHaveBeenCalledWith('custom-app-theme', 'custom-app-theme')
         expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
       })
@@ -985,6 +988,7 @@ describe('setup-theme', () => {
         await new Promise(resolve => setTimeout(resolve, 0))
 
         expect(savePreset).toHaveBeenCalledWith('maz-ui', 'maz-ui')
+        expect(warnSavedPresetFallback).toHaveBeenCalledWith(new Error('not found'))
       })
     })
 
@@ -1249,7 +1253,8 @@ describe('setup-theme', () => {
           ],
         })
 
-        await vi.waitFor(() => expect(savePreset).toHaveBeenLastCalledWith('test', 'test'))
+        await vi.waitFor(() => expect(warnSavedPresetFallback).toHaveBeenCalledWith(new Error('unknown')))
+        expect(savePreset).toHaveBeenLastCalledWith('test', 'test')
         expect(result.themeState.value.preset?.name).toBe('test')
       })
     })

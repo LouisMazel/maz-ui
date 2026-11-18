@@ -1,4 +1,6 @@
 import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from '../types'
+import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
+import { presetRegistry } from './preset-loaders'
 
 export function isPresetObject(preset?: ThemePresetName | ThemePreset | ThemePresetOverrides): preset is ThemePreset {
   return typeof preset === 'object' && preset !== null && !!preset.name
@@ -9,50 +11,25 @@ export async function getPreset(preset?: ThemePresetName | ThemePreset) {
     return preset
   }
 
-  if (preset === 'mazUi' || !preset || preset === 'maz-ui') {
-    const { mazUi } = await import('../presets/mazUi')
-    return mazUi
+  const name = !preset || preset === 'maz-ui'
+    ? 'mazUi'
+    : preset
+  const load = Object.hasOwn(presetRegistry.loaders, name)
+    ? presetRegistry.loaders[name]
+    : undefined
+
+  if (load) {
+    return await load()
   }
 
-  if (preset === 'ocean') {
-    const { ocean } = await import('../presets/ocean')
-    return ocean
-  }
-
-  if (preset === 'pristine') {
-    const { pristine } = await import('../presets/pristine')
-    return pristine
-  }
-
-  if (preset === 'obsidian') {
-    const { obsidian } = await import('../presets/obsidian')
-    return obsidian
-  }
-
-  if (preset === 'nova') {
-    const { nova } = await import('../presets/nova')
-    return nova
-  }
-
-  if (preset === 'folio') {
-    const { folio } = await import('../presets/folio')
-    return folio
-  }
-
-  if (preset === 'macos') {
-    const { macos } = await import('../presets/macos')
-    return macos
-  }
-
-  if (preset === 'windows') {
-    const { windows } = await import('../presets/windows')
-    return windows
-  }
-
-  if (preset === 'linux') {
-    const { linux } = await import('../presets/linux')
-    return linux
+  if (presetRegistry.restricted) {
+    throw new TypeError(`[@maz-ui/themes] Preset "${preset}" is not in the presets of the app: add it to the "presets" option of MazUi (@maz-ui/vite-plugin), or to "theme.presets" with @maz-ui/nuxt`)
   }
 
   throw new TypeError(`[@maz-ui/themes] Preset ${preset} not found`)
+}
+
+/** Warns that the preset saved in the `maz-preset` cookie cannot be loaded: the configured preset is used instead */
+export function warnSavedPresetFallback(error: unknown): void {
+  console.warn(`${getErrorMessage(error)}. The configured preset is used instead.`)
 }

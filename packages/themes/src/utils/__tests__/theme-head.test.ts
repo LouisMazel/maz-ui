@@ -67,12 +67,16 @@ describe('theme-head', () => {
     })
 
     describe('when the active preset of the cookie does not exist', () => {
-      it('then the configured preset is returned', async () => {
+      it('then the configured preset is returned with a warning', async () => {
+        const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
         const result = await resolveThemePresets({
           preset: 'folio',
         }, reader({ 'maz-preset': 'folio:unknown' }))
 
         expect(result.preset?.name).toBe('folio')
+        expect(warn).toHaveBeenCalledWith('[@maz-ui/themes] Preset unknown not found. The configured preset is used instead.')
+        warn.mockRestore()
       })
     })
 
