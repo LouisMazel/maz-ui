@@ -16,6 +16,7 @@ import type { MazInputNumberProps } from '../components/MazInputNumber.vue'
 import type { MazInputPhoneNumberProps } from '../components/MazInputPhoneNumber.vue'
 import type { MazInputTagsProps } from '../components/MazInputTags.vue'
 import type { MazMarkdownEditorProps } from '../components/MazMarkdownEditor.vue'
+import type { MazPageSectionProps } from '../components/MazPageSection.vue'
 import type { MazPaginationProps } from '../components/MazPagination.vue'
 import type { MazRadioProps } from '../components/MazRadio.vue'
 import type { MazRadioButtonsProps } from '../components/MazRadioButtons.vue'
@@ -75,6 +76,7 @@ export interface MazUiDefaultsOptions {
   MazInputPhoneNumber?: Partial<MazInputPhoneNumberProps>
   MazInputTags?: Partial<MazInputTagsProps>
   MazMarkdownEditor?: Partial<MazMarkdownEditorProps>
+  MazPageSection?: Partial<MazPageSectionProps>
   MazPagination?: Partial<MazPaginationProps>
   MazRadio?: Partial<MazRadioProps>
   MazRadioButtons?: Partial<MazRadioButtonsProps>

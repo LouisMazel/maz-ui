@@ -27,26 +27,37 @@
 /* Full-width block whose content is centered within `--maz-container-max-width`, without minimum side padding (full-bleed children) */
 @utility padded-container-no-p {
   inline-size: 100%;
-  padding-inline: max(0px, calc((100% - var(--maz-container-max-width)) / 2));
+  padding-inline: max(0px, calc((100% - var(--maz-container-max-width, 1440px)) / 2));
 }
 
-/* stylelint-disable no-invalid-position-declaration -- declarations of the element inside the @container of a Tailwind @utility */
+/* stylelint-disable no-invalid-position-declaration -- declarations of the element inside the @media and @container of a Tailwind @utility */
 
 /* Full-width page section (header, main, footer) with responsive side padding, content centered within `--maz-container-max-width`; the padding follows the closest `@container` ancestor, or the viewport */
 @utility padded-container {
   inline-size: 100%;
-  padding-inline: max(var(--maz-container-padding-value), calc((100% - var(--maz-container-max-width)) / 2));
+  padding-inline: max(
+    var(--maz-container-padding-value, var(--maz-container-padding-mobile, 1rem)),
+    calc((100% - var(--maz-container-max-width, 1440px)) / 2)
+  );
+
+  @media (width >= 576px) {
+    --maz-container-padding-value: var(--maz-container-padding-tablet, 2rem);
+  }
+
+  @media (width >= 1024px) {
+    --maz-container-padding-value: var(--maz-container-padding-desktop, 2.5rem);
+  }
 
   @container (width >= 0) {
-    --maz-container-padding-value: var(--maz-container-padding-mobile);
+    --maz-container-padding-value: var(--maz-container-padding-mobile, 1rem);
   }
 
   @container (width >= 576px) {
-    --maz-container-padding-value: var(--maz-container-padding-tablet);
+    --maz-container-padding-value: var(--maz-container-padding-tablet, 2rem);
   }
 
   @container (width >= 1024px) {
-    --maz-container-padding-value: var(--maz-container-padding-desktop);
+    --maz-container-padding-value: var(--maz-container-padding-desktop, 2.5rem);
   }
 }
 
