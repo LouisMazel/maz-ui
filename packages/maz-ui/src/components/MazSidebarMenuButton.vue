@@ -45,7 +45,7 @@ export interface MazSidebarMenuButtonProps {
 }
 </script>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="_T">
 import type { Component } from 'vue'
 import { computed, defineAsyncComponent, getCurrentInstance } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict'

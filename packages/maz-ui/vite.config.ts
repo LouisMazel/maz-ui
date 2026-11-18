@@ -1,14 +1,14 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
 import { getExternalDependencies, VitePreNestedCss } from '@maz-ui/vite-config'
+import SvgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 
+import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
-import SvgLoader from 'vite-svg-loader'
 
 import { ViteCompileStyles } from './build/index.ts'
 

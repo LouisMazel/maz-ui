@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="_T">
 import type { CSSProperties } from 'vue'
 import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazColor, MazNeutralColor, MazRoundedSize, MazSize } from './types'
@@ -8,34 +8,6 @@ import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import { getColor } from './types'
-
-const {
-  color = 'primary',
-  type = 'button',
-  fab,
-  icon,
-  startIcon,
-  endIcon,
-  justify = 'center',
-  pastel,
-  outlined,
-  loading,
-  disabled,
-  block,
-  padding = true,
-  active,
-  overflowHidden = true,
-} = defineProps<MazBtnProps>()
-
-const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazBtn', {
-  size: 'md',
-  roundedSize: 'md',
-})
-
-const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
-const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
-
-const { href, to } = useAttrs()
 
 export interface MazBtnProps {
   /**
@@ -136,6 +108,34 @@ export interface MazBtnProps {
    */
   overflowHidden?: boolean
 }
+
+const {
+  color = 'primary',
+  type = 'button',
+  fab,
+  icon,
+  startIcon,
+  endIcon,
+  justify = 'center',
+  pastel,
+  outlined,
+  loading,
+  disabled,
+  block,
+  padding = true,
+  active,
+  overflowHidden = true,
+} = defineProps<MazBtnProps>()
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazBtn', {
+  size: 'md',
+  roundedSize: 'md',
+})
+
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
+
+const { href, to } = useAttrs()
 
 const component = computed(() => {
   if (href)

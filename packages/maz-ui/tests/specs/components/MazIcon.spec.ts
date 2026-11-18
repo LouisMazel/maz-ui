@@ -1,4 +1,5 @@
 import MazIcon from '@components/MazIcon.vue'
+import { registerIcon, registerIcons } from '@maz-ui/icons/registry'
 import { mount, shallowMount } from '@vue/test-utils'
 import { createSSRApp, defineComponent, h, nextTick } from 'vue'
 import { renderToString } from 'vue/server-renderer'
@@ -44,6 +45,160 @@ describe('MazIcon', () => {
       await wrapper.setProps({ icon: SECOND_RAW_SVG })
       await nextTick()
       expect(wrapper.html()).toContain('<circle')
+    })
+  })
+
+  describe('given registered icon names', () => {
+    beforeEach(() => {
+      registerIcons({
+        'test-star': RAW_SVG,
+        'app:test-logo': SECOND_RAW_SVG,
+      })
+    })
+
+    describe('when the icon is a registered name', () => {
+      it('then it renders the registered SVG inline', () => {
+        const wrapper = mount(MazIcon, {
+          props: { icon: 'test-star' },
+        })
+
+        expect(wrapper.html()).toContain('<svg width="1em" height="1em" viewBox="0 0 24 24">')
+      })
+    })
+
+    describe('when the icon is a prefixed name', () => {
+      it('then it renders the SVG registered under the prefix', () => {
+        const wrapper = mount(MazIcon, {
+          props: { icon: 'app:test-logo' },
+        })
+
+        expect(wrapper.html()).toContain('<circle')
+      })
+    })
+
+    describe('when the name changes', () => {
+      it('then it renders the new icon synchronously', async () => {
+        const wrapper = mount(MazIcon, {
+          props: { icon: 'test-star' },
+        })
+
+        await wrapper.setProps({ icon: 'app:test-logo' })
+
+        expect(wrapper.html()).toContain('<circle')
+      })
+    })
+
+    describe('when the icon is a registered name rendered on the server', () => {
+      it('then the server output contains the SVG', async () => {
+        const html = await renderToString(createSSRApp({
+          render: () => h(MazIcon, { icon: 'test-star' }),
+        }))
+
+        expect(html).toContain('M0 0h24v24H0z')
+      })
+    })
+
+    describe('when the name is registered after the first render', () => {
+      it('then the icon replaces the fallback on the next change', async () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+        const wrapper = mount(MazIcon, {
+          props: { icon: 'test-late', fallback: ComponentIcon as any },
+        })
+
+        registerIcon('test-late', RAW_SVG)
+        await wrapper.setProps({ title: 'Late' })
+
+        expect(wrapper.html()).toContain('<title>Late</title>')
+        warnSpy.mockRestore()
+      })
+    })
+  })
+
+  describe('given an unknown icon name', () => {
+    describe('when it is rendered', () => {
+      it('then it warns, emits an error and renders the fallback', () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+        const wrapper = mount(MazIcon, {
+          props: { icon: 'test-unknown', fallback: ComponentIcon as any },
+        })
+
+        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Unknown icon "test-unknown"'))
+        expect(wrapper.emitted('error')?.[0][0]).toBeInstanceOf(Error)
+        expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(true)
+        warnSpy.mockRestore()
+      })
+    })
+
+    describe('when it is rendered several times', () => {
+      it('then it warns once', () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+        mount(MazIcon, {
+          props: { icon: 'test-unknown-twice' },
+        })
+        mount(MazIcon, {
+          props: { icon: 'test-unknown-twice' },
+        })
+
+        expect(warnSpy).toHaveBeenCalledTimes(1)
+        warnSpy.mockRestore()
+      })
+    })
+
+    describe('when the fallback is a raw SVG', () => {
+      it('then it renders the fallback inline', () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+        const wrapper = mount(MazIcon, {
+          props: { icon: 'test-unknown-raw', fallback: SECOND_RAW_SVG },
+        })
+
+        expect(wrapper.html()).toContain('<circle')
+        warnSpy.mockRestore()
+      })
+    })
+
+    describe('when it is rendered on the server', () => {
+      it('then the server output has no pending placeholder', async () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+        const html = await renderToString(createSSRApp({
+          render: () => h(MazIcon, { icon: 'app:test-missing', fallback: ComponentIcon }),
+        }))
+
+        expect(html).toContain('data-testid="component-icon"')
+        warnSpy.mockRestore()
+      })
+    })
+  })
+
+  describe('given a string that is neither a name, a SVG nor a URL', () => {
+    describe('when it replaces a raw SVG', () => {
+      it('then nothing is rendered', async () => {
+        const wrapper = mount(MazIcon, {
+          props: { icon: RAW_SVG },
+        })
+
+        await wrapper.setProps({ icon: 'not an icon' })
+
+        expect(wrapper.find('svg').exists()).toBe(false)
+      })
+    })
+  })
+
+  describe('given a raw SVG icon', () => {
+    describe('when it is replaced by a component', () => {
+      it('then the component is rendered', async () => {
+        const wrapper = mount(MazIcon, {
+          props: { icon: RAW_SVG },
+        })
+
+        await wrapper.setProps({ icon: ComponentIcon as any })
+
+        expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(true)
+        expect(wrapper.html()).not.toContain('M0 0h24v24H0z')
+      })
     })
   })
 

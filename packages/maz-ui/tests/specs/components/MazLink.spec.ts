@@ -1,9 +1,10 @@
+import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstanceType'
 import type { VueWrapper } from '@vue/test-utils'
 import MazLink from '@components/MazLink.vue'
 import { mount, shallowMount } from '@vue/test-utils'
 
 describe('MazLink component', () => {
-  let wrapper: VueWrapper<InstanceType<typeof MazLink>>
+  let wrapper: VueWrapper<GenericInstanceType<typeof MazLink>>
 
   beforeEach(() => {
     wrapper = shallowMount(MazLink, {

@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="_T">
 import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazIconProps } from './MazIcon.vue'
 import type { MazRoundedSize } from './types'

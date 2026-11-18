@@ -6,6 +6,7 @@
 
 const RAW_SVG_PATTERN = /^\s*<svg[\s>]/i
 const URL_PATTERN = /^(?:[a-z][a-z\d+\-.]*:|\/)/i
+const ICON_NAME_PATTERN = /^[a-z\d]+(?:-[a-z\d]+)*(?::[a-z\d]+(?:-[a-z\d]+)*)?$/i
 
 const RE_SVG_OPEN = /<svg\b/i
 const RE_SVG_TAG_FULL = /(<svg\b[^>]*>)/i
@@ -33,6 +34,11 @@ export function isRawSvg(value: unknown): value is string {
 
 export function isUrlLike(value: unknown): value is string {
   return typeof value === 'string' && URL_PATTERN.test(value) && !isRawSvg(value)
+}
+
+/** An icon name (`x-mark`, `app:logo`): URLs and file paths have a `/` or a `.` */
+export function isIconName(value: unknown): value is string {
+  return typeof value === 'string' && ICON_NAME_PATTERN.test(value)
 }
 
 export function isStringIcon(value: unknown): value is string {
@@ -73,21 +79,44 @@ export function stripSvgRootDimensions(svg: string): string {
   })
 }
 
+function escapeAttribute(value: string | number): string {
+  return String(value).replace(/"/g, '&quot;')
+}
+
+export interface SvgDimensions {
+  width?: string | number
+  height?: string | number
+}
+
 interface PrepareOptions {
   title?: string
   svgAttributes?: Record<string, string | number>
+  /**
+   * Dimensions of the root `<svg>`, `false` keeps its own
+   * @default { width: '1em', height: '1em' } (scaled by the font size)
+   */
+  dimensions?: SvgDimensions | false
 }
 
 export function prepareSvgString(svg: string, options: PrepareOptions = {}): string {
-  let result = stripSvgRootDimensions(svg)
+  const { dimensions = { width: '1em', height: '1em' } } = options
+  let result = svg
 
-  // Force 1em / 1em — the consumer scales via font-size.
-  result = result.replace(RE_SVG_OPEN, '<svg width="1em" height="1em"')
+  if (dimensions) {
+    result = stripSvgRootDimensions(result)
+    const attributes = Object.entries(dimensions)
+      .filter(([, value]) => value !== undefined && value !== '')
+      .map(([name, value]) => `${name}="${escapeAttribute(value as string | number)}"`)
+      .join(' ')
+
+    if (attributes)
+      result = result.replace(RE_SVG_OPEN, `<svg ${attributes}`)
+  }
 
   if (options.svgAttributes) {
     const attrStr = Object.entries(options.svgAttributes)
       .filter(([, v]) => typeof v === 'string' || typeof v === 'number')
-      .map(([k, v]) => `${k}="${String(v).replace(/"/g, '&quot;')}"`)
+      .map(([k, v]) => `${k}="${escapeAttribute(v)}"`)
       .join(' ')
 
     if (attrStr)

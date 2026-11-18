@@ -14,7 +14,7 @@ export interface MazSidebarMenuSubProps {
 }
 </script>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="_T">
 import { MazChevronDown } from '@maz-ui/icons/lazy/MazChevronDown'
 import { computed, defineAsyncComponent, ref, useId } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict'

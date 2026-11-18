@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup generic="_T">
 import type { VTooltipBindingValue } from '../directives/vTooltip'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazDropdownMenuItem, MazDropdownProps } from './MazDropdown.vue'
@@ -9,47 +9,6 @@ import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { vTooltip } from '../directives/vTooltip'
 import MazBtn from './MazBtn.vue'
 import MazDropdown from './MazDropdown.vue'
-
-const {
-  items = [],
-  menuLabel,
-  color = 'primary',
-  pastel,
-  outlined,
-  loading,
-  disabled,
-  actionDisabled,
-  menuDisabled,
-  itemsSize = 'sm',
-  position = 'bottom-end',
-  trigger = 'click',
-  type = 'button',
-  startIcon,
-  block,
-  tooltip,
-} = defineProps<MazBtnDropdownProps>()
-
-const emit = defineEmits<{
-  /**
-   * Emitted when the main action is clicked
-   * @property {MouseEvent} event - the click event
-   */
-  click: [event: MouseEvent]
-}>()
-
-const TOGGLE_PADDING_CLASS: Record<MazSize, string> = {
-  xl: 'maz:px-3!',
-  lg: 'maz:px-3!',
-  md: 'maz:px-2.5!',
-  sm: 'maz:px-2!',
-  xs: 'maz:px-1!',
-  mini: 'maz:px-0.5!',
-}
-
-const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: NonNullable<MazBtnProps['roundedSize']> }>('MazBtnDropdown', {
-  size: 'md',
-  roundedSize: 'md',
-})
 
 /**
  * Split button: the main action on the left, its variants in a menu behind the chevron on the right.
@@ -151,6 +110,47 @@ export interface MazBtnDropdownProps {
    */
   tooltip?: VTooltipBindingValue
 }
+
+const {
+  items = [],
+  menuLabel,
+  color = 'primary',
+  pastel,
+  outlined,
+  loading,
+  disabled,
+  actionDisabled,
+  menuDisabled,
+  itemsSize = 'sm',
+  position = 'bottom-end',
+  trigger = 'click',
+  type = 'button',
+  startIcon,
+  block,
+  tooltip,
+} = defineProps<MazBtnDropdownProps>()
+
+const emit = defineEmits<{
+  /**
+   * Emitted when the main action is clicked
+   * @property {MouseEvent} event - the click event
+   */
+  click: [event: MouseEvent]
+}>()
+
+const TOGGLE_PADDING_CLASS: Record<MazSize, string> = {
+  xl: 'maz:px-3!',
+  lg: 'maz:px-3!',
+  md: 'maz:px-2.5!',
+  sm: 'maz:px-2!',
+  xs: 'maz:px-1!',
+  mini: 'maz:px-0.5!',
+}
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: NonNullable<MazBtnProps['roundedSize']> }>('MazBtnDropdown', {
+  size: 'md',
+  roundedSize: 'md',
+})
 </script>
 
 <template>

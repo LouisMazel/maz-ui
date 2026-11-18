@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="_T">
 import type {
   ClassValue,
   ComponentPublicInstance,
@@ -23,36 +23,6 @@ import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazBackdrop from './MazBackdrop.vue'
 import MazIcon from './MazIcon.vue'
-
-defineOptions({
-  name: 'MazBottomSheet',
-  inheritAttrs: false,
-})
-
-const {
-  modelValue,
-  title,
-  icon,
-  maxWidth = '40rem',
-  hideCloseButton = false,
-  hideHeader = false,
-  padding = true,
-  persistent,
-  swipeToClose = true,
-  closeOnEscape = true,
-  ...backdropProps
-} = defineProps<BottomSheetProps & MazBackdropProps>()
-
-const emits = defineEmits<{
-  /** Emitted when the model value is updated */
-  'update:model-value': [value: boolean]
-  /** Emitted when the component is opened */
-  'open': [value: void]
-  /** Emitted when the component is closed */
-  'close': [value: void]
-}>()
-
-const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 export interface BottomSheetProps {
   /** @model Modal's model value */
@@ -83,6 +53,36 @@ export interface BottomSheetProps {
 }
 
 export interface MazBottomSheetProps extends BottomSheetProps, MazBackdropProps {}
+
+defineOptions({
+  name: 'MazBottomSheet',
+  inheritAttrs: false,
+})
+
+const {
+  modelValue,
+  title,
+  icon,
+  maxWidth = '40rem',
+  hideCloseButton = false,
+  hideHeader = false,
+  padding = true,
+  persistent,
+  swipeToClose = true,
+  closeOnEscape = true,
+  ...backdropProps
+} = defineProps<BottomSheetProps & MazBackdropProps>()
+
+const emits = defineEmits<{
+  /** Emitted when the model value is updated */
+  'update:model-value': [value: boolean]
+  /** Emitted when the component is opened */
+  'open': [value: void]
+  /** Emitted when the component is closed */
+  'close': [value: void]
+}>()
+
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const attrs = useAttrs()
 const slots = useSlots()
