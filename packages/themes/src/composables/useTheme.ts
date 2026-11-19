@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types/index.ts'
+import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, hasInjectionContext, inject } from 'vue'
 

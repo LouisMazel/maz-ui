@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../types/index.ts'
+import type { ThemePreset } from '../types.ts'
 import { generateCSS } from '../utils/css-generator.ts'
 
 interface SharedOptions {

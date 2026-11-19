@@ -1,5 +1,5 @@
 import type { MazUiThemeOptions } from '../plugin.ts'
-import type { ThemePreset } from '../types/index.ts'
+import type { ThemePreset } from '../types.ts'
 import { CSS_ID, generateCSS, injectCSS } from './css-generator.ts'
 
 export function injectThemeCSS(

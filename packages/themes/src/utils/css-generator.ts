@@ -1,4 +1,4 @@
-import type { RoundedScaleKey, ThemeColors, ThemeComponentBg, ThemeFoundation, ThemeMode, ThemePreset } from '../types/index.ts'
+import type { RoundedScaleKey, ThemeColors, ThemeComponentBg, ThemeFoundation, ThemeMode, ThemePreset } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults.ts'
 import { normalizeColor } from './color-parser.ts'

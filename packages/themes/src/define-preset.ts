@@ -1,4 +1,4 @@
-import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from './types/index.ts'
+import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from './types.ts'
 import { getPreset } from './utils/index.ts'
 import { mergePresets } from './utils/preset-merger.ts'
 

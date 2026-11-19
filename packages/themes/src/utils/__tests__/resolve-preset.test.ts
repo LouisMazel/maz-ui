@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../../types/index.ts'
+import type { ThemePreset } from '../../types.ts'
 import { mazUi } from '../../presets/mazUi.ts'
 import { colorToHex, formatAsOklch } from '../color-conversions.ts'
 import { getPerceptualColorScale, getRelativeColorScale } from '../css-generator.ts'

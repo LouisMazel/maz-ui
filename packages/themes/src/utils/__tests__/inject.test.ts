@@ -1,5 +1,5 @@
 import type { App, Ref } from 'vue'
-import type { ThemeState } from '../../types/index.ts'
+import type { ThemeState } from '../../types.ts'
 import { ref } from 'vue'
 import { injectThemeState } from '../inject.ts'
 import { getActiveThemeState, setActiveThemeState } from '../theme-state-registry.ts'

@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../../types/index.ts'
+import type { ThemePreset } from '../../types.ts'
 import { ocean } from '../../presets/ocean.ts'
 import { CSS_ID } from '../css-generator.ts'
 import {

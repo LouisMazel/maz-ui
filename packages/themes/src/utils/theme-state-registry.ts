@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ThemeState } from '../types/index.ts'
+import type { ThemeState } from '../types.ts'
 
 let activeThemeState: Ref<ThemeState | undefined> | undefined
 

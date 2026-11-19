@@ -1,4 +1,4 @@
-import type { ThemeState } from '../../types/index.ts'
+import type { ThemeState } from '../../types.ts'
 import { updateDocumentClass } from '../update-document-class.ts'
 
 vi.mock('../no-transition.ts', () => ({

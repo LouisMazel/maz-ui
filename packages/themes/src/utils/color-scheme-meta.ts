@@ -1,4 +1,4 @@
-import type { ColorMode, ThemeMode } from '../types/index.ts'
+import type { ColorMode, ThemeMode } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 
 /**

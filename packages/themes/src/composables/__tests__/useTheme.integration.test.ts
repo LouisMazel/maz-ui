@@ -1,4 +1,4 @@
-import type { ThemeState } from '../../types/index.ts'
+import type { ThemeState } from '../../types.ts'
 import { createApp, ref } from 'vue'
 import { mazUi } from '../../presets/index.ts'
 import { useTheme } from '../useTheme.ts'

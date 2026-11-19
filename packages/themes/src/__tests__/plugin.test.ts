@@ -1,5 +1,5 @@
 import type { App, Ref } from 'vue'
-import type { ThemeState } from '../types/index.ts'
+import type { ThemeState } from '../types.ts'
 import { MazUiTheme } from '../plugin.ts'
 
 vi.mock('../utils/setup-theme.ts', () => ({

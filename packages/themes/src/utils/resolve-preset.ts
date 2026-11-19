@@ -1,4 +1,4 @@
-import type { ColorScaleMode, ThemeColors, ThemePreset } from '../types/index.ts'
+import type { ColorScaleMode, ThemeColors, ThemePreset } from '../types.ts'
 import type { OklchChannels } from './color-conversions.ts'
 import { colorToHex, formatAsOklch, parseColorAsOklch } from './color-conversions.ts'
 import { normalizeColor } from './color-parser.ts'

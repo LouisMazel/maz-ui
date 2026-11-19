@@ -1,5 +1,5 @@
 import type { MazUiThemeOptions } from '../plugin.ts'
-import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName } from '../types/index.ts'
+import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName } from '../types.ts'
 import type { CookieReader, SystemColorMode } from './theme-preferences.ts'
 import { getCookie } from '@maz-ui/utils/helpers/cookie'
 import { resolveColorSchemeContent } from './color-scheme-meta.ts'

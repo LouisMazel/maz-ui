@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ThemePreset, ThemePresetOverrides, ThemeState } from '../../types/index.ts'
+import type { ThemePreset, ThemePresetOverrides, ThemeState } from '../../types.ts'
 import { createApp, defineComponent, ref } from 'vue'
 import { mazUi } from '../../presets/index.ts'
 import { useTheme } from '../useTheme.ts'

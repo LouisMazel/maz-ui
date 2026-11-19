@@ -1,4 +1,4 @@
-import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from '../types/index.ts'
+import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from '../types.ts'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { presetRegistry } from './preset-loaders.ts'
 

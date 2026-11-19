@@ -1,5 +1,5 @@
 import type { App, Ref } from 'vue'
-import type { ThemeState } from '../types/index.ts'
+import type { ThemeState } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { setActiveThemeState } from './theme-state-registry.ts'
 
