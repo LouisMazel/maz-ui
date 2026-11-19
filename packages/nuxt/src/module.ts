@@ -1,4 +1,5 @@
 import type { AgentTarget, SetupAgentsChange, SetupAgentsResult } from '@maz-ui/node'
+import type { IconDir } from '@maz-ui/vite-plugin'
 import type { Nuxt } from 'nuxt/schema'
 import type { MazUiNuxtOptions } from './types'
 import { createRequire } from 'node:module'
@@ -8,7 +9,7 @@ import { fileURLToPath } from 'node:url'
 import { readPackageVersion, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
-import { generateIconTypes, loadIconNames, MazUiIcons, MazUiPurgeCss, MazUiThemePresets } from '@maz-ui/vite-plugin'
+import { generateIconTypes, loadIconNames, MazUiIcons, MazUiPurgeCss, MazUiThemePresets, resolveIconTypesModule } from '@maz-ui/vite-plugin'
 import { onDevtoolsReady } from '@nuxt/devtools-kit'
 import {
   addComponent,
@@ -145,11 +146,28 @@ function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult
 /** Version of the maz-ui that Node.js resolves from a file, `undefined` when it does not resolve */
 const ICON_TYPES_TEMPLATE = 'types/maz-icons.d.ts'
 
+function resolveIconDir(dir: IconDir, rootDir: string): IconDir {
+  return typeof dir === 'string'
+    ? resolve(rootDir, dir)
+    : {
+        ...dir,
+        path: resolve(rootDir, dir.path),
+      }
+}
+
 function setupIcons(options: MazUiNuxtOptions['icons'], nuxt: Nuxt) {
   const iconsOptions = typeof options === 'object'
     ? options
     : {}
-  const dir = resolve(nuxt.options.rootDir, iconsOptions.dir ?? join(nuxt.options.srcDir, 'icons'))
+  const { rootDir } = nuxt.options
+  const dir = Array.isArray(iconsOptions.dir)
+    ? iconsOptions.dir.map(entry => resolveIconDir(entry, rootDir))
+    : resolveIconDir(iconsOptions.dir ?? join(nuxt.options.srcDir, 'icons'), rootDir)
+  const paths = (Array.isArray(dir)
+    ? dir
+    : [dir]).map(entry => typeof entry === 'string'
+    ? entry
+    : entry.path)
 
   addVitePlugin(MazUiIcons({ ...iconsOptions, dir, dts: false }))
 
@@ -157,19 +175,41 @@ function setupIcons(options: MazUiNuxtOptions['icons'], nuxt: Nuxt) {
   addTypeTemplate({
     filename: ICON_TYPES_TEMPLATE,
     getContents: () => generateIconTypes(
-      loadIconNames({ root: nuxt.options.rootDir, dir, prefix: iconsOptions.prefix }),
-      { strict: iconsOptions.strict },
+      loadIconNames({
+        root: rootDir,
+        dir,
+        prefix: iconsOptions.prefix,
+        defaultIcons: iconsOptions.defaultIcons,
+      }),
+      {
+        strict: iconsOptions.strict,
+        module: resolveIconTypesModule(rootDir),
+      },
     ),
   })
 
   nuxt.hook('builder:watch', async (event, relativePath) => {
     const path = resolve(nuxt.options.srcDir, relativePath)
-    if ((event === 'add' || event === 'unlink') && path.startsWith(`${dir}/`) && path.endsWith('.svg')) {
+    if ((event === 'add' || event === 'unlink') && paths.some(directory => path.startsWith(`${directory}/`)) && path.endsWith('.svg')) {
       await updateTemplates({
         filter: template => template.filename === ICON_TYPES_TEMPLATE,
       })
     }
   })
+}
+
+/**
+ * `@maz-ui/icons/vue`, from the maz-ui of the module: with pnpm strict, an app that only depends on `@maz-ui/nuxt`
+ * does not resolve `@maz-ui/icons`
+ */
+function resolveIconsVue(): string {
+  try {
+    const mazUiPackage = createRequire(import.meta.url).resolve('maz-ui/package.json')
+    return createRequire(mazUiPackage).resolve('@maz-ui/icons/vue')
+  }
+  catch {
+    return '@maz-ui/icons/vue'
+  }
 }
 
 function resolveMazUiVersion(from: string): string | undefined {
@@ -430,6 +470,13 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           filePath: `maz-ui/components/${name}`,
         })
       }
+
+      // The component of the icons by name, without style, for the wrappers of the app
+      addComponent({
+        name: 'MazIconPrimitive',
+        export: 'MazIconPrimitive',
+        filePath: resolveIconsVue(),
+      })
     }
 
     // Plugins

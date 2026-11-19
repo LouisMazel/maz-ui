@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, MazUiThemePresets, MazUiIcons, generateIconTypes, loadIconNames, addImports, addTemplate, addTypeTemplate, updateTemplates, resolvePath, createResolver, defineNuxtModule, onDevtoolsReady, register, useLogger, logger, setupAgents, readPackageVersion, createRequire } = vi.hoisted(() => {
+const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, MazUiThemePresets, MazUiIcons, generateIconTypes, loadIconNames, resolveIconTypesModule, addImports, addTemplate, addTypeTemplate, updateTemplates, resolvePath, createResolver, defineNuxtModule, onDevtoolsReady, register, useLogger, logger, setupAgents, readPackageVersion, createRequire } = vi.hoisted(() => {
   const logger = {
     info: vi.fn(),
     warn: vi.fn(),
@@ -26,6 +26,7 @@ const { addComponent, addPlugin, addVitePlugin, MazUiPurgeCss, MazUiThemePresets
     MazUiIcons: vi.fn((options: Record<string, unknown>) => ({ name: 'maz-ui:icons', options })),
     generateIconTypes: vi.fn((names: string[], options: Record<string, unknown>) => `types of ${names.join(', ')} ${JSON.stringify(options)}`),
     loadIconNames: vi.fn((_options: Record<string, unknown>) => ['x-mark', 'app:hero']),
+    resolveIconTypesModule: vi.fn((_root: string): string => 'maz-ui'),
     MazUiThemePresets: vi.fn((options: Record<string, unknown>) => ({ name: 'maz-ui:theme-presets', options })),
     addTemplate: vi.fn(),
     addTypeTemplate: vi.fn(),
@@ -73,6 +74,7 @@ vi.mock('@maz-ui/vite-plugin', () => ({
   MazUiIcons,
   generateIconTypes,
   loadIconNames,
+  resolveIconTypesModule,
   MazUiThemePresets,
 }))
 
@@ -354,7 +356,7 @@ describe('nuxt module', () => {
 
             const template = addTypeTemplate.mock.calls[0]![0] as { filename: string, getContents: () => string }
             expect(template.filename).toBe('types/maz-icons.d.ts')
-            expect(template.getContents()).toBe('types of x-mark, app:hero {}')
+            expect(template.getContents()).toBe('types of x-mark, app:hero {"module":"maz-ui"}')
             expect(loadIconNames).toHaveBeenCalledWith({ root: '/project', dir: '/project/app/icons', prefix: undefined })
           })
         })
@@ -380,7 +382,53 @@ describe('nuxt module', () => {
             const template = addTypeTemplate.mock.calls[0]![0] as { getContents: () => string }
             template.getContents()
             expect(loadIconNames).toHaveBeenCalledWith({ root: '/project', dir: '/project/assets/svg', prefix: 'app' })
-            expect(generateIconTypes).toHaveBeenCalledWith(['x-mark', 'app:hero'], { strict: true })
+            expect(generateIconTypes).toHaveBeenCalledWith(['x-mark', 'app:hero'], {
+              strict: true,
+              module: 'maz-ui',
+            })
+          })
+        })
+
+        describe('when it sets several folders without the icons of maz-ui', () => {
+          it('then each folder is resolved from the root, and the types only have the icons of the folders', () => {
+            callSetup({
+              icons: {
+                dir: [
+                  'assets/svg',
+                  { path: 'node_modules/@acme/icons/svg', prefix: 'acme', svgo: false },
+                ],
+                defaultIcons: false,
+              },
+            })
+
+            const dir = [
+              '/project/assets/svg',
+              { path: '/project/node_modules/@acme/icons/svg', prefix: 'acme', svgo: false },
+            ]
+            expect(MazUiIcons).toHaveBeenCalledWith({ dir, defaultIcons: false, dts: false })
+            const template = addTypeTemplate.mock.calls[0]![0] as { getContents: () => string }
+            template.getContents()
+            expect(loadIconNames).toHaveBeenCalledWith({
+              root: '/project',
+              dir,
+              prefix: undefined,
+              defaultIcons: false,
+            })
+          })
+        })
+
+        describe('when the project resolves @maz-ui/icons', () => {
+          it('then the types augment @maz-ui/icons, whose names maz-ui includes', () => {
+            resolveIconTypesModule.mockReturnValueOnce('@maz-ui/icons')
+            callSetup({ icons: true })
+
+            const template = addTypeTemplate.mock.calls[0]![0] as { getContents: () => string }
+            template.getContents()
+            expect(resolveIconTypesModule).toHaveBeenCalledWith('/project')
+            expect(generateIconTypes).toHaveBeenCalledWith(['x-mark', 'app:hero'], {
+              strict: undefined,
+              module: '@maz-ui/icons',
+            })
           })
         })
 
@@ -405,6 +453,24 @@ describe('nuxt module', () => {
             const { filter } = updateTemplates.mock.calls[0]![0] as { filter: (template: { filename: string }) => boolean }
             expect(filter({ filename: 'types/maz-icons.d.ts' })).toBe(true)
             expect(filter({ filename: 'types/other.d.ts' })).toBe(false)
+          })
+        })
+
+        describe('when a SVG is added to one of several icons folders', () => {
+          it('then the types are written again', async () => {
+            const { nuxt } = callSetup({
+              icons: {
+                dir: [
+                  'app/icons',
+                  { path: 'app/brand', prefix: 'brand' },
+                ],
+              },
+            })
+            const onWatch = nuxt.hook.mock.calls[0]![1]
+
+            await onWatch('add', 'brand/logo.svg')
+
+            expect(updateTemplates).toHaveBeenCalledTimes(1)
           })
         })
 
@@ -878,6 +944,40 @@ describe('nuxt module', () => {
             filePath: 'maz-ui/components/MazBtn',
           }),
         )
+      })
+
+      it('registers MazIconPrimitive of @maz-ui/icons/vue', () => {
+        callSetup({
+          components: { autoImport: true },
+        })
+
+        expect(addComponent).toHaveBeenCalledWith({
+          name: 'MazIconPrimitive',
+          export: 'MazIconPrimitive',
+          filePath: '@maz-ui/icons/vue',
+        })
+      })
+
+      it('resolves @maz-ui/icons/vue from the maz-ui of the module', () => {
+        const defaultCreateRequire = createRequire.getMockImplementation()!
+        createRequire.mockImplementation((from: string) => Object.assign(
+          (id: string): unknown => process.getBuiltinModule('node:module').createRequire(from)(id),
+          {
+            resolve: (id: string) => (id === 'maz-ui/package.json'
+              ? '/module/node_modules/maz-ui/package.json'
+              : `${from.replace('/package.json', '')}/node_modules/${id}.js`),
+          },
+        ))
+
+        callSetup({
+          components: { autoImport: true },
+        })
+
+        expect(addComponent).toHaveBeenCalledWith(expect.objectContaining({
+          name: 'MazIconPrimitive',
+          filePath: '/module/node_modules/maz-ui/node_modules/@maz-ui/icons/vue.js',
+        }))
+        createRequire.mockImplementation(defaultCreateRequire)
       })
 
       it('should not register components when autoImport is false', () => {
