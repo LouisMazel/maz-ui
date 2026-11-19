@@ -47,6 +47,12 @@ export interface MazUiIconsOptions {
    */
   dts?: string | boolean
   /**
+   * Name of the file of the types when `dts` is `true` or not set, in `src` when the project has one: a library that
+   * wraps the plugin sets its own (`acme-icons.d.ts`)
+   * @default 'maz-icons.d.ts'
+   */
+  dtsName?: string
+  /**
    * The module the types augment: a library that re-exports the types of `@maz-ui/icons` sets its own, the one its
    * consumers install (with pnpm, they do not resolve `@maz-ui/icons`)
    * @default '@maz-ui/icons' when the project resolves it, else 'maz-ui'
@@ -63,6 +69,13 @@ export interface MazUiIconsOptions {
    * @default true when `build.lib` is set
    */
   lib?: boolean
+  /**
+   * Packages of the modules the icons import (`import` of a folder), kept out of the pre-bundle of Vite in dev, like
+   * `@maz-ui/icons`: else every new icon found while browsing reloads the page. A package the app already lists in
+   * `optimizeDeps.include` or `optimizeDeps.exclude` is left as it is
+   * @default []
+   */
+  optimizeDepsExclude?: string[]
   /**
    * svgo config of the SVG of the folders given by their path, as in `@maz-ui/vite-svg-loader` (an object replaces the
    * default config)
@@ -187,10 +200,10 @@ function reExportIcon({ name }: IconImport, from: string): string {
   return `export { ${specifier} } from ${JSON.stringify(from)}\n`
 }
 
-function getDefaultDts(root: string): string {
+function getDefaultDts(root: string, dtsName: string): string {
   return existsSync(join(root, 'src'))
-    ? 'src/maz-icons.d.ts'
-    : 'maz-icons.d.ts'
+    ? `src/${dtsName}`
+    : dtsName
 }
 
 /**
@@ -369,13 +382,15 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsAp
 
     config(userConfig) {
       const { include = [], exclude = [] } = userConfig.optimizeDeps ?? {}
-      if (include.includes(ICONS_PACKAGE) || exclude.includes(ICONS_PACKAGE))
+      const packages = [ICONS_PACKAGE, ...(options.optimizeDepsExclude ?? [])]
+        .filter(id => !include.includes(id) && !exclude.includes(id))
+      if (packages.length === 0)
         return
 
       // Icons are one ESM module each: pre-bundled, every new one found while browsing reloads the page
       return {
         optimizeDeps: {
-          exclude: [ICONS_PACKAGE],
+          exclude: packages,
         },
       }
     },
@@ -403,7 +418,7 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsAp
         ? undefined
         : resolve(root, typeof options.dts === 'string'
             ? options.dts
-            : getDefaultDts(root))
+            : getDefaultDts(root, options.dtsName ?? 'maz-icons.d.ts'))
 
       typesModule = options.typesModule ?? resolveIconTypesModule(root)
       loadSources()

@@ -297,6 +297,27 @@ describe('given the config of the app', () => {
       } satisfies UserConfig)).toBeUndefined()
     })
   })
+
+  describe('when a library that wraps the plugin excludes its package', () => {
+    it('then its package is excluded too, unless the app sets it', () => {
+      const config = MazUiIcons({ optimizeDepsExclude: ['@acme/icons'] }).config as Handler
+
+      expect(config({})).toEqual({
+        optimizeDeps: {
+          exclude: ['@maz-ui/icons', '@acme/icons'],
+        },
+      })
+      expect(config({
+        optimizeDeps: {
+          include: ['@acme/icons'],
+        },
+      } satisfies UserConfig)).toEqual({
+        optimizeDeps: {
+          exclude: ['@maz-ui/icons'],
+        },
+      })
+    })
+  })
 })
 
 describe('given the types of the names', () => {
@@ -309,6 +330,21 @@ describe('given the types of the names', () => {
       setup({}, root)
 
       expect(readFileSync(join(root, 'src/maz-icons.d.ts'), 'utf8')).toContain('\'x-mark\': true')
+    })
+  })
+
+  describe('when a library that wraps the plugin sets the name of the file', () => {
+    it('then the file has this name, in the src folder or at the root', () => {
+      const withSrc = project({
+        files: { 'src/main.ts': '' },
+      })
+      const withoutSrc = project()
+
+      setup({ dtsName: 'acme-icons.d.ts' }, withSrc)
+      setup({ dts: true, dtsName: 'acme-icons.d.ts' }, withoutSrc)
+
+      expect(existsSync(join(withSrc, 'src/acme-icons.d.ts'))).toBe(true)
+      expect(existsSync(join(withoutSrc, 'acme-icons.d.ts'))).toBe(true)
     })
   })
 

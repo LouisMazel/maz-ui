@@ -100,7 +100,8 @@ It renders the `<svg>` of a name, and nothing else: no style, no wrapper. Your c
 
 - **Unknown name in dev**: a dashed square, with the name in its tooltip, and a warning in the console.
 - **Unknown name in production**: nothing is rendered.
-- `hasIcon(name)` of `@maz-ui/icons/vue` tells if a name is registered, to render your own fallback.
+- **`error` event**: emitted with an `Error` when the name is unknown, or when the SVG of a name loaded on demand can not be loaded (network error). Listen to it to render your own fallback.
+- `hasIcon(name)` of `@maz-ui/icons/vue` tells if a name is registered, before the render.
 
 ### Your own icon component
 
@@ -290,10 +291,12 @@ Which one to choose:
 | `defaultIcons` | `boolean \| IconSet[]` | `true` | The icons of `@maz-ui/icons` by name: every [set](#sets-of-maz-ui), some of them, or none |
 | `safelist` | `string[]` | `[]` | Names the plugin can not find (built at runtime) |
 | `dts` | `string \| boolean` | `'src/maz-icons.d.ts'` | File of the types of the names, `false` to not write it |
+| `dtsName` | `string` | `'maz-icons.d.ts'` | Name of the file of the types when `dts` is `true` or not set, in `src` when the project has one |
 | `typesModule` | `string` | `'@maz-ui/icons'` (`'maz-ui'` when not resolved) | The module the types augment, see [Your own icon package](#your-own-icon-package) |
 | `strict` | `boolean` | `false` | Only the known names, URLs and raw SVG are accepted: a typo is a type error, see [Catch typos](#catch-typos) |
 | `lib` | `boolean` | `true` with `build.lib` | Build of a library, see [Libraries](#libraries) |
 | `name` | `string` | `'maz-ui:icons'` | Name of the plugin, in the logs and the file of the types |
+| `optimizeDepsExclude` | `string[]` | `[]` | Packages kept out of the pre-bundle of Vite in dev, like `@maz-ui/icons`: the package of the `import` of a folder |
 | `scan.keys` | `string[]` | `[]` | Props and keys whose values are names, besides the ones whose name contains `icon`: `['name']` for `<AppIcon name="logo" />` |
 
 ## Types
@@ -409,7 +412,8 @@ export function AcmeIcons(options = {}) {
   return MazUiIcons({
     name: 'acme:icons',
     typesModule: '@acme/icons',
-    dts: 'src/acme-icons.d.ts',
+    dtsName: 'acme-icons.d.ts',
+    optimizeDepsExclude: ['@acme/icons'],
     defaultIcons: false,
     ...options,
     dir: [{ path: 'node_modules/@acme/icons/svg', svgo: false }, ...[options.dir ?? []].flat()],
@@ -433,6 +437,8 @@ process.exitCode = await runCli(process.argv.slice(2), console, { command: 'acme
 
 - **`name`**: the name of the plugin, in the logs and the file of the types.
 - **`typesModule`**: the types augment `@acme/icons`, the module the consumers install. It re-exports the types of `@maz-ui/icons`, which get the names too.
+- **`dtsName`**: the file of the types is `src/acme-icons.d.ts` (`acme-icons.d.ts` without a `src` folder), also with `dts: true`.
+- **`optimizeDepsExclude`**: in dev, Vite does not pre-bundle `@acme/icons`. Else every new icon found while browsing reloads the page.
 - **`runCli()`**: the command of the package, with its name in the help and the errors.
 - Declare `@maz-ui/icons` in the `dependencies` of the package.
 
