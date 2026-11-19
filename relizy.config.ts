@@ -86,7 +86,20 @@ export default defineConfig({
 
   commitlint: {
     changelogLinter: 'oxc',
-    scopes: ['clean', 'deps', 'release'],
+    scopes: [
+      'clean',
+      'deps',
+      'ecosystem',
+      'release',
+    ],
+    rules: {
+      'single-package': [
+        'error',
+        {
+          exceptScopes: ['deps', 'ecosystem'],
+        },
+      ],
+    },
   },
 
   sync: {

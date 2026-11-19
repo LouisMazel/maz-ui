@@ -73,7 +73,8 @@
     "build": "unbuild && pnpm generate:agent-docs",
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/vite-svg-loader",
     "dev": "unbuild --stub",
-    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck": "tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "test:unit": "vitest run",
@@ -88,6 +89,7 @@
     "svgo": "^4.1.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@maz-ui/eslint-config": "workspace:^",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",

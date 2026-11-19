@@ -1,5 +1,3 @@
-// @ts-check
-
 import { globSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import process from 'node:process'
@@ -16,31 +14,26 @@ import { parse } from 'yaml'
  *   inside this range.
  */
 
-const FIELDS = /** @type {const} */ ([
+const FIELDS = [
   'dependencies',
   'devDependencies',
   'optionalDependencies',
   'peerDependencies',
-])
+] as const
 
-/**
- * @typedef {{ dependencies?: Record<string, string>, devDependencies?: Record<string, string>,
- *   optionalDependencies?: Record<string, string>, peerDependencies?: Record<string, string> }} PackageJson
- */
+type Field = typeof FIELDS[number]
 
-/** @type {string[]} */
-const errors = []
+type PackageJson = Partial<Record<Field, Record<string, string>>>
+
+const errors: string[] = []
 
 const root = process.cwd()
 
-/** @type {{ packages: string[], catalog?: Record<string, string>, catalogs?: Record<string, Record<string, string>> }} */
-const workspace = parse(readFileSync(join(root, 'pnpm-workspace.yaml'), 'utf-8'))
+const workspace: { packages: string[], catalog?: Record<string, string>, catalogs?: Record<string, Record<string, string>> } = parse(readFileSync(join(root, 'pnpm-workspace.yaml'), 'utf-8'))
 
-/** @type {Record<string, Record<string, string>>} */
-const catalogs = { default: workspace.catalog ?? {}, ...workspace.catalogs }
+const catalogs: Record<string, Record<string, string>> = { default: workspace.catalog ?? {}, ...workspace.catalogs }
 
-/** @type {Map<string, PackageJson>} */
-const packages = new Map(globSync(workspace.packages.map(pattern => join(pattern, 'package.json')), { cwd: root })
+const packages = new Map<string, PackageJson>(globSync(workspace.packages.map(pattern => join(pattern, 'package.json')), { cwd: root })
   .map(file => [
     file,
     JSON.parse(readFileSync(join(root, file), 'utf-8')),
@@ -48,10 +41,8 @@ const packages = new Map(globSync(workspace.packages.map(pattern => join(pattern
 
 /**
  * Name of the catalog referenced by a specifier (`catalog:` is the default catalog), or `null`
- * @param {string} specifier
- * @returns {string | null} catalog name
  */
-function getCatalogName(specifier) {
+function getCatalogName(specifier: string): string | null {
   return specifier.startsWith('catalog:')
     ? specifier.slice('catalog:'.length) || 'default'
     : null
@@ -59,11 +50,8 @@ function getCatalogName(specifier) {
 
 /**
  * Range of a specifier, read from the catalog it references
- * @param {string} dep
- * @param {string} specifier
- * @returns {string | undefined} range
  */
-function resolveRange(dep, specifier) {
+function resolveRange(dep: string, specifier: string): string | undefined {
   const name = getCatalogName(specifier)
 
   return name
@@ -71,22 +59,15 @@ function resolveRange(dep, specifier) {
     : specifier
 }
 
-/**
- * @param {Map<string, Set<string>>} map
- * @param {string} key
- * @param {string} file
- */
-function addTo(map, key, file) {
+function addTo(map: Map<string, Set<string>>, key: string, file: string) {
   map.set(key, (map.get(key) ?? new Set()).add(file))
 }
 
 /**
  * The package.json declaring each dependency, and the package.json referencing each catalog entry
- * @type {Map<string, Set<string>>}
  */
-const declaredBy = new Map()
-/** @type {Map<string, Set<string>>} */
-const catalogUsage = new Map()
+const declaredBy = new Map<string, Set<string>>()
+const catalogUsage = new Map<string, Set<string>>()
 
 for (const [file, pkg] of packages) {
   for (const field of FIELDS) {
@@ -111,10 +92,8 @@ for (const [file, pkg] of packages) {
 
 /**
  * A shared dependency uses the catalog, a peer dependency keeps its range
- * @param {{ file: string, field: typeof FIELDS[number], dep: string, specifier: string }} declaration
- * @returns {string | undefined} error
  */
-function checkSpecifier({ file, field, dep, specifier }) {
+function checkSpecifier({ file, field, dep, specifier }: { file: string, field: Field, dep: string, specifier: string }): string | undefined {
   if (specifier.startsWith('workspace:'))
     return undefined
 
