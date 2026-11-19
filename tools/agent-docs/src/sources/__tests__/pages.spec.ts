@@ -61,7 +61,6 @@ describe('given collectSourcePages', () => {
         'index',
         'changelog',
         'components',
-        'guide/cli',
         'guide/migration-v4',
         'blog/v5',
       ])

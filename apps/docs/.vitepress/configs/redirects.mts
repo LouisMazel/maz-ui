@@ -14,6 +14,7 @@ export const redirects: Redirect[] = [
   { from: '/guide/icon-set', to: '/ecosystem/icons/icon-set' },
   { from: '/guide/icons', to: '/ecosystem/icons/' },
   { from: '/guide/themes', to: '/ecosystem/themes' },
+  { from: '/guide/cli', to: '/ecosystem/themes' },
   { from: '/guide/nuxt', to: '/ecosystem/nuxt' },
   { from: '/guide/translations', to: '/ecosystem/translations' },
   { from: '/guide/mcp', to: '/ecosystem/mcp' },

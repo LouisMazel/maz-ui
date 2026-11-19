@@ -25,7 +25,6 @@ const EXCLUDED_PAGES = new Set([
   'made-with-maz-ui.md',
   'theme-editor.md',
   'components/index.md',
-  'guide/cli.md',
   'guide/migration-v4.md',
 ])
 

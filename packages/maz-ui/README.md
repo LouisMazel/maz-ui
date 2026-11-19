@@ -137,23 +137,7 @@ const toast = useToast()
 
 ## 🎨 Theming Made Easy
 
-Customize Maz UI to match your brand with our dedicated CLI tool:
-
-```bash
-# Install the CLI
-npm install -g @maz-ui/cli
-
-# Generate your theme
-maz generate-css-vars
-```
-
-The CLI will automatically:
-
-- Generate all color variations
-- Create dark mode variables
-- Output a ready-to-use CSS file
-
-To know how configure the CLI, check [theming options](https://maz-ui.com/ecosystem/themes) in our documentation.
+Customize Maz UI to match your brand with the presets of [@maz-ui/themes](https://maz-ui.com/ecosystem/themes): colors, dark mode and the `useTheme` composable.
 
 ## 🧰 What's included?
 

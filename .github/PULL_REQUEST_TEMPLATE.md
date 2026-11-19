@@ -12,7 +12,6 @@
 - [ ] `@maz-ui/themes` (theme system)
 - [ ] `@maz-ui/translations` (i18n)
 - [ ] `@maz-ui/utils` (utilities)
-- [ ] `@maz-ui/cli` (CLI tools)
 - [ ] `@maz-ui/eslint-config` (ESLint config)
 - [ ] `@maz-ui/mcp` (MCP of maz-ui)
 - [ ] `@maz-ui/node` (Node utilities)
