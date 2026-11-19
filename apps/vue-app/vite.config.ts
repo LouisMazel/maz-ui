@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
       vueDevTools(),
       svgLoader(),
       MazUi({
-        icons: { prefix: 'app' },
+        icons: { prefix: 'app', strict: true },
       }),
       dts({
         compilerOptions: {

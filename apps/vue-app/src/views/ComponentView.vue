@@ -162,6 +162,7 @@ const galleryImages: MazGalleryImage[] = [
 ]
 
 const avatarPlaceholder = makePlaceholder('#6366f1', 'JD')
+const mazUiUrl = 'https://maz-ui.com'
 
 const checklistItems = [
   { label: 'Vue.js', value: 'vue' },
@@ -726,7 +727,7 @@ const checklistItems = [
             <p>This card can be collapsed by clicking the header. Try it!</p>
           </template>
         </MazCard>
-        <MazCard href="https://maz-ui.com" href-target="_blank">
+        <MazCard :href="mazUiUrl" href-target="_blank">
           <template #content-title>
             Linked Card
           </template>
