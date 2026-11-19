@@ -18,6 +18,14 @@ export interface IconSource {
   svgo?: SvgoConfigOption | false
   /** Its SVG is a chunk, downloaded when the icon is displayed: the icon of a `lazy` folder */
   lazy?: boolean
+  /** The module of its SVG, imported instead of the file: bundled once with the imports of the module, kept external in a library */
+  import?: IconImport
+}
+
+/** A module exporting the SVG string of an icon: its specifier, and its export (`default` when omitted) */
+export interface IconImport {
+  from: string
+  name?: string
 }
 
 /** A folder of SVG, relative to the root of the project: `node_modules/@acme/icons/svg` for the SVG of a package */
@@ -32,6 +40,13 @@ export interface IconDirOptions {
    * bundle only has a table of loaders (about 50 bytes per name). The names written in the code are bundled as usual
    */
   lazy?: boolean
+  /**
+   * The module of each SVG, for the folder of a package that publishes them as modules (`name` is the name without
+   * the prefix): the name imports it, so its SVG is bundled once with the imports of the module, and the dist of a
+   * library keeps the import (shared with the app) instead of copying the SVG.
+   * (`` name => `@acme/icons/raw/${name}` `` for a default export, or `{ from, name }` for a named one)
+   */
+  import?: (name: string) => string | IconImport
 }
 
 /** A folder of SVG: its path (with the global `prefix` and `svgoConfig`), or its options */
@@ -43,6 +58,7 @@ export interface ProjectIconsOptions {
   prefix?: string
   svgo?: SvgoConfigOption | false
   lazy?: boolean
+  import?: IconDirOptions['import']
 }
 
 export interface ProjectIcons {
@@ -154,6 +170,7 @@ export function loadPackageIcons(packageDir: string, sets: readonly IconSet[] = 
       file: join(packageDir, file),
       root: packageDir,
       component,
+      import: { from: `@maz-ui/icons/raw/${component}`, name: component },
     },
   ]))
 }
@@ -169,8 +186,14 @@ export function toIconName(path: string): string {
     .join('-')
 }
 
+function toIconImport(target: string | IconImport): IconImport {
+  return typeof target === 'string'
+    ? { from: target }
+    : target
+}
+
 /** The SVG files of the project folder, by name: `prefix:name` with a prefix */
-export function loadProjectIcons({ root, dir, prefix, svgo, lazy }: ProjectIconsOptions): ProjectIcons {
+export function loadProjectIcons({ root, dir, prefix, svgo, lazy, import: getImport }: ProjectIconsOptions): ProjectIcons {
   const icons = new Map<string, IconSource>()
   const invalid: string[] = []
   const directory = resolve(root, dir)
@@ -179,9 +202,10 @@ export function loadProjectIcons({ root, dir, prefix, svgo, lazy }: ProjectIcons
     return { icons, invalid }
 
   for (const path of globSync('**/*.svg', { cwd: directory }).sort()) {
+    const baseName = toIconName(path)
     const name = prefix
-      ? `${prefix}:${toIconName(path)}`
-      : toIconName(path)
+      ? `${prefix}:${baseName}`
+      : baseName
 
     if (!ICON_NAME_PATTERN.test(name)) {
       invalid.push(relative(root, join(directory, path)))
@@ -197,6 +221,9 @@ export function loadProjectIcons({ root, dir, prefix, svgo, lazy }: ProjectIcons
       ...(lazy
         ? { lazy }
         : {}),
+      ...(getImport
+        ? { import: toIconImport(getImport(baseName)) }
+        : {}),
     })
   }
 
@@ -205,7 +232,7 @@ export function loadProjectIcons({ root, dir, prefix, svgo, lazy }: ProjectIcons
 
 /** The SVG of every folder, by name */
 export function loadDirsIcons(root: string, dirs: readonly IconDirOptions[]): ProjectIcons[] {
-  return dirs.map(({ path, prefix, svgo, lazy }) => loadProjectIcons({ root, dir: path, prefix, svgo, lazy }))
+  return dirs.map(({ path, ...options }) => loadProjectIcons({ root, dir: path, ...options }))
 }
 
 /**

@@ -19,7 +19,7 @@ shadcn-vue et Nuxt UI v3 reposent sur Reka UI (ex-Radix Vue) pour l'ARIA, le foc
 
 ### Icônes par nom sans maz-ui
 
-Rendre `icon="x-mark"` disponible aux autres libs Vue, sans maz-ui et sans breaking change : le plugin (plusieurs dossiers, mode lib), un composant de rendu (`MazIconPrimitive`, à wrapper, utilisé par `MazIcon` et `MazSvg`) et les types des noms, tous dans `@maz-ui/icons`. Détail : [icons-by-name-standalone.md](./icons-by-name-standalone.md).
+Rendre `icon="x-mark"` disponible aux autres libs Vue, sans maz-ui et sans breaking change : le plugin (plusieurs dossiers, mode lib), un composant de rendu (`MazIconPrimitive`, à wrapper, utilisé par `MazIcon` et `MazSvg`) et les types des noms, tous dans `@maz-ui/icons`. Détail : [icons-by-name-standalone.md](./icons-by-name-standalone.md). Pour qu'une autre lib le wrappe (`@accor/icons`) : [icons-by-name-wrappers.md](./icons-by-name-wrappers.md).
 
 ### API de variants déclarative
 
