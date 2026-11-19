@@ -30,6 +30,3 @@ jobs:
 
       - name: Run linters
         run: pnpm exec nx ${{ steps.setup.outputs.nx-scope }} -t lint
-
-      - name: Run relizy commitlint
-        run: pnpm relizy commitlint
