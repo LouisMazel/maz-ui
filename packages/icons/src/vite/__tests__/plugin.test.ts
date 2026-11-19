@@ -435,6 +435,20 @@ describe('given the sources of the icons', () => {
     })
   })
 
+  describe('when a file sets the fallback of an icon by name', () => {
+    it('then the fallback is registered too', () => {
+      const root = project({
+        files: { 'src/icons/hero.svg': HERO_SVG },
+      })
+
+      const { plugin } = setup({ dts: false }, root)
+
+      const { code } = hook(plugin, 'transform')('h(MazIcon, { icon: "x-mark", fallback: "hero" })', '/src/a.ts')
+      expect(code).toContain('virtual:maz-icon/hero')
+      expect(code).toContain('virtual:maz-icon/x-mark')
+    })
+  })
+
   describe('when the icons of maz-ui are disabled', () => {
     it('then only the icons of the folders are names, without a warning', () => {
       const root = project({

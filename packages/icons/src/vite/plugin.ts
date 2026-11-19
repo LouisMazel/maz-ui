@@ -87,7 +87,7 @@ export interface MazUiIconsOptions {
 
 export interface MazUiIconsScanOptions {
   /**
-   * Props and keys whose values are icon names, besides the ones whose name contains `icon` (`icon`, `startIcon`):
+   * Props and keys whose values are icon names, besides `fallback` and the ones whose name contains `icon` (`icon`, `startIcon`):
    * `['name']` for `<AppIcon name="logo" />`. Exact names, in camelCase or kebab-case (`startSvg` also reads
    * `start-svg`). A string of a known name in one of them is registered: a generic key (`name`) can add an icon that
    * the page does not render (a route named `home`)
@@ -243,7 +243,11 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsAp
   const prefixes = [
     ...new Set(dirs.flatMap(({ prefix }) => prefix ?? [])),
   ]
-  const scanKeys = options.scan?.keys ?? []
+  const scanKeys = [
+    // `fallback` of `MazIcon` takes a name too
+    'fallback',
+    ...(options.scan?.keys ?? []),
+  ]
   /** The prefixes of the `lazy` folders, `''` for a folder without a prefix */
   const lazyPrefixes = [
     ...new Set(dirs.filter(({ lazy }) => lazy).map(({ prefix }) => prefix ?? '')),

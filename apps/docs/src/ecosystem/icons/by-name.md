@@ -121,7 +121,7 @@ defineProps<{ name: MazIconPrimitiveName, title?: string }>()
 </template>
 ```
 
-A prop whose name contains `icon` (`icon`, `startIcon`) works as it is. For another name, add it to `scan.keys`:
+A prop whose name contains `icon` (`icon`, `startIcon`), and `fallback`, work as they are. For another name, add it to `scan.keys`:
 
 ```ts
 MazUiIcons({
@@ -159,7 +159,7 @@ const svg = computed(() => getRegisteredIcon(icon))
 
 ## Which names are found
 
-The plugin reads the compiled code of your files. It finds the strings of the keys, attributes and variables whose name contains `icon`, and of the ones of `scan.keys`:
+The plugin reads the compiled code of your files. It finds the strings of the keys, attributes and variables whose name contains `icon`, of `fallback`, and of the ones of `scan.keys`:
 
 ```ts
 h(MazIconPrimitive, { icon: 'home' }) // found
@@ -297,7 +297,7 @@ Which one to choose:
 | `lib` | `boolean` | `true` with `build.lib` | Build of a library, see [Libraries](#libraries) |
 | `name` | `string` | `'maz-ui:icons'` | Name of the plugin, in the logs and the file of the types |
 | `optimizeDepsExclude` | `string[]` | `[]` | Packages kept out of the pre-bundle of Vite in dev, like `@maz-ui/icons`: the package of the `import` of a folder |
-| `scan.keys` | `string[]` | `[]` | Props and keys whose values are names, besides the ones whose name contains `icon`: `['name']` for `<AppIcon name="logo" />` |
+| `scan.keys` | `string[]` | `[]` | Props and keys whose values are names, besides `fallback` and the ones whose name contains `icon`: `['name']` for `<AppIcon name="logo" />` |
 
 ## Types
 
