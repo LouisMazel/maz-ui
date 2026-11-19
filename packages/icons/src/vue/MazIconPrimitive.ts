@@ -1,7 +1,7 @@
 import type { Component, PropType, SVGAttributes } from 'vue'
 import type { IconName, IconOptions } from '../types.ts'
 import type { SvgDimensions } from './svg.ts'
-import { defineAsyncComponent, defineComponent, h } from 'vue'
+import { defineAsyncComponent, defineComponent, h, watch } from 'vue'
 import { getRegisteredIcon, hasIconLoader, loadIcon } from '../registry.ts'
 import { parseSvg, prepareSvgString } from './svg.ts'
 
@@ -141,7 +141,18 @@ function renderSvg(svg: string, props: IconProps, attrs: Record<string, unknown>
 export const MazIconPrimitive = defineComponent({
   name: 'MazIconPrimitive',
   props: iconProps,
-  setup(props, { attrs }) {
+  emits: {
+    /** The name is unknown, or its SVG could not be loaded (`~x-mark`, a `lazy` folder): a wrapper renders its fallback */
+    error: (_error: Error) => true,
+  },
+  setup(props, { attrs, emit }) {
+    watch(() => props.icon, (icon) => {
+      if (!hasIcon(icon))
+        emit('error', new Error(`[maz-ui:icons] Unknown icon "${icon}"`))
+    }, { immediate: true })
+
+    const onError = (error: Error) => emit('error', error)
+
     return () => {
       const name = toIconName(props.icon)
       const svg = getRegisteredIcon(name)
@@ -156,6 +167,7 @@ export const MazIconPrimitive = defineComponent({
           height: props.height,
           title: props.title,
           svgAttributes: props.svgAttributes,
+          onError,
         })
       }
 
@@ -173,8 +185,8 @@ const MazIconLoaded = defineComponent({
   name: 'MazIconLoaded',
   props: iconProps,
   setup(props, { attrs }) {
-    // Without its SVG (removed from the registry), `parseSvg` renders nothing
-    return () => renderSvg(getRegisteredIcon(props.icon) ?? '', props, attrs)
+    // Only rendered once its SVG is registered
+    return () => renderSvg(getRegisteredIcon(props.icon)!, props, attrs)
   },
 })
 
@@ -197,7 +209,18 @@ export const MazIconLoading = defineComponent({
 
 const lazyIcons = new Map<string, Component>()
 
-const EmptyIcon = () => null
+/** A lazy icon that could not be loaded: nothing, and the error to the `MazIconPrimitive` that renders it */
+function createFailedIcon(error: Error): Component {
+  return defineComponent({
+    name: 'MazIconFailed',
+    props: iconProps,
+    emits: ['error'],
+    setup(_props, { emit }) {
+      emit('error', error)
+      return () => null
+    },
+  })
+}
 
 /** The async component of a lazy name, once per name: it loads the SVG, then renders it */
 function getLazyIcon(name: string): Component {
@@ -205,10 +228,12 @@ function getLazyIcon(name: string): Component {
   if (!component) {
     component = defineAsyncComponent({
       // A failed load renders nothing, on the server too: an error of an async component stops the SSR in dev
-      loader: () => loadIcon(name).then(() => MazIconLoaded, (error: unknown) => {
+      loader: () => loadIcon(name).then(svg => svg
+        ? MazIconLoaded
+        : createFailedIcon(new Error(`[maz-ui:icons] The icon "${name}" has no SVG`)), (error: unknown) => {
         console.warn(`[maz-ui:icons] The icon "${name}" could not be loaded`, error)
         lazyIcons.delete(name)
-        return EmptyIcon
+        return createFailedIcon(new Error(`[maz-ui:icons] The icon "${name}" could not be loaded`, { cause: error }))
       }),
       loadingComponent: MazIconLoading,
       delay: 0,

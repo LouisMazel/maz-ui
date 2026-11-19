@@ -155,6 +155,18 @@ describe('given an unknown name', () => {
     })
   })
 
+  describe('when it is rendered', () => {
+    it('then the error is emitted, for the fallback of a wrapper', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const onError = vi.fn()
+
+      await renderToString(h(MazIconPrimitive, { icon: 'test-missing-event', onError }))
+
+      expect(onError).toHaveBeenCalledExactlyOnceWith(new Error('[maz-ui:icons] Unknown icon "test-missing-event"'))
+      vi.restoreAllMocks()
+    })
+  })
+
   describe('when it is rendered in production', () => {
     it('then nothing is rendered, without a warning', async () => {
       vi.stubEnv('NODE_ENV', 'production')
@@ -195,8 +207,10 @@ describe('given a name of a lazy folder', () => {
   describe('when its loader returns a module without a SVG', () => {
     it('then nothing is rendered', async () => {
       registerIconLoader('test-lazy-empty', () => Promise.resolve({} as { default: string }))
+      const onError = vi.fn()
 
-      expect(await renderToString(h(MazIconPrimitive, { icon: 'test-lazy-empty' }))).toBe('<!---->')
+      expect(await renderToString(h(MazIconPrimitive, { icon: 'test-lazy-empty', onError }))).toBe('<!---->')
+      expect(onError).toHaveBeenCalledExactlyOnceWith(new Error('[maz-ui:icons] The icon "test-lazy-empty" has no SVG'))
     })
   })
 
@@ -204,9 +218,11 @@ describe('given a name of a lazy folder', () => {
     it('then nothing is rendered, with a warning', async () => {
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
       registerIconLoader('test-lazy-failing', () => Promise.reject(new Error('offline')))
+      const onError = vi.fn()
 
-      expect(await renderToString(h(MazIconPrimitive, { icon: 'test-lazy-failing' }))).toBe('<!---->')
+      expect(await renderToString(h(MazIconPrimitive, { icon: 'test-lazy-failing', onError }))).toBe('<!---->')
       expect(warn).toHaveBeenCalledWith('[maz-ui:icons] The icon "test-lazy-failing" could not be loaded', expect.any(Error))
+      expect(onError).toHaveBeenCalledExactlyOnceWith(new Error('[maz-ui:icons] The icon "test-lazy-failing" could not be loaded', { cause: new Error('offline') }))
       warn.mockRestore()
     })
   })
