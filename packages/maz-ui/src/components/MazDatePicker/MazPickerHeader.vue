@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { MazColor } from '../types'
-import type { MazDatePickerValue } from './types'
-import type { DateTimeFormatOptions } from './utils'
+import type { MazColor } from '../types.ts'
+import type { MazDatePickerValue } from './types.ts'
+import type { DateTimeFormatOptions } from './utils.ts'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs/esm'
+import dayjs from 'dayjs/esm/index.js'
 import { computed, ref, watch } from 'vue'
 
 const {

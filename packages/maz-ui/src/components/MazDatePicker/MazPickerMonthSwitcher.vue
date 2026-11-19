@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs/esm'
+import type { Dayjs } from 'dayjs/esm/index.js'
 import type { PropType } from 'vue'
-import type { MazColor } from '../types'
+import type { MazColor } from '../types.ts'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs/esm'
+import dayjs from 'dayjs/esm/index.js'
 import { computed } from 'vue'
 
 import MazBtn from '../MazBtn.vue'
 
 import MazIcon from '../MazIcon.vue'
-import { isSameDate } from './utils'
+import { isSameDate } from './utils.ts'
 
 const props = defineProps({
   calendarDate: { type: String, required: true },
