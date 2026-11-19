@@ -34,6 +34,10 @@ jobs:
         id: setup
         uses: ./.github/actions/setup
 
+      # The scripts of .github/scripts import its logger
+      - name: Build @maz-ui/node
+        run: pnpm exec nx run @maz-ui/node:build
+
       - name: Check the scripts of the published packages
         run: node .github/scripts/check-package-scripts.mts
 
