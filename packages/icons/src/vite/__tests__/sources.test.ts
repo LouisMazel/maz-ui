@@ -55,7 +55,7 @@ describe('given a project with maz-ui', () => {
   })
 
   describe('when the icons of the package are loaded', () => {
-    it('then each name points to its file and its component', () => {
+    it('then each name points to its file, its component and its module', () => {
       const root = project()
       const packageDir = resolveIconsPackage(root)!
 
@@ -66,6 +66,7 @@ describe('given a project with maz-ui', () => {
             file: join(packageDir, 'svg/home.svg'),
             root: packageDir,
             component: 'MazHome',
+            import: { from: '@maz-ui/icons/raw/MazHome', name: 'MazHome' },
           },
         ],
         [
@@ -74,6 +75,7 @@ describe('given a project with maz-ui', () => {
             file: join(packageDir, 'svg/x-mark.svg'),
             root: packageDir,
             component: 'MazXMark',
+            import: { from: '@maz-ui/icons/raw/MazXMark', name: 'MazXMark' },
           },
         ],
       ]))

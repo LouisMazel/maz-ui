@@ -1,6 +1,6 @@
 import type { optimizeSvg, SvgoConfigOption } from '@maz-ui/vite-svg-loader/optimize'
 import type { Logger, Plugin, ViteDevServer } from 'vite'
-import type { DefaultIcons, IconDir, IconSource, IconSources } from './sources.ts'
+import type { DefaultIcons, IconDir, IconImport, IconSource, IconSources } from './sources.ts'
 import type { IconTypesModule } from './types.ts'
 import { existsSync, readFileSync } from 'node:fs'
 import { join, resolve, sep } from 'node:path'
@@ -16,6 +16,12 @@ export interface MazUiIconsApi {
 }
 
 export interface MazUiIconsOptions {
+  /**
+   * Name of the plugin, in the logs and in the file of the types: a library that wraps it sets its own (`acme:icons`),
+   * and passes it to `runCli()`
+   * @default 'maz-ui:icons'
+   */
+  name?: string
   /**
    * Folders of SVG, relative to the root: `src/icons/hero.svg` is `<MazIcon icon="hero" />`. A path, or an array of paths
    * and of folders with their options (`{ path: 'node_modules/@acme/icons/svg', prefix: 'acme', svgo: false }`). An
@@ -41,13 +47,19 @@ export interface MazUiIconsOptions {
    */
   dts?: string | boolean
   /**
+   * The module the types augment: a library that re-exports the types of `@maz-ui/icons` sets its own, the one its
+   * consumers install (with pnpm, they do not resolve `@maz-ui/icons`)
+   * @default '@maz-ui/icons' when the project resolves it, else 'maz-ui'
+   */
+  typesModule?: IconTypesModule
+  /**
    * `icon` only accepts the known names, URLs and raw SVG: a typo is an error
    * @default false
    */
   strict?: boolean
   /**
-   * The build of a library: its dist imports the icons of `@maz-ui/icons` when it is external, shared with the app,
-   * instead of copying their SVG
+   * The build of a library: its dist imports the icons of `@maz-ui/icons` (and of the folders with `import`) when they
+   * are external, shared with the app, instead of copying their SVG
    * @default true when `build.lib` is set
    */
   lib?: boolean
@@ -167,6 +179,14 @@ export function readRawIcon(packageDir: string, component: string): string | und
     : undefined
 }
 
+/** The name re-exports the module of its SVG */
+function reExportIcon({ name }: IconImport, from: string): string {
+  const specifier = name && name !== 'default'
+    ? `${name} as default`
+    : 'default'
+  return `export { ${specifier} } from ${JSON.stringify(from)}\n`
+}
+
 function getDefaultDts(root: string): string {
   return existsSync(join(root, 'src'))
     ? 'src/maz-icons.d.ts'
@@ -179,7 +199,7 @@ function getDefaultDts(root: string): string {
  * fallback of `MazIcon`.
  */
 export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsApi> {
-  const { prefix, safelist = [], strict = false, defaultIcons = true, svgoConfig } = options
+  const { name: pluginName = 'maz-ui:icons', prefix, safelist = [], strict = false, defaultIcons = true, svgoConfig } = options
   const dirs = normalizeIconDirs(options.dir, { prefix, svgoConfig })
 
   let root = process.cwd()
@@ -229,7 +249,7 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsAp
       return
 
     warnings.add(message)
-    logger.warn(`[maz-ui:icons] ${message}`, { timestamp: true })
+    logger.warn(`[${pluginName}] ${message}`, { timestamp: true })
   }
 
   function loadSources() {
@@ -243,8 +263,13 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsAp
   }
 
   function writeTypes() {
-    if (dtsFile)
-      writeIfChanged(dtsFile, generateIconTypes(sources.icons.keys(), { strict, module: typesModule }))
+    if (dtsFile) {
+      writeIfChanged(dtsFile, generateIconTypes(sources.icons.keys(), {
+        strict,
+        module: typesModule,
+        generator: options.name,
+      }))
+    }
   }
 
   /** svgo, by `@maz-ui/vite-svg-loader`: an optional peer, not to install svgo with every `@maz-ui/icons` */
@@ -332,7 +357,7 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsAp
   }
 
   return {
-    name: 'maz-ui:icons',
+    name: pluginName,
     // After `vue()`: the scan reads the compiled code, where an attribute of a template is a key
     enforce: 'post',
 
@@ -380,7 +405,7 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsAp
             ? options.dts
             : getDefaultDts(root))
 
-      typesModule = resolveIconTypesModule(root)
+      typesModule = options.typesModule ?? resolveIconTypesModule(root)
       loadSources()
       writeTypes()
 
@@ -442,18 +467,16 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsAp
         if (!source)
           return 'export default ""\n'
 
-        // The `raw` module of maz-ui: the SVG is bundled once, for the name and for the imports of the components
-        const raw = source.component && iconsImporter
-          ? await this.resolve(`${ICONS_PACKAGE}/raw/${source.component}`, iconsImporter)
+        // The module of the SVG (the `raw` module of maz-ui): bundled once, for the name and for the imports of the module
+        const iconModule = source.import
+          ? await this.resolve(source.import.from, source.component ? iconsImporter : join(root, 'package.json'))
           : null
-        if (raw && !raw.external)
-          return `export { ${source.component} as default } from ${JSON.stringify(raw.id)}\n`
-        if (raw && isLib) {
-          const external = JSON.stringify(`${ICONS_PACKAGE}/raw/${source.component}`)
-          return `export { ${source.component} as default } from ${external}\n`
-        }
+        if (source.import && iconModule && !iconModule.external)
+          return reExportIcon(source.import, iconModule.id)
+        if (source.import && iconModule && isLib)
+          return reExportIcon(source.import, source.import.from)
 
-        if (!source.component) {
+        if (!source.import) {
           this.addWatchFile(source.file)
           iconFiles.add(source.file)
         }

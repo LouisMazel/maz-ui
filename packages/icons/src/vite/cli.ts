@@ -7,10 +7,37 @@ import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { parseArgs } from 'node:util'
 
-export const HELP = `maz-ui-icons: the icons of @maz-ui/icons by name
+/** For a library that wraps `MazUiIcons()` with its own command (`acme-icons types`) */
+export interface CliOptions {
+  /**
+   * The command, in the help
+   * @default 'maz-ui-icons'
+   */
+  command?: string
+  /**
+   * The `name` of the plugin to find in the Vite config, and the prefix of the messages
+   * @default 'maz-ui:icons'
+   */
+  plugin?: string
+  /**
+   * The function that adds the plugin, in the errors
+   * @default 'MazUiIcons()'
+   */
+  pluginFunction?: string
+}
+
+const DEFAULT_COMMAND = 'maz-ui-icons'
+const DEFAULT_PLUGIN = 'maz-ui:icons'
+
+export function getHelp(command = DEFAULT_COMMAND): string {
+  const title = command === DEFAULT_COMMAND
+    ? 'the icons of @maz-ui/icons by name'
+    : 'the icons by name'
+
+  return `${command}: ${title}
 
 Usage:
-  maz-ui-icons types [options]   Write the types of the icon names, without a build (before vue-tsc)
+  ${command} types [options]   Write the types of the icon names, without a build (before vue-tsc)
 
 Options:
   --config <file>   The Vite config (default: vite.config.* of the root)
@@ -19,6 +46,9 @@ Options:
   --help            Show this help
 
 With Nuxt, \`nuxi prepare\` and \`nuxi typecheck\` write them.`
+}
+
+export const HELP = getHelp()
 
 interface CliLogger {
   log: (message: string) => void
@@ -46,7 +76,7 @@ function resolveVite(root: string): string {
 }
 
 /** Resolves the Vite config, without a build: `MazUiIcons()` writes its types once the config is resolved */
-async function writeTypes(root: string, configFile: string | undefined, mode: string | undefined): Promise<string> {
+async function writeTypes(root: string, configFile: string | undefined, mode: string | undefined, { plugin: pluginName = DEFAULT_PLUGIN, pluginFunction }: CliOptions): Promise<string> {
   const { resolveConfig } = await import(resolveVite(root)) as typeof import('vite')
   const config = await resolveConfig({
     root,
@@ -54,19 +84,26 @@ async function writeTypes(root: string, configFile: string | undefined, mode: st
     mode,
     logLevel: 'warn',
   }, 'build')
-  const plugin = config.plugins.find((entry): entry is Plugin<MazUiIconsApi> => entry.name === 'maz-ui:icons')
+  const plugin = config.plugins.find((entry): entry is Plugin<MazUiIconsApi> => entry.name === pluginName)
+  const label = pluginFunction ?? 'MazUiIcons()'
 
-  if (!plugin)
-    throw new Error('MazUiIcons() is not in the Vite config: add it, or MazUi() of @maz-ui/vite-plugin')
+  if (!plugin) {
+    throw new Error(pluginFunction
+      ? `${label} is not in the Vite config: add it`
+      : `${label} is not in the Vite config: add it, or MazUi() of @maz-ui/vite-plugin`)
+  }
 
   if (!plugin.api?.dts)
-    throw new Error('MazUiIcons() does not write the types: remove `dts: false`')
+    throw new Error(`${label} does not write the types: remove \`dts: false\``)
 
   return plugin.api.dts
 }
 
 /** `maz-ui-icons <command>`: the exit code */
-export async function runCli(argv: string[], logger: CliLogger = console): Promise<number> {
+export async function runCli(argv: string[], logger: CliLogger = console, options: CliOptions = {}): Promise<number> {
+  const help = getHelp(options.command)
+  const prefix = `[${options.plugin ?? DEFAULT_PLUGIN}]`
+
   try {
     const { positionals, values } = parseArgs({
       args: argv,
@@ -81,20 +118,20 @@ export async function runCli(argv: string[], logger: CliLogger = console): Promi
     const [command] = positionals
 
     if (values.help || !command) {
-      logger.log(HELP)
+      logger.log(help)
       return values.help ? 0 : 1
     }
 
     if (command !== 'types')
-      throw new Error(`Unknown command "${command}"\n\n${HELP}`)
+      throw new Error(`Unknown command "${command}"\n\n${help}`)
 
     const root = resolve(values.root ?? process.cwd())
-    const dts = await writeTypes(root, values.config && resolve(root, values.config), values.mode)
-    logger.log(`[maz-ui:icons] Types written in ${relative(root, dts)}`)
+    const dts = await writeTypes(root, values.config && resolve(root, values.config), values.mode, options)
+    logger.log(`${prefix} Types written in ${relative(root, dts)}`)
     return 0
   }
   catch (error) {
-    logger.error(`[maz-ui:icons] ${(error as Error).message}`)
+    logger.error(`${prefix} ${(error as Error).message}`)
     return 1
   }
 }
