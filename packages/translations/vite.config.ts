@@ -1,6 +1,6 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
-import { getExternalDependencies } from '@maz-ui/vite-config'
+import { appendDeclarationExtensions, getExternalDependencies } from '@maz-ui/vite-config'
 
 import vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
@@ -43,6 +43,7 @@ export default defineConfig((option) => {
         outDirs: resolver('dist'),
         exclude: ['src/**/__tests__/**/*', 'src/**/*.spec.ts', 'src/**/*.test.ts'],
         include: ['src/**/*.ts'],
+        afterBuild: appendDeclarationExtensions,
       }),
       codecovVitePlugin({
         enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
