@@ -56,4 +56,32 @@ describe('given a vite build with svgLoader', () => {
       expect(code).not.toContain('clip"')
     })
   })
+
+  describe('when the app imports an SVG with ?uri and with ?url', () => {
+    it('then both are the same module, of one URL', async () => {
+      write(join(root, 'uri.js'), 'import uri from "./icons/logo.svg?uri"\nimport url from "./icons/logo.svg?url"\nexport const same = [uri, url]\n')
+      const output = await build({
+        root,
+        logLevel: 'silent',
+        configFile: false,
+        plugins: [
+          svgLoader(),
+        ],
+        build: {
+          write: false,
+          minify: false,
+          assetsInlineLimit: 0,
+          rolldownOptions: {
+            input: join(root, 'uri.js'),
+            preserveEntrySignatures: 'strict',
+          },
+        },
+      }) as Rollup.RollupOutput
+      const entry = output.output.find((chunk): chunk is Rollup.OutputChunk => chunk.type === 'chunk' && chunk.isEntry)!
+
+      expect(entry.code.match(/"[^"]*logo[^"]*\.svg[^"]*"/g)).toEqual([expect.stringMatching(/^"\/assets\/logo-[\w-]+\.svg"$/)])
+      expect(entry.code).toMatch(/same = \[(\w+), \1\]/)
+      expect(output.output.filter(file => file.type === 'asset' && file.fileName.endsWith('.svg'))).toHaveLength(1)
+    })
+  })
 })
