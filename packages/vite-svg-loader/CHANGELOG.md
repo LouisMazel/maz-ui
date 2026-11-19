@@ -1,5 +1,11 @@
 # Changelog
 
+## @maz-ui/vite-svg-loader@0.1.0 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/vite-svg-loader@0.1.0-beta.0...@maz-ui/vite-svg-loader@0.1.0)
+
+No relevant changes since last release
+
 ## @maz-ui/vite-svg-loader@0.1.0-beta.0 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/b625dcbd1cb1ef89a21acc9490ee2d7384e1c883...@maz-ui/vite-svg-loader@0.1.0-beta.0)

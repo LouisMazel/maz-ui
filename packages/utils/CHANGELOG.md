@@ -1,5 +1,36 @@
 # Change Log
 
+## v5.7.0 (2026-11-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0)
+
+### 🚀 Features
+
+- **utils:** Add the formatRelativeTime and getRelativeTime helpers ([3706c9942](https://github.com/LouisMazel/maz-ui/commit/3706c9942))
+
+  Localized relative time (3 minutes ago, in 2 days, yesterday) built on Intl.RelativeTimeFormat, with a compact form (3 min) from Intl.NumberFormat, configurable unit thresholds, an optional switch to an absolute date and the delay before the text changes.
+
+- **utils:** Add fuzzy search and string similarity helpers ([b6dc2c8ca](https://github.com/LouisMazel/maz-ui/commit/b6dc2c8ca))
+
+  - `fuzzySearch(items, query, options)` and `createFuzzySearch(items, options)`: tolerant search in a list, by relevance or in the original order (`sort: 'original'`), on several weighted keys, accents and case ignored, with a tolerance to typos (`typoThreshold`)
+  - `highlightMatches(text, indexes)` splits a result into highlighted and plain parts
+  - `levenshteinDistance`, `getMatchingScore` and `isStringMatching` in `@maz-ui/utils/helpers/stringMatching`
+  - `normalizeString` removes the accents of the letters without decomposition (`ø`, `ł`, `đ`, `æ`, `ß`...)
+
+- **utils:** Publish exports.json, the names of the helpers ([3ac85eaaf](https://github.com/LouisMazel/maz-ui/commit/3ac85eaaf))
+
+  @maz-ui/utils/exports.json lists the helpers exported by @maz-ui/utils, written by the build from the exports of the package: the tools that need them (auto-import resolvers) read it instead of keeping their own list.
+
+### 🩹 Fixes
+
+- Publish the exports without the monorepo:dev condition ([61fd61c82](https://github.com/LouisMazel/maz-ui/commit/61fd61c82))
+
+  The published package.json no longer has the monorepo:dev condition of the monorepo, which pointed to sources that are not published.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.7.0-beta.8 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0-beta.7...v5.7.0-beta.8)
