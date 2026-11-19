@@ -3,7 +3,6 @@ minimumReleaseAgeExclude:
   - '@yoloship/*'
   - '@maz-ui/*'
   - relizy*
-  - '@relizy/core'
   - '@babel/helper-string-parser@8.1.2'
   - '@babel/parser@8.1.2'
   - '@babel/types@8.1.2'
@@ -11,6 +10,7 @@ minimumReleaseAgeExclude:
   - '@tsconfig/node22@22.0.7'
   - '@vitejs/plugin-vue@6.0.11'
   - glob@14.0.6
+  - '@relizy/core@2.5.0-beta.1'
 
 # eslint-disable-next-line pnpm/yaml-enforce-settings
 trustPolicy: off
