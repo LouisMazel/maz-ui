@@ -1,7 +1,7 @@
-import { isClient } from '../isClient'
-import { isIos } from '../isIos'
+import { isClient } from '../isClient.ts'
+import { isIos } from '../isIos.ts'
 
-vi.mock('../isClient', () => ({
+vi.mock('../isClient.ts', () => ({
   isClient: vi.fn(),
 }))
 

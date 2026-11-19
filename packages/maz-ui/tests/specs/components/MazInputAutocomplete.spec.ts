@@ -1,6 +1,6 @@
 import type { MazInputAutocompleteProps } from '@components/MazInputAutocomplete.vue'
 import MazInputAutocomplete from '@components/MazInputAutocomplete.vue'
-import { runAxe } from '@tests/helpers/axe'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils'
 
 interface Country {

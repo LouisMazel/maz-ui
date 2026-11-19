@@ -1,4 +1,4 @@
-import { colors, sizes } from '@components/constants'
+import { colors, sizes } from '@components/constants.ts'
 
 describe('given constants', () => {
   describe('when accessing colors', () => {

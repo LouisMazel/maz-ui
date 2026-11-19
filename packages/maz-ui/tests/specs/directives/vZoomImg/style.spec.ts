@@ -1,4 +1,4 @@
-import { style } from '@directives/vZoomImg/style'
+import { style } from '@directives/vZoomImg/style.ts'
 
 describe('given vZoomImg style', () => {
   describe('when importing style', () => {

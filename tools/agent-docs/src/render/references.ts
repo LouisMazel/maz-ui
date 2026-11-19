@@ -1,5 +1,5 @@
-import type { IconGroup } from '../sources/icons'
-import type { TailwindManifest } from '../types'
+import type { IconGroup } from '../sources/icons.ts'
+import type { TailwindManifest } from '../types.ts'
 
 const COLOR_UTILITIES = 'bg-, text-, border-, ring-, outline-, fill-, stroke-, divide-, from-, via-, to-, decoration-, placeholder-, accent-, caret-, shadow-'
 

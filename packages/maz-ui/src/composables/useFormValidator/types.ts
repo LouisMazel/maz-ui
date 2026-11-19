@@ -4,7 +4,7 @@ import type {
   Ref,
   TemplateRef,
 } from 'vue'
-import type { getValidateFunction } from './validation'
+import type { getValidateFunction } from './validation.ts'
 
 /**
  * Standard Schema interface (https://standardschema.dev)

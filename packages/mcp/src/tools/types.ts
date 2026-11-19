@@ -1,5 +1,5 @@
 import type { ZodRawShape } from 'zod'
-import type { ServerContext } from '../context'
+import type { ServerContext } from '../context.ts'
 
 /** An error the agent can fix by changing its call: returned as a tool error with this message */
 export class ToolInputError extends Error {}

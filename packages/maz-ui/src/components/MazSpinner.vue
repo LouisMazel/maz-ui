@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazColor, MazSizeUnit } from './types'
+import type { MazColor, MazSizeUnit } from './types.ts'
 import { computed } from 'vue'
 
 export interface MazSpinnerProps {

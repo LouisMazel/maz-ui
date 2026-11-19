@@ -1,4 +1,4 @@
-import { readPresets } from '../preset'
+import { readPresets } from '../preset.ts'
 
 const PRESET = `import { definePreset, mazUi } from '@maz-ui/themes'
 import { palette } from './palette'

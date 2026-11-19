@@ -1,4 +1,4 @@
-import { debounce } from './debounce'
+import { debounce } from './debounce.ts'
 
 export class TextareaAutogrow {
   private element: HTMLTextAreaElement

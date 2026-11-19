@@ -1,4 +1,4 @@
-import { isTailwindStylesheet, parseCss, readStylesheet, tokenOf } from '../stylesheet'
+import { isTailwindStylesheet, parseCss, readStylesheet, tokenOf } from '../stylesheet.ts'
 
 const ENTRY = `@import 'maz-ui/style.css';
 @import "tailwindcss";

@@ -57,8 +57,8 @@ export interface MazListProps {
 
 <script lang="ts" setup>
 import { computed, provide, useSlots } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 
 const {
   title,

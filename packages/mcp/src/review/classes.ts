@@ -1,4 +1,4 @@
-import type { ReviewContext } from './types'
+import type { ReviewContext } from './types.ts'
 
 const COLOR_UTILITIES = 'bg|text|border(?:-[trblxyse])?|ring(?:-offset)?|outline|fill|stroke|divide|from|via|to|decoration|placeholder|accent|caret|shadow|inset-shadow|inset-ring|text-shadow'
 const PALETTE = 'slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose'

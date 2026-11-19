@@ -1,4 +1,4 @@
-import { pascalCase } from '../pascalCase'
+import { pascalCase } from '../pascalCase.ts'
 
 describe('Given pascalCase', () => {
   describe('When string is empty', () => {

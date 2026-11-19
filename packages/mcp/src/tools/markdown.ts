@@ -1,4 +1,4 @@
-import type { DocEntry } from '../knowledge/schema'
+import type { DocEntry } from '../knowledge/schema.ts'
 
 export interface MarkdownSection {
   title: string

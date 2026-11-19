@@ -1,4 +1,4 @@
-import { isEqual } from '../isEqual'
+import { isEqual } from '../isEqual.ts'
 
 describe('given isEqual function', () => {
   describe('when comparing primitive values', () => {

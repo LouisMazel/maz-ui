@@ -1,4 +1,4 @@
-import type { StylelintConfig } from '../types'
+import type { StylelintConfig } from '../types.ts'
 
 /**
  * Glob patterns Stylelint should ignore by default. Mirrors the eslint-config

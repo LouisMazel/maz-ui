@@ -1,4 +1,4 @@
-import { throttleId } from '../throttleId'
+import { throttleId } from '../throttleId.ts'
 
 describe('given throttleId function', () => {
   describe('when calling a throttled function multiple times within the interval', () => {

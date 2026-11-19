@@ -1,4 +1,4 @@
-import type { MazUiTranslationsNestedSchema } from '../types'
+import type { MazUiTranslationsNestedSchema } from '../types.ts'
 
 export default {
   aria: {

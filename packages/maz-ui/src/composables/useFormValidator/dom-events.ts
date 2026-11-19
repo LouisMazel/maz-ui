@@ -1,6 +1,6 @@
-import type { BaseFormPayload, ExtractModelKey, FieldState, FormSchema, StrictOptions } from './types'
-import { CONFIG } from './config'
-import { hasModeIncludes } from './state-management'
+import type { BaseFormPayload, ExtractModelKey, FieldState, FormSchema, StrictOptions } from './types.ts'
+import { CONFIG } from './config.ts'
+import { hasModeIncludes } from './state-management.ts'
 
 export function scrollToError(selector = CONFIG.scrollToErrorSelector) {
   const element = document.querySelector(selector)

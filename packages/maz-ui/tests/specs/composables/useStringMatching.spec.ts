@@ -1,4 +1,4 @@
-import { useStringMatching } from '@composables/useStringMatching'
+import { useStringMatching } from '@composables/useStringMatching.ts'
 import { ref } from 'vue'
 
 describe('given useStringMatching composable', () => {

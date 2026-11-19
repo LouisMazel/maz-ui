@@ -8,7 +8,7 @@ import {
   generatePurgeManifest,
   loadPurgeManifest,
   PURGE_MANIFEST_FILE,
-} from '../manifest'
+} from '../manifest.ts'
 
 function write(file: string, content: string) {
   mkdirSync(dirname(file), { recursive: true })

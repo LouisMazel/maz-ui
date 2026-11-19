@@ -1,4 +1,4 @@
-import { ToastPlugin } from '@plugins/toast'
+import { ToastPlugin } from '@plugins/toast.ts'
 import { createApp } from 'vue'
 
 describe('given ToastPlugin', () => {

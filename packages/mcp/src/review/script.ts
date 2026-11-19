@@ -1,8 +1,8 @@
-import type { ReviewContext, Severity } from './types'
+import type { ReviewContext, Severity } from './types.ts'
 
-import { closest } from '../knowledge/resolve'
-import { checkClassStrings } from './classes'
-import { checkPresetColors } from './preset'
+import { closest } from '../knowledge/resolve.ts'
+import { checkClassStrings } from './classes.ts'
+import { checkPresetColors } from './preset.ts'
 
 interface ThirdPartyRule {
   /** Package names (exact or prefix ending with `/`) */

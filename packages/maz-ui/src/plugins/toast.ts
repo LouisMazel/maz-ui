@@ -1,6 +1,6 @@
 import type { Plugin } from 'vue'
-import type { ToastOptions } from './toast/types'
-import { ToastHandler } from './toast/ToastHandler'
+import type { ToastOptions } from './toast/types.ts'
+import { ToastHandler } from './toast/ToastHandler.ts'
 
 export const ToastPlugin: Plugin<[ToastOptions?]> = {
   install(app, options) {
@@ -31,4 +31,4 @@ declare module 'vue' {
 }
 
 export { ToastHandler }
-export type { ToastOptions, ToastPosition } from './toast/types'
+export type { ToastOptions, ToastPosition } from './toast/types.ts'

@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import type { MazToastProps } from './MazToast.vue'
-import type { ToastButton, ToastOptions } from './types'
-import { useMountComponent } from '../../composables/useMountComponent'
+import type { ToastButton, ToastOptions } from './types.ts'
+import { useMountComponent } from '../../composables/useMountComponent.ts'
 import MazToast from './MazToast.vue'
 
 const DEFAULT_OPTIONS: ToastOptions = {

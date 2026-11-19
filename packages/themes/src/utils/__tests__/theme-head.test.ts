@@ -1,6 +1,6 @@
-import type { ThemePreset } from '../../types'
-import { ocean } from '../../presets/ocean'
-import { CSS_ID } from '../css-generator'
+import type { ThemePreset } from '../../types/index.ts'
+import { ocean } from '../../presets/ocean.ts'
+import { CSS_ID } from '../css-generator.ts'
 import {
   DEFAULT_PRESET_NAME,
   getColorModeScript,
@@ -10,7 +10,7 @@ import {
   renderThemeHead,
   resolveThemeContext,
   resolveThemePresets,
-} from '../theme-head'
+} from '../theme-head.ts'
 
 function reader(cookies: Record<string, string>) {
   return (name: string) => cookies[name]

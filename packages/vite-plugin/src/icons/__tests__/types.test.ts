@@ -1,7 +1,7 @@
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { generateIconTypes, writeIfChanged } from '../types'
+import { generateIconTypes, writeIfChanged } from '../types.ts'
 
 describe('given icon names', () => {
   describe('when their types are generated', () => {

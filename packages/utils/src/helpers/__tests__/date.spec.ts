@@ -1,4 +1,4 @@
-import { formatDate } from '../formatDate'
+import { formatDate } from '../formatDate.ts'
 
 describe('formatDate', () => {
   it('formats a date string as a short date', () => {

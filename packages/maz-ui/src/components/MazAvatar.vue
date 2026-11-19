@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazIndicatorProps } from './MazIndicator.vue'
-import type { MazColor, MazRoundedSize, MazSize, MazSizeUnit } from './types'
+import type { MazColor, MazRoundedSize, MazSize, MazSizeUnit } from './types.ts'
 import { MazPencil } from '@maz-ui/icons/lazy/MazPencil'
 import { computed, defineAsyncComponent, onMounted } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { resolveLinkComponent } from '../utils/resolveLinkComponent'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 
 defineOptions({
   inheritAttrs: false,

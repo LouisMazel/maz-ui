@@ -1,5 +1,5 @@
-import type { Logger } from './configs/logger'
-import type { MazESLintConfig, MazESLintOptions, MazESLintUserConfig, MazTailwindcssOptions, TailwindcssPreset } from './types'
+import type { Logger } from './configs/logger.ts'
+import type { MazESLintConfig, MazESLintOptions, MazESLintUserConfig, MazTailwindcssOptions, TailwindcssPreset } from './types.ts'
 import { existsSync, readFileSync } from 'node:fs'
 
 import { dirname, join } from 'node:path'
@@ -7,14 +7,14 @@ import antfu from '@antfu/eslint-config'
 import { configs as sonarConfigs } from 'eslint-plugin-sonarjs'
 
 import vueA11y from 'eslint-plugin-vuejs-accessibility'
-import { baseRules } from './configs/base'
-import { createLogger } from './configs/logger'
-import { markdown } from './configs/markdown'
-import { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
-import { tailwindcssConfigs } from './configs/tailwindcss'
-import { testRules } from './configs/test'
-import { unicorn } from './configs/unicorn'
-import { vueRules, vueSfcOnlyRules } from './configs/vue'
+import { baseRules } from './configs/base.ts'
+import { createLogger } from './configs/logger.ts'
+import { markdown } from './configs/markdown.ts'
+import { sonarjsRules, sonarjsTestRules } from './configs/sonarjs.ts'
+import { tailwindcssConfigs } from './configs/tailwindcss.ts'
+import { testRules } from './configs/test.ts'
+import { unicorn } from './configs/unicorn.ts'
+import { vueRules, vueSfcOnlyRules } from './configs/vue.ts'
 
 // `eslint-plugin-better-tailwindcss` resolves Tailwind inside a synckit worker
 // guarded by a hard 30s timeout. Under heavy parallel load (nx running lint +
@@ -384,13 +384,13 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
 }
 
 // Export individual configs for advanced usage
-export { baseRules } from './configs/base'
+export { baseRules } from './configs/base.ts'
 
-export { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
-export { TAILWINDCSS_DEFAULT_FILES, tailwindcssConfigs } from './configs/tailwindcss'
-export { vueRules, vueSfcOnlyRules } from './configs/vue'
+export { sonarjsRules, sonarjsTestRules } from './configs/sonarjs.ts'
+export { TAILWINDCSS_DEFAULT_FILES, tailwindcssConfigs } from './configs/tailwindcss.ts'
+export { vueRules, vueSfcOnlyRules } from './configs/vue.ts'
 // Custom rules / plugin
-export { mazPlugin } from './plugin'
-export { rules as mazRules } from './rules'
+export { mazPlugin } from './plugin.ts'
+export { rules as mazRules } from './rules/index.ts'
 // Export types
-export type { MazESLintConfig, MazESLintOptions, MazTailwindcssOptions, TailwindcssPreset } from './types'
+export type { MazESLintConfig, MazESLintOptions, MazTailwindcssOptions, TailwindcssPreset } from './types.ts'

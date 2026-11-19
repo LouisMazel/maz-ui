@@ -1,5 +1,5 @@
-import { readOwnVersion } from '../version'
-import { cleanTempDirs, createTempDir, writeFile } from './helpers'
+import { readOwnVersion } from '../version.ts'
+import { cleanTempDirs, createTempDir, writeFile } from './helpers.ts'
 
 afterEach(() => {
   cleanTempDirs()

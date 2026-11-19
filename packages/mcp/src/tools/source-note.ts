@@ -1,4 +1,4 @@
-import type { Knowledge } from '../knowledge/load'
+import type { Knowledge } from '../knowledge/load.ts'
 
 /**
  * One line to append to a page that comes from the docs bundled with @maz-ui/mcp when the project does not install

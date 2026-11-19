@@ -1,6 +1,6 @@
 import type { MazTimelineRoundedSize, MazTimelineStepState } from '@components/MazTimeline.vue'
 import MazTimeline from '@components/MazTimeline.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
 
 const defaultSteps = [

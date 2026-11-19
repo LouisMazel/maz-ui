@@ -2,9 +2,9 @@
 import type { ButtonHTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazBtnProps } from './MazBtn.vue'
-import type { MazColor, MazNeutralColor, MazSize } from './types'
+import type { MazColor, MazNeutralColor, MazSize } from './types.ts'
 import { defineAsyncComponent } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 
 type MazButtonGroupOptionBase = Omit<MazBtnProps, 'block' | 'fab'> & ButtonHTMLAttributes
 

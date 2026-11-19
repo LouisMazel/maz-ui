@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazSize } from './types.ts'
 import { computed } from 'vue'
-import { getColor } from './types'
+import { getColor } from './types.ts'
 
 export interface MazProgressBarSegment {
   /** Value of the segment, on the same scale as `max` */

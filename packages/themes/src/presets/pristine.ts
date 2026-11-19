@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../types'
+import type { ThemePreset } from '../types/index.ts'
 import {
   DEFAULT_BTN_FONT_WEIGHT,
   DEFAULT_CONTAINER_BG,
@@ -11,7 +11,7 @@ import {
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SPACE,
   typographyWith,
-} from './_defaults'
+} from './_defaults.ts'
 
 /**
  * Apple-style preset — sober and monochrome by default.

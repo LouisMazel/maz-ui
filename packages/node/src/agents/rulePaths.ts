@@ -1,6 +1,6 @@
-import type { AgentsTool, SetupAgentsOptions } from './types'
+import type { AgentsTool, SetupAgentsOptions } from './types.ts'
 import { posix } from 'node:path'
-import { findWorkspacesUsing } from '../project'
+import { findWorkspacesUsing } from '../project.ts'
 
 function isUnscopedGlob(glob: string): boolean {
   return ['**', '**/*', '*', '/**', '/**/*'].includes(glob.trim())

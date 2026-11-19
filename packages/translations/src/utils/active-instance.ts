@@ -1,4 +1,4 @@
-import type { MazUiTranslationsInstance } from '../types'
+import type { MazUiTranslationsInstance } from '../types.ts'
 
 let activeTranslations: MazUiTranslationsInstance | undefined
 

@@ -1,6 +1,6 @@
-import type { TailwindManifest } from '../../types'
+import type { TailwindManifest } from '../../types.ts'
 
-import { renderIconsReference, renderTailwindReference } from '../references'
+import { renderIconsReference, renderTailwindReference } from '../references.ts'
 
 const tokens: TailwindManifest = {
   entries: [

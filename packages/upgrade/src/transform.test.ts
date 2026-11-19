@@ -21,7 +21,7 @@ import {
   transformPresetColors,
   transformProps,
   transformStyleImports,
-} from './transform'
+} from './transform.ts'
 
 describe('transformImports', () => {
   describe('Given a maz-ui/styles import', () => {

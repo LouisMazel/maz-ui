@@ -1,4 +1,4 @@
-import { DialogHandler } from '@plugins/dialog/DialogHandler'
+import { DialogHandler } from '@plugins/dialog/DialogHandler.ts'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApp } from 'vue'
 
@@ -6,7 +6,7 @@ let resolveFn: (value: unknown) => void
 let rejectFn: (reason: unknown) => void
 let dialogPromiseMode: 'resolve' | 'reject' = 'resolve'
 
-vi.mock('@components/MazDialogConfirm/useMazDialogConfirm', () => ({
+vi.mock('@components/MazDialogConfirm/useMazDialogConfirm.ts', () => ({
   useMazDialogConfirm: () => ({
     showDialogAndWaitChoice: () =>
       new Promise((resolve, reject) => {
@@ -22,7 +22,7 @@ vi.mock('@components/MazDialogConfirm/useMazDialogConfirm', () => ({
 let mockIsActiveValue = true
 const mockCloseFn = vi.fn()
 
-vi.mock('@composables/useMountComponent', () => ({
+vi.mock('@composables/useMountComponent.ts', () => ({
   useMountComponent: () => ({
     destroy: vi.fn(),
     vNode: {

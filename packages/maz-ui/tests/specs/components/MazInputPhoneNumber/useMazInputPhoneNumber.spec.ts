@@ -1,4 +1,4 @@
-import { useMazInputPhoneNumber } from '@components/MazInputPhoneNumber/useMazInputPhoneNumber'
+import { useMazInputPhoneNumber } from '@components/MazInputPhoneNumber/useMazInputPhoneNumber.ts'
 import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
 const { fetchCountryCode, getBrowserLocale, getCountryList, sanitizePhoneNumber } = useMazInputPhoneNumber()

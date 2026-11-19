@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends MazInputValue">
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
-import type { MazIconLike } from '../composables/useMazIconProps'
-import type { MazColor, MazRoundedSize, MazSize } from './types'
+import type { MazIconLike } from '../composables/useMazIconProps.ts'
+import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { MazEye } from '@maz-ui/icons/lazy/MazEye'
 import { MazEyeSlash } from '@maz-ui/icons/lazy/MazEyeSlash'
 import { debounce as debounceFn } from '@maz-ui/utils/helpers/debounce'
@@ -13,11 +13,11 @@ import {
   ref,
   useSlots,
 } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { useMazIconProps } from '../composables/useMazIconProps'
-import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 
 export type MazInputValue = string | number | null | undefined | boolean

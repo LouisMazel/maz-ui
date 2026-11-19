@@ -1,6 +1,6 @@
-import type { ClassOptions, VLazyImgBinding, VLazyImgBindingValue, VLazyImgOptions } from './types'
+import type { ClassOptions, VLazyImgBinding, VLazyImgBindingValue, VLazyImgOptions } from './types.ts'
 
-export * from './types'
+export * from './types.ts'
 
 const EMPTY_PHOTO = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 

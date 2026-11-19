@@ -1,11 +1,11 @@
 import type { FormattingOptions, ParseError } from 'jsonc-parser'
-import type { ChangeSet } from './changeSet'
-import type { AgentsTool, AgentTarget, McpServerCommand } from './types'
+import type { ChangeSet } from './changeSet.ts'
+import type { AgentsTool, AgentTarget, McpServerCommand } from './types.ts'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { applyEdits, modify, parse } from 'jsonc-parser'
-import { isGeneratedMcpCommand, pinnedMcpVersion } from './mcpServer'
-import { compareVersions, isJsonObject } from './utils'
+import { isGeneratedMcpCommand, pinnedMcpVersion } from './mcpServer.ts'
+import { compareVersions, isJsonObject } from './utils.ts'
 
 interface McpConfigFile {
   file: string

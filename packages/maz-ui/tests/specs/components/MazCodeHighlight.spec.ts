@@ -1,5 +1,5 @@
 import MazCodeHighlight from '@components/MazCodeHighlight.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createSSRApp, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
@@ -24,7 +24,7 @@ const shiki = vi.hoisted(() => ({
   })),
 }))
 
-vi.mock('@components/MazCodeHighlight/shiki', () => ({
+vi.mock('@components/MazCodeHighlight/shiki.ts', () => ({
   loadShiki: () => Promise.resolve(shiki),
 }))
 

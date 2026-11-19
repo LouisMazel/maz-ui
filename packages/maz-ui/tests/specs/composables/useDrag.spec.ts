@@ -1,5 +1,5 @@
-import type { UseDragOptions } from '@composables/useDrag'
-import { useDrag } from '@composables/useDrag'
+import type { UseDragOptions } from '@composables/useDrag.ts'
+import { useDrag } from '@composables/useDrag.ts'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, ref } from 'vue'
 

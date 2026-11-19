@@ -1,11 +1,11 @@
-import { globalState, locale } from '../../states'
-import { getMessage, interpolate, mergeMessages, t } from '../messages'
+import { globalState, locale } from '../../states.ts'
+import { getMessage, interpolate, mergeMessages, t } from '../messages.ts'
 
-vi.mock('../locales', () => ({
+vi.mock('../locales.ts', () => ({
   loadLocale: vi.fn(() => Promise.resolve()),
 }))
 
-const { loadLocale } = await import('../locales')
+const { loadLocale } = await import('../locales.ts')
 
 describe('messages', () => {
   beforeEach(() => {
@@ -442,7 +442,7 @@ describe('messages', () => {
 
     describe('when the fallback locale failed to load', () => {
       it('then it is not loaded again by t', async () => {
-        const { legacyStore } = await import('../../states')
+        const { legacyStore } = await import('../../states.ts')
         legacyStore.failedLocales.add('de')
         globalState.messages = { fr: {} }
         globalState.loadedLocales = new Set(['fr', 'en'])

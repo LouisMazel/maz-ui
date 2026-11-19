@@ -1,9 +1,9 @@
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { getSourcePaths } from '../../paths'
-import { collectIconIds, collectIconNames, groupIcons } from '../icons'
-import { collectNuxtAutoImports } from '../nuxt'
+import { getSourcePaths } from '../../paths.ts'
+import { collectIconIds, collectIconNames, groupIcons } from '../icons.ts'
+import { collectNuxtAutoImports } from '../nuxt.ts'
 
 const paths = getSourcePaths()
 

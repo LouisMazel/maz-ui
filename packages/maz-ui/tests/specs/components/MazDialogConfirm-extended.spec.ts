@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import MazDialogConfirm from '@components/MazDialogConfirm.vue'
-import { useMazDialogConfirm } from '@components/MazDialogConfirm/useMazDialogConfirm'
+import { useMazDialogConfirm } from '@components/MazDialogConfirm/useMazDialogConfirm.ts'
 import { mount } from '@vue/test-utils'
 
 describe('MazDialogConfirm extended coverage', () => {

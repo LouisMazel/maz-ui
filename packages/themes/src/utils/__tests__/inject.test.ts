@@ -1,8 +1,8 @@
 import type { App, Ref } from 'vue'
-import type { ThemeState } from '../../types'
+import type { ThemeState } from '../../types/index.ts'
 import { ref } from 'vue'
-import { injectThemeState } from '../inject'
-import { getActiveThemeState, setActiveThemeState } from '../theme-state-registry'
+import { injectThemeState } from '../inject.ts'
+import { getActiveThemeState, setActiveThemeState } from '../theme-state-registry.ts'
 
 const { isServer } = vi.hoisted(() => ({
   isServer: vi.fn(() => false),

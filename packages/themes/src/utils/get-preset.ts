@@ -1,6 +1,6 @@
-import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from '../types'
+import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from '../types/index.ts'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
-import { presetRegistry } from './preset-loaders'
+import { presetRegistry } from './preset-loaders.ts'
 
 export function isPresetObject(preset?: ThemePresetName | ThemePreset | ThemePresetOverrides): preset is ThemePreset {
   return typeof preset === 'object' && preset !== null && !!preset.name

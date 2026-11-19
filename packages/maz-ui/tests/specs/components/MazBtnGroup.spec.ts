@@ -1,6 +1,6 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazBtnGroup from '@components/MazBtnGroup.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
 
 describe('given MazBtnGroup component', () => {

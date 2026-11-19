@@ -1,4 +1,4 @@
-import { scanIconNames } from '../scan'
+import { scanIconNames } from '../scan.ts'
 
 function scan(code: string, prefixes?: string[]) {
   return [

@@ -1,16 +1,16 @@
-import type { ThemePreset, ThemePresetOverrides } from '../types'
-import { definePreset } from '../define-preset'
+import type { ThemePreset, ThemePresetOverrides } from '../types/index.ts'
+import { definePreset } from '../define-preset.ts'
 
-vi.mock('../utils', () => ({
+vi.mock('../utils/index.ts', () => ({
   getPreset: vi.fn(),
 }))
 
-vi.mock('../utils/preset-merger', () => ({
+vi.mock('../utils/preset-merger.ts', () => ({
   mergePresets: vi.fn(),
 }))
 
-const { getPreset } = await import('../utils')
-const { mergePresets } = await import('../utils/preset-merger')
+const { getPreset } = await import('../utils/index.ts')
+const { mergePresets } = await import('../utils/preset-merger.ts')
 
 const mockPreset: ThemePreset = {
   name: 'test',

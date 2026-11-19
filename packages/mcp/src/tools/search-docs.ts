@@ -1,11 +1,11 @@
-import type { ServerContext } from '../context'
-import type { DocCategory, DocEntry } from '../knowledge/schema'
+import type { ServerContext } from '../context.ts'
+import type { DocCategory, DocEntry } from '../knowledge/schema.ts'
 
 import { z } from 'zod'
-import { docCategories } from '../knowledge/schema'
-import { searchIcons } from '../search/engine'
-import { truncateText } from './markdown'
-import { defineTool } from './types'
+import { docCategories } from '../knowledge/schema.ts'
+import { searchIcons } from '../search/engine.ts'
+import { truncateText } from './markdown.ts'
+import { defineTool } from './types.ts'
 
 /** Below this score, results are only loosely related to the query */
 export const WEAK_MATCH_SCORE = 150

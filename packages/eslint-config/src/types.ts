@@ -1,6 +1,6 @@
 import type { antfu, OptionsConfig, Rules, TypedFlatConfigItem } from '@antfu/eslint-config'
 import type { Linter } from 'eslint'
-import type { LogLevel } from './configs/logger'
+import type { LogLevel } from './configs/logger.ts'
 
 export type MazESLintUserConfig = TypedFlatConfigItem | TypedFlatConfigItem[] | Linter.Config | Linter.Config[]
 

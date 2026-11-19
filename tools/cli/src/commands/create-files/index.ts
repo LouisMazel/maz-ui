@@ -4,10 +4,10 @@ import { fileURLToPath } from 'node:url'
 import { cancel, confirm, isCancel, multiselect, spinner, text } from '@clack/prompts'
 import { logger } from '@maz-ui/node'
 import { Command } from 'commander'
-import { pascalCaseToKebabCase } from './../../utils/pascal-case-to-kebab-case'
-import { createDocumentFile } from './create-documentation-file'
-import { createLibraryComponentFile } from './create-library-component-file'
-import { createLibraryTestFile } from './create-library-test-file'
+import { pascalCaseToKebabCase } from './../../utils/pascal-case-to-kebab-case.ts'
+import { createDocumentFile } from './create-documentation-file.ts'
+import { createLibraryComponentFile } from './create-library-component-file.ts'
+import { createLibraryTestFile } from './create-library-test-file.ts'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 

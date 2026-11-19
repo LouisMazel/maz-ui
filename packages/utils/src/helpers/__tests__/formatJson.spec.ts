@@ -1,4 +1,4 @@
-import { formatJson } from '../formatJson'
+import { formatJson } from '../formatJson.ts'
 
 describe('formatJson', () => {
   it('capitalizes the first letter of a string', () => {

@@ -1,4 +1,4 @@
-import { checkAvailability } from '../checkAvailability'
+import { checkAvailability } from '../checkAvailability.ts'
 
 describe('given checkAvailability helper', () => {
   beforeEach(() => {

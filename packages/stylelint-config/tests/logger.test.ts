@@ -23,7 +23,7 @@ vi.mock('consola', () => ({
   createConsola: () => consolaSpies,
 }))
 
-const { createLogger } = await import('../src/configs/logger')
+const { createLogger } = await import('../src/configs/logger.ts')
 
 describe('createLogger', () => {
   beforeEach(() => {

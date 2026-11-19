@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isCompleteCSSColor, normalizeColor } from '../color-parser'
+import { isCompleteCSSColor, normalizeColor } from '../color-parser.ts'
 
 describe('isCompleteCSSColor', () => {
   describe('Given a complete CSS color value', () => {

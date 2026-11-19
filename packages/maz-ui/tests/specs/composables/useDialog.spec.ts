@@ -1,5 +1,5 @@
-import { useDialog } from '@composables/useDialog'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useDialog } from '@composables/useDialog.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 
 describe('given useDialog composable', () => {
   describe('when dialog plugin is installed', () => {

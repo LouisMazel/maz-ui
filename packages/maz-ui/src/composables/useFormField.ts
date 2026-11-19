@@ -5,7 +5,7 @@ import type {
   FormFieldOptions,
   FormSchema,
   ValidationIssues,
-} from './useFormValidator/types'
+} from './useFormValidator/types.ts'
 
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { isEqual } from '@maz-ui/utils/helpers/isEqual'
@@ -15,16 +15,16 @@ import {
   findInteractiveElements,
   getValidationEvents,
   removeEventFromInteractiveElements,
-} from './useFormValidator/dom-events'
+} from './useFormValidator/dom-events.ts'
 import {
   fieldHasValidation,
   getContext,
   handleFieldBlur,
   hasModeIncludes,
   updateFieldState,
-} from './useFormValidator/state-management'
-import { setFieldValidationState } from './useFormValidator/validation'
-import { useFreezeValue } from './useFreezeValue'
+} from './useFormValidator/state-management.ts'
+import { setFieldValidationState } from './useFormValidator/validation.ts'
+import { useFreezeValue } from './useFreezeValue.ts'
 
 function resolveBindElement(node: unknown): HTMLElement | null {
   if (node instanceof HTMLElement) {

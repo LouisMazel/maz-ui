@@ -1,9 +1,9 @@
 import type { App, Plugin } from 'vue'
-import type { MazUiTranslationsInstance, MazUiTranslationsOptions } from './types'
+import type { MazUiTranslationsInstance, MazUiTranslationsOptions } from './types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { legacyStore } from './states'
-import { injectTranslations } from './utils/inject'
-import { createMazUiTranslations } from './utils/instance'
+import { legacyStore } from './states.ts'
+import { injectTranslations } from './utils/inject.ts'
+import { createMazUiTranslations } from './utils/instance.ts'
 
 export const MazUiTranslations: Plugin<[MazUiTranslationsOptions?]> = {
   install(app: App, options: MazUiTranslationsOptions = {}) {

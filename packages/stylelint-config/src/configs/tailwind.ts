@@ -1,5 +1,5 @@
 import type { Plugin } from 'stylelint'
-import type { StylelintRules } from '../types'
+import type { StylelintRules } from '../types.ts'
 import {
   noApplyPlugin,
   noArbitraryValuePlugin,

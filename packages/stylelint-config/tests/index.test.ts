@@ -14,7 +14,7 @@ const { loggerSpies } = vi.hoisted(() => {
   return { loggerSpies: spies }
 })
 
-vi.mock('../src/configs/logger', () => ({
+vi.mock('../src/configs/logger.ts', () => ({
   createLogger: () => loggerSpies,
 }))
 
@@ -26,7 +26,7 @@ const {
   scssRules,
   TAILWIND_AT_RULES,
   tailwindRules,
-} = await import('../src/index')
+} = await import('../src/index.ts')
 
 const FIXTURES_DIR = fileURLToPath(new URL('./fixtures/', import.meta.url))
 

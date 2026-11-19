@@ -1,4 +1,4 @@
-import { TextareaAutogrow } from '../TextareaAutogrow'
+import { TextareaAutogrow } from '../TextareaAutogrow.ts'
 
 describe('given TextareaAutogrow class', () => {
   let textarea: HTMLTextAreaElement

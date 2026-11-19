@@ -1,5 +1,5 @@
-import type { Knowledge } from '../knowledge/load'
-import type { Framework, IconNames } from './types'
+import type { Knowledge } from '../knowledge/load.ts'
+import type { Framework, IconNames } from './types.ts'
 
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'

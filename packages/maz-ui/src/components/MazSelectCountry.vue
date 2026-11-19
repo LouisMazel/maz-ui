@@ -2,17 +2,17 @@
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { HTMLAttributes } from 'vue'
 
-import type { CodesType, DisplayNameCode, DisplayNamesOptions } from '../composables/useDisplayNames'
+import type { CodesType, DisplayNameCode, DisplayNamesOptions } from '../composables/useDisplayNames.ts'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazSelectProps } from './MazSelect.vue'
-import type { MazColor, MazCountryFlagSrc, MazSize } from './types'
+import type { MazColor, MazCountryFlagSrc, MazSize } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { getBrowserLocale } from '@maz-ui/utils/helpers/getBrowserLocale'
 import { getCountryFlagUrl } from '@maz-ui/utils/helpers/getCountryFlagUrl'
 import { computed, onBeforeUnmount, onMounted, shallowReactive, watch } from 'vue'
-import { useDisplayNames } from '../composables/useDisplayNames'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useDisplayNames } from '../composables/useDisplayNames.ts'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazSelect from './MazSelect.vue'
 
 export interface MazSelectCountryProps<Option extends { name: string, code: DisplayNameCode | string } = { name: string, code: string }> extends Omit<MazSelectProps<Option['code'], Option, false>, 'options' | 'multiple'> {

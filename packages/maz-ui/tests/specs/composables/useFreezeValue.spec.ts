@@ -1,4 +1,4 @@
-import { useFreezeValue } from '@composables/useFreezeValue'
+import { useFreezeValue } from '@composables/useFreezeValue.ts'
 
 import { ref } from 'vue'
 

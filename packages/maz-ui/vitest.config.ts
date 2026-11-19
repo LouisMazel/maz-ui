@@ -5,7 +5,7 @@ import SvgLoader from '@maz-ui/vite-svg-loader'
 import Vue from '@vitejs/plugin-vue'
 
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
-import { ViteBuildIcons, ViteBuildThemes } from './build'
+import { ViteBuildIcons, ViteBuildThemes } from './build/index.ts'
 
 export default defineConfig({
   logLevel: process.env.CI ? 'error' : 'info',

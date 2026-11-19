@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { MazRoundedSize, MazSizeUnit } from './types'
+import type { MazRoundedSize, MazSizeUnit } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 
 export interface MazSkeletonProps {
   /**

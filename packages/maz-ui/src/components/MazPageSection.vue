@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { StyleValue } from 'vue'
 import { computed } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 
 export type MazPageSectionTag = 'div' | 'section' | 'header' | 'main' | 'footer' | 'article' | 'aside' | 'nav' | (string & {})
 

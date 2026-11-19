@@ -12,22 +12,22 @@ import type {
   InferSchemaFormValidator,
   StrictOptions,
   ValidationIssues,
-} from './useFormValidator/types'
+} from './useFormValidator/types.ts'
 import { computed, nextTick, provide, ref, toValue, watch } from 'vue'
-import { CONFIG } from './useFormValidator/config'
-import { scrollToError } from './useFormValidator/dom-events'
+import { CONFIG } from './useFormValidator/config.ts'
+import { scrollToError } from './useFormValidator/dom-events.ts'
 import {
   getFieldsStates,
   getInstance,
   handleFieldInput,
   hasModeIncludes,
   updateFieldsStates,
-} from './useFormValidator/state-management'
+} from './useFormValidator/state-management.ts'
 import {
   getErrorMessages,
   getFieldsErrors,
   validateForm,
-} from './useFormValidator/validation'
+} from './useFormValidator/validation.ts'
 
 function createValidationProcessor<
   Model extends BaseFormPayload,

@@ -1,5 +1,5 @@
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { noTransition } from '../no-transition'
+import { noTransition } from '../no-transition.ts'
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({
   isServer: vi.fn(() => false),

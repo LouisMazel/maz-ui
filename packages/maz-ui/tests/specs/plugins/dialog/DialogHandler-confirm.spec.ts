@@ -1,4 +1,4 @@
-import { DialogHandler } from '@plugins/dialog/DialogHandler'
+import { DialogHandler } from '@plugins/dialog/DialogHandler.ts'
 import { computed, createApp, defineComponent, h, nextTick, ref } from 'vue'
 
 describe('given DialogHandler confirm', () => {

@@ -1,5 +1,5 @@
-import { useDisplayNames } from '@/composables/useDisplayNames'
-import { countryFlagCodes, loadCountryFlag } from '@/utils/country-flags'
+import { useDisplayNames } from '@/composables/useDisplayNames.ts'
+import { countryFlagCodes, loadCountryFlag } from '@/utils/country-flags.ts'
 
 const iconsSquareFlagFiles = Object.keys(import.meta.glob('../../../../icons/flags/1x1/*.svg'))
 

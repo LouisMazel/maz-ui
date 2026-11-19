@@ -1,4 +1,4 @@
-import { defineConfig } from './src/index'
+import { defineConfig } from './src/index.ts'
 
 export default defineConfig({
   formatters: true,

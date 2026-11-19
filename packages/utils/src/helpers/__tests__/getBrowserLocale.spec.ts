@@ -1,4 +1,4 @@
-import { getBrowserLocale } from '../getBrowserLocale'
+import { getBrowserLocale } from '../getBrowserLocale.ts'
 
 describe('given getBrowserLocale function', () => {
   describe('when running in browser environment', () => {

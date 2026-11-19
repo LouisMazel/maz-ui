@@ -1,7 +1,7 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazIcon from '@components/MazIcon.vue'
 import MazSpinner from '@components/MazSpinner.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount, shallowMount } from '@vue/test-utils'
 
 describe('mazBtn.vue', () => {

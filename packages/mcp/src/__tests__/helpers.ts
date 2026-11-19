@@ -1,13 +1,13 @@
-import type { ServerContext } from '../context'
-import type { FragmentSource } from '../knowledge/load'
-import type { DocEntry, Fragment, LegacyManifest } from '../knowledge/schema'
+import type { ServerContext } from '../context.ts'
+import type { FragmentSource } from '../knowledge/load.ts'
+import type { DocEntry, Fragment, LegacyManifest } from '../knowledge/schema.ts'
 
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { createContext } from '../context'
-import { Knowledge, loadKnowledge } from '../knowledge/load'
+import { createContext } from '../context.ts'
+import { Knowledge, loadKnowledge } from '../knowledge/load.ts'
 
 export const BUNDLE_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '../../agent-docs')
 

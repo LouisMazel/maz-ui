@@ -1,6 +1,6 @@
 <script lang="ts">
-export { useMazDialogConfirm } from './MazDialogConfirm/useMazDialogConfirm'
-export type { MazDialogConfirmButton, MazDialogConfirmData } from './MazDialogConfirm/useMazDialogConfirm'
+export { useMazDialogConfirm } from './MazDialogConfirm/useMazDialogConfirm.ts'
+export type { MazDialogConfirmButton, MazDialogConfirmData } from './MazDialogConfirm/useMazDialogConfirm.ts'
 </script>
 
 <script lang="ts" setup>
@@ -12,11 +12,11 @@ import type {
   MazDialogConfirmButtonPromised,
   MazDialogConfirmData,
   MazDialogConfirmState,
-} from './MazDialogConfirm/useMazDialogConfirm'
+} from './MazDialogConfirm/useMazDialogConfirm.ts'
 import { computed, defineAsyncComponent, ref } from 'vue'
 
 import MazDialog from './MazDialog.vue'
-import { defaultData, useMazDialogConfirm } from './MazDialogConfirm/useMazDialogConfirm'
+import { defaultData, useMazDialogConfirm } from './MazDialogConfirm/useMazDialogConfirm.ts'
 
 export interface MazDialogConfirmInternalProps {
   /**

@@ -5,7 +5,7 @@ import {
   formatAsOklch,
   parseColor,
   parseColorAsOklch,
-} from '../color-conversions'
+} from '../color-conversions.ts'
 
 describe('parseColor', () => {
   describe('Given a legacy raw HSL string', () => {

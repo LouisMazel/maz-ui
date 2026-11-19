@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { findPackageDefinition, PACKAGE_DEFINITIONS } from '../packages'
-import { getSourcePaths } from '../paths'
+import { findPackageDefinition, PACKAGE_DEFINITIONS } from '../packages.ts'
+import { getSourcePaths } from '../paths.ts'
 
 describe('given PACKAGE_DEFINITIONS', () => {
   const { root } = getSourcePaths()

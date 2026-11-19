@@ -1,8 +1,8 @@
 import type { MazBadgeColor, MazBadgeRoundedSize, MazBadgeSize } from '@components/MazBadge.vue'
 import MazBadge from '@components/MazBadge.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
-import { getColor } from '@/components/types'
+import { getColor } from '@/components/types.ts'
 
 describe('given MazBadge component', () => {
   describe('when rendered with default props', () => {

@@ -17,8 +17,8 @@ import {
   useSlots,
   watch,
 } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import MazBackdrop from './MazBackdrop.vue'
 
 defineOptions({

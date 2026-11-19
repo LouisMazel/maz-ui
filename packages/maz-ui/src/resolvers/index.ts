@@ -1,3 +1,3 @@
-export * from './MazComponentsResolver'
-export * from './MazDirectivesResolver'
-export * from './MazModulesResolver'
+export * from './MazComponentsResolver.ts'
+export * from './MazDirectivesResolver.ts'
+export * from './MazModulesResolver.ts'

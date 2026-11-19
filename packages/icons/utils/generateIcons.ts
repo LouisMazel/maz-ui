@@ -273,7 +273,7 @@ export function generateIcons({ root, reservedNames = getReservedNames() }: Gene
         writeFileSync(path, cleaned)
     }
 
-    const reexports = sortExports(components.map(({ component }) => `export { ${component} } from './${component}'`))
+    const reexports = sortExports(components.map(({ component }) => `export { ${component} } from './${component}.ts'`))
 
     writeModules(resolve(root, 'src/static'), components.map(({ component, source }) => ({
       name: component,
@@ -282,7 +282,7 @@ export function generateIcons({ root, reservedNames = getReservedNames() }: Gene
 
     writeModules(resolve(root, 'src/lazy'), components.map(({ component }) => ({
       name: component,
-      content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport { defineAsyncComponent, markRaw } from 'vue'\n\nexport const ${component} = markRaw(defineAsyncComponent(() => import('../static/${component}').then(module => module.${component})))\n`,
+      content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport { defineAsyncComponent, markRaw } from 'vue'\n\nexport const ${component} = markRaw(defineAsyncComponent(() => import('../static/${component}.ts').then(module => module.${component})))\n`,
     })), `${GENERATED_HEADER}\n\n${reexports}\n`)
 
     writeModules(resolve(root, 'src/raw'), components.map(({ component, source }) => ({
@@ -290,9 +290,9 @@ export function generateIcons({ root, reservedNames = getReservedNames() }: Gene
       content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport _raw from '${source}?raw'\n\nexport const ${component}: string = _raw\n`,
     })), `${GENERATED_HEADER}\n\n${reexports}\n`)
 
-    const lazyExports = sortExports(components.map(({ component }) => `export { ${component} as Lazy${component} } from './lazy/${component}'`))
+    const lazyExports = sortExports(components.map(({ component }) => `export { ${component} as Lazy${component} } from './lazy/${component}.ts'`))
 
-    writeFileSync(resolve(root, 'src/index.ts'), `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue'\n\nexport type IconComponent = FunctionalComponent | ComponentPublicInstance | Component\n\nexport * from './static'\n\n${lazyExports}\n`)
+    writeFileSync(resolve(root, 'src/index.ts'), `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue'\n\nexport type IconComponent = FunctionalComponent | ComponentPublicInstance | Component\n\nexport * from './static/index.ts'\n\n${lazyExports}\n`)
 
     const iconList = [
       ...components.map(({ component }) => `'${component}'`),

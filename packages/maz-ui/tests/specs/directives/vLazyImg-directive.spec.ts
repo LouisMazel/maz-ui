@@ -1,4 +1,4 @@
-import { vLazyImg, vLazyImgInstall } from '@directives/vLazyImg'
+import { vLazyImg, vLazyImgInstall } from '@directives/vLazyImg.ts'
 import { createApp } from 'vue'
 
 describe('given vLazyImg directive', () => {

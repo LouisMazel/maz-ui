@@ -6,7 +6,7 @@ import {
   parseColor,
   resolveCssColor,
   rgbToHsv,
-} from '@components/MazColorPicker/color'
+} from '@components/MazColorPicker/color.ts'
 
 describe('given parseColor', () => {
   describe('when parsing hex colors', () => {

@@ -1,4 +1,4 @@
-import { decodeSvgDataUri, extractSvgMarkup, isRawSvg, prefetchSvgText, svgFetchInflight, svgTextCache } from '@/utils/svg-utils'
+import { decodeSvgDataUri, extractSvgMarkup, isRawSvg, prefetchSvgText, svgFetchInflight, svgTextCache } from '@/utils/svg-utils.ts'
 
 const SVG = '<svg viewBox="0 0 24 24"><path d="M0 0"/></svg>'
 

@@ -1,7 +1,7 @@
-import { isIos } from '../isIos'
-import { addViewportMaximumScale, preventIosInputZoom } from '../preventIosInputZoom'
+import { isIos } from '../isIos.ts'
+import { addViewportMaximumScale, preventIosInputZoom } from '../preventIosInputZoom.ts'
 
-vi.mock('../isIos', () => ({
+vi.mock('../isIos.ts', () => ({
   isIos: vi.fn(),
 }))
 

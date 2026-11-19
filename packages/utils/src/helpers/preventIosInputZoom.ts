@@ -1,4 +1,4 @@
-import { isIos } from './isIos'
+import { isIos } from './isIos.ts'
 
 const MAXIMUM_SCALE_REGEX = /maximum-scale\s*=\s*[\d.]+/i
 

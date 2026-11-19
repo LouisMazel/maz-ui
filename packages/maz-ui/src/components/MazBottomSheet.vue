@@ -4,9 +4,9 @@ import type {
   ComponentPublicInstance,
   StyleValue,
 } from 'vue'
-import type { MazIconLike } from '../composables/useMazIconProps'
+import type { MazIconLike } from '../composables/useMazIconProps.ts'
 import type { MazBackdropProps } from './MazBackdrop.vue'
-import type { MazSizeUnit } from './types'
+import type { MazSizeUnit } from './types.ts'
 
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
@@ -17,10 +17,10 @@ import {
   useAttrs,
   useSlots,
 } from 'vue'
-import { useDrag } from '../composables/useDrag'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { useMazIconProps } from '../composables/useMazIconProps'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { useDrag } from '../composables/useDrag.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import MazBackdrop from './MazBackdrop.vue'
 import MazIcon from './MazIcon.vue'
 

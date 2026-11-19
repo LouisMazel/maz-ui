@@ -1,5 +1,5 @@
-import type { VZoomImgBinding } from '@directives/vZoomImg/zoom-img.handler'
-import { ZoomImgHandler } from '@directives/vZoomImg/zoom-img.handler'
+import type { VZoomImgBinding } from '@directives/vZoomImg/zoom-img.handler.ts'
+import { ZoomImgHandler } from '@directives/vZoomImg/zoom-img.handler.ts'
 import { sleep } from '@maz-ui/utils/helpers/sleep'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 

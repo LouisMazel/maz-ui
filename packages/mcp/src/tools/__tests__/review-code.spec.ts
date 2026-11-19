@@ -1,6 +1,6 @@
-import { cleanTempDirs, createContextFor, createTempDir, getContext, writeFile } from '../../__tests__/helpers'
-import { reviewCodeTool } from '../review-code'
-import { ToolInputError } from '../types'
+import { cleanTempDirs, createContextFor, createTempDir, getContext, writeFile } from '../../__tests__/helpers.ts'
+import { reviewCodeTool } from '../review-code.ts'
+import { ToolInputError } from '../types.ts'
 
 describe('given the review_code tool', () => {
   afterEach(() => {

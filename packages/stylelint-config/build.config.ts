@@ -1,6 +1,6 @@
 import { defineBuildConfig } from 'unbuild'
 
-import { dependencies, devDependencies } from './package.json'
+import packageJson from './package.json' with { type: 'json' }
 
 export default defineBuildConfig({
   entries: [
@@ -13,8 +13,8 @@ export default defineBuildConfig({
     emitCJS: false,
   },
   externals: [
-    ...Object.keys(dependencies),
-    ...Object.keys(devDependencies),
+    ...Object.keys(packageJson.dependencies),
+    ...Object.keys(packageJson.devDependencies),
     'node:fs',
     'node:path',
     'node:module',

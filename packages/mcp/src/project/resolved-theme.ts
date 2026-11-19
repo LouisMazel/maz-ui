@@ -1,6 +1,6 @@
 import type { ThemePreset, ThemePresetOverrides } from '@maz-ui/themes'
 import type { ColorScaleStep, ResolvedColor, ResolvedPreset, ResolvedThemeColors, ScaledColor } from '@maz-ui/themes/utils/resolve-preset'
-import type { PresetValue, ProjectPreset } from './preset'
+import type { PresetValue, ProjectPreset } from './preset.ts'
 
 import { folio, mazUi, nova, obsidian, ocean, pristine } from '@maz-ui/themes/presets'
 import { parseColorAsOklch } from '@maz-ui/themes/utils/color-conversions'

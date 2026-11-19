@@ -5,7 +5,7 @@ import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { MazLinkIcon } from '@maz-ui/icons/lazy/MazLinkIcon'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, onUnmounted, ref } from 'vue'
-import { vTooltip } from '../directives/vTooltip'
+import { vTooltip } from '../directives/vTooltip.ts'
 
 export type MazWindowMockupVariant = 'browser' | 'terminal' | 'editor'
 

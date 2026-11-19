@@ -1,4 +1,4 @@
-import type { Hsva } from '@components/MazColorPicker/color'
+import type { Hsva } from '@components/MazColorPicker/color.ts'
 import MazColorPickerPanel from '@components/MazColorPicker/MazColorPickerPanel.vue'
 import { flushPromises, mount } from '@vue/test-utils'
 

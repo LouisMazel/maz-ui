@@ -1,6 +1,6 @@
 import type { ComponentMeta, EventMeta, PropertyMeta, SlotMeta } from 'vue-component-meta'
 
-import { attributeProps, attrsNames, attrsTarget, cleanType, dynamicSlots, propValues, slotBindings, toComponentApi, toEventApi, toPropApi, toSlotApi, unionMembers } from '../components'
+import { attributeProps, attrsNames, attrsTarget, cleanType, dynamicSlots, propValues, slotBindings, toComponentApi, toEventApi, toPropApi, toSlotApi, unionMembers } from '../components.ts'
 
 function prop(overrides: Partial<PropertyMeta> = {}): PropertyMeta {
   return {

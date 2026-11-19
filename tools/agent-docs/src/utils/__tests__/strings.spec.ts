@@ -1,4 +1,4 @@
-import { kebabToCamel, kebabToPascal, pascalToKebab, splitWords, truncate, unique } from '../strings'
+import { kebabToCamel, kebabToPascal, pascalToKebab, splitWords, truncate, unique } from '../strings.ts'
 
 describe('given kebabToPascal', () => {
   describe('when the value is kebab or snake case', () => {

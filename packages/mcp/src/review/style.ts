@@ -1,6 +1,6 @@
-import type { ReviewContext } from './types'
+import type { ReviewContext } from './types.ts'
 
-import { checkClassList } from './classes'
+import { checkClassList } from './classes.ts'
 
 const COLOR_LITERAL = /#[\da-f]{3,8}\b|\b(?:rgba?|hsla?|oklch|oklab|lab|lch)\(/i
 const COLOR_PROPERTIES = /^(?:color|background(?:-color)?|border(?:-[a-z]+)*-color|border(?:-(?:top|right|bottom|left|inline|block)(?:-(?:start|end))?)?|outline(?:-color)?|fill|stroke|box-shadow|text-shadow|caret-color|accent-color|text-decoration-color|column-rule-color)$/

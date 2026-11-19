@@ -1,11 +1,11 @@
-import type { SourcePaths } from '../paths'
-import type { SourcePage } from './pages'
+import type { SourcePaths } from '../paths.ts'
+import type { SourcePage } from './pages.ts'
 
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { ECOSYSTEM_SYMBOLS } from '../aliases'
-import { extractCodeBlocks } from '../markdown/clean'
-import { kebabToCamel, kebabToPascal, unique } from '../utils/strings'
+import { ECOSYSTEM_SYMBOLS } from '../aliases.ts'
+import { extractCodeBlocks } from '../markdown/clean.ts'
+import { kebabToCamel, kebabToPascal, unique } from '../utils/strings.ts'
 
 export interface ImportStatement {
   specifier: string

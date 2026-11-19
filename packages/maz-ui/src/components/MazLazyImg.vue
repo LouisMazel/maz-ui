@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { VLazyImgOptions } from '../directives/vLazyImg'
+import type { VLazyImgOptions } from '../directives/vLazyImg.ts'
 import { computed, defineAsyncComponent } from 'vue'
 
-import { vLazyImg } from '../directives/vLazyImg'
+import { vLazyImg } from '../directives/vLazyImg.ts'
 
 interface Source {
   srcset?: string

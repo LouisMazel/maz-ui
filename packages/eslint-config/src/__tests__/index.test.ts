@@ -47,7 +47,7 @@ function stubPackageJson(json: object | 'throw'): void {
 async function loadDefineConfig() {
   // Re-import the module after mocks are in place.
   vi.resetModules()
-  return (await import('../index')).defineConfig
+  return (await import('../index.ts')).defineConfig
 }
 
 describe('defineConfig', () => {
@@ -426,7 +426,7 @@ describe('defineConfig', () => {
   })
 })
 
-async function getRuleNames(config: ReturnType<typeof import('../index').defineConfig>): Promise<string[]> {
+async function getRuleNames(config: ReturnType<typeof import('../index.ts').defineConfig>): Promise<string[]> {
   const blocks = await config
   return blocks.flatMap(block => Object.keys(block?.rules ?? {}))
 }
@@ -480,7 +480,7 @@ describe('pnpm rules', () => {
 
 interface Block { files?: unknown, ignores?: string[], rules?: Record<string, unknown> }
 
-async function getBlocks(config: ReturnType<typeof import('../index').defineConfig>): Promise<Block[]> {
+async function getBlocks(config: ReturnType<typeof import('../index.ts').defineConfig>): Promise<Block[]> {
   return (await config) as Block[]
 }
 

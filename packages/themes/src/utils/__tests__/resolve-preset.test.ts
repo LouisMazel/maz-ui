@@ -1,8 +1,8 @@
-import type { ThemePreset } from '../../types'
-import { mazUi } from '../../presets/mazUi'
-import { colorToHex, formatAsOklch } from '../color-conversions'
-import { getPerceptualColorScale, getRelativeColorScale } from '../css-generator'
-import { mergePresets } from '../preset-merger'
+import type { ThemePreset } from '../../types/index.ts'
+import { mazUi } from '../../presets/mazUi.ts'
+import { colorToHex, formatAsOklch } from '../color-conversions.ts'
+import { getPerceptualColorScale, getRelativeColorScale } from '../css-generator.ts'
+import { mergePresets } from '../preset-merger.ts'
 import {
   COLOR_SCALE_STEPS,
   evaluateChannel,
@@ -11,7 +11,7 @@ import {
   getContrastRatio,
   resolvePreset,
   SCALED_COLORS,
-} from '../resolve-preset'
+} from '../resolve-preset.ts'
 
 const channels = { l: 0.5, c: 0.2, h: 120 }
 

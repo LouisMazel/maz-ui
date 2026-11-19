@@ -3,7 +3,7 @@ import { createRequire } from 'node:module'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { globSync } from 'tinyglobby'
-import { ICON_NAME_PATTERN } from './scan'
+import { ICON_NAME_PATTERN } from './scan.ts'
 
 export interface IconSource {
   /** Absolute path of the SVG file */

@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../types'
+import type { ThemePreset } from '../types/index.ts'
 import {
   DEFAULT_BTN_FONT_WEIGHT,
   DEFAULT_CONTAINER_BG,
@@ -12,7 +12,7 @@ import {
   DEFAULT_SHADOW,
   DEFAULT_SPACE,
   DEFAULT_TYPOGRAPHY,
-} from './_defaults'
+} from './_defaults.ts'
 
 const FONT_FAMILY = `Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
 

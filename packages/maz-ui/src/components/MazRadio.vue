@@ -1,9 +1,9 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
 import type { HTMLAttributes } from 'vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazSize } from './types.ts'
 import { computed, ref } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 
 export interface MazRadioProps<T = string | number | boolean> {
   /** Style attribut of the component root element */

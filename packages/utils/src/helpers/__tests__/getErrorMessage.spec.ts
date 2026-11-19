@@ -1,4 +1,4 @@
-import { getErrorMessage } from '../getErrorMessage'
+import { getErrorMessage } from '../getErrorMessage.ts'
 
 describe('given getErrorMessage function', () => {
   describe('when called with an Error instance', () => {

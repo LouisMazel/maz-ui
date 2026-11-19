@@ -1,12 +1,12 @@
-import type { ServerContext } from '../context'
-import type { DocEntry } from '../knowledge/schema'
+import type { ServerContext } from '../context.ts'
+import type { DocEntry } from '../knowledge/schema.ts'
 
 import { z } from 'zod'
-import { resolveDoc } from '../knowledge/resolve'
-import { findSection, linksToDocIds, listSections, outline, sectionContent, stripFrontmatter } from './markdown'
-import { formatDocLine } from './search-docs'
-import { sourceNote } from './source-note'
-import { defineTool, ToolInputError } from './types'
+import { resolveDoc } from '../knowledge/resolve.ts'
+import { findSection, linksToDocIds, listSections, outline, sectionContent, stripFrontmatter } from './markdown.ts'
+import { formatDocLine } from './search-docs.ts'
+import { sourceNote } from './source-note.ts'
+import { defineTool, ToolInputError } from './types.ts'
 
 /** Pages above this size are returned as an outline plus their beginning, unless `full` is set */
 export const MAX_FULL_DOC_CHARS = 24_000

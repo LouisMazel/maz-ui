@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor } from './types.ts'
 import { computed } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 
 defineOptions({
   inheritAttrs: false,

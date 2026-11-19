@@ -2,7 +2,7 @@ import type {
   ClassOptions,
   VLazyImgBindingValue,
   VLazyImgOptions,
-} from '@directives/vLazyImg/types'
+} from '@directives/vLazyImg/types.ts'
 
 describe('given vLazyImg types', () => {
   describe('when ClassOptions interface is defined', () => {

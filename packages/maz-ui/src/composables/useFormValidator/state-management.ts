@@ -9,13 +9,13 @@ import type {
   FormFieldOptions,
   FormSchema,
   StrictOptions,
-} from './types'
+} from './types.ts'
 
 import { isEqual } from '@maz-ui/utils/helpers/isEqual'
 import { getCurrentInstance, inject } from 'vue'
-import { useFreezeValue } from '../useFreezeValue'
-import { CONFIG } from './config'
-import { getValidateFunction } from './validation'
+import { useFreezeValue } from '../useFreezeValue.ts'
+import { CONFIG } from './config.ts'
+import { getValidateFunction } from './validation.ts'
 
 export function getFieldState<
   Model extends BaseFormPayload = BaseFormPayload,

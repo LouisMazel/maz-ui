@@ -1,6 +1,6 @@
 import type { AtRule, ChildNode, Container, Node, Rule } from 'postcss'
 import postcss from 'postcss'
-import { getRequiredClasses, splitSelectorList } from './selectors'
+import { getRequiredClasses, splitSelectorList } from './selectors.ts'
 
 /** The public utilities of `maz-ui/utilities.css` are compiled in this sub-layer of `utilities` */
 export const PUBLIC_UTILITIES_LAYER = 'maz'

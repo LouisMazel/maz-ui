@@ -1,4 +1,4 @@
-import { fetchLocaleIp } from '../fetchLocaleIp'
+import { fetchLocaleIp } from '../fetchLocaleIp.ts'
 
 describe('given fetchLocaleIp function', () => {
   describe('when the API returns a successful response', () => {

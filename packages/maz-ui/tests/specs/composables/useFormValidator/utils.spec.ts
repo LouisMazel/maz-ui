@@ -1,8 +1,8 @@
-import type { FieldsStates, FieldState, FormSchema, StrictOptions, Validation, ValidationIssues } from '@composables/useFormValidator/types'
+import type { FieldsStates, FieldState, FormSchema, StrictOptions, Validation, ValidationIssues } from '@composables/useFormValidator/types.ts'
 import { minLength, pipe, string } from 'valibot'
-import { addEventToInteractiveElements, findInteractiveElements, getValidationEvents, removeEventFromInteractiveElements, scrollToError } from '@/composables/useFormValidator/dom-events'
-import { canExecuteValidation, fieldHasValidation, getFieldsStates, getFieldState, handleFieldBlur, handleFieldInput, hasModeIncludes, updateFieldsStates, updateFieldState } from '@/composables/useFormValidator/state-management'
-import { getErrorMessages, getFieldsErrors, getFieldValidationResult, getValidateFunction, isEmptyValue, setFieldValidationState } from '@/composables/useFormValidator/validation'
+import { addEventToInteractiveElements, findInteractiveElements, getValidationEvents, removeEventFromInteractiveElements, scrollToError } from '@/composables/useFormValidator/dom-events.ts'
+import { canExecuteValidation, fieldHasValidation, getFieldsStates, getFieldState, handleFieldBlur, handleFieldInput, hasModeIncludes, updateFieldsStates, updateFieldState } from '@/composables/useFormValidator/state-management.ts'
+import { getErrorMessages, getFieldsErrors, getFieldValidationResult, getValidateFunction, isEmptyValue, setFieldValidationState } from '@/composables/useFormValidator/validation.ts'
 
 describe('given fieldHasValidation function', () => {
   const schema = {
