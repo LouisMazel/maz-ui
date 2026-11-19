@@ -4,6 +4,7 @@ import type {
   FieldState,
   FormFieldOptions,
   FormSchema,
+  ValidationIssues,
 } from './useFormValidator/types'
 
 import { isClient } from '@maz-ui/utils/helpers/isClient'
@@ -165,7 +166,7 @@ export function useFormField<
 
   return {
     hasError: computed(() => fieldState.value?.error ?? false),
-    errors: computed(() => fieldState.value?.errors ?? []),
+    errors: computed<ValidationIssues>(() => fieldState.value?.errors ?? []),
     errorMessage: computed(() => errorMessages.value[name]),
     isValid: computed(() => fieldState.value?.valid ?? false),
     isDirty: computed(() => fieldState.value?.dirty ?? false),
