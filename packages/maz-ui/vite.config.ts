@@ -1,6 +1,6 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
-import { getExternalDependencies, ViteExportNames, VitePreNestedCss } from '@maz-ui/vite-config'
+import { appendDeclarationExtensions, getExternalDependencies, ViteExportNames, VitePreNestedCss } from '@maz-ui/vite-config'
 import SvgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
@@ -71,6 +71,7 @@ export default defineConfig(({ mode }) => {
           filePath,
           content: content.replaceAll('import(\'@vue/reactivity\').OnCleanup', '((cleanupFn: () => void) => void)'),
         }),
+        afterBuild: appendDeclarationExtensions,
       }),
       ViteCompileStyles(),
       codecovVitePlugin({
