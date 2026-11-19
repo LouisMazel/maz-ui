@@ -284,14 +284,16 @@ Which one to choose:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `dir` | `IconDir \| IconDir[]` | `'src/icons'` | Folders of SVG: a path, or `{ path, prefix?, svgo?, lazy? }` |
+| `dir` | `IconDir \| IconDir[]` | `'src/icons'` | Folders of SVG: a path, or `{ path, prefix?, svgo?, lazy?, import? }` |
 | `prefix` | `string` | | Prefix of the names of the folders given by their path: `app` gives `app:logo` |
 | `svgoConfig` | `Config \| (defaults) => Config` | | svgo config of the folders given by their path (an object replaces the default config) |
 | `defaultIcons` | `boolean \| IconSet[]` | `true` | The icons of `@maz-ui/icons` by name: every [set](#sets-of-maz-ui), some of them, or none |
 | `safelist` | `string[]` | `[]` | Names the plugin can not find (built at runtime) |
 | `dts` | `string \| boolean` | `'src/maz-icons.d.ts'` | File of the types of the names, `false` to not write it |
+| `typesModule` | `string` | `'@maz-ui/icons'` (`'maz-ui'` when not resolved) | The module the types augment, see [Your own icon package](#your-own-icon-package) |
 | `strict` | `boolean` | `false` | Only the known names, URLs and raw SVG are accepted: a typo is a type error, see [Catch typos](#catch-typos) |
 | `lib` | `boolean` | `true` with `build.lib` | Build of a library, see [Libraries](#libraries) |
+| `name` | `string` | `'maz-ui:icons'` | Name of the plugin, in the logs and the file of the types |
 | `scan.keys` | `string[]` | `[]` | Props and keys whose values are names, besides the ones whose name contains `icon`: `['name']` for `<AppIcon name="logo" />` |
 
 ## Types
@@ -384,6 +386,55 @@ A library built with the plugin ships its icons: its `dist` has the runtime and 
 With `build.lib`, or `lib: true` for a library built without it, an icon of `@maz-ui/icons` stays an import (`@maz-ui/icons/raw/MazXMark`) when `@maz-ui/icons` is external. The app and the library share it, it is not copied. Declare `@maz-ui/icons` in the `dependencies` of the library.
 
 The plugin of the app does not scan `node_modules`: the icons of a built library are not registered twice.
+
+A folder whose SVG a package also publishes as modules takes `import`: the name imports the module of the SVG. The app bundles the SVG once, for the name and for the imports of the module, and the `dist` of a library keeps the import.
+
+```ts
+MazUiIcons({
+  dir: [{ path: 'node_modules/@acme/icons/svg', import: name => `@acme/icons/raw/${name}` }],
+})
+```
+
+The function gets the name without its prefix, and returns the module (its default export), or `{ from, name }` for a named export.
+
+### Your own icon package
+
+A library can publish `MazUiIcons()` and `MazIconPrimitive` under its own names, with its SVG and without the icons of maz-ui. Its consumers only install it.
+
+```ts
+// @acme/icons/vite
+import { MazUiIcons } from '@maz-ui/icons/vite'
+
+export function AcmeIcons(options = {}) {
+  return MazUiIcons({
+    name: 'acme:icons',
+    typesModule: '@acme/icons',
+    dts: 'src/acme-icons.d.ts',
+    defaultIcons: false,
+    ...options,
+    dir: [{ path: 'node_modules/@acme/icons/svg', svgo: false }, ...[options.dir ?? []].flat()],
+  })
+}
+```
+
+```ts
+// @acme/icons
+export type { IconName, IconNames, IconOptions, IconString } from '@maz-ui/icons'
+export { MazIconPrimitive as AcmeIconPrimitive } from '@maz-ui/icons/vue'
+```
+
+```js
+#!/usr/bin/env node
+// The bin of @acme/icons: acme-icons types
+import { runCli } from '@maz-ui/icons/vite'
+
+process.exitCode = await runCli(process.argv.slice(2), console, { command: 'acme-icons', plugin: 'acme:icons', pluginFunction: 'AcmeIcons()' })
+```
+
+- **`name`**: the name of the plugin, in the logs and the file of the types.
+- **`typesModule`**: the types augment `@acme/icons`, the module the consumers install. It re-exports the types of `@maz-ui/icons`, which get the names too.
+- **`runCli()`**: the command of the package, with its name in the help and the errors.
+- Declare `@maz-ui/icons` in the `dependencies` of the package.
 
 ## Accessibility
 

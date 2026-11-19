@@ -120,7 +120,7 @@ MazUi({
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `dir` | `IconDir \| IconDir[]` | `'src/icons'` | Folders of the SVG of the project: a path, or `{ path, prefix?, svgo?, lazy? }`, see [Folders](./icons/by-name.md#folders) and [Load on demand](./icons/by-name.md#load-on-demand) |
+| `dir` | `IconDir \| IconDir[]` | `'src/icons'` | Folders of the SVG of the project: a path, or `{ path, prefix?, svgo?, lazy?, import? }`, see [Folders](./icons/by-name.md#folders) and [Load on demand](./icons/by-name.md#load-on-demand) |
 | `prefix` | `string` | | Prefix of the names of the folders given by their path: `app` gives `app:hero` |
 | `defaultIcons` | `boolean \| IconSet[]` | `true` | The icons of `@maz-ui/icons` by name: every set, some of them (`['icons', 'logos']`), or none, see [Sets of maz-ui](./icons/by-name.md#sets-of-maz-ui) |
 | `safelist` | `string[]` | `[]` | Names the plugin can not find (built at runtime): registered wherever icons are used |
