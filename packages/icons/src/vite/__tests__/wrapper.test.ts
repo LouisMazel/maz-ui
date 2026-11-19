@@ -60,6 +60,7 @@ function typeErrors(root: string, files: string[]): string[] {
     module: ts.ModuleKind.ESNext,
     moduleResolution: ts.ModuleResolutionKind.Bundler,
     types: [],
+    lib: ['lib.es5.d.ts'],
   })
   return ts.getPreEmitDiagnostics(program).map(diagnostic => ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n'))
 }
