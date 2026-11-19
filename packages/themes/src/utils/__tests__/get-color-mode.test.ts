@@ -1,4 +1,4 @@
-import type { ColorMode } from '../../types/index.ts'
+import type { ColorMode } from '../../types.ts'
 import { getColorMode, getSavedResolvedColorMode, getSystemColorMode, saveResolvedColorMode } from '../get-color-mode.ts'
 
 // Mock document.cookie

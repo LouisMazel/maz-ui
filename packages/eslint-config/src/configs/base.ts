@@ -52,5 +52,8 @@ export function baseRules(isProduction: boolean): Partial<Rules> {
 
     // e18e
     'e18e/prefer-static-regex': 'off',
+
+    // antfu
+    'antfu/reasonable-newline': 'off',
   }
 }

@@ -4,17 +4,15 @@
  * pinned to `1em`, optional `<title>` injection, custom attribute merging).
  */
 
+export { prepareSvgString, stripSvgRootDimensions } from '@maz-ui/icons/vue'
+export type { SvgDimensions } from '@maz-ui/icons/vue'
+
 const RAW_SVG_PATTERN = /^<svg[\s>/]/i
 /** What an SVG file can have before its `<svg>`: whitespace, an XML prolog, a doctype, comments */
 const RE_SVG_PROLOG = /^(?:\s|<\?xml[^>]*\?>|<!--[\s\S]*?-->|<!doctype[^>]*>)*/i
 const URL_PATTERN = /^(?:[a-z][a-z\d+\-.]*:|\/)/i
 const ICON_NAME_PATTERN = /^[a-z\d]+(?:-[a-z\d]+)*(?::[a-z\d]+(?:-[a-z\d]+)*)?$/i
 
-const RE_SVG_OPEN = /<svg\b/i
-const RE_SVG_TAG_FULL = /(<svg\b[^>]*>)/i
-const RE_SVG_TAG_WITH_CLOSE = /<svg\b([^>]*)>/i
-const RE_SVG_DIMENSIONS = /\s(?:width|height)\s*=\s*(?:"[^"]*"|'[^']*')/gi
-const RE_TITLE_TAG = /<title\b[^>]*>[\s\S]*?<\/title>/i
 const RE_SVG_DATA_URI = /^\s*data:image\/svg\+xml((?:;[^,;]*)*),/i
 
 /**
@@ -87,69 +85,6 @@ export function decodeSvgDataUri(value: string): string | undefined {
   catch {
     return undefined
   }
-}
-
-export function stripSvgRootDimensions(svg: string): string {
-  return svg.replace(RE_SVG_TAG_WITH_CLOSE, (_, attrs: string) => {
-    const cleaned = attrs.replace(RE_SVG_DIMENSIONS, '')
-    return `<svg${cleaned}>`
-  })
-}
-
-function escapeAttribute(value: string | number): string {
-  return String(value).replace(/"/g, '&quot;')
-}
-
-export interface SvgDimensions {
-  width?: string | number
-  height?: string | number
-}
-
-interface PrepareOptions {
-  title?: string
-  svgAttributes?: Record<string, string | number>
-  /**
-   * Dimensions of the root `<svg>`, `false` keeps its own
-   * @default { width: '1em', height: '1em' } (scaled by the font size)
-   */
-  dimensions?: SvgDimensions | false
-}
-
-export function prepareSvgString(svg: string, options: PrepareOptions = {}): string {
-  const { dimensions = { width: '1em', height: '1em' } } = options
-  let result = svg
-
-  if (dimensions) {
-    result = stripSvgRootDimensions(result)
-    const attributes = Object.entries(dimensions)
-      .filter(([, value]) => value !== undefined && value !== '')
-      .map(([name, value]) => `${name}="${escapeAttribute(value as string | number)}"`)
-      .join(' ')
-
-    if (attributes)
-      result = result.replace(RE_SVG_OPEN, `<svg ${attributes}`)
-  }
-
-  if (options.svgAttributes) {
-    const attrStr = Object.entries(options.svgAttributes)
-      .filter(([, v]) => typeof v === 'string' || typeof v === 'number')
-      .map(([k, v]) => `${k}="${escapeAttribute(v)}"`)
-      .join(' ')
-
-    if (attrStr)
-      result = result.replace(RE_SVG_TAG_WITH_CLOSE, `<svg$1 ${attrStr}>`)
-  }
-
-  if (options.title) {
-    const escaped = options.title
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-    result = result.replace(RE_TITLE_TAG, '')
-    result = result.replace(RE_SVG_TAG_FULL, `$1<title>${escaped}</title>`)
-  }
-
-  return result
 }
 
 /**

@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../types/index.ts'
+import type { ThemePreset } from '../types.ts'
 
 export interface PresetRegistry {
   /** Whether the loaders are a selection of the app (`presets` option of `MazUiThemePresets`) */

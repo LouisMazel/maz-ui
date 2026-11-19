@@ -16,6 +16,12 @@ describe('given MazIconsResolver', () => {
     })
   })
 
+  describe('when a template uses MazIconPrimitive', () => {
+    it('then it is imported from @maz-ui/icons/vue', () => {
+      expect(resolve('MazIconPrimitive')).toEqual({ name: 'MazIconPrimitive', from: '@maz-ui/icons/vue' })
+    })
+  })
+
   describe('when a template uses another component', () => {
     it.each(['MazBtn', 'Star', 'LazyMazBtn'])('then %s is not resolved', (name) => {
       expect(resolve(name)).toBeNull()

@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../types/index.ts'
+import type { ThemePreset } from '../types.ts'
 import {
   DEFAULT_BTN_FONT_WEIGHT,
   DEFAULT_CONTAINER_BG,

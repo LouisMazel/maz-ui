@@ -26,6 +26,7 @@ export const guide = {
       link: '/ecosystem/icons/',
       collapsed: true,
       items: [
+        { text: 'Icons by name, without maz-ui', link: '/ecosystem/icons/by-name' },
         { text: 'Icon Set - 860+ icons', link: '/ecosystem/icons/icon-set' },
       ],
     },

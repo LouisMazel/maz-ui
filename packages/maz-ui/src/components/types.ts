@@ -1,3 +1,4 @@
+import type { IconName, IconOptions } from '@maz-ui/icons'
 import type { colors, neutralColors, sizes } from './constants.ts'
 
 export type MazColor = (typeof colors)[number]
@@ -31,23 +32,34 @@ export function getColor(color: MazColor | MazNeutralColor | 'muted' | 'inherit'
 }
 
 /**
- * The names of the icons and SVG of `MazIcon` and `MazSvg`: the types `MazUi()` (`@maz-ui/vite-plugin`, included
- * in `@maz-ui/nuxt`) generates add the icons of maz-ui and of the project to it, by augmentation of `maz-ui`.
+ * The names of the icons and SVG of `MazIcon` and `MazSvg`, with the `IconNames` of `@maz-ui/icons`: the types `MazUi()`
+ * (`@maz-ui/vite-plugin`, included in `@maz-ui/nuxt`) generates add the icons of maz-ui and of the project to
+ * `IconNames` when the project resolves `@maz-ui/icons`, else to `MazIconNames`.
  * A component with an icon prop is generic (`generic="_T"`): passed as a `Component` (`h()`, a route), the
  * `LooseRequired<props>` of a `DefineComponent` intersects the 870+ names with themselves, over the limit of
  * TypeScript (TS2590).
  */
 export interface MazIconNames {}
 
-export type MazIconName = keyof MazIconNames
+export type MazIconName = keyof MazIconNames | IconName
 
-/** Augmented with `{ strict: true }`: `icon` only accepts the known names, URLs and raw SVG, a typo is an error */
+/**
+ * Augmented with `{ strict: true }` (or `IconOptions` of `@maz-ui/icons`): `icon` only accepts the known names, URLs
+ * and raw SVG, a typo is an error
+ */
 export interface MazIconOptions {}
+
+type MazIconStrict = MazIconOptions extends { strict: true }
+  ? true
+  : IconOptions extends { strict: true }
+    ? true
+    : false
 
 export type MazIconSource = `/${string}` | `http://${string}` | `https://${string}` | `data:${string}` | `blob:${string}` | `<svg${string}`
 
 /**
- * A string `icon`: a name (`'x-mark'`, `'app:logo'`), a URL or a raw SVG. `string &` gives `String` to the compiler of
- * Vue, that does not read the conditional type, for the runtime check of the prop
+ * A string `icon`: a name (`'x-mark'`, `'app:logo'`, `'~x-mark'` loaded when it is displayed), a URL or a raw SVG.
+ * `string &` gives `String` to the compiler of Vue, that does not read the conditional type, for the runtime check of
+ * the prop
  */
-export type MazIconString = MazIconName | (string & (MazIconOptions extends { strict: true } ? MazIconSource : Record<never, never>))
+export type MazIconString = MazIconName | `~${MazIconName}` | (string & (MazIconStrict extends true ? MazIconSource : Record<never, never>))

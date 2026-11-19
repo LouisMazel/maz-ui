@@ -1,4 +1,4 @@
-import type { ColorMode } from '../types/index.ts'
+import type { ColorMode } from '../types.ts'
 import type { SystemColorMode } from './theme-preferences.ts'
 import { readColorModePreference, saveSystemColorMode } from './theme-preferences.ts'
 

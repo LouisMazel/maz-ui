@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { MazUiThemeOptions } from '../plugin.ts'
-import type { ColorMode, ThemePreset, ThemePresetName, ThemeState } from '../types/index.ts'
+import type { ColorMode, ThemePreset, ThemePresetName, ThemeState } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
 import { injectColorSchemeMeta, resolveColorSchemeContent } from './color-scheme-meta.ts'

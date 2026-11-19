@@ -2,8 +2,8 @@ import type { Logger, Plugin, Rollup, UserConfig } from 'vite'
 import { EventEmitter } from 'node:events'
 import { existsSync, readFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
-import { build } from 'vite'
-import { generateRegistration, generateRuntime, MazUiIcons, readRawIcon } from '../index.ts'
+import { build, resolveConfig } from 'vite'
+import { generateLazyTable, generateRegistration, generateRuntime, MazUiIcons, readRawIcon } from '../plugin.ts'
 import { createProject, HERO_SVG, write } from './fixtures.ts'
 
 const { packageMissing } = vi.hoisted(() => ({
@@ -121,6 +121,81 @@ describe('given a vite build with MazUiIcons', () => {
       expect(page.code).toContain('currentColor')
       expect(page.code).toContain('"app:hero"')
       expect(page.code).toContain('#7dd3fc')
+    })
+  })
+})
+
+describe('given a vite build of a library with MazUiIcons', () => {
+  async function buildLibrary(options: Parameters<typeof MazUiIcons>[0], isLibBuild: boolean): Promise<string> {
+    const root = project({
+      icons: 'root',
+      files: {
+        'src/icons/hero.svg': HERO_SVG,
+        'src/a.js': 'export const a = { icon: "home", hero: { icon: "hero" } }\n',
+        'src/b.js': 'export const b = { startIcon: "hero" }\n',
+        'src/index.js': 'export * from "./a.js"\nexport * from "./b.js"\n',
+      },
+    })
+    const entry = join(root, 'src/index.js')
+
+    const output = await build({
+      root,
+      configFile: false,
+      logLevel: 'silent',
+      plugins: [
+        MazUiIcons({ dts: false, ...options }),
+      ],
+      build: {
+        write: false,
+        minify: false,
+        ...(isLibBuild
+          ? {
+              lib: {
+                entry,
+                formats: ['es'],
+              },
+            }
+          : {}),
+        rollupOptions: {
+          ...(isLibBuild
+            ? {}
+            : { input: entry, preserveEntrySignatures: 'strict' }),
+          external: [/^@maz-ui\/icons/],
+        },
+      },
+    }) as Rollup.RollupOutput | Rollup.RollupOutput[]
+
+    const { output: files } = Array.isArray(output)
+      ? output[0]!
+      : output
+    return files.map(file => file.type === 'chunk'
+      ? file.code
+      : '').join('\n')
+  }
+
+  describe('when its files use names', () => {
+    it('then the dist imports the icons of @maz-ui/icons, and has the SVG of the folder once, without virtual modules', async () => {
+      const code = await buildLibrary({}, true)
+
+      expect(code).toContain('from "@maz-ui/icons/raw/MazHome"')
+      expect(code.match(/#7dd3fc/g)).toHaveLength(1)
+      expect(code).toContain('Symbol.for("maz-ui.icons.v1")')
+      expect(code).not.toMatch(/from "\0?virtual:/)
+    })
+  })
+
+  describe('when it is built without build.lib and the lib option', () => {
+    it('then the dist imports the icons of @maz-ui/icons', async () => {
+      expect(await buildLibrary({ lib: true }, false)).toContain('from "@maz-ui/icons/raw/MazHome"')
+    })
+  })
+
+  describe('when the lib option is disabled', () => {
+    it('then the dist has the SVG of the icons of @maz-ui/icons', async () => {
+      const code = await buildLibrary({ lib: false }, true)
+
+      expect(code).not.toContain('@maz-ui/icons/raw/MazHome')
+      expect(code).toContain('m3 12 9-9 9 9')
     })
   })
 })
@@ -247,6 +322,31 @@ describe('given the types of the names', () => {
     })
   })
 
+  describe('when the project resolves @maz-ui/icons and maz-ui', () => {
+    it('then they only augment @maz-ui/icons, whose names maz-ui includes', () => {
+      const root = project({ icons: 'root' })
+
+      setup({}, root)
+
+      const types = readFileSync(join(root, 'maz-icons.d.ts'), 'utf8')
+      expect(types).toContain('declare module \'@maz-ui/icons\' {\n  interface IconNames {')
+      expect(types).not.toContain('declare module \'maz-ui\'')
+    })
+  })
+
+  describe('when the project resolves neither @maz-ui/icons nor maz-ui', () => {
+    it('then they augment maz-ui', () => {
+      const root = project({ icons: 'none' })
+      rmSync(join(root, 'node_modules/maz-ui'), { recursive: true })
+
+      setup({}, root)
+
+      const types = readFileSync(join(root, 'maz-icons.d.ts'), 'utf8')
+      expect(types).toContain('declare module \'maz-ui\' {')
+      expect(types).not.toContain('@maz-ui/icons')
+    })
+  })
+
   describe('when the file is set or disabled', () => {
     it('then they are written in it, or not at all', () => {
       const root = project({
@@ -277,6 +377,83 @@ describe('given the sources of the icons', () => {
       const { code } = hook(plugin, 'transform')('const a = { icon: "x-mark" }; const b = { icon: "hero" }', '/src/a.ts')
       expect(code).toContain('virtual:maz-icon/hero')
       expect(code).not.toContain('virtual:maz-icon/x-mark')
+    })
+  })
+
+  describe('when scan keys are set', () => {
+    it('then the names of these props are registered too', () => {
+      const root = project({
+        files: { 'src/icons/hero.svg': HERO_SVG },
+      })
+
+      const { plugin } = setup({
+        dts: false,
+        scan: {
+          keys: ['name'],
+        },
+      }, root)
+
+      const { code } = hook(plugin, 'transform')('h(AppIcon, { name: "hero" }); h(AppIcon, { icon: "x-mark" })', '/src/a.ts')
+      expect(code).toContain('virtual:maz-icon/hero')
+      expect(code).toContain('virtual:maz-icon/x-mark')
+    })
+  })
+
+  describe('when the icons of maz-ui are disabled', () => {
+    it('then only the icons of the folders are names, without a warning', () => {
+      const root = project({
+        files: { 'src/icons/hero.svg': HERO_SVG },
+      })
+
+      const { plugin, logger } = setup({ dts: false, defaultIcons: false }, root)
+
+      const { code } = hook(plugin, 'transform')('const a = { icon: "x-mark" }; const b = { icon: "hero" }', '/src/a.ts')
+      expect(code).toContain('virtual:maz-icon/hero')
+      expect(code).not.toContain('virtual:maz-icon/x-mark')
+      expect(logger.warn).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('when only some sets of maz-ui are enabled', () => {
+    it('then only their names are registered', () => {
+      const root = project({
+        files: {
+          'node_modules/maz-ui/node_modules/@maz-ui/icons/icon-names.json': JSON.stringify({
+            'x-mark': { component: 'MazXMark', file: 'svg/x-mark.svg' },
+            'flag-fr': { component: 'MazFlagFR', file: 'flags/3x2/FR.svg' },
+          }),
+          'node_modules/maz-ui/node_modules/@maz-ui/icons/flags/3x2/FR.svg': HERO_SVG,
+        },
+      })
+
+      const { plugin } = setup({ dts: false, defaultIcons: ['flags'] }, root)
+
+      const { code } = hook(plugin, 'transform')('const a = { icon: "x-mark" }; const b = { icon: "flag-fr" }', '/src/a.ts')
+      expect(code).toContain('virtual:maz-icon/flag-fr')
+      expect(code).not.toContain('virtual:maz-icon/x-mark')
+    })
+  })
+
+  describe('when the icons come from several folders', () => {
+    it('then the names of each folder are found, with its prefix', () => {
+      const root = project({
+        files: {
+          'src/icons/hero.svg': HERO_SVG,
+          'node_modules/@acme/icons/svg/eye.svg': HERO_SVG,
+        },
+      })
+
+      const { plugin } = setup({
+        dts: false,
+        dir: [
+          'src/icons',
+          { path: 'node_modules/@acme/icons/svg', prefix: 'acme' },
+        ],
+      }, root)
+
+      const { code } = hook(plugin, 'transform')('const a = { icon: "hero" }; const b = { startIcon: "acme:eye" }', '/src/a.ts')
+      expect(code).toContain('virtual:maz-icon/hero')
+      expect(code).toContain('virtual:maz-icon/acme:eye')
     })
   })
 
@@ -432,6 +609,24 @@ describe('given the virtual modules', () => {
     })
   })
 
+  describe('when an icon of a folder without svgo is loaded', () => {
+    it('then it exports the SVG as it is', async () => {
+      const { plugin, logger } = setup({
+        dts: false,
+        dir: [
+          { path: 'src/icons', prefix: 'app', svgo: false },
+        ],
+      }, root)
+      const context = {
+        addWatchFile: vi.fn(),
+        resolve: vi.fn(),
+      }
+
+      expect(await hook(plugin, 'load').call(context, '\0virtual:maz-icon/app:hero')).toBe(`export default ${JSON.stringify(HERO_SVG)}\n`)
+      expect(logger.warn).not.toHaveBeenCalled()
+    })
+  })
+
   describe('when an icon that no longer exists is loaded', () => {
     it('then it exports an empty SVG, rendered as the fallback', async () => {
       const { plugin } = setup({ dts: false }, root)
@@ -530,7 +725,9 @@ describe('given the dev server', () => {
       write(file, HERO_SVG)
       server.watcher.emit('add', file)
 
-      expect(server.watcher.add).toHaveBeenCalledWith(join(root, 'src/icons'))
+      expect(server.watcher.add).toHaveBeenCalledWith([
+        join(root, 'src/icons'),
+      ])
       expect(readFileSync(join(root, 'src/maz-icons.d.ts'), 'utf8')).toContain('\'hero\': true')
       expect(server.environments.client.moduleGraph.invalidateModule).toHaveBeenCalledWith({ id: '/src/page.vue' })
       expect(server.environments.client.moduleGraph.invalidateModule).toHaveBeenCalledTimes(1)
@@ -634,6 +831,232 @@ describe('given the dev server', () => {
       const { plugin } = setup({ dts: false }, project())
 
       expect((plugin.hotUpdate as Handler).call({}, { file: '/src/main.ts', modules: [] })).toBeUndefined()
+    })
+  })
+})
+
+describe('given a lazy folder', () => {
+  const WIFI_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#0f766e" d="M1 1h22v22H1z"/></svg>'
+  const POOL_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#a21caf" d="M2 2h20v20H2z"/></svg>'
+  const lazyDir = { path: 'src/icons/amenities', prefix: 'amenity', lazy: true }
+  const codeExpression = ['$', '{code}'].join('')
+  const builtName = `\`amenity:${codeExpression}\``
+
+  describe('when the table of its loaders is generated', () => {
+    it('then each name loads its SVG with a dynamic import', () => {
+      expect(generateLazyTable(['amenity:pool', 'amenity:wifi'])).toBe([
+        'const loaders = (globalThis[Symbol.for(\'maz-ui.icons.loaders.v1\')] ??= new Map())',
+        'for (const [name, loader] of Object.entries({',
+        '  "amenity:pool": () => import("virtual:maz-icon/amenity:pool"),',
+        '  "amenity:wifi": () => import("virtual:maz-icon/amenity:wifi"),',
+        '})) loaders.set(name, loader)',
+        '',
+      ].join('\n'))
+    })
+  })
+
+  describe('when a file builds a name with its prefix', () => {
+    it('then the file imports the table, which has the names of the folder only', async () => {
+      const root = project({
+        files: {
+          'src/icons/amenities/wifi.svg': WIFI_SVG,
+          'src/icons/hero.svg': HERO_SVG,
+        },
+      })
+      const { plugin } = setup({ dts: false, dir: ['src/icons', lazyDir] }, root)
+
+      const { code } = hook(plugin, 'transform')(`export const icon = code => ${builtName}`, '/src/page.ts')
+      const table = await hook(plugin, 'load').call({}, '\0virtual:maz-icon-lazy/amenity')
+
+      expect(code).toBe(`import "virtual:maz-icon-lazy/amenity";\nexport const icon = code => ${builtName}`)
+      expect(table).toContain('"amenity:wifi": () => import("virtual:maz-icon/amenity:wifi"),')
+      expect(table).not.toContain('hero')
+      expect(hook(plugin, 'transform')('export const label = "home"', '/src/other.ts')).toBeUndefined()
+    })
+  })
+
+  describe('when it has no prefix', () => {
+    it('then the files with an icon context import its table, with its names', async () => {
+      const root = project({
+        files: { 'src/icons/amenities/wifi.svg': WIFI_SVG },
+      })
+      const { plugin } = setup({ dts: false, dir: [{ path: 'src/icons/amenities', lazy: true }] }, root)
+
+      expect(hook(plugin, 'transform')('h(AppIcon, { icon: dynamic })', '/src/page.ts').code).toContain('import "virtual:maz-icon-lazy/";')
+      expect(await hook(plugin, 'load').call({}, '\0virtual:maz-icon-lazy/')).toContain('"wifi": () => import("virtual:maz-icon/wifi"),')
+      expect(hook(plugin, 'transform')('export const label = "home"', '/src/other.ts')).toBeUndefined()
+    })
+  })
+
+  describe('when an app is built', () => {
+    let output: Rollup.RollupOutput
+
+    beforeAll(async () => {
+      const root = project({
+        files: {
+          'src/icons/amenities/wifi.svg': WIFI_SVG,
+          'src/icons/amenities/pool.svg': POOL_SVG,
+          'src/entry.js': 'console.log({ icon: "home" })\nimport("./page.js").then(page => console.log(page))\n',
+          'src/page.js': `export const amenity = code => ({ icon: ${builtName} })\n`,
+        },
+      })
+
+      output = await build({
+        root,
+        configFile: false,
+        logLevel: 'silent',
+        plugins: [
+          MazUiIcons({ dts: false, dir: [lazyDir] }),
+        ],
+        build: {
+          write: false,
+          minify: false,
+          rollupOptions: {
+            input: join(root, 'src/entry.js'),
+          },
+        },
+      }) as Rollup.RollupOutput
+    })
+
+    it('then the table is in the chunk of the page, and each SVG in its own chunk', () => {
+      const chunks = output.output.filter((file): file is Rollup.OutputChunk => file.type === 'chunk')
+      const entry = chunks.find(chunk => chunk.isEntry)!
+      const page = chunks.find(chunk => chunk.code.includes(`amenity:${codeExpression}`))!
+
+      expect(entry.code).not.toContain('maz-ui.icons.loaders.v1')
+      expect(page.code).toContain('maz-ui.icons.loaders.v1')
+      expect(page.code).toContain('"amenity:wifi"')
+      expect(page.code).not.toContain('#0f766e')
+      expect(chunks.filter(chunk => chunk.code.includes('#0f766e') || chunk.code.includes('#a21caf'))).toHaveLength(2)
+    })
+  })
+
+  describe('when an app is built and minified', () => {
+    it('then each name costs its name twice and less than 50 bytes in the table', async () => {
+      const root = project({
+        files: {
+          'src/icons/amenities/wifi.svg': WIFI_SVG,
+          'src/icons/amenities/swimming-pool.svg': POOL_SVG,
+          'src/entry.js': `export const amenity = code => ({ icon: ${builtName} })\n`,
+        },
+      })
+      const output = await build({
+        root,
+        configFile: false,
+        logLevel: 'silent',
+        plugins: [
+          MazUiIcons({ dts: false, dir: [lazyDir] }),
+        ],
+        build: {
+          write: false,
+          rollupOptions: {
+            input: join(root, 'src/entry.js'),
+          },
+        },
+      }) as Rollup.RollupOutput
+      const entry = output.output.find((file): file is Rollup.OutputChunk => file.type === 'chunk' && file.isEntry)!
+      const start = entry.code.indexOf('Object.entries({') + 'Object.entries({'.length
+      const table = entry.code.slice(start, entry.code.indexOf('}))', start))
+      const names = ['amenity:wifi', 'amenity:swimming-pool']
+
+      expect(names.every(name => table.includes(`"${name}"`))).toBe(true)
+      expect((table.length - names.reduce((total, name) => total + 2 * name.length, 0)) / names.length).toBeLessThan(50)
+    })
+  })
+
+  describe('when a SVG is added to it in dev', () => {
+    it('then its table is loaded again', () => {
+      const root = project()
+      const { plugin } = setup({ dts: false, dir: [lazyDir] }, root)
+      const server = createServer()
+      server.environments.client.moduleGraph.getModuleById.mockImplementation((id: string) => id === '\0virtual:maz-icon-lazy/amenity'
+        ? { id }
+        : undefined)
+      ;(plugin.configureServer as Handler)(server)
+
+      const file = join(root, 'src/icons/amenities/wifi.svg')
+      write(file, WIFI_SVG)
+      server.watcher.emit('add', file)
+
+      expect(server.environments.client.moduleGraph.invalidateModule).toHaveBeenCalledWith({ id: '\0virtual:maz-icon-lazy/amenity' })
+    })
+  })
+})
+
+describe('given a name written with a ~', () => {
+  describe('when a file uses it', () => {
+    it('then the file imports its loader only, which loads its SVG', async () => {
+      const root = project()
+      const { plugin } = setup({ dts: false }, root)
+
+      const { code } = hook(plugin, 'transform')('h(MazIcon, { icon: "~x-mark" })', '/src/page.ts')
+
+      expect(code).toBe('import "virtual:maz-icon-lazy/~x-mark";\nh(MazIcon, { icon: "~x-mark" })')
+      expect(await hook(plugin, 'load').call({}, '\0virtual:maz-icon-lazy/~x-mark')).toBe(generateLazyTable(['x-mark']))
+    })
+  })
+
+  describe('when the file also uses it without a ~', () => {
+    it('then it is registered, without a loader', () => {
+      const root = project()
+      const { plugin } = setup({ dts: false }, root)
+
+      const { code } = hook(plugin, 'transform')('h(MazIcon, { icon: "~x-mark" }); h(MazIcon, { icon: "x-mark" })', '/src/page.ts')
+
+      expect(code).toContain('virtual:maz-icon/x-mark')
+      expect(code).not.toContain('virtual:maz-icon-lazy/')
+    })
+  })
+
+  describe('when it is not a known name', () => {
+    it('then the file is not changed', () => {
+      const root = project()
+      const { plugin } = setup({ dts: false }, root)
+
+      expect(hook(plugin, 'transform')('h(MazIcon, { icon: "~nope" })', '/src/page.ts')).toBeUndefined()
+    })
+  })
+
+  describe('when an app is built', () => {
+    it('then its SVG is in its own chunk, not in the chunk that uses it', async () => {
+      const root = project({
+        files: { 'src/entry.js': 'console.log({ icon: "~x-mark" })\n' },
+      })
+      const output = await build({
+        root,
+        configFile: false,
+        logLevel: 'silent',
+        plugins: [
+          MazUiIcons({ dts: false }),
+        ],
+        build: {
+          write: false,
+          minify: false,
+          rollupOptions: {
+            input: join(root, 'src/entry.js'),
+          },
+        },
+      }) as Rollup.RollupOutput
+      const chunks = output.output.filter((file): file is Rollup.OutputChunk => file.type === 'chunk')
+      const entry = chunks.find(chunk => chunk.isEntry)!
+
+      expect(entry.code).toContain('"x-mark"')
+      expect(entry.code).not.toContain('M6 18')
+      expect(chunks.filter(chunk => chunk.code.includes('M6 18'))).toHaveLength(1)
+    })
+  })
+})
+
+describe('given a resolved config with MazUiIcons()', () => {
+  describe('when its api is read', () => {
+    it('then it gives the file of the types', async () => {
+      const root = createProject()
+      const plugin = MazUiIcons({ dts: 'types/icons.d.ts' })
+
+      await resolveConfig({ root, configFile: false, logLevel: 'silent', plugins: [plugin] }, 'build')
+
+      expect(plugin.api?.dts).toBe(join(root, 'types/icons.d.ts'))
+      rmSync(root, { recursive: true, force: true })
     })
   })
 })

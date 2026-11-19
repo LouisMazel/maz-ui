@@ -1,4 +1,4 @@
-import type { ThemeColors, ThemePreset } from '../../types/index.ts'
+import type { ThemeColors, ThemePreset } from '../../types.ts'
 import { colorToHex } from '../../utils/color-conversions.ts'
 import { folio } from '../folio.ts'
 import { linux } from '../linux.ts'

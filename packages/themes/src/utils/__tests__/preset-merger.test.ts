@@ -1,4 +1,4 @@
-import type { ThemePreset, ThemePresetOverrides } from '../../types/index.ts'
+import type { ThemePreset, ThemePresetOverrides } from '../../types.ts'
 import { mazUi } from '../../presets/mazUi.ts'
 import { deepMerge, mergePresets } from '../preset-merger.ts'
 

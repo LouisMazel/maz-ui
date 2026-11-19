@@ -81,7 +81,6 @@
   "dependencies": {
     "@maz-ui/icons": "workspace:^",
     "@maz-ui/vite-svg-loader": "workspace:^",
-    "magic-string": "^0.30.21",
     "postcss": "catalog:",
     "tinyglobby": "catalog:"
   },

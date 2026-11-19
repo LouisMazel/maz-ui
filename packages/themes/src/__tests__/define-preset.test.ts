@@ -1,4 +1,4 @@
-import type { ThemePreset, ThemePresetOverrides } from '../types/index.ts'
+import type { ThemePreset, ThemePresetOverrides } from '../types.ts'
 import { definePreset } from '../define-preset.ts'
 
 vi.mock('../utils/index.ts', () => ({

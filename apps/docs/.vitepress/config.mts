@@ -102,7 +102,7 @@ export default defineConfig<DefaultTheme.Config>({
     // Dark in both modes on purpose: the code blocks stay dark on the light site (`--vp-code-block-bg` in theme/main.css)
     theme: {
       light: 'github-dark',
-      dark: 'tokyo-night',
+      dark: 'github-dark',
     },
   },
 

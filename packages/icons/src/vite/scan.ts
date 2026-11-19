@@ -74,60 +74,110 @@ function* readStrings(expression: string): Generator<string> {
     yield match[1] ?? match[2] ?? match[3]!
 }
 
+interface ContextPatterns {
+  key: RegExp
+  assignment: RegExp
+  attribute: RegExp
+}
+
+const ICON_PATTERNS: ContextPatterns = {
+  key: ICON_KEY_PATTERN,
+  assignment: ICON_ASSIGNMENT_PATTERN,
+  attribute: ICON_ATTRIBUTE_PATTERN,
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/** `startSvg` is also `start-svg` (an attribute of a template) and `"start-svg"` (a key of compiled code) */
+function toKeyForms(key: string): string[] {
+  const kebab = key.replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase()
+  const camel = key.replace(/-([a-z\d])/g, (_, char: string) => char.toUpperCase())
+  return [
+    ...new Set([key, kebab, camel]),
+  ]
+}
+
+const keyPatternsCache = new Map<string, ContextPatterns>()
+
+/** The patterns of the exact `keys` (`name`, `svg`): the same contexts as the keys whose name contains `icon` */
+function createKeyPatterns(keys: readonly string[]): ContextPatterns {
+  const cacheKey = keys.join(',')
+  const cached = keyPatternsCache.get(cacheKey)
+  if (cached)
+    return cached
+
+  const alternatives = keys.flatMap(toKeyForms).map(escapeRegExp).join('|')
+  const patterns = {
+    key: new RegExp(`(?:^|[^\\w$-])(["']?)(${alternatives})\\1\\s*:(?!:)`, 'g'),
+    assignment: new RegExp(`(?:^|[^\\w$-])(?:${alternatives})(?:\\.value)?\\s*=(?![=>])`, 'g'),
+    attribute: new RegExp(`(?<![\\w$-])(?:${alternatives})\\s*=\\s*\\\\?(?:"([^"\\\\]*)\\\\?"|'([^'\\\\]*)\\\\?')`, 'g'),
+  }
+  keyPatternsCache.set(cacheKey, patterns)
+  return patterns
+}
+
 export interface IconScan {
   /** Strings that look like icon names, in an icon context or prefixed */
   names: Set<string>
+  /** The names written with a `~` (`'~x-mark'`), without it: loaded when they are displayed */
+  lazyNames: Set<string>
   /** The code has a key, a variable or an attribute whose name contains `icon`: it can hold a name built at runtime */
   hasIconContext: boolean
 }
 
-/** The strings of the values of the keys, variables and attributes whose name contains `icon` */
-function readIconContexts(code: string): { found: boolean, values: string[] } {
-  const values: string[] = []
+/** The strings of the values of the keys, variables and attributes matched by the patterns */
+function readIconContexts(code: string, patterns: ContextPatterns, values: string[]): boolean {
   let found = false
 
-  for (const match of code.matchAll(ICON_KEY_PATTERN)) {
+  for (const match of code.matchAll(patterns.key)) {
     found = true
     values.push(...readStrings(readExpression(code, match.index + match[0].length)))
   }
 
-  for (const match of code.matchAll(ICON_ASSIGNMENT_PATTERN)) {
+  for (const match of code.matchAll(patterns.assignment)) {
     found = true
     values.push(...readStrings(readExpression(code, match.index + match[0].length, true)))
   }
 
-  for (const match of code.matchAll(ICON_ATTRIBUTE_PATTERN)) {
+  for (const match of code.matchAll(patterns.attribute)) {
     found = true
     const value = match[1] ?? match[2]!
     values.push(value, ...readStrings(value))
   }
 
-  return { found, values }
+  return found
 }
 
 /**
  * The icon names a file uses. Not every string: only the values of the keys, variables and attributes whose name
  * contains `icon` (`icon: 'x-mark'`, `startIcon: dark ? 'moon' : 'sun'`, `const icon = 'moon'`, `icon="x-mark"`), and
- * every string with one of the `prefixes` (`'app:hero'`). The caller keeps the names it knows.
+ * every string with one of the `prefixes` (`'app:hero'`, `'~app:hero'`). With `keys` (`['name']`), the values of these exact keys,
+ * variables and attributes too. The caller keeps the names it knows.
  */
-export function scanIconNames(code: string, prefixes: readonly string[] = []): IconScan {
+export function scanIconNames(code: string, prefixes: readonly string[] = [], keys: readonly string[] = []): IconScan {
   const names = new Set<string>()
-  const { found: hasIconContext, values: candidates } = /icon/i.test(code)
-    ? readIconContexts(code)
-    : { found: false, values: [] }
+  const lazyNames = new Set<string>()
+  const candidates: string[] = []
+  const hasIconKeys = /icon/i.test(code) && readIconContexts(code, ICON_PATTERNS, candidates)
+  const hasKeys = keys.length > 0 && readIconContexts(code, createKeyPatterns(keys), candidates)
+  const hasIconContext = hasIconKeys || hasKeys
 
   for (const prefix of prefixes) {
     if (code.includes(`${prefix}:`)) {
       candidates.push(...[
         ...readStrings(code),
-      ].filter(value => value.startsWith(`${prefix}:`)))
+      ].filter(value => value.startsWith(`${prefix}:`) || value.startsWith(`~${prefix}:`)))
     }
   }
 
   for (const value of candidates) {
     if (ICON_NAME_PATTERN.test(value))
       names.add(value)
+    else if (value.startsWith('~') && ICON_NAME_PATTERN.test(value.slice(1)))
+      lazyNames.add(value.slice(1))
   }
 
-  return { names, hasIconContext }
+  return { names, lazyNames, hasIconContext }
 }

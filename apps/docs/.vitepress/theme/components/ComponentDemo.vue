@@ -17,7 +17,7 @@ const showCode = ref(props.expanded)
 </script>
 
 <template>
-  <MazCard class="component-demo" block footer-align="start" :class="{ '--no-padding maz:overflow-hidden': !padding }">
+  <MazCard class="component-demo maz:bg-container" block footer-align="start" :class="{ '--no-padding maz:overflow-hidden': !padding }">
     <template v-if="$slots.title || title" #title>
       <h3 class="vp-raw maz:text-lg maz:font-semibold">
         <slot name="title">
@@ -35,7 +35,7 @@ const showCode = ref(props.expanded)
     </template>
 
     <template v-if="$slots.code" #footer>
-      <button class="vp-raw maz:flex maz:w-full maz:items-center maz:justify-between maz:bg-surface maz:p-3 maz:transition-all maz:duration-300 maz:hover:bg-surface-400" @click="showCode = !showCode">
+      <button class="vp-raw maz:flex maz:w-full maz:items-center maz:justify-between maz:bg-container maz:p-3 maz:transition-all maz:duration-300 maz:hover:bg-surface-400" @click="showCode = !showCode">
         <span class="maz:flex maz:items-center maz:gap-2 maz:text-primary">
           <MazCodeBracket />
           View code

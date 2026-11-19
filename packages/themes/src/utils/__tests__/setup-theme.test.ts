@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../../types/index.ts'
+import type { ThemePreset } from '../../types.ts'
 import type { SetupThemeReturn } from '../setup-theme.ts'
 import { nextTick } from 'vue'
 

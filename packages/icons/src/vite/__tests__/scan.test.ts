@@ -1,8 +1,8 @@
 import { scanIconNames } from '../scan.ts'
 
-function scan(code: string, prefixes?: string[]) {
+function scan(code: string, prefixes?: string[], keys?: string[]) {
   return [
-    ...scanIconNames(code, prefixes).names,
+    ...scanIconNames(code, prefixes, keys).names,
   ].sort()
 }
 
@@ -83,6 +83,7 @@ describe('given the compiled code of a file', () => {
     it('then it has no name', () => {
       expect(scanIconNames('const label = "home"')).toEqual({
         names: new Set(),
+        lazyNames: new Set(),
         hasIconContext: false,
       })
       expect(scanIconNames('import MazIcon from "maz-ui/components/MazIcon"').hasIconContext).toBe(false)
@@ -93,8 +94,73 @@ describe('given the compiled code of a file', () => {
     it('then the context is found', () => {
       expect(scanIconNames('{ icon: item.icon }')).toEqual({
         names: new Set(),
+        lazyNames: new Set(),
         hasIconContext: true,
       })
+    })
+  })
+})
+
+describe('given scan keys', () => {
+  describe('when the code has these exact keys', () => {
+    it('then the strings of their values are names', () => {
+      expect(scan('h(AppIcon, { name: "logo", label: "home" })', [], ['name'])).toEqual(['logo'])
+      expect(scan('{ "start-svg": "moon", endSvg: _ctx.dark ? "sun" : "star" }', [], ['startSvg', 'end-svg'])).toEqual(['moon', 'star', 'sun'])
+    })
+  })
+
+  describe('when the code has these keys in a variable or a template attribute', () => {
+    it('then their strings are names', () => {
+      expect(scan('const name = isDark ? "moon" : "sun"', [], ['name'])).toEqual(['moon', 'sun'])
+      expect(scan('<AppIcon name="logo" :start-svg="\'moon\'" />', [], ['name', 'startSvg'])).toEqual(['logo', 'moon'])
+    })
+  })
+
+  describe('when a key only contains one of them', () => {
+    it('then it is not read', () => {
+      expect(scan('{ __name: "Page", fullName: "home", "user-name": "bell" }', [], ['name'])).toEqual([])
+    })
+  })
+
+  describe('when they are not set', () => {
+    it('then only the keys that contain icon are read', () => {
+      expect(scan('h(AppIcon, { name: "logo", icon: "bell" })')).toEqual(['bell'])
+    })
+  })
+
+  describe('when a key has a character of a regular expression', () => {
+    it('then it is read as it is', () => {
+      expect(scan('{ "svg.name": "logo", svgXname: "home" }', [], ['svg.name'])).toEqual(['logo'])
+    })
+  })
+
+  describe('when the code has a key and no icon context', () => {
+    it('then it has a context, for the safelist', () => {
+      expect(scanIconNames('h(AppIcon, { name: dynamicName })', [], ['name']).hasIconContext).toBe(true)
+      expect(scanIconNames('h(AppIcon, { name: dynamicName })').hasIconContext).toBe(false)
+    })
+  })
+})
+
+describe('given names written with a ~', () => {
+  describe('when they are in an icon context', () => {
+    it('then they are lazy names, without the ~', () => {
+      const { names, lazyNames } = scanIconNames('h(MazIcon, { icon: "~x-mark" }); <MazBtn start-icon="~moon" />')
+
+      expect([...lazyNames]).toEqual(['x-mark', 'moon'])
+      expect([...names]).toEqual([])
+    })
+  })
+
+  describe('when they have a prefix, outside of an icon context', () => {
+    it('then they are lazy names', () => {
+      expect([...scanIconNames('const hero = "~app:hero"', ['app']).lazyNames]).toEqual(['app:hero'])
+    })
+  })
+
+  describe('when the rest is not a name', () => {
+    it('then they are ignored', () => {
+      expect([...scanIconNames('h(MazIcon, { icon: "~/assets/logo.svg" })').lazyNames]).toEqual([])
     })
   })
 })

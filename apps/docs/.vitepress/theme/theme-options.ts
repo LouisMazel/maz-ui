@@ -12,5 +12,10 @@ export const DOCS_THEME = {
     scales: {
       color: DOCS_COLOR_SCALE,
     },
+    components: {
+      container: {
+        bg: { dark: 'oklch(0.20 0.025 285)' },
+      },
+    },
   },
 } satisfies MazUiThemeOptions

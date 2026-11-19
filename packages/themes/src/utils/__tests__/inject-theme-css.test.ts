@@ -1,5 +1,5 @@
 import type { MazUiThemeOptions } from '../../plugin.ts'
-import type { ThemePreset } from '../../types/index.ts'
+import type { ThemePreset } from '../../types.ts'
 import { injectThemeCSS } from '../inject-theme-css.ts'
 
 vi.mock('../css-generator.ts', () => ({

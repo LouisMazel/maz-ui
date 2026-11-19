@@ -1,23 +1,36 @@
-import type { SvgoConfigOption } from '@maz-ui/vite-svg-loader/optimize'
+import type { optimizeSvg, SvgoConfigOption } from '@maz-ui/vite-svg-loader/optimize'
 import type { Logger, Plugin, ViteDevServer } from 'vite'
-import type { IconSource, IconSources } from './sources.ts'
+import type { DefaultIcons, IconDir, IconSource, IconSources } from './sources.ts'
+import type { IconTypesModule } from './types.ts'
 import { existsSync, readFileSync } from 'node:fs'
 import { join, resolve, sep } from 'node:path'
-import { optimizeSvg } from '@maz-ui/vite-svg-loader/optimize'
 import MagicString from 'magic-string'
 import { ICONS_PACKAGE, loadIconIds, rewriteIconImports } from './imports.ts'
 import { scanIconNames } from './scan.ts'
-import { loadPackageIcons, loadProjectIcons, locateIconsPackage, mergeIconSources } from './sources.ts'
+import { loadDirsIcons, loadPackageIcons, locateIconsPackage, mergeIconSources, normalizeIconDirs, resolveIconTypesModule, toIconSets } from './sources.ts'
 import { generateIconTypes, writeIfChanged } from './types.ts'
+
+/** Read by `maz-ui-icons types`: the file of the types, written once the config is resolved */
+export interface MazUiIconsApi {
+  readonly dts: string | undefined
+}
 
 export interface MazUiIconsOptions {
   /**
-   * Folder of the SVG of the project, relative to the root: `src/icons/hero.svg` is `<MazIcon icon="hero" />`
+   * Folders of SVG, relative to the root: `src/icons/hero.svg` is `<MazIcon icon="hero" />`. A path, or an array of paths
+   * and of folders with their options (`{ path: 'node_modules/@acme/icons/svg', prefix: 'acme', svgo: false }`). An
+   * icon of a folder replaces the one of maz-ui, or of a previous folder, with the same name
    * @default 'src/icons'
    */
-  dir?: string
-  /** Prefix of the names of the project SVG: with `'app'`, `src/icons/hero.svg` is `app:hero` */
+  dir?: IconDir | IconDir[]
+  /** Prefix of the names of the SVG of the folders given by their path: with `'app'`, `src/icons/hero.svg` is `app:hero` */
   prefix?: string
+  /**
+   * The icons of `@maz-ui/icons` by name: every set, some of them (`['icons', 'logos']`), or none (`false`, only the
+   * icons of the folders). The components of maz-ui do not use names
+   * @default true
+   */
+  defaultIcons?: DefaultIcons
   /**
    * Names the scan can not find (built at runtime, coming from an API): registered wherever icons are used
    */
@@ -32,14 +45,40 @@ export interface MazUiIconsOptions {
    * @default false
    */
   strict?: boolean
-  /** svgo config of the project SVG, as in `@maz-ui/vite-svg-loader` (an object replaces the default config) */
+  /**
+   * The build of a library: its dist imports the icons of `@maz-ui/icons` when it is external, shared with the app,
+   * instead of copying their SVG
+   * @default true when `build.lib` is set
+   */
+  lib?: boolean
+  /**
+   * svgo config of the SVG of the folders given by their path, as in `@maz-ui/vite-svg-loader` (an object replaces the
+   * default config)
+   */
   svgoConfig?: SvgoConfigOption
+  /** What the plugin reads to find the names a file uses */
+  scan?: MazUiIconsScanOptions
 }
+
+export interface MazUiIconsScanOptions {
+  /**
+   * Props and keys whose values are icon names, besides the ones whose name contains `icon` (`icon`, `startIcon`):
+   * `['name']` for `<AppIcon name="logo" />`. Exact names, in camelCase or kebab-case (`startSvg` also reads
+   * `start-svg`). A string of a known name in one of them is registered: a generic key (`name`) can add an icon that
+   * the page does not render (a route named `home`)
+   * @default []
+   */
+  keys?: string[]
+}
+
+type Optimize = typeof optimizeSvg
 
 const RUNTIME_ID = 'virtual:maz-icon-runtime'
 const ICON_ID_PREFIX = 'virtual:maz-icon/'
-const VIRTUAL_PATTERN = /^virtual:maz-icon(?:-runtime$|\/)/
-const RESOLVED_PATTERN = /^\0virtual:maz-icon(?:-runtime$|\/)/
+/** The table of the loaders of the `lazy` folders (`virtual:maz-icon-lazy/amenity`, `virtual:maz-icon-lazy/` without a prefix), and the loader of a name written `~x-mark` (`virtual:maz-icon-lazy/~x-mark`) */
+const LAZY_ID_PREFIX = 'virtual:maz-icon-lazy/'
+const VIRTUAL_PATTERN = /^virtual:maz-icon(?:-runtime$|-lazy\/|\/)/
+const RESOLVED_PATTERN = /^\0virtual:maz-icon(?:-runtime$|-lazy\/|\/)/
 const SCRIPT_PATTERN = /\.(?:vue|md|[mc]?[jt]sx?)(?:$|\?)/
 const EXCLUDED_PATTERN = /node_modules|^\0|[?&]type=style/
 /** The string of a built `raw` module: `var MazStar = /* @__PURE__ *\/ String("<svg ...")` */
@@ -50,6 +89,33 @@ const RUNTIME_CODE = `const registry = (globalThis[Symbol.for('maz-ui.icons.v1')
 export function r(icons) {
   for (const name in icons) registry.set(name, icons[name])
 }`
+
+/** Same key and shape as the loaders of `@maz-ui/icons/registry`, that `MazIconPrimitive` reads */
+const LOADERS_CODE = `const loaders = (globalThis[Symbol.for('maz-ui.icons.loaders.v1')] ??= new Map())`
+
+/** The prefix of a name, `''` without: the key of the table of its `lazy` folder */
+function getNamePrefix(name: string): string {
+  const index = name.indexOf(':')
+  return index === -1
+    ? ''
+    : name.slice(0, index)
+}
+
+/**
+ * The table of the loaders of the names of `lazy` folders: one dynamic import per SVG, a chunk downloaded when the icon
+ * is displayed. Imported by the files that can build these names: in their chunk, not in the entry.
+ */
+export function generateLazyTable(names: readonly string[]): string {
+  const entries = names.map(name => `  ${JSON.stringify(name)}: () => import(${JSON.stringify(ICON_ID_PREFIX + name)}),`)
+
+  return [
+    LOADERS_CODE,
+    'for (const [name, loader] of Object.entries({',
+    ...entries,
+    '})) loaders.set(name, loader)',
+    '',
+  ].join('\n')
+}
 
 function generateImports(names: readonly string[]): { imports: string[], icons: string } {
   const entries = names.map((name, index) => `${JSON.stringify(name)}: __mazIcon${index}`)
@@ -112,8 +178,9 @@ function getDefaultDts(root: string): string {
  * of `@maz-ui/icons` and the SVG of the project, and writes the types of the names. Without it, a name renders the
  * fallback of `MazIcon`.
  */
-export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
-  const { dir = 'src/icons', prefix, safelist = [], strict = false, svgoConfig } = options
+export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin<MazUiIconsApi> {
+  const { prefix, safelist = [], strict = false, defaultIcons = true, svgoConfig } = options
+  const dirs = normalizeIconDirs(options.dir, { prefix, svgoConfig })
 
   let root = process.cwd()
   let logger!: Logger
@@ -129,16 +196,32 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
     invalid: [],
   }
   let dtsFile: string | undefined
+  let typesModule: IconTypesModule = 'maz-ui'
   let isServe = false
+  /** The build of a library (`build.lib`): its dist keeps the imports of the external `@maz-ui/icons`, shared with the app */
+  let isLib = false
   const warnings = new Set<string>()
   const svgCache = new Map<string, string>()
+  let optimizer: Promise<Optimize | undefined> | undefined
   /** The SVG files of the loaded icons, watched in dev */
   const iconFiles = new Set<string>()
   /** Dev: the candidate names of each module, to transform them again when a project SVG is added */
   const candidatesByModule = new Map<string, Set<string>>()
-  const prefixes = prefix
-    ? [prefix]
-    : []
+  const prefixes = [
+    ...new Set(dirs.flatMap(({ prefix }) => prefix ?? [])),
+  ]
+  const scanKeys = options.scan?.keys ?? []
+  /** The prefixes of the `lazy` folders, `''` for a folder without a prefix */
+  const lazyPrefixes = [
+    ...new Set(dirs.filter(({ lazy }) => lazy).map(({ prefix }) => prefix ?? '')),
+  ]
+
+  /** The tables of loaders a file needs: it has the prefix of a `lazy` folder (`` `amenity:${code}` ``), or an icon context without a prefix */
+  function getLazyTables(code: string, hasIconContext: boolean): string[] {
+    return lazyPrefixes.filter(lazyPrefix => (lazyPrefix
+      ? code.includes(`${lazyPrefix}:`)
+      : hasIconContext))
+  }
 
   /** Once per message: the sources are loaded again each time a project SVG is added */
   function warn(message: string) {
@@ -150,10 +233,10 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
   }
 
   function loadSources() {
-    sources = mergeIconSources(packageIcons, loadProjectIcons({ root, dir, prefix }), root)
+    sources = mergeIconSources(packageIcons, loadDirsIcons(root, dirs), root)
 
-    for (const [name, file] of sources.overrides)
-      warn(`${file} replaces the icon "${name}" of maz-ui: rename it or set the \`prefix\` option`)
+    for (const [name, file, replaced] of sources.overrides)
+      warn(`${file} replaces the icon "${name}" of ${replaced}: rename it or set the \`prefix\` option`)
 
     for (const file of sources.invalid)
       warn(`${file} is not a valid icon name (letters, digits and dashes)`)
@@ -161,10 +244,19 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
 
   function writeTypes() {
     if (dtsFile)
-      writeIfChanged(dtsFile, generateIconTypes(sources.icons.keys(), { strict }))
+      writeIfChanged(dtsFile, generateIconTypes(sources.icons.keys(), { strict, module: typesModule }))
   }
 
-  function readIcon(source: IconSource): string {
+  /** svgo, by `@maz-ui/vite-svg-loader`: an optional peer, not to install svgo with every `@maz-ui/icons` */
+  function loadOptimizer(): Promise<Optimize | undefined> {
+    optimizer ??= import('@maz-ui/vite-svg-loader/optimize').then(
+      module => module.optimizeSvg,
+      () => undefined,
+    )
+    return optimizer
+  }
+
+  function readIcon(source: IconSource, optimize: Optimize | undefined): string {
     const cached = svgCache.get(source.file)
     if (cached !== undefined)
       return cached
@@ -175,21 +267,28 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
       return packageSvg
     }
 
-    const isProjectIcon = source.root === root
-    const svg = optimizeSvg(readFileSync(source.file, 'utf8'), {
-      path: source.file,
-      root: source.root,
-      config: isProjectIcon
-        ? svgoConfig
-        : undefined,
-    })
+    const content = readFileSync(source.file, 'utf8')
+    if (source.svgo === false) {
+      svgCache.set(source.file, content)
+      return content
+    }
+
+    if (!optimize)
+      warn('@maz-ui/vite-svg-loader not found: the SVG are not optimized, install it to run svgo on them')
+
+    const svg = optimize
+      ? optimize(content, {
+          path: source.file,
+          root: source.root,
+          config: source.svgo,
+        })
+      : content
     svgCache.set(source.file, svg)
     return svg
   }
 
   function isProjectFile(file: string): boolean {
-    const directory = resolve(root, dir) + sep
-    return file.startsWith(directory) && file.endsWith('.svg')
+    return file.endsWith('.svg') && dirs.some(({ path }) => file.startsWith(resolve(root, path) + sep))
   }
 
   /** A project SVG added or removed: new names, so new types and new imports in the files that use them */
@@ -207,6 +306,15 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
     for (const name of before) {
       if (!sources.icons.has(name))
         changed.add(name)
+    }
+
+    const lazyTables = lazyPrefixes.map(lazyPrefix => `\0${LAZY_ID_PREFIX}${lazyPrefix}`)
+    for (const environment of Object.values(server.environments)) {
+      for (const id of lazyTables) {
+        const module = environment.moduleGraph.getModuleById(id)
+        if (module)
+          environment.moduleGraph.invalidateModule(module)
+      }
     }
 
     for (const [id, candidates] of candidatesByModule) {
@@ -228,6 +336,12 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
     // After `vue()`: the scan reads the compiled code, where an attribute of a template is a key
     enforce: 'post',
 
+    api: {
+      get dts() {
+        return dtsFile
+      },
+    },
+
     config(userConfig) {
       const { include = [], exclude = [] } = userConfig.optimizeDeps ?? {}
       if (include.includes(ICONS_PACKAGE) || exclude.includes(ICONS_PACKAGE))
@@ -244,12 +358,15 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
     configResolved(config) {
       root = config.root
       logger = config.logger
+      isLib = config.command === 'build' && (options.lib ?? Boolean(config.build?.lib))
 
       rewritesImports = config.command === 'build' || (config.optimizeDeps?.exclude ?? []).includes(ICONS_PACKAGE)
 
       const iconsPackage = locateIconsPackage(root)
       if (iconsPackage) {
-        packageIcons = loadPackageIcons(iconsPackage.packageDir)
+        const sets = toIconSets(defaultIcons)
+        if (sets.length > 0)
+          packageIcons = loadPackageIcons(iconsPackage.packageDir, sets)
         iconIds = loadIconIds(iconsPackage.packageDir)
         iconsImporter = iconsPackage.importer
       }
@@ -263,6 +380,7 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
             ? options.dts
             : getDefaultDts(root))
 
+      typesModule = resolveIconTypesModule(root)
       loadSources()
       writeTypes()
 
@@ -273,7 +391,7 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
 
     configureServer(server) {
       isServe = true
-      server.watcher.add(resolve(root, dir))
+      server.watcher.add(dirs.map(({ path }) => resolve(root, path)))
       server.watcher.on('add', file => onProjectIconsChange(server, file))
       server.watcher.on('unlink', file => onProjectIconsChange(server, file))
     },
@@ -309,6 +427,16 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
         if (id === `\0${RUNTIME_ID}`)
           return generateRuntime(safelist.filter(name => sources.icons.has(name)))
 
+        if (id.startsWith(`\0${LAZY_ID_PREFIX}~`))
+          return generateLazyTable([id.slice(`\0${LAZY_ID_PREFIX}~`.length)])
+
+        if (id.startsWith(`\0${LAZY_ID_PREFIX}`)) {
+          const lazyPrefix = id.slice(`\0${LAZY_ID_PREFIX}`.length)
+          return generateLazyTable([
+            ...sources.icons,
+          ].filter(([name, source]) => source.lazy && getNamePrefix(name) === lazyPrefix).map(([name]) => name).sort())
+        }
+
         const source = sources.icons.get(id.slice(`\0${ICON_ID_PREFIX}`.length))
         // A project SVG removed while a module still imports it: the name renders the fallback
         if (!source)
@@ -320,12 +448,16 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
           : null
         if (raw && !raw.external)
           return `export { ${source.component} as default } from ${JSON.stringify(raw.id)}\n`
+        if (raw && isLib) {
+          const external = JSON.stringify(`${ICONS_PACKAGE}/raw/${source.component}`)
+          return `export { ${source.component} as default } from ${external}\n`
+        }
 
         if (!source.component) {
           this.addWatchFile(source.file)
           iconFiles.add(source.file)
         }
-        return `export default ${JSON.stringify(readIcon(source))}\n`
+        return `export default ${JSON.stringify(readIcon(source, await loadOptimizer()))}\n`
       },
     },
 
@@ -337,19 +469,28 @@ export function MazUiIcons(options: MazUiIconsOptions = {}): Plugin {
         if (!SCRIPT_PATTERN.test(id) || EXCLUDED_PATTERN.test(id))
           return undefined
 
-        const { names: candidates, hasIconContext } = scanIconNames(code, prefixes)
+        const { names: candidates, lazyNames: lazyCandidates, hasIconContext } = scanIconNames(code, prefixes, scanKeys)
         if (isServe)
-          candidatesByModule.set(id, candidates)
+          candidatesByModule.set(id, new Set([...candidates, ...lazyCandidates]))
 
         const output = new MagicString(code)
         const hasRewrittenImports = rewritesImports && rewriteIconImports(output, code, iconIds)
         const names = [...candidates].filter(name => sources.icons.has(name)).sort()
         const registers = names.length > 0 || (safelist.length > 0 && hasIconContext)
-        if (!registers && !hasRewrittenImports)
+        const lazyTables = getLazyTables(code, hasIconContext)
+        // `~x-mark`: its loader only, unless the file also uses `x-mark`
+        const lazyNames = [...lazyCandidates].filter(name => sources.icons.has(name) && !candidates.has(name)).sort()
+        if (!registers && !hasRewrittenImports && lazyTables.length === 0 && lazyNames.length === 0)
           return undefined
 
         if (registers)
           output.prepend(generateRegistration(names))
+        for (const lazyPrefix of lazyTables)
+          output.prepend(`import ${JSON.stringify(LAZY_ID_PREFIX + lazyPrefix)};\n`)
+        for (const name of lazyNames) {
+          const loaderId = `${LAZY_ID_PREFIX}~${name}`
+          output.prepend(`import ${JSON.stringify(loaderId)};\n`)
+        }
 
         return {
           code: output.toString(),

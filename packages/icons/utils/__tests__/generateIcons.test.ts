@@ -159,7 +159,7 @@ import _component from '../../svg/link.svg?component'
 export const MazLinkIcon = _component
 `)
       expect(read('src/lazy/MazStar.ts')).toContain(`export const MazStar = markRaw(defineAsyncComponent(() => import('../static/MazStar.ts').then(module => module.MazStar)))`)
-      expect(read('src/raw/MazFlagSquareFR.ts')).toContain(`import _raw from '../../flags/1x1/FR.svg?raw'\n\nexport const MazFlagSquareFR: string = _raw`)
+      expect(read('src/raw/MazFlagSquareFR.ts')).toContain(`import _raw from '../../flags/1x1/FR.svg?svg'\n\nexport const MazFlagSquareFR = _raw`)
     })
 
     it('then the entries export every icon in order', () => {
@@ -171,7 +171,8 @@ export const MazLinkIcon = _component
         `export { MazLogoVue } from './MazLogoVue.ts'`,
         `export { MazStar } from './MazStar.ts'`,
       ])
-      expect(read('src/index.ts')).toContain(`export * from './static/index.ts'\n\nexport { MazCheck as LazyMazCheck } from './lazy/MazCheck.ts'`)
+      expect(read('src/index.ts')).toContain('/// <reference path="./svg-modules.d.ts" />')
+      expect(read('src/index.ts')).toContain(`export type * from './types.ts'\n\nexport * from './static/index.ts'\n\nexport { MazCheck as LazyMazCheck } from './lazy/MazCheck.ts'`)
       expect(read('src/lazy/index.ts')).toContain(`export { MazLogoVue } from './MazLogoVue.ts'`)
       expect(read('src/raw/index.ts')).toContain(`export { MazFlagFR } from './MazFlagFR.ts'`)
     })

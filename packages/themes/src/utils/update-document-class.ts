@@ -1,4 +1,4 @@
-import type { ColorMode, ThemeState } from '../types/index.ts'
+import type { ColorMode, ThemeState } from '../types.ts'
 import { noTransition } from './no-transition.ts'
 import { getSystemColorMode } from './theme-preferences.ts'
 

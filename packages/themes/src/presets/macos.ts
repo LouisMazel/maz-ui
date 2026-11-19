@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../types/index.ts'
+import type { ThemePreset } from '../types.ts'
 import {
   DEFAULT_DISABLED_OPACITY,
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
