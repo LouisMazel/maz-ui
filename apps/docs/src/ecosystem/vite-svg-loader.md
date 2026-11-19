@@ -68,6 +68,15 @@ import IconSource from './icon.svg?skipsvgo' // component, without svgo
 import iconSource from './icon.svg?raw&skipsvgo' // string, without svgo
 ```
 
+`?svg` and `?uri` are `?raw` and `?url`, with a precise type: `` `<svg${string}` `` and a URL (`/...`, `https://...`, `data:...`). An icon prop of maz-ui with `strict` accepts them, without a cast:
+
+```ts
+import heroSvg from './hero.svg?svg'
+import heroUrl from './hero.svg?uri'
+```
+
+They only work with `svgLoader()` in the Vite config: without it, an import with `?svg` is a URL.
+
 ```vue
 <template>
   <IconComponent class="size-6 text-primary" />

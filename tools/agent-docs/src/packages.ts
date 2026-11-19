@@ -27,7 +27,7 @@ export const PACKAGE_DEFINITIONS: PackageDefinition[] = [
     name: '@maz-ui/icons',
     dir: 'icons',
     short: 'icons',
-    description: 'Icon set of 860+ SVG icons (interface icons, logos, country flags) as Vue components, raw SVG strings and files.',
+    description: 'Icons by name for any Vue app or library (MazUiIcons() Vite plugin for your SVG folders, MazIconPrimitive, typed names), and a set of 860+ SVG icons (interface icons, logos, country flags) as Vue components, raw SVG strings and files.',
     group: 'ecosystem',
     mainDocId: 'ecosystem/icons',
   },
