@@ -92,7 +92,7 @@ export default defineConfig({
   sync: {
     rules: [
       {
-        from: 'main',
+        from: 'master',
         to: ['develop'],
       },
     ],
