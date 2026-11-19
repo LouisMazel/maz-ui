@@ -2,8 +2,11 @@ import type { ComponentResolver } from 'unplugin-vue-components/types'
 import type { IconName } from './icon-list.js'
 import { iconList } from './icon-list.js'
 
+/** The components of `@maz-ui/icons/vue` */
+const VUE_COMPONENTS = new Set(['MazIconPrimitive'])
+
 /**
- * Resolver for @maz-ui/icons
+ * Resolver for @maz-ui/icons: the icon components (`MazStar`, `LazyMazStar`) and `MazIconPrimitive`
  *
  * @author @louismazel
  * @link https://maz-ui.com
@@ -12,6 +15,9 @@ export function MazIconsResolver(): ComponentResolver {
   return {
     type: 'component',
     resolve: (name: string) => {
+      if (VUE_COMPONENTS.has(name))
+        return { name, from: '@maz-ui/icons/vue' }
+
       if (!iconList.includes(name as IconName)) {
         return null
       }

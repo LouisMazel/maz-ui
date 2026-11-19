@@ -26,7 +26,7 @@ describe('given the components of the icons', () => {
 
     const read = (path: string) => readFileSync(join(outDir, path), 'utf8')
 
-    it('then five files hold the types of every icon', () => {
+    it('then six files hold the types of every icon', () => {
       expect(readdirSync(outDir, { recursive: true }).toSorted()).toEqual([
         'icons.d.ts',
         'index.d.ts',
@@ -36,6 +36,7 @@ describe('given the components of the icons', () => {
         'raw/index.d.ts',
         'static',
         'static/index.d.ts',
+        'svg-modules.d.ts',
       ])
     })
 
@@ -49,17 +50,27 @@ describe('given the components of the icons', () => {
         '',
       ].join('\n'))
       expect(read('lazy/index.d.ts')).toContain('import type { FunctionalComponent, Raw, SVGAttributes } from \'vue\'\nexport declare const MazCheck: Raw<FunctionalComponent<SVGAttributes>>\n')
-      expect(read('raw/index.d.ts')).toBe('export declare const MazCheck: string\nexport declare const MazH2: string\nexport declare const MazH10: string\nexport declare const MazStar: string\n')
+      const svgString = `\`<svg\${string}\``
+      const declarations = ['MazCheck', 'MazH2', 'MazH10', 'MazStar'].map(component => `export declare const ${component}: ${svgString}\n`)
+
+      expect(read('raw/index.d.ts')).toBe(declarations.join(''))
     })
 
     it('then the root exports the static icons and the lazy ones, with the extension of their entry', () => {
       expect(read('index.d.ts')).toBe([
+        '/// <reference path="./svg-modules.d.ts" />',
         'import type { Component, ComponentPublicInstance, FunctionalComponent } from \'vue\'',
         'export type IconComponent = FunctionalComponent | ComponentPublicInstance | Component',
+        'export type * from \'./types.js\'',
         'export * from \'./static/index.js\'',
         'export { MazCheck as LazyMazCheck, MazH2 as LazyMazH2, MazH10 as LazyMazH10, MazStar as LazyMazStar } from \'./lazy/index.js\'',
         '',
       ].join('\n'))
+    })
+
+    it('then the SVG files of the package are typed for strict', () => {
+      expect(read('svg-modules.d.ts')).toContain('declare module \'@maz-ui/icons/svg/*?url\'')
+      expect(read('svg-modules.d.ts')).toContain('declare module \'@maz-ui/icons/svg/*?raw\'')
     })
 
     it('then each module of an icon is declared from its entry', () => {
