@@ -84,6 +84,17 @@
       ],
       "outputs": []
     },
+    "check:published-types": {
+      "cache": true,
+      "dependsOn": [
+        "build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ],
+      "outputs": []
+    },
     "types:check": {
       "cache": true,
       "dependsOn": [

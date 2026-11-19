@@ -7,7 +7,9 @@ on:
       - 'apps/docs/**'
       - pnpm-lock.yaml
       - .github/workflows/build-and-typecheck.yml
-      - .github/scripts/check-dist-imports.mjs
+      - .github/scripts/check-dist-imports.mts
+      - .github/scripts/check-package-scripts.mts
+      - nx.json
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -32,12 +34,19 @@ jobs:
         id: setup
         uses: ./.github/actions/setup
 
+      - name: Check the scripts of the published packages
+        run: node .github/scripts/check-package-scripts.mts
+
       # The packages and the docs changed by the pull request, and their dependents (the demo apps are not built)
       - name: Build
         run: pnpm exec nx ${{ steps.setup.outputs.nx-scope }} -t build --exclude=vue-app,nuxt-app
 
       - name: Check the packages imported by the published files
-        run: node .github/scripts/check-dist-imports.mjs
+        run: node .github/scripts/check-dist-imports.mts
+
+      # arethetypeswrong on the tarballs: the published declarations as a consumer in node16 / nodenext reads them
+      - name: Check the published types
+        run: pnpm exec nx ${{ steps.setup.outputs.nx-scope }} -t check:published-types
 
       - name: Typecheck
         run: pnpm exec nx ${{ steps.setup.outputs.nx-scope }} -t typecheck

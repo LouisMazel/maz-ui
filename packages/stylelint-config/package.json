@@ -46,7 +46,8 @@
     "build": "unbuild && pnpm generate:agent-docs",
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/stylelint-config",
     "dev": "unbuild --stub",
-    "typecheck": "tsc --build",
+    "typecheck": "tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "test:unit": "vitest run",
@@ -70,6 +71,7 @@
     "stylelint-use-logical-spec": "^5.0.1"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@maz-ui/eslint-config": "workspace:^",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",

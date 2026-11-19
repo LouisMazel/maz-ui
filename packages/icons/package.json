@@ -181,7 +181,8 @@
     "build": "vite build && pnpm generate:agent-docs",
     "generate": "node utils/generate.ts",
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/icons",
-    "typecheck": "pnpm generate && tsc --noEmit --skipLibCheck",
+    "typecheck": "pnpm generate && tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "test:unit": "pnpm generate && vitest run",
@@ -201,6 +202,7 @@
     }
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@codecov/vite-plugin": "catalog:",
     "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/node": "workspace:^",

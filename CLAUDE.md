@@ -104,7 +104,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - CSS is extracted and processed with PostCSS
 - Icons are dynamically generated from SVG files
 - Supports both ESM and CommonJS outputs
-- The `exports` keep a `monorepo:dev` condition (sources for the apps of the monorepo), `publishConfig.exports` is the published copy without it: run `node .github/scripts/publish-exports.mjs` after changing the `exports` of a package (checked in CI).
+- The `exports` keep a `monorepo:dev` condition (sources for the apps of the monorepo), `publishConfig.exports` is the published copy without it: run `node .github/scripts/publish-exports.mts` after changing the `exports` of a package (checked in CI).
 
 ### Agent knowledge bundle (`tools/agent-docs`)
 
@@ -142,10 +142,10 @@ Within individual packages (e.g., `packages/maz-ui/`):
 ### Declaring dependencies
 
 - Every project (package, app, tool) declares the dependencies it imports or runs, in its own `package.json`: pnpm does not hoist the dependencies to the root `node_modules`, an undeclared dependency fails to resolve (pnpm ignores the `.npmrc` settings other than auth and registry since pnpm 11: the `node_modules` settings go in `pnpm-workspace.yaml`).
-- A dependency shared by several projects is declared with `catalog:`, its version lives in the `catalog` of `pnpm-workspace.yaml`. A dependency used by a single project keeps its version in its `package.json`: move it to the catalog when a second project needs it, and back when only one project still uses it. `@maz-ui/eslint-config` does not enforce the catalog for every dependency: `.github/scripts/check-deps.mjs` checks this rule (run `node .github/scripts/check-deps.mjs` after changing the dependencies).
+- A dependency shared by several projects is declared with `catalog:`, its version lives in the `catalog` of `pnpm-workspace.yaml`. A dependency used by a single project keeps its version in its `package.json`: move it to the catalog when a second project needs it, and back when only one project still uses it. `@maz-ui/eslint-config` does not enforce the catalog for every dependency: `.github/scripts/check-deps.mts` checks this rule (run `node .github/scripts/check-deps.mts` after changing the dependencies).
 - `peerDependencies` keep their ranges, never `catalog:`.
 - Internal packages use `workspace:^` (published as `^<version>`).
-- A package with a peer dependency also declares it in its `devDependencies`, with a version inside the peer range: `.github/scripts/check-deps.mjs` checks it too.
+- A package with a peer dependency also declares it in its `devDependencies`, with a version inside the peer range: `.github/scripts/check-deps.mts` checks it too.
 - The root `package.json` only lists the tools of the repository (nx, relizy, husky, lint-staged...).
 
 ## Unit Testing Guidelines

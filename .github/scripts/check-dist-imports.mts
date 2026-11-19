@@ -1,5 +1,3 @@
-// @ts-check
-
 import { existsSync, globSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { builtinModules } from 'node:module'
 import { join, relative } from 'node:path'
@@ -16,18 +14,25 @@ import { parse } from 'yaml'
  * Run it after the build: the packages without `dist` are skipped.
  */
 
+interface PackageJson {
+  name: string
+  private?: boolean
+  files?: string[]
+  dependencies?: Record<string, string>
+  peerDependencies?: Record<string, string>
+  optionalDependencies?: Record<string, string>
+}
+
 const root = process.cwd()
 
-/** @type {{ packages: string[] }} */
-const workspace = parse(readFileSync(join(root, 'pnpm-workspace.yaml'), 'utf-8'))
+const workspace: { packages: string[] } = parse(readFileSync(join(root, 'pnpm-workspace.yaml'), 'utf-8'))
 
 /**
  * Packages that a published package imports without declaring them, by package. @maz-ui/mcp bundles zod and the MCP SDK
  * (`npx` downloads a single package): only the types of its programmatic API import them. Declared as optional peers,
  * npm would refuse to install it in a project that has another major of zod.
- * @type {Record<string, string[]>}
  */
-const ALLOWED_UNDECLARED = {
+const ALLOWED_UNDECLARED: Record<string, string[]> = {
   '@maz-ui/mcp': [
     '@modelcontextprotocol/sdk',
     'zod',
@@ -37,20 +42,16 @@ const ALLOWED_UNDECLARED = {
 /**
  * Specifiers of the static imports, re-exports, dynamic imports and `require` calls of a script, read by the
  * TypeScript scanner: the import-like text of strings and template literals (code examples) is ignored
- * @param {string} content
- * @returns {string[]} specifiers
  */
-function getImportedSpecifiers(content) {
+function getImportedSpecifiers(content: string): string[] {
   return ts.preProcessFile(content, true, true).importedFiles.map(file => file.fileName)
 }
 
 /**
  * Package name of a bare specifier, `null` for relative paths, URLs (`node:`, `data:`...), subpath imports (`#...`)
  * and Node.js builtins
- * @param {string} specifier
- * @returns {string | null} package name
  */
-function getPackageName(specifier) {
+function getPackageName(specifier: string): string | null {
   if (/^[./#]/.test(specifier) || specifier.includes(':'))
     return null
 
@@ -64,10 +65,9 @@ function getPackageName(specifier) {
 }
 
 /**
- * @param {string} path
- * @returns {string[]} scripts of a published file or directory
+ * Scripts of a published file or directory
  */
-function findScripts(path) {
+function findScripts(path: string): string[] {
   if (!existsSync(path))
     return []
 
@@ -83,12 +83,11 @@ function findScripts(path) {
 }
 
 /**
- * @param {string} file package.json of a project
- * @returns {string[]} errors
+ * Errors of a project, from its package.json
  */
-function checkPackage(file) {
+function checkPackage(file: string): string[] {
   const dir = join(root, file, '..')
-  const pkg = JSON.parse(readFileSync(join(root, file), 'utf-8'))
+  const pkg: PackageJson = JSON.parse(readFileSync(join(root, file), 'utf-8'))
 
   if (pkg.private || !existsSync(join(dir, 'dist')))
     return []
@@ -101,10 +100,9 @@ function checkPackage(file) {
     ...Object.keys(pkg.optionalDependencies ?? {}),
   ])
 
-  /** @type {Map<string, Set<string>>} */
-  const undeclared = new Map()
+  const undeclared = new Map<string, Set<string>>()
 
-  for (const script of (pkg.files ?? ['dist']).flatMap((/** @type {string} */ entry) => findScripts(join(dir, entry)))) {
+  for (const script of (pkg.files ?? ['dist']).flatMap(entry => findScripts(join(dir, entry)))) {
     for (const specifier of getImportedSpecifiers(readFileSync(script, 'utf-8'))) {
       const name = getPackageName(specifier)
 
