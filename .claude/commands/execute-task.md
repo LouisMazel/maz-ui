@@ -181,7 +181,7 @@ maz-ui est une **librairie publique**. La doc consommateur a le même statut que
 
 - `packages/maz-ui/README.md`
 - `packages/nuxt/README.md`
-- `packages/icons/README.md`, `packages/themes/README.md`, `packages/translations/README.md`, `packages/utils/README.md`, `packages/node/README.md`, `packages/maz-cli/README.md`
+- `packages/icons/README.md`, `packages/themes/README.md`, `packages/translations/README.md`, `packages/utils/README.md`, `packages/node/README.md`
 - Tout README de package que tu touches doit refléter l'API publique réelle (install, usage minimal, lien vers la doc complète).
 
 **CHANGELOG** : géré par `relizy` au release → ne pas toucher manuellement sauf demande explicite.

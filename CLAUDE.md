@@ -50,7 +50,6 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - `packages/translations/` - i18n support package (@maz-ui/translations)
 - `packages/utils/` - Utility functions package (@maz-ui/utils)
 - `packages/eslint-config/` - Shared ESLint configuration
-- `packages/maz-cli/` - CLI tool for theme generation
 - `packages/nuxt/` - Nuxt 3 module (@maz-ui/nuxt)
 - `packages/node/` - Node.js utilities (also `setupAgents`, used by `npx @maz-ui/mcp init` and the Nuxt `agents` option)
 - `packages/vite-plugin/` - Vite plugins (@maz-ui/vite-plugin): `MazUiPurgeCss` removes the unused CSS of maz-ui, from the `purge-manifest.json` written by the build of maz-ui
