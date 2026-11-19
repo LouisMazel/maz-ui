@@ -1,7 +1,7 @@
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
-import { loadIconNames, loadPackageIcons, loadProjectIcons, locateIconsPackage, mergeIconSources, resolveIconsPackage, toIconName } from '../sources'
-import { createProject, HERO_SVG } from './fixtures'
+import { loadIconNames, loadPackageIcons, loadProjectIcons, locateIconsPackage, mergeIconSources, resolveIconsPackage, toIconName } from '../sources.ts'
+import { createProject, HERO_SVG } from './fixtures.ts'
 
 const roots: string[] = []
 

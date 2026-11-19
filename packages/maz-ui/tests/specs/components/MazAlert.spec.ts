@@ -1,6 +1,6 @@
 import type { MazAlertColor, MazAlertRoundedSize } from '@components/MazAlert.vue'
 import MazAlert from '@components/MazAlert.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
 
 describe('given MazAlert component', () => {

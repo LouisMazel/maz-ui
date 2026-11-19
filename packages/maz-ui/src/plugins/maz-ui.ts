@@ -1,10 +1,10 @@
 import type { MazUiThemeOptions } from '@maz-ui/themes/plugin'
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { Plugin } from 'vue'
-import type { MazUiDefaultsOptions } from '../composables/useGlobalConfig'
+import type { MazUiDefaultsOptions } from '../composables/useGlobalConfig.ts'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { MazUiTranslations } from '@maz-ui/translations/plugin'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig.ts'
 
 export interface MazUiOptions {
   /**

@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'node:url'
-import { loadIconNames, locateIconsPackage, resolveIconsPackage } from '../sources'
+import { loadIconNames, locateIconsPackage, resolveIconsPackage } from '../sources.ts'
 
 const { resolvable } = vi.hoisted(() => ({
   resolvable: { fromPlugin: true },

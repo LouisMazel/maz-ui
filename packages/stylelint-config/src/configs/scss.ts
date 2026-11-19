@@ -1,5 +1,5 @@
-import type { StylelintRules } from '../types'
-import { TAILWIND_AT_RULES } from './tailwind'
+import type { StylelintRules } from '../types.ts'
+import { TAILWIND_AT_RULES } from './tailwind.ts'
 
 /**
  * Native SCSS at-rules that should never be flagged by `at-rule-no-unknown`

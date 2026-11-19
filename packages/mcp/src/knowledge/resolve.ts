@@ -1,5 +1,5 @@
-import type { Knowledge } from './load'
-import type { ComponentApi, DocCategory, DocEntry } from './schema'
+import type { Knowledge } from './load.ts'
+import type { ComponentApi, DocCategory, DocEntry } from './schema.ts'
 
 const CATEGORY_PRIORITY: DocCategory[] = [
   'component',

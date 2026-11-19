@@ -2,6 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "preserve",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "types": ["node", "@maz-ui/vite-svg-loader/client", "vite/client"]
   },
   "include": [".vitepress/**/*", "src/**/*", "components/**/*", "types"],

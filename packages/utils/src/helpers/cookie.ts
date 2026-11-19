@@ -1,4 +1,4 @@
-import { isServer } from './isServer'
+import { isServer } from './isServer.ts'
 
 export type CookieSameSite = 'Lax' | 'Strict' | 'None' | 'lax' | 'strict' | 'none'
 

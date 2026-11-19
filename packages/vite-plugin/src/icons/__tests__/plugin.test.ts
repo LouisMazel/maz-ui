@@ -3,15 +3,15 @@ import { EventEmitter } from 'node:events'
 import { existsSync, readFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { build } from 'vite'
-import { generateRegistration, generateRuntime, MazUiIcons, readRawIcon } from '../index'
-import { createProject, HERO_SVG, write } from './fixtures'
+import { generateRegistration, generateRuntime, MazUiIcons, readRawIcon } from '../index.ts'
+import { createProject, HERO_SVG, write } from './fixtures.ts'
 
 const { packageMissing } = vi.hoisted(() => ({
   packageMissing: { enabled: false },
 }))
 
-vi.mock('../sources', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../sources')>()
+vi.mock('../sources.ts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../sources.ts')>()
   return {
     ...actual,
     locateIconsPackage: (root: string) => packageMissing.enabled

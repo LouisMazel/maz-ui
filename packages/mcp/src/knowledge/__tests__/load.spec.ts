@@ -1,9 +1,9 @@
-import type { Fragment } from '../schema'
+import type { Fragment } from '../schema.ts'
 
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { BUNDLE_DIR, cleanTempDirs, createTempDir, fakeDoc, fakeFragment, fakeKnowledge, fakeLegacyManifest, writeFakeBundle, writeFakeFragment, writeFakeMazUi, writeFakePackage } from '../../__tests__/helpers'
-import { defaultBundledDir, findProjectMazUi, installedMazUiPackages, Knowledge, loadKnowledge, readBundle, readFragment, readLegacyManifest, splitLegacyManifest } from '../load'
+import { BUNDLE_DIR, cleanTempDirs, createTempDir, fakeDoc, fakeFragment, fakeKnowledge, fakeLegacyManifest, writeFakeBundle, writeFakeFragment, writeFakeMazUi, writeFakePackage } from '../../__tests__/helpers.ts'
+import { defaultBundledDir, findProjectMazUi, installedMazUiPackages, Knowledge, loadKnowledge, readBundle, readFragment, readLegacyManifest, splitLegacyManifest } from '../load.ts'
 
 const themesDoc = fakeDoc({
   id: 'ecosystem/themes',

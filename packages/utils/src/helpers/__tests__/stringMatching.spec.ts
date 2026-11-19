@@ -1,4 +1,4 @@
-import { getMatchingScore, isStringMatching, levenshteinDistance } from '../stringMatching'
+import { getMatchingScore, isStringMatching, levenshteinDistance } from '../stringMatching.ts'
 
 describe('given levenshteinDistance', () => {
   describe('when the strings are compared', () => {

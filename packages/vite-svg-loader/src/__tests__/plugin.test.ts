@@ -1,9 +1,9 @@
 import type { Plugin } from 'vite'
-import type { SvgLoaderOptions } from '../plugin'
+import type { SvgLoaderOptions } from '../plugin.ts'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { svgLoader } from '../plugin'
+import { svgLoader } from '../plugin.ts'
 
 const SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">\n  <path d="M6.12345 18.12345L18 6" stroke="currentColor"/>\n</svg>\n'
 

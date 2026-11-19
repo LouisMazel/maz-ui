@@ -1,9 +1,9 @@
 <script lang="ts" setup generic="T extends string | number">
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, ref, watch } from 'vue'
-import { SIZE_TEXT_CLASS } from './constants'
+import { SIZE_TEXT_CLASS } from './constants.ts'
 
 export type MazInputCodeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export interface MazInputCodeProps<T = string | number> {

@@ -1,6 +1,6 @@
 import MazList from '@components/MazList.vue'
 import MazListItem from '@components/MazListItem.vue'
-import { runAxe } from '@tests/helpers/axe'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 

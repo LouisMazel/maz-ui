@@ -1,5 +1,5 @@
 import { defineConfig } from 'relizy'
-import { buildPublishedPackages } from './scripts/release'
+import { buildPublishedPackages } from './scripts/release.ts'
 
 export default defineConfig({
   projectName: 'maz-ui',

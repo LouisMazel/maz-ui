@@ -1,7 +1,7 @@
-import type { MazUiTranslationsInstance } from '../types'
+import type { MazUiTranslationsInstance } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { getCurrentInstance, hasInjectionContext, inject } from 'vue'
-import { getActiveTranslations } from '../utils/active-instance'
+import { getActiveTranslations } from '../utils/active-instance.ts'
 
 /**
  * Translations instance of the current component tree (plugin or `MazUiProvider`). Outside a

@@ -1,7 +1,7 @@
 import type { ComponentDoc } from 'vue-docgen-api'
-import type { ComponentApi } from '../../types'
+import type { ComponentApi } from '../../types.ts'
 
-import { docgenDescriptions, mergeDescriptions, parseDocgen } from '../components'
+import { docgenDescriptions, mergeDescriptions, parseDocgen } from '../components.ts'
 
 function api(overrides: Partial<ComponentApi> = {}): ComponentApi {
   return {

@@ -1,11 +1,11 @@
-import type { ProjectTheme } from '../theme'
+import type { ProjectTheme } from '../theme.ts'
 
 import { execFileSync } from 'node:child_process'
 import { symlinkSync } from 'node:fs'
 import { join } from 'node:path'
-import { cleanTempDirs, createTempDir, getKnowledge, writeFile } from '../../__tests__/helpers'
-import { readStylesheet } from '../stylesheet'
-import { mazUiThemeVariables, readProjectTheme, renderProjectTheme, stylesheetProblems } from '../theme'
+import { cleanTempDirs, createTempDir, getKnowledge, writeFile } from '../../__tests__/helpers.ts'
+import { readStylesheet } from '../stylesheet.ts'
+import { mazUiThemeVariables, readProjectTheme, renderProjectTheme, stylesheetProblems } from '../theme.ts'
 
 const ENTRY = `@import 'tailwindcss';
 @import 'maz-ui/tailwindcss/theme.css';

@@ -1,4 +1,4 @@
-import type { StylelintRules } from '../types'
+import type { StylelintRules } from '../types.ts'
 
 /**
  * Baseline rules applied on top of `stylelint-config-standard`.

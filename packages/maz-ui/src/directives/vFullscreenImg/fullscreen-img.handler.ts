@@ -1,7 +1,7 @@
 import type { DirectiveBinding } from 'vue'
 
 import type { MazFullscreenImgProps } from './MazFullscreenImg.vue'
-import { useMountComponent } from '../../composables/useMountComponent'
+import { useMountComponent } from '../../composables/useMountComponent.ts'
 import MazFullscreenImg from './MazFullscreenImg.vue'
 
 export interface VFullscreenImgOptions {

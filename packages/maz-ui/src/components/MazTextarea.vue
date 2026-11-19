@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { MazColor, MazRoundedSize, MazSize } from './types'
-import { SIZE_TEXT_CLASS } from './constants'
+import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
+import { SIZE_TEXT_CLASS } from './constants.ts'
 
 export interface MazTextareaProps<T extends string | undefined | null> {
   /** Style attribut of the component root element */
@@ -96,9 +96,9 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 <script lang="ts" setup generic="T extends string | undefined | null">
 import type { HTMLAttributes } from 'vue'
 import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync.ts'
 
 defineOptions({
   inheritAttrs: false,

@@ -1,14 +1,14 @@
 import type { SvgoConfigOption } from '@maz-ui/vite-svg-loader/optimize'
 import type { Logger, Plugin, ViteDevServer } from 'vite'
-import type { IconSource, IconSources } from './sources'
+import type { IconSource, IconSources } from './sources.ts'
 import { existsSync, readFileSync } from 'node:fs'
 import { join, resolve, sep } from 'node:path'
 import { optimizeSvg } from '@maz-ui/vite-svg-loader/optimize'
 import MagicString from 'magic-string'
-import { ICONS_PACKAGE, loadIconIds, rewriteIconImports } from './imports'
-import { scanIconNames } from './scan'
-import { loadPackageIcons, loadProjectIcons, locateIconsPackage, mergeIconSources } from './sources'
-import { generateIconTypes, writeIfChanged } from './types'
+import { ICONS_PACKAGE, loadIconIds, rewriteIconImports } from './imports.ts'
+import { scanIconNames } from './scan.ts'
+import { loadPackageIcons, loadProjectIcons, locateIconsPackage, mergeIconSources } from './sources.ts'
+import { generateIconTypes, writeIfChanged } from './types.ts'
 
 export interface MazUiIconsOptions {
   /**

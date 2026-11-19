@@ -302,7 +302,7 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 import type { HTMLAttributes, InjectionKey, Ref, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
 import type { MazTableVirtualWindow } from './MazTableVirtualizer.vue'
-import type { MazColor, MazRoundedSize, MazSize } from './types'
+import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { MazArrowUp } from '@maz-ui/icons/lazy/MazArrowUp'
 import { MazChevronDoubleLeft } from '@maz-ui/icons/lazy/MazChevronDoubleLeft'
 import { MazChevronLeft } from '@maz-ui/icons/lazy/MazChevronLeft'
@@ -322,8 +322,8 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 
 const {
   tableClass,

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { MazTabsProvide } from './MazTabs.vue'
 import { computed, ref, watch } from 'vue'
-import { useInjectStrict } from '../composables/useInjectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict.ts'
 
 const props = defineProps({
   tab: { type: Number, required: true },

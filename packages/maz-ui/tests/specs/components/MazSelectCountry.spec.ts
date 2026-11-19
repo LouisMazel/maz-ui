@@ -1,6 +1,6 @@
 import type { MazSelectCountryProps } from '@/components/MazSelectCountry.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
-import { IntersectionObserverMock } from '@tests/vitest-global.setup'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
+import { IntersectionObserverMock } from '@tests/vitest-global.setup.ts'
 import { flushPromises, mount, shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import MazSelectCountry from '@/components/MazSelectCountry.vue'

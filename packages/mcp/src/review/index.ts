@@ -1,14 +1,14 @@
 import type { ElementNode, RootNode } from '@vue/compiler-dom'
-import type { Finding, ReviewContext, ReviewOptions, RuleId, Severity } from './types'
+import type { Finding, ReviewContext, ReviewOptions, RuleId, Severity } from './types.ts'
 
 import { NodeTypes, parse } from '@vue/compiler-dom'
-import { mazIconNames } from './icons'
-import { localComponents, rawIcons, reviewScript } from './script'
-import { reviewStyle } from './style'
-import { reviewTemplate } from './template'
-import { SEVERITY_ORDER } from './types'
+import { mazIconNames } from './icons.ts'
+import { localComponents, rawIcons, reviewScript } from './script.ts'
+import { reviewStyle } from './style.ts'
+import { reviewTemplate } from './template.ts'
+import { SEVERITY_ORDER } from './types.ts'
 
-export type { Finding, Framework, IconNames, ReviewOptions, RuleId, Severity } from './types'
+export type { Finding, Framework, IconNames, ReviewOptions, RuleId, Severity } from './types.ts'
 
 type FileKind = 'vue' | 'script' | 'style' | 'template'
 

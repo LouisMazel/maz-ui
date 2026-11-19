@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="Option extends Record<string, unknown>">
-import type { MazColor } from '../types'
+import type { MazColor } from '../types.ts'
 import { MazNoSymbol } from '@maz-ui/icons/lazy/MazNoSymbol'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { defineAsyncComponent, useTemplateRef } from 'vue'

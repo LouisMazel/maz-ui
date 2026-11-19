@@ -1,10 +1,10 @@
 import type { Plugin, ResolvedConfig } from 'vite'
-import type { PurgeManifest } from './manifest'
-import type { Usage } from './usage'
+import type { PurgeManifest } from './manifest.ts'
+import type { Usage } from './usage.ts'
 import { isAbsolute, relative } from 'node:path'
-import { containsToken, loadPurgeManifest } from './manifest'
-import { PUBLIC_UTILITIES_LAYER, purgeCss } from './purge'
-import { DEFAULT_CONTENT, readContent, resolveUsage } from './usage'
+import { containsToken, loadPurgeManifest } from './manifest.ts'
+import { PUBLIC_UTILITIES_LAYER, purgeCss } from './purge.ts'
+import { DEFAULT_CONTENT, readContent, resolveUsage } from './usage.ts'
 
 export interface MazUiPurgeCssOptions {
   /**

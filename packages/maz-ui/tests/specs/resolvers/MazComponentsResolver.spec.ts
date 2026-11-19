@@ -1,4 +1,4 @@
-import { MazComponentsResolver } from '@resolvers/MazComponentsResolver'
+import { MazComponentsResolver } from '@resolvers/MazComponentsResolver.ts'
 
 describe('given MazComponentsResolver', () => {
   describe('when resolver is created without options', () => {

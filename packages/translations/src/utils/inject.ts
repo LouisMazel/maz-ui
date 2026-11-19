@@ -1,7 +1,7 @@
 import type { App } from 'vue'
-import type { MazUiTranslationsInstance } from '../types'
+import type { MazUiTranslationsInstance } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { setActiveTranslations } from './active-instance'
+import { setActiveTranslations } from './active-instance.ts'
 
 export function injectTranslations({
   app,

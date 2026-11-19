@@ -5,7 +5,7 @@ import MazFullscreenLoader from '@components/MazFullscreenLoader.vue'
 import MazSwitch from '@components/MazSwitch.vue'
 import { mount } from '@vue/test-utils'
 import { Comment, defineComponent, Fragment, h, ref, Text } from 'vue'
-import { hasSlotContent } from '@/utils/hasSlotContent'
+import { hasSlotContent } from '@/utils/hasSlotContent.ts'
 
 // ---------------------------------------------------------------------------
 // Unit tests — raw VNode structures

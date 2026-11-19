@@ -1,6 +1,6 @@
 import type { DirectiveBinding } from 'vue'
-import { style } from './style'
-import { svgs } from './svgs'
+import { style } from './style.ts'
+import { svgs } from './svgs.ts'
 
 export interface VZoomImgOptions {
   disabled?: boolean

@@ -1,5 +1,5 @@
-import type { ColorMode } from '../../types'
-import { getColorMode, getSavedResolvedColorMode, getSystemColorMode, saveResolvedColorMode } from '../get-color-mode'
+import type { ColorMode } from '../../types/index.ts'
+import { getColorMode, getSavedResolvedColorMode, getSystemColorMode, saveResolvedColorMode } from '../get-color-mode.ts'
 
 // Mock document.cookie
 function mockDocumentCookie(cookies: string = '') {

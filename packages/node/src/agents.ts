@@ -15,12 +15,12 @@ export {
   resolveAgentDocsDir,
   resolveRulePaths,
   writeFileAtomic,
-} from './agents/deprecated'
-export { detectAgentTargets } from './agents/detectAgentTargets'
-export { mcpServerCommand } from './agents/mcpServer'
-export { setupAgents } from './agents/setupAgents'
-export { MAZ_UI_AGENTS_TOOL } from './agents/tool'
-export type { AgentDocs, AgentsTool, AgentTarget, McpServerCommand, SetupAgentsAction, SetupAgentsChange, SetupAgentsOptions, SetupAgentsResult } from './agents/types'
-export { AGENT_TARGETS } from './agents/types'
-export type { PackageManager } from './project'
-export { detectPackageManager, findProjectPackage, findWorkspaceDirs, readPackageVersion } from './project'
+} from './agents/deprecated.ts'
+export { detectAgentTargets } from './agents/detectAgentTargets.ts'
+export { mcpServerCommand } from './agents/mcpServer.ts'
+export { setupAgents } from './agents/setupAgents.ts'
+export { MAZ_UI_AGENTS_TOOL } from './agents/tool.ts'
+export type { AgentDocs, AgentsTool, AgentTarget, McpServerCommand, SetupAgentsAction, SetupAgentsChange, SetupAgentsOptions, SetupAgentsResult } from './agents/types.ts'
+export { AGENT_TARGETS } from './agents/types.ts'
+export type { PackageManager } from './project.ts'
+export { detectPackageManager, findProjectPackage, findWorkspaceDirs, readPackageVersion } from './project.ts'

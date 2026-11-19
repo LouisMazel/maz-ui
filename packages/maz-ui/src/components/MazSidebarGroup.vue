@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useInjectStrict } from '../composables/useInjectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict.ts'
 import { mazSidebarKey } from './MazSidebar.vue'
 
 export interface MazSidebarGroupProps {

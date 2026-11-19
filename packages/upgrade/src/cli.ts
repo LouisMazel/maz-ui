@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-import type { TransformGroup } from './transform'
+import type { TransformGroup } from './transform.ts'
 import { spawnSync } from 'node:child_process'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import process from 'node:process'
 import { logger } from '@maz-ui/node'
 import { globby } from 'globby'
-import { ALL_GROUPS, hasFoundationRadius, hasMazAvatarBoundSize, hasMazBadgeLengthSize, hasMazIconLegacyApi, hasMazUiDistImport, hasMazUiRootImport, hasValibotImport, transformFile } from './transform'
+import { ALL_GROUPS, hasFoundationRadius, hasMazAvatarBoundSize, hasMazBadgeLengthSize, hasMazIconLegacyApi, hasMazUiDistImport, hasMazUiRootImport, hasValibotImport, transformFile } from './transform.ts'
 
 const DEFAULT_IGNORES = [
   '**/node_modules/**',

@@ -1,8 +1,8 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { getSourcePaths } from '../../paths'
-import { classifyPage, collectSourcePages, sourcePathToId } from '../pages'
+import { getSourcePaths } from '../../paths.ts'
+import { classifyPage, collectSourcePages, sourcePathToId } from '../pages.ts'
 
 describe('given sourcePathToId', () => {
   describe('when the path is a page or an index', () => {

@@ -1,5 +1,5 @@
 import type { Rule } from 'eslint'
-import tailwindNoArbitraryPx from './tailwind/no-arbitrary-px'
+import tailwindNoArbitraryPx from './tailwind/no-arbitrary-px.ts'
 
 /**
  * Registry of all custom rules shipped by `@maz-ui/eslint-config`.

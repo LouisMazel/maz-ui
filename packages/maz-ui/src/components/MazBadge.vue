@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazColor, MazNeutralColor, MazSize } from './types'
+import type { MazColor, MazNeutralColor, MazSize } from './types.ts'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import MazIcon from './MazIcon.vue'
-import { getColor } from './types'
+import { getColor } from './types.ts'
 
 export type MazBadgeColor = MazColor | MazNeutralColor
 export type MazBadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'

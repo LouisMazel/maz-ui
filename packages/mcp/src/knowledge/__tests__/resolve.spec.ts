@@ -1,5 +1,5 @@
-import { getKnowledge } from '../../__tests__/helpers'
-import { closest, editDistance, normalizeName, resolveComponent, resolveDoc, toKebab } from '../resolve'
+import { getKnowledge } from '../../__tests__/helpers.ts'
+import { closest, editDistance, normalizeName, resolveComponent, resolveDoc, toKebab } from '../resolve.ts'
 
 describe('given resolveDoc on the real bundle', () => {
   describe('when the query is an id', () => {

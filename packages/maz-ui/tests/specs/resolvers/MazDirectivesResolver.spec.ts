@@ -1,4 +1,4 @@
-import { MazDirectivesResolver } from '@resolvers/MazDirectivesResolver'
+import { MazDirectivesResolver } from '@resolvers/MazDirectivesResolver.ts'
 
 describe('given MazDirectivesResolver', () => {
   describe('when resolver is created without options', () => {

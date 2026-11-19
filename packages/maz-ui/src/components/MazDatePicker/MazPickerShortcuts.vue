@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { MazColor } from '../types'
-import type { MazDatePickerRangeValue, MazDatePickerShortcut, MazDatePickerValue } from './types'
+import type { MazColor } from '../types.ts'
+import type { MazDatePickerRangeValue, MazDatePickerShortcut, MazDatePickerValue } from './types.ts'
 import { ref, watch } from 'vue'
 
 import MazBtn from '../MazBtn.vue'

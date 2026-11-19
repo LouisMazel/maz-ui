@@ -1,9 +1,9 @@
 <script lang="ts">
-import type { MazIconLike } from '../composables/useMazIconProps'
+import type { MazIconLike } from '../composables/useMazIconProps.ts'
 import type { MazBadgeProps } from './MazBadge.vue'
 import type { MazSidebarTooltipMode } from './MazSidebar.vue'
-import { vTooltip } from '../directives/vTooltip'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { vTooltip } from '../directives/vTooltip.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 
 export type MazSidebarMenuButtonBadge = string | number | (MazBadgeProps & { text?: string | number })
 
@@ -48,9 +48,9 @@ export interface MazSidebarMenuButtonProps {
 <script lang="ts" setup generic="_T">
 import type { Component } from 'vue'
 import { computed, defineAsyncComponent, getCurrentInstance } from 'vue'
-import { useInjectStrict } from '../composables/useInjectStrict'
-import { useMazIconProps } from '../composables/useMazIconProps'
-import { resolveLinkComponent } from '../utils/resolveLinkComponent'
+import { useInjectStrict } from '../composables/useInjectStrict.ts'
+import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 import { mazSidebarKey } from './MazSidebar.vue'
 
 const { to, href, icon, badge, tooltip, tooltipMode, active, size = 'md' } = defineProps<MazSidebarMenuButtonProps>()

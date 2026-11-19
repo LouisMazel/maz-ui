@@ -1,4 +1,4 @@
-import { vZoomImg, vZoomImgInstall } from '@directives/vZoomImg'
+import { vZoomImg, vZoomImgInstall } from '@directives/vZoomImg.ts'
 import { createApp } from 'vue'
 
 describe('given vZoomImg directive', () => {

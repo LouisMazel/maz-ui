@@ -1,14 +1,14 @@
 import type { Ref } from 'vue'
-import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
+import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types/index.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, hasInjectionContext, inject } from 'vue'
 
-import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
-import { getPreset } from '../utils/get-preset'
-import { noTransition } from '../utils/no-transition'
-import { mergePresets } from '../utils/preset-merger'
-import { readPresetPreference, saveColorModeChoice, savePresetPreference } from '../utils/theme-preferences'
-import { getActiveThemeState, setActiveThemeState } from '../utils/theme-state-registry'
+import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator.ts'
+import { getPreset } from '../utils/get-preset.ts'
+import { noTransition } from '../utils/no-transition.ts'
+import { mergePresets } from '../utils/preset-merger.ts'
+import { readPresetPreference, saveColorModeChoice, savePresetPreference } from '../utils/theme-preferences.ts'
+import { getActiveThemeState, setActiveThemeState } from '../utils/theme-state-registry.ts'
 
 type ThemeStateRef = Ref<ThemeState | undefined>
 
@@ -77,7 +77,7 @@ async function setColorMode(themeState: ThemeStateRef, colorMode: ColorMode, opt
   }
 
   if (options.animate) {
-    const { runViewTransition } = await import('../utils/view-transition')
+    const { runViewTransition } = await import('../utils/view-transition.ts')
     await runViewTransition(apply)
   }
   else {

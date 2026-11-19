@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { kebabCase } from '../kebabCase'
+import { kebabCase } from '../kebabCase.ts'
 
 describe('kebabCase', () => {
   it('should convert PascalCase to kebab-case', () => {

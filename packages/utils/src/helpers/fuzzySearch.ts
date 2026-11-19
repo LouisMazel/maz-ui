@@ -1,7 +1,7 @@
 import type { Prepared } from 'fuzzysort'
 import fuzzysort from 'fuzzysort'
-import { normalizeString } from './normalizeString'
-import { getMatchingScore } from './stringMatching'
+import { normalizeString } from './normalizeString.ts'
+import { getMatchingScore } from './stringMatching.ts'
 
 /** A key of the items to search in: a property name, a getter, or one of them with a weight */
 export type FuzzySearchKey<T> = FuzzySearchKeyValue<T> | {

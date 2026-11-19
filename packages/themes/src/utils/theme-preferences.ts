@@ -1,4 +1,4 @@
-import type { ColorMode, ThemeMode } from '../types'
+import type { ColorMode, ThemeMode } from '../types/index.ts'
 import { deleteCookie, getCookie, setCookie } from '@maz-ui/utils/helpers/cookie'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 

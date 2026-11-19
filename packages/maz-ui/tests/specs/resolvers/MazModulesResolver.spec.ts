@@ -1,5 +1,5 @@
 import type { ResolverResult } from 'unplugin-auto-import/types'
-import { MazModulesResolver } from '@resolvers/MazModulesResolver'
+import { MazModulesResolver } from '@resolvers/MazModulesResolver.ts'
 
 const exportsFiles: Record<string, unknown> = {
   '@maz-ui/utils/exports.json': {

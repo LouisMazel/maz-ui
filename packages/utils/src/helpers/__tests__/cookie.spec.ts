@@ -1,4 +1,4 @@
-import { deleteCookie, getCookie, setCookie } from '../cookie'
+import { deleteCookie, getCookie, setCookie } from '../cookie.ts'
 
 function mockDocumentCookie(initialValue: string = '') {
   let cookieValue = initialValue

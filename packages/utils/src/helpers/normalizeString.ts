@@ -1,7 +1,7 @@
-import { camelCase } from './camelCase.js'
-import { kebabCase } from './kebabCase.js'
-import { pascalCase } from './pascalCase.js'
-import { snakeCase } from './snakeCase.js'
+import { camelCase } from './camelCase.ts'
+import { kebabCase } from './kebabCase.ts'
+import { pascalCase } from './pascalCase.ts'
+import { snakeCase } from './snakeCase.ts'
 
 export type CaseFormat = 'kebab-case' | 'camelCase' | 'PascalCase' | 'snake_case' | 'lowercase' | 'UPPERCASE'
 

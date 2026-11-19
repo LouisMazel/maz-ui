@@ -1,18 +1,18 @@
-import type { OklchChannels } from '../color-conversions'
-import { mazUi } from '../../presets/mazUi'
-import { nova } from '../../presets/nova'
-import { obsidian } from '../../presets/obsidian'
-import { ocean } from '../../presets/ocean'
-import { pristine } from '../../presets/pristine'
-import { colorToHex, parseColorAsOklch } from '../color-conversions'
+import type { OklchChannels } from '../color-conversions.ts'
+import { mazUi } from '../../presets/mazUi.ts'
+import { nova } from '../../presets/nova.ts'
+import { obsidian } from '../../presets/obsidian.ts'
+import { ocean } from '../../presets/ocean.ts'
+import { pristine } from '../../presets/pristine.ts'
+import { colorToHex, parseColorAsOklch } from '../color-conversions.ts'
 import {
   BRAND_COLOR_ROLES,
   generateCSS,
   getPerceptualDarkBound,
   PERCEPTUAL_COLOR_SCALE,
   PERCEPTUAL_LIGHT_BOUND,
-} from '../css-generator'
-import { mergePresets } from '../preset-merger'
+} from '../css-generator.ts'
+import { mergePresets } from '../preset-merger.ts'
 
 const STEPS = [
   50,

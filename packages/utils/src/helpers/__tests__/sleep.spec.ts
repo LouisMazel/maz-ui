@@ -1,4 +1,4 @@
-import { sleep } from '../sleep'
+import { sleep } from '../sleep.ts'
 
 describe('given sleep function', () => {
   describe('when called with a duration', () => {

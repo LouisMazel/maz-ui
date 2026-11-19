@@ -1,11 +1,11 @@
-import type { ServerContext } from '../context'
-import type { LoadedFragment } from '../knowledge/load'
-import type { DocCategory } from '../knowledge/schema'
+import type { ServerContext } from '../context.ts'
+import type { LoadedFragment } from '../knowledge/load.ts'
+import type { DocCategory } from '../knowledge/schema.ts'
 
 import { z } from 'zod'
-import { docCategories } from '../knowledge/schema'
-import { truncateText } from './markdown'
-import { defineTool } from './types'
+import { docCategories } from '../knowledge/schema.ts'
+import { truncateText } from './markdown.ts'
+import { defineTool } from './types.ts'
 
 const CATEGORY_TITLES: Record<DocCategory, string> = {
   guide: 'Guides',

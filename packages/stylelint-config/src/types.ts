@@ -1,5 +1,5 @@
 import type { Config } from 'stylelint'
-import type { LogLevel } from './configs/logger'
+import type { LogLevel } from './configs/logger.ts'
 
 export type StylelintConfig = Config
 export type StylelintRules = Config['rules']

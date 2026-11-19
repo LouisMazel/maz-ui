@@ -1,4 +1,4 @@
-import { runViewTransition } from '../view-transition'
+import { runViewTransition } from '../view-transition.ts'
 
 describe('given runViewTransition', () => {
   describe('when document.startViewTransition is available', () => {

@@ -1,5 +1,5 @@
 import MazSidebar from '@components/MazSidebar.vue'
-import { useSidebar } from '@composables/useSidebar'
+import { useSidebar } from '@composables/useSidebar.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { mount } from '@vue/test-utils'
 

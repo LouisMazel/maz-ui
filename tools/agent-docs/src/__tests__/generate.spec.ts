@@ -1,10 +1,10 @@
-import type { GeneratedFragment, GeneratedKnowledge } from '../generate'
+import type { GeneratedFragment, GeneratedKnowledge } from '../generate.ts'
 
 import { posix, resolve } from 'node:path'
-import { generateKnowledge, HOMEPAGE, resolveHrefToId } from '../generate'
-import { PACKAGE_DEFINITIONS } from '../packages'
-import { getSourcePaths } from '../paths'
-import { findOutdatedFiles } from '../write'
+import { generateKnowledge, HOMEPAGE, resolveHrefToId } from '../generate.ts'
+import { PACKAGE_DEFINITIONS } from '../packages.ts'
+import { getSourcePaths } from '../paths.ts'
+import { findOutdatedFiles } from '../write.ts'
 
 describe('given resolveHrefToId', () => {
   const knownIds = new Set([

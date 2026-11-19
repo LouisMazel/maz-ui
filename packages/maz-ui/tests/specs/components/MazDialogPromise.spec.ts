@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { MazDialogConfirm, useMazDialogConfirm } from '@components/index'
+import { MazDialogConfirm, useMazDialogConfirm } from '@components/index.ts'
 import { mount } from '@vue/test-utils'
 
 describe('given MazDialogConfirm component', () => {

@@ -1,8 +1,8 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import { detectAgentTargets } from '../agents/detectAgentTargets'
-import { AGENT_TARGETS } from '../agents/types'
+import { detectAgentTargets } from '../agents/detectAgentTargets.ts'
+import { AGENT_TARGETS } from '../agents/types.ts'
 
 let rootDir: string
 

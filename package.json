@@ -1,5 +1,6 @@
 {
   "name": "root",
+  "type": "module",
   "version": "5.7.0",
   "private": true,
   "packageManager": "pnpm@12.14.0",

@@ -1,4 +1,4 @@
-import { useIdleTimeout } from '@composables/useIdleTimeout'
+import { useIdleTimeout } from '@composables/useIdleTimeout.ts'
 import { IdleTimeout } from '@maz-ui/utils/helpers/idleTimeout'
 
 it('useIdleTimeout should create an instance of IdleTimeout', () => {

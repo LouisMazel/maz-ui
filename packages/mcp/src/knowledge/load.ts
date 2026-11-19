@@ -1,10 +1,10 @@
-import type { ComponentApi, DocEntry, Fragment, LegacyManifest, PackageGroup, TailwindTokens } from './schema'
+import type { ComponentApi, DocEntry, Fragment, LegacyManifest, PackageGroup, TailwindTokens } from './schema.ts'
 
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { findProjectPackage, findWorkspaceDirs, readPackageVersion } from '@maz-ui/node'
-import { bundleIndexSchema, fragmentSchema, legacyManifestSchema, SUPPORTED_SCHEMA_VERSION } from './schema'
+import { bundleIndexSchema, fragmentSchema, legacyManifestSchema, SUPPORTED_SCHEMA_VERSION } from './schema.ts'
 
 /** Folder of the agent docs of a package (`node_modules/maz-ui/agent-docs`) and of the bundle of @maz-ui/mcp */
 export const FRAGMENT_DIR = 'agent-docs'

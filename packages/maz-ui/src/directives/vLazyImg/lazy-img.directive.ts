@@ -1,6 +1,6 @@
 import type { ObjectDirective } from 'vue'
-import type { VLazyImgBindingValue } from './lazy-img.handler'
-import { LazyImg } from './lazy-img.handler'
+import type { VLazyImgBindingValue } from './lazy-img.handler.ts'
+import { LazyImg } from './lazy-img.handler.ts'
 
 let instance: LazyImg | undefined
 

@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import MazTextarea from '@components/MazTextarea.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { shallowMount } from '@vue/test-utils'
 
 describe('components/MazTextarea.vue', () => {

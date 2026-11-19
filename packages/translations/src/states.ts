@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { GlobalState, MazUiTranslationsMessages, MazUiTranslationsSchema } from './types'
+import type { GlobalState, MazUiTranslationsMessages, MazUiTranslationsSchema } from './types.ts'
 import { reactive, ref } from 'vue'
 
 /**

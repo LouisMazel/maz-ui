@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../types'
+import type { ThemePreset } from '../types/index.ts'
 import {
   DEFAULT_BTN_FONT_WEIGHT,
   DEFAULT_CONTAINER_BG,
@@ -12,7 +12,7 @@ import {
   DEFAULT_SHADOW,
   DEFAULT_SPACE,
   typographyWith,
-} from './_defaults'
+} from './_defaults.ts'
 
 /**
  * Folio preset - "plasma": electric and modern, made for long reading. It styles maz-ui.com.

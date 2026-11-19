@@ -1,6 +1,6 @@
 import type { AgentTarget, SetupAgentsChange } from '@maz-ui/node'
 import type { ColorScaleStep } from '@maz-ui/themes/utils/resolve-preset'
-import type { Framework, Severity } from './review'
+import type { Framework, Severity } from './review/index.ts'
 
 import { Buffer } from 'node:buffer'
 import { existsSync } from 'node:fs'
@@ -8,10 +8,10 @@ import { join, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 import { AGENT_TARGETS, detectAgentTargets, detectPackageManager, findProjectPackage, setupAgents } from '@maz-ui/node'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
-import { createContext } from './context'
-import { startStdioServer } from './server'
-import { searchDocs } from './tools/search-docs'
-import { readOwnVersion } from './version'
+import { createContext } from './context.ts'
+import { startStdioServer } from './server.ts'
+import { searchDocs } from './tools/search-docs.ts'
+import { readOwnVersion } from './version.ts'
 
 export const HELP = `maz-ui-mcp: maz-ui knowledge for AI coding agents
 
@@ -172,7 +172,7 @@ export async function runReview(values: Record<string, unknown>, positionals: st
       : undefined,
   })
   const framework = values.framework as Framework | undefined
-  const [{ countBySeverity, formatFindings }, { isIgnoredPath, REVIEWABLE_EXTENSIONS, reviewFiles }] = await Promise.all([import('./review'), import('./review/files')])
+  const [{ countBySeverity, formatFindings }, { isIgnoredPath, REVIEWABLE_EXTENSIONS, reviewFiles }] = await Promise.all([import('./review/index.ts'), import('./review/files.ts')])
 
   if (values.hook) {
     const input = JSON.parse(await readStdin() || '{}') as { tool_input?: { file_path?: string }, cwd?: string }
@@ -233,7 +233,7 @@ export async function runReview(values: Record<string, unknown>, positionals: st
 }
 
 async function runColors(values: { colors?: string, steps?: string }, [preset]: string[], cwd: string): Promise<number> {
-  const [{ readProjectTheme }, { BUNDLED_PRESETS, renderEffectiveColors }] = await Promise.all([import('./project/theme'), import('./project/resolved-theme')])
+  const [{ readProjectTheme }, { BUNDLED_PRESETS, renderEffectiveColors }] = await Promise.all([import('./project/theme.ts'), import('./project/resolved-theme.ts')])
   const list = (value?: string): string[] | undefined => value?.split(',').map(item => item.trim()).filter(Boolean)
 
   if (preset && !Object.hasOwn(BUNDLED_PRESETS, preset)) {

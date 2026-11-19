@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
-import { MazUiTranslations } from '../plugin'
-import { globalState, locale } from '../states'
-import { getActiveTranslations } from '../utils/active-instance'
+import { MazUiTranslations } from '../plugin.ts'
+import { globalState, locale } from '../states.ts'
+import { getActiveTranslations } from '../utils/active-instance.ts'
 
 const { isServer } = vi.hoisted(() => ({
   isServer: vi.fn(() => false),

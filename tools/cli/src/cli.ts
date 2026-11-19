@@ -3,8 +3,8 @@ import { logger, printBanner } from '@maz-ui/node'
 
 import { blueBright, bold } from 'colorette'
 import { Command } from 'commander'
-import { createFilesCommand } from './commands/create-files'
-import { generateComponentsDocumentationCommand } from './commands/generate-components-docs'
+import { createFilesCommand } from './commands/create-files/index.ts'
+import { generateComponentsDocumentationCommand } from './commands/generate-components-docs/index.ts'
 
 const name = 'cli'
 const program = new Command()

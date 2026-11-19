@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { execPromise } from '../execPromise'
+import { execPromise } from '../execPromise.ts'
 
 describe('given execPromise function', () => {
   describe('given basic execution', () => {

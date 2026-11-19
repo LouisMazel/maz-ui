@@ -1,13 +1,13 @@
-import type { GeneratedFragment } from './generate'
-import type { AgentDocsBundle, OutputFile } from './types'
+import type { GeneratedFragment } from './generate.ts'
+import type { AgentDocsBundle, OutputFile } from './types.ts'
 
 import { join, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
-import { generateKnowledge } from './generate'
-import { PACKAGE_DEFINITIONS } from './packages'
-import { getSourcePaths } from './paths'
-import { AGENT_DOCS_SCHEMA_VERSION } from './types'
-import { findOutdatedFiles, writeOutput } from './write'
+import { generateKnowledge } from './generate.ts'
+import { PACKAGE_DEFINITIONS } from './packages.ts'
+import { getSourcePaths } from './paths.ts'
+import { AGENT_DOCS_SCHEMA_VERSION } from './types.ts'
+import { findOutdatedFiles, writeOutput } from './write.ts'
 
 const logger = {
   info: (message: string): void => console.log(message),

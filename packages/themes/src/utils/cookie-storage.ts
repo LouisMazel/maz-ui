@@ -1,8 +1,8 @@
-import type { SavedPreset } from './theme-preferences'
-import { clearPresetPreference, readPresetPreference, savePresetPreference } from './theme-preferences'
+import type { SavedPreset } from './theme-preferences.ts'
+import { clearPresetPreference, readPresetPreference, savePresetPreference } from './theme-preferences.ts'
 
-export { PRESET_COOKIE } from './theme-preferences'
-export type { SavedPreset } from './theme-preferences'
+export { PRESET_COOKIE } from './theme-preferences.ts'
+export type { SavedPreset } from './theme-preferences.ts'
 
 export function getSavedPreset(): SavedPreset | null {
   return readPresetPreference()

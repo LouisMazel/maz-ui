@@ -1,8 +1,8 @@
-import type { PurgeManifest } from '../manifest'
+import type { PurgeManifest } from '../manifest.ts'
 import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { DEFAULT_CONTENT, DEFAULT_IGNORE, readContent, resolveUsage } from '../usage'
+import { DEFAULT_CONTENT, DEFAULT_IGNORE, readContent, resolveUsage } from '../usage.ts'
 
 const manifest: PurgeManifest = {
   version: '5.7.0',

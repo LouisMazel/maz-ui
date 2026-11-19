@@ -1,8 +1,8 @@
 <script lang="ts" setup generic="_T">
 import type { MazIconValue } from './MazIcon.vue'
 import { computed } from 'vue'
-import { prepareSvgString } from '../utils/svg-utils'
-import { useSvgAccessibility, useSvgSource } from '../utils/useSvgSource'
+import { prepareSvgString } from '../utils/svg-utils.ts'
+import { useSvgAccessibility, useSvgSource } from '../utils/useSvgSource.ts'
 
 export interface MazSvgProps {
   /**

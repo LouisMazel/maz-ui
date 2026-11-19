@@ -1,5 +1,5 @@
-import type { VZoomImgBinding } from '@directives/vZoomImg/zoom-img.handler'
-import { ZoomImgHandler } from '@directives/vZoomImg/zoom-img.handler'
+import type { VZoomImgBinding } from '@directives/vZoomImg/zoom-img.handler.ts'
+import { ZoomImgHandler } from '@directives/vZoomImg/zoom-img.handler.ts'
 
 describe('given ZoomImgHandler', () => {
   let el: HTMLElement

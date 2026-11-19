@@ -1,6 +1,6 @@
 import type { Plugin } from 'vue'
-import type { DialogOptions } from './dialog/DialogHandler'
-import { DialogHandler } from './dialog/DialogHandler'
+import type { DialogOptions } from './dialog/DialogHandler.ts'
+import { DialogHandler } from './dialog/DialogHandler.ts'
 
 export const DialogPlugin: Plugin<[DialogOptions?]> = {
   install(app, options) {
@@ -38,4 +38,4 @@ declare module 'vue' {
   }
 }
 
-export { type DialogConfirmOptions, DialogHandler, type DialogOptions } from './dialog/DialogHandler'
+export { type DialogConfirmOptions, DialogHandler, type DialogOptions } from './dialog/DialogHandler.ts'

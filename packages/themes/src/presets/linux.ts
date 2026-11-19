@@ -1,9 +1,9 @@
-import type { ThemePreset } from '../types'
+import type { ThemePreset } from '../types/index.ts'
 import {
   DEFAULT_DISABLED_OPACITY,
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SPACE,
-} from './_defaults'
+} from './_defaults.ts'
 
 /**
  * Linux preset: the look of a native GNOME app (libadwaita).

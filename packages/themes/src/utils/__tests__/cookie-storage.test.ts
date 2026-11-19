@@ -1,4 +1,4 @@
-import { clearSavedPresetName, getSavedPreset, savePreset } from '../cookie-storage'
+import { clearSavedPresetName, getSavedPreset, savePreset } from '../cookie-storage.ts'
 
 function mockDocumentCookie(initialValue: string = '') {
   let cookieValue = initialValue

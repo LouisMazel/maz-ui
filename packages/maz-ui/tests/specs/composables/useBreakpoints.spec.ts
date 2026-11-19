@@ -1,14 +1,14 @@
-import { useBreakpoints } from '@composables/useBreakpoints'
-import { useWindowSize } from '@composables/useWindowSize'
+import { useBreakpoints } from '@composables/useBreakpoints.ts'
+import { useWindowSize } from '@composables/useWindowSize.ts'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { getNumericScreensFromTailwind } from '@/tailwindcss/variables/breakpoints'
+import { getNumericScreensFromTailwind } from '@/tailwindcss/variables/breakpoints.ts'
 
-vi.mock('@composables/useWindowSize', () => ({
+vi.mock('@composables/useWindowSize.ts', () => ({
   useWindowSize: vi.fn(),
 }))
 
-vi.mock('@/tailwindcss/variables/breakpoints', () => ({
+vi.mock('@/tailwindcss/variables/breakpoints.ts', () => ({
   getNumericScreensFromTailwind: vi.fn(),
 }))
 

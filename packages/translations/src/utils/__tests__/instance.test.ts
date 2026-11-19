@@ -1,5 +1,5 @@
-import { createTranslationsStore, legacyStore, locale } from '../../states'
-import { createMazUiTranslations } from '../instance'
+import { createTranslationsStore, legacyStore, locale } from '../../states.ts'
+import { createMazUiTranslations } from '../instance.ts'
 
 describe('instance', () => {
   beforeEach(() => {

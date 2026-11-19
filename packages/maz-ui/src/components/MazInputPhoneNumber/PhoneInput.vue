@@ -5,10 +5,10 @@ import type { MazInputProps } from '../MazInput.vue'
 import type { MazInputPhoneNumberInjectedData } from '../MazInputPhoneNumber.vue'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, onMounted, ref, useTemplateRef } from 'vue'
-import { useInjectStrict } from '../../composables/useInjectStrict'
+import { useInjectStrict } from '../../composables/useInjectStrict.ts'
 import MazInput from '../MazInput.vue'
-import { useLibphonenumber } from './useLibphonenumber'
-import { useMazInputPhoneNumber } from './useMazInputPhoneNumber'
+import { useLibphonenumber } from './useLibphonenumber.ts'
+import { useMazInputPhoneNumber } from './useMazInputPhoneNumber.ts'
 
 type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   id: string

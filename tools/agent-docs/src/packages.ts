@@ -1,4 +1,4 @@
-import type { PackageGroup } from './types'
+import type { PackageGroup } from './types.ts'
 
 export interface PackageDefinition {
   /** npm package name */

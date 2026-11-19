@@ -1,12 +1,12 @@
 <script lang="ts" setup generic="_T">
-import type { VTooltipBindingValue } from '../directives/vTooltip'
+import type { VTooltipBindingValue } from '../directives/vTooltip.ts'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazDropdownMenuItem, MazDropdownProps } from './MazDropdown.vue'
 import type { MazPopoverPosition } from './MazPopover.vue'
-import type { MazSize } from './types'
+import type { MazSize } from './types.ts'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { vTooltip } from '../directives/vTooltip'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { vTooltip } from '../directives/vTooltip.ts'
 import MazBtn from './MazBtn.vue'
 import MazDropdown from './MazDropdown.vue'
 

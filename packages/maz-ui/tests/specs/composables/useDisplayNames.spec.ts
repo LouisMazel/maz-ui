@@ -1,4 +1,4 @@
-import { useDisplayNames } from '@composables/useDisplayNames'
+import { useDisplayNames } from '@composables/useDisplayNames.ts'
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
 

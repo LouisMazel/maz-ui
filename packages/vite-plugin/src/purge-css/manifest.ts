@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { basename, dirname, join, resolve } from 'node:path'
 import postcss from 'postcss'
-import { getRequiredClasses, splitSelectorList } from './selectors'
+import { getRequiredClasses, splitSelectorList } from './selectors.ts'
 
 export const PURGE_MANIFEST_FILE = 'purge-manifest.json'
 

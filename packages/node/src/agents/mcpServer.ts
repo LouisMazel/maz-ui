@@ -1,8 +1,8 @@
-import type { PackageManager } from '../project'
-import type { AgentsTool, McpServerCommand } from './types'
-import { detectPackageManager, readPackageJson } from '../project'
-import { MAZ_UI_AGENTS_TOOL } from './tool'
-import { escapeRegExp } from './utils'
+import type { PackageManager } from '../project.ts'
+import type { AgentsTool, McpServerCommand } from './types.ts'
+import { detectPackageManager, readPackageJson } from '../project.ts'
+import { MAZ_UI_AGENTS_TOOL } from './tool.ts'
+import { escapeRegExp } from './utils.ts'
 
 /** `true` when the `package.json` of the project declares the MCP package of the tool (`@maz-ui/mcp` by default) */
 export function installsMcpPackage(rootDir: string, tool: AgentsTool = MAZ_UI_AGENTS_TOOL): boolean {

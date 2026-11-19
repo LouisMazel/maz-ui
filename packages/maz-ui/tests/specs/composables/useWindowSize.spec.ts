@@ -1,5 +1,5 @@
-import { useWindowSize } from '@composables/useWindowSize'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useWindowSize } from '@composables/useWindowSize.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 
 vi.mock('@utils/isClient', () => ({
   isClient: vi.fn(() => true),

@@ -1,6 +1,6 @@
-import type { ComponentApi, PropApi } from '../../types'
+import type { ComponentApi, PropApi } from '../../types.ts'
 
-import { modelDirective, renderComponentApi, renderProp } from '../api'
+import { modelDirective, renderComponentApi, renderProp } from '../api.ts'
 
 function prop(overrides: Partial<PropApi> = {}): PropApi {
   return {

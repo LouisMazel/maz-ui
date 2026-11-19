@@ -1,6 +1,6 @@
-import { getPreset, warnSavedPresetFallback } from '../get-preset'
+import { getPreset, warnSavedPresetFallback } from '../get-preset.ts'
 
-vi.mock('../preset-loaders', () => ({
+vi.mock('../preset-loaders.ts', () => ({
   presetRegistry: {
     restricted: true,
     loaders: {

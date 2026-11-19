@@ -1,6 +1,6 @@
-import type { ComponentApi, PropApi } from '../types'
+import type { ComponentApi, PropApi } from '../types.ts'
 
-import { pascalToKebab } from '../utils/strings'
+import { pascalToKebab } from '../utils/strings.ts'
 
 /** Props declared only to type the root element attributes */
 const HTML_ATTRIBUTE_PROPS = new Set(['class', 'style'])

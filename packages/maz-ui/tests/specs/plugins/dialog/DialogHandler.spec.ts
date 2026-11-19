@@ -1,10 +1,10 @@
-import { DialogHandler } from '@plugins/dialog/DialogHandler'
+import { DialogHandler } from '@plugins/dialog/DialogHandler.ts'
 import { describe, expect, it, vi } from 'vitest'
 import { createApp } from 'vue'
 
 let resolveFn: (value: unknown) => void
 const callback = vi.fn()
-vi.mock('@components/MazDialogConfirm/useMazDialogConfirm', () => ({
+vi.mock('@components/MazDialogConfirm/useMazDialogConfirm.ts', () => ({
   useMazDialogConfirm: () => ({
     showDialogAndWaitChoice: () => new Promise((resolve) => {
       resolveFn = resolve

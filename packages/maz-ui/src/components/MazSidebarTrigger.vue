@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { MazChevronUpDown } from '@maz-ui/icons/raw/MazChevronUpDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { useSidebar } from '../composables/useSidebar'
+import { useSidebar } from '../composables/useSidebar.ts'
 import MazIcon from './MazIcon.vue'
 
 const sidebar = useSidebar()

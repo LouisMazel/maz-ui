@@ -1,7 +1,7 @@
-import type { SetupAgentsAction, SetupAgentsChange } from './types'
+import type { SetupAgentsAction, SetupAgentsChange } from './types.ts'
 import { existsSync, readdirSync, readFileSync, rmdirSync, rmSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { writeFileAtomic } from './utils'
+import { writeFileAtomic } from './utils.ts'
 
 function isWriteAction(action: SetupAgentsAction): boolean {
   return action === 'create' || action === 'update' || action === 'remove'

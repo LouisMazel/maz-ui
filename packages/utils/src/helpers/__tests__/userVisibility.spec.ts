@@ -1,12 +1,12 @@
 /* eslint-disable ts/ban-ts-comment */
 
-import type { UserVisibilyCallback, UserVisibilyOptions } from '../userVisibility'
+import type { UserVisibilyCallback, UserVisibilyOptions } from '../userVisibility.ts'
 
-import { sleep } from '../sleep'
+import { sleep } from '../sleep.ts'
 import {
   UserVisibility,
 
-} from '../userVisibility'
+} from '../userVisibility.ts'
 
 function documentEmitEvent(event: string) {
   return document.dispatchEvent(new Event(event))

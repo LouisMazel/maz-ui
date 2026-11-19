@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { build } from 'vite'
-import { MazUiPurgeCss } from '../index'
+import { MazUiPurgeCss } from '../index.ts'
 
 function write(file: string, content: string) {
   mkdirSync(dirname(file), { recursive: true })

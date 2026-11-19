@@ -1,5 +1,5 @@
 import MazProgressBar from '@components/MazProgressBar.vue'
-import { runAxe } from '@tests/helpers/axe'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { mount } from '@vue/test-utils'
 
 function parts(wrapper: ReturnType<typeof mount>) {

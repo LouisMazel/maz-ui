@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useInjectStrict } from '../composables/useInjectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict.ts'
 import { mazTableKey } from './MazTable.vue'
 
 export interface MazTableRowProps {

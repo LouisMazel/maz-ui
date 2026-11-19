@@ -2,7 +2,7 @@ import type { MazPopoverProps } from '@components/MazPopover.vue'
 import MazPopover from '@components/MazPopover.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { getColor } from '@/components/types'
+import { getColor } from '@/components/types.ts'
 
 async function mountPopover(...args: Parameters<typeof mount<typeof MazPopover>>) {
   const wrapper = mount(...args)

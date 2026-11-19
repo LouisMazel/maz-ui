@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { VNode } from 'vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazSize } from './types.ts'
 import { computed } from 'vue'
-import { hasSlotContent } from '../utils/hasSlotContent'
-import { getColor } from './types'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
+import { getColor } from './types.ts'
 
 export type MazIndicatorPosition = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useInjectStrict } from '../composables/useInjectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict.ts'
 import { mazSidebarKey } from './MazSidebar.vue'
 
 const sidebar = useInjectStrict(mazSidebarKey, undefined, '[maz-ui](MazSidebarMenu) Must be used inside MazSidebar')

@@ -1,4 +1,4 @@
-import { addPopoverLayer, isInUpperPopoverLayer, isTopPopoverLayer, removePopoverLayer } from '@/utils/popoverLayers'
+import { addPopoverLayer, isInUpperPopoverLayer, isTopPopoverLayer, removePopoverLayer } from '@/utils/popoverLayers.ts'
 
 function createLayer(element: HTMLElement) {
   return {

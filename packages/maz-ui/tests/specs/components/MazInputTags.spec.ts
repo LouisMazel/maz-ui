@@ -1,6 +1,6 @@
 import MazInputTags from '@components/MazInputTags.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
-import { runAxe } from '@tests/helpers/axe'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { enableAutoUnmount, mount } from '@vue/test-utils'
 
 enableAutoUnmount(afterEach)

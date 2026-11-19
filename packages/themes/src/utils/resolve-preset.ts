@@ -1,8 +1,8 @@
-import type { ColorScaleMode, ThemeColors, ThemePreset } from '../types'
-import type { OklchChannels } from './color-conversions'
-import { colorToHex, formatAsOklch, parseColorAsOklch } from './color-conversions'
-import { normalizeColor } from './color-parser'
-import { BRAND_COLOR_ROLES, getPerceptualColorScale, getRelativeColorScale } from './css-generator'
+import type { ColorScaleMode, ThemeColors, ThemePreset } from '../types/index.ts'
+import type { OklchChannels } from './color-conversions.ts'
+import { colorToHex, formatAsOklch, parseColorAsOklch } from './color-conversions.ts'
+import { normalizeColor } from './color-parser.ts'
+import { BRAND_COLOR_ROLES, getPerceptualColorScale, getRelativeColorScale } from './css-generator.ts'
 
 export const COLOR_SCALE_STEPS = [
   '50',

@@ -1,4 +1,4 @@
-import { upperFirst } from '../upperFirst'
+import { upperFirst } from '../upperFirst.ts'
 
 describe('upperFirst', () => {
   it('should capitalize the first letter of a string', () => {

@@ -1,5 +1,5 @@
-import { useUserVisibility } from '@composables/useUserVisibility'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useUserVisibility } from '@composables/useUserVisibility.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 
 describe('given useUserVisibility composable', () => {
   describe('when called with callback', () => {

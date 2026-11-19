@@ -1,4 +1,4 @@
-import { holdInertBackground, releaseInertBackground } from '@/utils/inertBackground'
+import { holdInertBackground, releaseInertBackground } from '@/utils/inertBackground.ts'
 
 function addToBody(html: string) {
   const template = document.createElement('template')

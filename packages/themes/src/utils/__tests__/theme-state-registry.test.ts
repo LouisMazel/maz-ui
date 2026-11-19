@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
-import type { ThemeState } from '../../types'
+import type { ThemeState } from '../../types/index.ts'
 import { ref } from 'vue'
-import { getActiveThemeState, setActiveThemeState } from '../theme-state-registry'
+import { getActiveThemeState, setActiveThemeState } from '../theme-state-registry.ts'
 
 describe('theme-state-registry', () => {
   describe('given a theme state', () => {

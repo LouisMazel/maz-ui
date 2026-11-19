@@ -1,4 +1,4 @@
-import type { StylelintConfig, StylelintRules } from '../types'
+import type { StylelintConfig, StylelintRules } from '../types.ts'
 
 /**
  * Stylelint plugin that flags physical CSS properties (`top`/`right`/`left`/

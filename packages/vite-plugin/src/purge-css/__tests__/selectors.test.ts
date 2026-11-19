@@ -1,4 +1,4 @@
-import { getRequiredClasses, splitSelectorList } from '../selectors'
+import { getRequiredClasses, splitSelectorList } from '../selectors.ts'
 
 describe('given splitSelectorList', () => {
   describe('when the selector has top-level commas', () => {

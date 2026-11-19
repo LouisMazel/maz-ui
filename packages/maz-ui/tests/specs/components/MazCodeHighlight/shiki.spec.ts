@@ -1,4 +1,4 @@
-import { loadShiki } from '@components/MazCodeHighlight/shiki'
+import { loadShiki } from '@components/MazCodeHighlight/shiki.ts'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 
 vi.mock('shiki/engine/javascript', async (importOriginal) => {

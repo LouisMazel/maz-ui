@@ -1,9 +1,9 @@
 import type { ExecOptions } from 'node:child_process'
-import type { LogLevel } from './logger.js'
+import type { LogLevel } from './logger.ts'
 import { exec } from 'node:child_process'
 import process from 'node:process'
-import { logger as defaultLogger } from './logger.js'
-import { redactError, redactSecrets } from './redactSecrets.js'
+import { logger as defaultLogger } from './logger.ts'
+import { redactError, redactSecrets } from './redactSecrets.ts'
 
 interface CustomLogger {
   log: (message: string, ...args: any[]) => void
