@@ -1,4 +1,5 @@
-import { extname, relative, resolve } from 'node:path'
+import { writeFileSync } from 'node:fs'
+import { dirname, extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
 import { getExternalDependencies, ViteExportNames, VitePreNestedCss } from '@maz-ui/vite-config'
 import SvgLoader from '@maz-ui/vite-svg-loader'
@@ -41,6 +42,28 @@ const moduleEntries = Object.fromEntries(
 
 const isExternal = getExternalDependencies(pkg)
 
+// The declarations of a package with `"type": "module"` must use extensioned relative specifiers to resolve
+// under `moduleResolution` `node16`/`nodenext`
+function appendDeclarationExtensions(files: Map<string, string>) {
+  const emitted = new Set(files.keys())
+  for (const [filePath, content] of files) {
+    if (!filePath.endsWith('.d.ts'))
+      continue
+    const rewritten = content.replace(/(['"])(\.\.?\/[^'"]*)\1/g, (match, quote: string, specifier: string) => {
+      if (/\.[cm]?[jt]sx?$|\.vue$|\.json$|\.css$|\.svg$/.test(specifier))
+        return match
+      const target = resolve(dirname(filePath), specifier)
+      if (emitted.has(`${target}.d.ts`))
+        return `${quote}${specifier}.js${quote}`
+      if (emitted.has(`${target}/index.d.ts`))
+        return `${quote}${specifier}/index.js${quote}`
+      return match
+    })
+    if (rewritten !== content)
+      writeFileSync(filePath, rewritten)
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production'
   return {
@@ -71,6 +94,7 @@ export default defineConfig(({ mode }) => {
           filePath,
           content: content.replaceAll('import(\'@vue/reactivity\').OnCleanup', '((cleanupFn: () => void) => void)'),
         }),
+        afterBuild: appendDeclarationExtensions,
       }),
       ViteCompileStyles(),
       codecovVitePlugin({

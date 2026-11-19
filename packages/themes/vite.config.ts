@@ -1,4 +1,5 @@
-import { extname, relative, resolve } from 'node:path'
+import { writeFileSync } from 'node:fs'
+import { dirname, extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
 import { getExternalDependencies } from '@maz-ui/vite-config'
 
@@ -32,6 +33,28 @@ const entries = Object.fromEntries(
     .map(getEntries),
 )
 
+// The declarations of a package with `"type": "module"` must use extensioned relative specifiers to resolve
+// under `moduleResolution` `node16`/`nodenext`
+function appendDeclarationExtensions(files: Map<string, string>) {
+  const emitted = new Set(files.keys())
+  for (const [filePath, content] of files) {
+    if (!filePath.endsWith('.d.ts'))
+      continue
+    const rewritten = content.replace(/(['"])(\.\.?\/[^'"]*)\1/g, (match, quote: string, specifier: string) => {
+      if (/\.[cm]?[jt]sx?$|\.vue$|\.json$|\.css$|\.svg$/.test(specifier))
+        return match
+      const target = resolve(dirname(filePath), specifier)
+      if (emitted.has(`${target}.d.ts`))
+        return `${quote}${specifier}.js${quote}`
+      if (emitted.has(`${target}/index.d.ts`))
+        return `${quote}${specifier}/index.js${quote}`
+      return match
+    })
+    if (rewritten !== content)
+      writeFileSync(filePath, rewritten)
+  }
+}
+
 export default defineConfig((option) => {
   const isProduction = option.mode === 'production'
   return {
@@ -43,6 +66,7 @@ export default defineConfig((option) => {
         outDirs: resolver('dist'),
         exclude: ['src/**/__tests__/**/*', 'src/**/*.spec.ts', 'src/**/*.test.ts'],
         include: ['src/**/*.ts'],
+        afterBuild: appendDeclarationExtensions,
       }),
       codecovVitePlugin({
         enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
