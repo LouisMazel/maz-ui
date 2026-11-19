@@ -1,5 +1,43 @@
 # Change Log
 
+## v5.8.0-beta.0 (2026-11-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0...v5.8.0-beta.0)
+
+### 🚀 Features
+
+- **maz-ui:** Add the `gutter` prop to MazPageSection, `full-bleed` goes edge to edge ([e0f25a18c](https://github.com/LouisMazel/maz-ui/commit/e0f25a18c))
+
+  `:gutter="false"` removes the side padding and keeps the content on the page column. `full-bleed` now puts the content edge to edge at every width: no side padding nor maximum width.
+
+- **maz-ui:** Render the names with MazIconPrimitive ([86981b420](https://github.com/LouisMazel/maz-ui/commit/86981b420))
+
+  `MazIcon` and `MazSvg` render the names with `MazIconPrimitive` of `@maz-ui/icons` and accept `~name` to load an icon on demand. `maz-ui` comes with the `maz-ui-icons` command.
+
+### 🩹 Fixes
+
+- **ecosystem:** Emit extensioned relative imports in published declarations ([30c9bb6f1](https://github.com/LouisMazel/maz-ui/commit/30c9bb6f1))
+- **ecosystem:** Resolve the published types in node16 and nodenext ([88f7cd83c](https://github.com/LouisMazel/maz-ui/commit/88f7cd83c))
+
+  The declarations of `maz-ui`, `@maz-ui/utils`, `@maz-ui/themes` and `@maz-ui/translations` are now `.d.mts` files whose relative imports carry their extension: with `moduleResolution` `node16` or `nodenext`, the re-exports resolve to their real types instead of missing exports or `any`.
+
+- **maz-ui:** Resolve the dayjs types of the date picker in node16 and nodenext ([4f9d45195](https://github.com/LouisMazel/maz-ui/commit/4f9d45195))
+
+  The date picker imports `dayjs/esm` by the full path of its files, so its types resolve with `moduleResolution` `node16` or `nodenext`.
+
+### 💅 Refactors
+
+- **ecosystem:** Move the declaration extension helper into @maz-ui/vite-config ([4ddc0212b](https://github.com/LouisMazel/maz-ui/commit/4ddc0212b))
+
+### 🧪 Tests
+
+- **maz-ui:** Update the coverage thresholds ([f6601151f](https://github.com/LouisMazel/maz-ui/commit/f6601151f))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+- Abderrahmane Messaadi <abderrahmane8@yandex.com>
+
 ## v5.7.0 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0)
