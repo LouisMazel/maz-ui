@@ -3,6 +3,7 @@ import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties } from 'vue'
 import type { MazIconString, MazSizeUnit } from './types.ts'
 import { MazQuestionMarkCircle } from '@maz-ui/icons/lazy/MazQuestionMarkCircle'
+import { MazIconPrimitive } from '@maz-ui/icons/vue'
 import { computed } from 'vue'
 import { prepareSvgString } from '../utils/svg-utils.ts'
 import { useSvgAccessibility, useSvgSource } from '../utils/useSvgSource.ts'
@@ -62,7 +63,7 @@ type PredefinedSize = Exclude<MazIconSize, MazSizeUnit>
 
 const predefinedSizes: readonly PredefinedSize[] = ['xs', 'sm', 'md', 'lg', 'xl']
 
-const { rawSvgContent, isPendingUrl, componentIcon } = useSvgSource({
+const { rawSvgContent, registeredName, isPendingUrl, componentIcon } = useSvgSource({
   icon: () => icon,
   fallback: () => fallback,
   prepare: svg => prepareSvgString(svg, { title, svgAttributes }),
@@ -70,7 +71,7 @@ const { rawSvgContent, isPendingUrl, componentIcon } = useSvgSource({
   onError: error => emits('error', error),
 })
 
-const { ariaHidden, role, ariaLabel } = useSvgAccessibility({
+const { ariaHidden, role, ariaLabel, primitiveAttributes } = useSvgAccessibility({
   title: () => title,
   svgAttributes: () => svgAttributes,
 })
@@ -102,7 +103,18 @@ const flipClass = computed(() => (flipIconForRtl ? 'm-icon--flip-for-rtl' : unde
 
 <template>
   <span
-    v-if="rawSvgContent"
+    v-if="registeredName"
+    class="m-icon m-reset-css maz:inline-flex maz:size-[1em] maz:flex-center maz:align-middle"
+    :class="[sizeClass, flipClass]"
+    :style="svgStyle"
+    :aria-hidden="ariaHidden"
+    :aria-label="ariaLabel"
+    :role="role"
+  >
+    <MazIconPrimitive :icon="registeredName" :title="title" :svg-attributes="svgAttributes" v-bind="primitiveAttributes" />
+  </span>
+  <span
+    v-else-if="rawSvgContent"
     class="m-icon m-reset-css maz:inline-flex maz:size-[1em] maz:flex-center maz:align-middle"
     :class="[sizeClass, flipClass]"
     :style="svgStyle"

@@ -1,4 +1,4 @@
-import { decodeSvgDataUri, extractSvgMarkup, isRawSvg, prefetchSvgText, svgFetchInflight, svgTextCache } from '@/utils/svg-utils.ts'
+import { decodeSvgDataUri, extractSvgMarkup, fetchSvgText, isRawSvg, prefetchSvgText, svgFetchInflight, svgTextCache } from '@/utils/svg-utils.ts'
 
 const SVG = '<svg viewBox="0 0 24 24"><path d="M0 0"/></svg>'
 
@@ -97,5 +97,45 @@ describe('prefetchSvgText', () => {
     expect(globalThis.fetch).not.toHaveBeenCalled()
 
     svgFetchInflight.delete('https://cdn.example.com/inflight.svg')
+  })
+})
+
+describe('given a base64 data URI that is not valid', () => {
+  describe('when decoding it', () => {
+    it('then there is no SVG', () => {
+      expect(decodeSvgDataUri('data:image/svg+xml;base64,%%%')).toBeUndefined()
+    })
+  })
+})
+
+describe('given a URL being fetched', () => {
+  const url = 'https://cdn.example.com/fetched.svg'
+  const originalFetch = globalThis.fetch
+
+  afterEach(() => {
+    globalThis.fetch = originalFetch
+    svgTextCache.delete(url)
+    svgFetchInflight.delete(url)
+  })
+
+  describe('when it is fetched twice at once, then again', () => {
+    it('then a single request is sent, and the cache answers the last call', async () => {
+      const fetchMock = vi.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve('<svg viewBox="0 0 24 24"></svg>'),
+      })
+      globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch
+
+      const [first, second] = await Promise.all([
+        fetchSvgText(url),
+        fetchSvgText(url),
+      ])
+      const third = await fetchSvgText(url)
+
+      expect(first).toBe('<svg viewBox="0 0 24 24"></svg>')
+      expect(second).toBe(first)
+      expect(third).toBe(first)
+      expect(fetchMock).toHaveBeenCalledOnce()
+    })
   })
 })

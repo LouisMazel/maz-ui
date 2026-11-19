@@ -154,10 +154,14 @@
     },
     "./package.json": "./package.json"
   },
+  "bin": {
+    "maz-ui-icons": "./bin/maz-ui-icons.mjs"
+  },
   "files": [
     "LICENSE",
     "README.md",
     "agent-docs",
+    "bin",
     "dist",
     "src/tailwindcss"
   ],

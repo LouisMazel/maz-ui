@@ -1,6 +1,7 @@
 import MazIcon from '@components/MazIcon.vue'
-import { registerIcon, registerIcons } from '@maz-ui/icons/registry'
-import { mount, shallowMount } from '@vue/test-utils'
+import { registerIcon, registerIconLoader, registerIcons } from '@maz-ui/icons/registry'
+import { runAxe } from '@tests/helpers/axe.ts'
+import { flushPromises, mount, shallowMount } from '@vue/test-utils'
 import { createSSRApp, defineComponent, h, nextTick } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { SVG_PREFETCH_FAILURE_TTL_MS, svgTextCache } from '../../../src/utils/svg-utils.ts'
@@ -62,7 +63,7 @@ describe('MazIcon', () => {
           props: { icon: 'test-star' },
         })
 
-        expect(wrapper.html()).toContain('<svg width="1em" height="1em" viewBox="0 0 24 24">')
+        expect(wrapper.find('svg').attributes()).toMatchObject({ width: '1em', height: '1em', viewBox: '0 0 24 24' })
       })
     })
 
@@ -794,6 +795,151 @@ describe('MazIcon', () => {
         expect(globalThis.fetch).not.toHaveBeenCalled()
         expect(wrapper.html()).toContain('d="M0 0h24v24H0z"')
         expect(wrapper.html()).not.toContain('DOCTYPE')
+      })
+    })
+  })
+
+  describe('given a registered name and its accessibility', () => {
+    beforeEach(() => {
+      registerIcon('test-a11y-star', RAW_SVG)
+    })
+
+    describe('when it is decorative', () => {
+      it('then the wrapper is hidden, the svg has no accessibility attribute, without axe violation', async () => {
+        const wrapper = mount(MazIcon, {
+          props: { icon: 'test-a11y-star' },
+        })
+        const svg = wrapper.find('svg')
+
+        expect(wrapper.attributes('aria-hidden')).toBe('true')
+        expect(svg.attributes('aria-hidden')).toBeUndefined()
+        expect(svg.attributes('role')).toBeUndefined()
+        expect(await runAxe(wrapper)).toHaveNoViolations()
+      })
+    })
+
+    describe('when it has a title', () => {
+      it('then the wrapper is an image named by it, the svg keeps the title, without axe violation', async () => {
+        const wrapper = mount(MazIcon, {
+          props: { icon: 'test-a11y-star', title: 'Favorite' },
+        })
+        const svg = wrapper.find('svg')
+
+        expect(wrapper.attributes()).toMatchObject({ 'role': 'img', 'aria-label': 'Favorite' })
+        expect(wrapper.attributes('aria-hidden')).toBeUndefined()
+        expect(svg.attributes('aria-label')).toBeUndefined()
+        expect(svg.attributes('role')).toBeUndefined()
+        expect(svg.find('title').text()).toBe('Favorite')
+        expect(await runAxe(wrapper)).toHaveNoViolations()
+      })
+    })
+
+    describe('when it has an aria-label in its svg attributes', () => {
+      it('then the svg keeps it', () => {
+        const wrapper = mount(MazIcon, {
+          props: {
+            icon: 'test-a11y-star',
+            svgAttributes: { 'aria-label': 'Star' },
+          },
+        })
+
+        expect(wrapper.attributes('role')).toBe('img')
+        expect(wrapper.find('svg').attributes('aria-label')).toBe('Star')
+      })
+    })
+
+    describe('when it is the only content of a labelled button', () => {
+      it('then the button is named by its label, without axe violation', async () => {
+        const wrapper = mount(defineComponent({
+          render: () => h('button', { 'type': 'button', 'aria-label': 'Close' }, [
+            h(MazIcon, { icon: 'test-a11y-star' }),
+          ]),
+        }))
+
+        expect(wrapper.find('.m-icon').attributes('aria-hidden')).toBe('true')
+        expect(await runAxe(wrapper)).toHaveNoViolations()
+      })
+    })
+
+    describe('when it is the only content of a link with a title', () => {
+      it('then the link is named by the icon, without axe violation', async () => {
+        const wrapper = mount(defineComponent({
+          render: () => h('a', { href: '/home' }, [
+            h(MazIcon, { icon: 'test-a11y-star', title: 'Home' }),
+          ]),
+        }))
+
+        expect(wrapper.find('.m-icon').attributes('aria-label')).toBe('Home')
+        expect(await runAxe(wrapper)).toHaveNoViolations()
+      })
+    })
+
+    describe('when it is rendered on the server', () => {
+      it('then the wrapper is named and the svg has its title', async () => {
+        const html = await renderToString(createSSRApp(() => h(MazIcon, { icon: 'test-a11y-star', title: 'Favorite' })))
+
+        expect(html).toMatch(/^<span[^>]* aria-label="Favorite" role="img"[^>]*><svg width="1em" height="1em" viewBox="0 0 24 24"[^>]*><title>Favorite<\/title>/)
+      })
+    })
+  })
+
+  describe('given a name written with a ~', () => {
+    describe('when it is mounted', () => {
+      it('then its SVG is loaded, then rendered', async () => {
+        registerIconLoader('test-tilde', () => Promise.resolve({ default: RAW_SVG }))
+        const wrapper = mount(MazIcon, {
+          props: { icon: '~test-tilde' },
+        })
+
+        expect(wrapper.find('svg[data-loading-icon="test-tilde"]').exists()).toBe(true)
+
+        await flushPromises()
+
+        expect(wrapper.find('svg').attributes('data-loading-icon')).toBeUndefined()
+        expect(wrapper.find('svg').html()).toContain('<path')
+      })
+    })
+  })
+
+  describe('given a name of a lazy folder', () => {
+    describe('when it is mounted', () => {
+      it('then an empty svg of its size takes its place, then its SVG, with the class of the parent once', async () => {
+        registerIconLoader('test-lazy-client', () => Promise.resolve({ default: RAW_SVG }))
+        const wrapper = mount(MazIcon, {
+          props: { icon: 'test-lazy-client', title: 'Star' },
+        })
+
+        expect(wrapper.find('svg[data-loading-icon="test-lazy-client"]').attributes('width')).toBe('1em')
+
+        await flushPromises()
+
+        const svg = wrapper.find('svg')
+        expect(svg.attributes('data-loading-icon')).toBeUndefined()
+        expect(svg.find('title').text()).toBe('Star')
+        expect(wrapper.attributes()).toMatchObject({ 'role': 'img', 'aria-label': 'Star' })
+        expect(svg.attributes('role')).toBeUndefined()
+      })
+    })
+
+    describe('when the server renders it and the client hydrates it before its load', () => {
+      it('then the hydration waits for the SVG, without a mismatch', async () => {
+        registerIcon('test-lazy-server', SECOND_RAW_SVG)
+        registerIconLoader('test-lazy-hydration', () => Promise.resolve({ default: SECOND_RAW_SVG }))
+        const html = await renderToString(createSSRApp(() => h(MazIcon, { icon: 'test-lazy-server' })))
+        const container = document.createElement('div')
+        container.innerHTML = html
+        const serverDom = container.innerHTML
+        const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+        const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+        createSSRApp(() => h(MazIcon, { icon: 'test-lazy-hydration' })).mount(container)
+        await flushPromises()
+
+        expect(container.innerHTML).toBe(serverDom)
+        expect(container.querySelector('circle')).not.toBeNull()
+        expect([...warn.mock.calls, ...error.mock.calls].flat().join(' ')).not.toMatch(/mismatch/i)
+        warn.mockRestore()
+        error.mockRestore()
       })
     })
   })
