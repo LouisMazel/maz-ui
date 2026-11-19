@@ -24,6 +24,18 @@
         >
           Test page
         </MazBtn>
+        <MazBtn
+          :to="{ name: 'icons' }"
+          color="transparent"
+        >
+          Icons
+        </MazBtn>
+        <MazBtn
+          :to="{ name: 'icons-lazy' }"
+          color="transparent"
+        >
+          Icons Lazy
+        </MazBtn>
         <LangSwitcher />
         <ThemeSwitcher />
       </nav>
