@@ -1,19 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": ".",
-    "types": [
-      "vite",
-      "vitest/globals",
-      "@maz-ui/vite-svg-loader/client"
-    ]
+    "types": ["vite/client", "vitest/globals", "@maz-ui/vite-svg-loader/client"]
   },
-  "include": [
-    "src/**/*",
-    "utils/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*", "utils/**/*"]
 }

@@ -87,7 +87,6 @@ export default defineConfig({
       '@components': fileURLToPath(new URL('src/components', import.meta.url)),
       '@composables': fileURLToPath(new URL('src/composables', import.meta.url)),
       '@directives': fileURLToPath(new URL('src/directives', import.meta.url)),
-      '@icons': fileURLToPath(new URL('src/icons', import.meta.url)),
       '@plugins': fileURLToPath(new URL('src/plugins', import.meta.url)),
       '@resolvers': fileURLToPath(new URL('src/resolvers', import.meta.url)),
       '@tests': fileURLToPath(new URL('tests', import.meta.url)),

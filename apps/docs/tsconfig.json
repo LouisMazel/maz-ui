@@ -2,22 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "lib": [
-      "ESNext",
-      "DOM",
-      "DOM.Iterable"
-    ],
     "types": ["node", "@maz-ui/vite-svg-loader/client", "vite/client"]
   },
-  "include": [
-    ".vitepress/**/*",
-    "src/**/*",
-    "components/**/*",
-    "types"
-  ],
-  "exclude": [
-    "node_modules/**",
-    "**/dist/**",
-    "../../packages/maz-ui/**/*"
-  ]
+  "include": [".vitepress/**/*", "src/**/*", "components/**/*", "types"],
+  "exclude": ["node_modules/**", "**/dist/**", "../../packages/maz-ui/**/*"]
 }

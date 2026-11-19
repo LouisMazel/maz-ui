@@ -6,13 +6,12 @@
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "declaration": false,
+    "noUnusedParameters": true,
     "noEmit": true,
-    "sourceMap": false,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   }

@@ -96,6 +96,7 @@ function getPhoneNumberExample(countryCode?: CountryCode | undefined | null) {
   }
   catch (error) {
     console.error(`[maz-ui](MazInputPhoneNumber) ${error}`)
+    return undefined
   }
 }
 

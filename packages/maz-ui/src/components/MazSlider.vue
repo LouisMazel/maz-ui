@@ -323,6 +323,7 @@ async function getCursorsValues() {
   }
   else {
     console.warn('[maz-ui][MazSlider] ref component not found')
+    return undefined
   }
 }
 function handleMousedown(_event: MouseEvent | TouchEvent | FocusEvent, i: number) {

@@ -31,6 +31,8 @@ function resolveRedirect(path: string): string | undefined {
     if (prefix && path.startsWith(`${from}/`))
       return `${to}${path.slice(from.length)}`
   }
+
+  return undefined
 }
 
 export const redirectMiddleware: Connect.NextHandleFunction = (req, res, next) => {

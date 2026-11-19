@@ -1,22 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.node.json",
   "compilerOptions": {
-    "target": "esnext",
-    "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Iterator"],
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "types": ["vitest/globals", "node"],
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "skipLibCheck": true
+    "types": ["node", "vitest/globals"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*"]
 }
