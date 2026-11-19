@@ -1,5 +1,27 @@
 # Change Log
 
+## v5.8.0-beta.1 (2026-11-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0-beta.0...v5.8.0-beta.1)
+
+### 🚀 Features
+
+- **icons:** Name the file of the types and exclude the package of a wrapper from the pre-bundle ([de00a61b0](https://github.com/LouisMazel/maz-ui/commit/de00a61b0))
+
+  `MazUiIcons()` takes `dtsName`, the name of the file of the types when `dts` is `true` or not set (`acme-icons.d.ts`), and `optimizeDepsExclude`, the packages Vite does not pre-bundle in dev, like `@maz-ui/icons` (the package of the `import` of a folder).
+
+- **icons:** Emit an error from MazIconPrimitive ([d3901ed43](https://github.com/LouisMazel/maz-ui/commit/d3901ed43))
+
+  `MazIconPrimitive` emits `error` when the name is unknown, or when the SVG of a name loaded on demand can not be loaded: a wrapper renders its fallback.
+
+### 🧪 Tests
+
+- **icons:** Load only the es5 lib in the type check of the wrapper test ([4112cd92b](https://github.com/LouisMazel/maz-ui/commit/4112cd92b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.0-beta.0 (2026-11-19)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0...v5.8.0-beta.0)

@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/vite-plugin",
   "type": "module",
-  "version": "5.8.0-beta.0",
+  "version": "5.8.0-beta.1",
   "description": "Vite plugins for Maz-UI: icons by name, purge of the CSS of the components and utilities your app does not use, and only the theme presets it loads",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
