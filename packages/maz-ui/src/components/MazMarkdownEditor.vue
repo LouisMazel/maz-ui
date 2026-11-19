@@ -338,7 +338,7 @@ function setMode(value: MazMarkdownEditorMode) {
   mode.value = value
 }
 
-function tryExecInsert(el: HTMLTextAreaElement, text: string): boolean {
+function tryExecInsert(text: string): boolean {
   if (typeof document === 'undefined' || typeof document.execCommand !== 'function')
     return false
 
@@ -358,7 +358,7 @@ function replaceRange(rangeStart: number, rangeEnd: number, text: string, caretS
   el.focus()
   el.setSelectionRange(rangeStart, rangeEnd)
 
-  if (!tryExecInsert(el, text)) {
+  if (!tryExecInsert(text)) {
     const value = modelValue ?? ''
     updateValue(value.slice(0, rangeStart) + text + value.slice(rangeEnd))
   }

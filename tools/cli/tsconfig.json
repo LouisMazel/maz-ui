@@ -1,24 +1,4 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "target": "ESNext",
-    "lib": [
-      "ESNext"
-    ],
-    "types": ["node"]
-  },
-  "include": [
-    "bin/**/*",
-    "src/**/*",
-    "*.config.mts",
-    "*.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+  "extends": "../../tsconfig.node.json",
+  "include": ["bin/**/*", "src/**/*", "*.config.mts", "*.js"]
 }

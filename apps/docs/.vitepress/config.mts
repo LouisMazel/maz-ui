@@ -230,6 +230,7 @@ export default defineConfig<DefaultTheme.Config>({
         transform(code, id) {
           if (/\.md(?:$|\?vue)/.test(id))
             return code.replaceAll(/(_?resolveComponent\d*)\("(Maz\w+)",\s*(?:true|!0)\)/g, '$1("$2")')
+          return undefined
         },
       },
       Components({

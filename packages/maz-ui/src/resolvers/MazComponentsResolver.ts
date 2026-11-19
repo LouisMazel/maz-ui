@@ -24,6 +24,8 @@ export function MazComponentsResolver(): ComponentResolver {
       else if (mazRegexKebabCase.test(name)) {
         return { from: `maz-ui/components/${pascalCase(name)}` }
       }
+
+      return undefined
     },
   }
 }

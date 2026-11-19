@@ -294,6 +294,7 @@ function uploadFile(formData: FormData) {
       event: null,
       code: 'FILE_UPLOAD_ERROR',
     })
+    return undefined
   }
 }
 
