@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
+import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, hasInjectionContext, inject } from 'vue'
 
@@ -125,7 +125,7 @@ export function useTheme() {
     /**
      * Strategy used to apply the theme
      */
-    strategy: computed(() => themeState.value?.strategy as Required<ThemeState>['strategy']),
+    strategy: computed(() => themeState.value?.strategy as Strategy),
     /**
      * Update the theme
      * @param preset The new theme preset
@@ -156,12 +156,12 @@ export function useTheme() {
      * Mode
      * @description Supported themes - Can be 'both', 'light' or 'dark'
      */
-    mode: computed(() => themeState.value?.mode as Required<ThemeState>['mode']),
+    mode: computed(() => themeState.value?.mode as ThemeMode),
     /**
      * Dark mode strategy
      * @description Strategy used to apply the dark mode - Can be 'class' or 'media'
      */
-    darkModeStrategy: computed(() => themeState.value?.darkModeStrategy as Required<ThemeState>['darkModeStrategy']),
+    darkModeStrategy: computed(() => themeState.value?.darkModeStrategy as DarkModeStrategy),
     /**
      * @deprecated use `preset` instead
      */

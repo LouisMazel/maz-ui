@@ -1,6 +1,6 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
-import { appendDeclarationExtensions, getExternalDependencies, ViteExportNames, VitePreNestedCss } from '@maz-ui/vite-config'
+import { getExternalDependencies, ViteExportNames, VitePreNestedCss } from '@maz-ui/vite-config'
 import SvgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
@@ -62,16 +62,16 @@ export default defineConfig(({ mode }) => {
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
-        outDirs: [
-          resolver('dist'),
-        ],
+        outDirs: {
+          dir: resolver('dist'),
+          moduleFormat: 'esm',
+        },
         // vue-tsc expands the instance types of the template refs, whose `$watch` uses `OnCleanup`: `vue` does not
         // re-export it, the declaration would import `@vue/reactivity`, which the consumers do not declare
         beforeWriteFile: (filePath, content) => ({
           filePath,
           content: content.replaceAll('import(\'@vue/reactivity\').OnCleanup', '((cleanupFn: () => void) => void)'),
         }),
-        afterBuild: appendDeclarationExtensions,
       }),
       ViteCompileStyles(),
       codecovVitePlugin({
