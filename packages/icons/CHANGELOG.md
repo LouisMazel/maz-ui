@@ -1,19 +1,5 @@
 # Change Log
 
-## v6.0.0-beta.0 (2026-11-19)
-
-[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0...v6.0.0-beta.0)
-
-### 🚀 Features
-
-- **icons:** Use the icons by name without maz-ui ([778a630e2](https://github.com/LouisMazel/maz-ui/commit/778a630e2))
-
-  `MazUiIcons()` of `@maz-ui/icons/vite` and `MazIconPrimitive` of `@maz-ui/icons/vue` render the icons by name in any Vue app or library: the names of `@maz-ui/icons` and of your SVG folders, typed and bundled with the files that use them. Write `~` before a name to load it on demand, `defaultIcons` keeps some sets of `@maz-ui/icons` (`['icons', 'logos']`), and the `maz-ui-icons types` command writes the types without a build.
-
-### ❤️ Contributors
-
-- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
-
 ## v5.7.0 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0)

@@ -1,19 +1,5 @@
 # Change Log
 
-## v6.0.0-beta.0 (2026-11-19)
-
-[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0...v6.0.0-beta.0)
-
-### 🚀 Features
-
-- **nuxt:** Auto-import MazIconPrimitive ([cdd60bea9](https://github.com/LouisMazel/maz-ui/commit/cdd60bea9))
-
-  `MazIconPrimitive` is auto-imported, and `icons.defaultIcons` keeps some sets of `@maz-ui/icons`.
-
-### ❤️ Contributors
-
-- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
-
 ## v5.7.0 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0)

@@ -1,19 +1,5 @@
 # Changelog
 
-## @maz-ui/vite-svg-loader@0.2.0-beta.0 (2026-11-19)
-
-[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/vite-svg-loader@0.1.0...@maz-ui/vite-svg-loader@0.2.0-beta.0)
-
-### 🚀 Features
-
-- **vite-svg-loader:** Add the ?svg and ?uri queries ([b87745ef3](https://github.com/LouisMazel/maz-ui/commit/b87745ef3))
-
-  `?svg` is `?raw` and `?uri` is `?url`, typed as an SVG string and a URL: an icon prop with `strict` accepts them.
-
-### ❤️ Contributors
-
-- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
-
 ## @maz-ui/vite-svg-loader@0.1.0 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/vite-svg-loader@0.1.0-beta.0...@maz-ui/vite-svg-loader@0.1.0)
