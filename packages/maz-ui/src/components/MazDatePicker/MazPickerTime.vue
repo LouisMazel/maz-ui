@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs/esm'
+import type { Dayjs } from 'dayjs/esm/index.js'
 import type { PropType } from 'vue'
-import type { MazColor } from '../types'
-import type { MazDatePickerValue } from './types'
-import type { DateTimeFormatOptions } from './utils'
-import dayjs from 'dayjs/esm'
+import type { MazColor } from '../types.ts'
+import type { MazDatePickerValue } from './types.ts'
+import type { DateTimeFormatOptions } from './utils.ts'
+import dayjs from 'dayjs/esm/index.js'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 import MazBtn from '../MazBtn.vue'
-import { findNearestNumberInList, scrollToTarget } from './utils'
+import { findNearestNumberInList, scrollToTarget } from './utils.ts'
 
 type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 

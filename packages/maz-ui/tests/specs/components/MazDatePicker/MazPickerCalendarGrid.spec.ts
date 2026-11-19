@@ -1,8 +1,8 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazPickerCalendarGrid from '@components/MazDatePicker/MazPickerCalendarMonth/MazPickerCalendarGrid.vue'
 import { mount } from '@vue/test-utils'
-import dayjs from 'dayjs/esm'
-import isBetween from 'dayjs/esm/plugin/isBetween'
+import dayjs from 'dayjs/esm/index.js'
+import isBetween from 'dayjs/esm/plugin/isBetween/index.js'
 
 dayjs.extend(isBetween)
 

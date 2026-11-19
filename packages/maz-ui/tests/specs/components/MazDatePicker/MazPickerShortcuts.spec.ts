@@ -1,7 +1,7 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazPickerShortcuts from '@components/MazDatePicker/MazPickerShortcuts.vue'
 import { mount } from '@vue/test-utils'
-import dayjs from 'dayjs/esm'
+import dayjs from 'dayjs/esm/index.js'
 
 describe('given MazPickerShortcuts component', () => {
   const defaultShortcuts = [

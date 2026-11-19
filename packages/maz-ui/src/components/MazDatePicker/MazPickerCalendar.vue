@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs/esm'
-import type { MazColor } from '../types'
-import type { MazDatePickerShortcut, MazDatePickerValue } from './types'
-import dayjs from 'dayjs/esm'
+import type { Dayjs } from 'dayjs/esm/index.js'
+import type { MazColor } from '../types.ts'
+import type { MazDatePickerShortcut, MazDatePickerValue } from './types.ts'
+import dayjs from 'dayjs/esm/index.js'
 import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
 
 const props = defineProps<{

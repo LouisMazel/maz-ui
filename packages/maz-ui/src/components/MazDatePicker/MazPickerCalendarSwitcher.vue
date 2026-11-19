@@ -3,7 +3,7 @@ import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs/esm'
+import dayjs from 'dayjs/esm/index.js'
 
 import { computed } from 'vue'
 import MazBtn from '../MazBtn.vue'
