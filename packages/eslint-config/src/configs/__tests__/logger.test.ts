@@ -1,6 +1,6 @@
-import type { LogLevel } from '../logger'
+import type { LogLevel } from '../logger.ts'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { createLogger } from '../logger'
+import { createLogger } from '../logger.ts'
 
 // consola writes through process.stdout/stderr. Stub them so the test runner
 // stays clean and we can verify visibility for each level.

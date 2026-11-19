@@ -1,10 +1,10 @@
 import type { Mock } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { isClient } from '../isClient'
-import { isStandaloneMode } from '../isStandaloneMode'
+import { isClient } from '../isClient.ts'
+import { isStandaloneMode } from '../isStandaloneMode.ts'
 
 // Mock the isClient module
-vi.mock('../isClient', () => ({
+vi.mock('../isClient.ts', () => ({
   isClient: vi.fn(),
 }))
 

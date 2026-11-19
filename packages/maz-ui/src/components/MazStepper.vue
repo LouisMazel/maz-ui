@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Component } from 'vue'
 import type { MazIconValue } from './MazIcon.vue'
-import type { MazColor, MazIconString } from './types'
+import type { MazColor, MazIconString } from './types.ts'
 import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
 import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
 import { MazExclamationTriangle } from '@maz-ui/icons/lazy/MazExclamationTriangle'
@@ -11,7 +11,7 @@ import {
   ref,
   useSlots,
 } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 
 const {
   modelValue,

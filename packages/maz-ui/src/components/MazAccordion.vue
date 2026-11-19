@@ -2,7 +2,7 @@
 import type { ClassValue } from 'vue'
 import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
 import { computed, ref, useSlots } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 
 import MazExpandAnimation from './MazExpandAnimation.vue'

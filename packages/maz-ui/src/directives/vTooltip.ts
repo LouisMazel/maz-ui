@@ -2,7 +2,7 @@ import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 import type { MazPopoverPosition, MazPopoverProps, MazPopoverTrigger } from '../components/MazPopover.vue'
 import { h, nextTick, ref, watch } from 'vue'
 import MazPopover from '../components/MazPopover.vue'
-import { useMountComponent } from '../composables/useMountComponent'
+import { useMountComponent } from '../composables/useMountComponent.ts'
 
 interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
   /**

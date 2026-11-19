@@ -1,6 +1,6 @@
 import process from 'node:process'
-import * as loggerModule from '../logger'
-import { printBanner } from '../printBanner'
+import * as loggerModule from '../logger.ts'
+import { printBanner } from '../printBanner.ts'
 
 describe('given printBanner function', () => {
   let brandSpy: ReturnType<typeof vi.spyOn>

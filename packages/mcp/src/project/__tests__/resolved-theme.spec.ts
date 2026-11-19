@@ -1,10 +1,10 @@
-import type { ProjectPreset } from '../preset'
+import type { ProjectPreset } from '../preset.ts'
 
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { ocean } from '@maz-ui/themes/presets/ocean'
 import { mergePresets } from '@maz-ui/themes/utils/preset-merger'
 import { resolvePreset } from '@maz-ui/themes/utils/resolve-preset'
-import { projectPresetValue, renderEffectiveColors, renderResolvedTheme, themeWarnings } from '../resolved-theme'
+import { projectPresetValue, renderEffectiveColors, renderResolvedTheme, themeWarnings } from '../resolved-theme.ts'
 
 function projectPreset(preset: Partial<ProjectPreset>): ProjectPreset {
   return { file: 'src/preset.ts', overrides: {}, ...preset }

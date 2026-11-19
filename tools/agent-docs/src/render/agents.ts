@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { stringifyFrontmatter } from '../markdown/frontmatter'
+import { stringifyFrontmatter } from '../markdown/frontmatter.ts'
 
 export interface AgentContent {
   /** Complete rules: the AGENTS.md section, the skill and the rules page */

@@ -1,7 +1,7 @@
 import type { App } from 'vue'
-import type { MazUiTranslationsInstance } from '../../types'
-import { getActiveTranslations, setActiveTranslations } from '../active-instance'
-import { injectTranslations } from '../inject'
+import type { MazUiTranslationsInstance } from '../../types.ts'
+import { getActiveTranslations, setActiveTranslations } from '../active-instance.ts'
+import { injectTranslations } from '../inject.ts'
 
 const { isServer } = vi.hoisted(() => ({
   isServer: vi.fn(() => false),

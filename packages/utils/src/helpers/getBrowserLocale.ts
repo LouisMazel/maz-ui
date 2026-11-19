@@ -1,4 +1,4 @@
-import { isServer } from './isServer'
+import { isServer } from './isServer.ts'
 
 export function getBrowserLocale(): string | undefined {
   try {

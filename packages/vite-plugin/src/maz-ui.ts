@@ -1,9 +1,9 @@
 import type { Plugin } from 'vite'
-import type { MazUiIconsOptions } from './icons'
-import type { MazUiPurgeCssOptions } from './purge-css'
-import { MazUiIcons } from './icons'
-import { MazUiPurgeCss } from './purge-css'
-import { MazUiThemePresets } from './theme-presets'
+import type { MazUiIconsOptions } from './icons/index.ts'
+import type { MazUiPurgeCssOptions } from './purge-css/index.ts'
+import { MazUiIcons } from './icons/index.ts'
+import { MazUiPurgeCss } from './purge-css/index.ts'
+import { MazUiThemePresets } from './theme-presets/index.ts'
 
 export interface MazUiOptions {
   /**

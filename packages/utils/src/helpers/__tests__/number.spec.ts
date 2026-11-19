@@ -1,4 +1,4 @@
-import { formatNumber } from '../formatNumber'
+import { formatNumber } from '../formatNumber.ts'
 
 describe('formatNumber', () => {
   it('should return the formatted number with default options', () => {

@@ -1,7 +1,7 @@
-import type { TranslationsStore } from '../states'
-import type { MazUiTranslationsSchema, TranslationKey } from '../types'
-import { legacyStore } from '../states'
-import { loadLocale } from './locales'
+import type { TranslationsStore } from '../states.ts'
+import type { MazUiTranslationsSchema, TranslationKey } from '../types.ts'
+import { legacyStore } from '../states.ts'
+import { loadLocale } from './locales.ts'
 
 export function getMessage(obj: any, path: string): any {
   return path.split('.').reduce((current, key) => current?.[key], obj)

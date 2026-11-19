@@ -1,18 +1,18 @@
-import type { TranslationsStore } from '../states'
-import type { MazUiTranslationsMessages, MazUiTranslationsSchema } from '../types'
-import en from '../locales/en'
-import { legacyStore } from '../states'
-import { mergeMessages } from './messages'
+import type { TranslationsStore } from '../states.ts'
+import type { MazUiTranslationsMessages, MazUiTranslationsSchema } from '../types.ts'
+import en from '../locales/en.ts'
+import { legacyStore } from '../states.ts'
+import { mergeMessages } from './messages.ts'
 
 /** Default messages loaded on demand. English is bundled: it is the default locale and the last fallback, so the first render never shows keys. */
 const lazyDefaultLocales: Record<string, () => Promise<{ default: MazUiTranslationsSchema }>> = {
-  'de': () => import('./../locales/de'),
-  'es': () => import('./../locales/es'),
-  'fr': () => import('./../locales/fr'),
-  'it': () => import('./../locales/it'),
-  'ja': () => import('./../locales/ja'),
-  'pt': () => import('./../locales/pt'),
-  'zh-CN': () => import('./../locales/zh-CN'),
+  'de': () => import('./../locales/de.ts'),
+  'es': () => import('./../locales/es.ts'),
+  'fr': () => import('./../locales/fr.ts'),
+  'it': () => import('./../locales/it.ts'),
+  'ja': () => import('./../locales/ja.ts'),
+  'pt': () => import('./../locales/pt.ts'),
+  'zh-CN': () => import('./../locales/zh-CN.ts'),
 }
 
 /** Default messages are static: the cache is shared by every instance and every server request. */

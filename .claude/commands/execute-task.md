@@ -181,7 +181,7 @@ maz-ui est une **librairie publique**. La doc consommateur a le même statut que
 
 - `packages/maz-ui/README.md`
 - `packages/nuxt/README.md`
-- `packages/icons/README.md`, `packages/themes/README.md`, `packages/translations/README.md`, `packages/utils/README.md`, `packages/node/README.md`, `packages/maz-cli/README.md`
+- `packages/icons/README.md`, `packages/themes/README.md`, `packages/translations/README.md`, `packages/utils/README.md`, `packages/node/README.md`
 - Tout README de package que tu touches doit refléter l'API publique réelle (install, usage minimal, lien vers la doc complète).
 
 **CHANGELOG** : géré par `relizy` au release → ne pas toucher manuellement sauf demande explicite.
@@ -255,7 +255,7 @@ Convention relizy enforced (`relizy.config.ts`) :
 
 - Format : `type(scope): subject`
 - Types valides : `feat`, `fix`, `perf`, `refactor`, `test`, `docs`, `style`, `chore`, `clean`, `ci`, `revert`, `build`
-- Scopes valides : `docs`, `release`, `deps`, `nuxt-app`, `vue-app`, `cli`, `maz-ui`, `@maz-ui/nuxt`, `@maz-ui/icons`, `@maz-ui/cli`, `@maz-ui/eslint-config`, `@maz-ui/stylelint-config`, `@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/utils`, `@maz-ui/node`, `@maz-ui/mcp`, `@maz-ui/vite-config`, `@maz-ui/upgrade`
+- Scopes valides : `docs`, `release`, `deps`, `nuxt-app`, `vue-app`, `cli`, `maz-ui`, `@maz-ui/nuxt`, `@maz-ui/icons`, `@maz-ui/eslint-config`, `@maz-ui/stylelint-config`, `@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/utils`, `@maz-ui/node`, `@maz-ui/mcp`, `@maz-ui/vite-config`, `@maz-ui/upgrade`
 - Sujet : minuscule au début, pas de point final, ≤ 200 char
 - **Pas de Co-Authored-By**
 

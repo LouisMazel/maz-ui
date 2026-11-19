@@ -1,13 +1,13 @@
 import type { Ref } from 'vue'
-import type { MazUiThemeOptions } from '../plugin'
-import type { ColorMode, ThemePreset, ThemePresetName, ThemeState } from '../types'
+import type { MazUiThemeOptions } from '../plugin.ts'
+import type { ColorMode, ThemePreset, ThemePresetName, ThemeState } from '../types/index.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
-import { injectColorSchemeMeta, resolveColorSchemeContent } from './color-scheme-meta'
-import { getPreset, warnSavedPresetFallback } from './get-preset'
-import { injectThemeCSS } from './inject-theme-css'
-import { mergePresets } from './preset-merger'
-import { DEFAULT_PRESET_NAME, resolveThemePresets } from './theme-head'
+import { injectColorSchemeMeta, resolveColorSchemeContent } from './color-scheme-meta.ts'
+import { getPreset, warnSavedPresetFallback } from './get-preset.ts'
+import { injectThemeCSS } from './inject-theme-css.ts'
+import { mergePresets } from './preset-merger.ts'
+import { DEFAULT_PRESET_NAME, resolveThemePresets } from './theme-head.ts'
 import {
   COLOR_MODE_COOKIE,
   getDefaultColorMode,
@@ -19,9 +19,9 @@ import {
   resolveIsDark,
   savePresetPreference,
   saveSystemColorMode,
-} from './theme-preferences'
-import { updateDocumentClass } from './update-document-class'
-import { useMutationObserver } from './use-mutation-observer'
+} from './theme-preferences.ts'
+import { updateDocumentClass } from './update-document-class.ts'
+import { useMutationObserver } from './use-mutation-observer.ts'
 
 function noop() {}
 

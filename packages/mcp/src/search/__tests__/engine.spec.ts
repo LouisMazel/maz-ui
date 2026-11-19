@@ -1,5 +1,5 @@
-import { getKnowledge } from '../../__tests__/helpers'
-import { DocSearch, searchIcons } from '../engine'
+import { getKnowledge } from '../../__tests__/helpers.ts'
+import { DocSearch, searchIcons } from '../engine.ts'
 
 describe('given a DocSearch on the real bundle', () => {
   const search = new DocSearch(getKnowledge())

@@ -1,5 +1,5 @@
 import MazAnimatedCounter from '@components/MazAnimatedCounter.vue'
-import { IntersectionObserverMock } from '@tests/vitest-global.setup'
+import { IntersectionObserverMock } from '@tests/vitest-global.setup.ts'
 import { shallowMount } from '@vue/test-utils'
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'

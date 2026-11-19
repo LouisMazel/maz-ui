@@ -1,23 +1,9 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
-  "exclude": [
-    "dist",
-    "node_modules",
-    "../../node_modules",
-    "../maz-ui/**/*",
-    "../utils/**/*",
-    "../node/**/*",
-    "../themes/**/*",
-    "../translations/**/*",
-    "../upgrade/**/*",
-    "../mcp/**/*",
-    "../icons/**/*",
-    "../eslint-config/**/*",
-    "../../tools/**/*",
-    "../stylelint-config/**/*",
-    "../maz-cli/**/*",
-    "../vite-plugin/**/*",
-    "../vite-svg-loader/**/*",
-    "../../apps/**/*"
-  ]
+  "references": [
+    { "path": "./.nuxt/tsconfig.app.json" },
+    { "path": "./.nuxt/tsconfig.server.json" },
+    { "path": "./.nuxt/tsconfig.shared.json" },
+    { "path": "./.nuxt/tsconfig.node.json" }
+  ],
+  "files": []
 }

@@ -1,14 +1,14 @@
-import type { TailwindTokens } from '../knowledge/schema'
-import type { ThemeTopic } from '../tools/get-theme-tokens'
-import type { PresetValue, ProjectPreset } from './preset'
-import type { ProjectStylesheet, ProjectToken } from './stylesheet'
+import type { TailwindTokens } from '../knowledge/schema.ts'
+import type { ThemeTopic } from '../tools/get-theme-tokens.ts'
+import type { PresetValue, ProjectPreset } from './preset.ts'
+import type { ProjectStylesheet, ProjectToken } from './stylesheet.ts'
 
 import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { globSync } from 'tinyglobby'
-import { readPresets } from './preset'
-import { isTailwindStylesheet, readStylesheet } from './stylesheet'
+import { readPresets } from './preset.ts'
+import { isTailwindStylesheet, readStylesheet } from './stylesheet.ts'
 
 export interface ProjectTheme {
   stylesheets: ProjectStylesheet[]

@@ -4,7 +4,8 @@ import type {
   FieldState,
   FormFieldOptions,
   FormSchema,
-} from './useFormValidator/types'
+  ValidationIssues,
+} from './useFormValidator/types.ts'
 
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { isEqual } from '@maz-ui/utils/helpers/isEqual'
@@ -14,16 +15,16 @@ import {
   findInteractiveElements,
   getValidationEvents,
   removeEventFromInteractiveElements,
-} from './useFormValidator/dom-events'
+} from './useFormValidator/dom-events.ts'
 import {
   fieldHasValidation,
   getContext,
   handleFieldBlur,
   hasModeIncludes,
   updateFieldState,
-} from './useFormValidator/state-management'
-import { setFieldValidationState } from './useFormValidator/validation'
-import { useFreezeValue } from './useFreezeValue'
+} from './useFormValidator/state-management.ts'
+import { setFieldValidationState } from './useFormValidator/validation.ts'
+import { useFreezeValue } from './useFreezeValue.ts'
 
 function resolveBindElement(node: unknown): HTMLElement | null {
   if (node instanceof HTMLElement) {
@@ -165,7 +166,7 @@ export function useFormField<
 
   return {
     hasError: computed(() => fieldState.value?.error ?? false),
-    errors: computed(() => fieldState.value?.errors ?? []),
+    errors: computed<ValidationIssues>(() => fieldState.value?.errors ?? []),
     errorMessage: computed(() => errorMessages.value[name]),
     isValid: computed(() => fieldState.value?.valid ?? false),
     isDirty: computed(() => fieldState.value?.dirty ?? false),

@@ -1,7 +1,7 @@
 import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { writeIconTypes } from '../writeIconTypes'
+import { writeIconTypes } from '../writeIconTypes.ts'
 
 describe('given the components of the icons', () => {
   describe('when their types are written', () => {

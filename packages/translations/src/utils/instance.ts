@@ -1,9 +1,9 @@
-import type { TranslationsStore } from '../states'
-import type { MazUiTranslationsInstance, MazUiTranslationsOptions, TranslationKey } from '../types'
+import type { TranslationsStore } from '../states.ts'
+import type { MazUiTranslationsInstance, MazUiTranslationsOptions, TranslationKey } from '../types.ts'
 import { toRaw } from 'vue'
-import { createTranslationsStore } from '../states'
-import { getAvailableLocales, getLoadedLocales, getMessages, isLocaleLoaded, isLocaleLoading, loadLocale, setLocale, setLocaleMessage } from './locales'
-import { mergeMessages, t } from './messages'
+import { createTranslationsStore } from '../states.ts'
+import { getAvailableLocales, getLoadedLocales, getMessages, isLocaleLoaded, isLocaleLoading, loadLocale, setLocale, setLocaleMessage } from './locales.ts'
+import { mergeMessages, t } from './messages.ts'
 
 export interface CreateMazUiTranslationsInternalOptions {
   /**

@@ -1,11 +1,11 @@
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
 import type { HTMLAttributes } from 'vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazSize } from './types.ts'
 import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
 import { computed, ref } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import MazIcon from './MazIcon.vue'
 
 export type MazCheckboxValue = string | number | boolean

@@ -1,5 +1,5 @@
-import { useWait } from '@composables/useWait'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useWait } from '@composables/useWait.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 
 describe('given useWait composable', () => {
   describe('when wait plugin is installed', () => {

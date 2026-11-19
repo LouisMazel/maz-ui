@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes, StyleValue } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor } from './types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 

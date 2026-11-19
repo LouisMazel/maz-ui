@@ -1,5 +1,5 @@
 import MazAnimatedElement from '@components/MazAnimatedElement.vue'
-import { IntersectionObserverMock } from '@tests/vitest-global.setup'
+import { IntersectionObserverMock } from '@tests/vitest-global.setup.ts'
 import { shallowMount } from '@vue/test-utils'
 
 function getLastIntersectionCallback(): IntersectionObserverCallback {

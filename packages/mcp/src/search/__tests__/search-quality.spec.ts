@@ -1,10 +1,10 @@
-import type { SearchCase } from './search-cases'
+import type { SearchCase } from './search-cases.ts'
 
 import { tmpdir } from 'node:os'
 import { resolve } from 'node:path'
-import { loadKnowledge } from '../../knowledge/load'
-import { DocSearch } from '../engine'
-import { HELD_OUT_CASES, NOISE_CASES, SEARCH_CASES } from './search-cases'
+import { loadKnowledge } from '../../knowledge/load.ts'
+import { DocSearch } from '../engine.ts'
+import { HELD_OUT_CASES, NOISE_CASES, SEARCH_CASES } from './search-cases.ts'
 
 const knowledge = loadKnowledge({
   bundledDir: resolve(__dirname, '../../../agent-docs'),

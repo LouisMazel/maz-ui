@@ -1,4 +1,4 @@
-import { formatCurrency } from '../formatCurrency'
+import { formatCurrency } from '../formatCurrency.ts'
 
 describe('formatCurrency', () => {
   it('formats a number as a currency', () => {

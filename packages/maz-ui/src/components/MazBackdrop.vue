@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
-import { holdInertBackground, releaseInertBackground } from '../utils/inertBackground'
+import { holdInertBackground, releaseInertBackground } from '../utils/inertBackground.ts'
 
 defineOptions({
   inheritAttrs: false,

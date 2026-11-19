@@ -4,7 +4,7 @@ import {
   getValidationEvents,
   removeEventFromInteractiveElements,
   scrollToError,
-} from '@composables/useFormValidator/dom-events'
+} from '@composables/useFormValidator/dom-events.ts'
 
 describe('given dom-events module', () => {
   describe('scrollToError', () => {

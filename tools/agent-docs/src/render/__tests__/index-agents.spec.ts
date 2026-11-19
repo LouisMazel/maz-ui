@@ -1,10 +1,10 @@
-import type { PackageDefinition } from '../../packages'
-import type { DocEntry } from '../../types'
+import type { PackageDefinition } from '../../packages.ts'
+import type { DocEntry } from '../../types.ts'
 
-import { parseFrontmatter } from '../../markdown/frontmatter'
-import { getSourcePaths } from '../../paths'
-import { loadAgentContent, renderAgentsMdSection, renderClaudeRule, renderRulesDoc, renderSkill, SKILL_DESCRIPTION } from '../agents'
-import { CATEGORY_ORDER, renderBundleIndex, renderFragmentIndex, renderLlmsFullTxt, renderLlmsTxt } from '../index'
+import { parseFrontmatter } from '../../markdown/frontmatter.ts'
+import { getSourcePaths } from '../../paths.ts'
+import { loadAgentContent, renderAgentsMdSection, renderClaudeRule, renderRulesDoc, renderSkill, SKILL_DESCRIPTION } from '../agents.ts'
+import { CATEGORY_ORDER, renderBundleIndex, renderFragmentIndex, renderLlmsFullTxt, renderLlmsTxt } from '../index.ts'
 
 function doc(overrides: Partial<DocEntry>): DocEntry {
   return {

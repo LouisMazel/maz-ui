@@ -58,7 +58,8 @@
     "test:unit:coverage": "vitest run --coverage",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
-    "typecheck": "nuxi typecheck --skipLibCheck"
+    "typecheck": "nuxi typecheck",
+    "check:published-types": "attw --pack . --profile esm-only"
   },
   "peerDependencies": {
     "@nuxt/schema": ">=3.4.0 <5.0.0",
@@ -85,6 +86,7 @@
     "maz-ui": "workspace:^"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@maz-ui/eslint-config": "workspace:^",
     "@nuxt/devtools": "catalog:",
     "@nuxt/module-builder": "^1.0.4",
@@ -114,6 +116,12 @@
         "outputs": [
           "{projectRoot}/dist",
           "{projectRoot}/agent-docs"
+        ]
+      },
+      "typecheck": {
+        "dependsOn": [
+          "^build",
+          "build"
         ]
       }
     }

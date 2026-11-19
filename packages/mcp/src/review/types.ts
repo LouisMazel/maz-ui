@@ -1,4 +1,4 @@
-import type { Knowledge } from '../knowledge/load'
+import type { Knowledge } from '../knowledge/load.ts'
 
 export type Severity = 'error' | 'warning' | 'info'
 

@@ -1,4 +1,4 @@
-import { MazUi } from '../maz-ui'
+import { MazUi } from '../maz-ui.ts'
 
 describe('given the MazUi plugin', () => {
   describe('when it has no option', () => {

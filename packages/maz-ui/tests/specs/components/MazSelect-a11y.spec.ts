@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import MazSelect from '@components/MazSelect.vue'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { runAxe } from '@tests/helpers/axe'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 

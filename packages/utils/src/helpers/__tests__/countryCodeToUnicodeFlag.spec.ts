@@ -1,4 +1,4 @@
-import { countryCodeToUnicodeFlag } from '../countryCodeToUnicodeFlag'
+import { countryCodeToUnicodeFlag } from '../countryCodeToUnicodeFlag.ts'
 
 describe('countryCodeToUnicodeFlag', () => {
   it('devrait retourner un drapeau Unicode pour la locale "fr"', () => {

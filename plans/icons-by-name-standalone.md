@@ -110,7 +110,7 @@ Un composant avec une prop typée `IconName` ou `IconString` doit être généri
 - `vite` et `svgo` : peers optionnels. Sans svgo, le plugin garde les SVG du projet tels quels et prévient une fois, quand il y a un dossier de SVG ;
 - `@maz-ui/vite-svg-loader` : à trancher, en dépendance (il tire svgo) ou en n'important que son `optimizeSvg` quand svgo est résolu.
 
-`@maz-ui/vite-plugin` dépend déjà de `@maz-ui/icons` : rien à ajouter. Lancer `node .github/scripts/check-deps.mjs` et `node .github/scripts/publish-exports.mjs` après.
+`@maz-ui/vite-plugin` dépend déjà de `@maz-ui/icons` : rien à ajouter. Lancer `node .github/scripts/check-deps.mts` et `node .github/scripts/publish-exports.mts` après.
 
 ## Tâches
 

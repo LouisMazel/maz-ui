@@ -1,5 +1,5 @@
 import MazAnimatedText from '@components/MazAnimatedText.vue'
-import { IntersectionObserverMock } from '@tests/vitest-global.setup'
+import { IntersectionObserverMock } from '@tests/vitest-global.setup.ts'
 import { mount } from '@vue/test-utils'
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'

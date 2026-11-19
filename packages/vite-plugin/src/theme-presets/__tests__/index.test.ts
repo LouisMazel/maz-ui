@@ -1,5 +1,5 @@
 import type { UserConfig } from 'vite'
-import { MazUiThemePresets, renderPresetRegistry } from '../index'
+import { MazUiThemePresets, renderPresetRegistry } from '../index.ts'
 
 const vite = vi.hoisted(() => ({ version: '8.3.8' }))
 

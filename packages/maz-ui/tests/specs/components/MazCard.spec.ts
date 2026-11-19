@@ -1,6 +1,6 @@
-import { MazGallery } from '@components/index'
+import { MazGallery } from '@components/index.ts'
 import MazCard from '@components/MazCard.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
 
 describe('components/MazCard.vue', () => {

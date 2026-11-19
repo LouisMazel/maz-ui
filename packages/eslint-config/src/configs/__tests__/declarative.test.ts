@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { baseRules } from '../base'
-import { markdown } from '../markdown'
-import { sonarjsRules, sonarjsTestRules } from '../sonarjs'
-import { testRules } from '../test'
-import { vueRules, vueSfcOnlyRules } from '../vue'
+import { baseRules } from '../base.ts'
+import { markdown } from '../markdown.ts'
+import { sonarjsRules, sonarjsTestRules } from '../sonarjs.ts'
+import { testRules } from '../test.ts'
+import { vueRules, vueSfcOnlyRules } from '../vue.ts'
 
 describe('baseRules', () => {
   it('downgrades `no-console` to `warn` in development', () => {

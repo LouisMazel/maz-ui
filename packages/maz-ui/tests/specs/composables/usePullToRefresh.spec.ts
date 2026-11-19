@@ -1,5 +1,5 @@
-import type { UsePullToRefreshOptions, UsePullToRefreshReturn } from '@composables/usePullToRefresh'
-import { usePullToRefresh } from '@composables/usePullToRefresh'
+import type { UsePullToRefreshOptions, UsePullToRefreshReturn } from '@composables/usePullToRefresh.ts'
+import { usePullToRefresh } from '@composables/usePullToRefresh.ts'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, nextTick, ref } from 'vue'
 

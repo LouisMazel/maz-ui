@@ -1,11 +1,11 @@
 <script lang="ts" setup generic="_T">
-import type { MazIconLike } from '../composables/useMazIconProps'
+import type { MazIconLike } from '../composables/useMazIconProps.ts'
 import type { MazIconProps } from './MazIcon.vue'
-import type { MazRoundedSize } from './types'
+import type { MazRoundedSize } from './types.ts'
 import { defineAsyncComponent } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useMazIconProps } from '../composables/useMazIconProps'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 
 export interface MazContainerProps {
   /**

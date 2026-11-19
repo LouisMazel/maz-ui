@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MazColor } from './types'
+import type { MazColor } from './types.ts'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export interface MazAnimatedTextProps {

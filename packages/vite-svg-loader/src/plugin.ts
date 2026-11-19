@@ -1,9 +1,9 @@
 import type { Plugin } from 'vite'
-import type { SvgoConfigOption } from './optimize'
+import type { SvgoConfigOption } from './optimize.ts'
 import { readFile } from 'node:fs/promises'
 import process from 'node:process'
-import { compileSvgComponent } from './compile'
-import { optimizeSvg } from './optimize'
+import { compileSvgComponent } from './compile.ts'
+import { optimizeSvg } from './optimize.ts'
 
 export type SvgImportType = 'url' | 'raw' | 'component'
 

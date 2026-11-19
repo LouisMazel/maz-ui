@@ -1,8 +1,8 @@
 import type { VueWrapper } from '@vue/test-utils'
 import type { Component } from 'vue'
-import * as components from '@components/index'
+import * as components from '@components/index.ts'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
-import { runAxe } from '@tests/helpers/axe'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 

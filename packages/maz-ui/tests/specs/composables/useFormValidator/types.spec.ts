@@ -1,4 +1,4 @@
-import type { FormValidatorField, FormValidatorSchema, FormValidatorState } from '@composables/useFormValidator/types'
+import type { FormValidatorField, FormValidatorSchema, FormValidatorState } from '@composables/useFormValidator/types.ts'
 
 describe('given FormValidatorField type', () => {
   describe('when used with string value', () => {

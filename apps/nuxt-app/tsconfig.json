@@ -1,14 +1,9 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "paths": {
-      "../../../../packages/maz-ui/dist/composables/index": [
-        "../../packages/maz-ui/dist/composables/index.d.ts"
-      ]
-    },
-    "allowImportingTsExtensions": true
-  },
-  "exclude": [
-    "../../packages/nuxt/**/*"
-  ]
+  "references": [
+    { "path": "./.nuxt/tsconfig.app.json" },
+    { "path": "./.nuxt/tsconfig.server.json" },
+    { "path": "./.nuxt/tsconfig.shared.json" },
+    { "path": "./.nuxt/tsconfig.node.json" }
+  ],
+  "files": []
 }

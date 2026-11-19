@@ -1,5 +1,5 @@
-import { useTimer } from '@composables/useTimer'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useTimer } from '@composables/useTimer.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 
 describe('useTimer', () => {
   it('should start and trigger callback when timeout is reached', async () => {

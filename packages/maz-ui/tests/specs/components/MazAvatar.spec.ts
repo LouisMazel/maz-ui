@@ -1,6 +1,6 @@
 import MazAvatar from '@components/MazAvatar.vue'
 import MazLazyImg from '@components/MazLazyImg.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 

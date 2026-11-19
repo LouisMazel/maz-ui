@@ -1,9 +1,9 @@
-import type { Finding } from '../index'
+import type { Finding } from '../index.ts'
 
 import { join } from 'node:path'
-import { cleanTempDirs, createTempDir, getKnowledge, writeFile } from '../../__tests__/helpers'
-import { detectFramework, displayPath, expandPaths, findProjectRoot, MAX_REVIEWED_FILES, projectIconNames, reviewFiles } from '../files'
-import { countBySeverity, detectKind, filterBySeverity, formatFindings, reviewCode } from '../index'
+import { cleanTempDirs, createTempDir, getKnowledge, writeFile } from '../../__tests__/helpers.ts'
+import { detectFramework, displayPath, expandPaths, findProjectRoot, MAX_REVIEWED_FILES, projectIconNames, reviewFiles } from '../files.ts'
+import { countBySeverity, detectKind, filterBySeverity, formatFindings, reviewCode } from '../index.ts'
 
 function review(code: string, filename?: string): Finding[] {
   return reviewCode(code, {

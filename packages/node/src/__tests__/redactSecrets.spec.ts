@@ -1,4 +1,4 @@
-import { redactError, redactSecrets } from '../redactSecrets'
+import { redactError, redactSecrets } from '../redactSecrets.ts'
 
 describe('given redactSecrets function', () => {
   describe('when the string contains an npm authToken', () => {

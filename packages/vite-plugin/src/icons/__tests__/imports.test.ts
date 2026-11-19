@@ -2,8 +2,8 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import MagicString from 'magic-string'
-import { loadIconIds, rewriteIconImports } from '../imports'
-import { write } from './fixtures'
+import { loadIconIds, rewriteIconImports } from '../imports.ts'
+import { write } from './fixtures.ts'
 
 const IDS = new Set(['MazHome', 'MazStar'])
 

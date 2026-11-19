@@ -1,10 +1,10 @@
 import type { ThemePreset } from '@maz-ui/themes'
-import type { PresetValue } from '../project/preset'
-import type { ReviewContext } from './types'
+import type { PresetValue } from '../project/preset.ts'
+import type { ReviewContext } from './types.ts'
 
 import { folio, mazUi, nova, obsidian, ocean, pristine } from '@maz-ui/themes/presets'
 import { evaluateColor, getContrastRatio } from '@maz-ui/themes/utils/resolve-preset'
-import { readPresets } from '../project/preset'
+import { readPresets } from '../project/preset.ts'
 
 const MIN_CONTRAST = 3
 const BRAND_ROLES = ['primary', 'secondary'] as const

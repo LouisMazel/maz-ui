@@ -3,7 +3,7 @@ import type { StyleValue } from 'vue'
 import type { MazLinkProps } from './MazLink.vue'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, nextTick, onMounted, ref, useSlots } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazLink from './MazLink.vue'
 
 export interface MazReadMoreProps {

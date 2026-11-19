@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor, MazRoundedSize, MazSize } from './types'
+import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, onBeforeUnmount, ref, useTemplateRef } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 import MazBadge from './MazBadge.vue'
 

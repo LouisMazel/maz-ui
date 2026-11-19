@@ -1,7 +1,7 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { getComponentList } from '../getComponentList'
+import { getComponentList } from '../getComponentList.ts'
 
 describe('given a folder of components', () => {
   let dir: string

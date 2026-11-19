@@ -1,9 +1,9 @@
 import type { ResolvedConfig } from 'vite'
-import type { PurgeManifest } from '../manifest'
+import type { PurgeManifest } from '../manifest.ts'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import { MazUiPurgeCss } from '../index'
+import { MazUiPurgeCss } from '../index.ts'
 
 interface Hooks {
   configResolved: (config: ResolvedConfig) => void

@@ -1,4 +1,4 @@
-import { getRegisteredIcon, registerIcon, registerIcons } from '../registry'
+import { getRegisteredIcon, registerIcon, registerIcons } from '../registry.ts'
 
 const STAR = '<svg viewBox="0 0 24 24"><path d="M0 0"/></svg>'
 
@@ -32,7 +32,7 @@ describe('given the icon registry', () => {
     it('then the icons are shared through globalThis', async () => {
       registerIcon('test-shared', STAR)
       vi.resetModules()
-      const copy = await import('../registry')
+      const copy = await import('../registry.ts')
 
       expect(copy.getRegisteredIcon('test-shared')).toBe(STAR)
     })

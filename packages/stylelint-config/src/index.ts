@@ -1,15 +1,15 @@
 import type { Plugin } from 'stylelint'
-import type { Logger } from './configs/logger'
-import type { MazStylelintOptions, StylelintConfig, StylelintOverride } from './types'
+import type { Logger } from './configs/logger.ts'
+import type { MazStylelintOptions, StylelintConfig, StylelintOverride } from './types.ts'
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { baseRules } from './configs/base'
-import { GLOBAL_IGNORES } from './configs/global'
-import { createLogger } from './configs/logger'
-import { LOGICAL_PLUGIN, logicalRules } from './configs/logical'
-import { scssRules } from './configs/scss'
+import { baseRules } from './configs/base.ts'
+import { GLOBAL_IGNORES } from './configs/global.ts'
+import { createLogger } from './configs/logger.ts'
+import { LOGICAL_PLUGIN, logicalRules } from './configs/logical.ts'
+import { scssRules } from './configs/scss.ts'
 import {
   TAILWIND_POLICY_PLUGINS,
   tailwindAtRuleNoUnknown,
@@ -17,7 +17,7 @@ import {
   tailwindPluginRecommended,
   tailwindPluginStrict,
   tailwindRules,
-} from './configs/tailwind'
+} from './configs/tailwind.ts'
 
 type StylelintPluginEntry = string | Plugin
 
@@ -371,10 +371,10 @@ export function defineConfig(options: MazStylelintOptions = {}): StylelintConfig
   }
 }
 
-export { baseRules } from './configs/base'
-export { GLOBAL_IGNORES } from './configs/global'
-export { logicalRules } from './configs/logical'
-export { scssRules } from './configs/scss'
+export { baseRules } from './configs/base.ts'
+export { GLOBAL_IGNORES } from './configs/global.ts'
+export { logicalRules } from './configs/logical.ts'
+export { scssRules } from './configs/scss.ts'
 export {
   TAILWIND_AT_RULES,
   tailwindAtRuleNoUnknown,
@@ -382,5 +382,5 @@ export {
   tailwindPluginRecommended,
   tailwindPluginStrict,
   tailwindRules,
-} from './configs/tailwind'
-export type { MazStylelintOptions, StylelintConfig, StylelintOrderStrategy, StylelintOverride, StylelintRules } from './types'
+} from './configs/tailwind.ts'
+export type { MazStylelintOptions, StylelintConfig, StylelintOrderStrategy, StylelintOverride, StylelintRules } from './types.ts'

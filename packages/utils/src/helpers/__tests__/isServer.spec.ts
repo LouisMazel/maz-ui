@@ -1,4 +1,4 @@
-import { isServer } from '../isServer'
+import { isServer } from '../isServer.ts'
 
 describe('given isServer function', () => {
   describe('when running in jsdom environment', () => {

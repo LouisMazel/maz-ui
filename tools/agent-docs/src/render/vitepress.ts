@@ -1,7 +1,7 @@
-import type { ComponentApi, OutputFile } from '../types'
+import type { ComponentApi, OutputFile } from '../types.ts'
 
-import { pascalToKebab } from '../utils/strings'
-import { modelDirective } from './api'
+import { pascalToKebab } from '../utils/strings.ts'
+import { modelDirective } from './api.ts'
 
 const HTML_ATTRIBUTE_PROPS = new Set(['class', 'style'])
 

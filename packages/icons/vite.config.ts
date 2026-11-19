@@ -9,8 +9,8 @@ import dts from 'vite-plugin-dts'
 
 import pkg from './package.json' with { type: 'json' }
 
-import { generateIcons } from './utils/generateIcons'
-import { writeIconTypes } from './utils/writeIconTypes'
+import { generateIcons } from './utils/generateIcons.ts'
+import { writeIconTypes } from './utils/writeIconTypes.ts'
 
 // Before the entries are listed: the variants of the icons are generated, not versioned
 generateIcons({ root: import.meta.dirname })

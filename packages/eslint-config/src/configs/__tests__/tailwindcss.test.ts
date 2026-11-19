@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { mazPlugin } from '../../plugin'
-import { TAILWINDCSS_DEFAULT_FILES, tailwindcssConfigs } from '../tailwindcss'
+import { mazPlugin } from '../../plugin.ts'
+import { TAILWINDCSS_DEFAULT_FILES, tailwindcssConfigs } from '../tailwindcss.ts'
 
 describe('tailwindcssConfigs', () => {
   it('returns a single flat-config block scoped to the default files', () => {

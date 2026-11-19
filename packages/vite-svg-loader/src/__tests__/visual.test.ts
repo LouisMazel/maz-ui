@@ -2,7 +2,7 @@ import { Buffer } from 'node:buffer'
 import { readdirSync, readFileSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
 import sharp from 'sharp'
-import { optimizeSvg } from '../optimize'
+import { optimizeSvg } from '../optimize.ts'
 
 const ICONS_DIR = resolve(import.meta.dirname, '../../../icons')
 const CORPUS = [

@@ -38,7 +38,7 @@ Définir les variants (`color` x `size` x `variant`) via une config type-safe (`
 ## Priorité basse - Stratégique
 
 - **`@maz-ui/forms`** : générateur de formulaires piloté par un schéma (Standard Schema, sur la base de `useFormValidator`). PR en cours : #1437.
-- **Distribution "registry" à la shadcn** : `npx maz add button` qui copie le code dans le projet. Point de départ : `maz-cli`.
+- **Distribution "registry" à la shadcn** : `npx maz add button` qui copie le code dans le projet. Point de départ : l'ancien `maz-cli` (supprimé, dans l'historique git).
 - **Tests de régression visuelle** (Playwright screenshots, éventuellement Histoire / Storybook).
 - **Container queries** (`@container` de Tailwind v4) pour rendre `MazCard` / `MazTable` responsives à leur conteneur.
 

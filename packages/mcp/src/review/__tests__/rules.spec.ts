@@ -1,10 +1,10 @@
-import type { ComponentApi } from '../../knowledge/schema'
-import type { Finding, Framework } from '../index'
+import type { ComponentApi } from '../../knowledge/schema.ts'
+import type { Finding, Framework } from '../index.ts'
 
-import { getKnowledge } from '../../__tests__/helpers'
-import { Knowledge } from '../../knowledge/load'
-import { reviewCode } from '../index'
-import { destructuredNames, propSuggestions } from '../template'
+import { getKnowledge } from '../../__tests__/helpers.ts'
+import { Knowledge } from '../../knowledge/load.ts'
+import { reviewCode } from '../index.ts'
+import { destructuredNames, propSuggestions } from '../template.ts'
 
 function withoutTailwind(): Knowledge {
   return new Knowledge(getKnowledge().fragments.map(loaded => ({

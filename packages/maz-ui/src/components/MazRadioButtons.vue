@@ -1,12 +1,12 @@
 <script lang="ts" setup generic="T extends string | number | boolean, Option extends MazRadioButtonsOption<T>">
 import type { CSSProperties, HTMLAttributes } from 'vue'
-import type { MazColor, MazNeutralColor, MazSize } from './types'
+import type { MazColor, MazNeutralColor, MazSize } from './types.ts'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { computed } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazIcon from './MazIcon.vue'
-import { getColor } from './types'
+import { getColor } from './types.ts'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
   /** The label of the option */

@@ -1,4 +1,4 @@
-import type { NamedToken, TailwindManifest, TailwindUtility, ThemeColorToken } from '../types'
+import type { NamedToken, TailwindManifest, TailwindUtility, ThemeColorToken } from '../types.ts'
 
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'

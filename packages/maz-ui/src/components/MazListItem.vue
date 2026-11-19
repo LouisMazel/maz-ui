@@ -3,9 +3,9 @@ import type { HTMLAttributes } from 'vue'
 import type { MazListSize } from './MazList.vue'
 import { MazChevronRight } from '@maz-ui/icons/lazy/MazChevronRight'
 import { computed, defineAsyncComponent, inject, useSlots } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { hasSlotContent } from '../utils/hasSlotContent'
-import { resolveLinkComponent } from '../utils/resolveLinkComponent'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 import { mazListKey } from './MazList.vue'
 
 export interface MazListItemProps {

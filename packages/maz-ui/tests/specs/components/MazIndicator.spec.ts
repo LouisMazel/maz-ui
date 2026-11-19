@@ -1,5 +1,5 @@
 import MazIndicator from '@components/MazIndicator.vue'
-import { runAxe } from '@tests/helpers/axe'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { mount } from '@vue/test-utils'
 
 describe('given MazIndicator component', () => {

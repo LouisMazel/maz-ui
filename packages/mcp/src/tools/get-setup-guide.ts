@@ -1,8 +1,8 @@
-import type { ServerContext } from '../context'
+import type { ServerContext } from '../context.ts'
 
 import { z } from 'zod'
-import { findSection, linksToDocIds, sectionContent, stripFrontmatter } from './markdown'
-import { defineTool } from './types'
+import { findSection, linksToDocIds, sectionContent, stripFrontmatter } from './markdown.ts'
+import { defineTool } from './types.ts'
 
 export interface GetSetupGuideArgs {
   framework: 'vue' | 'nuxt'

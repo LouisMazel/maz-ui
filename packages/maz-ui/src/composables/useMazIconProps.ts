@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { MazIconProps } from '../components/MazIcon.vue'
-import type { MazIconLike, ResolvedMazIconProps, UseMazIconPropsOptions } from '../utils/resolveMazIconProps'
+import type { MazIconLike, ResolvedMazIconProps, UseMazIconPropsOptions } from '../utils/resolveMazIconProps.ts'
 import { computed, toValue } from 'vue'
-import { resolveMazIconProps } from '../utils/resolveMazIconProps'
+import { resolveMazIconProps } from '../utils/resolveMazIconProps.ts'
 
-export type { MazIconLike, ResolvedMazIconProps, UseMazIconPropsOptions } from '../utils/resolveMazIconProps'
+export type { MazIconLike, ResolvedMazIconProps, UseMazIconPropsOptions } from '../utils/resolveMazIconProps.ts'
 
 /**
  * Normalize a flexible icon prop into a fully-formed object that can be

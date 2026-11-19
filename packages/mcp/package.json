@@ -60,11 +60,13 @@
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "test:unit": "pnpm generate:docs && vitest run",
     "test:unit:watch": "pnpm generate:docs && vitest watch",
     "test:unit:coverage": "pnpm generate:docs && vitest run --coverage"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@babel/parser": "^8.1.2",
     "@babel/types": "^8.1.2",
     "@maz-ui/eslint-config": "workspace:^",

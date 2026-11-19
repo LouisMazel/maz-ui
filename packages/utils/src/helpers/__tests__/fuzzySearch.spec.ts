@@ -1,4 +1,4 @@
-import { createFuzzySearch, fuzzySearch, highlightMatches } from '../fuzzySearch'
+import { createFuzzySearch, fuzzySearch, highlightMatches } from '../fuzzySearch.ts'
 
 const countries = [
   { code: 'FR', name: 'France' },

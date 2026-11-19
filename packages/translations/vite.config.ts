@@ -40,7 +40,10 @@ export default defineConfig((option) => {
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
-        outDirs: resolver('dist'),
+        outDirs: {
+          dir: resolver('dist'),
+          moduleFormat: 'esm',
+        },
         exclude: ['src/**/__tests__/**/*', 'src/**/*.spec.ts', 'src/**/*.test.ts'],
         include: ['src/**/*.ts'],
       }),

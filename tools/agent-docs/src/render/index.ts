@@ -1,7 +1,7 @@
-import type { PackageDefinition } from '../packages'
-import type { DocCategory, DocEntry } from '../types'
+import type { PackageDefinition } from '../packages.ts'
+import type { DocCategory, DocEntry } from '../types.ts'
 
-import { truncate } from '../utils/strings'
+import { truncate } from '../utils/strings.ts'
 
 const SECTIONS: Array<{ title: string, filter: (doc: DocEntry) => boolean }> = [
   {

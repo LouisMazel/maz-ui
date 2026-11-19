@@ -3,7 +3,7 @@ import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstan
 import type { VueWrapper } from '@vue/test-utils'
 import MazBtn from '@components/MazBtn.vue'
 import MazDropdown from '@components/MazDropdown.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { MazStar } from '@maz-ui/icons'
 import { mount } from '@vue/test-utils'
 import { markRaw } from 'vue'

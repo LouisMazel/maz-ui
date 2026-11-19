@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { createLogger, logger } from '../logger'
+import { createLogger, logger } from '../logger.ts'
 
 describe('given logger module', () => {
   describe('given createLogger function', () => {

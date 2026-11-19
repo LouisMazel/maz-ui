@@ -1,5 +1,5 @@
 import type { ComponentResolverObject } from 'unplugin-vue-components/types'
-import { MazIconsResolver } from '../resolvers'
+import { MazIconsResolver } from '../resolvers.ts'
 
 describe('given MazIconsResolver', () => {
   const { resolve } = MazIconsResolver() as ComponentResolverObject

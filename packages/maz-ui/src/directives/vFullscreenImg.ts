@@ -1,6 +1,6 @@
 import type { Plugin } from 'vue'
-import type { VFullscreenImgDirective } from './vFullscreenImg/fullscreen-img.directive'
-import { vFullscreenImg } from './vFullscreenImg/fullscreen-img.directive'
+import type { VFullscreenImgDirective } from './vFullscreenImg/fullscreen-img.directive.ts'
+import { vFullscreenImg } from './vFullscreenImg/fullscreen-img.directive.ts'
 
 const plugin: Plugin = {
   install(app) {
@@ -9,8 +9,8 @@ const plugin: Plugin = {
 }
 
 export { plugin as vFullscreenImgInstall }
-export { vFullscreenImg, type VFullscreenImgDirective } from './vFullscreenImg/fullscreen-img.directive'
-export type { VFullscreenImgBindingValue, VFullscreenImgOptions } from './vFullscreenImg/fullscreen-img.handler'
+export { vFullscreenImg, type VFullscreenImgDirective } from './vFullscreenImg/fullscreen-img.directive.ts'
+export type { VFullscreenImgBindingValue, VFullscreenImgOptions } from './vFullscreenImg/fullscreen-img.handler.ts'
 
 declare module 'vue' {
   interface GlobalDirectives {

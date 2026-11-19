@@ -1,7 +1,7 @@
-import type { Knowledge, LoadKnowledgeOptions } from './knowledge/load'
+import type { Knowledge, LoadKnowledgeOptions } from './knowledge/load.ts'
 
-import { loadKnowledge } from './knowledge/load'
-import { DocSearch } from './search/engine'
+import { loadKnowledge } from './knowledge/load.ts'
+import { DocSearch } from './search/engine.ts'
 
 export interface ServerContext {
   knowledge: Knowledge

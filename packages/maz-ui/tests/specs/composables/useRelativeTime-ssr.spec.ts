@@ -1,5 +1,5 @@
-import { useRelativeTime } from '@composables/useRelativeTime'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useRelativeTime } from '@composables/useRelativeTime.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 import { nextTick } from 'vue'
 
 vi.mock('@maz-ui/utils/helpers/isClient', () => ({

@@ -1,5 +1,5 @@
-import { useAos } from '@composables/useAos'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useAos } from '@composables/useAos.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 
 describe('given useAos composable', () => {
   describe('when AOS plugin is installed', () => {

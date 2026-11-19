@@ -2,7 +2,7 @@ import type { IconComponent } from '@maz-ui/icons'
 import { getRegisteredIcon } from '@maz-ui/icons/registry'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, inject, markRaw, ref, useAttrs, watch } from 'vue'
-import { decodeSvgDataUri, extractSvgMarkup, fetchSvgText, isIconName, isStringIcon, isUrlLike, prefetchSvgText, svgTextCache } from './svg-utils'
+import { decodeSvgDataUri, extractSvgMarkup, fetchSvgText, isIconName, isStringIcon, isUrlLike, prefetchSvgText, svgTextCache } from './svg-utils.ts'
 
 type SvgSourceValue = string | IconComponent
 

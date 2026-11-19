@@ -13,7 +13,7 @@ Print an ASCII-art banner (via [figlet](https://github.com/patorjk/figlet.js)) w
 import { printBanner } from '@maz-ui/node'
 
 printBanner({
-  name: 'maz-cli',
+  name: 'my-cli',
   version: 'v1.0.0',
 })
 ```
@@ -70,14 +70,14 @@ All standard [`figlet` options](https://github.com/patorjk/figlet.js#api) are fo
 Minimal banner:
 
 ```ts
-printBanner({ name: 'maz-cli' })
+printBanner({ name: 'my-cli' })
 ```
 
 Banner with divider, no screen clearing:
 
 ```ts
 printBanner({
-  name: 'maz-cli',
+  name: 'my-cli',
   version: 'v1.0.0',
   options: { clear: false, divider: true },
 })

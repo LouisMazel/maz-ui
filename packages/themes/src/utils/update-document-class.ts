@@ -1,6 +1,6 @@
-import type { ColorMode, ThemeState } from '../types'
-import { noTransition } from './no-transition'
-import { getSystemColorMode } from './theme-preferences'
+import type { ColorMode, ThemeState } from '../types/index.ts'
+import { noTransition } from './no-transition.ts'
+import { getSystemColorMode } from './theme-preferences.ts'
 
 export function updateDocumentClass(colorMode: ColorMode, state?: ThemeState): void {
   if (typeof document === 'undefined' || !state || state.darkModeStrategy === 'media' || state.mode !== 'both') {

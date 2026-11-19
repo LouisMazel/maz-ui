@@ -1,0 +1,20 @@
+{
+  "excludeEntrypoints": [
+    "./aos.css",
+    "./style.css",
+    "./tailwindcss/tailwind.css",
+    "./tailwindcss/theme-breakpoints.css",
+    "./tailwindcss/theme-colors.css",
+    "./tailwindcss/theme-components.css",
+    "./tailwindcss/theme-containers.css",
+    "./tailwindcss/theme-radius.css",
+    "./tailwindcss/theme-shadows.css",
+    "./tailwindcss/theme-spacing.css",
+    "./tailwindcss/theme-typography.css",
+    "./tailwindcss/theme-variants.css",
+    "./tailwindcss/theme-z-index.css",
+    "./tailwindcss/theme.css",
+    "./tailwindcss/utilities.css",
+    "./utilities.css"
+  ]
+}

@@ -1,25 +1,7 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "types": ["node"],
-    "allowImportingTsExtensions": false,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "declaration": false,
-    "noEmit": true,
-    "sourceMap": false,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true
-  },
+  "extends": "./tsconfig.node.json",
   "include": ["**/*"],
   "exclude": [
-    "node_modules",
     "**/node_modules/*",
     "**/dist/*",
     "**/coverage/*",

@@ -1,4 +1,4 @@
-import { formatRelativeTime, getRelativeTime } from '../formatRelativeTime'
+import { formatRelativeTime, getRelativeTime } from '../formatRelativeTime.ts'
 
 const NOW = new Date('2024-06-15T12:00:00.000Z')
 const SECOND = 1000

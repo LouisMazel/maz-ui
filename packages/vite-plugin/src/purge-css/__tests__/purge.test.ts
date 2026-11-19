@@ -1,5 +1,5 @@
-import type { PurgeDecision } from '../purge'
-import { PUBLIC_UTILITIES_LAYER, purgeCss } from '../purge'
+import type { PurgeDecision } from '../purge.ts'
+import { PUBLIC_UTILITIES_LAYER, purgeCss } from '../purge.ts'
 
 function createDecision(used: string[], utilities: string[] = []): PurgeDecision {
   return {

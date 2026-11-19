@@ -21,7 +21,7 @@ jobs:
         run: pnpm exec nx run @maz-ui/node:build
 
       - name: Check the catalog and the peer dependencies
-        run: node .github/scripts/check-deps.mjs
+        run: node .github/scripts/check-deps.mts
 
       - name: Check the published exports
-        run: node .github/scripts/publish-exports.mjs --check
+        run: node .github/scripts/publish-exports.mts --check

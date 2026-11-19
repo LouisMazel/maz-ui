@@ -3,7 +3,7 @@ import { registerIcon, registerIcons } from '@maz-ui/icons/registry'
 import { mount, shallowMount } from '@vue/test-utils'
 import { createSSRApp, defineComponent, h, nextTick } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { SVG_PREFETCH_FAILURE_TTL_MS, svgTextCache } from '../../../src/utils/svg-utils'
+import { SVG_PREFETCH_FAILURE_TTL_MS, svgTextCache } from '../../../src/utils/svg-utils.ts'
 
 const serverMode = vi.hoisted(() => ({ enabled: false }))
 

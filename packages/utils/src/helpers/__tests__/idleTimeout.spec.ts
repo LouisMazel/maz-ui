@@ -1,4 +1,4 @@
-import { IdleTimeout } from '../idleTimeout'
+import { IdleTimeout } from '../idleTimeout.ts'
 
 describe('given IdleTimeout class', () => {
   beforeEach(() => {

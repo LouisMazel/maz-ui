@@ -1,18 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.node.json",
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "types": ["vitest/globals", "node"],
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUnusedParameters": true
+    "types": ["node", "vitest/globals"]
   },
-  "include": [
-    "src/**/*",
-    "*.config.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*", "*.config.ts"]
 }

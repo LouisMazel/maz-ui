@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { Ref } from 'vue'
-import type { MazColor, MazRoundedSize, MazSize } from './types'
+import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { computed, provide, ref, toRef } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 
 export interface MazTabsProps {
   /** The the selected tab number */

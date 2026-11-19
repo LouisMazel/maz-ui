@@ -1,10 +1,10 @@
-import type { ServerContext } from '../context'
+import type { ServerContext } from '../context.ts'
 
 import { z } from 'zod'
-import { closest, resolveComponent } from '../knowledge/resolve'
-import { findSection, linksToDocIds, sectionContent, stripFrontmatter } from './markdown'
-import { sourceNote } from './source-note'
-import { defineTool, ToolInputError } from './types'
+import { closest, resolveComponent } from '../knowledge/resolve.ts'
+import { findSection, linksToDocIds, sectionContent, stripFrontmatter } from './markdown.ts'
+import { sourceNote } from './source-note.ts'
+import { defineTool, ToolInputError } from './types.ts'
 
 export interface GetComponentApiArgs {
   names: string[]

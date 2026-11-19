@@ -2,13 +2,13 @@
 import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties } from 'vue'
 import type { MazIconProps, MazIconValue } from './MazIcon.vue'
-import type { MazColor } from './types'
+import type { MazColor } from './types.ts'
 import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
 import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
 import { MazInformationCircle } from '@maz-ui/icons/lazy/MazInformationCircle'
 import { MazXCircle } from '@maz-ui/icons/lazy/MazXCircle'
 import { computed, defineAsyncComponent, useId, useSlots } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 
 export type MazAlertColor = Exclude<MazColor, 'transparent'>
 export type MazAlertRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'

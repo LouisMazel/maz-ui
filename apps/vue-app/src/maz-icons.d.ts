@@ -746,24 +746,33 @@ declare module 'maz-ui' {
     'lock-open': true
     'logo-android': true
     'logo-apple': true
+    'logo-bun': true
+    'logo-claude': true
     'logo-csv': true
     'logo-facebook': true
+    'logo-gitlab': true
     'logo-html': true
     'logo-instagram': true
     'logo-js': true
     'logo-json': true
     'logo-linkedin': true
     'logo-markdown': true
+    'logo-microsoft-teams': true
     'logo-npm': true
+    'logo-pnpm': true
     'logo-properties': true
     'logo-react': true
+    'logo-slack': true
     'logo-twitter': true
     'logo-txt': true
     'logo-typescript': true
+    'logo-vercel': true
     'logo-vue': true
+    'logo-x': true
     'logo-xliff': true
     'logo-xls': true
     'logo-xml': true
+    'logo-yarn': true
     'magnifying-glass': true
     'magnifying-glass-circle': true
     'magnifying-glass-minus': true

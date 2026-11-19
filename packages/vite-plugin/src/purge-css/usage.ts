@@ -1,7 +1,7 @@
-import type { PurgeManifest } from './manifest'
+import type { PurgeManifest } from './manifest.ts'
 import { readFile } from 'node:fs/promises'
 import { glob } from 'tinyglobby'
-import { containsName, containsToken } from './manifest'
+import { containsName, containsToken } from './manifest.ts'
 
 export const DEFAULT_CONTENT = ['**/*.{vue,js,jsx,mjs,cjs,ts,tsx,mts,cts,html,md,mdx,astro,svelte}']
 

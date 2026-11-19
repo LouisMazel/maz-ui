@@ -1,9 +1,9 @@
 import type { App, Component, MaybeRefOrGetter } from 'vue'
 import type { MazDialogConfirmProps } from '../../components/MazDialogConfirm.vue'
 import MazDialogConfirm from '../../components/MazDialogConfirm.vue'
-import { useMazDialogConfirm } from '../../components/MazDialogConfirm/useMazDialogConfirm'
-import { useMountComponent } from '../../composables/useMountComponent'
-import { createReactiveDialog, isReactiveSource } from './createReactiveDialog'
+import { useMazDialogConfirm } from '../../components/MazDialogConfirm/useMazDialogConfirm.ts'
+import { useMountComponent } from '../../composables/useMountComponent.ts'
+import { createReactiveDialog, isReactiveSource } from './createReactiveDialog.ts'
 
 type DialogButtonProps = MazDialogConfirmProps['acceptProps']
 

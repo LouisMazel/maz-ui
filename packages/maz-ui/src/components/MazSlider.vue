@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties, StyleValue } from 'vue'
-import type { MazColor, MazSizeUnit } from './types'
+import type { MazColor, MazSizeUnit } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
 
@@ -13,7 +13,7 @@ import {
   ref,
   watch,
 } from 'vue'
-import { getOpacityCoeff, getPos, isBetween } from './MazSlider/utils'
+import { getOpacityCoeff, getPos, isBetween } from './MazSlider/utils.ts'
 
 export interface MazSliderProps {
   /** Array of cursors values */
@@ -323,6 +323,7 @@ async function getCursorsValues() {
   }
   else {
     console.warn('[maz-ui][MazSlider] ref component not found')
+    return undefined
   }
 }
 function handleMousedown(_event: MouseEvent | TouchEvent | FocusEvent, i: number) {

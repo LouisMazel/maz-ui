@@ -1,4 +1,4 @@
-import type { colors, neutralColors, sizes } from './constants'
+import type { colors, neutralColors, sizes } from './constants.ts'
 
 export type MazColor = (typeof colors)[number]
 

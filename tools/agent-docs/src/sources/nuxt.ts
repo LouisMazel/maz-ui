@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import ts from 'typescript'
 
@@ -35,9 +35,10 @@ function resolveModule(fromFile: string, specifier: string): string | undefined 
   const base = resolve(dirname(fromFile), specifier)
 
   return [
+    base,
     `${base}.ts`,
     join(base, 'index.ts'),
-  ].find(file => existsSync(file))
+  ].find(file => existsSync(file) && statSync(file).isFile())
 }
 
 function hasExportModifier(statement: ts.Statement): boolean {

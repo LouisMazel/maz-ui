@@ -1,4 +1,4 @@
-import { useInjectStrict } from '@composables/useInjectStrict'
+import { useInjectStrict } from '@composables/useInjectStrict.ts'
 import { shallowMount } from '@vue/test-utils'
 
 describe('injectStrict', () => {

@@ -1,4 +1,4 @@
-import type { ThemeTopic } from '../tools/get-theme-tokens'
+import type { ThemeTopic } from '../tools/get-theme-tokens.ts'
 
 export interface CssDeclaration {
   property: string

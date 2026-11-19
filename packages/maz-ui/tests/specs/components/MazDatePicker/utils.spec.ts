@@ -21,8 +21,8 @@ import {
   isValueDisabledDate,
   isValueDisabledWeekly,
   scrollToTarget,
-} from '@components/MazDatePicker/utils'
-import dayjs from 'dayjs/esm'
+} from '@components/MazDatePicker/utils.ts'
+import dayjs from 'dayjs/esm/index.js'
 
 describe('given MazDatePicker utils', () => {
   describe('getFormattedDate', () => {

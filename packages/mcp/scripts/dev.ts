@@ -1,3 +1,3 @@
-import { main } from '../src/cli'
+import { main } from '../src/cli.ts'
 
 main()

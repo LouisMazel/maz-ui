@@ -1,5 +1,5 @@
 import { it } from 'vitest'
-import { formatPhoneNumber } from '../formatPhoneNumber'
+import { formatPhoneNumber } from '../formatPhoneNumber.ts'
 
 it('should format a telephone number', () => {
   expect(formatPhoneNumber('+15551234567')).toEqual('+1 555 123 4567')

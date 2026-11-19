@@ -1,11 +1,11 @@
 <script lang="ts" setup generic="_T">
 import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties } from 'vue'
-import type { MazIconString, MazSizeUnit } from './types'
+import type { MazIconString, MazSizeUnit } from './types.ts'
 import { MazQuestionMarkCircle } from '@maz-ui/icons/lazy/MazQuestionMarkCircle'
 import { computed } from 'vue'
-import { prepareSvgString } from '../utils/svg-utils'
-import { useSvgAccessibility, useSvgSource } from '../utils/useSvgSource'
+import { prepareSvgString } from '../utils/svg-utils.ts'
+import { useSvgAccessibility, useSvgSource } from '../utils/useSvgSource.ts'
 
 export type MazIconSize = MazSizeUnit | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export type MazIconValue = MazIconString | IconComponent

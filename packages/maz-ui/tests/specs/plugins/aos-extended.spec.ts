@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
-import { AosHandler, AosPlugin } from '@plugins/aos'
+import { AosHandler, AosPlugin } from '@plugins/aos.ts'
 import { vi } from 'vitest'
 
 vi.mock('@maz-ui/utils/helpers/sleep', () => ({

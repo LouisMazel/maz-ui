@@ -1,5 +1,5 @@
-import { useFormValidator } from '@composables/useFormValidator'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useFormValidator } from '@composables/useFormValidator.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 import { flushPromises } from '@vue/test-utils'
 import { email, minLength, pipe, string } from 'valibot'
 import { ref } from 'vue'

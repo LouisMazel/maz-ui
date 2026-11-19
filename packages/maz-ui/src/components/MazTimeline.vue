@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { CSSProperties, HTMLAttributes } from 'vue'
 
-import type { MazIconLike } from '../composables'
-import type { MazColor, MazSize } from './types'
+import type { MazIconLike } from '../composables/index.ts'
+import type { MazColor, MazSize } from './types.ts'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useId, useSlots, watch } from 'vue'
-import { useMazIconProps } from '../composables'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { useMazIconProps } from '../composables/index.ts'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 
 export type MazTimelineColor = Exclude<MazColor, 'transparent'>
 export type MazTimelineDirection = 'horizontal' | 'vertical' | 'auto'

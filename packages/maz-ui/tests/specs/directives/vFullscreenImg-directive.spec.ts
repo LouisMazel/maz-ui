@@ -1,4 +1,4 @@
-import { vFullscreenImg, vFullscreenImgInstall } from '@directives/vFullscreenImg'
+import { vFullscreenImg, vFullscreenImgInstall } from '@directives/vFullscreenImg.ts'
 import { createApp } from 'vue'
 
 describe('given vFullscreenImg directive', () => {

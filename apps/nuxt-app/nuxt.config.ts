@@ -1,8 +1,8 @@
 import process from 'node:process'
+import mazUiModule from '@maz-ui/nuxt'
 import { VitePreNestedCss } from '@maz-ui/vite-config'
 import svgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
-import mazUiModule from './../../packages/nuxt/src/module'
 
 const enableLocalMonorepoDev = false
 const isDev = enableLocalMonorepoDev && process.env.NODE_ENV !== 'production'

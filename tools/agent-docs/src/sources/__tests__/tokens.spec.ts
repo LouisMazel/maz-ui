@@ -1,4 +1,4 @@
-import { getSourcePaths } from '../../paths'
+import { getSourcePaths } from '../../paths.ts'
 import {
   collectTailwindTokens,
   parseColors,
@@ -7,7 +7,7 @@ import {
   parseTransitions,
   parseUtilities,
   stripCssComments,
-} from '../tokens'
+} from '../tokens.ts'
 
 describe('given stripCssComments', () => {
   describe('when the css has block comments', () => {

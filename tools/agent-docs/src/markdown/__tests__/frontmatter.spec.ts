@@ -1,4 +1,4 @@
-import { parseFrontmatter, stringifyFrontmatter } from '../frontmatter'
+import { parseFrontmatter, stringifyFrontmatter } from '../frontmatter.ts'
 
 describe('given parseFrontmatter', () => {
   describe('when the source starts with a YAML frontmatter', () => {

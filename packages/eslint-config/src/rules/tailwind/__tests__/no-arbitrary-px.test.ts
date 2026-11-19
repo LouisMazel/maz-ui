@@ -1,7 +1,7 @@
 import { RuleTester } from '@typescript-eslint/rule-tester'
 import { afterAll, describe, it } from 'vitest'
 import vueParser from 'vue-eslint-parser'
-import rule from '../no-arbitrary-px'
+import rule from '../no-arbitrary-px.ts'
 
 RuleTester.afterAll = afterAll
 RuleTester.it = it

@@ -1,5 +1,5 @@
-import { useDropzone } from '@composables/useDropzone'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useDropzone } from '@composables/useDropzone.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 import { nextTick, ref } from 'vue'
 
 class MockDataTransfer {

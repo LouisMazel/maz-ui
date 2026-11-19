@@ -1,8 +1,8 @@
-import type { DocCategory } from '../../types'
-import type { SourcePage } from '../pages'
+import type { DocCategory } from '../../types.ts'
+import type { SourcePage } from '../pages.ts'
 
-import { getSourcePaths } from '../../paths'
-import { extractImports, formatImport, parseExportedNames, resolvePageSymbols } from '../symbols'
+import { getSourcePaths } from '../../paths.ts'
+import { extractImports, formatImport, parseExportedNames, resolvePageSymbols } from '../symbols.ts'
 
 const paths = getSourcePaths()
 

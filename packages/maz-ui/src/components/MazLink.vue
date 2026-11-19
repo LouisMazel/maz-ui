@@ -1,13 +1,13 @@
 <script lang="ts" setup generic="_T">
 import type { Component, HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
-import type { MazIconLike } from '../composables/useMazIconProps'
-import type { MazColor, MazNeutralColor } from './types'
+import type { MazIconLike } from '../composables/useMazIconProps.ts'
+import type { MazColor, MazNeutralColor } from './types.ts'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnSquare'
 import { computed, defineAsyncComponent } from 'vue'
-import { useInstanceUniqId } from '../composables'
-import { useMazIconProps } from '../composables/useMazIconProps'
-import { resolveLinkComponent } from '../utils/resolveLinkComponent'
+import { useInstanceUniqId } from '../composables/index.ts'
+import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 
 export interface MazLinkProps {
   /**

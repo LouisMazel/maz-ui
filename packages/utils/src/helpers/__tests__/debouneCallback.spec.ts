@@ -1,4 +1,4 @@
-import { debounceCallback } from '../debounceCallback'
+import { debounceCallback } from '../debounceCallback.ts'
 
 describe('debounceCallback.ts', () => {
   it('delaying Callback Execution', () => {

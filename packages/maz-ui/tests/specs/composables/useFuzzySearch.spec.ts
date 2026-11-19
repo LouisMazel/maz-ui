@@ -1,4 +1,4 @@
-import { useFuzzySearch } from '@composables/useFuzzySearch'
+import { useFuzzySearch } from '@composables/useFuzzySearch.ts'
 import { effectScope, nextTick, ref } from 'vue'
 
 const fruits = [

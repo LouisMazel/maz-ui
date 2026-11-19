@@ -1,7 +1,7 @@
 export type {
   TransformGroup,
   TransformOptions,
-} from './transform'
+} from './transform.ts'
 export {
   ALL_GROUPS,
   hasFoundationRadius,
@@ -26,4 +26,4 @@ export {
   transformProps,
   transformPullToRefresh,
   transformStyleImports,
-} from './transform'
+} from './transform.ts'

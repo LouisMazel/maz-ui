@@ -3,7 +3,7 @@ import type { ComponentPublicInstance } from 'vue'
 import MazCheckbox from '@components/MazCheckbox.vue'
 import MazLoadingBar from '@components/MazLoadingBar.vue'
 import MazTable from '@components/MazTable.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
 
 describe('given MazTable component', () => {

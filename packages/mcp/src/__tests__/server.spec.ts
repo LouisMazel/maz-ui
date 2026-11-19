@@ -1,12 +1,12 @@
-import type { ToolDefinition } from '../tools/types'
+import type { ToolDefinition } from '../tools/types.ts'
 
 import { Client } from '@modelcontextprotocol/sdk/client/index.js'
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js'
-import { version } from '../../package.json' with { type: 'json' }
-import { buildInstructions, MAX_INSTRUCTIONS_LENGTH } from '../instructions'
-import { createMazUiMcpServer, runTool, TOOLS } from '../server'
-import { ToolInputError } from '../tools/types'
-import { getContext, getEmptyCwd, getKnowledge } from './helpers'
+import packageJson from '../../package.json' with { type: 'json' }
+import { buildInstructions, MAX_INSTRUCTIONS_LENGTH } from '../instructions.ts'
+import { createMazUiMcpServer, runTool, TOOLS } from '../server.ts'
+import { ToolInputError } from '../tools/types.ts'
+import { getContext, getEmptyCwd, getKnowledge } from './helpers.ts'
 
 async function connect(): Promise<Client> {
   const { server } = createMazUiMcpServer({
@@ -64,7 +64,7 @@ describe('given the maz-ui MCP server', () => {
 
   describe('when a client connects', () => {
     it('then it receives the server info and instructions', () => {
-      expect(client.getServerVersion()).toEqual(expect.objectContaining({ name: 'maz-ui', version }))
+      expect(client.getServerVersion()).toEqual(expect.objectContaining({ name: 'maz-ui', version: packageJson.version }))
       expect(client.getInstructions()).toContain('search_docs')
       expect(client.getInstructions()!.length).toBeLessThan(MAX_INSTRUCTIONS_LENGTH)
     })

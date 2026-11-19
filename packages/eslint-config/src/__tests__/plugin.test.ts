@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { mazPlugin } from '../plugin'
-import { rules } from '../rules'
+import { mazPlugin } from '../plugin.ts'
+import { rules } from '../rules/index.ts'
 
 describe('mazPlugin', () => {
   it('declares the `maz` plugin name', () => {

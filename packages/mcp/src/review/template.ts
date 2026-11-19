@@ -1,13 +1,13 @@
 import type { AttributeNode, DirectiveNode, ElementNode, RootNode, TemplateChildNode } from '@vue/compiler-dom'
-import type { ComponentApi, PropApi } from '../knowledge/schema'
-import type { Background } from './classes'
-import type { ReviewContext } from './types'
+import type { ComponentApi, PropApi } from '../knowledge/schema.ts'
+import type { Background } from './classes.ts'
+import type { ReviewContext } from './types.ts'
 
 import { NodeTypes } from '@vue/compiler-dom'
-import { closest, toKebab } from '../knowledge/resolve'
-import { backgroundOf, checkClassList, checkClassStrings } from './classes'
-import { isPassthroughAttribute, NATIVE_EVENTS, nativeReplacement } from './html'
-import { checkStyleDeclarations } from './style'
+import { closest, toKebab } from '../knowledge/resolve.ts'
+import { backgroundOf, checkClassList, checkClassStrings } from './classes.ts'
+import { isPassthroughAttribute, NATIVE_EVENTS, nativeReplacement } from './html.ts'
+import { checkStyleDeclarations } from './style.ts'
 
 export function toCamel(value: string): string {
   return value.replaceAll(/-([a-z\d])/g, (_, char: string) => char.toUpperCase())

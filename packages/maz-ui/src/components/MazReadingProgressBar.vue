@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor } from './types.ts'
 import { throttle } from '@maz-ui/utils/helpers/throttle'
 import {
   computed,

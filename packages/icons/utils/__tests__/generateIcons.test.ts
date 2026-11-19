@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { logger } from '@maz-ui/node'
-import { cleanSvg, generateIcons, getComponentName, listIconFiles, toPascalCase } from '../generateIcons'
+import { cleanSvg, generateIcons, getComponentName, listIconFiles, toPascalCase } from '../generateIcons.ts'
 
 vi.mock('@maz-ui/node', () => ({
   logger: {
@@ -158,22 +158,22 @@ import _component from '../../svg/link.svg?component'
 
 export const MazLinkIcon = _component
 `)
-      expect(read('src/lazy/MazStar.ts')).toContain(`export const MazStar = markRaw(defineAsyncComponent(() => import('../static/MazStar').then(module => module.MazStar)))`)
+      expect(read('src/lazy/MazStar.ts')).toContain(`export const MazStar = markRaw(defineAsyncComponent(() => import('../static/MazStar.ts').then(module => module.MazStar)))`)
       expect(read('src/raw/MazFlagSquareFR.ts')).toContain(`import _raw from '../../flags/1x1/FR.svg?raw'\n\nexport const MazFlagSquareFR: string = _raw`)
     })
 
     it('then the entries export every icon in order', () => {
       expect(read('src/static/index.ts').split('\n').filter(line => line.startsWith('export'))).toEqual([
-        `export { MazCheck } from './MazCheck'`,
-        `export { MazFlagFR } from './MazFlagFR'`,
-        `export { MazFlagSquareFR } from './MazFlagSquareFR'`,
-        `export { MazLinkIcon } from './MazLinkIcon'`,
-        `export { MazLogoVue } from './MazLogoVue'`,
-        `export { MazStar } from './MazStar'`,
+        `export { MazCheck } from './MazCheck.ts'`,
+        `export { MazFlagFR } from './MazFlagFR.ts'`,
+        `export { MazFlagSquareFR } from './MazFlagSquareFR.ts'`,
+        `export { MazLinkIcon } from './MazLinkIcon.ts'`,
+        `export { MazLogoVue } from './MazLogoVue.ts'`,
+        `export { MazStar } from './MazStar.ts'`,
       ])
-      expect(read('src/index.ts')).toContain(`export * from './static'\n\nexport { MazCheck as LazyMazCheck } from './lazy/MazCheck'`)
-      expect(read('src/lazy/index.ts')).toContain(`export { MazLogoVue } from './MazLogoVue'`)
-      expect(read('src/raw/index.ts')).toContain(`export { MazFlagFR } from './MazFlagFR'`)
+      expect(read('src/index.ts')).toContain(`export * from './static/index.ts'\n\nexport { MazCheck as LazyMazCheck } from './lazy/MazCheck.ts'`)
+      expect(read('src/lazy/index.ts')).toContain(`export { MazLogoVue } from './MazLogoVue.ts'`)
+      expect(read('src/raw/index.ts')).toContain(`export { MazFlagFR } from './MazFlagFR.ts'`)
     })
 
     it('then the icon list has the components and their lazy version', () => {
