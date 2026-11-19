@@ -24,7 +24,7 @@
   z-index: 1050;
 }
 
-/* Full-width block whose content is centered within `--maz-container-max-width`, without minimum side padding (full-bleed children) */
+/* Full-width block whose content is centered within `--maz-container-max-width`, without minimum side padding: edge to edge until it reaches the column (carousel, image on mobile) */
 @utility padded-container-no-p {
   inline-size: 100%;
   padding-inline: max(0px, calc((100% - var(--maz-container-max-width, 1440px)) / 2));

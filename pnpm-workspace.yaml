@@ -3,7 +3,7 @@ minimumReleaseAgeExclude:
   - '@yoloship/*'
   - '@maz-ui/*'
   - relizy*
-  - '@relizy/core@2.5.0-beta.0'
+  - '@relizy/core'
   - '@babel/helper-string-parser@8.1.2'
   - '@babel/parser@8.1.2'
   - '@babel/types@8.1.2'
