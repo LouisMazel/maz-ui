@@ -1,6 +1,6 @@
 ---
 title: useStringMatching
-description: Efficient composable for string matching tasks, utilizing Levenshtein distance calculation. Simplify comparison operations with minimal setup. Enhance text similarity checks effortlessly.
+description: Reactive similarity of two whole strings (score from 0 to 1, case and accents ignored, Levenshtein distance) and whether they match above a threshold - to detect a close spelling. To search in a list, use useFuzzySearch.
 ---
 
 # {{ $frontmatter.title }}

@@ -1,6 +1,6 @@
 ---
 title: useTimer
-description: The useTimer composable manages timeouts. It allows you to start, pause, resume, and stop a timer with reactive updates on the remaining time. Ideal for handling asynchronous operations or user interactions with a specified timeout.
+description: A reactive countdown that you can start, pause, resume, stop and reset, with the remaining time in ms and a callback at the end - for an auto close, a resend delay or a quiz timer.
 ---
 
 # {{ $frontmatter.title }}
@@ -11,13 +11,14 @@ description: The useTimer composable manages timeouts. It allows you to start, p
 
 The composable provides the following functionality:
 
-- **start**: Initiates a timer that decrements the remaining time every second until the timeout is reached. When the timeout is reached, it executes the provided callback function.
+- **start**: Starts the timer, which decrements the remaining time every `remainingTimeUpdate` ms (200 by default) until it reaches 0, then runs the callback. `start(ms)` changes the timeout.
 - **pause**: Pauses the active timer, allowing it to be resumed later from the point it was paused.
 - **resume**: Resumes the timer from the point it was paused, considering the remaining time.
-- **stop**: Stops the timer completely, resetting the remaining time to the initial timeout value.
+- **stop**: Stops the timer and resets the remaining time to the timeout.
+- **reset**: Resets the remaining time to the timeout, without stopping the timer.
 - **remainingTime**: A reactive variable that holds the current remaining time in milliseconds. It updates reactively as the timer progresses.
 
-The composable also includes cleanup logic using onBeforeUnmount to ensure that the timer is stopped when the component is unmounted.
+The timer is stopped when the component is unmounted (or the `effectScope` stopped): the callback never runs after it.
 
 This composable can be used in Vue components to handle timeouts in a flexible and reactive manner.
 
