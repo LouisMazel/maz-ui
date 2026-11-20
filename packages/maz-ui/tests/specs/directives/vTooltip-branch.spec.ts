@@ -107,7 +107,7 @@ describe('given vTooltip directive (branch coverage)', () => {
 
       await nextTick()
 
-      expect(wrapper.find('.m-tooltip-panel').exists()).toBe(true)
+      expect(document.querySelector('.m-tooltip-panel')).not.toBeNull()
     })
   })
 
