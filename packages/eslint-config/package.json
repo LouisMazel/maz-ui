@@ -66,7 +66,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
     "@types/node": "catalog:",
-    "@typescript-eslint/rule-tester": "^8.72.2",
+    "@typescript-eslint/rule-tester": "^8.73.0",
     "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",
     "eslint": "catalog:",
