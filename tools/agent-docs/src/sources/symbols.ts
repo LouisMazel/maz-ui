@@ -1,7 +1,7 @@
 import type { SourcePaths } from '../paths.ts'
 import type { SourcePage } from './pages.ts'
 
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { ECOSYSTEM_SYMBOLS } from '../aliases.ts'
 import { extractCodeBlocks } from '../markdown/clean.ts'
@@ -84,6 +84,11 @@ function pageImports(page: SourcePage): ImportStatement[] {
   return extractCodeBlocks(page.body).flatMap(extractImports)
 }
 
+/** Case-sensitive, unlike `existsSync` on macOS: `IdleTimeout` is not the module `idleTimeout` */
+function isHelper(name: string, paths: SourcePaths): boolean {
+  return existsSync(paths.utilsHelpers) && readdirSync(paths.utilsHelpers).includes(`${name}.ts`)
+}
+
 function resolveUtilHelper(page: SourcePage, paths: SourcePaths): string | undefined {
   const imports = pageImports(page)
   const counts = new Map<string, number>()
@@ -99,7 +104,7 @@ function resolveUtilHelper(page: SourcePage, paths: SourcePaths): string | undef
     ...counts.entries(),
   ].sort((a, b) => b[1] - a[1])[0]?.[0]
 
-  if (fromSpecifier && existsSync(join(paths.utilsHelpers, `${fromSpecifier}.ts`)))
+  if (fromSpecifier && isHelper(fromSpecifier, paths))
     return fromSpecifier
 
   const rootNames = imports
@@ -107,14 +112,14 @@ function resolveUtilHelper(page: SourcePage, paths: SourcePaths): string | undef
     .flatMap(statement => statement.names)
 
   for (const name of rootNames) {
-    if (existsSync(join(paths.utilsHelpers, `${name}.ts`)))
+    if (isHelper(name, paths))
       return name
   }
 
   return [
     kebabToCamel(page.slug),
     kebabToPascal(page.slug),
-  ].find(candidate => existsSync(join(paths.utilsHelpers, `${candidate}.ts`)))
+  ].find(candidate => isHelper(candidate, paths))
 }
 
 function genericImports(page: SourcePage): PageSymbols {
