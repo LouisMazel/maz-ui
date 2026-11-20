@@ -80,7 +80,7 @@
     "@maz-ui/translations": "workspace:^",
     "@maz-ui/utils": "workspace:^",
     "@maz-ui/vite-plugin": "workspace:^",
-    "@nuxt/devtools-kit": "^4.1.0",
+    "@nuxt/devtools-kit": "^4.2.0",
     "@nuxt/kit": "^4.6.4",
     "defu": "^6.1.7",
     "maz-ui": "workspace:^"
