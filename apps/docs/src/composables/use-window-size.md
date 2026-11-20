@@ -1,6 +1,6 @@
 ---
 title: useWindowSize
-description: This composable provides a simple utility to track the width and height of the browser window with reactivity
+description: Reactive width and height of the browser window, updated on resize (and optionally on orientation change), SSR safe with initial values.
 ---
 
 # {{ $frontmatter.title }}
