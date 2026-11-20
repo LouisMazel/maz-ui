@@ -1,5 +1,5 @@
-import { fakeDoc } from '../../__tests__/helpers'
-import { findSection, linksToDocIds, listSections, outline, sectionContent, stripFrontmatter, truncateText } from '../markdown'
+import { fakeDoc } from '../../__tests__/helpers.ts'
+import { findSection, linksToDocIds, listSections, outline, sectionContent, stripFrontmatter, truncateText } from '../markdown.ts'
 
 const MARKDOWN = `# Title
 

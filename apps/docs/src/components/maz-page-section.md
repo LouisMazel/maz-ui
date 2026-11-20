@@ -11,12 +11,9 @@ description: MazPageSection is a full-width band of a page (header, section, foo
 
 ## Basic usage
 
-Wrap each band of your page in a `MazPageSection`. The band takes the full width, so its background goes edge to edge, and its content:
+Wrap each band of your page (header, sections, footer) in a `MazPageSection`. Its background takes the full width. Its content gets a side padding that grows with the screen, and stays centered on a column of `1440px` at most.
 
-- gets a side padding of `1rem` on mobile, `2rem` from `576px` and `2.5rem` from `1024px`;
-- stops growing at `1440px` and stays centered.
-
-<ComponentDemo expanded>
+<ComponentDemo expanded :padding="false">
   <MazPageSection class="maz:bg-surface-600 maz:py-6">
     <div class="maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:bg-surface maz:p-4 maz:text-center">
       Content of the section
@@ -48,13 +45,13 @@ import MazPageSection from 'maz-ui/components/MazPageSection'
   </template>
 </ComponentDemo>
 
-Use `as` to pick the HTML tag (`div` by default): `header`, `main`, `section`, `footer`...
+`as` sets the HTML tag: `div` by default, `header`, `main`, `section`, `footer`...
 
 ## Narrower content
 
-`max-width` sets the width of the content column for this section only: a string with any CSS unit, or a number in pixels.
+`max-width` sets the width of the column for one section: a number in pixels, or any CSS value.
 
-<ComponentDemo>
+<ComponentDemo :padding="false">
   <MazPageSection :max-width="480" class="maz:bg-surface-600 maz:py-6">
     <div class="maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:bg-surface maz:p-4 maz:text-center">
       480px at most
@@ -78,14 +75,14 @@ Use `as` to pick the HTML tag (`div` by default): `header`, `main`, `section`, `
   </template>
 </ComponentDemo>
 
-## Full bleed
+## Without side padding
 
-`full-bleed` keeps the content on the same column as the other sections, without the side padding: for a carousel or an image that touches the edges of the screen on mobile.
+`:gutter="false"` removes the side padding. The content touches the edges of the screen until it reaches the width of the column, then stays centered. Useful for an image or a carousel on mobile. To see it, make your window narrower than `480px`.
 
-<ComponentDemo>
-  <MazPageSection full-bleed :max-width="480" class="maz:bg-surface-600 maz:py-6">
+<ComponentDemo :padding="false">
+  <MazPageSection :gutter="false" :max-width="480" class="maz:bg-surface-600 maz:py-6">
     <div class="maz:bg-primary maz:p-4 maz:text-center maz:text-primary-foreground">
-      No side padding
+      No side padding, 480px at most
     </div>
   </MazPageSection>
 
@@ -93,7 +90,7 @@ Use `as` to pick the HTML tag (`div` by default): `header`, `main`, `section`, `
 
 ```vue
 <template>
-  <MazPageSection full-bleed>
+  <MazPageSection :gutter="false">
     <img src="/banner.jpg" alt="" class="w-full">
   </MazPageSection>
 </template>
@@ -102,15 +99,50 @@ Use `as` to pick the HTML tag (`div` by default): `header`, `main`, `section`, `
   </template>
 </ComponentDemo>
 
-## Container
+## Full bleed
 
-By default, the side padding follows the width of the screen. In a layout with a sidebar, the main area is narrower than the screen: make it a container, and what is inside follows its width instead.
+`full-bleed` puts the content edge to edge at every screen width: no side padding, no maximum width.
 
-`container` makes the section a container (`@container`): the container query classes of its children (`@tab-m:grid-cols-2`) and the `MazPageSection` inside follow its width. Drag the bottom right corner of the frame to make it narrower: the grid of the demo (`@mob-m:grid-cols-2`) switches to one column under `425px`, whatever the width of the screen.
+To keep a title aligned with the rest of the page, wrap it in a `MazPageSection`.
 
-<ComponentDemo>
-  <div class="maz:min-w-60 maz:max-w-full maz:resize-x maz:overflow-auto maz:rounded-md maz:border maz:border-divider">
-    <MazPageSection container class="maz:bg-surface-600 maz:py-4">
+<ComponentDemo :padding="false">
+  <MazPageSection full-bleed class="maz:bg-surface-600 maz:py-6">
+    <MazPageSection class="maz:pb-4">
+      <div class="maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:bg-surface maz:p-4 maz:text-center">
+        Title on the column
+      </div>
+    </MazPageSection>
+    <div class="maz:bg-primary maz:p-4 maz:text-center maz:text-primary-foreground">
+      Edge to edge
+    </div>
+  </MazPageSection>
+
+  <template #code>
+
+```vue
+<template>
+  <MazPageSection as="section" full-bleed class="py-12">
+    <MazPageSection class="pb-6">
+      <h2 class="text-title-2">Gallery</h2>
+    </MazPageSection>
+
+    <MazCarousel>...</MazCarousel>
+  </MazPageSection>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Layout with a sidebar
+
+The side padding follows the width of the screen. Next to a sidebar, add the `@container` class to the main area: the sections inside follow its width instead. The `@tab-m:` classes of their content follow it too.
+
+Drag the bottom right corner of the frame: the padding shrinks and the grid goes to one column.
+
+<ComponentDemo :padding="false">
+  <div class="maz:@container maz:min-w-60 maz:max-w-full maz:resize-x maz:overflow-auto maz:rounded-md maz:border maz:border-divider">
+    <MazPageSection class="maz:bg-surface-600 maz:py-4">
       <div class="maz:grid maz:gap-2 maz:@mob-m:grid-cols-2">
         <div v-for="item in 4" :key="item" class="maz:rounded-md maz:bg-surface maz:p-4 maz:text-center">
           Card {{ item }}
@@ -126,11 +158,13 @@ By default, the side padding follows the width of the screen. In a layout with a
   <div class="flex">
     <MazSidebar>...</MazSidebar>
 
-    <MazPageSection as="main" container class="flex-1 py-8">
-      <div class="grid gap-4 @tab-m:grid-cols-2">
-        ...
-      </div>
-    </MazPageSection>
+    <div class="@container flex-1">
+      <MazPageSection as="main" class="py-8">
+        <div class="grid gap-4 @tab-m:grid-cols-2">
+          ...
+        </div>
+      </MazPageSection>
+    </div>
   </div>
 </template>
 ```
@@ -138,14 +172,16 @@ By default, the side padding follows the width of the screen. In a layout with a
   </template>
 </ComponentDemo>
 
+The `container` prop makes the section itself a container, for the `@tab-m:` classes of its content. It does not change its own padding: for that, the `@container` goes on a parent.
+
 ## Good to know
 
-- **Do not nest** two `MazPageSection`: the padding adds up. Inside a section, use a plain `div`, or `full-bleed` to stay on the column without the padding.
-- **Do not add `px-*`** to the component: it sets the side padding too, and the result depends on the order of the CSS. Change the gutter with the [CSS variables](#defaults-for-the-whole-app).
+- **Do not nest** two `MazPageSection`: the paddings add up. The exception is a `full-bleed` section, which has no padding.
+- **Do not add `px-*`**: it conflicts with the side padding of the component. Change the padding with the [CSS variables](#defaults-for-the-whole-app) instead. A `full-bleed` section has no padding: `px-*` is fine on it.
 
 ## Defaults for the whole app
 
-Every prop can get a default for the whole app through the `defaults` option of the `MazUi` plugin (or of `@maz-ui/nuxt`): a width for every section without setting it on each one. A prop set on a section still wins. See [Global defaults](./../guide/global-defaults.md).
+Set a default value for every section with the `defaults` option of the `MazUi` plugin (or of `@maz-ui/nuxt`). A prop set on a section still wins. See [Global defaults](./../guide/global-defaults.md).
 
 ```ts
 app.use(MazUi, {
@@ -155,7 +191,7 @@ app.use(MazUi, {
 })
 ```
 
-The side padding has no prop: set it with CSS variables, as well as the width of the column (the `maxWidth` default above is simpler for the width alone):
+The side padding is set with CSS variables:
 
 | Variable | Default |
 | --- | --- |
@@ -173,7 +209,7 @@ The side padding has no prop: set it with CSS variables, as well as the width of
 
 ## Without the component
 
-`MazPageSection` renders the `padded-container` utility (`padded-container-no-p` with `full-bleed`). You can put these classes on your own elements: with Tailwind CSS, import `maz-ui/tailwindcss/utilities.css` (see [Tailwind CSS](./../guide/tailwind.md#page-gutter-padded-container)); without, import `maz-ui/utilities.css`. The component needs neither: its styles are in `maz-ui/style.css`.
+The component uses the `padded-container` class (`padded-container-no-p` without side padding). You can put it on your own elements: import `maz-ui/tailwindcss/utilities.css` with Tailwind CSS (see [Tailwind CSS](./../guide/tailwind.md#page-gutter-padded-container)), `maz-ui/utilities.css` without.
 
 ```html
 <section class="padded-container py-16">...</section>

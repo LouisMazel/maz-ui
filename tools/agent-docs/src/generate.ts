@@ -1,30 +1,30 @@
-import type { CleanMarkdownContext } from './markdown/clean'
-import type { PackageDefinition } from './packages'
-import type { SourcePaths } from './paths'
-import type { NuxtAutoImports } from './sources/nuxt'
-import type { SourcePage } from './sources/pages'
-import type { AgentDocsFragment, ComponentApi, DocEntry, OutputFile, TailwindManifest } from './types'
+import type { CleanMarkdownContext } from './markdown/clean.ts'
+import type { PackageDefinition } from './packages.ts'
+import type { SourcePaths } from './paths.ts'
+import type { NuxtAutoImports } from './sources/nuxt.ts'
+import type { SourcePage } from './sources/pages.ts'
+import type { AgentDocsFragment, ComponentApi, DocEntry, OutputFile, TailwindManifest } from './types.ts'
 
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join, posix, resolve } from 'node:path'
-import { COMPONENT_DESCRIPTIONS, DOC_ALIASES, ECOSYSTEM_SYMBOLS, RELATED_DOCS } from './aliases'
-import { cleanMarkdown, extractHeadings, normalizeDashes, stripLeadingTitle } from './markdown/clean'
-import { stringifyFrontmatter } from './markdown/frontmatter'
-import { findPackageDefinition, PACKAGE_DEFINITIONS } from './packages'
-import { getSourcePaths } from './paths'
-import { loadAgentContent, renderAgentsMdSection, renderClaudeRule, renderRulesDoc, renderSkill } from './render/agents'
-import { renderComponentApi } from './render/api'
-import { CATEGORY_ORDER, renderBundleIndex, renderFragmentIndex, renderLlmsFullTxt, renderLlmsTxt } from './render/index'
-import { renderIconsReference, renderTailwindReference } from './render/references'
-import { renderVitepressApis } from './render/vitepress'
-import { listComponentFiles } from './sources/component-files'
-import { collectIconIds, collectIconNames, groupIcons } from './sources/icons'
-import { collectNuxtAutoImports } from './sources/nuxt'
-import { collectSourcePages, sourcePathToId } from './sources/pages'
-import { resolvePageSymbols } from './sources/symbols'
-import { collectTailwindTokens } from './sources/tokens'
-import { AGENT_DOCS_SCHEMA_VERSION } from './types'
-import { kebabToPascal, pascalToKebab, splitWords, unique } from './utils/strings'
+import { COMPONENT_DESCRIPTIONS, DOC_ALIASES, ECOSYSTEM_SYMBOLS, RELATED_DOCS } from './aliases.ts'
+import { cleanMarkdown, extractHeadings, normalizeDashes, stripLeadingTitle } from './markdown/clean.ts'
+import { stringifyFrontmatter } from './markdown/frontmatter.ts'
+import { findPackageDefinition, PACKAGE_DEFINITIONS } from './packages.ts'
+import { getSourcePaths } from './paths.ts'
+import { loadAgentContent, renderAgentsMdSection, renderClaudeRule, renderRulesDoc, renderSkill } from './render/agents.ts'
+import { renderComponentApi } from './render/api.ts'
+import { CATEGORY_ORDER, renderBundleIndex, renderFragmentIndex, renderLlmsFullTxt, renderLlmsTxt } from './render/index.ts'
+import { renderIconsReference, renderTailwindReference } from './render/references.ts'
+import { renderVitepressApis } from './render/vitepress.ts'
+import { listComponentFiles } from './sources/component-files.ts'
+import { collectIconIds, collectIconNames, groupIcons } from './sources/icons.ts'
+import { collectNuxtAutoImports } from './sources/nuxt.ts'
+import { collectSourcePages, sourcePathToId } from './sources/pages.ts'
+import { resolvePageSymbols } from './sources/symbols.ts'
+import { collectTailwindTokens } from './sources/tokens.ts'
+import { AGENT_DOCS_SCHEMA_VERSION } from './types.ts'
+import { kebabToPascal, pascalToKebab, splitWords, unique } from './utils/strings.ts'
 
 export const HOMEPAGE = 'https://maz-ui.com'
 
@@ -193,7 +193,7 @@ interface GenerationContext {
 async function createGenerationContext(paths: SourcePaths, withComponents: boolean): Promise<GenerationContext> {
   const componentNames = listComponentFiles(paths.libComponents).map(file => file.replace(/\.vue$/, ''))
   const components = withComponents
-    ? await (await import('./sources/components')).collectComponentApis(paths.libComponents, join(paths.libRoot, 'tsconfig.json'))
+    ? await (await import('./sources/components.ts')).collectComponentApis(paths.libComponents, join(paths.libRoot, 'tsconfig.json'))
     : []
   const pages = collectSourcePages(paths.docsSrc)
   const indexPages = new Set(pages.filter(page => page.sourcePath.endsWith('/index.md')).map(page => page.id))

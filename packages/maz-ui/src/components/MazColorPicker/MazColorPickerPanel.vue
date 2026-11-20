@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { Hsva, Rgba } from './color'
+import type { Hsva, Rgba } from './color.ts'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { MazEyeDropper } from '@maz-ui/icons/lazy/MazEyeDropper'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
-import { formatColor, getLuminance, hsvToRgb, resolveCssColor } from './color'
+import { formatColor, getLuminance, hsvToRgb, resolveCssColor } from './color.ts'
 
 export interface MazColorPickerPanelLabels {
   area: string

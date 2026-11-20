@@ -1,7 +1,7 @@
 import type { App, Plugin, Ref } from 'vue'
-import type { ThemeConfig, ThemeState } from './types'
-import { injectThemeState } from './utils'
-import { setupTheme } from './utils/setup-theme'
+import type { ThemeConfig, ThemeState } from './types.ts'
+import { injectThemeState } from './utils/index.ts'
+import { setupTheme } from './utils/setup-theme.ts'
 
 export type MazUiThemeOptions = Omit<ThemeConfig, 'prefix'>
 

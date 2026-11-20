@@ -1,9 +1,9 @@
+import type { MazUiIconsOptions } from '@maz-ui/icons/vite'
 import type { Plugin } from 'vite'
-import type { MazUiIconsOptions } from './icons'
-import type { MazUiPurgeCssOptions } from './purge-css'
-import { MazUiIcons } from './icons'
-import { MazUiPurgeCss } from './purge-css'
-import { MazUiThemePresets } from './theme-presets'
+import type { MazUiPurgeCssOptions } from './purge-css/index.ts'
+import { MazUiIcons } from '@maz-ui/icons/vite'
+import { MazUiPurgeCss } from './purge-css/index.ts'
+import { MazUiThemePresets } from './theme-presets/index.ts'
 
 export interface MazUiOptions {
   /**
@@ -40,20 +40,8 @@ export function MazUi(options: MazUiOptions = {}): Plugin[] {
   const purge = getOptions(options.purge)
 
   return [
-    ...(icons
-      ? [
-          MazUiIcons(icons),
-        ]
-      : []),
-    ...(purge
-      ? [
-          MazUiPurgeCss(purge),
-        ]
-      : []),
-    ...(options.presets
-      ? [
-          MazUiThemePresets({ presets: options.presets }),
-        ]
-      : []),
+    ...(icons ? [MazUiIcons(icons)] : []),
+    ...(purge ? [MazUiPurgeCss(purge)] : []),
+    ...(options.presets ? [MazUiThemePresets({ presets: options.presets })] : []),
   ]
 }

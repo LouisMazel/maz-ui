@@ -1,5 +1,10 @@
-import { writeFileSync } from 'node:fs'
+import { copyFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const SVG_MODULES = fileURLToPath(new URL('../src/svg-modules.d.ts', import.meta.url))
+
+const SVG_STRING = `\`<svg\${string}\``
 
 const VARIANTS = {
   static: {
@@ -12,7 +17,7 @@ const VARIANTS = {
   },
   raw: {
     imports: undefined,
-    type: 'string',
+    type: SVG_STRING,
   },
 } as const
 
@@ -29,7 +34,7 @@ function declareModules(component: string): string[] {
 }
 
 /**
- * The types of the icons in five files, instead of one per module: the entries (`index.d.ts`, `static`, `lazy`,
+ * The types of the icons in six files, instead of one per module: the entries (`index.d.ts`, `static`, `lazy`,
  * `raw`) declare the icons, `icons.d.ts` declares each module (`@maz-ui/icons/static/MazStar`), the types of the
  * modules in the `exports`. TypeScript uses a declared module before the file it resolves: an import of an icon
  * keeps its exact types.
@@ -45,9 +50,12 @@ export function writeIconTypes(outDir: string, components: readonly string[]): v
 
   const lazyExports = sorted.map(component => `${component} as Lazy${component}`).join(', ')
 
+  copyFileSync(SVG_MODULES, resolve(outDir, 'svg-modules.d.ts'))
   writeFileSync(resolve(outDir, 'index.d.ts'), [
+    '/// <reference path="./svg-modules.d.ts" />',
     'import type { Component, ComponentPublicInstance, FunctionalComponent } from \'vue\'',
     'export type IconComponent = FunctionalComponent | ComponentPublicInstance | Component',
+    'export type * from \'./types.js\'',
     'export * from \'./static/index.js\'',
     `export { ${lazyExports} } from './lazy/index.js'`,
     '',

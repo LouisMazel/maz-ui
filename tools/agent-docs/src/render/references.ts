@@ -1,5 +1,5 @@
-import type { IconGroup } from '../sources/icons'
-import type { TailwindManifest } from '../types'
+import type { IconGroup } from '../sources/icons.ts'
+import type { TailwindManifest } from '../types.ts'
 
 const COLOR_UTILITIES = 'bg-, text-, border-, ring-, outline-, fill-, stroke-, divide-, from-, via-, to-, decoration-, placeholder-, accent-, caret-, shadow-'
 
@@ -175,10 +175,12 @@ ${table(['Variant', 'Min container width'], tokens.containers.map(token => [`\`$
 <main class="padded-container py-12">
   <h1 class="text-title-1">Projects</h1>
 </main>
-<section class="padded-container-no-p">full-bleed carousel, centered on the same column</section>
+<section class="padded-container-no-p">carousel without the gutter, centered on the same column</section>
 \`\`\`
 
-- The padding is mobile (\`1rem\`), tablet from \`mob-l\` (\`2rem\`), desktop from \`lap-s\` (\`2.5rem\`) of the viewport. Inside an \`@container\` ancestor, it follows the width of that container instead: a layout with a sidebar keeps the right gutter.
+- \`padded-container-no-p\` keeps the column but drops the minimum side padding: the content touches the edges of the screen until it reaches \`--maz-container-max-width\`. For content edge to edge at every width, use neither (\`w-full\`), and put a \`padded-container\` inside for the parts that stay on the column.
+
+- The padding is mobile (\`1rem\`), tablet from \`mob-l\` (\`2rem\`), desktop from \`lap-s\` (\`2.5rem\`) of the viewport. Inside an \`@container\` ancestor, it follows the width of that container instead: a layout with a sidebar keeps the right gutter. The container has to be a parent (\`<div class="@container flex-1"><main class="padded-container">\`): an \`@container\` on the element itself does not count.
 - Override the variables below in your CSS (\`:root { --maz-container-max-width: 1200px; }\`): the utilities follow, no media query to update.
 
 ${table(['Variable', 'Default'], tokens.containerVariables

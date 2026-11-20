@@ -1,17 +1,17 @@
-import type { McpServerCommand } from './types'
+import type { McpServerCommand } from './types.ts'
 import {
   findInstalledPackage as findInstalledPackageInternal,
   findWorkspacesUsing as findWorkspacesUsingInternal,
   readWorkspacePatterns as readWorkspacePatternsInternal,
-} from '../project'
-import { readAgentDocs as readAgentDocsInternal, resolveAgentDocsDir as resolveAgentDocsDirInternal } from './agentDocs'
+} from '../project.ts'
+import { readAgentDocs as readAgentDocsInternal, resolveAgentDocsDir as resolveAgentDocsDirInternal } from './agentDocs.ts'
 import {
   isEditedManagedContent as isEditedManagedContentInternal,
   readManagedVersion as readManagedVersionInternal,
-} from './managedContent'
-import { installsMcpPackage as installsMcpPackageInternal } from './mcpServer'
-import { resolveRulePaths as resolveRulePathsInternal } from './rulePaths'
-import { compareVersions as compareVersionsInternal, writeFileAtomic as writeFileAtomicInternal } from './utils'
+} from './managedContent.ts'
+import { installsMcpPackage as installsMcpPackageInternal } from './mcpServer.ts'
+import { resolveRulePaths as resolveRulePathsInternal } from './rulePaths.ts'
+import { compareVersions as compareVersionsInternal, writeFileAtomic as writeFileAtomicInternal } from './utils.ts'
 
 /** @deprecated Internal to `setupAgents`, removed in the next major version. Use `MAZ_UI_AGENTS_TOOL` */
 export const MANAGED_MARKER = 'Managed by maz-ui'

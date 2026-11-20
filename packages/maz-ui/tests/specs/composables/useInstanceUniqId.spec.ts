@@ -1,5 +1,5 @@
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useInstanceUniqId } from '@composables/useInstanceUniqId.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 
 describe('useInstanceUniqId', () => {
   it('should return providedId even if componentName is not provided', () => {

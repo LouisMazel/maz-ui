@@ -1,5 +1,5 @@
-import type { ToastHandler } from '../plugins/toast/ToastHandler'
-import { useInjectStrict } from '../composables/useInjectStrict'
+import type { ToastHandler } from '../plugins/toast/ToastHandler.ts'
+import { useInjectStrict } from '../composables/useInjectStrict.ts'
 
 export function useToast() {
   const toast = useInjectStrict<ToastHandler>('mazToast', undefined, '[maz-ui](useToast) ToastPlugin is not installed')

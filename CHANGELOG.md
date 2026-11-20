@@ -1,5 +1,92 @@
 # Change Log
 
+## v5.8.0-beta.2 (2026-11-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0-beta.1...v5.8.0-beta.2)
+
+### 🚀 Features
+
+- **icons:** Find the names of the fallback props ([24563762f](https://github.com/LouisMazel/maz-ui/commit/24563762f))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.8.0-beta.1 (2026-11-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0-beta.0...v5.8.0-beta.1)
+
+### 🚀 Features
+
+- **icons:** Name the file of the types and exclude the package of a wrapper from the pre-bundle ([de00a61b0](https://github.com/LouisMazel/maz-ui/commit/de00a61b0))
+
+  `MazUiIcons()` takes `dtsName`, the name of the file of the types when `dts` is `true` or not set (`acme-icons.d.ts`), and `optimizeDepsExclude`, the packages Vite does not pre-bundle in dev, like `@maz-ui/icons` (the package of the `import` of a folder).
+
+- **icons:** Emit an error from MazIconPrimitive ([d3901ed43](https://github.com/LouisMazel/maz-ui/commit/d3901ed43))
+
+  `MazIconPrimitive` emits `error` when the name is unknown, or when the SVG of a name loaded on demand can not be loaded: a wrapper renders its fallback.
+
+### 🧪 Tests
+
+- **icons:** Load only the es5 lib in the type check of the wrapper test ([4112cd92b](https://github.com/LouisMazel/maz-ui/commit/4112cd92b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.8.0-beta.0 (2026-11-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0...v5.8.0-beta.0)
+
+### 🚀 Features
+
+- **maz-ui:** Add the `gutter` prop to MazPageSection, `full-bleed` goes edge to edge ([e0f25a18c](https://github.com/LouisMazel/maz-ui/commit/e0f25a18c))
+
+  `:gutter="false"` removes the side padding and keeps the content on the page column. `full-bleed` now puts the content edge to edge at every width: no side padding nor maximum width.
+
+- **icons:** Use the icons by name without maz-ui ([778a630e2](https://github.com/LouisMazel/maz-ui/commit/778a630e2))
+
+  `MazUiIcons()` of `@maz-ui/icons/vite` and `MazIconPrimitive` of `@maz-ui/icons/vue` render the icons by name in any Vue app or library: the names of `@maz-ui/icons` and of your SVG folders, typed and bundled with the files that use them. Write `~` before a name to load it on demand, `defaultIcons` keeps some sets of `@maz-ui/icons` (`['icons', 'logos']`), and the `maz-ui-icons types` command writes the types without a build.
+
+- **maz-ui:** Render the names with MazIconPrimitive ([86981b420](https://github.com/LouisMazel/maz-ui/commit/86981b420))
+
+  `MazIcon` and `MazSvg` render the names with `MazIconPrimitive` of `@maz-ui/icons` and accept `~name` to load an icon on demand. `maz-ui` comes with the `maz-ui-icons` command.
+
+- **nuxt:** Auto-import MazIconPrimitive ([cdd60bea9](https://github.com/LouisMazel/maz-ui/commit/cdd60bea9))
+
+  `MazIconPrimitive` is auto-imported, and `icons.defaultIcons` keeps some sets of `@maz-ui/icons`.
+
+- **icons:** Wrap the icons by name in another library ([59b6da701](https://github.com/LouisMazel/maz-ui/commit/59b6da701))
+
+  A library can publish `MazUiIcons()` under its own name: `typesModule` augments the module its consumers install (with pnpm, they do not resolve `@maz-ui/icons`), `name` names the plugin in the logs and the file of the types, and `runCli()` of `@maz-ui/icons/vite` runs its own command. The `import` option of a folder imports the module of each SVG: the app bundles it once, the dist of a library keeps the import.
+
+### 🩹 Fixes
+
+- **ecosystem:** Emit extensioned relative imports in published declarations ([30c9bb6f1](https://github.com/LouisMazel/maz-ui/commit/30c9bb6f1))
+- **ecosystem:** Resolve the published types in node16 and nodenext ([88f7cd83c](https://github.com/LouisMazel/maz-ui/commit/88f7cd83c))
+
+  The declarations of `maz-ui`, `@maz-ui/utils`, `@maz-ui/themes` and `@maz-ui/translations` are now `.d.mts` files whose relative imports carry their extension: with `moduleResolution` `node16` or `nodenext`, the re-exports resolve to their real types instead of missing exports or `any`.
+
+- **maz-ui:** Resolve the dayjs types of the date picker in node16 and nodenext ([4f9d45195](https://github.com/LouisMazel/maz-ui/commit/4f9d45195))
+
+  The date picker imports `dayjs/esm` by the full path of its files, so its types resolve with `moduleResolution` `node16` or `nodenext`.
+
+### 💅 Refactors
+
+- **ecosystem:** Move the declaration extension helper into @maz-ui/vite-config ([4ddc0212b](https://github.com/LouisMazel/maz-ui/commit/4ddc0212b))
+- **vite-plugin:** Use MazUiIcons of @maz-ui/icons ([8c8c0986f](https://github.com/LouisMazel/maz-ui/commit/8c8c0986f))
+
+  The icons plugin moved to `@maz-ui/icons/vite`: `MazUi()` and its options do not change.
+
+### 🧪 Tests
+
+- **maz-ui:** Update the coverage thresholds ([f6601151f](https://github.com/LouisMazel/maz-ui/commit/f6601151f))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+- Abderrahmane Messaadi <abderrahmane8@yandex.com>
+
 ## v5.7.0 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.6.0...v5.7.0)

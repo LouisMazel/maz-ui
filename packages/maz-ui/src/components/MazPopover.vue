@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor, MazNeutralColor } from './types'
+import type { MazColor, MazNeutralColor } from './types.ts'
 
 import { autoPlacement, autoUpdate, flip, offset as floatingOffset, hide, shift, useFloating } from '@floating-ui/vue'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
@@ -17,10 +17,10 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { hasSlotContent } from '../utils/hasSlotContent'
-import { addPopoverLayer, isInUpperPopoverLayer, isTopPopoverLayer, removePopoverLayer } from '../utils/popoverLayers'
-import { getColor } from './types'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
+import { addPopoverLayer, isInUpperPopoverLayer, isTopPopoverLayer, removePopoverLayer } from '../utils/popoverLayers.ts'
+import { getColor } from './types.ts'
 
 defineOptions({
   name: 'MazPopover',

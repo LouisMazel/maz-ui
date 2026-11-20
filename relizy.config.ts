@@ -1,5 +1,5 @@
 import { defineConfig } from 'relizy'
-import { buildPublishedPackages } from './scripts/release'
+import { buildPublishedPackages } from './scripts/release.ts'
 
 export default defineConfig({
   projectName: 'maz-ui',
@@ -86,13 +86,26 @@ export default defineConfig({
 
   commitlint: {
     changelogLinter: 'oxc',
-    scopes: ['clean', 'deps', 'release'],
+    scopes: [
+      'clean',
+      'deps',
+      'ecosystem',
+      'release',
+    ],
+    rules: {
+      'single-package': [
+        'error',
+        {
+          exceptScopes: ['deps', 'ecosystem'],
+        },
+      ],
+    },
   },
 
   sync: {
     rules: [
       {
-        from: 'main',
+        from: 'master',
         to: ['develop'],
       },
     ],

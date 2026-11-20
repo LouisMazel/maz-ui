@@ -197,9 +197,13 @@ export function listIconFiles(root: string): IconFile[] {
   ]
 }
 
+/** The components of `@maz-ui/icons/vue`: an icon can not have their name */
+const PACKAGE_COMPONENTS = ['MazIconPrimitive']
+
 function getReservedNames(): string[] {
   return [
     ...getComponentList().map(({ name }) => name),
+    ...PACKAGE_COMPONENTS,
     ...GLOBAL_NAMES,
   ]
 }
@@ -273,7 +277,7 @@ export function generateIcons({ root, reservedNames = getReservedNames() }: Gene
         writeFileSync(path, cleaned)
     }
 
-    const reexports = sortExports(components.map(({ component }) => `export { ${component} } from './${component}'`))
+    const reexports = sortExports(components.map(({ component }) => `export { ${component} } from './${component}.ts'`))
 
     writeModules(resolve(root, 'src/static'), components.map(({ component, source }) => ({
       name: component,
@@ -282,24 +286,24 @@ export function generateIcons({ root, reservedNames = getReservedNames() }: Gene
 
     writeModules(resolve(root, 'src/lazy'), components.map(({ component }) => ({
       name: component,
-      content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport { defineAsyncComponent, markRaw } from 'vue'\n\nexport const ${component} = markRaw(defineAsyncComponent(() => import('../static/${component}').then(module => module.${component})))\n`,
+      content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport { defineAsyncComponent, markRaw } from 'vue'\n\nexport const ${component} = markRaw(defineAsyncComponent(() => import('../static/${component}.ts').then(module => module.${component})))\n`,
     })), `${GENERATED_HEADER}\n\n${reexports}\n`)
 
     writeModules(resolve(root, 'src/raw'), components.map(({ component, source }) => ({
       name: component,
-      content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport _raw from '${source}?raw'\n\nexport const ${component}: string = _raw\n`,
+      content: `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport _raw from '${source}?svg'\n\nexport const ${component} = _raw\n`,
     })), `${GENERATED_HEADER}\n\n${reexports}\n`)
 
-    const lazyExports = sortExports(components.map(({ component }) => `export { ${component} as Lazy${component} } from './lazy/${component}'`))
+    const lazyExports = sortExports(components.map(({ component }) => `export { ${component} as Lazy${component} } from './lazy/${component}.ts'`))
 
-    writeFileSync(resolve(root, 'src/index.ts'), `${SVG_LOADER_TYPES}\n\n${GENERATED_HEADER}\n\nimport type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue'\n\nexport type IconComponent = FunctionalComponent | ComponentPublicInstance | Component\n\nexport * from './static'\n\n${lazyExports}\n`)
+    writeFileSync(resolve(root, 'src/index.ts'), `${SVG_LOADER_TYPES}\n/// <reference path="./svg-modules.d.ts" />\n\n${GENERATED_HEADER}\n\nimport type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue'\n\nexport type IconComponent = FunctionalComponent | ComponentPublicInstance | Component\n\nexport type * from './types.ts'\n\nexport * from './static/index.ts'\n\n${lazyExports}\n`)
 
     const iconList = [
       ...components.map(({ component }) => `'${component}'`),
       ...components.map(({ component }) => `'Lazy${component}'`),
     ].join(',\n  ')
 
-    writeFileSync(resolve(root, 'src/icon-list.ts'), `${GENERATED_HEADER}\nexport const iconList = [\n  ${iconList}\n] as const\n\nexport type IconName = typeof iconList[number]\n`)
+    writeFileSync(resolve(root, 'src/icon-list.ts'), `${GENERATED_HEADER}\nexport const iconList = [\n  ${iconList}\n] as const\n\n/** The name of a component of the icons ('MazStar', 'LazyMazStar'), not a name of icon="star" (IconName of @maz-ui/icons) */\nexport type IconName = typeof iconList[number]\n`)
     writeFileSync(resolve(root, 'icon-names.json'), iconNames)
 
     logger.success(`[generateIcons] ✅ ${icons.length} icons generated`)

@@ -164,4 +164,4 @@ export type { MazUiProviderProps, MazUiProviderTranslations } from './MazUiProvi
 export { default as MazWindowMockup } from './MazWindowMockup.vue'
 export type { MazWindowMockupProps, MazWindowMockupVariant } from './MazWindowMockup.vue'
 
-export type { MazColor, MazNeutralColor, MazSize } from './types'
+export type { MazColor, MazNeutralColor, MazSize } from './types.ts'

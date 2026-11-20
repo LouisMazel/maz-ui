@@ -1,5 +1,4 @@
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
-import type { MazUiOptions } from 'maz-ui/plugins'
 import type { Theme } from 'vitepress'
 
 import en from '@maz-ui/translations/locales/en'
@@ -25,12 +24,6 @@ export default {
   Layout,
   enhanceApp({ app, router: { route } }) {
     app.use(MazUi, {
-      defaults: {
-        global: {
-          // roundedSize: 'xl',
-          // size: 'sm'
-        },
-      } satisfies MazUiOptions['defaults'],
       theme: DOCS_THEME,
       translations: {
         locale: 'en',

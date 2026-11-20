@@ -1,6 +1,6 @@
 import type { MazSidebarContext } from '../components/MazSidebar.vue'
 import { mazSidebarKey } from '../components/MazSidebar.vue'
-import { useInjectStrict } from './useInjectStrict'
+import { useInjectStrict } from './useInjectStrict.ts'
 
 /**
  * Composable to access the nearest MazSidebar context.

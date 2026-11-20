@@ -193,6 +193,7 @@ export class AosHandler {
     }
     else {
       console.warn('[MazAos](runAnimations) should be executed on client side')
+      return undefined
     }
   }
 }

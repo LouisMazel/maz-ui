@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { snakeCase } from '../snakeCase'
+import { snakeCase } from '../snakeCase.ts'
 
 describe('snakeCase', () => {
   it('should convert PascalCase to snake_case', () => {

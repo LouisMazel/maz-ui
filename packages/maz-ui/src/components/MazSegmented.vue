@@ -1,12 +1,12 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
 import type { CSSProperties } from 'vue'
-import type { MazIconLike } from '../composables/useMazIconProps'
-import type { MazColor, MazSize } from './types'
+import type { MazIconLike } from '../composables/useMazIconProps.ts'
+import type { MazColor, MazSize } from './types.ts'
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { resolveMazIconProps } from '../utils/resolveMazIconProps'
-import { getColor } from './types'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { resolveMazIconProps } from '../utils/resolveMazIconProps.ts'
+import { getColor } from './types.ts'
 
 export interface MazSegmentedOption<T = string | number | boolean> {
   /** Text of the segment */

@@ -1,5 +1,5 @@
 import type { ComputedRef } from 'vue'
-import { GLOBAL_CONFIG_INJECTION_KEY, useGlobalConfig } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY, useGlobalConfig } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h } from 'vue'
 

@@ -45,7 +45,8 @@
     "build": "unbuild && pnpm generate:agent-docs",
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/upgrade",
     "dev": "unbuild --stub",
-    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck": "tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
@@ -57,6 +58,7 @@
     "globby": "^16.2.4"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@maz-ui/eslint-config": "workspace:^",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",

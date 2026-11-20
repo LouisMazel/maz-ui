@@ -9,8 +9,8 @@ import dts from 'vite-plugin-dts'
 
 import pkg from './package.json' with { type: 'json' }
 
-import { generateIcons } from './utils/generateIcons'
-import { writeIconTypes } from './utils/writeIconTypes'
+import { generateIcons } from './utils/generateIcons.ts'
+import { writeIconTypes } from './utils/writeIconTypes.ts'
 
 // Before the entries are listed: the variants of the icons are generated, not versioned
 generateIcons({ root: import.meta.dirname })
@@ -67,10 +67,12 @@ export default defineConfig({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
       outDirs: resolver('dist'),
-      // The build utilities of utils/ are typechecked, not published. The types of the icons are written by `maz-icons-types`
+      // The build utilities of utils/ are typechecked, not published. The types of the icons are written by `maz-icons-types`,
+      // the ones of the Vite plugin by unbuild
       include: ['src'],
       exclude: [
         'src/**/__tests__/**/*',
+        'src/vite/**',
         'src/index.ts',
         'src/static/**',
         'src/lazy/**',
@@ -95,6 +97,7 @@ export default defineConfig({
         'resolvers': resolver('./src/resolvers.ts'),
         'icon-list': resolver('./src/icon-list.ts'),
         'registry': resolver('./src/registry.ts'),
+        'vue': resolver('./src/vue/index.ts'),
         'static/index': resolver('./src/static/index.ts'),
         'lazy/index': resolver('./src/lazy/index.ts'),
         'raw/index': resolver('./src/raw/index.ts'),

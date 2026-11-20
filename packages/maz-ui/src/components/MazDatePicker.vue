@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazDatePickerPartialRangeValue, MazDatePickerShortcut, MazDatePickerValue } from './MazDatePicker/types'
-import type { DateTimeFormatOptions } from './MazDatePicker/utils'
+import type { MazDatePickerPartialRangeValue, MazDatePickerShortcut, MazDatePickerValue } from './MazDatePicker/types.ts'
+import type { DateTimeFormatOptions } from './MazDatePicker/utils.ts'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
-import type { MazColor } from './types'
+import type { MazColor } from './types.ts'
 import { MazCalendar } from '@maz-ui/icons/lazy/MazCalendar'
 import { MazClock } from '@maz-ui/icons/lazy/MazClock'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs/esm'
-import customParseFormat from 'dayjs/esm/plugin/customParseFormat'
-import isBetween from 'dayjs/esm/plugin/isBetween'
+import dayjs from 'dayjs/esm/index.js'
+import customParseFormat from 'dayjs/esm/plugin/customParseFormat/index.js'
+import isBetween from 'dayjs/esm/plugin/isBetween/index.js'
 import {
   computed,
   defineAsyncComponent,
@@ -21,7 +21,7 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 
 import MazPickerContainer from './MazDatePicker/MazPickerContainer.vue'
 import {
@@ -34,7 +34,7 @@ import {
   isRangeValue,
   isValueDisabledDate,
   isValueDisabledWeekly,
-} from './MazDatePicker/utils'
+} from './MazDatePicker/utils.ts'
 import MazIcon from './MazIcon.vue'
 import MazPopover from './MazPopover.vue'
 
@@ -96,7 +96,7 @@ const emits = defineEmits<{
 
 const { t, locale } = useTranslations()
 
-export type { MazDatePickerPartialRangeValue, MazDatePickerRangeValue, MazDatePickerShortcut, MazDatePickerValue } from './MazDatePicker/types'
+export type { MazDatePickerPartialRangeValue, MazDatePickerRangeValue, MazDatePickerShortcut, MazDatePickerValue } from './MazDatePicker/types.ts'
 
 dayjs.extend(customParseFormat)
 dayjs.extend(isBetween)

@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/mcp",
   "type": "module",
-  "version": "5.7.0",
+  "version": "5.8.0-beta.2",
   "description": "MCP server and CLI that give AI coding agents the version-matched knowledge of maz-ui and its ecosystem: search, component APIs, icons, Tailwind theme tokens, setup guides and code review",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -60,11 +60,13 @@
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "test:unit": "pnpm generate:docs && vitest run",
     "test:unit:watch": "pnpm generate:docs && vitest watch",
     "test:unit:coverage": "pnpm generate:docs && vitest run --coverage"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@babel/parser": "^8.1.2",
     "@babel/types": "^8.1.2",
     "@maz-ui/eslint-config": "workspace:^",

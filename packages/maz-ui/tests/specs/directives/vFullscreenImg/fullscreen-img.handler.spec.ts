@@ -1,5 +1,5 @@
-import type { VFullscreenImgBinding } from '@directives/vFullscreenImg/fullscreen-img.handler'
-import { FullscreenImgHandler } from '@directives/vFullscreenImg/fullscreen-img.handler'
+import type { VFullscreenImgBinding } from '@directives/vFullscreenImg/fullscreen-img.handler.ts'
+import { FullscreenImgHandler } from '@directives/vFullscreenImg/fullscreen-img.handler.ts'
 
 describe('fullscreenImgHandler', () => {
   let el: HTMLElement

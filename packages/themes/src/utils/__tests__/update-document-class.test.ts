@@ -1,15 +1,15 @@
-import type { ThemeState } from '../../types'
-import { updateDocumentClass } from '../update-document-class'
+import type { ThemeState } from '../../types.ts'
+import { updateDocumentClass } from '../update-document-class.ts'
 
-vi.mock('../no-transition', () => ({
+vi.mock('../no-transition.ts', () => ({
   noTransition: vi.fn((fn: () => void) => fn()),
 }))
 
-vi.mock('../theme-preferences', () => ({
+vi.mock('../theme-preferences.ts', () => ({
   getSystemColorMode: vi.fn(() => 'light'),
 }))
 
-const { getSystemColorMode } = await import('../theme-preferences')
+const { getSystemColorMode } = await import('../theme-preferences.ts')
 
 function createThemeState(overrides: Partial<ThemeState> = {}): ThemeState {
   return {
@@ -38,7 +38,7 @@ describe('update-document-class', () => {
       })
 
       it('then it returns early without modifications', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
         vi.stubGlobal('document', undefined)
 
         const state = createThemeState()
@@ -50,7 +50,7 @@ describe('update-document-class', () => {
 
     describe('when no state is provided', () => {
       it('then it returns early without modifications', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
 
         updateDocumentClass('dark', undefined)
 
@@ -60,7 +60,7 @@ describe('update-document-class', () => {
 
     describe('when darkModeStrategy is media', () => {
       it('then it returns early without modifications', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
         const state = createThemeState({ darkModeStrategy: 'media' })
 
         updateDocumentClass('dark', state)
@@ -71,7 +71,7 @@ describe('update-document-class', () => {
 
     describe('when mode is light', () => {
       it('then it returns early without modifications', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
         const state = createThemeState({ mode: 'light' })
 
         updateDocumentClass('dark', state)
@@ -82,7 +82,7 @@ describe('update-document-class', () => {
 
     describe('when mode is dark', () => {
       it('then it returns early without modifications', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
         const state = createThemeState({ mode: 'dark' })
 
         updateDocumentClass('dark', state)
@@ -95,7 +95,7 @@ describe('update-document-class', () => {
 
     describe('when colorMode is dark and state is valid', () => {
       it('then it adds the dark class to documentElement', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
         const state = createThemeState()
 
         updateDocumentClass('dark', state)
@@ -108,7 +108,7 @@ describe('update-document-class', () => {
 
     describe('when colorMode is light and state is valid', () => {
       it('then it adds the light class and removes the dark class', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
         document.documentElement.classList.add('dark')
         const state = createThemeState()
 
@@ -122,7 +122,7 @@ describe('update-document-class', () => {
 
     describe('when colorMode is auto and system prefers light', () => {
       it('then it adds the light class and removes the dark class', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
         vi.mocked(getSystemColorMode).mockReturnValue('light')
         document.documentElement.classList.add('dark')
         const state = createThemeState()
@@ -137,7 +137,7 @@ describe('update-document-class', () => {
 
     describe('when colorMode is auto and system prefers dark', () => {
       it('then it adds the dark class and removes the light class', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
         vi.mocked(getSystemColorMode).mockReturnValue('dark')
         document.documentElement.classList.add('light')
         const state = createThemeState()
@@ -204,7 +204,7 @@ describe('update-document-class', () => {
 
     describe('when mode is both and darkModeStrategy is class', () => {
       it('then it proceeds with class manipulation', async () => {
-        const { noTransition } = await import('../no-transition')
+        const { noTransition } = await import('../no-transition.ts')
         const state = createThemeState({ mode: 'both', darkModeStrategy: 'class' })
 
         updateDocumentClass('dark', state)

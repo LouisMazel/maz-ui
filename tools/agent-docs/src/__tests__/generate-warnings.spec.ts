@@ -1,10 +1,10 @@
-import type { GeneratedKnowledge } from '../generate'
+import type { GeneratedKnowledge } from '../generate.ts'
 
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { generateKnowledge } from '../generate'
-import { getSourcePaths } from '../paths'
+import { generateKnowledge } from '../generate.ts'
+import { getSourcePaths } from '../paths.ts'
 
 function page(directory: string, path: string, content: string): void {
   const file = join(directory, path)

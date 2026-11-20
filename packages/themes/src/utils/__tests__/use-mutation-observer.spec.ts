@@ -1,4 +1,4 @@
-import { useMutationObserver } from '../use-mutation-observer'
+import { useMutationObserver } from '../use-mutation-observer.ts'
 
 describe('given useMutationObserver composable', () => {
   describe('when creating with a target element', () => {

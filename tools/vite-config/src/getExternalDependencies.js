@@ -3,7 +3,7 @@
 /**
  * Packages left out of the bundle: the consumers install them (`dependencies`, `peerDependencies`), so they get a
  * single copy, deduplicated and tree-shaken by their bundler. The `devDependencies` are external too, so that a package
- * imported by mistake is never bundled: `.github/scripts/check-dist-imports.mjs` fails when a `dist` imports a package
+ * imported by mistake is never bundled: `.github/scripts/check-dist-imports.mts` fails when a `dist` imports a package
  * that is not declared in `dependencies` or `peerDependencies`.
  * @param {{
  *   devDependencies?: Record<string, string>;

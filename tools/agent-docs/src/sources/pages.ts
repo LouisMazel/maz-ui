@@ -1,9 +1,9 @@
-import type { Frontmatter } from '../markdown/frontmatter'
-import type { DocCategory } from '../types'
+import type { Frontmatter } from '../markdown/frontmatter.ts'
+import type { DocCategory } from '../types.ts'
 
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
-import { parseFrontmatter } from '../markdown/frontmatter'
+import { parseFrontmatter } from '../markdown/frontmatter.ts'
 
 export interface SourcePage {
   /** Absolute path of the source markdown file */
@@ -25,7 +25,6 @@ const EXCLUDED_PAGES = new Set([
   'made-with-maz-ui.md',
   'theme-editor.md',
   'components/index.md',
-  'guide/cli.md',
   'guide/migration-v4.md',
 ])
 

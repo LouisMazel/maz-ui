@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { SVGAttributes } from 'vue'
-import type { MazColor, MazSizeUnit } from './types'
+import type { MazColor, MazSizeUnit } from './types.ts'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 
 export interface MazCircularProgressBarProps {
   /**

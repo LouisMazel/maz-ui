@@ -1,4 +1,4 @@
-import type { ThemeColors, ThemeComponents, ThemePreset, ThemePresetOverrides, ThemeScales, ThemeTypography, TypographyLevel } from '../types'
+import type { ThemeColors, ThemeComponents, ThemePreset, ThemePresetOverrides, ThemeScales, ThemeTypography, TypographyLevel } from '../types.ts'
 
 export function mergePresets(base: ThemePreset, overrides: ThemePresetOverrides): ThemePreset {
   return {

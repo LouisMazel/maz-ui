@@ -263,6 +263,8 @@ const icons = {
   prefix: 'app',
   // Names built at runtime, that the module can not find in the code
   safelist: ['flag-fr', 'flag-de'],
+  // Sets of @maz-ui/icons by name: 'icons', 'flags', 'flags-square', 'logos', or false for none (default: true, every set)
+  defaultIcons: ['icons', 'logos'],
   // `icon` only accepts the known names, URLs and raw SVG: a typo is a type error (default: false)
   strict: false,
 }

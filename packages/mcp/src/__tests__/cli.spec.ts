@@ -2,12 +2,12 @@ import { Buffer } from 'node:buffer'
 import { cpSync, existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { Readable } from 'node:stream'
-import { version } from '../../package.json' with { type: 'json' }
-import { HELP, main, runCli } from '../cli'
-import { startStdioServer } from '../server'
-import { BUNDLE_DIR, cleanTempDirs, createTempDir, writeFakeMazUi, writeFile } from './helpers'
+import packageJson from '../../package.json' with { type: 'json' }
+import { HELP, main, runCli } from '../cli.ts'
+import { startStdioServer } from '../server.ts'
+import { BUNDLE_DIR, cleanTempDirs, createTempDir, writeFakeMazUi, writeFile } from './helpers.ts'
 
-vi.mock('../server', () => ({
+vi.mock('../server.ts', () => ({
   startStdioServer: vi.fn(),
 }))
 
@@ -50,7 +50,7 @@ describe('given the maz-ui-mcp CLI', () => {
   describe('when --version is passed', () => {
     it('then it prints the version', async () => {
       expect(await runCli(['-v'])).toBe(0)
-      expect(logged()).toBe(version)
+      expect(logged()).toBe(packageJson.version)
     })
   })
 
@@ -455,7 +455,7 @@ describe('given the maz-ui-mcp CLI', () => {
         cwd,
       ])
 
-      expect(JSON.parse(readFileSync(join(cwd, '.mcp.json'), 'utf8')).mcpServers['maz-ui'].args).toEqual(['-y', `@maz-ui/mcp@${version}`])
+      expect(JSON.parse(readFileSync(join(cwd, '.mcp.json'), 'utf8')).mcpServers['maz-ui'].args).toEqual(['-y', `@maz-ui/mcp@${packageJson.version}`])
       expect(logged()).toContain('install @maz-ui/mcp as a devDependency of the project (`npm install -D @maz-ui/mcp`)')
     })
 

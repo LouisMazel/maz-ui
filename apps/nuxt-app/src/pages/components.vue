@@ -171,6 +171,7 @@ const galleryImages = [
 ] satisfies MazGalleryImage[]
 
 const avatarPlaceholder = makePlaceholder('#6366f1', 'JD')
+const mazUiUrl = 'https://maz-ui.com'
 
 const checklistItems = [
   { label: 'Vue.js', value: 'vue' },
@@ -228,9 +229,7 @@ const checklistItems = [
         Fab
       </h3>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-2 maz:mb-4">
-        <MazBtn v-for="s in sizes" :key="s" :size="s" fab>
-          +
-        </MazBtn>
+        <MazBtn v-for="s in sizes" :key="s" icon="plus" :size="s" fab />
       </div>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
@@ -720,7 +719,7 @@ const checklistItems = [
             <p>This card can be collapsed by clicking the header. Try it!</p>
           </template>
         </MazCard>
-        <MazCard href="https://maz-ui.com" collapsible href-target="_blank" title="Linked Card">
+        <MazCard :href="mazUiUrl" collapsible href-target="_blank" title="Linked Card">
           <template #content-title>
             Linked Card
           </template>

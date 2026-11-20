@@ -23,14 +23,14 @@
     "cli": "tsx src/cli.ts",
     "build": "unbuild",
     "build:stub": "unbuild --stub",
-    "typecheck": "tsc --noEmit --skipLibCheck"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@clack/prompts": "catalog:",
+    "@clack/prompts": "^1.9.0",
     "@maz-ui/node": "workspace:^",
     "@maz-ui/utils": "workspace:^",
     "colorette": "catalog:",
-    "commander": "catalog:",
+    "commander": "^15.1.0",
     "figlet": "catalog:"
   },
   "devDependencies": {

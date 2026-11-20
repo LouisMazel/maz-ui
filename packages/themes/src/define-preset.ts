@@ -1,6 +1,6 @@
-import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from './types'
-import { getPreset } from './utils'
-import { mergePresets } from './utils/preset-merger'
+import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from './types.ts'
+import { getPreset } from './utils/index.ts'
+import { mergePresets } from './utils/preset-merger.ts'
 
 /**
  * Define a custom theme preset
@@ -16,7 +16,7 @@ import { mergePresets } from './utils/preset-merger'
  *   }
  * })
  *
- * import { mazUi } from './presets/mazUi'
+ * import { mazUi } from './presets/mazUi.ts'
  * const customTheme = definePreset({
  *   base: mazUi,
  *   overrides: {

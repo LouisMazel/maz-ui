@@ -1,17 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo",
-    "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
-    "rootDir": ".",
-    "types": ["node", "@maz-ui/vite-svg-loader/client", "vite/client", "vue"],
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "skipLibCheck": true
+    "types": ["node", "@maz-ui/vite-svg-loader/client", "vite/client", "vue"]
   },
   "vueCompilerOptions": {
     "checkUnknownComponents": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"]
 }

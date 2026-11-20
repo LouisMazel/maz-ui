@@ -50,7 +50,6 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - `packages/translations/` - i18n support package (@maz-ui/translations)
 - `packages/utils/` - Utility functions package (@maz-ui/utils)
 - `packages/eslint-config/` - Shared ESLint configuration
-- `packages/maz-cli/` - CLI tool for theme generation
 - `packages/nuxt/` - Nuxt 3 module (@maz-ui/nuxt)
 - `packages/node/` - Node.js utilities (also `setupAgents`, used by `npx @maz-ui/mcp init` and the Nuxt `agents` option)
 - `packages/vite-plugin/` - Vite plugins (@maz-ui/vite-plugin): `MazUiPurgeCss` removes the unused CSS of maz-ui, from the `purge-manifest.json` written by the build of maz-ui
@@ -104,7 +103,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - CSS is extracted and processed with PostCSS
 - Icons are dynamically generated from SVG files
 - Supports both ESM and CommonJS outputs
-- The `exports` keep a `monorepo:dev` condition (sources for the apps of the monorepo), `publishConfig.exports` is the published copy without it: run `node .github/scripts/publish-exports.mjs` after changing the `exports` of a package (checked in CI).
+- The `exports` keep a `monorepo:dev` condition (sources for the apps of the monorepo), `publishConfig.exports` is the published copy without it: run `node .github/scripts/publish-exports.mts` after changing the `exports` of a package (checked in CI).
 
 ### Agent knowledge bundle (`tools/agent-docs`)
 
@@ -115,6 +114,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - A new published package needs an entry in `tools/agent-docs/src/packages.ts` and a `generate:agent-docs` script in its `build`.
 - The agent rules live in `tools/agent-docs/content/rules.md` (also included in `apps/docs/src/guide/ai-agents.md`).
 - The generator warns about broken internal links and unknown alias ids: keep `pnpm -F agent-docs generate --bundle /tmp/x --strict` clean.
+- Docs (site and agent docs): simple and easy to understand but complete, in short sentences, the common case first.
 - Docs examples (code fences) must use plain Tailwind classes, never the internal `maz:` prefix (only live demos rendered by the docs site use it).
 
 ### Branch Strategy
@@ -142,10 +142,10 @@ Within individual packages (e.g., `packages/maz-ui/`):
 ### Declaring dependencies
 
 - Every project (package, app, tool) declares the dependencies it imports or runs, in its own `package.json`: pnpm does not hoist the dependencies to the root `node_modules`, an undeclared dependency fails to resolve (pnpm ignores the `.npmrc` settings other than auth and registry since pnpm 11: the `node_modules` settings go in `pnpm-workspace.yaml`).
-- A dependency shared by several projects is declared with `catalog:`, its version lives in the `catalog` of `pnpm-workspace.yaml`. A dependency used by a single project keeps its version in its `package.json`: move it to the catalog when a second project needs it, and back when only one project still uses it. `@maz-ui/eslint-config` does not enforce the catalog for every dependency: `.github/scripts/check-deps.mjs` checks this rule (run `node .github/scripts/check-deps.mjs` after changing the dependencies).
+- A dependency shared by several projects is declared with `catalog:`, its version lives in the `catalog` of `pnpm-workspace.yaml`. A dependency used by a single project keeps its version in its `package.json`: move it to the catalog when a second project needs it, and back when only one project still uses it. `@maz-ui/eslint-config` does not enforce the catalog for every dependency: `.github/scripts/check-deps.mts` checks this rule (run `node .github/scripts/check-deps.mts` after changing the dependencies).
 - `peerDependencies` keep their ranges, never `catalog:`.
 - Internal packages use `workspace:^` (published as `^<version>`).
-- A package with a peer dependency also declares it in its `devDependencies`, with a version inside the peer range: `.github/scripts/check-deps.mjs` checks it too.
+- A package with a peer dependency also declares it in its `devDependencies`, with a version inside the peer range: `.github/scripts/check-deps.mts` checks it too.
 - The root `package.json` only lists the tools of the repository (nx, relizy, husky, lint-staged...).
 
 ## Unit Testing Guidelines

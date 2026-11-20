@@ -1,17 +1,16 @@
 {
-  "extends": ["./../tsconfig.json"],
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@/*": ["./../src/*"],
+      "@/*": ["../src/*"],
       "@tests/*": ["./*"],
-      "@components/*": ["./../src/components/*"],
-      "@composables/*": ["./../src/composables/*"],
-      "@directives/*": ["./../src/directives/*"],
-      "@icons/*": ["./../src/icons/*"],
-      "@plugins/*": ["./../src/plugins/*"],
-      "@resolvers/*": ["./../src/resolvers/*"]
+      "@components/*": ["../src/components/*"],
+      "@composables/*": ["../src/composables/*"],
+      "@directives/*": ["../src/directives/*"],
+      "@plugins/*": ["../src/plugins/*"],
+      "@resolvers/*": ["../src/resolvers/*"]
     },
     "types": ["node", "@maz-ui/vite-svg-loader/client", "vitest/globals", "vue"]
   },
-  "include": ["./../types/*", "**/*", "./../src/**/*"]
+  "include": ["**/*", "../src/**/*"]
 }

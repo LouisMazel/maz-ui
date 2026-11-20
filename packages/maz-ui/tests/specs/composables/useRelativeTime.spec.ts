@@ -1,6 +1,6 @@
-import { useRelativeTime } from '@composables/useRelativeTime'
+import { useRelativeTime } from '@composables/useRelativeTime.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { withSetup } from '@tests/helpers/withSetup'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 import { effectScope, nextTick, ref } from 'vue'
 
 const NOW = new Date('2024-06-15T12:00:00.000Z')

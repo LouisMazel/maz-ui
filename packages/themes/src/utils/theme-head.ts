@@ -1,11 +1,11 @@
-import type { MazUiThemeOptions } from '../plugin'
-import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName } from '../types'
-import type { CookieReader, SystemColorMode } from './theme-preferences'
+import type { MazUiThemeOptions } from '../plugin.ts'
+import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName } from '../types.ts'
+import type { CookieReader, SystemColorMode } from './theme-preferences.ts'
 import { getCookie } from '@maz-ui/utils/helpers/cookie'
-import { resolveColorSchemeContent } from './color-scheme-meta'
-import { CSS_ID, generateCSS } from './css-generator'
-import { getPreset, warnSavedPresetFallback } from './get-preset'
-import { mergePresets } from './preset-merger'
+import { resolveColorSchemeContent } from './color-scheme-meta.ts'
+import { CSS_ID, generateCSS } from './css-generator.ts'
+import { getPreset, warnSavedPresetFallback } from './get-preset.ts'
+import { mergePresets } from './preset-merger.ts'
 import {
   COLOR_MODE_COOKIE,
   getDefaultColorMode,
@@ -14,7 +14,7 @@ import {
   readPresetPreference,
   resolveActivePresetName,
   resolveIsDark,
-} from './theme-preferences'
+} from './theme-preferences.ts'
 
 /** Default preset identity used when the app declares no preset. */
 export const DEFAULT_PRESET_NAME = 'maz-ui'

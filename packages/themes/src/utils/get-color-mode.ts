@@ -1,8 +1,8 @@
-import type { ColorMode } from '../types'
-import type { SystemColorMode } from './theme-preferences'
-import { readColorModePreference, saveSystemColorMode } from './theme-preferences'
+import type { ColorMode } from '../types.ts'
+import type { SystemColorMode } from './theme-preferences.ts'
+import { readColorModePreference, saveSystemColorMode } from './theme-preferences.ts'
 
-export { COLOR_MODE_COOKIE, getSystemColorMode } from './theme-preferences'
+export { COLOR_MODE_COOKIE, getSystemColorMode } from './theme-preferences.ts'
 
 /** Color mode chosen by the user, from the `maz-color-mode` cookie. */
 export function getSavedColorMode(): ColorMode | undefined {

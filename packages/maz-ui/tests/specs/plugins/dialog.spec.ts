@@ -1,4 +1,4 @@
-import { DialogPlugin } from '@plugins/dialog'
+import { DialogPlugin } from '@plugins/dialog.ts'
 import { createApp } from 'vue'
 
 describe('given DialogPlugin', () => {

@@ -1,5 +1,5 @@
-import { formatDate } from './formatDate'
-import { getBrowserLocale } from './getBrowserLocale'
+import { formatDate } from './formatDate.ts'
+import { getBrowserLocale } from './getBrowserLocale.ts'
 
 export type RelativeTimeInput = Date | string | number
 

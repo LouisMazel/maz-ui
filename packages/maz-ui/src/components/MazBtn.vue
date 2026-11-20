@@ -1,13 +1,13 @@
 <script lang="ts" setup generic="_T">
 import type { CSSProperties } from 'vue'
-import type { MazIconLike } from '../composables/useMazIconProps'
-import type { MazColor, MazNeutralColor, MazRoundedSize, MazSize } from './types'
+import type { MazIconLike } from '../composables/useMazIconProps.ts'
+import type { MazColor, MazNeutralColor, MazRoundedSize, MazSize } from './types.ts'
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useMazIconProps } from '../composables/useMazIconProps'
-import { hasSlotContent } from '../utils/hasSlotContent'
-import { resolveLinkComponent } from '../utils/resolveLinkComponent'
-import { getColor } from './types'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
+import { getColor } from './types.ts'
 
 export interface MazBtnProps {
   /**

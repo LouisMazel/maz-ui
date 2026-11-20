@@ -1,4 +1,4 @@
-import { injectColorSchemeMeta, resolveColorSchemeContent } from '../color-scheme-meta'
+import { injectColorSchemeMeta, resolveColorSchemeContent } from '../color-scheme-meta.ts'
 
 describe('given resolveColorSchemeContent', () => {
   describe('when mode is both', () => {

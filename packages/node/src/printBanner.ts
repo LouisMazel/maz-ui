@@ -1,6 +1,6 @@
 import type { FigletOptions } from 'figlet/node'
 import figlet from 'figlet'
-import { logger } from './logger'
+import { logger } from './logger.ts'
 
 export function printBanner({
   name,

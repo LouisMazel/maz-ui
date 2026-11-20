@@ -1,5 +1,5 @@
 import { defineComponent, h } from 'vue'
-import { resolveMazIconProps } from '@/utils/resolveMazIconProps'
+import { resolveMazIconProps } from '@/utils/resolveMazIconProps.ts'
 
 const RAW_SVG = '<svg viewBox="0 0 24 24"><path d="M0 0"/></svg>'
 

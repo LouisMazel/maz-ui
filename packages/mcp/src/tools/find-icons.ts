@@ -1,9 +1,9 @@
-import type { ServerContext } from '../context'
+import type { ServerContext } from '../context.ts'
 
 import { z } from 'zod'
-import { closest } from '../knowledge/resolve'
-import { searchIcons } from '../search/engine'
-import { defineTool } from './types'
+import { closest } from '../knowledge/resolve.ts'
+import { searchIcons } from '../search/engine.ts'
+import { defineTool } from './types.ts'
 
 export interface FindIconsArgs {
   query: string

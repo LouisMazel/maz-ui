@@ -1,4 +1,4 @@
-import { getDefaultSvgoConfig, getFloatPrecision, getIdPrefix, optimizeSvg } from '../optimize'
+import { getDefaultSvgoConfig, getFloatPrecision, getIdPrefix, optimizeSvg } from '../optimize.ts'
 
 const ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M6.12345 18.12345L18 6" stroke="currentColor"/></svg>'
 const WITH_IDS = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><clipPath id="clip"><rect width="24" height="24"/></clipPath></defs><g clip-path="url(#clip)"><path d="M0 0h24v24H0z"/></g></svg>'

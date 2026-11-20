@@ -1,8 +1,8 @@
 import type { IconComponent } from '@maz-ui/icons'
-import { getRegisteredIcon } from '@maz-ui/icons/registry'
+import { hasIcon } from '@maz-ui/icons/vue'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, inject, markRaw, ref, useAttrs, watch } from 'vue'
-import { decodeSvgDataUri, extractSvgMarkup, fetchSvgText, isIconName, isStringIcon, isUrlLike, prefetchSvgText, svgTextCache } from './svg-utils'
+import { decodeSvgDataUri, extractSvgMarkup, fetchSvgText, isIconName, isStringIcon, isUrlLike, prefetchSvgText, svgTextCache } from './svg-utils.ts'
 
 type SvgSourceValue = string | IconComponent
 
@@ -44,6 +44,8 @@ function isRelativeUrl(value: string): boolean {
  */
 export function useSvgSource({ icon, fallback, prepare, watchSources, onError }: UseSvgSourceOptions) {
   const rawSvgContent = ref('')
+  /** A registered name, rendered by MazIconPrimitive */
+  const registeredName = ref<string>()
   const hasError = ref(false)
 
   /**
@@ -85,7 +87,13 @@ export function useSvgSource({ icon, fallback, prepare, watchSources, onError }:
   })
 
   function render(svg: string) {
+    registeredName.value = undefined
     rawSvgContent.value = prepare(svg)
+  }
+
+  function clear() {
+    registeredName.value = undefined
+    rawSvgContent.value = ''
   }
 
   /** `/star.svg` is `${mazIconPath}/star.svg`, a URL already under its path (`/icons/star.svg` with `/icons`) keeps it */
@@ -107,7 +115,7 @@ export function useSvgSource({ icon, fallback, prepare, watchSources, onError }:
   async function fail(error: Error, value: string): Promise<void> {
     onError(error)
     hasError.value = true
-    rawSvgContent.value = ''
+    clear()
 
     // A string fallback is tried in turn, a component fallback takes over through `componentIcon`
     const fallbackValue = fallback()
@@ -116,9 +124,9 @@ export function useSvgSource({ icon, fallback, prepare, watchSources, onError }:
   }
 
   async function resolveString(value: string): Promise<void> {
-    const registered = getRegisteredIcon(value)
-    if (registered) {
-      render(registered)
+    if (hasIcon(value)) {
+      rawSvgContent.value = ''
+      registeredName.value = value
       return
     }
 
@@ -135,7 +143,7 @@ export function useSvgSource({ icon, fallback, prepare, watchSources, onError }:
     }
 
     if (!isUrlLike(value)) {
-      rawSvgContent.value = ''
+      clear()
       return
     }
 
@@ -175,7 +183,7 @@ export function useSvgSource({ icon, fallback, prepare, watchSources, onError }:
     // A URL keeps the previous icon until it is loaded
     const source = icon() || fallback()
     if (!source || !isStringIcon(source)) {
-      rawSvgContent.value = ''
+      clear()
       return
     }
 
@@ -202,7 +210,12 @@ export function useSvgSource({ icon, fallback, prepare, watchSources, onError }:
     { immediate: true, deep: true },
   )
 
-  return { rawSvgContent, isPendingUrl, componentIcon }
+  return {
+    rawSvgContent,
+    registeredName,
+    isPendingUrl,
+    componentIcon,
+  }
 }
 
 /** Decorative (`aria-hidden`) unless it has a title or a label, then exposed as an image */
@@ -229,5 +242,20 @@ export function useSvgAccessibility({ title, svgAttributes }: UseSvgAccessibilit
     ? undefined
     : title()))
 
-  return { ariaHidden, role, ariaLabel }
+  /**
+   * The wrapper is the accessible element: the SVG of MazIconPrimitive only keeps the accessibility attributes of
+   * `svgAttributes`, as the SVG rendered with `v-html`
+   */
+  const primitiveAttributes = computed(() => ({
+    'role': svgAttributes()?.role ?? null,
+    'aria-hidden': svgAttributes()?.['aria-hidden'] ?? null,
+    'aria-label': svgAttributes()?.['aria-label'] ?? null,
+  }))
+
+  return {
+    ariaHidden,
+    role,
+    ariaLabel,
+    primitiveAttributes,
+  }
 }

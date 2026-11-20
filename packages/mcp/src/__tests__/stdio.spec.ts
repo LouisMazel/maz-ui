@@ -1,6 +1,6 @@
-import { createContext } from '../context'
-import { startStdioServer } from '../server'
-import { BUNDLE_DIR, getEmptyCwd } from './helpers'
+import { createContext } from '../context.ts'
+import { startStdioServer } from '../server.ts'
+import { BUNDLE_DIR, getEmptyCwd } from './helpers.ts'
 
 const transports = vi.hoisted(() => ({ created: 0 }))
 

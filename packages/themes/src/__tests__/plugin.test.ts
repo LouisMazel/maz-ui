@@ -1,17 +1,17 @@
 import type { App, Ref } from 'vue'
-import type { ThemeState } from '../types'
-import { MazUiTheme } from '../plugin'
+import type { ThemeState } from '../types.ts'
+import { MazUiTheme } from '../plugin.ts'
 
-vi.mock('../utils/setup-theme', () => ({
+vi.mock('../utils/setup-theme.ts', () => ({
   setupTheme: vi.fn(),
 }))
 
-vi.mock('../utils', () => ({
+vi.mock('../utils/index.ts', () => ({
   injectThemeState: vi.fn(),
 }))
 
-const { setupTheme } = await import('../utils/setup-theme')
-const { injectThemeState } = await import('../utils')
+const { setupTheme } = await import('../utils/setup-theme.ts')
+const { injectThemeState } = await import('../utils/index.ts')
 
 describe('plugin', () => {
   afterEach(() => {

@@ -731,6 +731,15 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'logos',
   ],
   'ecosystem/icons/icon-set': ['icon list', 'find icon', 'icon names'],
+  'ecosystem/icons/by-name': [
+    'icons without maz-ui',
+    'own svg icons',
+    'svg folder',
+    'icon component',
+    'MazIconPrimitive',
+    'MazUiIcons',
+    'icon bundle size',
+  ],
 
   'guide/getting-started': [
     'install',
@@ -855,6 +864,8 @@ export const RELATED_DOCS: Array<[string, string]> = [
   ['ecosystem/vite-plugin', 'ecosystem/nuxt'],
   ['ecosystem/vite-plugin', 'guide/vue'],
   ['ecosystem/vite-plugin', 'ecosystem/icons'],
+  ['ecosystem/icons/by-name', 'ecosystem/icons'],
+  ['ecosystem/icons/by-name', 'ecosystem/vite-plugin'],
 ]
 
 /** Symbols and canonical imports of the ecosystem pages (their examples import many unrelated symbols) */

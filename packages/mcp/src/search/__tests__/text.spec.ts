@@ -1,4 +1,4 @@
-import { analyze, processTerm, stem, tokenize } from '../text'
+import { analyze, processTerm, stem, tokenize } from '../text.ts'
 
 describe('given stem', () => {
   describe('when a word is short or contains digits', () => {

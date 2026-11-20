@@ -28,7 +28,7 @@ import type { MazTableProps } from '../components/MazTable.vue'
 import type { MazTabsBarProps } from '../components/MazTabsBar.vue'
 import type { MazTextareaProps } from '../components/MazTextarea.vue'
 import type { MazTimelineProps } from '../components/MazTimeline.vue'
-import type { MazCountryFlagSrc, MazRoundedSize, MazSize } from '../components/types'
+import type { MazCountryFlagSrc, MazRoundedSize, MazSize } from '../components/types.ts'
 import { computed, getCurrentInstance, inject } from 'vue'
 
 /**

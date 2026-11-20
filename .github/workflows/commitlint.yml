@@ -1,0 +1,23 @@
+name: Commit messages
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  commitlint:
+    name: commitlint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js, pnpm and Nx cache
+        uses: ./.github/actions/setup
+
+      # The commits of the pull request, relizy fetches the history missing from the shallow clone
+      - name: Lint the commits
+        run: pnpm relizy commitlint

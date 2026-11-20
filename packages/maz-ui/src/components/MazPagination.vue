@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { MazBtnProps } from './MazBtn.vue'
-import type { MazColor, MazNeutralColor, MazSize } from './types'
+import type { MazColor, MazNeutralColor, MazSize } from './types.ts'
 import { MazEllipsisHorizontal } from '@maz-ui/icons/lazy/MazEllipsisHorizontal'
 import { MazChevronDoubleLeft } from '@maz-ui/icons/raw/MazChevronDoubleLeft'
 import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import MazBtn from './MazBtn.vue'
 import MazIcon from './MazIcon.vue'
 

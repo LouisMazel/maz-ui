@@ -1,7 +1,7 @@
 import type { MazBtnDropdownProps } from '@components/MazBtnDropdown.vue'
 import MazBtnDropdown from '@components/MazBtnDropdown.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
-import { runAxe } from '@tests/helpers/axe'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { mount } from '@vue/test-utils'
 
 const draftSpy = vi.fn()

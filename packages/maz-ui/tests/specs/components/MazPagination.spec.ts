@@ -1,6 +1,6 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazPagination from '@components/MazPagination.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
 
 describe('mazPagination.vue', () => {

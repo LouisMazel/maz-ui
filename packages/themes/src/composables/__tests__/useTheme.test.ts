@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
-import type { ThemePreset, ThemePresetOverrides, ThemeState } from '../../types'
+import type { ThemePreset, ThemePresetOverrides, ThemeState } from '../../types.ts'
 import { createApp, defineComponent, ref } from 'vue'
-import { mazUi } from '../../presets'
-import { useTheme } from '../useTheme'
+import { mazUi } from '../../presets/index.ts'
+import { useTheme } from '../useTheme.ts'
 
 const { generateCSS, getActiveThemeState, getPreset, injectCSS, isServer, mergePresets, readPresetPreference, runViewTransition, saveColorModeChoice, savePresetPreference, setActiveThemeState } = vi.hoisted(() => ({
   generateCSS: vi.fn(() => 'full-css'),
@@ -25,32 +25,32 @@ const { generateCSS, getActiveThemeState, getPreset, injectCSS, isServer, mergeP
   setActiveThemeState: vi.fn(),
 }))
 
-vi.mock('../../utils/css-generator', () => ({
+vi.mock('../../utils/css-generator.ts', () => ({
   CSS_ID: 'maz-theme-css',
   generateCSS,
   injectCSS,
 }))
 
-vi.mock('../../utils/get-preset', () => ({ getPreset }))
+vi.mock('../../utils/get-preset.ts', () => ({ getPreset }))
 
-vi.mock('../../utils/preset-merger', () => ({ mergePresets }))
+vi.mock('../../utils/preset-merger.ts', () => ({ mergePresets }))
 
-vi.mock('../../utils/no-transition', () => ({
+vi.mock('../../utils/no-transition.ts', () => ({
   noTransition: (fn: (...args: any[]) => any, ...args: any[]) => fn(...args),
 }))
 
-vi.mock('../../utils/theme-preferences', () => ({
+vi.mock('../../utils/theme-preferences.ts', () => ({
   readPresetPreference,
   saveColorModeChoice,
   savePresetPreference,
 }))
 
-vi.mock('../../utils/theme-state-registry', () => ({
+vi.mock('../../utils/theme-state-registry.ts', () => ({
   getActiveThemeState,
   setActiveThemeState,
 }))
 
-vi.mock('../../utils/view-transition', () => ({ runViewTransition }))
+vi.mock('../../utils/view-transition.ts', () => ({ runViewTransition }))
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({ isServer }))
 

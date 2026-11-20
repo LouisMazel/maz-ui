@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "5.7.0",
+  "version": "5.8.0-beta.2",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -33,91 +33,91 @@
   "exports": {
     ".": {
       "monorepo:dev": "./src/index.ts",
-      "types": "./dist/index.d.ts",
+      "types": "./dist/index.d.mts",
       "import": "./dist/index.js",
       "module": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./components": {
       "monorepo:dev": "./src/components/index.ts",
-      "types": "./dist/components/index.d.ts",
+      "types": "./dist/components/index.d.mts",
       "import": "./dist/components/index.js",
       "module": "./dist/components/index.js",
       "default": "./dist/components/index.js"
     },
     "./components/*": {
       "monorepo:dev": "./src/components/*.vue",
-      "types": "./dist/components/*.vue.d.ts",
+      "types": "./dist/components/*.vue.d.mts",
       "import": "./dist/components/*.js",
       "module": "./dist/components/*.js",
       "default": "./dist/components/*.js"
     },
     "./composables": {
       "monorepo:dev": "./src/composables/index.ts",
-      "types": "./dist/composables/index.d.ts",
+      "types": "./dist/composables/index.d.mts",
       "import": "./dist/composables/index.js",
       "module": "./dist/composables/index.js",
       "default": "./dist/composables/index.js"
     },
     "./composables/*": {
       "monorepo:dev": "./src/composables/*.ts",
-      "types": "./dist/composables/*.d.ts",
+      "types": "./dist/composables/*.d.mts",
       "import": "./dist/composables/*.js",
       "module": "./dist/composables/*.js",
       "default": "./dist/composables/*.js"
     },
     "./plugins": {
       "monorepo:dev": "./src/plugins/index.ts",
-      "types": "./dist/plugins/index.d.ts",
+      "types": "./dist/plugins/index.d.mts",
       "import": "./dist/plugins/index.js",
       "module": "./dist/plugins/index.js",
       "default": "./dist/plugins/index.js"
     },
     "./plugins/*": {
       "monorepo:dev": "./src/plugins/*.ts",
-      "types": "./dist/plugins/*.d.ts",
+      "types": "./dist/plugins/*.d.mts",
       "import": "./dist/plugins/*.js",
       "module": "./dist/plugins/*.js",
       "default": "./dist/plugins/*.js"
     },
     "./directives": {
       "monorepo:dev": "./src/directives/index.ts",
-      "types": "./dist/directives/index.d.ts",
+      "types": "./dist/directives/index.d.mts",
       "import": "./dist/directives/index.js",
       "module": "./dist/directives/index.js",
       "default": "./dist/directives/index.js"
     },
     "./directives/*": {
       "monorepo:dev": "./src/directives/*.ts",
-      "types": "./dist/directives/*.d.ts",
+      "types": "./dist/directives/*.d.mts",
       "import": "./dist/directives/*.js",
       "module": "./dist/directives/*.js",
       "default": "./dist/directives/*.js"
     },
     "./resolvers": {
       "monorepo:dev": "./src/resolvers/index.ts",
-      "types": "./dist/resolvers/index.d.ts",
+      "types": "./dist/resolvers/index.d.mts",
       "import": "./dist/resolvers/index.js",
       "module": "./dist/resolvers/index.js",
       "default": "./dist/resolvers/index.js"
     },
     "./resolvers/*": {
       "monorepo:dev": "./src/resolvers/*.ts",
-      "types": "./dist/resolvers/*.d.ts",
+      "types": "./dist/resolvers/*.d.mts",
       "import": "./dist/resolvers/*.js",
       "module": "./dist/resolvers/*.js",
       "default": "./dist/resolvers/*.js"
     },
     "./country-flags": {
       "monorepo:dev": "./src/utils/country-flags.ts",
-      "types": "./dist/utils/country-flags.d.ts",
+      "types": "./dist/utils/country-flags.d.mts",
       "import": "./dist/country-flags.js",
       "module": "./dist/country-flags.js",
       "default": "./dist/country-flags.js"
     },
     "./tailwindcss": {
       "monorepo:dev": "./src/tailwindcss/index.ts",
-      "types": "./dist/tailwindcss/index.d.ts",
+      "types": "./dist/tailwindcss/index.d.mts",
       "import": "./dist/tailwindcss/index.js",
       "module": "./dist/tailwindcss/index.js",
       "default": "./dist/tailwindcss/index.js"
@@ -136,7 +136,7 @@
     "./tailwindcss/utilities.css": "./src/tailwindcss/utilities.css",
     "./tailwindcss/tailwind.css": "./src/tailwindcss/tailwind.css",
     "./tailwindcss/*": {
-      "types": "./dist/tailwindcss/*.d.ts",
+      "types": "./dist/tailwindcss/*.d.mts",
       "import": "./dist/tailwindcss/*.js",
       "module": "./dist/tailwindcss/*.js",
       "default": "./dist/tailwindcss/*.js"
@@ -154,10 +154,14 @@
     },
     "./package.json": "./package.json"
   },
+  "bin": {
+    "maz-ui-icons": "./bin/maz-ui-icons.mjs"
+  },
   "files": [
     "LICENSE",
     "README.md",
     "agent-docs",
+    "bin",
     "dist",
     "src/tailwindcss"
   ],
@@ -179,7 +183,8 @@
     "test:unit:coverage": "vitest run --coverage",
     "test:unit:coverage:watch": "vitest watch --coverage",
     "test:unit:coverage:master": "vitest run --coverage --changed master",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck",
+    "typecheck": "vue-tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "generate:agent-docs": "pnpm -F agent-docs generate --package maz-ui"
   },
   "peerDependencies": {
@@ -233,6 +238,7 @@
     "marked": "^18.2.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@codecov/vite-plugin": "catalog:",
     "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/node": "workspace:^",
@@ -306,79 +312,79 @@
   "publishConfig": {
     "exports": {
       ".": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/index.d.mts",
         "import": "./dist/index.js",
         "module": "./dist/index.js",
         "default": "./dist/index.js"
       },
       "./components": {
-        "types": "./dist/components/index.d.ts",
+        "types": "./dist/components/index.d.mts",
         "import": "./dist/components/index.js",
         "module": "./dist/components/index.js",
         "default": "./dist/components/index.js"
       },
       "./components/*": {
-        "types": "./dist/components/*.vue.d.ts",
+        "types": "./dist/components/*.vue.d.mts",
         "import": "./dist/components/*.js",
         "module": "./dist/components/*.js",
         "default": "./dist/components/*.js"
       },
       "./composables": {
-        "types": "./dist/composables/index.d.ts",
+        "types": "./dist/composables/index.d.mts",
         "import": "./dist/composables/index.js",
         "module": "./dist/composables/index.js",
         "default": "./dist/composables/index.js"
       },
       "./composables/*": {
-        "types": "./dist/composables/*.d.ts",
+        "types": "./dist/composables/*.d.mts",
         "import": "./dist/composables/*.js",
         "module": "./dist/composables/*.js",
         "default": "./dist/composables/*.js"
       },
       "./plugins": {
-        "types": "./dist/plugins/index.d.ts",
+        "types": "./dist/plugins/index.d.mts",
         "import": "./dist/plugins/index.js",
         "module": "./dist/plugins/index.js",
         "default": "./dist/plugins/index.js"
       },
       "./plugins/*": {
-        "types": "./dist/plugins/*.d.ts",
+        "types": "./dist/plugins/*.d.mts",
         "import": "./dist/plugins/*.js",
         "module": "./dist/plugins/*.js",
         "default": "./dist/plugins/*.js"
       },
       "./directives": {
-        "types": "./dist/directives/index.d.ts",
+        "types": "./dist/directives/index.d.mts",
         "import": "./dist/directives/index.js",
         "module": "./dist/directives/index.js",
         "default": "./dist/directives/index.js"
       },
       "./directives/*": {
-        "types": "./dist/directives/*.d.ts",
+        "types": "./dist/directives/*.d.mts",
         "import": "./dist/directives/*.js",
         "module": "./dist/directives/*.js",
         "default": "./dist/directives/*.js"
       },
       "./resolvers": {
-        "types": "./dist/resolvers/index.d.ts",
+        "types": "./dist/resolvers/index.d.mts",
         "import": "./dist/resolvers/index.js",
         "module": "./dist/resolvers/index.js",
         "default": "./dist/resolvers/index.js"
       },
       "./resolvers/*": {
-        "types": "./dist/resolvers/*.d.ts",
+        "types": "./dist/resolvers/*.d.mts",
         "import": "./dist/resolvers/*.js",
         "module": "./dist/resolvers/*.js",
         "default": "./dist/resolvers/*.js"
       },
       "./country-flags": {
-        "types": "./dist/utils/country-flags.d.ts",
+        "types": "./dist/utils/country-flags.d.mts",
         "import": "./dist/country-flags.js",
         "module": "./dist/country-flags.js",
         "default": "./dist/country-flags.js"
       },
       "./tailwindcss": {
-        "types": "./dist/tailwindcss/index.d.ts",
+        "types": "./dist/tailwindcss/index.d.mts",
         "import": "./dist/tailwindcss/index.js",
         "module": "./dist/tailwindcss/index.js",
         "default": "./dist/tailwindcss/index.js"
@@ -397,7 +403,7 @@
       "./tailwindcss/utilities.css": "./src/tailwindcss/utilities.css",
       "./tailwindcss/tailwind.css": "./src/tailwindcss/tailwind.css",
       "./tailwindcss/*": {
-        "types": "./dist/tailwindcss/*.d.ts",
+        "types": "./dist/tailwindcss/*.d.mts",
         "import": "./dist/tailwindcss/*.js",
         "module": "./dist/tailwindcss/*.js",
         "default": "./dist/tailwindcss/*.js"

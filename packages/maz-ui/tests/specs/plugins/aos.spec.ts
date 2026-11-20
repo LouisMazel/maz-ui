@@ -1,9 +1,9 @@
-import type { AosOptions } from '@plugins/aos'
+import type { AosOptions } from '@plugins/aos.ts'
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { sleep } from '@maz-ui/utils/helpers/sleep'
-import { AosHandler, AosPlugin, getAosInstance } from '@plugins/aos'
+import { AosHandler, AosPlugin, getAosInstance } from '@plugins/aos.ts'
 import { vi } from 'vitest'
 
 // Mock dependencies

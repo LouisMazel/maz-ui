@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/vite-plugin",
   "type": "module",
-  "version": "5.7.0",
+  "version": "5.8.0-beta.2",
   "description": "Vite plugins for Maz-UI: icons by name, purge of the CSS of the components and utilities your app does not use, and only the theme presets it loads",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -67,7 +67,8 @@
     "build": "unbuild && pnpm generate:agent-docs",
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/vite-plugin",
     "dev": "unbuild --stub",
-    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck": "tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "test:unit": "vitest run",
@@ -80,11 +81,11 @@
   "dependencies": {
     "@maz-ui/icons": "workspace:^",
     "@maz-ui/vite-svg-loader": "workspace:^",
-    "magic-string": "^0.30.21",
     "postcss": "catalog:",
     "tinyglobby": "catalog:"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@maz-ui/eslint-config": "workspace:^",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",

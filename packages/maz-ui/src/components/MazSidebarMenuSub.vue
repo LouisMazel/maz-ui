@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { MazIconLike } from '../composables/useMazIconProps'
+import type { MazIconLike } from '../composables/useMazIconProps.ts'
 
 export interface MazSidebarMenuSubProps {
   /** Label for the sub-menu trigger button */
@@ -17,8 +17,8 @@ export interface MazSidebarMenuSubProps {
 <script lang="ts" setup generic="_T">
 import { MazChevronDown } from '@maz-ui/icons/lazy/MazChevronDown'
 import { computed, defineAsyncComponent, ref, useId } from 'vue'
-import { useInjectStrict } from '../composables/useInjectStrict'
-import { useMazIconProps } from '../composables/useMazIconProps'
+import { useInjectStrict } from '../composables/useInjectStrict.ts'
+import { useMazIconProps } from '../composables/useMazIconProps.ts'
 import { mazSidebarKey } from './MazSidebar.vue'
 
 const { icon, defaultOpen = false } = defineProps<MazSidebarMenuSubProps>()

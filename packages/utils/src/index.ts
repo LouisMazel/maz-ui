@@ -1,2 +1,2 @@
-export * from './helpers'
-export * from './ts-helpers'
+export * from './helpers/index.ts'
+export * from './ts-helpers/index.ts'

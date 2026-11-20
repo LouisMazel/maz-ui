@@ -1,4 +1,4 @@
-import { useMutationObserver } from '@composables/useMutationObserver'
+import { useMutationObserver } from '@composables/useMutationObserver.ts'
 import { ref } from 'vue'
 
 describe('given useMutationObserver composable', () => {

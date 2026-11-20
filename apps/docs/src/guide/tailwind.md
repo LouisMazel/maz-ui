@@ -277,9 +277,9 @@ The breakpoint names also exist as **container sizes** (`maz-ui/tailwindcss/them
 
 In Vue, [`MazPageSection`](./../components/maz-page-section.md) renders this class for you (`<MazPageSection as="header">`), without `maz-ui/tailwindcss/utilities.css`.
 
-`padded-container-no-p` centers the content on the same column without the minimum side padding: for full-bleed children (a carousel, an image) aligned with the rest of the page.
+`padded-container-no-p` centers the content on the same column without the minimum side padding: a carousel or an image touches the edges of the screen on mobile, and stays aligned with the rest of the page on a wide screen. For content edge to edge at every width, use neither class (`w-full`), and put a `padded-container` inside for the parts that stay on the column.
 
-**Inside a container**: the side padding follows the viewport by default. Inside an `@container` ancestor, it follows the width of that container instead, so a layout with a sidebar keeps the right gutter:
+**Inside a container**: the side padding follows the viewport by default. Inside an `@container` ancestor, it follows the width of that container instead, so a layout with a sidebar keeps the right gutter. An `@container` on the element itself does not count, the container has to be a parent:
 
 ```html
 <div class="flex">

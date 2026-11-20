@@ -1,8 +1,8 @@
-import type { AgentDocs, AgentsTool, SetupAgentsOptions } from './types'
+import type { AgentDocs, AgentsTool, SetupAgentsOptions } from './types.ts'
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { findProjectPackage, readPackageVersion } from '../project'
-import { MAZ_UI_AGENTS_TOOL } from './tool'
+import { findProjectPackage, readPackageVersion } from '../project.ts'
+import { MAZ_UI_AGENTS_TOOL } from './tool.ts'
 
 /** Folder of the agent docs of an installed package: `agent-docs`, else `docs` (older maz-ui versions), else undefined */
 export function resolveAgentDocsDir(packageDir: string): string | undefined {

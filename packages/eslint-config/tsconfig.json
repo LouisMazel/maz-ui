@@ -1,20 +1,4 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "rootDir": ".",
-    "types": [
-      "node"
-    ],
-    "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "outDir": "dist",
-    "sourceMap": true
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "extends": "../../tsconfig.node.json",
+  "include": ["src/**/*"]
 }

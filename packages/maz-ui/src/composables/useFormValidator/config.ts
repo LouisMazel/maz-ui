@@ -1,4 +1,4 @@
-import type { BaseFormPayload, ExtractModelKey, FormSchema, StrictOptions } from './types'
+import type { BaseFormPayload, ExtractModelKey, FormSchema, StrictOptions } from './types.ts'
 
 export const CONFIG: {
   mode: StrictOptions<BaseFormPayload, ExtractModelKey<FormSchema<BaseFormPayload>>>['mode']

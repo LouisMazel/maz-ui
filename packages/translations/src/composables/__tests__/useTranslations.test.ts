@@ -1,8 +1,8 @@
-import type { MazUiTranslationsInstance } from '../../types'
+import type { MazUiTranslationsInstance } from '../../types.ts'
 import { createApp, defineComponent } from 'vue'
-import { getActiveTranslations, setActiveTranslations } from '../../utils/active-instance'
-import { createMazUiTranslations } from '../../utils/instance'
-import { useTranslations } from '../useTranslations'
+import { getActiveTranslations, setActiveTranslations } from '../../utils/active-instance.ts'
+import { createMazUiTranslations } from '../../utils/instance.ts'
+import { useTranslations } from '../useTranslations.ts'
 
 const { isServer } = vi.hoisted(() => ({
   isServer: vi.fn(() => false),
@@ -10,7 +10,7 @@ const { isServer } = vi.hoisted(() => ({
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({ isServer }))
 
-vi.mock('../../utils/active-instance', () => {
+vi.mock('../../utils/active-instance.ts', () => {
   let active: MazUiTranslationsInstance | undefined
   return {
     getActiveTranslations: vi.fn(() => active),

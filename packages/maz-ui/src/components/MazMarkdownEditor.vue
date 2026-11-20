@@ -2,7 +2,7 @@
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { Component, HTMLAttributes } from 'vue'
-import type { MazColor, MazRoundedSize } from './types'
+import type { MazColor, MazRoundedSize } from './types.ts'
 
 export type MazMarkdownEditorMode = 'write' | 'preview' | 'split'
 
@@ -128,8 +128,8 @@ import { MazTableCells } from '@maz-ui/icons/lazy/MazTableCells'
 import { MazViewColumns } from '@maz-ui/icons/lazy/MazViewColumns'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, nextTick, ref, watch } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazBtn from './MazBtn.vue'
 import MazBtnGroup from './MazBtnGroup.vue'
 import MazDropdown from './MazDropdown.vue'
@@ -338,7 +338,7 @@ function setMode(value: MazMarkdownEditorMode) {
   mode.value = value
 }
 
-function tryExecInsert(el: HTMLTextAreaElement, text: string): boolean {
+function tryExecInsert(text: string): boolean {
   if (typeof document === 'undefined' || typeof document.execCommand !== 'function')
     return false
 
@@ -358,7 +358,7 @@ function replaceRange(rangeStart: number, rangeEnd: number, text: string, caretS
   el.focus()
   el.setSelectionRange(rangeStart, rangeEnd)
 
-  if (!tryExecInsert(el, text)) {
+  if (!tryExecInsert(text)) {
     const value = modelValue ?? ''
     updateValue(value.slice(0, rangeStart) + text + value.slice(rangeEnd))
   }

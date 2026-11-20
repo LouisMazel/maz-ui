@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { getDaysOfWeek } from '../utils'
+import { getDaysOfWeek } from '../utils.ts'
 
 const props = defineProps({
   locale: { type: String, required: true },

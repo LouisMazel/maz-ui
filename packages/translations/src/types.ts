@@ -1,6 +1,6 @@
 import type { DeepKeyOf, DeepPartial, FlattenObjectKeys } from '@maz-ui/utils/ts-helpers'
 import type { Ref } from 'vue'
-import type defaultMessages from './locales/en'
+import type defaultMessages from './locales/en.ts'
 
 export type TranslationKey = NonNullable<DeepKeyOf<MazUiTranslationsFlattenSchema>>
 

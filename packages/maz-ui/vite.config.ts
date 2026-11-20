@@ -62,9 +62,10 @@ export default defineConfig(({ mode }) => {
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
-        outDirs: [
-          resolver('dist'),
-        ],
+        outDirs: {
+          dir: resolver('dist'),
+          moduleFormat: 'esm',
+        },
         // vue-tsc expands the instance types of the template refs, whose `$watch` uses `OnCleanup`: `vue` does not
         // re-export it, the declaration would import `@vue/reactivity`, which the consumers do not declare
         beforeWriteFile: (filePath, content) => ({

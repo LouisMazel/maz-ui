@@ -1,6 +1,6 @@
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { mazUi } from '../../presets/mazUi'
-import { CSS_ID, generateCSS, injectCSS, removeCSS } from '../css-generator'
+import { mazUi } from '../../presets/mazUi.ts'
+import { CSS_ID, generateCSS, injectCSS, removeCSS } from '../css-generator.ts'
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({
   isServer: vi.fn(() => false),

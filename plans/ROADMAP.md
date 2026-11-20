@@ -17,6 +17,10 @@ Ce qui reste à faire après la v5. Le travail déjà livré (virtualisation de 
 
 shadcn-vue et Nuxt UI v3 reposent sur Reka UI (ex-Radix Vue) pour l'ARIA, le focus trap, le roving tabindex, la détection de collision et la navigation clavier. Maz-UI les implémente à la main. Les tests axe et clavier sont maintenant en place (garde-fou), l'étape suivante serait d'adopter Reka UI comme socle des primitives complexes (`Popover`, `Dropdown`, `Dialog`, `Select`, `Tabs`, `Combobox`) en ne gardant que le style par-dessus.
 
+### Icônes par nom sans maz-ui
+
+Rendre `icon="x-mark"` disponible aux autres libs Vue, sans maz-ui et sans breaking change : le plugin (plusieurs dossiers, mode lib), un composant de rendu (`MazIconPrimitive`, à wrapper, utilisé par `MazIcon` et `MazSvg`) et les types des noms, tous dans `@maz-ui/icons`. Détail : [icons-by-name-standalone.md](./icons-by-name-standalone.md). Pour qu'une autre lib le wrappe (`@accor/icons`) : [icons-by-name-wrappers.md](./icons-by-name-wrappers.md).
+
 ### API de variants déclarative
 
 Définir les variants (`color` x `size` x `variant`) via une config type-safe (`tailwind-variants` / CVA) plutôt que des chaînes de classes conditionnelles : lisibilité, slots de classes surchargeables, cohérence.
@@ -34,7 +38,7 @@ Définir les variants (`color` x `size` x `variant`) via une config type-safe (`
 ## Priorité basse - Stratégique
 
 - **`@maz-ui/forms`** : générateur de formulaires piloté par un schéma (Standard Schema, sur la base de `useFormValidator`). PR en cours : #1437.
-- **Distribution "registry" à la shadcn** : `npx maz add button` qui copie le code dans le projet. Point de départ : `maz-cli`.
+- **Distribution "registry" à la shadcn** : `npx maz add button` qui copie le code dans le projet. Point de départ : l'ancien `maz-cli` (supprimé, dans l'historique git).
 - **Tests de régression visuelle** (Playwright screenshots, éventuellement Histoire / Storybook).
 - **Container queries** (`@container` de Tailwind v4) pour rendre `MazCard` / `MazTable` responsives à leur conteneur.
 

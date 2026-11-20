@@ -91,7 +91,7 @@ Every icon of [@maz-ui/icons](./icons/index.md) (`x-mark`, `logo-vue`, `flag-fr`
 
 ### Which names are found
 
-The plugin reads the strings of the keys, variables and attributes whose name contains `icon`, and the strings with your `prefix`:
+The plugin reads the strings of the keys, variables and attributes whose name contains `icon` (and the ones of `scan.keys`), and the strings with your `prefix`:
 
 ```ts
 const items = [{ label: 'Home', icon: 'home' }] // found
@@ -120,27 +120,30 @@ MazUi({
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `dir` | `string` | `'src/icons'` | Folder of the SVG of the project |
-| `prefix` | `string` | | Prefix of their names: `app` gives `app:hero` |
+| `dir` | `IconDir \| IconDir[]` | `'src/icons'` | Folders of the SVG of the project: a path, or `{ path, prefix?, svgo?, lazy?, import? }`, see [Folders](./icons/by-name.md#folders) and [Load on demand](./icons/by-name.md#load-on-demand) |
+| `prefix` | `string` | | Prefix of the names of the folders given by their path: `app` gives `app:hero` |
+| `defaultIcons` | `boolean \| IconSet[]` | `true` | The icons of `@maz-ui/icons` by name: every set, some of them (`['icons', 'logos']`), or none, see [Sets of maz-ui](./icons/by-name.md#sets-of-maz-ui) |
 | `safelist` | `string[]` | `[]` | Names the plugin can not find (built at runtime): registered wherever icons are used |
 | `dts` | `string \| boolean` | `'src/maz-icons.d.ts'` | File of the types of the names, `false` to not write it |
-| `strict` | `boolean` | `false` | `icon` only accepts the known names, URLs and raw SVG: a typo is a type error |
-| `svgoConfig` | `Config \| (defaults) => Config` | | svgo config of the SVG of the project |
+| `strict` | `boolean` | `false` | `icon` only accepts the known names, URLs and raw SVG: a typo is a type error, see [Catch typos](./icons/by-name.md#catch-typos) |
+| `svgoConfig` | `Config \| (defaults) => Config` | | svgo config of the folders given by their path |
+| `scan.keys` | `string[]` | `[]` | Props and keys whose values are names, besides the ones whose name contains `icon`, see [Your own icon component](./icons/by-name.md#your-own-icon-component) |
+| `lib` | `boolean` | `true` with `build.lib` | Build of a library: the icons of an external `@maz-ui/icons` stay imports, see [Libraries](./icons/by-name.md#libraries) |
 
-The types augment `maz-ui`: keep `src/maz-icons.d.ts` in the `include` of your `tsconfig.json` (it is under `src`). Commit it, like the `components.d.ts` of unplugin-vue-components: `vue-tsc` in the CI and a fresh clone have the names without running Vite (without the file, `icon` is a plain `string`). It only changes when you add an SVG or upgrade maz-ui.
+The types augment `@maz-ui/icons` (`maz-ui` when the project does not resolve it): keep `src/maz-icons.d.ts` in the `include` of your `tsconfig.json` (it is under `src`). Vite writes it when it starts: run `maz-ui-icons types` before `vue-tsc` in the CI, see [Before the typecheck](./icons/by-name.md#before-the-typecheck). It only changes when you add an SVG or upgrade maz-ui.
 
 ::: details Your own components with an icon prop
-Type the prop with `MazIconString` (a string, from `maz-ui`) or `MazIconValue` (a string or a component, from `maz-ui/components/MazIcon`), and make the component generic:
+Type the prop with `MazIconString` (a string, from `maz-ui`) or `MazIconValue` (a string or a component, from `maz-ui/components/MazIcon`), through a generic:
 
 ```vue
-<script setup lang="ts" generic="_T">
+<script setup lang="ts" generic="T extends MazIconValue">
 import type { MazIconValue } from 'maz-ui/components/MazIcon'
 
-defineProps<{ icon?: MazIconValue }>()
+const { icon = 'home' } = defineProps<{ icon?: T }>()
 </script>
 ```
 
-Passed as a `Component` (`h()`, a route), a component that is not generic fails with `TS2590: Expression produces a union type that is too complex to represent`: TypeScript compares its props with the 860+ names. The components of maz-ui with an icon prop are generic for this reason: type their template refs with [`GenericInstanceType`](./utils/types/generic-instance-type.md), `InstanceType` does not work with a generic component.
+Without the generic, a component that destructures its props, uses `withDefaults` or is assigned to the `Component` type fails with `TS2590: Expression produces a union type that is too complex to represent`, caused by the `LooseRequired` type of Vue ([vuejs/core#10514](https://github.com/vuejs/core/issues/10514)). Type the template refs of a generic component with [`GenericInstanceType`](./utils/types/generic-instance-type.md), `InstanceType` does not work with it.
 :::
 
 ## CSS purge

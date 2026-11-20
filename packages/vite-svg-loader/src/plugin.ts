@@ -1,9 +1,9 @@
 import type { Plugin } from 'vite'
-import type { SvgoConfigOption } from './optimize'
+import type { SvgoConfigOption } from './optimize.ts'
 import { readFile } from 'node:fs/promises'
 import process from 'node:process'
-import { compileSvgComponent } from './compile'
-import { optimizeSvg } from './optimize'
+import { compileSvgComponent } from './compile.ts'
+import { optimizeSvg } from './optimize.ts'
 
 export type SvgImportType = 'url' | 'raw' | 'component'
 
@@ -24,7 +24,12 @@ export interface SvgLoaderOptions {
 
 const SVG_ID_RE = /\.svg(?:\?.*)?$/
 
-function getImportType(params: URLSearchParams, defaultImport: SvgImportType): 'raw' | 'component' | undefined {
+const URI_QUERY_RE = /([?&])uri(?=&|$)/
+
+function getImportType(params: URLSearchParams, defaultImport: SvgImportType): 'raw' | 'svg' | 'component' | undefined {
+  if (params.has('svg')) {
+    return 'svg'
+  }
   if (params.has('raw')) {
     return 'raw'
   }
@@ -46,6 +51,17 @@ export function svgLoader({ svgo = true, svgoConfig, defaultImport = 'url' }: Sv
     enforce: 'pre',
     configResolved(config) {
       root = config.root
+    },
+    // `?uri` is `?url` with a typed string: the same URL, the same file
+    resolveId: {
+      filter: { id: URI_QUERY_RE },
+      handler(source, importer, options) {
+        if (!SVG_ID_RE.test(source) || !URI_QUERY_RE.test(source)) {
+          return
+        }
+
+        return this.resolve(source.replace(URI_QUERY_RE, '$1url'), importer, { ...options, skipSelf: true })
+      },
     },
     load: {
       filter: { id: SVG_ID_RE },
@@ -74,9 +90,14 @@ export function svgLoader({ svgo = true, svgoConfig, defaultImport = 'url' }: Sv
           svg = optimizeSvg(svg, { path, root, config: svgoConfig })
         }
 
-        return type === 'raw'
-          ? `export default ${JSON.stringify(svg)}`
-          : compileSvgComponent(svg, { id, path })
+        // `?svg` is typed `<svg...`: without what svgo can keep before it (`<?xml`, a comment)
+        if (type === 'svg') {
+          svg = svg.slice(Math.max(0, svg.indexOf('<svg')))
+        }
+
+        return type === 'component'
+          ? compileSvgComponent(svg, { id, path })
+          : `export default ${JSON.stringify(svg)}`
       },
     },
   }

@@ -1,5 +1,5 @@
-import type { ThemePreset, ThemePresetOverrides } from '../../types'
-import { getPreset, isPresetObject } from '../get-preset'
+import type { ThemePreset, ThemePresetOverrides } from '../../types.ts'
+import { getPreset, isPresetObject } from '../get-preset.ts'
 
 describe('get-preset', () => {
   describe('given isPresetObject function', () => {

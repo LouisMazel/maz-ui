@@ -1,4 +1,4 @@
-import { onAutofillSync, readInitialAutofillValue } from '@/utils/autofillSync'
+import { onAutofillSync, readInitialAutofillValue } from '@/utils/autofillSync.ts'
 
 const ANIMATION_NAME = 'maz-autofill-start'
 const STYLE_ELEMENT_ID = 'maz-autofill-sync'

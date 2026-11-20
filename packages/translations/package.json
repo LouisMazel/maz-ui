@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/translations",
   "type": "module",
-  "version": "5.7.0",
+  "version": "5.8.0-beta.2",
   "description": "Translations for Maz-UI library",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -24,42 +24,42 @@
     "access": "public",
     "exports": {
       ".": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/index.d.mts",
         "import": "./dist/index.js",
         "default": "./dist/index.js"
       },
       "./plugin": {
-        "types": "./dist/plugin.d.ts",
+        "types": "./dist/plugin.d.mts",
         "import": "./dist/plugin.js",
         "default": "./dist/plugin.js"
       },
       "./utils": {
-        "types": "./dist/utils/index.d.ts",
+        "types": "./dist/utils/index.d.mts",
         "import": "./dist/utils/index.js",
         "default": "./dist/utils/index.js"
       },
       "./utils/*": {
-        "types": "./dist/utils/*.d.ts",
+        "types": "./dist/utils/*.d.mts",
         "import": "./dist/utils/*.js",
         "default": "./dist/utils/*.js"
       },
       "./locales": {
-        "types": "./dist/locales/index.d.ts",
+        "types": "./dist/locales/index.d.mts",
         "import": "./dist/locales/index.js",
         "default": "./dist/locales/index.js"
       },
       "./locales/*": {
-        "types": "./dist/locales/*.d.ts",
+        "types": "./dist/locales/*.d.mts",
         "import": "./dist/locales/*.js",
         "default": "./dist/locales/*.js"
       },
       "./composables": {
-        "types": "./dist/composables/useTranslations.d.ts",
+        "types": "./dist/composables/useTranslations.d.mts",
         "import": "./dist/composables/useTranslations.js",
         "default": "./dist/composables/useTranslations.js"
       },
       "./composables/*": {
-        "types": "./dist/composables/*.d.ts",
+        "types": "./dist/composables/*.d.mts",
         "import": "./dist/composables/*.js",
         "default": "./dist/composables/*.js"
       }
@@ -68,55 +68,55 @@
   "exports": {
     ".": {
       "monorepo:dev": "./src/index.ts",
-      "types": "./dist/index.d.ts",
+      "types": "./dist/index.d.mts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./plugin": {
       "monorepo:dev": "./src/plugin.ts",
-      "types": "./dist/plugin.d.ts",
+      "types": "./dist/plugin.d.mts",
       "import": "./dist/plugin.js",
       "default": "./dist/plugin.js"
     },
     "./utils": {
       "monorepo:dev": "./src/utils/index.ts",
-      "types": "./dist/utils/index.d.ts",
+      "types": "./dist/utils/index.d.mts",
       "import": "./dist/utils/index.js",
       "default": "./dist/utils/index.js"
     },
     "./utils/*": {
       "monorepo:dev": "./src/utils/*.ts",
-      "types": "./dist/utils/*.d.ts",
+      "types": "./dist/utils/*.d.mts",
       "import": "./dist/utils/*.js",
       "default": "./dist/utils/*.js"
     },
     "./locales": {
       "monorepo:dev": "./src/locales/index.ts",
-      "types": "./dist/locales/index.d.ts",
+      "types": "./dist/locales/index.d.mts",
       "import": "./dist/locales/index.js",
       "default": "./dist/locales/index.js"
     },
     "./locales/*": {
       "monorepo:dev": "./src/locales/*.ts",
-      "types": "./dist/locales/*.d.ts",
+      "types": "./dist/locales/*.d.mts",
       "import": "./dist/locales/*.js",
       "default": "./dist/locales/*.js"
     },
     "./composables": {
       "monorepo:dev": "./src/composables/useTranslations.ts",
-      "types": "./dist/composables/useTranslations.d.ts",
+      "types": "./dist/composables/useTranslations.d.mts",
       "import": "./dist/composables/useTranslations.js",
       "default": "./dist/composables/useTranslations.js"
     },
     "./composables/*": {
       "monorepo:dev": "./src/composables/*.ts",
-      "types": "./dist/composables/*.d.ts",
+      "types": "./dist/composables/*.d.mts",
       "import": "./dist/composables/*.js",
       "default": "./dist/composables/*.js"
     }
   },
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "files": [
     "LICENSE",
     "README.md",
@@ -130,7 +130,8 @@
     "build": "vite build && pnpm generate:agent-docs",
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/translations",
     "build:watch": "vite build --watch --mode development",
-    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck": "tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "test": "vitest",
@@ -145,6 +146,7 @@
     "@maz-ui/utils": "workspace:^"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@codecov/vite-plugin": "catalog:",
     "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",

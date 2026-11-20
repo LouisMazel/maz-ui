@@ -1,8 +1,8 @@
-import type { MazUiThemeOptions } from '../../plugin'
-import type { ThemePreset } from '../../types'
-import { injectThemeCSS } from '../inject-theme-css'
+import type { MazUiThemeOptions } from '../../plugin.ts'
+import type { ThemePreset } from '../../types.ts'
+import { injectThemeCSS } from '../inject-theme-css.ts'
 
-vi.mock('../css-generator', () => ({
+vi.mock('../css-generator.ts', () => ({
   CSS_ID: 'maz-theme-css',
   generateCSS: vi.fn(() => 'generated-css'),
   injectCSS: vi.fn(),
@@ -54,7 +54,7 @@ describe('inject-theme-css', () => {
       })
 
       it('then it returns early without generating CSS', async () => {
-        const { generateCSS, injectCSS } = await import('../css-generator')
+        const { generateCSS, injectCSS } = await import('../css-generator.ts')
         vi.stubGlobal('document', undefined)
 
         injectThemeCSS(createMockPreset(), createConfig())
@@ -66,7 +66,7 @@ describe('inject-theme-css', () => {
 
     describe('when strategy is runtime', () => {
       it('then it generates and injects the full CSS in one shot', async () => {
-        const { generateCSS, injectCSS } = await import('../css-generator')
+        const { generateCSS, injectCSS } = await import('../css-generator.ts')
         const preset = createMockPreset()
 
         injectThemeCSS(preset, createConfig({ strategy: 'runtime' }))
@@ -83,7 +83,7 @@ describe('inject-theme-css', () => {
 
     describe('when strategy is buildtime', () => {
       it('then it skips the runtime injection', async () => {
-        const { generateCSS, injectCSS } = await import('../css-generator')
+        const { generateCSS, injectCSS } = await import('../css-generator.ts')
 
         injectThemeCSS(createMockPreset(), createConfig({ strategy: 'buildtime' }))
 
@@ -94,7 +94,7 @@ describe('inject-theme-css', () => {
 
     describe('when CSS options reflect the config values', () => {
       it('then it forwards mode, darkSelectorStrategy, darkClass, lightClass', async () => {
-        const { generateCSS } = await import('../css-generator')
+        const { generateCSS } = await import('../css-generator.ts')
         const preset = createMockPreset()
 
         injectThemeCSS(preset, createConfig({

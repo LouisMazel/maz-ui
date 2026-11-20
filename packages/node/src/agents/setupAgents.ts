@@ -1,13 +1,13 @@
-import type { AgentsTool, AgentTarget, McpServerCommand, SetupAgentsOptions, SetupAgentsResult } from './types'
-import { findProjectPackage, readPackageVersion } from '../project'
-import { resolveAgentDocs } from './agentDocs'
-import { ChangeSet } from './changeSet'
-import { detectAgentTargets } from './detectAgentTargets'
-import { syncMcpConfigs } from './mcpConfig'
-import { mcpServerCommand } from './mcpServer'
-import { resolveRulePaths } from './rulePaths'
-import { syncRules } from './rules'
-import { MAZ_UI_AGENTS_TOOL, resolveTool } from './tool'
+import type { AgentsTool, AgentTarget, McpServerCommand, SetupAgentsOptions, SetupAgentsResult } from './types.ts'
+import { findProjectPackage, readPackageVersion } from '../project.ts'
+import { resolveAgentDocs } from './agentDocs.ts'
+import { ChangeSet } from './changeSet.ts'
+import { detectAgentTargets } from './detectAgentTargets.ts'
+import { syncMcpConfigs } from './mcpConfig.ts'
+import { mcpServerCommand } from './mcpServer.ts'
+import { resolveRulePaths } from './rulePaths.ts'
+import { syncRules } from './rules.ts'
+import { MAZ_UI_AGENTS_TOOL, resolveTool } from './tool.ts'
 
 /**
  * Command of the MCP server: the given one, else the command for the project, pinned to the given version, else to

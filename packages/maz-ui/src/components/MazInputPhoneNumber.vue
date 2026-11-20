@@ -5,7 +5,7 @@ import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from
 import type { HTMLAttributes } from 'vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 
-import type { MazColor, MazCountryFlagSrc, MazSize } from './types'
+import type { MazColor, MazCountryFlagSrc, MazSize } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import {
   computed,
@@ -19,12 +19,12 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 import PhoneInput from './MazInputPhoneNumber/PhoneInput.vue'
-import { useLibphonenumber } from './MazInputPhoneNumber/useLibphonenumber'
-import { useMazInputPhoneNumber } from './MazInputPhoneNumber/useMazInputPhoneNumber'
+import { useLibphonenumber } from './MazInputPhoneNumber/useLibphonenumber.ts'
+import { useMazInputPhoneNumber } from './MazInputPhoneNumber/useMazInputPhoneNumber.ts'
 import MazSelectCountry from './MazSelectCountry.vue'
 
 defineOptions({

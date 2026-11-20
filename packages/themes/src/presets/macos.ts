@@ -1,9 +1,9 @@
-import type { ThemePreset } from '../types'
+import type { ThemePreset } from '../types.ts'
 import {
   DEFAULT_DISABLED_OPACITY,
   DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SPACE,
-} from './_defaults'
+} from './_defaults.ts'
 
 /**
  * macOS preset: the look of a native Mac app (macOS 26).

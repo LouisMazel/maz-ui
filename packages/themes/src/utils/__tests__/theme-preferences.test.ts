@@ -12,7 +12,7 @@ import {
   savePresetPreference,
   saveSystemColorMode,
   serializeColorModeCookie,
-} from '../theme-preferences'
+} from '../theme-preferences.ts'
 
 const { isServer } = vi.hoisted(() => ({
   isServer: vi.fn(() => false),

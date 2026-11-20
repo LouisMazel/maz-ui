@@ -1,4 +1,4 @@
-import { useMountComponent } from '@composables/useMountComponent'
+import { useMountComponent } from '@composables/useMountComponent.ts'
 import { createApp, defineComponent, h } from 'vue'
 
 describe('given useMountComponent composable', () => {

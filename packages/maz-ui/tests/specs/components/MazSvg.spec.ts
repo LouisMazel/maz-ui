@@ -1,5 +1,6 @@
 import MazSvg from '@components/MazSvg.vue'
 import { registerIcons } from '@maz-ui/icons/registry'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { mount } from '@vue/test-utils'
 import { createSSRApp, defineComponent, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
@@ -37,7 +38,7 @@ describe('MazSvg', () => {
           props: { icon: 'test-flag', width: 120 },
         })
 
-        expect(wrapper.html()).toContain('<svg width="120" xmlns')
+        expect(wrapper.find('svg').attributes('width')).toBe('120')
         expect(wrapper.find('svg').attributes('height')).toBeUndefined()
       })
     })
@@ -48,7 +49,7 @@ describe('MazSvg', () => {
           props: { icon: 'test-flag', height: '4rem' },
         })
 
-        expect(wrapper.html()).toContain('<svg height="4rem" xmlns')
+        expect(wrapper.find('svg').attributes('height')).toBe('4rem')
         expect(wrapper.classes()).not.toContain('m-svg--fluid')
       })
     })
@@ -61,7 +62,7 @@ describe('MazSvg', () => {
 
         await wrapper.setProps({ width: 240 })
 
-        expect(wrapper.html()).toContain('<svg width="240" xmlns')
+        expect(wrapper.find('svg').attributes('width')).toBe('240')
       })
     })
 
@@ -145,6 +146,35 @@ describe('MazSvg', () => {
         expect(wrapper.find('span.m-svg').exists()).toBe(true)
         expect(wrapper.find('svg').exists()).toBe(false)
         globalThis.fetch = originalFetch
+      })
+    })
+  })
+
+  describe('given a registered name with a title', () => {
+    describe('when it is rendered', () => {
+      it('then the wrapper is an image named by the title, without axe violation', async () => {
+        const wrapper = mount(MazSvg, {
+          props: { icon: 'test-flag', title: 'France' },
+        })
+        const svg = wrapper.find('svg')
+
+        expect(wrapper.attributes()).toMatchObject({ 'role': 'img', 'aria-label': 'France' })
+        expect(svg.attributes('role')).toBeUndefined()
+        expect(svg.attributes('width')).toBe('513')
+        expect(await runAxe(wrapper)).toHaveNoViolations()
+      })
+    })
+  })
+
+  describe('given a raw SVG with a width', () => {
+    describe('when it is rendered', () => {
+      it('then the SVG takes the width', () => {
+        const wrapper = mount(MazSvg, {
+          props: { icon: FLAG_SVG, width: 100 },
+        })
+
+        expect(wrapper.find('svg').attributes('width')).toBe('100')
+        expect(wrapper.find('svg').attributes('height')).toBeUndefined()
       })
     })
   })

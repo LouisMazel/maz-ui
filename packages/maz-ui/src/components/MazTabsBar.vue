@@ -2,7 +2,7 @@
 import type { MazBadgeProps } from './MazBadge.vue'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazIndicatorProps } from './MazIndicator.vue'
-import type { MazColor, MazRoundedSize, MazSize } from './types'
+import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 
 /**
  * Props of MazBtn that an item is not allowed to forward, because they are
@@ -141,8 +141,8 @@ import {
   ref,
   watch,
 } from 'vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazBtn from './MazBtn.vue'
 
 const {

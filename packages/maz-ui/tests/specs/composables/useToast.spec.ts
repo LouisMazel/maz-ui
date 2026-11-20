@@ -1,5 +1,5 @@
-import { useToast } from '@composables/useToast'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useToast } from '@composables/useToast.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 
 describe('given useToast composable', () => {
   describe('when toast plugin is installed', () => {

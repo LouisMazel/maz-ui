@@ -7,12 +7,12 @@ import type {
   StrictOptions,
   Validation,
   ValidationIssues,
-} from './types'
+} from './types.ts'
 
 import { debounceId } from '@maz-ui/utils/helpers/debounceId'
 import { throttleId } from '@maz-ui/utils/helpers/throttleId'
 import { nextTick, toRaw } from 'vue'
-import { CONFIG } from './config'
+import { CONFIG } from './config.ts'
 
 export function isEmptyValue(value: unknown): value is null | undefined | '' {
   return value === undefined || value === null || value === ''

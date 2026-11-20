@@ -1,5 +1,5 @@
-import type { ThemePreset } from '../../types'
-import type { SetupThemeReturn } from '../setup-theme'
+import type { ThemePreset } from '../../types.ts'
+import type { SetupThemeReturn } from '../setup-theme.ts'
 import { nextTick } from 'vue'
 
 const { getColorMode, getSavedColorMode, getSavedPreset, getSystemColorMode, savePreset, saveResolvedColorMode } = vi.hoisted(() => ({
@@ -11,8 +11,8 @@ const { getColorMode, getSavedColorMode, getSavedPreset, getSystemColorMode, sav
   saveResolvedColorMode: vi.fn(),
 }))
 
-vi.mock('../theme-preferences', async importOriginal => ({
-  ...await importOriginal<typeof import('../theme-preferences')>(),
+vi.mock('../theme-preferences.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('../theme-preferences.ts')>(),
   getSystemColorMode,
   readColorModePreference: vi.fn(() => ({
     colorMode: getSavedColorMode(),
@@ -22,20 +22,20 @@ vi.mock('../theme-preferences', async importOriginal => ({
   saveSystemColorMode: saveResolvedColorMode,
 }))
 
-vi.mock('../get-preset', () => ({
+vi.mock('../get-preset.ts', () => ({
   getPreset: vi.fn(),
   warnSavedPresetFallback: vi.fn(),
 }))
 
-vi.mock('../inject-theme-css', () => ({
+vi.mock('../inject-theme-css.ts', () => ({
   injectThemeCSS: vi.fn(),
 }))
 
-vi.mock('../preset-merger', () => ({
+vi.mock('../preset-merger.ts', () => ({
   mergePresets: vi.fn((preset: ThemePreset) => preset),
 }))
 
-vi.mock('../update-document-class', () => ({
+vi.mock('../update-document-class.ts', () => ({
   updateDocumentClass: vi.fn(),
 }))
 
@@ -43,19 +43,19 @@ vi.mock('@maz-ui/utils/helpers/isServer', () => ({
   isServer: vi.fn(() => false),
 }))
 
-vi.mock('../use-mutation-observer', () => ({
+vi.mock('../use-mutation-observer.ts', () => ({
   useMutationObserver: vi.fn(() => ({
     stop: vi.fn(),
   })),
 }))
 
-const { getPreset, warnSavedPresetFallback } = await import('../get-preset')
-const { injectThemeCSS } = await import('../inject-theme-css')
-const { mergePresets } = await import('../preset-merger')
-const { updateDocumentClass } = await import('../update-document-class')
+const { getPreset, warnSavedPresetFallback } = await import('../get-preset.ts')
+const { injectThemeCSS } = await import('../inject-theme-css.ts')
+const { mergePresets } = await import('../preset-merger.ts')
+const { updateDocumentClass } = await import('../update-document-class.ts')
 const { isServer } = await import('@maz-ui/utils')
-const { useMutationObserver } = await import('../use-mutation-observer')
-const { defaultOptions, setupTheme } = await import('../setup-theme')
+const { useMutationObserver } = await import('../use-mutation-observer.ts')
+const { defaultOptions, setupTheme } = await import('../setup-theme.ts')
 
 const mockPreset: ThemePreset = {
   name: 'test',

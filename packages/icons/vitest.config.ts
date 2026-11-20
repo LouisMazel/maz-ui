@@ -26,6 +26,8 @@ export default defineConfig({
       include: [
         'src/registry.ts',
         'src/resolvers.ts',
+        'src/vite/**/*.ts',
+        'src/vue/**/*.ts',
         'utils/**/*.ts',
       ],
       exclude: [

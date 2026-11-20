@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { MazColor, MazSizeUnit } from './types'
+import type { MazColor, MazSizeUnit } from './types.ts'
 import { onMounted, onUnmounted } from 'vue'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import MazSpinner from './MazSpinner.vue'
 
 defineOptions({

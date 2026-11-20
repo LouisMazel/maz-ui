@@ -1,4 +1,4 @@
-import { compileSvgComponent } from '../compile'
+import { compileSvgComponent } from '../compile.ts'
 
 describe('given compileSvgComponent', () => {
   describe('when an SVG is compiled', () => {

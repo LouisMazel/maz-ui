@@ -1,4 +1,4 @@
-import { useSwipe } from '@composables/useSwipe'
+import { useSwipe } from '@composables/useSwipe.ts'
 import { vi } from 'vitest'
 
 let capturedOnValuesChanged: ((values: any) => void) | undefined

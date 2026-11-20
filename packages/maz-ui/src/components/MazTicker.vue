@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazSizeUnit } from './types'
+import type { MazSizeUnit } from './types.ts'
 import { computed } from 'vue'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 
 export type MazTickerOrientation = 'horizontal' | 'vertical'
 

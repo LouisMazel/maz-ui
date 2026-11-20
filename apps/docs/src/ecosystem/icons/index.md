@@ -63,6 +63,7 @@ export default defineConfig({
 - **Light**: only the icons of each page are bundled, and they are in the HTML of the server.
 - **Typed**: the names autocomplete in the icon props, a typo is caught by [`review_code`](../../guide/ai-agents.md) (and by TypeScript with `strict`).
 - **Your SVG**: the files of `src/icons` are names too (`src/icons/hero.svg` is `hero`), see [SVG of the project](../vite-plugin.md#svg-of-the-project).
+- **Without maz-ui**: in any Vue app or library, with `MazUiIcons()` and `MazIconPrimitive`, see [Icons by name, without maz-ui](./by-name.md).
 
 ::: details Without the plugin
 Register the names yourself (tests, other build tools), with the raw SVG strings:

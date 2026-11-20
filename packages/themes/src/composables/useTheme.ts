@@ -1,14 +1,14 @@
 import type { Ref } from 'vue'
-import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
+import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, hasInjectionContext, inject } from 'vue'
 
-import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
-import { getPreset } from '../utils/get-preset'
-import { noTransition } from '../utils/no-transition'
-import { mergePresets } from '../utils/preset-merger'
-import { readPresetPreference, saveColorModeChoice, savePresetPreference } from '../utils/theme-preferences'
-import { getActiveThemeState, setActiveThemeState } from '../utils/theme-state-registry'
+import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator.ts'
+import { getPreset } from '../utils/get-preset.ts'
+import { noTransition } from '../utils/no-transition.ts'
+import { mergePresets } from '../utils/preset-merger.ts'
+import { readPresetPreference, saveColorModeChoice, savePresetPreference } from '../utils/theme-preferences.ts'
+import { getActiveThemeState, setActiveThemeState } from '../utils/theme-state-registry.ts'
 
 type ThemeStateRef = Ref<ThemeState | undefined>
 
@@ -77,7 +77,7 @@ async function setColorMode(themeState: ThemeStateRef, colorMode: ColorMode, opt
   }
 
   if (options.animate) {
-    const { runViewTransition } = await import('../utils/view-transition')
+    const { runViewTransition } = await import('../utils/view-transition.ts')
     await runViewTransition(apply)
   }
   else {
@@ -125,7 +125,7 @@ export function useTheme() {
     /**
      * Strategy used to apply the theme
      */
-    strategy: computed(() => themeState.value?.strategy as Required<ThemeState>['strategy']),
+    strategy: computed(() => themeState.value?.strategy as Strategy),
     /**
      * Update the theme
      * @param preset The new theme preset
@@ -156,12 +156,12 @@ export function useTheme() {
      * Mode
      * @description Supported themes - Can be 'both', 'light' or 'dark'
      */
-    mode: computed(() => themeState.value?.mode as Required<ThemeState>['mode']),
+    mode: computed(() => themeState.value?.mode as ThemeMode),
     /**
      * Dark mode strategy
      * @description Strategy used to apply the dark mode - Can be 'class' or 'media'
      */
-    darkModeStrategy: computed(() => themeState.value?.darkModeStrategy as Required<ThemeState>['darkModeStrategy']),
+    darkModeStrategy: computed(() => themeState.value?.darkModeStrategy as DarkModeStrategy),
     /**
      * @deprecated use `preset` instead
      */

@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs/esm'
+import type { Dayjs } from 'dayjs/esm/index.js'
 import type { PropType } from 'vue'
-import type { MazColor } from '../../types'
-import type { MazDatePickerValue } from '../types'
+import type { MazColor } from '../../types.ts'
+import type { MazDatePickerValue } from '../types.ts'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs/esm'
+import dayjs from 'dayjs/esm/index.js'
 import { computed, ref, watch } from 'vue'
 import MazBtn from '../../MazBtn.vue'
 
-import { getDaysInMonth, getFirstDayOfMonth, isRangeValue, isSameDate, isSameDay, isValidDate } from '../utils'
+import { getDaysInMonth, getFirstDayOfMonth, isRangeValue, isSameDate, isSameDay, isValidDate } from '../utils.ts'
 
 const props = defineProps({
   modelValue: {

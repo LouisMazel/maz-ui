@@ -1,4 +1,4 @@
-import { createTranslationsStore, globalState, legacyStore, locale } from '../../states'
+import { createTranslationsStore, globalState, legacyStore, locale } from '../../states.ts'
 import {
   getAvailableLocales,
   getLoadedLocales,
@@ -9,7 +9,7 @@ import {
   loadLocale,
   setLocale,
   setLocaleMessage,
-} from '../locales'
+} from '../locales.ts'
 
 describe('locales', () => {
   beforeEach(() => {
@@ -386,12 +386,12 @@ describe('locales', () => {
     describe('when it is loaded', () => {
       it('then it is not marked as loaded', async () => {
         const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-        vi.doMock('../../locales/de', () => {
+        vi.doMock('../../locales/de.ts', () => {
           throw new Error('chunk failed')
         })
         vi.resetModules()
-        const states = await import('../../states')
-        const { loadLocale: freshLoadLocale } = await import('../locales')
+        const states = await import('../../states.ts')
+        const { loadLocale: freshLoadLocale } = await import('../locales.ts')
         const store = states.createTranslationsStore()
 
         await freshLoadLocale('de', store)
@@ -409,11 +409,11 @@ describe('locales', () => {
     describe('when loadDefaultMessages is called', () => {
       it('then it logs the error and returns empty messages', async () => {
         const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-        vi.doMock('../../locales/es', () => {
+        vi.doMock('../../locales/es.ts', () => {
           throw new Error('chunk failed')
         })
         vi.resetModules()
-        const { loadDefaultMessages: freshLoadDefaultMessages } = await import('../locales')
+        const { loadDefaultMessages: freshLoadDefaultMessages } = await import('../locales.ts')
 
         expect(await freshLoadDefaultMessages('es')).toEqual({})
         expect(errorSpy).toHaveBeenCalledWith('[@maz-ui/translations] Failed to load default messages for locale "es":', expect.any(Error))

@@ -1,5 +1,5 @@
-import { camelCase } from './camelCase.js'
-import { capitalize } from './capitalize.js'
+import { camelCase } from './camelCase.ts'
+import { capitalize } from './capitalize.ts'
 
 export function pascalCase(str: string) {
   if (str === str.toUpperCase()) {

@@ -33,3 +33,13 @@ declare module '*.svg?url' {
   const url: string
   export default url
 }
+
+declare module '*.svg?uri' {
+  const url: `/${string}` | `http://${string}` | `https://${string}` | `data:${string}`
+  export default url
+}
+
+declare module '*.svg?svg' {
+  const svg: `<svg${string}`
+  export default svg
+}

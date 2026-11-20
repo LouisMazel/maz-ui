@@ -1,10 +1,10 @@
-import type { Knowledge } from '../knowledge/load'
-import type { DocCategory, DocEntry } from '../knowledge/schema'
+import type { Knowledge } from '../knowledge/load.ts'
+import type { DocCategory, DocEntry } from '../knowledge/schema.ts'
 
 import MiniSearch from 'minisearch'
-import { normalizeName, toKebab } from '../knowledge/resolve'
-import { SYNONYMS } from './synonyms'
-import { analyze, processTerm, tokenize } from './text'
+import { normalizeName, toKebab } from '../knowledge/resolve.ts'
+import { SYNONYMS } from './synonyms.ts'
+import { analyze, processTerm, tokenize } from './text.ts'
 
 export interface SearchOptions {
   category?: DocCategory

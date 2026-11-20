@@ -1,5 +1,5 @@
-import type { SwipeOptions } from '../swipeHandler'
-import { Swipe } from '../swipeHandler'
+import type { SwipeOptions } from '../swipeHandler.ts'
+import { Swipe } from '../swipeHandler.ts'
 
 function createPointerEvent(type: string, init: { clientX?: number, clientY?: number, cancelable?: boolean, pointerType?: string } = {}) {
   const event = new MouseEvent(type, { clientX: init.clientX, clientY: init.clientY, cancelable: init.cancelable })

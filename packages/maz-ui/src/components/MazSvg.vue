@@ -1,8 +1,9 @@
 <script lang="ts" setup generic="_T">
 import type { MazIconValue } from './MazIcon.vue'
+import { MazIconPrimitive } from '@maz-ui/icons/vue'
 import { computed } from 'vue'
-import { prepareSvgString } from '../utils/svg-utils'
-import { useSvgAccessibility, useSvgSource } from '../utils/useSvgSource'
+import { prepareSvgString } from '../utils/svg-utils.ts'
+import { useSvgAccessibility, useSvgSource } from '../utils/useSvgSource.ts'
 
 export interface MazSvgProps {
   /**
@@ -43,7 +44,7 @@ const dimensions = computed(() => (width === undefined && height === undefined
   ? false
   : { width, height }))
 
-const { rawSvgContent, isPendingUrl, componentIcon } = useSvgSource({
+const { rawSvgContent, registeredName, isPendingUrl, componentIcon } = useSvgSource({
   icon: () => icon,
   fallback: () => fallback,
   prepare: svg => prepareSvgString(svg, { title, svgAttributes, dimensions: dimensions.value }),
@@ -51,7 +52,7 @@ const { rawSvgContent, isPendingUrl, componentIcon } = useSvgSource({
   onError: error => emits('error', error),
 })
 
-const { ariaHidden, role, ariaLabel } = useSvgAccessibility({
+const { ariaHidden, role, ariaLabel, primitiveAttributes } = useSvgAccessibility({
   title: () => title,
   svgAttributes: () => svgAttributes,
 })
@@ -63,7 +64,17 @@ const fluidClass = computed(() => (height === undefined
 
 <template>
   <span
-    v-if="rawSvgContent"
+    v-if="registeredName"
+    class="m-svg m-reset-css maz:inline-block maz:max-w-full maz:align-middle"
+    :class="fluidClass"
+    :aria-hidden="ariaHidden"
+    :aria-label="ariaLabel"
+    :role="role"
+  >
+    <MazIconPrimitive :icon="registeredName" :title="title" :svg-attributes="svgAttributes" :width="width ?? false" :height="height ?? false" v-bind="primitiveAttributes" />
+  </span>
+  <span
+    v-else-if="rawSvgContent"
     class="m-svg m-reset-css maz:inline-block maz:max-w-full maz:align-middle"
     :class="fluidClass"
     :aria-hidden="ariaHidden"

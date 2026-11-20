@@ -1,6 +1,6 @@
-import type { ThemePreset, ThemePresetOverrides } from '../../types'
-import { mazUi } from '../../presets/mazUi'
-import { deepMerge, mergePresets } from '../preset-merger'
+import type { ThemePreset, ThemePresetOverrides } from '../../types.ts'
+import { mazUi } from '../../presets/mazUi.ts'
+import { deepMerge, mergePresets } from '../preset-merger.ts'
 
 describe('preset-merger', () => {
   describe('given mergePresets function', () => {

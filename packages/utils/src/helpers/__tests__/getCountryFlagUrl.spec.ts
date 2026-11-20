@@ -1,4 +1,4 @@
-import { getCountryFlagUrl } from '../getCountryFlagUrl'
+import { getCountryFlagUrl } from '../getCountryFlagUrl.ts'
 
 describe('given getCountryFlagUrl function', () => {
   describe('when called with a supported country code', () => {

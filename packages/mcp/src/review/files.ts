@@ -1,11 +1,11 @@
-import type { Knowledge } from '../knowledge/load'
-import type { Finding, Framework, IconNames, Severity } from './types'
+import type { Knowledge } from '../knowledge/load.ts'
+import type { Finding, Framework, IconNames, Severity } from './types.ts'
 
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
 import { glob } from 'tinyglobby'
-import { loadIconNames } from './icons'
-import { filterBySeverity, reviewCode } from './index'
+import { loadIconNames } from './icons.ts'
+import { filterBySeverity, reviewCode } from './index.ts'
 
 export const REVIEWABLE_EXTENSIONS = [
   'vue',

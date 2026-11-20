@@ -3,7 +3,6 @@ minimumReleaseAgeExclude:
   - '@yoloship/*'
   - '@maz-ui/*'
   - relizy*
-  - '@relizy/core@2.4.0-beta.3'
   - '@babel/helper-string-parser@8.1.2'
   - '@babel/parser@8.1.2'
   - '@babel/types@8.1.2'
@@ -11,6 +10,7 @@ minimumReleaseAgeExclude:
   - '@tsconfig/node22@22.0.7'
   - '@vitejs/plugin-vue@6.0.11'
   - glob@14.0.6
+  - '@relizy/core@2.5.0-beta.1'
 
 # eslint-disable-next-line pnpm/yaml-enforce-settings
 trustPolicy: off
@@ -39,7 +39,7 @@ permissions:
 
 # Versions of the dependencies shared by several projects of the workspace, referenced with `catalog:`
 catalog:
-  '@clack/prompts': ^1.9.0
+  '@arethetypeswrong/cli': ^0.18.5
   '@codecov/vite-plugin': ^2.0.1
   '@nuxt/devtools': ^4.1.0
   '@tailwindcss/postcss': ^4.3.5
@@ -49,7 +49,6 @@ catalog:
   '@vitest/coverage-v8': ^5.1.0
   chart.js: ^4.6.1
   colorette: ^2.0.20
-  commander: ^15.1.0
   consola: ^3.4.2
   cross-env: ^10.1.0
   dayjs: ^1.11.23

@@ -1,4 +1,4 @@
-import type { RoundedScaleKey, ThemeComponentBg, ThemeComponents, ThemeFoundation, ThemeScales, ThemeTypography, TypographyLevel } from '../types'
+import type { RoundedScaleKey, ThemeComponentBg, ThemeComponents, ThemeFoundation, ThemeScales, ThemeTypography, TypographyLevel } from '../types.ts'
 
 /**
  * Defaults shared across the bundled presets. Each preset can spread these

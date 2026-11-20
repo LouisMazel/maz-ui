@@ -1,6 +1,6 @@
-import type { MazSize } from '@/components/types'
+import type { MazSize } from '@/components/types.ts'
 import MazInputNumber from '@components/MazInputNumber.vue'
-import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount, shallowMount } from '@vue/test-utils'
 
 describe('given MazInputNumber component', () => {

@@ -1,14 +1,14 @@
 import type { ComponentMeta, EventMeta, ExposeMeta, PropertyMeta, SlotMeta } from 'vue-component-meta'
 import type { ComponentDoc } from 'vue-docgen-api'
-import type { ComponentApi, EventApi, PropApi, SlotApi } from '../types'
+import type { ComponentApi, EventApi, PropApi, SlotApi } from '../types.ts'
 
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { createChecker } from 'vue-component-meta'
 import { parseMulti } from 'vue-docgen-api'
-import { normalizeDashes } from '../markdown/clean'
-import { pascalToKebab } from '../utils/strings'
-import { listComponentFiles } from './component-files'
+import { normalizeDashes } from '../markdown/clean.ts'
+import { pascalToKebab } from '../utils/strings.ts'
+import { listComponentFiles } from './component-files.ts'
 
 const MAX_TYPE_LENGTH = 240
 

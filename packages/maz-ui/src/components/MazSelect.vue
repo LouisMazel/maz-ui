@@ -8,7 +8,7 @@ import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstan
 import type { HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazSize } from './types.ts'
 import { MazMagnifyingGlass } from '@maz-ui/icons/lazy/MazMagnifyingGlass'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
@@ -24,9 +24,9 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'

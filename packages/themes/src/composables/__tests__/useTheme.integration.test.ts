@@ -1,9 +1,9 @@
-import type { ThemeState } from '../../types'
+import type { ThemeState } from '../../types.ts'
 import { createApp, ref } from 'vue'
-import { mazUi } from '../../presets'
-import { useTheme } from '../useTheme'
+import { mazUi } from '../../presets/index.ts'
+import { useTheme } from '../useTheme.ts'
 
-vi.mock('../../utils/css-generator', () => ({
+vi.mock('../../utils/css-generator.ts', () => ({
   generateCSS: vi.fn(() => 'full-css'),
   injectCSS: vi.fn(),
   CSS_ID: 'maz-theme-css',

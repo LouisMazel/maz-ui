@@ -1,4 +1,4 @@
-import { debounceId } from '../debounceId'
+import { debounceId } from '../debounceId.ts'
 
 describe('given debounceId function', () => {
   describe('when calling a debounced function multiple times', () => {

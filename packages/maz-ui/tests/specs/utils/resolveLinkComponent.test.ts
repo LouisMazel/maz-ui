@@ -1,5 +1,5 @@
 import { createApp, defineComponent, h } from 'vue'
-import { resolveLinkComponent } from '@/utils/resolveLinkComponent'
+import { resolveLinkComponent } from '@/utils/resolveLinkComponent.ts'
 
 function callInsideSetup(fn: () => unknown): unknown {
   let result: unknown

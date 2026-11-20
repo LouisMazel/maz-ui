@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { MazColor } from './types'
+import type { MazColor } from './types.ts'
 import { computed } from 'vue'
 
 export interface MazLoadingBarProps {

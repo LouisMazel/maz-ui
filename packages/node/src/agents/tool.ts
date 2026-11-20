@@ -1,5 +1,5 @@
-import type { AgentsTool } from './types'
-import { escapeRegExp } from './utils'
+import type { AgentsTool } from './types.ts'
+import { escapeRegExp } from './utils.ts'
 
 export const MAZ_UI_AGENTS_TOOL: AgentsTool = {
   name: 'maz-ui',

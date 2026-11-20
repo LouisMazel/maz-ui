@@ -1,4 +1,4 @@
-import { svgs } from '@directives/vZoomImg/svgs'
+import { svgs } from '@directives/vZoomImg/svgs.ts'
 
 describe('given vZoomImg svgs', () => {
   describe('when importing svgs', () => {

@@ -1,12 +1,12 @@
-import type { ChangeSet } from './changeSet'
-import type { ToolSetup } from './tool'
-import type { AgentDocs, AgentTarget } from './types'
+import type { ChangeSet } from './changeSet.ts'
+import type { ToolSetup } from './tool.ts'
+import type { AgentDocs, AgentTarget } from './types.ts'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
-import { CLAUDE_MEMORY_FILES } from './detectAgentTargets'
-import { hasSameManagedRules, isEditedManagedContent, isOwned, managedContent, newerManagedVersion, newerVersionReason, withVersion } from './managedContent'
-import { syncGeminiContext } from './mcpConfig'
-import { claudeFrontmatter } from './rulePaths'
+import { CLAUDE_MEMORY_FILES } from './detectAgentTargets.ts'
+import { hasSameManagedRules, isEditedManagedContent, isOwned, managedContent, newerManagedVersion, newerVersionReason, withVersion } from './managedContent.ts'
+import { syncGeminiContext } from './mcpConfig.ts'
+import { claudeFrontmatter } from './rulePaths.ts'
 
 function syncOwnedFile(changes: ChangeSet, file: string, content: string | undefined, version: string, setup: ToolSetup): void {
   const { tool } = setup

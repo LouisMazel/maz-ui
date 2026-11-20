@@ -1,9 +1,9 @@
 import type { Plugin } from 'vite'
-import type { SvgLoaderOptions } from '../plugin'
+import type { SvgLoaderOptions } from '../plugin.ts'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { svgLoader } from '../plugin'
+import { svgLoader } from '../plugin.ts'
 
 const SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">\n  <path d="M6.12345 18.12345L18 6" stroke="currentColor"/>\n</svg>\n'
 
@@ -13,6 +13,10 @@ let file: string
 interface LoadHook {
   filter: { id: RegExp }
   handler: (id: string) => Promise<string | undefined>
+}
+
+interface ResolveIdHook {
+  handler: (this: { resolve: (source: string) => string }, source: string) => unknown
 }
 
 function setup(options?: SvgLoaderOptions) {
@@ -49,6 +53,35 @@ describe('given the svgLoader plugin', () => {
       const code = await setup().load.handler(`${file}?raw`)
 
       expect(code).toBe(`export default ${JSON.stringify('<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path stroke="currentColor" d="M6.123 18.123 18 6"/></svg>')}`)
+    })
+  })
+
+  describe('when a file is imported with ?svg', () => {
+    it('then it returns the optimized string, as ?raw', async () => {
+      const plugin = setup()
+
+      expect(await plugin.load.handler(`${file}?svg`)).toBe(await plugin.load.handler(`${file}?raw`))
+    })
+  })
+
+  describe('when a file with a prolog is imported with ?svg, without svgo', () => {
+    it('then the string starts with the svg element', async () => {
+      const prolog = join(root, 'prolog.svg')
+      writeFileSync(prolog, `<?xml version="1.0"?>\n<!-- Logo -->\n${SVG}`)
+
+      expect(await setup({ svgo: false }).load.handler(`${prolog}?svg`)).toBe(`export default ${JSON.stringify(SVG)}`)
+    })
+  })
+
+  describe('when an id with ?uri is resolved', () => {
+    it('then an SVG is resolved as ?url, another file is left to Vite', () => {
+      const plugin = svgLoader() as Plugin & { resolveId: ResolveIdHook }
+      const context = { resolve: (source: string) => source }
+
+      expect(plugin.resolveId.handler.call(context, './icon.svg?uri')).toBe('./icon.svg?url')
+      expect(plugin.resolveId.handler.call(context, './icon.svg?inline&uri')).toBe('./icon.svg?inline&url')
+      expect(plugin.resolveId.handler.call(context, './data.json?uri')).toBeUndefined()
+      expect(plugin.resolveId.handler.call(context, './icon.svg?uris')).toBeUndefined()
     })
   })
 

@@ -1,12 +1,12 @@
 import type { ColorScaleStep } from '@maz-ui/themes/utils/resolve-preset'
-import type { ServerContext } from '../context'
-import type { BundledPresetName } from '../project/resolved-theme'
+import type { ServerContext } from '../context.ts'
+import type { BundledPresetName } from '../project/resolved-theme.ts'
 
 import { COLOR_SCALE_STEPS, SCALED_COLORS } from '@maz-ui/themes/utils/resolve-preset'
 import { z } from 'zod'
-import { BUNDLED_PRESETS, renderEffectiveColors } from '../project/resolved-theme'
-import { findSection, sectionContent, stripFrontmatter } from './markdown'
-import { defineTool, ToolInputError } from './types'
+import { BUNDLED_PRESETS, renderEffectiveColors } from '../project/resolved-theme.ts'
+import { findSection, sectionContent, stripFrontmatter } from './markdown.ts'
+import { defineTool, ToolInputError } from './types.ts'
 
 export const THEME_TOPICS = {
   'setup': 'Setup',
@@ -55,7 +55,7 @@ export async function getThemeTokens(context: ServerContext, { topics, project =
 
   if (project || preset) {
     // Babel loads on the first read of the project theme, not when the server starts
-    const { readProjectTheme, renderProjectTheme } = await import('../project/theme')
+    const { readProjectTheme, renderProjectTheme } = await import('../project/theme.ts')
     const theme = project
       ? readProjectTheme(context.cwd)
       : { stylesheets: [], presets: [] }

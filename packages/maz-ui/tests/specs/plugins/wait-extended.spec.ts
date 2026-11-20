@@ -1,4 +1,4 @@
-import { WaitHandler, waitInstance, WaitPlugin } from '@plugins/wait'
+import { WaitHandler, waitInstance, WaitPlugin } from '@plugins/wait.ts'
 import { createApp } from 'vue'
 
 describe('given WaitHandler extended', () => {

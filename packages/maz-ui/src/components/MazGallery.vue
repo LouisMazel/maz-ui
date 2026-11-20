@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { MazNoImage } from '@maz-ui/icons/lazy/MazNoImage'
 import { computed, onBeforeMount } from 'vue'
-import { vFullscreenImg } from '../directives/vFullscreenImg'
-import { vLazyImg } from '../directives/vLazyImg'
+import { vFullscreenImg } from '../directives/vFullscreenImg.ts'
+import { vLazyImg } from '../directives/vLazyImg.ts'
 
 export type MazGalleryImage
   = | {

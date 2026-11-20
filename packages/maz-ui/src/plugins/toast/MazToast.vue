@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { MazIconValue } from '../../components/MazIcon.vue'
-import type { ToastButton, ToastOptions } from './types'
+import type { ToastButton, ToastOptions } from './types.ts'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnSquare'
 import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
 import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
@@ -11,7 +11,7 @@ import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import MazIcon from '../../components/MazIcon.vue'
-import { useTimer } from '../../composables/useTimer'
+import { useTimer } from '../../composables/useTimer.ts'
 
 const {
   position = 'bottom-right',

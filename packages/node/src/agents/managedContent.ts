@@ -1,8 +1,8 @@
-import type { ToolSetup } from './tool'
-import type { AgentsTool } from './types'
+import type { ToolSetup } from './tool.ts'
+import type { AgentsTool } from './types.ts'
 import { createHash } from 'node:crypto'
-import { MAZ_UI_AGENTS_TOOL, resolveTool } from './tool'
-import { compareVersions } from './utils'
+import { MAZ_UI_AGENTS_TOOL, resolveTool } from './tool.ts'
+import { compareVersions } from './utils.ts'
 
 /** Adds the note (version-free by default) under the title of a generated rule */
 export function withVersion(content: string, version: string, tool: AgentsTool): string {

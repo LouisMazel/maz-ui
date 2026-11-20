@@ -2,13 +2,13 @@
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { CSSProperties, HTMLAttributes } from 'vue'
-import type { PullToRefreshTarget } from '../composables/usePullToRefresh'
-import type { MazColor } from './types'
+import type { PullToRefreshTarget } from '../composables/usePullToRefresh.ts'
+import type { MazColor } from './types.ts'
 import { MazArrowDown } from '@maz-ui/icons/raw/MazArrowDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { isStandaloneMode } from '@maz-ui/utils/helpers/isStandaloneMode'
 import { computed, defineAsyncComponent, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
-import { usePullToRefresh } from '../composables/usePullToRefresh'
+import { usePullToRefresh } from '../composables/usePullToRefresh.ts'
 import MazIcon from './MazIcon.vue'
 
 export interface MazPullToRefreshProps {

@@ -1,5 +1,5 @@
-import { useFormField, useFormValidator } from '@composables/index'
-import { withSetup } from '@tests/helpers/withSetup'
+import { useFormField, useFormValidator } from '@composables/index.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 import { flushPromises, mount } from '@vue/test-utils'
 
 import { minLength, minValue, number, pipe, string } from 'valibot'

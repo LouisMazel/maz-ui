@@ -5,7 +5,7 @@ import SvgLoader from '@maz-ui/vite-svg-loader'
 import Vue from '@vitejs/plugin-vue'
 
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
-import { ViteBuildIcons, ViteBuildThemes } from './build'
+import { ViteBuildIcons, ViteBuildThemes } from './build/index.ts'
 
 export default defineConfig({
   logLevel: process.env.CI ? 'error' : 'info',
@@ -64,10 +64,10 @@ export default defineConfig({
         'src/**/types.ts',
       ],
       thresholds: {
-        lines: 95,
-        functions: 94,
-        branches: 89.76,
-        statements: 95,
+        lines: 95.29,
+        functions: 95.02,
+        branches: 89.87,
+        statements: 95.39,
         autoUpdate: !process.env.CI,
       },
     },
@@ -87,7 +87,6 @@ export default defineConfig({
       '@components': fileURLToPath(new URL('src/components', import.meta.url)),
       '@composables': fileURLToPath(new URL('src/composables', import.meta.url)),
       '@directives': fileURLToPath(new URL('src/directives', import.meta.url)),
-      '@icons': fileURLToPath(new URL('src/icons', import.meta.url)),
       '@plugins': fileURLToPath(new URL('src/plugins', import.meta.url)),
       '@resolvers': fileURLToPath(new URL('src/resolvers', import.meta.url)),
       '@tests': fileURLToPath(new URL('tests', import.meta.url)),

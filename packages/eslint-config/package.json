@@ -44,7 +44,8 @@
     "build": "unbuild && pnpm generate:agent-docs",
     "generate:agent-docs": "pnpm -F agent-docs generate --package @maz-ui/eslint-config",
     "dev": "unbuild --stub",
-    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck": "tsc --noEmit",
+    "check:published-types": "attw --pack . --profile esm-only",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "test:unit": "vitest run",
@@ -63,6 +64,7 @@
     "eslint-plugin-vuejs-accessibility": "^2.6.3"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@types/node": "catalog:",
     "@typescript-eslint/rule-tester": "^8.72.2",
     "@vitest/coverage-v8": "catalog:",

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { MazSizeUnit } from './types'
+import type { MazSizeUnit } from './types.ts'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 
 import { computed, defineAsyncComponent, useSlots } from 'vue'
-import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazBackdrop from './MazBackdrop.vue'
 import MazIcon from './MazIcon.vue'
 

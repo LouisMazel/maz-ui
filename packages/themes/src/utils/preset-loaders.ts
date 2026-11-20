@@ -1,4 +1,4 @@
-import type { ThemePreset } from '../types'
+import type { ThemePreset } from '../types.ts'
 
 export interface PresetRegistry {
   /** Whether the loaders are a selection of the app (`presets` option of `MazUiThemePresets`) */
@@ -13,14 +13,14 @@ export interface PresetRegistry {
 export const presetRegistry: PresetRegistry = {
   restricted: false,
   loaders: {
-    mazUi: () => import('../presets/mazUi').then(module => module.mazUi),
-    ocean: () => import('../presets/ocean').then(module => module.ocean),
-    pristine: () => import('../presets/pristine').then(module => module.pristine),
-    obsidian: () => import('../presets/obsidian').then(module => module.obsidian),
-    nova: () => import('../presets/nova').then(module => module.nova),
-    folio: () => import('../presets/folio').then(module => module.folio),
-    macos: () => import('../presets/macos').then(module => module.macos),
-    windows: () => import('../presets/windows').then(module => module.windows),
-    linux: () => import('../presets/linux').then(module => module.linux),
+    mazUi: () => import('../presets/mazUi.ts').then(module => module.mazUi),
+    ocean: () => import('../presets/ocean.ts').then(module => module.ocean),
+    pristine: () => import('../presets/pristine.ts').then(module => module.pristine),
+    obsidian: () => import('../presets/obsidian.ts').then(module => module.obsidian),
+    nova: () => import('../presets/nova.ts').then(module => module.nova),
+    folio: () => import('../presets/folio.ts').then(module => module.folio),
+    macos: () => import('../presets/macos.ts').then(module => module.macos),
+    windows: () => import('../presets/windows.ts').then(module => module.windows),
+    linux: () => import('../presets/linux.ts').then(module => module.linux),
   },
 }

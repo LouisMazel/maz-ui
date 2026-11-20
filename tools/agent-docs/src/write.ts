@@ -1,4 +1,4 @@
-import type { OutputFile } from './types'
+import type { OutputFile } from './types.ts'
 
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'

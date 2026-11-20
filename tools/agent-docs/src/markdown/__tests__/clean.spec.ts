@@ -1,4 +1,4 @@
-import type { CleanMarkdownContext } from '../clean'
+import type { CleanMarkdownContext } from '../clean.ts'
 
 import {
   cleanMarkdown,
@@ -9,7 +9,7 @@ import {
   resolveIncludes,
   stripInternalPrefix,
   stripLeadingTitle,
-} from '../clean'
+} from '../clean.ts'
 
 function createContext(overrides: Partial<CleanMarkdownContext> = {}): CleanMarkdownContext {
   return {

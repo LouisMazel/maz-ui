@@ -1,4 +1,4 @@
-import { normalizeString } from '../normalizeString'
+import { normalizeString } from '../normalizeString.ts'
 
 describe('normalizeString', () => {
   it('should normalize accents by default', () => {

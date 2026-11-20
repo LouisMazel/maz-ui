@@ -1,5 +1,5 @@
 import MazSegmented from '@components/MazSegmented.vue'
-import { runAxe } from '@tests/helpers/axe'
+import { runAxe } from '@tests/helpers/axe.ts'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, nextTick } from 'vue'
 

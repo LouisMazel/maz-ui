@@ -1,7 +1,7 @@
 import type { Linter } from 'eslint'
-import type { BaseFontSizeSource, MazTailwindcssOptions, TailwindcssPreset } from '../types'
+import type { BaseFontSizeSource, MazTailwindcssOptions, TailwindcssPreset } from '../types.ts'
 import betterTailwindcss from 'eslint-plugin-better-tailwindcss'
-import { mazPlugin } from '../plugin'
+import { mazPlugin } from '../plugin.ts'
 
 const TAILWINDCSS_FILES = ['**/*.{js,jsx,cjs,mjs,ts,mts,cts,tsx,vue,html,svelte,astro,astrojs,css,scss}']
 

@@ -43,7 +43,10 @@ export default defineConfig(({ mode }) => {
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
-        outDirs: resolver('dist'),
+        outDirs: {
+          dir: resolver('dist'),
+          moduleFormat: 'esm',
+        },
         include: ['src/**/*.ts'],
         exclude: testPaths,
       }),

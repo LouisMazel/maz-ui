@@ -1,7 +1,7 @@
-import type { AgentTarget } from './types'
+import type { AgentTarget } from './types.ts'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
-import { AGENT_TARGETS } from './types'
+import { AGENT_TARGETS } from './types.ts'
 
 export const CLAUDE_MEMORY_FILES = ['CLAUDE.md', '.claude/CLAUDE.md', 'CLAUDE.local.md']
 

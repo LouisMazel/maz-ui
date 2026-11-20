@@ -1,5 +1,5 @@
 import { config } from '@vue/test-utils'
-import * as axeMatchers from 'vitest-axe/matchers'
+import * as axeMatchers from 'vitest-axe/matchers.js'
 
 process.env.TZ = 'Europe/Paris'
 

@@ -1,6 +1,6 @@
-import type { ServerContext } from './context'
+import type { ServerContext } from './context.ts'
 
-import { describeSource } from './tools/list-docs'
+import { describeSource } from './tools/list-docs.ts'
 
 /** Claude Code truncates server instructions to 4096 characters */
 export const MAX_INSTRUCTIONS_LENGTH = 4096

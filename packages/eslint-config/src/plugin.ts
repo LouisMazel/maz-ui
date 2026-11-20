@@ -1,5 +1,5 @@
 import type { ESLint } from 'eslint'
-import { rules } from './rules'
+import { rules } from './rules/index.ts'
 
 /**
  * The `maz` ESLint plugin bundling all custom rules shipped by

@@ -1,1 +1,1 @@
-export { getNumericScreensFromTailwind, screens } from './variables/breakpoints'
+export { getNumericScreensFromTailwind, screens } from './variables/breakpoints.ts'
