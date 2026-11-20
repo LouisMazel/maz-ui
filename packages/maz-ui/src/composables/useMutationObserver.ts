@@ -1,7 +1,7 @@
 import type { ComponentPublicInstance, MaybeRefOrGetter } from 'vue'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { truthyFilter } from '@maz-ui/utils/helpers/truthyFilter'
-import { computed, onMounted, ref, toValue, watch } from 'vue'
+import { computed, getCurrentScope, onMounted, onScopeDispose, ref, toValue, watch } from 'vue'
 
 export interface UseMutationObserverOptions extends MutationObserverInit {
   internalWindow?: Window
@@ -71,6 +71,10 @@ export function useMutationObserver(
   const stop = () => {
     stopWatch()
     cleanup()
+  }
+
+  if (getCurrentScope()) {
+    onScopeDispose(stop)
   }
 
   return {

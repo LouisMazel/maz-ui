@@ -386,6 +386,20 @@ describe('given the icon names of the icon props', () => {
   })
 })
 
+describe('given a native element that handles the drop of files', () => {
+  describe('when it listens to a drag and drop event', () => {
+    it.each([
+      ['<div @drop.prevent="onDrop">x</div>'],
+      ['<div v-on:dragover.prevent="onOver">x</div>'],
+    ])('then %s suggests useDropzone', (markup) => {
+      const [finding] = review(template(markup))
+
+      expect(finding).toMatchObject({ rule: 'prefer-ecosystem', severity: 'info' })
+      expect(finding.suggestion).toContain('useDropzone')
+    })
+  })
+})
+
 describe('given the prefer-maz-component rule', () => {
   describe('when native elements are used', () => {
     it.each([
@@ -674,9 +688,9 @@ describe('given the prefer-ecosystem and prefer-utils rules', () => {
 
   describe('when VueUse functions with a maz-ui equivalent are imported', () => {
     it('then they are reported as info', () => {
-      const findings = review('import { useWindowSize, useFetch } from \'@vueuse/core\'', 'a.ts')
+      const findings = review('import { useWindowSize, useFetch, useTimeAgo } from \'@vueuse/core\'', 'a.ts')
 
-      expect(findings).toHaveLength(1)
+      expect(findings).toHaveLength(2)
       expect(findings[0].severity).toBe('info')
     })
   })
@@ -1103,6 +1117,10 @@ describe('given the hand-written helpers', () => {
       ['const mobile = window.matchMedia(\'(max-width: 768px)\')', 'prefer-ecosystem', 'useBreakpoints'],
       ['document.addEventListener(\'visibilitychange\', onChange)', 'prefer-ecosystem', 'useUserVisibility'],
       ['const observer = new MutationObserver(onMutation)', 'prefer-ecosystem', 'useMutationObserver'],
+      ['zone.addEventListener(\'drop\', onDrop)', 'prefer-ecosystem', 'useDropzone'],
+      ['el.addEventListener(\'touchstart\', onStart)', 'prefer-ecosystem', 'useSwipe'],
+      ['const names = new Intl.DisplayNames([\'en\'], { type: \'region\' })', 'prefer-ecosystem', 'useDisplayNames'],
+      ['const ctx = inject(KEY)\nif (!ctx)\n  throw new Error(\'Missing\')', 'prefer-ecosystem', 'useInjectStrict'],
     ])('then `%s` is reported', (code, rule, suggestion) => {
       const [finding] = review(code, 'a.ts')
 

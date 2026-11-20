@@ -39,9 +39,9 @@ Use `@maz-ui/icons`, never inline SVG nor another icon library. Pick the format 
 - **Not visible at first render** (`v-if`, menus, dialogs, tabs): the lazy component, `@maz-ui/icons/lazy/MazTrash`. Never for icons visible on load: each one is an extra request.
 - **Illustrations, logos, flags** at their own size and colors: `<MazSvg icon="flag-fr" width="32" />`. `<img>` or CSS only for multicolor icons, the text color does not apply there: the files are `@maz-ui/icons/svg/star.svg`, `@maz-ui/icons/flags/3x2/FR.svg` (`flags/1x1` for the square ones) and `@maz-ui/icons/logos/vue.svg`.
 
-### Helpers
+### Helpers and composables
 
-Use `@maz-ui/utils/helpers/<name>` and the maz-ui composables instead of lodash, VueUse or hand-written code: `debounce`, `throttle`, `sleep`, `isEqual`, `formatCurrency`, `formatDate`, `formatNumber`, `formatPhoneNumber`, `capitalize`, `normalizeString`, `getCookie` / `setCookie`, `useBreakpoints`, `useWindowSize`, `useTimer`, `useIdleTimeout`, `useSwipe`, `vClickOutside`, `vTooltip`, `vLazyImg`...
+Before writing browser or reactive logic by hand (`addEventListener`, `setTimeout` / `setInterval`, `matchMedia`, an observer, a gesture, drag and drop, a search in a list, `provide` / `inject`...) or importing lodash or VueUse, call `search_docs` with the need: `@maz-ui/utils` and the maz-ui composables and directives probably have it (`debounce`, `formatDate`, `useBreakpoints`, `useTimer`, `useDropzone`, `vClickOutside`...).
 
 ### Texts and languages
 

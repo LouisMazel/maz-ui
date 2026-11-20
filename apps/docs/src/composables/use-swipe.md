@@ -1,6 +1,6 @@
 ---
 title: useSwipe
-description: useSwipe is a Vue composable that simplifies the management of "swipe" interactions on HTML elements.
+description: Detect swipe gestures (left, right, up, down) on an element with touch or pointer, with callbacks and the reactive start, end and distance of the swipe - for a carousel, a drawer or a swipe to dismiss.
 ---
 
 # {{ $frontmatter.title }}

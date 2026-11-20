@@ -1,5 +1,6 @@
 import { useIdleTimeout } from '@composables/useIdleTimeout.ts'
 import { IdleTimeout } from '@maz-ui/utils/helpers/idleTimeout'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 
 it('useIdleTimeout should create an instance of IdleTimeout', () => {
   const callback = vi.fn()
@@ -27,5 +28,17 @@ it('useIdleTimeout should default options to an empty object if not provided', (
     immediate: true,
     once: false,
     timeout: 300_000,
+  })
+})
+
+describe('given useIdleTimeout called in a component', () => {
+  describe('when the component is unmounted', () => {
+    it('then the instance is destroyed', () => {
+      const [idle, app] = withSetup(() => useIdleTimeout({ callback: vi.fn() }))
+
+      app.unmount()
+
+      expect(idle.destroyed).toBe(true)
+    })
   })
 })

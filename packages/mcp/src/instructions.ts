@@ -20,7 +20,7 @@ Other tools: get_doc (pages and guides: guide/tailwind, ecosystem/themes, ecosys
 
 Rules:
 - Maz* components instead of native or hand-made elements (MazBtn, MazInput, MazSelect, MazDialog, MazDialogConfirm, MazCard, MazTable, MazAvatar, MazBadge, MazAlert, MazSkeleton, MazDatePicker, MazDropzone...). useToast for notifications, useDialog for confirmations.
-- @maz-ui/utils and maz-ui composables instead of lodash, VueUse or custom code (debounce, throttle, formatCurrency, formatDate, isEqual, cookies, useBreakpoints, useTimer...).
+- @maz-ui/utils and maz-ui composables instead of lodash, VueUse or custom code (debounce, formatDate, isEqual, cookies, useBreakpoints, useTimer, useDropzone...): before writing browser logic by hand (addEventListener, timers, observers, gestures, drag and drop, provide/inject), search_docs the need.
 - Tailwind: never the default palette (bg-blue-500, text-gray-600, bg-white) nor hard-coded colors; theme colors already handle dark mode (no dark: color overrides); never the internal \`maz:\` prefix. Custom CSS uses var(--maz-*).
 - Theme through a @maz-ui/themes preset and useTheme() (toggleDarkMode, setColorMode), never by hand.
 - Deep imports (maz-ui/components/MazBtn, maz-ui/composables/useToast, @maz-ui/utils/helpers/debounce); the maz-ui root only exports types. Icons: by name in icon props (start-icon="trash") with MazUi() of @maz-ui/vite-plugin or @maz-ui/nuxt, else @maz-ui/icons/raw/MazTrash; /static/ in templates, /lazy/ only when not visible at first render. With @maz-ui/nuxt, components and composables are auto-imported.`
