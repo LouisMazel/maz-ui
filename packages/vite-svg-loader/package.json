@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/vite-svg-loader",
   "type": "module",
-  "version": "0.2.0-beta.0",
+  "version": "0.2.0",
   "description": "Vite plugin to import SVG files as Vue components, optimized strings or URLs, with svgo 4",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
