@@ -674,7 +674,20 @@ function hasStackedLabels(element: ElementNode, context: ReviewContext): boolean
   return (labels.length >= 2 && !isSentence) || labels.some(label => hasStackedLabels(label, context))
 }
 
+const DROP_EVENTS = new Set(['drop', 'dragover', 'dragenter'])
+
 function checkNativeElement(element: ElementNode, context: ReviewContext): void {
+  const drop = element.props.find((prop): prop is DirectiveNode => prop.type === NodeTypes.DIRECTIVE && prop.name === 'on' && DROP_EVENTS.has(directiveArg(prop) ?? ''))
+
+  if (drop) {
+    context.report({
+      rule: 'prefer-ecosystem',
+      severity: 'info',
+      message: 'Handles the drop of files by hand.',
+      suggestion: 'MazDropzone, or `useDropzone(target, { onDrop })` from `maz-ui/composables/useDropzone` for a custom drop area.',
+    }, drop.loc.start.offset)
+  }
+
   if (element.tag === 'svg' && isIconLikeSvg(element)) {
     context.report({
       rule: 'inline-svg',

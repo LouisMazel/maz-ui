@@ -1,6 +1,6 @@
 ---
 title: useDialog
-description: Vue composable for handling dialog plugin in your components
+description: Open a confirmation or information dialog from your script and await the answer of the user (confirm or cancel), with customizable buttons - through the dialog plugin, instead of window.confirm.
 ---
 
 # {{ $frontmatter.title }}

@@ -1,4 +1,5 @@
 import { useMutationObserver } from '@composables/useMutationObserver.ts'
+import { withSetup } from '@tests/helpers/withSetup.ts'
 import { ref } from 'vue'
 
 describe('given useMutationObserver composable', () => {
@@ -98,6 +99,22 @@ describe('given useMutationObserver composable', () => {
       })
 
       expect(isSupported.value).toBe(false)
+    })
+  })
+})
+
+describe('given useMutationObserver called in a component', () => {
+  describe('when the component is unmounted', () => {
+    it('then the observer no longer calls the callback', async () => {
+      const target = document.createElement('div')
+      const callback = vi.fn()
+      const [, app] = withSetup(() => useMutationObserver(target, callback, { attributes: true }))
+
+      app.unmount()
+      target.setAttribute('data-test', 'changed')
+      await Promise.resolve()
+
+      expect(callback).not.toHaveBeenCalled()
     })
   })
 })

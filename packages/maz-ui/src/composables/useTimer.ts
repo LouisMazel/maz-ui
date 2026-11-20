@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { getCurrentScope, onScopeDispose, ref } from 'vue'
 
 export interface TimerOptions {
   /**
@@ -73,6 +73,10 @@ export function useTimer({ timeout = 1000, callback, remainingTimeUpdate = 200, 
 
   function reset() {
     remainingTime.value = internalTimeout.value
+  }
+
+  if (getCurrentScope()) {
+    onScopeDispose(pause)
   }
 
   return {
