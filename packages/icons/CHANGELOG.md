@@ -1,5 +1,37 @@
 # Change Log
 
+## v5.8.0 (2026-11-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0...v5.8.0)
+
+### 🚀 Features
+
+- **icons:** Use the icons by name without maz-ui ([778a630e2](https://github.com/LouisMazel/maz-ui/commit/778a630e2))
+
+  `MazUiIcons()` of `@maz-ui/icons/vite` and `MazIconPrimitive` of `@maz-ui/icons/vue` render the icons by name in any Vue app or library: the names of `@maz-ui/icons` and of your SVG folders, typed and bundled with the files that use them. Write `~` before a name to load it on demand, `defaultIcons` keeps some sets of `@maz-ui/icons` (`['icons', 'logos']`), and the `maz-ui-icons types` command writes the types without a build.
+
+- **icons:** Wrap the icons by name in another library ([59b6da701](https://github.com/LouisMazel/maz-ui/commit/59b6da701))
+
+  A library can publish `MazUiIcons()` under its own name: `typesModule` augments the module its consumers install (with pnpm, they do not resolve `@maz-ui/icons`), `name` names the plugin in the logs and the file of the types, and `runCli()` of `@maz-ui/icons/vite` runs its own command. The `import` option of a folder imports the module of each SVG: the app bundles it once, the dist of a library keeps the import.
+
+- **icons:** Name the file of the types and exclude the package of a wrapper from the pre-bundle ([de00a61b0](https://github.com/LouisMazel/maz-ui/commit/de00a61b0))
+
+  `MazUiIcons()` takes `dtsName`, the name of the file of the types when `dts` is `true` or not set (`acme-icons.d.ts`), and `optimizeDepsExclude`, the packages Vite does not pre-bundle in dev, like `@maz-ui/icons` (the package of the `import` of a folder).
+
+- **icons:** Emit an error from MazIconPrimitive ([d3901ed43](https://github.com/LouisMazel/maz-ui/commit/d3901ed43))
+
+  `MazIconPrimitive` emits `error` when the name is unknown, or when the SVG of a name loaded on demand can not be loaded: a wrapper renders its fallback.
+
+- **icons:** Find the names of the fallback props ([24563762f](https://github.com/LouisMazel/maz-ui/commit/24563762f))
+
+### 🧪 Tests
+
+- **icons:** Load only the es5 lib in the type check of the wrapper test ([4112cd92b](https://github.com/LouisMazel/maz-ui/commit/4112cd92b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.0-beta.2 (2026-11-19)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0-beta.1...v5.8.0-beta.2)

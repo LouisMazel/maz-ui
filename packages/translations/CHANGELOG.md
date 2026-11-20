@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.8.0 (2026-11-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0...v5.8.0)
+
+### 🩹 Fixes
+
+- **ecosystem:** Emit extensioned relative imports in published declarations ([30c9bb6f1](https://github.com/LouisMazel/maz-ui/commit/30c9bb6f1))
+- **ecosystem:** Resolve the published types in node16 and nodenext ([88f7cd83c](https://github.com/LouisMazel/maz-ui/commit/88f7cd83c))
+
+  The declarations of `maz-ui`, `@maz-ui/utils`, `@maz-ui/themes` and `@maz-ui/translations` are now `.d.mts` files whose relative imports carry their extension: with `moduleResolution` `node16` or `nodenext`, the re-exports resolve to their real types instead of missing exports or `any`.
+
+### 💅 Refactors
+
+- **ecosystem:** Move the declaration extension helper into @maz-ui/vite-config ([4ddc0212b](https://github.com/LouisMazel/maz-ui/commit/4ddc0212b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+- Abderrahmane Messaadi <abderrahmane8@yandex.com>
+
 ## v5.8.0-beta.2 (2026-11-19)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0-beta.1...v5.8.0-beta.2)
