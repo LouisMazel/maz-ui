@@ -233,9 +233,9 @@
     "@tanstack/vue-virtual": "^3.13.52",
     "chart.js": "catalog:",
     "dayjs": "catalog:",
-    "dompurify": "^3.4.17",
+    "dompurify": "^3.4.18",
     "libphonenumber-js": "catalog:",
-    "marked": "^18.2.0"
+    "marked": "^18.2.1"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
