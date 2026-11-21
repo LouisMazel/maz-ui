@@ -38,6 +38,8 @@ export type RuleId
     | 'button-navigation'
     | 'input-label'
     | 'native-dialog'
+    | 'table-part-outside-table'
+    | 'prefer-dialog-confirm'
     | 'parse-error'
 
 export interface Finding {
