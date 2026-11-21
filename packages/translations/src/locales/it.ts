@@ -145,6 +145,14 @@ export default {
     copyUrlToClipboard: 'Copia URL negli appunti',
     urlCopiedToClipboard: 'URL copiato negli appunti',
   },
+  btnClipboard: {
+    copy: 'Copia',
+    copied: 'Copiato',
+  },
+  btnScroll: {
+    top: 'Torna su',
+    bottom: 'Vai in fondo',
+  },
   markdownEditor: {
     write: 'Scrivi',
     preview: 'Anteprima',

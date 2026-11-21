@@ -3,8 +3,10 @@ import type { MazAlertProps } from '../components/MazAlert.vue'
 import type { MazAvatarProps } from '../components/MazAvatar.vue'
 import type { MazBadgeProps } from '../components/MazBadge.vue'
 import type { MazBtnProps } from '../components/MazBtn.vue'
+import type { MazBtnClipboardProps } from '../components/MazBtnClipboard.vue'
 import type { MazBtnDropdownProps } from '../components/MazBtnDropdown.vue'
 import type { MazButtonGroupProps } from '../components/MazBtnGroup.vue'
+import type { MazBtnScrollProps } from '../components/MazBtnScroll.vue'
 import type { MazCardProps } from '../components/MazCard.vue'
 import type { MazCheckboxProps } from '../components/MazCheckbox.vue'
 import type { MazCodeHighlightProps } from '../components/MazCodeHighlight.vue'
@@ -64,6 +66,8 @@ export interface MazUiDefaultsOptions {
   MazBadge?: Partial<MazBadgeProps>
   MazBtn?: Partial<MazBtnProps>
   MazBtnGroup?: Partial<MazButtonGroupProps>
+  MazBtnScroll?: Partial<MazBtnScrollProps>
+  MazBtnClipboard?: Partial<MazBtnClipboardProps>
   MazBtnDropdown?: Partial<MazBtnDropdownProps>
   MazCard?: Partial<MazCardProps>
   MazCheckbox?: Partial<MazCheckboxProps>

@@ -107,7 +107,7 @@ export interface MazUiNuxtOptions {
   /**
    * Source of the country flags of `MazSelectCountry` and `MazInputPhoneNumber`
    * @description
-   * - `'cdn'`: images of the flagcdn.com CDN
+   * - `'cdn'`: images of the flagcdn CDN
    * - `'local'`: square flags of `@maz-ui/icons`, one chunk per flag, loaded only when visible, without any request to a third party (works offline)
    * - a URL template of your own files, with `{code}` (lowercase) or `{CODE}` (uppercase): `'/flags/{code}.svg'`
    *
@@ -284,6 +284,13 @@ export interface MazUiNuxtOptions {
     useFuzzySearch?: boolean
 
     /**
+     * Enable auto-import of useClipboard composable
+     * @description Copy a text to the clipboard with a `copied` state
+     * @default true
+     */
+    useClipboard?: boolean
+
+    /**
      * Enable auto-import of useTimer composable
      * @description Timer and countdown functionality
      * @default true
@@ -352,6 +359,41 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     usePullToRefresh?: boolean
+
+    /**
+     * Enable auto-import of useIntersectionObserver composable
+     * @description Know when elements enter or leave the viewport
+     * @default true
+     */
+    useIntersectionObserver?: boolean
+
+    /**
+     * Enable auto-import of useScroll composable
+     * @description Scroll position, direction and edges of the page or of an element
+     * @default true
+     */
+    useScroll?: boolean
+
+    /**
+     * Enable auto-import of useInfiniteScroll composable
+     * @description Load the next page of a list when its end gets close
+     * @default true
+     */
+    useInfiniteScroll?: boolean
+
+    /**
+     * Enable auto-import of useScrollLock composable
+     * @description Lock the scroll of the page or of an element (menu, overlay)
+     * @default true
+     */
+    useScrollLock?: boolean
+
+    /**
+     * Enable auto-import of useResizeObserver composable
+     * @description Know when the size of elements changes
+     * @default true
+     */
+    useResizeObserver?: boolean
   }
 
   /**
@@ -385,6 +427,13 @@ export interface MazUiNuxtOptions {
      * @default false
      */
     vFullscreenImg?: boolean | VFullscreenImgOptions
+
+    /**
+     * Install v-intersect directive globally
+     * @description Call a function when an element enters or leaves the viewport
+     * @default false
+     */
+    vIntersect?: boolean
 
     /**
      * Install v-tooltip directive globally

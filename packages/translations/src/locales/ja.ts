@@ -145,6 +145,14 @@ export default {
     copyUrlToClipboard: 'URLをクリップボードにコピー',
     urlCopiedToClipboard: 'URLがクリップボードにコピーされました',
   },
+  btnClipboard: {
+    copy: 'コピー',
+    copied: 'コピーしました',
+  },
+  btnScroll: {
+    top: 'トップへ戻る',
+    bottom: '一番下へ',
+  },
   markdownEditor: {
     write: '編集',
     preview: 'プレビュー',

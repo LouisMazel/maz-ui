@@ -195,6 +195,7 @@ export default defineNuxtConfig({
       vLazyImg: true,
       vClickOutside: true,
       vFullscreenImg: true,
+      vIntersect: true,
       vZoomImg: true,
     },
 
@@ -454,12 +455,20 @@ const composables = {
 
   // 🛠️ Utilities
   useTimer: true, // Timer and countdown
+  useClipboard: true, // Copy to the clipboard
   useFormValidator: true, // Form validation
   useStringMatching: true, // String utilities
   useReadingTime: true, // Reading time calculation
   useDisplayNames: true, // Display localized names
   useSwipe: true, // Swipe gestures
   usePullToRefresh: true, // Pull to refresh gesture
+
+  // 📜 Scroll & Visibility
+  useScroll: true, // Scroll position, direction and edges
+  useInfiniteScroll: true, // Load the next page at the end of a list
+  useScrollLock: true, // Lock the scroll of the page
+  useIntersectionObserver: true, // Element enters or leaves the viewport
+  useResizeObserver: true, // Size of an element
 
   // 🔧 Advanced
   useFreezeValue: true, // Freeze reactive values
@@ -498,6 +507,7 @@ const directives = {
   // Interaction directives
   vTooltip: { position: 'top' }, // Flexible tooltips
   vClickOutside: true, // Detect outside clicks
+  vIntersect: true, // Run a function when an element enters or leaves the viewport
 }
 ```
 

@@ -367,6 +367,8 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'distribution bar',
   ],
   'components/maz-reading-progress-bar': ['reading progress', 'scroll progress', 'article progress'],
+  'components/maz-btn-scroll': ['back to top', 'scroll to top', 'go to top button', 'scroll to bottom button', 'jump to latest'],
+  'components/maz-btn-clipboard': ['copy button', 'copy id', 'copy command', 'copy to clipboard button', 'copyable text', 'snippet copy'],
   'components/maz-select': [
     'select',
     'dropdown select',
@@ -481,6 +483,9 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'is mobile',
     'screen size',
   ],
+  'composables/use-clipboard': ['copy to clipboard', 'copied state', 'clipboard', 'copy link'],
+  'composables/use-infinite-scroll': ['infinite scroll', 'load more', 'next page on scroll', 'endless list', 'pagination on scroll'],
+  'composables/use-intersection-observer': ['intersection observer', 'element visible', 'in viewport', 'element visibility', 'sentinel'],
   'composables/use-dialog': [
     'confirm',
     'confirmation dialog',
@@ -551,6 +556,7 @@ export const DOC_ALIASES: Record<string, string[]> = {
   ],
   'composables/use-pull-to-refresh': ['pull to refresh', 'refresh gesture'],
   'composables/use-reading-time': ['reading time', 'minutes to read', 'word count'],
+  'composables/use-resize-observer': ['resize observer', 'element size', 'element resized', 'width of an element', 'observe size'],
   'composables/use-relative-time': [
     'relative time',
     'time ago',
@@ -562,6 +568,8 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'fuzzy search',
     'search in list',
     'filter list',
+    'filter by query',
+    'search as you type',
     'typo tolerant search',
   ],
   'composables/use-string-matching': ['string similarity', 'levenshtein', 'compare strings'],
@@ -582,14 +590,20 @@ export const DOC_ALIASES: Record<string, string[]> = {
   'composables/use-user-visibility': ['page visibility', 'tab hidden', 'user away'],
   'composables/use-wait': [
     'loading state',
+    'shared loading state',
+    'busy state',
     'pending state',
     'global loader',
+    'sync in progress',
     'wait',
   ],
+  'composables/use-scroll': ['scroll position', 'scroll direction', 'scroll listener', 'hide header on scroll', 'scrolled to bottom', 'scroll event'],
+  'composables/use-scroll-lock': ['scroll lock', 'lock scroll', 'disable body scroll', 'prevent scroll', 'overflow hidden'],
   'composables/use-window-size': ['window size', 'viewport size', 'resize'],
 
   'directives/click-outside': ['click outside', 'close on outside click', 'outside click'],
   'directives/fullscreen-img': ['fullscreen image', 'image viewer', 'lightbox'],
+  'directives/intersect': ['v-intersect', 'when visible', 'enter viewport', 'on visible'],
   'directives/lazy-img': ['lazy load image', 'lazy loading', 'deferred image'],
   'directives/tooltip': [
     'tooltip',
@@ -657,6 +671,8 @@ export const DOC_ALIASES: Record<string, string[]> = {
   'ecosystem/utils/normalize-string': [
     'normalize string',
     'remove accents',
+    'strip diacritics',
+    'case insensitive compare',
     'slug',
     'case conversion',
   ],

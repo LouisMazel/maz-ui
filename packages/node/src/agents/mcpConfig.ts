@@ -94,7 +94,7 @@ function findLegacyPackage(server: unknown, tool: AgentsTool): string | undefine
   return tool.legacyMcpPackages?.find(name => serialized.includes(name))
 }
 
-function detectFormatting(content: string): FormattingOptions {
+export function detectFormatting(content: string): FormattingOptions {
   const indent = /^( +|\t)"/m.exec(content)?.[1] ?? '  '
 
   return {
@@ -253,4 +253,20 @@ export function syncGeminiContext(changes: ChangeSet): void {
   changes.write(GEMINI_SETTINGS, content.endsWith('\n')
     ? content
     : `${content}\n`, current, 'Gemini CLI reads AGENTS.md')
+}
+
+/** Key of the MCP server of the tool in the `.mcp.json` of the project (Claude Code), as the run leaves it */
+export function claudeMcpServerKey(changes: ChangeSet, rootDir: string, tool: AgentsTool): string | undefined {
+  const config = mcpConfigFiles(rootDir).claude as McpConfigFile
+  const current = changes.read(config.file)
+  const parsed: unknown = current === undefined
+    ? undefined
+    : parse(current, [], { allowTrailingComma: true })
+  const servers = isJsonObject(parsed)
+    ? parsed[config.rootKey]
+    : undefined
+
+  return isJsonObject(servers)
+    ? Object.entries(servers).find(([, value]) => referencesToolMcp(value, tool, config))?.[0]
+    : undefined
 }

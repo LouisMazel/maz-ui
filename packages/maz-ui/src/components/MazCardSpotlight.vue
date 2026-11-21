@@ -3,6 +3,8 @@ import type { HTMLAttributes, StyleValue } from 'vue'
 import type { MazColor } from './types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
+import { useScroll } from '../composables/useScroll.ts'
 
 export interface MazCardSpotlightProps {
   /**
@@ -51,7 +53,12 @@ const blobElement = ref<HTMLDivElement>()
 const blobVisible = ref<boolean>(false)
 
 let rafId: number | null = null
-let isIntersecting = false
+
+const { isIntersecting } = useIntersectionObserver(containerElement, () => {
+  if (!isIntersecting.value) {
+    stopBlobAnimation()
+  }
+})
 let cachedRect: DOMRect | null = null
 
 const alphaColor = computed(() => `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`)
@@ -77,7 +84,7 @@ function updateBlobPosition(x: number, y: number) {
 }
 
 function handleMouseMove(event: MouseEvent) {
-  if (!isIntersecting || rafId !== null) {
+  if (!isIntersecting.value || rafId !== null) {
     return
   }
 
@@ -97,6 +104,8 @@ function stopBlobAnimation() {
   }
 }
 
+useScroll(undefined, { onScroll: updateCachedRect })
+
 onMounted(() => {
   if (isServer() || !containerElement.value) {
     return
@@ -104,34 +113,15 @@ onMounted(() => {
 
   updateCachedRect()
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      isIntersecting = entries[0].isIntersecting
-      if (!isIntersecting) {
-        stopBlobAnimation()
-      }
-    },
-    { threshold: 0 },
-  )
-
-  observer.observe(containerElement.value)
-
-  const handleScrollResize = () => {
-    updateCachedRect()
-  }
-
   globalThis.addEventListener('mousemove', handleMouseMove, { passive: true })
-  globalThis.addEventListener('scroll', handleScrollResize, { passive: true })
-  globalThis.addEventListener('resize', handleScrollResize, { passive: true })
+  globalThis.addEventListener('resize', updateCachedRect, { passive: true })
 
   onBeforeUnmount(() => {
     if (rafId !== null) {
       cancelAnimationFrame(rafId)
     }
-    observer.disconnect()
     globalThis.removeEventListener('mousemove', handleMouseMove)
-    globalThis.removeEventListener('scroll', handleScrollResize)
-    globalThis.removeEventListener('resize', handleScrollResize)
+    globalThis.removeEventListener('resize', updateCachedRect)
   })
 })
 </script>

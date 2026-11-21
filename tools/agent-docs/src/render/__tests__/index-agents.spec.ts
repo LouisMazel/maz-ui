@@ -158,7 +158,7 @@ describe('given renderLlmsFullTxt', () => {
 })
 
 describe('given the agent content renderers', () => {
-  const content = { rules: 'Use **maz-ui**.', rulesCore: 'Core **maz-ui**.', workflow: '### Workflow\n\n1. Search' }
+  const content = { rules: 'Use **maz-ui**.', rulesCore: 'Core **maz-ui**.', sessionCore: 'Session **maz-ui**.', workflow: '### Workflow\n\n1. Search' }
   const versionNote = '> These rules and the docs in `node_modules/maz-ui/agent-docs` and `node_modules/@maz-ui/<package>/agent-docs` match the installed versions of the packages (their `package.json`).'
 
   describe('when rendering the rules doc', () => {

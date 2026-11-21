@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue'
+import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
 
 export interface MazAnimatedCounterProps {
   /**
@@ -44,7 +45,6 @@ const currentCount = ref(0)
 
 const elementRef = ref<HTMLElement | null>(null)
 
-let observer: IntersectionObserver | null = null
 let timeoutId: ReturnType<typeof setTimeout> | undefined
 let frameId: number | undefined
 let hasPlayed = false
@@ -84,31 +84,16 @@ function animate(start: number, end: number) {
   }, delay)
 }
 
-onMounted(() => {
-  if (!elementRef.value) {
+useIntersectionObserver(elementRef, (entries) => {
+  if (!entries.at(-1)?.isIntersecting) {
     return
   }
 
-  observer = new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) {
-      return
-    }
+  hasPlayed = true
+  animate(0, count)
+}, { once })
 
-    hasPlayed = true
-    animate(0, count)
-
-    if (once) {
-      observer?.unobserve(entry.target)
-    }
-  })
-
-  observer.observe(elementRef.value)
-})
-
-onBeforeUnmount(() => {
-  observer?.disconnect()
-  cancelAnimation()
-})
+onBeforeUnmount(cancelAnimation)
 
 watch(
   () => count,

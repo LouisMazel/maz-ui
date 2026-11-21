@@ -4,7 +4,8 @@ import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { MazLinkIcon } from '@maz-ui/icons/lazy/MazLinkIcon'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, defineAsyncComponent, onUnmounted, ref } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
+import { useClipboard } from '../composables/useClipboard.ts'
 import { vTooltip } from '../directives/vTooltip.ts'
 
 export type MazWindowMockupVariant = 'browser' | 'terminal' | 'editor'
@@ -107,26 +108,12 @@ const codeWithPrompt = computed(() => {
   return code
 })
 
-const urlCopied = ref(false)
-let urlCopyResetTimer: ReturnType<typeof setTimeout> | undefined
+const { copy, copied: urlCopied } = useClipboard()
 
 async function copyUrl() {
-  if (!url || typeof navigator === 'undefined' || !navigator.clipboard)
-    return
-  try {
-    await navigator.clipboard.writeText(url)
-    urlCopied.value = true
-    clearTimeout(urlCopyResetTimer)
-    urlCopyResetTimer = setTimeout(() => {
-      urlCopied.value = false
-    }, 1500)
-  }
-  catch {}
+  if (url)
+    await copy(url)
 }
-
-onUnmounted(() => {
-  clearTimeout(urlCopyResetTimer)
-})
 </script>
 
 <template>

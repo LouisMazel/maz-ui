@@ -1,10 +1,11 @@
 import MazAnimatedCounter from '@components/MazAnimatedCounter.vue'
 import { IntersectionObserverMock } from '@tests/vitest-global.setup.ts'
 import { shallowMount } from '@vue/test-utils'
-import { createSSRApp, h } from 'vue'
+import { createSSRApp, h, nextTick } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 
-function intersect(element: Element, isIntersecting = true) {
+async function intersect(element: Element, isIntersecting = true) {
+  await nextTick()
   const callback = vi.mocked(IntersectionObserver).mock.calls.at(-1)![0]
 
   callback(
@@ -93,11 +94,11 @@ describe('given a MazAnimatedCounter', () => {
         props: { count: 100, duration: 200, delay: 0 },
       })
 
-      intersect(wrapper.element)
+      await intersect(wrapper.element)
       await runAnimation()
 
       expect(getValues(wrapper).value).toBe('100')
-      expect(IntersectionObserverMock.unobserve).toHaveBeenCalledWith(wrapper.element)
+      expect(IntersectionObserverMock.disconnect).toHaveBeenCalled()
     })
   })
 
@@ -112,10 +113,10 @@ describe('given a MazAnimatedCounter', () => {
         },
       })
 
-      intersect(wrapper.element)
+      await intersect(wrapper.element)
       await runAnimation()
-      intersect(wrapper.element, false)
-      intersect(wrapper.element)
+      await intersect(wrapper.element, false)
+      await intersect(wrapper.element)
       await vi.advanceTimersByTimeAsync(0)
 
       expect(Number(getValues(wrapper).value)).toBeLessThan(50)
@@ -123,7 +124,7 @@ describe('given a MazAnimatedCounter', () => {
       await runAnimation()
 
       expect(getValues(wrapper).value).toBe('50')
-      expect(IntersectionObserverMock.unobserve).not.toHaveBeenCalled()
+      expect(IntersectionObserverMock.disconnect).not.toHaveBeenCalled()
     })
   })
 
@@ -133,7 +134,7 @@ describe('given a MazAnimatedCounter', () => {
         props: { count: 10, duration: 100, delay: 0 },
       })
 
-      intersect(wrapper.element)
+      await intersect(wrapper.element)
       await runAnimation()
       await wrapper.setProps({ count: 20 })
 
@@ -168,7 +169,7 @@ describe('given a MazAnimatedCounter', () => {
         props: { count: 42, delay: 500 },
       })
 
-      intersect(wrapper.element)
+      await intersect(wrapper.element)
       await wrapper.vm.$nextTick()
 
       expect(getValues(wrapper).value).toBe('42')
@@ -182,7 +183,7 @@ describe('given a MazAnimatedCounter', () => {
         props: { count: 100, duration: 1000, delay: 0 },
       })
 
-      intersect(wrapper.element)
+      await intersect(wrapper.element)
       await vi.advanceTimersByTimeAsync(40)
       wrapper.unmount()
 

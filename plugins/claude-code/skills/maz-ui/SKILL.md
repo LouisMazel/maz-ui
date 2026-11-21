@@ -14,6 +14,85 @@ This project is built with **maz-ui** and its ecosystem. Reuse what it provides 
 
 Never guess an API: only use documented props, events, slots and imports.
 
+### The ecosystem by need
+
+Before writing logic by hand (a state shared between components, a timer, an event listener, an observer, a formatter, a browser API), look for the need below: these tools already exist. Read their API with `get_doc` or `search_docs` (or their page in `agent-docs`) before using them, and `search_docs` the needs that are not listed. A composable that works through a plugin needs it once in the app (`app.use(WaitPlugin)` in `main.ts`, or `mazUi.plugins` with Nuxt): that is one line, not a reason to write it by hand.
+
+**State, feedback and async**
+
+- a `ref` shared by several components (or a module) for a loading or busy state: sync in progress, spinner, disabled buttons, fullscreen loader: `useWait` (`maz-ui/composables/useWait`), `app.use(WaitPlugin)` once (`maz-ui/plugins/wait`)
+- a message after an action (saved, failed, undo), instead of an `alert()` or a hand-made banner: `useToast` (`maz-ui/composables/useToast`), `app.use(ToastPlugin)` once (`maz-ui/plugins/toast`)
+- ask a confirmation or a choice from the code (`await` the answer), instead of `confirm()` or a dialog wired by hand: `useDialog` (`maz-ui/composables/useDialog`), `app.use(DialogPlugin)` once (`maz-ui/plugins/dialog`)
+- copy a text with a "Copied!" state, a copy button for an ID or a command, instead of `navigator.clipboard.writeText`: `MazBtnClipboard` (`maz-ui/components/MazBtnClipboard`), `useClipboard` (`maz-ui/composables/useClipboard`)
+- validate a form with a Zod, Valibot or ArkType schema (errors per field, on blur or submit): `useFormValidator` (`maz-ui/composables/useFormValidator`)
+- keep the initial values of a form (a copy that no longer follows the source): `useFreezeValue` (`maz-ui/composables/useFreezeValue`)
+- know if two objects, arrays or dates are equal (unsaved changes), instead of `JSON.stringify(a) === JSON.stringify(b)`: `isEqual` (`@maz-ui/utils/helpers/isEqual`)
+- a readable message from anything a `catch` receives, instead of `error instanceof Error ? error.message : String(error)`: `getErrorMessage` (`@maz-ui/utils/helpers/getErrorMessage`)
+- wait until a value exists or matches (poll a getter with a timeout), instead of `setInterval` with a count of attempts: `checkAvailability` (`@maz-ui/utils/helpers/checkAvailability`)
+- pause an async function, instead of `new Promise(resolve => setTimeout(resolve, ms))`: `sleep` (`@maz-ui/utils/helpers/sleep`)
+- remove `null`, `undefined` and the falsy values of an array, with the type narrowed, instead of `.filter(Boolean)`: `truthyFilter` (`@maz-ui/utils/helpers/truthyFilter`)
+- the context a parent component gives its children, with an error when it is missing, instead of `inject()` + `throw`: `useInjectStrict` (`maz-ui/composables/useInjectStrict`)
+- a unique and SSR safe id per component instance (label `for`, `aria-describedby`), instead of `Math.random().toString(36)`: `useInstanceUniqId` (`maz-ui/composables/useInstanceUniqId`)
+- render a component from a function, outside of any template (a popup opened by code), instead of `createApp` or `render(h())` + `document.body.appendChild`: `useMountComponent` (`maz-ui/composables/useMountComponent`)
+
+**Timers and events**
+
+- wait after the last keystroke, or reset a state after a delay, instead of `clearTimeout` + `setTimeout`: `debounce` (`@maz-ui/utils/helpers/debounce`)
+- a search field that waits for the user to stop typing: the `debounce` prop: `MazInput` (`maz-ui/components/MazInput`)
+- only the last call of an async function per id resolves (one request per row): `debounceId` (`@maz-ui/utils/helpers/debounceId`)
+- run at most every N ms (scroll, resize, mousemove handlers), instead of a `Date.now() - last` check: `throttle`, `throttleId` (`@maz-ui/utils/helpers/<name>`)
+- a countdown or a timeout with pause, resume and the remaining time, instead of `setInterval`: `useTimer` (`maz-ui/composables/useTimer`)
+- the user is inactive (auto logout, pause polling), instead of listeners on `mousemove` and `keydown`: `useIdleTimeout` (`maz-ui/composables/useIdleTimeout`), `IdleTimeout` (`@maz-ui/utils/helpers/idleTimeout`)
+- the tab is hidden or visible again (pause, refresh on return), instead of `visibilitychange`: `useUserVisibility` (`maz-ui/composables/useUserVisibility`), `UserVisibility` (`@maz-ui/utils/helpers/userVisibility`)
+- a click outside of an element (close a menu), instead of a `document` listener and `contains(event.target)`: `vClickOutside` (`maz-ui/directives/vClickOutside`)
+- the screen size or the breakpoint in the script, instead of `resize` or `matchMedia("(max-width...")`: `useBreakpoints`, `useWindowSize` (`maz-ui/composables/<name>`)
+- the changes or the size of a DOM element, instead of `new MutationObserver` or `new ResizeObserver`: `useMutationObserver`, `useResizeObserver` (`maz-ui/composables/<name>`)
+
+**Formatting and text**
+
+- an amount of money, instead of `Intl.NumberFormat` with `currency`: `formatCurrency` (`@maz-ui/utils/helpers/formatCurrency`)
+- an input of an amount of money: `MazInputPrice` (`maz-ui/components/MazInputPrice`)
+- a date or a time, instead of `toLocaleDateString` or `Intl.DateTimeFormat`: `formatDate` (`@maz-ui/utils/helpers/formatDate`)
+- time ago ("3 minutes ago") that refreshes by itself, instead of `Intl.RelativeTimeFormat` and a timer: `useRelativeTime` (`maz-ui/composables/useRelativeTime`), `formatRelativeTime` (`@maz-ui/utils/helpers/formatRelativeTime`)
+- a number, a percentage, a compact number (1.2K), instead of `Intl.NumberFormat`: `formatNumber` (`@maz-ui/utils/helpers/formatNumber`)
+- a phone number in its international format, instead of `libphonenumber-js`: `formatPhoneNumber` (`@maz-ui/utils/helpers/formatPhoneNumber`)
+- the name of a country or a language in any locale, instead of `Intl.DisplayNames`: `useDisplayNames` (`maz-ui/composables/useDisplayNames`)
+- a country flag (emoji or image URL), instead of code points (`127397 +`) or a `flagcdn.com` URL: `countryCodeToUnicodeFlag`, `getCountryFlagUrl` (`@maz-ui/utils/helpers/<name>`)
+- the reading time of a text, instead of `split(/\s+/).length / 200`: `useReadingTime` (`maz-ui/composables/useReadingTime`)
+- change the case of a string (camelCase, kebab-case, snake_case...), instead of `charAt(0).toUpperCase()` or a regex: `camelCase`, `kebabCase`, `snakeCase`, `pascalCase`, `capitalize`, `upperFirst` (`@maz-ui/utils/helpers/<name>`)
+- remove accents, compare without case nor accents, make a slug, instead of `normalize("NFD")` + a regex: `normalizeString` (`@maz-ui/utils/helpers/normalizeString`)
+- pretty print JSON, instead of `JSON.stringify(value, null, 2)`: `formatJson` (`@maz-ui/utils/helpers/formatJson`)
+- filter a list by a typed query (typos, accents, words in any order, highlight), instead of `includes()` on lowercased strings: `useFuzzySearch` (`maz-ui/composables/useFuzzySearch`), `highlightMatches` (`@maz-ui/utils/helpers/fuzzySearch`)
+- a select or a list with a search field: the `search` prop: `MazSelect`, `MazChecklist` (`maz-ui/components/<name>`)
+- how close two strings are ("did you mean"): `useStringMatching` (`maz-ui/composables/useStringMatching`)
+- a long text cut with "Read more": `MazReadMore` (`maz-ui/components/MazReadMore`)
+
+**Gestures, files and images**
+
+- drop files on an area, instead of `drop` and `dragover` listeners: `MazDropzone` (`maz-ui/components/MazDropzone`), `useDropzone` (`maz-ui/composables/useDropzone`)
+- a swipe on an element (carousel, dismiss), instead of `touchstart` and `touchend` listeners: `useSwipe` (`maz-ui/composables/useSwipe`), `Swipe` (`@maz-ui/utils/helpers/swipeHandler`)
+- follow a pointer drag live (sheet, slider, reorder), instead of `pointerdown` and `pointermove` listeners: `useDrag` (`maz-ui/composables/useDrag`)
+- pull to refresh: `MazPullToRefresh` (`maz-ui/components/MazPullToRefresh`), `usePullToRefresh` (`maz-ui/composables/usePullToRefresh`)
+- a tooltip on hover: `vTooltip` (`maz-ui/directives/vTooltip`)
+- an element enters the viewport (infinite scroll, lazy images, animations), instead of `new IntersectionObserver`: `useIntersectionObserver`, `useInfiniteScroll`, `useAos` (`maz-ui/composables/<name>`), `vIntersect`, `vLazyImg` (`maz-ui/directives/<name>`), `MazLazyImg`, `MazAnimatedElement` (`maz-ui/components/<name>`), `app.use(AosPlugin)` once (`maz-ui/plugins/aos`)
+- scroll position, direction or end, "back to top" or "to bottom" button, instead of `addEventListener("scroll")`: `useScroll` (`maz-ui/composables/useScroll`), `MazBtnScroll` (`maz-ui/components/MazBtnScroll`)
+- lock the page scroll, instead of `body.style.overflow`: `useScrollLock` (`maz-ui/composables/useScrollLock`)
+- enlarge an image on click, browse a gallery in fullscreen, instead of `requestFullscreen`: `vZoomImg`, `vFullscreenImg` (`maz-ui/directives/<name>`)
+- a textarea that grows with its content, instead of `style.height = scrollHeight`: the `autogrow` prop: `MazTextarea` (`maz-ui/components/MazTextarea`), `TextareaAutogrow` (`@maz-ui/utils/helpers/TextareaAutogrow`)
+- expand and collapse a block with an animation: `MazExpandAnimation`, `MazAccordion` (`maz-ui/components/<name>`)
+
+**Browser and environment**
+
+- read or write a cookie, instead of `document.cookie`: `getCookie`, `setCookie`, `deleteCookie` (`@maz-ui/utils/helpers/cookie`)
+- run only in the browser or only on the server, instead of `typeof window`: `isClient`, `isServer` (`@maz-ui/utils/helpers/<name>`)
+- detect iOS, or an app installed as a PWA, instead of `navigator.userAgent` or `display-mode: standalone`: `isIos`, `isStandaloneMode` (`@maz-ui/utils/helpers/<name>`)
+- stop iOS from zooming on a focused field, instead of `maximum-scale=1` (it blocks the zoom for everyone): `preventIosInputZoom` (`@maz-ui/utils/helpers/preventIosInputZoom`)
+- the browser language or the visitor country, instead of `navigator.language` or an IP API: `getBrowserLocale`, `fetchLocaleIp` (`@maz-ui/utils/helpers/<name>`)
+- load a third-party script once (SDK), instead of `document.createElement("script")`: `ScriptLoader` (`@maz-ui/utils/helpers/scriptLoader`)
+- dark mode toggle, color mode, brand colors at runtime, instead of the `dark` class or `localStorage`: `useTheme` (`@maz-ui/themes`)
+- the language of the texts of the components: `useTranslations` (`@maz-ui/translations`)
+- TypeScript helpers (deep partial, key paths, instance type of a generic component): `DeepPartial`, `DeepRequired`, `DeepKeyOf`, `FlattenObjectKeys`, `GenericInstanceType`, `InferMaybeRef` (`@maz-ui/utils/ts-helpers/<name>`)
+
 ### Which package for what
 
 `maz-ui` (components, composables, directives, plugins), `@maz-ui/themes` (brand colors, fonts, dark mode), `@maz-ui/icons` (icons, logos, flags), `@maz-ui/utils` (helpers), `@maz-ui/translations` (texts of the components), `@maz-ui/nuxt` (Nuxt module).
@@ -26,7 +105,7 @@ Never guess an API: only use documented props, events, slots and imports.
 
 ### Feedback, overlays and forms
 
-- `useToast()` for notifications, `useDialog()` or `MazDialogConfirm` for confirmations, `useWait()` for loading states, `MazSkeleton` / `MazSpinner` while data loads.
+- `useToast()` for notifications, `useDialog()` or `MazDialogConfirm` for confirmations, `useWait()` for a loading state shared between components, `MazSkeleton` / `MazSpinner` while data loads.
 - These composables need their plugin. Vue: `app.use(ToastPlugin)` from `maz-ui/plugins/toast` (`DialogPlugin`, `WaitPlugin`, `AosPlugin` likewise). Nuxt: `mazUi: { plugins: { toast: true } }`, off by default like the directives (`mazUi.directives.vTooltip`, or import the directive).
 - Forms: `useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType).
 
@@ -38,10 +117,6 @@ Use `@maz-ui/icons`, never inline SVG nor another icon library. Pick the format 
 - **Directly in a template**: the component, `@maz-ui/icons/static/MazTrash`, then `<MazTrash class="size-5 text-muted" />` (size and color from the text: `1em`, `currentColor`).
 - **Not visible at first render** (`v-if`, menus, dialogs, tabs): the lazy component, `@maz-ui/icons/lazy/MazTrash`. Never for icons visible on load: each one is an extra request.
 - **Illustrations, logos, flags** at their own size and colors: `<MazSvg icon="flag-fr" width="32" />`. `<img>` or CSS only for multicolor icons, the text color does not apply there: the files are `@maz-ui/icons/svg/star.svg`, `@maz-ui/icons/flags/3x2/FR.svg` (`flags/1x1` for the square ones) and `@maz-ui/icons/logos/vue.svg`.
-
-### Helpers and composables
-
-Before writing browser or reactive logic by hand (`addEventListener`, `setTimeout` / `setInterval`, `matchMedia`, an observer, a gesture, drag and drop, a search in a list, `provide` / `inject`...) or importing lodash or VueUse, call `search_docs` with the need: `@maz-ui/utils` and the maz-ui composables and directives probably have it (`debounce`, `formatDate`, `useBreakpoints`, `useTimer`, `useDropzone`, `vClickOutside`...).
 
 ### Texts and languages
 
@@ -73,10 +148,11 @@ Brand colors, fonts, radius and spacing come from a `@maz-ui/themes` preset (`de
 
 ### Before you finish
 
-Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <files>`, and fix every finding.
+Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <files>`, and fix every error and warning until none is left.
 
 ### Workflow
 
+0. **Know the project**: `get_project_info()` gives the installed versions, the plugins already installed, whether components and icons resolve by name, the theme presets and the components and tools the code already uses.
 1. **Search by need**: `search_docs("<what you need>")`, e.g. "user avatar with initials", "confirm before delete", "phone number input", "debounce search". Pick the most specific result.
 2. **Read the exact API** before writing a template: `get_component_api(["MazBtn", "MazDialog"])` (batch up to 10). Never invent a prop, event or slot.
 3. **Icons**: `find_icons("delete")` returns the icon names and their imports.

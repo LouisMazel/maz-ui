@@ -38,6 +38,16 @@ export const NOISE_CASES: NoiseCase[] = [
 
 export const SEARCH_CASES: SearchCase[] = [
   {
+    query: 'shared loading state between components',
+    expected: ['composables/use-wait', 'plugins/wait'],
+    rank: 1,
+  },
+  {
+    query: 'remove accents case insensitive compare',
+    expected: ['ecosystem/utils/normalize-string'],
+    rank: 1,
+  },
+  {
     query: 'MazBtn',
     expected: ['components/maz-btn'],
     rank: 1,
@@ -340,6 +350,51 @@ export const SEARCH_CASES: SearchCase[] = [
   {
     query: 'image gallery',
     expected: ['components/maz-gallery'],
+    rank: 1,
+  },
+  {
+    query: 'infinite scroll',
+    expected: ['composables/use-infinite-scroll'],
+    rank: 1,
+  },
+  {
+    query: 'load more when reaching the end of the list',
+    expected: ['composables/use-infinite-scroll'],
+    rank: 3,
+  },
+  {
+    query: 'back to top button',
+    expected: ['components/maz-btn-scroll'],
+    rank: 1,
+  },
+  {
+    query: 'scroll position',
+    expected: ['composables/use-scroll'],
+    rank: 1,
+  },
+  {
+    query: 'hide header on scroll down',
+    expected: ['composables/use-scroll'],
+    rank: 3,
+  },
+  {
+    query: 'detect when an element is visible',
+    expected: ['composables/use-intersection-observer', 'directives/intersect'],
+    rank: 3,
+  },
+  {
+    query: 'width of an element when it is resized',
+    expected: ['composables/use-resize-observer'],
+    rank: 3,
+  },
+  {
+    query: 'lock body scroll',
+    expected: ['composables/use-scroll-lock'],
+    rank: 1,
+  },
+  {
+    query: 'copy button for an id',
+    expected: ['components/maz-btn-clipboard'],
     rank: 1,
   },
   {

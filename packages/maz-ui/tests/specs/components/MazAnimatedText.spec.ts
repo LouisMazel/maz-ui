@@ -1,10 +1,11 @@
 import MazAnimatedText from '@components/MazAnimatedText.vue'
 import { IntersectionObserverMock } from '@tests/vitest-global.setup.ts'
 import { mount } from '@vue/test-utils'
-import { createSSRApp, h } from 'vue'
+import { createSSRApp, h, nextTick } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 
-function intersect(element: Element, isIntersecting: boolean) {
+async function intersect(element: Element, isIntersecting: boolean) {
+  await nextTick()
   const callback = vi.mocked(IntersectionObserver).mock.calls.at(-1)![0]
 
   callback(
@@ -116,11 +117,11 @@ describe('given a MazAnimatedText', () => {
 
       expect(wrapper.classes()).toContain('m-animated-text--pending')
 
-      intersect(wrapper.find('.m-animated-text__root').element, true)
+      await intersect(wrapper.find('.m-animated-text__root').element, true)
       await wrapper.vm.$nextTick()
 
       expect(wrapper.classes()).not.toContain('m-animated-text--pending')
-      expect(IntersectionObserverMock.unobserve).toHaveBeenCalled()
+      expect(IntersectionObserverMock.disconnect).toHaveBeenCalled()
     })
   })
 
@@ -132,11 +133,11 @@ describe('given a MazAnimatedText', () => {
       })
       const root = wrapper.find('.m-animated-text__root').element
 
-      intersect(root, false)
+      await intersect(root, false)
       await wrapper.vm.$nextTick()
 
       expect(wrapper.classes()).toContain('m-animated-text--pending')
-      expect(IntersectionObserverMock.unobserve).not.toHaveBeenCalled()
+      expect(IntersectionObserverMock.disconnect).not.toHaveBeenCalled()
     })
   })
 
@@ -147,7 +148,7 @@ describe('given a MazAnimatedText', () => {
         props: { text: 'Hello world', once: true },
       })
 
-      intersect(wrapper.find('.m-animated-text__root').element, false)
+      await intersect(wrapper.find('.m-animated-text__root').element, false)
       await wrapper.vm.$nextTick()
 
       expect(wrapper.classes()).not.toContain('m-animated-text--pending')

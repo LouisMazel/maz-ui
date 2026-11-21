@@ -23,7 +23,21 @@ export function nextCall(doc: DocEntry): string {
   return `get_doc({ id: "${doc.id}" })`
 }
 
-export function formatDocLine(doc: DocEntry, index?: number): string {
+/** What a composable that works through a plugin of maz-ui (`useWait` and `WaitPlugin`) needs once in the app */
+export function pluginSetup(doc: DocEntry, docsById: ReadonlyMap<string, DocEntry>): string | undefined {
+  const slug = doc.category === 'composable'
+    ? /^use(\w+)$/.exec(doc.title)?.[1].toLowerCase()
+    : undefined
+  const plugin = slug
+    ? docsById.get(`plugins/${slug}`)?.symbols[0]
+    : undefined
+
+  return plugin
+    ? `Needs its plugin once: \`app.use(${plugin})\` from \`maz-ui/plugins/${slug}\` in \`main.ts\` (Nuxt: \`mazUi: { plugins: { ${slug}: true } }\`).`
+    : undefined
+}
+
+export function formatDocLine(doc: DocEntry, index?: number, docsById?: ReadonlyMap<string, DocEntry>): string {
   const prefix = index === undefined
     ? '-'
     : `${index + 1}.`
@@ -33,6 +47,11 @@ export function formatDocLine(doc: DocEntry, index?: number): string {
 
   if (doc.imports[0])
     lines.push(`   \`${doc.imports[0]}\``)
+
+  const setup = docsById && pluginSetup(doc, docsById)
+
+  if (setup)
+    lines.push(`   ${setup}`)
 
   lines.push(`   Next: ${nextCall(doc)}`)
 
@@ -63,7 +82,7 @@ export function searchDocs(context: ServerContext, { query, category, limit = 8 
   const lines = [
     header,
     '',
-    ...hits.map((hit, index) => formatDocLine(hit.doc, index)),
+    ...hits.map((hit, index) => formatDocLine(hit.doc, index, context.knowledge.docsById)),
   ]
 
   if (hits[0].score < WEAK_MATCH_SCORE) {

@@ -85,47 +85,104 @@ function locate(starts: number[], offset: number): { line: number, column: numbe
  * - `maz-ui-review-ignore-file`: the whole file
  * - `maz-ui-review-ignore` (alone on its line): the next line
  * - `maz-ui-review-ignore` at the end of a line: that line
- * An optional comma separated list of rule ids restricts the ignore.
+ * An optional comma separated list of rule ids restricts the ignore, the reason after ` -- ` is required.
  */
 type IgnoreScope = Set<string> | 'all'
 
-function ignoredRules(lines: string[]): { file: IgnoreScope | undefined, byLine: Map<number, IgnoreScope> } {
+/** The rules of a code that does not work (an unknown component, prop or import...): they are fixed, never ignored */
+export const UNIGNORABLE_RULES: ReadonlySet<RuleId> = new Set<RuleId>([
+  'unknown-component',
+  'unknown-prop',
+  'invalid-prop-value',
+  'unknown-model',
+  'unknown-event',
+  'unknown-slot',
+  'unknown-slot-binding',
+  'missing-required-prop',
+  'raw-icon-tag',
+  'root-import',
+  'internal-import',
+  'missing-reference',
+  'parse-error',
+])
+
+interface IgnoreComments {
+  file: IgnoreScope | undefined
+  byLine: Map<number, IgnoreScope>
+  /** The comments that are not applied: no reason, or an unignorable rule */
+  invalid: Omit<Finding, 'severity' | 'rule'>[]
+}
+
+function ignoredRules(lines: string[]): IgnoreComments {
   const byLine = new Map<number, IgnoreScope>()
+  const invalid: IgnoreComments['invalid'] = []
   let file: IgnoreScope | undefined
 
-  const parseRules = (rest: string): IgnoreScope => {
-    const [directive] = rest.replace(/-->|\*\/|\*\}|\}/g, '').split(/\s--\s/)
+  const parse = (rest: string, line: number, column: number): IgnoreScope | undefined => {
+    const [directive, ...reason] = rest.replace(/-->|\*\/|\*\}|\}/g, '').split(/\s--(?:\s|$)/)
     const rules = directive.split(/[\s,]+/).filter(rule => /^[a-z][a-z\d-]+$/.test(rule))
+    const unignorable = rules.filter(rule => UNIGNORABLE_RULES.has(rule as RuleId))
 
-    return rules.length > 0
-      ? new Set(rules)
-      : 'all'
+    if (unignorable.length > 0) {
+      invalid.push({
+        line,
+        column,
+        message: `${unignorable.map(rule => `\`${rule}\``).join(', ')} cannot be ignored: the code does not work as written.`,
+        suggestion: 'Fix the code with the documented API (get_component_api, search_docs), then remove the comment.',
+      })
+    }
+
+    if (reason.join(' -- ').trim() === '') {
+      invalid.push({
+        line,
+        column,
+        message: '`maz-ui-review-ignore` without a reason is not applied.',
+        suggestion: 'Fix the finding, or give the reason after two dashes when it is intended: `maz-ui-review-ignore <rule> -- <reason>`.',
+      })
+
+      return undefined
+    }
+
+    const ignorable = rules.filter(rule => !UNIGNORABLE_RULES.has(rule as RuleId))
+
+    if (rules.length === 0)
+      return 'all'
+
+    return ignorable.length > 0
+      ? new Set(ignorable)
+      : undefined
   }
 
   for (const [index, line] of lines.entries()) {
-    const fileMatch = /maz-ui-review-ignore-file\b(.*)/.exec(line)
+    const match = /(?:<!--|\/\/|\/\*|\{\/\*)\s*maz-ui-review-ignore(-file)?\b(.*)/.exec(line)
 
-    if (fileMatch) {
-      file = parseRules(fileMatch[1])
+    if (!match)
+      continue
+
+    const scope = parse(match[2], index + 1, line.indexOf('maz-ui-review-ignore', match.index) + 1)
+
+    if (match[1]) {
+      file = scope
       continue
     }
 
-    const match = /maz-ui-review-ignore\b(.*)/.exec(line)
-
-    if (!match)
+    if (!scope)
       continue
 
     const isAlone = /^\s*(?:<!--|\/\/|\/\*|\{\/\*)\s*maz-ui-review-ignore/.test(line)
 
     byLine.set(isAlone
       ? index + 2
-      : index + 1, parseRules(match[1]))
+      : index + 1, scope)
   }
 
-  return { file, byLine }
+  return { file, byLine, invalid }
 }
 
 function isIgnored(rule: RuleId, scope: IgnoreScope | undefined): boolean {
+  if (UNIGNORABLE_RULES.has(rule))
+    return false
+
   return scope === 'all' || (scope instanceof Set && scope.has(rule))
 }
 
@@ -228,10 +285,12 @@ export function reviewCode(code: string, options: ReviewOptions): Finding[] {
     }, error.loc?.start.offset ?? 0)
   }
 
-  const { file, byLine } = ignoredRules(code.split('\n'))
+  const { file, byLine, invalid } = ignoredRules(code.split('\n'))
 
-  return findings
-    .filter(finding => !isIgnored(finding.rule, file) && !isIgnored(finding.rule, byLine.get(finding.line)))
+  return [
+    ...findings.filter(finding => !isIgnored(finding.rule, file) && !isIgnored(finding.rule, byLine.get(finding.line))),
+    ...invalid.map(finding => ({ ...finding, rule: 'invalid-ignore' as const, severity: 'error' as const })),
+  ]
     .sort((a, b) => a.line - b.line || a.column - b.column || SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity])
 }
 

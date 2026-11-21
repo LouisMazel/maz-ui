@@ -50,6 +50,8 @@ Guarantees:
 - An existing entry of the maz-ui MCP server only gets a better command (the installed `@maz-ui/mcp`, a newer pinned version) and keeps its other fields (`env`...). A command written by hand (with `--docs`, for example) is never changed.
 - In a monorepo, rules written by a newer maz-ui and a newer pinned `@maz-ui/mcp` are never downgraded by an app with an older version. Files are written atomically: apps started together never read a half-written file.
 - The Claude rule is scoped with a `paths:` frontmatter, so that Claude Code only loads it when it reads or edits a file of the workspaces that depend on maz-ui (see [Scope of the Claude rule](#scope-of-the-claude-rule)), instead of at every session.
+- With `hooks: true`, the review hook is added to the `PostToolUse` (each edited file), `Stop` and `SubagentStop` (the files changed in git at the end of a task) hooks of `.claude/settings.json`, next to the other settings and hooks, with the command of the MCP server (`pnpm exec maz-ui-mcp review --hook`, or `npx -y @maz-ui/mcp@<version> review --hook`). It is not added, and removed if it was, when the maz-ui Claude Code plugin is enabled (project or user settings): the plugin has its own hook.
+- When the maz-ui Claude Code plugin is enabled and `.mcp.json` has the `maz-ui` server, the server is added to the `disabledMcpjsonServers` of `.claude/settings.local.json` (your machine only, added to an existing `.gitignore`): the plugin runs its own server, and the teammates without the plugin keep the one of `.mcp.json`. It is removed from the list, and the file deleted when left empty, with `remove: true` or when the plugin is gone.
 - Without `CLAUDE.md` in the project, Claude Code reads `AGENTS.md`: the Claude rule is then skipped to avoid loading the rules twice.
 - Running it again is idempotent: unchanged files are reported as `unchanged`. A managed file is only rewritten when its rules change: after a release of the tool that keeps the same rules, it stays as is, its header keeps the version that last changed them.
 
@@ -66,6 +68,8 @@ setupAgents({
   rules: true,
   // Register the maz-ui MCP server, default: true
   mcp: true,
+  // With the claude target, add a hook to .claude/settings.json that reviews each file Claude edits, default: false
+  hooks: false,
   // Compute the changes without writing anything
   dryRun: false,
   // Remove everything setupAgents added
@@ -131,6 +135,8 @@ const tool: AgentsTool = {
   // Scope of the Claude rule: the workspaces that depend on these packages, and the files of the rule inside them
   packages: ['relizy'],
   ruleGlobs: ['relizy.config.*', '**/CHANGELOG.md'],
+  // Arguments of the bin that review the files of the Claude Code hooks (PostToolUse, Stop, SubagentStop), written with `hooks: true`, default: no hook
+  reviewHookArgs: undefined,
 }
 
 setupAgents({
@@ -236,6 +242,24 @@ setupAgents({
 ```
 
 Without any detected agent (and without `targets`), nothing is written and the rules are not read: maz-ui does not need to be installed.
+
+## Diagnose the setup
+
+`diagnoseAgents` tells how Claude Code gets the MCP server and the rules of the tool in a project, without writing anything. `npx @maz-ui/mcp doctor` prints it.
+
+```ts
+import { diagnoseAgents } from '@maz-ui/node'
+
+const { servers, plugin, problems } = diagnoseAgents({ rootDir: process.cwd(), version: '5.8.0' })
+
+for (const problem of problems) {
+  console.log(problem.message, problem.fix)
+}
+```
+
+- `servers`: the servers of the tool in each scope (`local` and `user` from `~/.claude.json`, `project` from `.mcp.json`, `plugin`), with `active: false` when another server of the same name wins, and `disabled: true` for a server of `.mcp.json` listed in `disabledMcpjsonServers`.
+- `plugin`: the Claude Code plugin of the tool is installed and enabled.
+- `problems`: a server shadowed by another of the same name, a server running beside the one of the plugin, a server pinned to a prerelease or to an older version than `version`, rules written for an older version, review hooks doubled by the plugin, no server at all. Each one has its `fix`.
 
 ## Errors
 

@@ -145,6 +145,14 @@ export default {
     copyUrlToClipboard: '复制 URL 到剪贴板',
     urlCopiedToClipboard: 'URL 已复制到剪贴板',
   },
+  btnClipboard: {
+    copy: '复制',
+    copied: '已复制',
+  },
+  btnScroll: {
+    top: '返回顶部',
+    bottom: '滚动到底部',
+  },
   markdownEditor: {
     write: '编辑',
     preview: '预览',

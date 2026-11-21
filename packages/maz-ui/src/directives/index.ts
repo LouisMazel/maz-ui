@@ -1,5 +1,6 @@
 export * from './vClickOutside.ts'
 export * from './vFullscreenImg.ts'
+export * from './vIntersect.ts'
 export * from './vLazyImg.ts'
 export * from './vTooltip.ts'
 export * from './vZoomImg.ts'

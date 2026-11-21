@@ -231,7 +231,18 @@ describe('given get_component_api', () => {
       expect(output).toContain('## MazBtn API')
       expect(output).toContain('## MazDialog API')
       expect(output.match(/## MazBtn API/g)).toHaveLength(1)
-      expect(output).toContain('Examples: `get_doc({ id: "components/maz-btn" })`')
+      expect(output).toContain('Examples: `get_doc({ id: "components/maz-btn", sections: ["Basic usage"] })`, sections: Basic usage, Sizes, Colors')
+      expect(output).toContain(', RouterLink')
+    })
+  })
+
+  describe('when the compact form is requested', () => {
+    it('then it keeps the names, types and defaults without the descriptions', () => {
+      const output = getComponentApi(getContext(), { names: ['MazBtn'], compact: true })
+
+      expect(output).toContain('- `color` (`"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent" | "surface" | "container"`, default: `"primary"`)\n')
+      expect(output).not.toContain('Predifined sizes of the button')
+      expect(output.length).toBeLessThan(getComponentApi(getContext(), { names: ['MazBtn'] }).length * 0.7)
     })
   })
 
@@ -518,7 +529,7 @@ describe('given list_docs', () => {
     it('then only this category is listed', () => {
       const output = listDocs(getContext(), { category: 'directive' })
 
-      expect(output).toContain('## Directives (maz-ui) (5)')
+      expect(output).toContain('## Directives (maz-ui) (6)')
       expect(output).not.toContain('## Components')
     })
   })

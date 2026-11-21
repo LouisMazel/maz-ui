@@ -12,6 +12,10 @@ export const components = {
         { text: 'Btn', link: '/components/maz-btn' },
         { text: 'BtnGroup', link: '/components/maz-btn-group' },
         {
+          text: withNewBadge('BtnClipboard'),
+          link: '/components/maz-btn-clipboard',
+        },
+        {
           text: withNewBadge('BtnDropdown'),
           link: '/components/maz-btn-dropdown',
         },
@@ -79,6 +83,10 @@ export const components = {
           link: '/components/maz-timeline',
         },
         { text: 'Pagination', link: '/components/maz-pagination' },
+        {
+          text: withNewBadge('BtnScroll'),
+          link: '/components/maz-btn-scroll',
+        },
         { text: 'Link', link: '/components/maz-link' },
         { text: 'PullToRefresh', link: '/components/maz-pull-to-refresh' },
         { text: 'ReadingProgressBar', link: '/components/maz-reading-progress-bar' },
