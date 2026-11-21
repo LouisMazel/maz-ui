@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazIndicatorProps } from './MazIndicator.vue'
 import type { MazColor, MazRoundedSize, MazSize, MazSizeUnit } from './types.ts'
 import { MazPencil } from '@maz-ui/icons/lazy/MazPencil'
+import { isProduction } from '@maz-ui/utils/helpers/isProduction'
 import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
@@ -157,7 +158,7 @@ function getInitials(name: string, count = letterCount) {
 const shouldDisplayImg = computed(() => src || (!src && !caption))
 
 onMounted(() => {
-  if (process.env.NODE_ENV !== 'production' && loading === 'intersecting') {
+  if (!isProduction() && loading === 'intersecting') {
     console.warn('[maz-ui][MazAvatar] `loading="intersecting"` is deprecated and removed in v6: use `loading="lazy"`, the native lazy loading.')
   }
 })
