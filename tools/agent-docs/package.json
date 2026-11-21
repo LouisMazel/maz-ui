@@ -15,8 +15,8 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
-    "generate:plugin": "tsx src/cli.ts --skill ../../plugins/claude-code",
-    "check:plugin": "tsx src/cli.ts --skill ../../plugins/claude-code --check"
+    "generate:plugin": "tsx src/cli.ts --skill ../../plugins/maz-ui",
+    "check:plugin": "tsx src/cli.ts --skill ../../plugins/maz-ui --check"
   },
   "dependencies": {
     "typescript": "catalog:",

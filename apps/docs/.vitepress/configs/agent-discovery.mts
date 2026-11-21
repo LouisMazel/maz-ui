@@ -10,7 +10,7 @@ const _dirname = dirname(fileURLToPath(import.meta.url))
 const skills = [
   {
     name: 'maz-ui',
-    source: join(_dirname, '../../../../plugins/claude-code/skills/maz-ui/SKILL.md'),
+    source: join(_dirname, '../../../../plugins/maz-ui/skills/maz-ui/SKILL.md'),
   },
 ]
 

@@ -16,7 +16,7 @@ export default defineConfig(
       './apps/**/*',
       './tools/**/*',
       './plans/**/*',
-      './plugins/claude-code/skills/**/*',
+      './plugins/maz-ui/skills/**/*',
       './.claude/rules/*',
     ],
   },

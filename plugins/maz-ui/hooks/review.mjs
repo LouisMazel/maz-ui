@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * PostToolUse, Stop and SubagentStop hook: reviews the file Claude just edited, or the files changed in the task,
- * with `maz-ui-mcp review --hook`.
- * Exit code 2 sends the findings back to Claude, which fixes them.
+ * PostToolUse, Stop and SubagentStop hook (Claude Code and Codex): reviews the file the agent just edited, or the files
+ * changed in the task, with `maz-ui-mcp review --hook`.
+ * Exit code 2 sends the findings back to the agent, which fixes them.
  * Files outside of a project that installs maz-ui are skipped without spawning anything. maz-ui is looked for from
  * each file: in a pnpm monorepo, the session starts at the root and maz-ui is only installed in the apps.
  */
@@ -66,6 +66,16 @@ function changedFiles(cwd) {
   }
 }
 
+/** The files of an edit: `file_path` of Claude Code, or the paths in the `apply_patch` of Codex */
+function editedFiles(toolInput) {
+  if (typeof toolInput?.file_path === 'string')
+    return [toolInput.file_path]
+
+  return typeof toolInput?.command === 'string'
+    ? [...toolInput.command.matchAll(/^\*\*\* (?:Add File|Update File|Move to): (.+)$/gm)].map(match => match[1].trim())
+    : []
+}
+
 const input = readFileSync(0, 'utf8')
 const { tool_input: toolInput, cwd = process.cwd(), hook_event_name: event, stop_hook_active: stopHookActive } = JSON.parse(input || '{}')
 // At the end of a task, the command reviews the files changed in git (written by Edit, or by Bash)
@@ -76,7 +86,7 @@ if (isStop && stopHookActive)
 
 const files = isStop
   ? changedFiles(cwd)
-  : [toolInput?.file_path].filter(Boolean).map(file => resolve(cwd, file))
+  : editedFiles(toolInput).map(file => resolve(cwd, file))
 const mazUi = files.filter(isReviewable).map(file => findUp(dirname(file), MAZ_UI)).find(Boolean)
 
 if (!mazUi)

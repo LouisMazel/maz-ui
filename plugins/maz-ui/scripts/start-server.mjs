@@ -2,6 +2,8 @@
 /**
  * Starts the maz-ui MCP server: the @maz-ui/mcp installed in the project (no download, the version of its lockfile),
  * else `npx -y @maz-ui/mcp@latest`.
+ * `.mcp.json` runs this file inline (`pnpm -F agent-docs generate:plugin` writes it): Codex does not expand
+ * `CLAUDE_PLUGIN_ROOT` in the MCP config of a plugin. Claude Code and Codex start it in the folder of the project.
  */
 import { spawn } from 'node:child_process'
 import { existsSync } from 'node:fs'

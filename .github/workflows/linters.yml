@@ -43,5 +43,5 @@ jobs:
 
       - name: Validate the plugin and the marketplace
         run: |
-          npx -y @anthropic-ai/claude-code plugin validate plugins/claude-code
+          npx -y @anthropic-ai/claude-code plugin validate plugins/maz-ui
           npx -y @anthropic-ai/claude-code plugin validate .

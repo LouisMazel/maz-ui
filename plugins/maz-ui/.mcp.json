@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "maz-ui": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "--input-type=module",
+        "-e",
+        "#!/usr/bin/env node\n/**\n * Starts the maz-ui MCP server: the @maz-ui/mcp installed in the project (no download, the version of its lockfile),\n * else `npx -y @maz-ui/mcp@latest`.\n * `.mcp.json` runs this file inline (`pnpm -F agent-docs generate:plugin` writes it): Codex does not expand\n * `CLAUDE_PLUGIN_ROOT` in the MCP config of a plugin. Claude Code and Codex start it in the folder of the project.\n */\nimport { spawn } from 'node:child_process'\nimport { existsSync } from 'node:fs'\nimport { dirname, join } from 'node:path'\nimport process from 'node:process'\nimport { pathToFileURL } from 'node:url'\n\nfunction findUp(start, relativePath) {\n  let directory = start\n\n  for (;;) {\n    const candidate = join(directory, relativePath)\n\n    if (existsSync(candidate))\n      return candidate\n\n    const parent = dirname(directory)\n\n    if (parent === directory)\n      return undefined\n\n    directory = parent\n  }\n}\n\nconst installed = findUp(process.cwd(), 'node_modules/@maz-ui/mcp/bin/maz-ui-mcp.mjs')\n\nif (installed) {\n  await import(pathToFileURL(installed).href)\n}\nelse {\n  // eslint-disable-next-line sonarjs/no-os-command-from-path -- the npx of the user, like the command of any MCP config\n  const child = spawn('npx', ['-y', '@maz-ui/mcp@latest'], { stdio: 'inherit', shell: process.platform === 'win32' })\n\n  child.on('exit', code => process.exit(code ?? 0))\n\n  for (const signal of ['SIGINT', 'SIGTERM'])\n    process.on(signal, () => child.kill(signal))\n}\n"
+      ]
+    }
+  }
+}

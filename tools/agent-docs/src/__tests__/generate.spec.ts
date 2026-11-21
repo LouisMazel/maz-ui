@@ -7,6 +7,7 @@ import { generateKnowledge, HOMEPAGE, resolveHrefToId } from '../generate.ts'
 import { PACKAGE_DEFINITIONS } from '../packages.ts'
 import { getSourcePaths } from '../paths.ts'
 import { SESSION_CONTEXT_LIMIT } from '../render/agents.ts'
+import { renderPluginFiles } from '../render/plugin.ts'
 import { findOutdatedFiles } from '../write.ts'
 
 describe('given resolveHrefToId', () => {
@@ -254,8 +255,10 @@ describe('given generateKnowledge', () => {
       expect(fragmentFile('maz-ui', 'components/maz-btn.md')).toContain('- Nuxt: auto-imported by `@maz-ui/nuxt`')
     })
 
-    it('then the committed Claude Code plugin skill is up to date', () => {
-      expect(findOutdatedFiles(resolve(__dirname, '../../../../plugins/claude-code'), knowledge.skill)).toEqual([])
+    it('then the committed files of the plugin are up to date', () => {
+      const pluginDir = resolve(__dirname, '../../../../plugins/maz-ui')
+
+      expect(findOutdatedFiles(pluginDir, [...knowledge.skill, ...renderPluginFiles(pluginDir)])).toEqual([])
     })
 
     it('then generates an API table for every component of the website', () => {

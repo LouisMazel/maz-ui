@@ -1,0 +1,12 @@
+{
+  "name": "maz-ui",
+  "description": "Build Vue and Nuxt apps with the maz-ui ecosystem instead of re-implementing it (Claude Code and Codex): the maz-ui rules in every session and subagent, maz-ui skill, UI subagent (Claude Code) and upgrade skill, MCP server (project setup, docs, component APIs, icons, Tailwind theme tokens, code review) and hooks that review every edited file and, at the end of a task, the files changed in git",
+  "author": {
+    "name": "Louis Mazel",
+    "url": "https://github.com/LouisMazel"
+  },
+  "homepage": "https://maz-ui.com/guide/ai-agents",
+  "repository": "https://github.com/LouisMazel/maz-ui",
+  "license": "MIT",
+  "keywords": ["maz-ui", "claude-code", "codex", "vue", "nuxt", "tailwindcss", "ui", "components", "design-system"]
+}

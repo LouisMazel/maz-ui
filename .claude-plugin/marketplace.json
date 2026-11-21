@@ -5,13 +5,13 @@
     "url": "https://github.com/LouisMazel"
   },
   "metadata": {
-    "description": "Claude Code plugins for the maz-ui ecosystem"
+    "description": "Claude Code and Codex plugins for the maz-ui ecosystem"
   },
   "plugins": [
     {
       "name": "maz-ui",
-      "source": "./plugins/claude-code",
-      "description": "Build Vue and Nuxt apps with the maz-ui ecosystem instead of re-implementing it: the maz-ui rules in every session and subagent, maz-ui skill, UI subagent and upgrade skill, MCP server (project setup, docs, component APIs, icons, Tailwind theme tokens, code review) and hooks that review every edited file and, at the end of a task, the files changed in git",
+      "source": "./plugins/maz-ui",
+      "description": "Build Vue and Nuxt apps with the maz-ui ecosystem instead of re-implementing it (Claude Code and Codex): the maz-ui rules in every session and subagent, maz-ui skill, UI subagent (Claude Code) and upgrade skill, MCP server (project setup, docs, component APIs, icons, Tailwind theme tokens, code review) and hooks that review every edited file and, at the end of a task, the files changed in git",
       "category": "development",
       "homepage": "https://maz-ui.com/guide/ai-agents"
     }
