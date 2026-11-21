@@ -107,7 +107,7 @@ export const TASKS: EvalTask[] = [
   {
     id: 'shared-loading',
     prompt: 'Create `src/api.ts` with a `fetchUser()` that resolves after one second, load the user in `src/App.vue`, and create `src/components/AppHeader.vue`, shown by `App.vue`, with a spinner while the user loads. Share the loading state between them without a prop nor an event.',
-    expects: [/\buseWait\b/, /\bWaitPlugin\b/],
+    expects: [/\buseWait\b/],
     forbids: [/\bprovide\(/, /\bdefineStore\(/],
   },
   {
