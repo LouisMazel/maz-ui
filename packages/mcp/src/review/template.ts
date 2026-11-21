@@ -916,7 +916,7 @@ function checkConfirmDialog(element: ElementNode, context: ReviewContext): void 
     rule: 'prefer-dialog-confirm',
     severity: 'warning',
     message: '`MazDialog` with a cancel and a confirm button: a confirmation dialog written by hand.',
-    suggestion: 'Use `useDialog().confirm({ title, message })` (`DialogPlugin`), it returns a `Promise<boolean>`, or `<MazDialogConfirm>` in the template: buttons, keyboard and focus included.',
+    suggestion: 'Use `useDialog().confirm({ title, message })`, it returns a `Promise<boolean>`, or `<MazDialogConfirm>` in the template: buttons, keyboard and focus included.',
   }, element.loc.start.offset)
 }
 

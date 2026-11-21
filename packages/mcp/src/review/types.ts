@@ -42,6 +42,7 @@ export type RuleId
     | 'prefer-dialog-confirm'
     | 'parse-error'
     | 'invalid-ignore'
+    | 'deprecated-api'
 
 export interface Finding {
   rule: RuleId

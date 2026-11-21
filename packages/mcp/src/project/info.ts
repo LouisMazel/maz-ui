@@ -17,6 +17,8 @@ const ECOSYSTEM_PACKAGES = [
 ]
 /** The plugins of maz-ui, by the name of their Nuxt option */
 const PLUGINS = { toast: 'ToastPlugin', dialog: 'DialogPlugin', wait: 'WaitPlugin', aos: 'AosPlugin' }
+/** `useToast`, `useDialog` and `useWait` work without these plugins, deprecated and removed in v6 */
+const DEPRECATED_PLUGINS = ['ToastPlugin', 'DialogPlugin', 'WaitPlugin']
 const SOURCES = '**/*.{vue,ts,js,tsx,jsx,mts,mjs}'
 const IGNORED = ['**/node_modules/**', '**/dist/**', '**/.nuxt/**', '**/.output/**', '**/coverage/**', '**/*.d.ts']
 const MAX_SCANNED_FILES = 3000
@@ -30,6 +32,8 @@ export interface AppInfo {
   versions: Record<string, string>
   /** Plugins installed by the app: `app.use(ToastPlugin)` or `mazUi.plugins` */
   plugins: string[]
+  /** Animations on scroll: `AosPlugin`, the `aos` option of `MazUi` or of the Nuxt module */
+  aos: boolean
   /** Vue: `app.use(MazUi)` initializes the theme and the translations (Nuxt: the module) */
   mazUiPlugin: boolean
   /** `MazUi()` of `@maz-ui/vite-plugin` or `@maz-ui/nuxt`: the icons are used by name */
@@ -63,11 +67,16 @@ function versionsOf(directory: string): Record<string, string> {
   }))
 }
 
-/** Plugins of a Nuxt app: the `plugins` of the `mazUi` options set to `true` */
+/** Plugins of a Nuxt app: the `plugins` of the `mazUi` options set to `true` or to their options */
 function nuxtPlugins(config: string): string[] {
   const options = /\bplugins\s*:\s*\{([^}]*)\}/.exec(config)?.[1] ?? ''
 
-  return Object.entries(PLUGINS).filter(([option]) => new RegExp(`\\b${option}\\s*:\\s*true\\b`).test(options)).map(([, plugin]) => plugin)
+  return Object.entries(PLUGINS).filter(([option]) => new RegExp(`\\b${option}\\s*:\\s*(?:true\\b|\\{)`).test(options)).map(([, plugin]) => plugin)
+}
+
+/** The `aos` option of `MazUi` or of the Nuxt module is enabled */
+function hasAosOption(code: string): boolean {
+  return /\baos\s*:\s*(?:true\b|\{)/.test(code)
 }
 
 function count(values: string[]): Array<[string, number]> {
@@ -105,6 +114,9 @@ async function appInfo(rootDir: string, directory: string, componentNames: Set<s
     framework,
     versions: versionsOf(directory),
     plugins,
+    aos: plugins.includes(PLUGINS.aos) || hasAosOption(framework === 'nuxt'
+      ? nuxtConfig
+      : code),
     mazUiPlugin: framework === 'nuxt' || /\.use\(\s*MazUi\b/.test(code),
     iconsByName: framework === 'nuxt' || /\bMazUi\s*\(/.test(viteConfig),
     componentsAutoImported: framework === 'nuxt' || /\bMazComponentsResolver\b/.test(viteConfig),
@@ -125,7 +137,8 @@ function renderList(entries: Array<[string, number]>): string {
   return entries.map(([name, uses]) => `\`${name}\` (${uses})`).join(', ')
 }
 
-function renderPlugins(app: AppInfo): string {
+// Removed in v6 (plans/ROADMAP.md): a maz-ui older than the standalone composables
+function renderLegacyPlugins(app: AppInfo): string {
   const missing = Object.values(PLUGINS).filter(plugin => !app.plugins.includes(plugin))
   const installed = app.plugins.length > 0
     ? app.plugins.map(plugin => `\`${plugin}\``).join(', ')
@@ -139,7 +152,36 @@ function renderPlugins(app: AppInfo): string {
     : ''}`
 }
 
-export function renderProjectInfo(apps: AppInfo[]): string {
+function renderPlugins(app: AppInfo): string {
+  const nuxt = app.framework === 'nuxt'
+  const deprecated = app.plugins.filter(plugin => DEPRECATED_PLUGINS.includes(plugin))
+  const options = nuxt
+    ? '`mazUi.toast` and `mazUi.dialog` in `nuxt.config`'
+    : '`app.use(MazUi, { toast, dialog })`'
+  const lines = [
+    `- Toast, dialog and wait: \`useToast\`, \`useDialog\` and \`useWait\` need no plugin, their global options go in ${options}.`,
+    `- Animations on scroll: ${app.aos
+      ? 'enabled (`useAos`).'
+      : `disabled, enable them with ${nuxt
+        ? '`mazUi: { aos: true }`'
+        : '`app.use(MazUi, { aos: true })` and `import \'maz-ui/aos.css\'`'} before using \`useAos\`.`}`,
+  ]
+
+  if (deprecated.length > 0) {
+    lines.push(`- Deprecated: ${nuxt
+      ? '`mazUi.plugins`'
+      : deprecated.map(plugin => `\`app.use(${plugin})\``).join(', ')} still works, removed in v6: remove it and move its options to ${options}.`)
+  }
+
+  return lines.join('\n')
+}
+
+export interface RenderProjectInfoOptions {
+  /** `useToast`, `useDialog` and `useWait` work without their plugin in the installed maz-ui */
+  standaloneComposables?: boolean
+}
+
+export function renderProjectInfo(apps: AppInfo[], { standaloneComposables = true }: RenderProjectInfoOptions = {}): string {
   if (apps.length === 0)
     return 'No app of this project depends on maz-ui. `get_setup_guide` gives the installation for Vue or Nuxt.'
 
@@ -151,7 +193,9 @@ export function renderProjectInfo(apps: AppInfo[]): string {
       ...(app.mazUiPlugin
         ? []
         : ['- `app.use(MazUi)` (`maz-ui/plugins/maz-ui`) not found: it initializes the theme and the translations of the components, add it to `main.ts` with a preset (`get_setup_guide`).']),
-      renderPlugins(app),
+      standaloneComposables
+        ? renderPlugins(app)
+        : renderLegacyPlugins(app),
       `- Components: ${app.componentsAutoImported
         ? 'auto-imported in the templates'
         : 'import each one (`import MazBtn from \'maz-ui/components/MazBtn\'`)'}. Composables: ${app.framework === 'nuxt'
