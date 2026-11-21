@@ -367,6 +367,8 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'distribution bar',
   ],
   'components/maz-reading-progress-bar': ['reading progress', 'scroll progress', 'article progress'],
+  'components/maz-btn-scroll': ['back to top', 'scroll to top', 'go to top button', 'scroll to bottom button', 'jump to latest'],
+  'components/maz-btn-clipboard': ['copy button', 'copy id', 'copy command', 'copy to clipboard button', 'copyable text', 'snippet copy'],
   'components/maz-select': [
     'select',
     'dropdown select',
@@ -481,7 +483,9 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'is mobile',
     'screen size',
   ],
-  'composables/use-clipboard': ['copy to clipboard', 'copy button', 'copied state', 'clipboard', 'copy link'],
+  'composables/use-clipboard': ['copy to clipboard', 'copied state', 'clipboard', 'copy link'],
+  'composables/use-infinite-scroll': ['infinite scroll', 'load more', 'next page on scroll', 'endless list', 'pagination on scroll'],
+  'composables/use-intersection-observer': ['intersection observer', 'element visible', 'in viewport', 'element visibility', 'sentinel'],
   'composables/use-dialog': [
     'confirm',
     'confirmation dialog',
@@ -592,10 +596,13 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'sync in progress',
     'wait',
   ],
+  'composables/use-scroll': ['scroll position', 'scroll direction', 'scroll listener', 'hide header on scroll', 'scrolled to bottom', 'scroll event'],
+  'composables/use-scroll-lock': ['scroll lock', 'lock scroll', 'disable body scroll', 'prevent scroll', 'overflow hidden'],
   'composables/use-window-size': ['window size', 'viewport size', 'resize'],
 
   'directives/click-outside': ['click outside', 'close on outside click', 'outside click'],
   'directives/fullscreen-img': ['fullscreen image', 'image viewer', 'lightbox'],
+  'directives/intersect': ['v-intersect', 'when visible', 'enter viewport', 'on visible'],
   'directives/lazy-img': ['lazy load image', 'lazy loading', 'deferred image'],
   'directives/tooltip': [
     'tooltip',
