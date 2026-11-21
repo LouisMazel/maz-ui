@@ -7,6 +7,10 @@ description: Copy a text to the clipboard, with a reactive copied state that goe
 
 {{ $frontmatter.description }}
 
+::: tip
+For a button that copies an ID or a command, use the [MazBtnClipboard](./../components/maz-btn-clipboard.md) component: it is built on this composable.
+:::
+
 ## Usage
 
 <div class="vp-raw maz:flex maz:items-center maz:gap-2">

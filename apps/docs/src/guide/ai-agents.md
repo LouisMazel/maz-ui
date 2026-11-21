@@ -170,7 +170,7 @@ Then run `/reload-plugins` in the open sessions.
 }
 ```
 
-Run `init` again after removing the plugin: it enables the server again.
+Run `init` again after removing the plugin: it enables the server again. Until `init` runs, the plugin tells Claude at each session to use the tools of its own server.
 
 ### Check the setup
 
@@ -279,7 +279,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | `native-dialog` | warning | `alert()`, `confirm()`, `prompt()` instead of `useToast()` and `useDialog()` |
 | `prefer-dialog-confirm` | warning | A `MazDialog` with a cancel and a confirm button: use `useDialog().confirm()` or `MazDialogConfirm` |
 | `table-part-outside-table` | warning | `MazTableRow`, `MazTableCell` or `MazTableTitle` outside of a `MazTable` (invalid HTML): `MazTable` sorts, searches and paginates by itself |
-| `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers, and hand-written code it provides (`Intl.NumberFormat` for a currency, a `setTimeout` debounce, a loading `ref` shared by a module, `JSON.stringify` to compare objects, a click outside listener, `navigator.clipboard`, a countdown with `setInterval`, the iOS detection, a case conversion regex, `document.cookie`, a `resize` listener...). Warning when the tool covers the case, info when the hand-written code can be intended |
+| `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers, and hand-written code it provides (`Intl.NumberFormat` for a currency, a `setTimeout` debounce, a loading `ref` shared by a module, `JSON.stringify` to compare objects, a click outside listener, `navigator.clipboard`, a countdown with `setInterval`, the iOS detection, a case conversion regex, `document.cookie`, a `resize` or `scroll` listener, a `new IntersectionObserver`, `body.style.overflow`...). Warning when the tool covers the case, info when the hand-written code can be intended |
 | `theme-colors` | warning | Default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`) |
 | `hardcoded-color` | warning | `bg-[#1d90ff]`, `color: #fff` |
 | `pale-brand-color` | warning | A `primary` or `secondary` of `definePreset` under 3:1 against the surface: they are strong brand colors, not subtle backgrounds |

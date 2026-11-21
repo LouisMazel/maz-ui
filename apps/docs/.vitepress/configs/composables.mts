@@ -24,8 +24,16 @@ export const composables = {
       link: '/composables/use-fuzzy-search',
     },
     { text: 'useIdleTimeout', link: '/composables/use-idle-timeout' },
+    {
+      text: withNewBadge('useInfiniteScroll'),
+      link: '/composables/use-infinite-scroll',
+    },
     { text: 'useInjectStrict', link: '/composables/use-inject-strict' },
     { text: 'useInstanceUniqId', link: '/composables/use-instance-uniq-id' },
+    {
+      text: withNewBadge('useIntersectionObserver'),
+      link: '/composables/use-intersection-observer',
+    },
     { text: 'useDisplayNames', link: '/composables/use-display-names' },
     { text: 'useMountComponent', link: '/composables/use-mount-component' },
     { text: 'useMutationObserver', link: '/composables/use-mutation-observer' },
@@ -37,6 +45,14 @@ export const composables = {
     {
       text: withNewBadge('useRelativeTime'),
       link: '/composables/use-relative-time',
+    },
+    {
+      text: withNewBadge('useScroll'),
+      link: '/composables/use-scroll',
+    },
+    {
+      text: withNewBadge('useScrollLock'),
+      link: '/composables/use-scroll-lock',
     },
     { text: 'useStringMatching', link: '/composables/use-string-matching' },
     { text: 'useSwipe', link: '/composables/use-swipe' },
