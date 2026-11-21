@@ -118,6 +118,7 @@ const defaults = {
     vLazyImg: false,
     vClickOutside: false,
     vFullscreenImg: false,
+    vIntersect: false,
     vTooltip: false,
   },
   agents: {
@@ -546,6 +547,10 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.directives.vFullscreenImg) {
       addPlugin(resolve(_dirname, './runtime/plugins/v-fullscreen-img'))
+    }
+
+    if (moduleOptions.directives.vIntersect) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-intersect'))
     }
 
     if (moduleOptions.directives.vTooltip) {

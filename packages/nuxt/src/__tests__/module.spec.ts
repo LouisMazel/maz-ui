@@ -92,6 +92,7 @@ vi.mock('defu', () => ({
 }))
 
 vi.mock('@maz-ui/utils/helpers/capitalize', () => ({
+  // maz-ui-review-ignore prefer-utils -- mock of capitalize itself
   capitalize: (str: string) => str.charAt(0).toUpperCase() + str.slice(1),
 }))
 
@@ -173,6 +174,7 @@ describe('nuxt module', () => {
         vLazyImg: false,
         vClickOutside: false,
         vFullscreenImg: false,
+        vIntersect: false,
         vTooltip: false,
       })
     })
@@ -200,6 +202,10 @@ describe('nuxt module', () => {
       expect(composables.useSwipe).toBe(true)
       expect(composables.usePullToRefresh).toBe(true)
       expect(composables.useMutationObserver).toBe(true)
+      expect(composables.useIntersectionObserver).toBe(true)
+      expect(composables.useScroll).toBe(true)
+      expect(composables.useInfiniteScroll).toBe(true)
+      expect(composables.useScrollLock).toBe(true)
     })
   })
 
@@ -585,6 +591,7 @@ describe('nuxt module', () => {
             callSetup({
               css: {
                 purge: {
+                  // maz-ui-review-ignore internal-prefix -- the purge safelist holds the classes of maz-ui
                   safelist: ['maz:p-2'],
                   entries: ['MazBtn'],
                 },
@@ -593,6 +600,7 @@ describe('nuxt module', () => {
             })
 
             expect(MazUiPurgeCss).toHaveBeenCalledWith({
+              // maz-ui-review-ignore internal-prefix -- the purge safelist holds the classes of maz-ui
               safelist: ['maz:p-2'],
               entries: ['plugins/wait', 'MazBtn'],
             })
@@ -1025,6 +1033,15 @@ describe('nuxt module', () => {
         )
       })
 
+      it('should add v-intersect plugin when enabled', () => {
+        callSetup({
+          directives: { vIntersect: true },
+        })
+        expect(addPlugin).toHaveBeenCalledWith(
+          expect.stringContaining('v-intersect'),
+        )
+      })
+
       it('should add v-tooltip plugin when enabled', () => {
         callSetup({
           directives: { vTooltip: true },
@@ -1041,6 +1058,7 @@ describe('nuxt module', () => {
             vLazyImg: false,
             vClickOutside: false,
             vFullscreenImg: false,
+            vIntersect: false,
             vTooltip: false,
           },
         })
