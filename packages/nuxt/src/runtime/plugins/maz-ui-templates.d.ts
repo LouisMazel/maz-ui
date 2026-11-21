@@ -4,3 +4,8 @@ declare module '#build/maz-ui-translations.mjs' {
   const messages: MazUiTranslationsMessages
   export default messages
 }
+
+declare module '#build/maz-ui-flags.mjs' {
+  const loadCountryFlag: ((code: string) => Promise<string | undefined>) | undefined
+  export default loadCountryFlag
+}

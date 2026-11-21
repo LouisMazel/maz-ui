@@ -27,7 +27,7 @@ describe('dialog plugin', () => {
   })
 
   it('should create DialogHandler with vueApp', async () => {
-    const vueApp = {}
+    const vueApp = { provide: vi.fn() }
     const context = {
       $config: {
         public: {
@@ -47,7 +47,7 @@ describe('dialog plugin', () => {
   })
 
   it('should pass dialog options when config is an object', async () => {
-    const vueApp = {}
+    const vueApp = { provide: vi.fn() }
     const dialogOptions = { closable: false }
     const context = {
       $config: {
@@ -66,7 +66,7 @@ describe('dialog plugin', () => {
   })
 
   it('should provide mazDialog in client mode (import.meta.server is false)', async () => {
-    const vueApp = {}
+    const vueApp = { provide: vi.fn() }
     const context = {
       $config: {
         public: {
@@ -81,10 +81,11 @@ describe('dialog plugin', () => {
     const result = await (dialogPlugin as (...args: any[]) => any)(context)
 
     expect(result.provide.mazDialog).toBeInstanceOf(MockDialogHandler)
+    expect(vueApp.provide).toHaveBeenCalledWith('mazDialog', result.provide.mazDialog)
   })
 
   it('should pass undefined options when dialog is boolean', async () => {
-    const vueApp = {}
+    const vueApp = { provide: vi.fn() }
     const context = {
       $config: {
         public: {
