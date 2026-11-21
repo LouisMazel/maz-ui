@@ -236,7 +236,7 @@ The MCP server gives agents tools that work with the needs they have, and verify
 | Tool | Purpose |
 | --- | --- |
 | `search_docs` | Find what maz-ui provides for a need ("confirm before delete", "phone input", "debounce search") |
-| `get_project_info` | How the project uses maz-ui: installed versions, plugins, auto-imports, icons by name, theme presets, the components and tools already used |
+| `get_project_info` | How the project uses maz-ui: installed versions, setup of the toasts, dialogs and aos, auto-imports, icons by name, theme presets, the components and tools already used |
 | `get_component_api` | Exact props, values, events, slots of up to 10 components, with the sections of their examples (`compact: true`: names and types only) |
 | `find_icons` | Icons by meaning ("delete", "settings", "france flag") with their imports |
 | `get_theme_tokens` | The theme of your project (preset, `@theme` tokens, variants, utilities), its effective colors (every step in light and dark, contrasts, what to check) and every Tailwind class and CSS variable of maz-ui |
@@ -289,6 +289,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | `manual-dark-mode` | warning | Dark mode handled by hand instead of `useTheme()` |
 | `root-import`, `internal-import` | error | Runtime imports from `maz-ui` (types only) or from `src`/`dist` |
 | `nuxt-auto-import` | info | Imports that `@maz-ui/nuxt` already auto-imports (a component used in the script, `h(MazIcon)`, keeps its import) |
+| `deprecated-api` | warning | `app.use(ToastPlugin)`, `DialogPlugin`, `WaitPlugin`, `$mazToast`... and `mazUi.plugins` in `nuxt.config`: the composables work without them (removed in v6) |
 | `parse-error` | error | A file the parser cannot read (an unclosed tag): it is not reviewed |
 | `invalid-ignore` | error | A `maz-ui-review-ignore` comment without a reason, or on a rule that cannot be ignored |
 

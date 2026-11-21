@@ -7,41 +7,44 @@ description: A powerful toast notification system for Vue.js that displays user-
 
 {{ $frontmatter.description }}
 
-::: tip
-This plugin has a composable for easier use, after installing it you can use [useToast](./../composables/use-toast.md)
-:::
+Use the [useToast](./../composables/use-toast.md) composable in your components: no plugin to install.
 
-## Installation
+## Global options
+
+The options of every toast, a toast can override them. All options are listed in the [Type](#type) section.
 
 ::: code-group
 
 ```ts [Vue]
-import { ToastPlugin } from 'maz-ui/plugins/toast'
-import { createApp } from 'vue'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
 
-const app = createApp(App)
-
-const toastOptions: ToastOptions = {
-  position: 'bottom-right',
-  timeout: 10_000,
-  persistent: false,
-}
-
-app.use(ToastPlugin, toastOptions)
-app.mount('#app')
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  toast: {
+    position: 'bottom-right',
+    timeout: 10_000,
+    persistent: false,
+  },
+})
 ```
 
 ```ts [Nuxt]
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],
   mazUi: {
-    composables: {
-      useToast: true,
+    toast: {
+      position: 'bottom-right',
+      timeout: 10_000,
+      persistent: false,
     },
   },
 })
 ```
 
+:::
+
+::: tip Outside of a component
+`useToast()` works in the `setup` of a component. In a store, a router guard or `app.runWithContext()`, install the [MazUi plugin](./../guide/vue.md#install-plugin): it gives the app to the toasts.
 :::
 
 ## Basic usage
