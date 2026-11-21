@@ -45,6 +45,10 @@
       "module": "./dist/components/index.js",
       "default": "./dist/components/index.js"
     },
+    "./components/types": {
+      "monorepo:dev": "./src/components/types.ts",
+      "types": "./dist/components/types.d.mts"
+    },
     "./components/*": {
       "monorepo:dev": "./src/components/*.vue",
       "types": "./dist/components/*.vue.d.mts",
@@ -322,6 +326,9 @@
         "import": "./dist/components/index.js",
         "module": "./dist/components/index.js",
         "default": "./dist/components/index.js"
+      },
+      "./components/types": {
+        "types": "./dist/components/types.d.mts"
       },
       "./components/*": {
         "types": "./dist/components/*.vue.d.mts",
