@@ -145,6 +145,14 @@ export default {
     copyUrlToClipboard: 'Copier l\'URL dans le presse-papiers',
     urlCopiedToClipboard: 'URL copiée dans le presse-papiers',
   },
+  btnClipboard: {
+    copy: 'Copier',
+    copied: 'Copié',
+  },
+  btnScroll: {
+    top: 'Retour en haut',
+    bottom: 'Aller en bas',
+  },
   markdownEditor: {
     write: 'Écrire',
     preview: 'Aperçu',

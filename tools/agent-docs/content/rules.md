@@ -7,6 +7,8 @@ This project is built with **maz-ui** and its ecosystem. Reuse what it provides 
 
 Never guess an API: only use documented props, events, slots and imports.
 
+<!--@include: ../../../apps/docs/.vitepress/generated-docs/ecosystem-catalog.doc.md-->
+
 ### Which package for what
 
 `maz-ui` (components, composables, directives, plugins), `@maz-ui/themes` (brand colors, fonts, dark mode), `@maz-ui/icons` (icons, logos, flags), `@maz-ui/utils` (helpers), `@maz-ui/translations` (texts of the components), `@maz-ui/nuxt` (Nuxt module).
@@ -19,8 +21,9 @@ Never guess an API: only use documented props, events, slots and imports.
 
 ### Feedback, overlays and forms
 
-- `useToast()` for notifications, `useDialog()` or `MazDialogConfirm` for confirmations, `useWait()` for loading states, `MazSkeleton` / `MazSpinner` while data loads.
-- These composables need their plugin. Vue: `app.use(ToastPlugin)` from `maz-ui/plugins/toast` (`DialogPlugin`, `WaitPlugin`, `AosPlugin` likewise). Nuxt: `mazUi: { plugins: { toast: true } }`, off by default like the directives (`mazUi.directives.vTooltip`, or import the directive).
+- `useToast()` for notifications, `useDialog()` or `MazDialogConfirm` for confirmations, `useWait()` for a loading state shared between components, `MazSkeleton` / `MazSpinner` while data loads.
+- These composables work without plugin. Their global options go in the MazUi plugin: `app.use(MazUi, { theme, toast: { position: 'top-right' }, dialog: { acceptText: 'Yes' } })` (Nuxt: `mazUi: { toast: {...}, dialog: {...} }`). Outside of a component (store, router guard), `useToast` and `useDialog` need the MazUi plugin, `useWait` works anywhere.
+- Animations on scroll: `aos: true` in the MazUi plugin with `import 'maz-ui/aos.css'` (Nuxt: `mazUi: { aos: true }`), then `useAos`. The directives are off by default with Nuxt (`mazUi.directives.vTooltip`, or import the directive).
 - Forms: `useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType).
 
 ### Icons
@@ -31,10 +34,6 @@ Use `@maz-ui/icons`, never inline SVG nor another icon library. Pick the format 
 - **Directly in a template**: the component, `@maz-ui/icons/static/MazTrash`, then `<MazTrash class="size-5 text-muted" />` (size and color from the text: `1em`, `currentColor`).
 - **Not visible at first render** (`v-if`, menus, dialogs, tabs): the lazy component, `@maz-ui/icons/lazy/MazTrash`. Never for icons visible on load: each one is an extra request.
 - **Illustrations, logos, flags** at their own size and colors: `<MazSvg icon="flag-fr" width="32" />`. `<img>` or CSS only for multicolor icons, the text color does not apply there: the files are `@maz-ui/icons/svg/star.svg`, `@maz-ui/icons/flags/3x2/FR.svg` (`flags/1x1` for the square ones) and `@maz-ui/icons/logos/vue.svg`.
-
-### Helpers and composables
-
-Before writing browser or reactive logic by hand (`addEventListener`, `setTimeout` / `setInterval`, `matchMedia`, an observer, a gesture, drag and drop, a search in a list, `provide` / `inject`...) or importing lodash or VueUse, call `search_docs` with the need: `@maz-ui/utils` and the maz-ui composables and directives probably have it (`debounce`, `formatDate`, `useBreakpoints`, `useTimer`, `useDropzone`, `vClickOutside`...).
 
 ### Texts and languages
 
@@ -66,4 +65,4 @@ Brand colors, fonts, radius and spacing come from a `@maz-ui/themes` preset (`de
 
 ### Before you finish
 
-Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <files>`, and fix every finding.
+Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <files>`, and fix every error and warning until none is left.

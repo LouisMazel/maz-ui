@@ -2,9 +2,10 @@
 import type { CSSProperties } from 'vue'
 import type { MazIconLike } from '../composables/useMazIconProps.ts'
 import type { MazColor, MazSize } from './types.ts'
-import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useResizeObserver } from '../composables/useResizeObserver.ts'
 import { resolveMazIconProps } from '../utils/resolveMazIconProps.ts'
 import { getColor } from './types.ts'
 
@@ -193,21 +194,15 @@ function placeIndicator() {
   }
 }
 
-let resizeObserver: ResizeObserver | undefined
+useResizeObserver(rootRef, () => placeIndicator())
 
 onMounted(async () => {
   await nextTick()
   placeIndicator()
-  if (typeof ResizeObserver !== 'undefined' && rootRef.value) {
-    resizeObserver = new ResizeObserver(() => placeIndicator())
-    resizeObserver.observe(rootRef.value)
-  }
   requestAnimationFrame(() => {
     animated.value = true
   })
 })
-
-onBeforeUnmount(() => resizeObserver?.disconnect())
 
 watch(() => [selectedIndex.value, options.length], async () => {
   await nextTick()

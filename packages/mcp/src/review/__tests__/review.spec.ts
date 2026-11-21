@@ -117,19 +117,19 @@ describe('given a file that cannot be parsed', () => {
 describe('given ignore comments', () => {
   describe('when a comment is alone on the line above', () => {
     it('then the next line is ignored', () => {
-      expect(review('<template>\n  <!-- maz-ui-review-ignore -->\n  <button>b</button>\n</template>', 'A.vue')).toEqual([])
+      expect(review('<template>\n  <!-- maz-ui-review-ignore -- native element of the embed -->\n  <button>b</button>\n</template>', 'A.vue')).toEqual([])
     })
   })
 
   describe('when a comment ends the line', () => {
     it('then this line is ignored', () => {
-      expect(review('const c = \'bg-red-500\' // maz-ui-review-ignore', 'a.ts')).toEqual([])
+      expect(review('const c = \'bg-red-500\' // maz-ui-review-ignore -- color of the brand logo', 'a.ts')).toEqual([])
     })
   })
 
   describe('when a comment lists rules', () => {
     it('then only these rules are ignored', () => {
-      const code = '<template>\n  <!-- maz-ui-review-ignore theme-colors -->\n  <button class="bg-red-500">b</button>\n</template>'
+      const code = '<template>\n  <!-- maz-ui-review-ignore theme-colors -- frame over the video -->\n  <button class="bg-red-500">b</button>\n</template>'
 
       expect(review(code, 'A.vue').map(finding => finding.rule)).toEqual(['prefer-maz-component'])
     })
@@ -137,18 +137,55 @@ describe('given ignore comments', () => {
 
   describe('when a comment gives the reason after two dashes', () => {
     it('then the reason is not read as rules', () => {
-      const withRule = '<template>\n  <!-- maz-ui-review-ignore theme-colors -- frame over the video -->\n  <button class="bg-red-500">b</button>\n</template>'
-      const withoutRule = '<template>\n  <!-- maz-ui-review-ignore -- frame over the video -->\n  <button class="bg-red-500">b</button>\n</template>'
+      const code = '<template>\n  <!-- maz-ui-review-ignore -- frame over the video theme-colors -->\n  <button class="bg-red-500">b</button>\n</template>'
 
-      expect(review(withRule, 'A.vue').map(finding => finding.rule)).toEqual(['prefer-maz-component'])
-      expect(review(withoutRule, 'A.vue')).toEqual([])
+      expect(review(code, 'A.vue')).toEqual([])
+    })
+  })
+
+  describe('when a comment has no reason', () => {
+    it('then it is not applied and reported as an error', () => {
+      const findings = review('<template>\n  <!-- maz-ui-review-ignore theme-colors -->\n  <button class="bg-red-500">b</button>\n</template>', 'A.vue')
+
+      expect(findings.map(finding => finding.rule)).toEqual(['invalid-ignore', 'prefer-maz-component', 'theme-colors'])
+      expect(findings[0]).toMatchObject({ line: 2, column: 8, severity: 'error' })
+    })
+
+    it.each([
+      ['// maz-ui-review-ignore\nconst c = \'bg-red-500\''],
+      ['// maz-ui-review-ignore theme-colors --\nconst c = \'bg-red-500\''],
+      ['/* maz-ui-review-ignore-file */\nconst c = \'bg-red-500\''],
+    ])('then %j keeps the finding', (code) => {
+      expect(review(code, 'a.ts').map(finding => finding.rule)).toEqual(['invalid-ignore', 'theme-colors'])
+    })
+  })
+
+  describe('when a comment ignores an unknown component, prop or import', () => {
+    it('then the error stays and the comment is reported', () => {
+      const code = '<template>\n  <!-- maz-ui-review-ignore unknown-component, theme-colors -- it works -->\n  <MazNope class="bg-red-500" />\n</template>'
+      const findings = review(code, 'A.vue')
+
+      expect(findings.map(finding => finding.rule)).toEqual(['invalid-ignore', 'unknown-component'])
+      expect(findings[0].message).toContain('`unknown-component` cannot be ignored')
+    })
+
+    it('then an ignore of every rule keeps it too', () => {
+      const code = 'import { MazBtn } from \'maz-ui\' // maz-ui-review-ignore -- types only'
+
+      expect(review(code, 'a.ts').map(finding => finding.rule)).toEqual(['root-import'])
+    })
+  })
+
+  describe('when a string mentions the comment', () => {
+    it('then it is not read as an ignore', () => {
+      expect(review('const legend = \'add a maz-ui-review-ignore comment\'', 'a.ts')).toEqual([])
     })
   })
 
   describe('when a whole file is ignored', () => {
     it('then nothing is reported, or only the rules not listed', () => {
-      expect(review('// maz-ui-review-ignore-file\nconst c = \'bg-red-500\'', 'a.ts')).toEqual([])
-      expect(review('/* maz-ui-review-ignore-file theme-colors */\nconst c = \'bg-red-500 maz:flex\'', 'a.ts').map(finding => finding.rule)).toEqual(['internal-prefix'])
+      expect(review('// maz-ui-review-ignore-file -- generated file\nconst c = \'bg-red-500\'', 'a.ts')).toEqual([])
+      expect(review('/* maz-ui-review-ignore-file theme-colors -- generated file */\nconst c = \'bg-red-500 maz:flex\'', 'a.ts').map(finding => finding.rule)).toEqual(['internal-prefix'])
     })
   })
 })

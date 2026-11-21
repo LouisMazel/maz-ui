@@ -83,12 +83,7 @@ export default defineNuxtConfig({
       preloadFallback: true,
       fallbackLocale: 'en',
     },
-    plugins: {
-      aos: true,
-      dialog: true,
-      toast: true,
-      wait: true,
-    },
+    aos: true,
     directives: {
       vTooltip: true,
     },

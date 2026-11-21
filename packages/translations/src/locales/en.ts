@@ -274,6 +274,26 @@ export default {
     urlCopiedToClipboard: 'URL copied to clipboard',
   },
   /**
+   * This is the translation for the btn clipboard component.
+   * The keys are:
+   * - copy: Label/tooltip of the button (default state).
+   * - copied: Label/tooltip of the button after a successful copy.
+   */
+  btnClipboard: {
+    copy: 'Copy',
+    copied: 'Copied',
+  },
+  /**
+   * This is the translation for the btn scroll component.
+   * The keys are:
+   * - top: Accessible label/tooltip of the button that scrolls to the top.
+   * - bottom: Accessible label/tooltip of the button that scrolls to the bottom.
+   */
+  btnScroll: {
+    top: 'Back to top',
+    bottom: 'Scroll to bottom',
+  },
+  /**
    * This is the translation for the markdown editor component.
    * The keys are:
    * - write/preview/split: Labels for the editor mode tabs.

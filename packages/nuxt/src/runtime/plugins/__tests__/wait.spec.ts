@@ -14,7 +14,7 @@ const { MockWaitHandler } = vi.hoisted(() => {
 })
 
 vi.mock('maz-ui/plugins/wait', () => ({
-  WaitHandler: MockWaitHandler,
+  waitInstance: new MockWaitHandler(),
 }))
 
 vi.mock('nuxt/app', () => ({
@@ -22,9 +22,11 @@ vi.mock('nuxt/app', () => ({
 }))
 
 describe('wait plugin', () => {
-  it('should provide mazWait as WaitHandler in client mode (import.meta.server is false)', async () => {
+  it('should provide the wait handler of useWait in client mode (import.meta.server is false)', async () => {
+    const { waitInstance } = await import('maz-ui/plugins/wait')
+
     const result = await (waitPlugin as (...args: any[]) => any)()
 
-    expect(result.provide.mazWait).toBeInstanceOf(MockWaitHandler)
+    expect(result.provide.mazWait).toBe(waitInstance)
   })
 })

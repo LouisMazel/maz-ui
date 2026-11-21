@@ -711,7 +711,7 @@ function checkNativeElement(element: ElementNode, context: ReviewContext): void 
       message: `Native \`<${element.tag}>\`${element.tag === 'input'
         ? ` (type "${staticAttribute(element, 'type')?.value?.content ?? 'text'}")`
         : ''}.`,
-      suggestion: `Use ${replacement.component}: themed, accessible and consistent with the rest of the UI. Add \`<!-- maz-ui-review-ignore -->\` above it if the native element is intended.`,
+      suggestion: `Use ${replacement.component}: themed, accessible and consistent with the rest of the UI. Add \`<!-- maz-ui-review-ignore prefer-maz-component -- <reason> -->\` above it if the native element is intended.`,
     }, element.loc.start.offset)
   }
 }
@@ -774,6 +774,9 @@ function checkIconButtonLabel(element: ElementNode, context: ReviewContext): voi
   }, element.loc.start.offset)
 }
 
+/** Rows, cells and titles of MazTable */
+const TABLE_PARTS = new Set(['MazTableRow', 'MazTableCell', 'MazTableTitle'])
+
 function checkMazTag(element: ElementNode, mazName: string, source: string, context: ReviewContext, ancestry: Ancestry): void {
   const component = context.knowledge.componentsByName.get(mazName)
 
@@ -785,6 +788,12 @@ function checkMazTag(element: ElementNode, mazName: string, source: string, cont
       checkIconButtonLabel(element, context)
       checkButtonNavigation(element, ancestry.link, context)
     }
+
+    if (TABLE_PARTS.has(mazName))
+      checkTablePart(element, mazName, ancestry, context)
+
+    if (mazName === 'MazDialog')
+      checkConfirmDialog(element, context)
     return
   }
 
@@ -858,11 +867,57 @@ function checkRawIconTag(element: ElementNode, name: string, context: ReviewCont
   }, element.loc.start.offset)
 }
 
-/** What the parents of an element set: the closest background (for `text-white` on `bg-overlay`), an enclosing link or `<label>` */
+/** What the parents of an element set: the closest background (for `text-white` on `bg-overlay`), an enclosing link or `<label>`, a table */
 interface Ancestry {
   background?: Background
   link?: string
   label?: boolean
+  /** Inside a `MazTable`, one of its parts or a `<table>`: only the outermost part is reported */
+  table?: boolean
+  /** Inside an element of the template (a `<template>` wrapper does not count) */
+  nested?: boolean
+}
+
+/**
+ * A row, a cell or a title of MazTable inside another element: they render `<tr>`, `<td>` and `<th>`, only valid in
+ * the table. A component whose root is a row (rendered in the slot of a MazTable) is not reported.
+ */
+function checkTablePart(element: ElementNode, name: string, ancestry: Ancestry, context: ReviewContext): void {
+  if (ancestry.table || !ancestry.nested)
+    return
+
+  context.report({
+    rule: 'table-part-outside-table',
+    severity: 'warning',
+    message: `\`${name}\` outside of a \`MazTable\`: it renders a table row or cell, invalid HTML without the table.`,
+    suggestion: 'Use `<MazTable :headers="headers" :rows="rows">`: it sorts the columns, searches (`search`) and paginates (`pagination`) by itself, with slots for the cells. Read its API with `get_component_api(["MazTable"])`.',
+  }, element.loc.start.offset)
+}
+
+const CANCEL_LABEL = /\b(?:cancel|no|annuler|non|keep)\b/i
+const CONFIRM_LABEL = /\b(?:delete|remove|confirm|yes|ok|continue|supprimer|confirmer|oui|valider)\b/i
+
+function textOf(element: ElementNode): string {
+  return element.children.map(child => child.type === NodeTypes.TEXT
+    ? child.content
+    : isElement(child)
+      ? textOf(child)
+      : '').join(' ')
+}
+
+/** A MazDialog with a cancel and a confirm button: the confirmation dialog of maz-ui does it */
+function checkConfirmDialog(element: ElementNode, context: ReviewContext): void {
+  const labels = descendantsOf(element).filter(child => mazTagName(child.tag) === 'MazBtn').map(textOf)
+
+  if (!labels.some(label => CANCEL_LABEL.test(label)) || !labels.some(label => CONFIRM_LABEL.test(label)))
+    return
+
+  context.report({
+    rule: 'prefer-dialog-confirm',
+    severity: 'warning',
+    message: '`MazDialog` with a cancel and a confirm button: a confirmation dialog written by hand.',
+    suggestion: 'Use `useDialog().confirm({ title, message })`, it returns a `Promise<boolean>`, or `<MazDialogConfirm>` in the template: buttons, keyboard and focus included.',
+  }, element.loc.start.offset)
 }
 
 const LINK_TAGS = new Set([
@@ -905,6 +960,8 @@ function childAncestry(element: ElementNode, name: string, ancestry: Ancestry): 
       ? name
       : ancestry.link,
     label: ancestry.label || element.tag === 'label',
+    table: ancestry.table || name === 'MazTable' || TABLE_PARTS.has(name) || element.tag === 'table',
+    nested: ancestry.nested || element.tag !== 'template',
   }
 }
 

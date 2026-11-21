@@ -13,8 +13,8 @@ head:
 
 <NpmBadge package="@maz-ui/mcp" />
 
-::: tip Start with `npx @maz-ui/mcp init`
-It registers the server and writes the maz-ui rules for the agents of your project. See [AI agents](./../guide/ai-agents.md) for the complete picture (rules, version-matched docs, Claude Code plugin, code review in CI).
+::: tip Start with `npx @maz-ui/mcp init`, or the Claude Code plugin
+`init` registers the server and writes the maz-ui rules for the agents of your project. With Claude Code, the [maz-ui plugin](./../guide/ai-agents.md#claude-code-plugin) brings the server, the rules and a review hook to all your projects: `claude plugin install maz-ui --marketplace LouisMazel/maz-ui`. See [AI agents](./../guide/ai-agents.md) for the complete picture (rules, version-matched docs, code review in CI).
 :::
 
 ## Tools
@@ -22,7 +22,8 @@ It registers the server and writes the maz-ui rules for the agents of your proje
 | Tool | Purpose |
 | --- | --- |
 | `search_docs` | Find what maz-ui provides for a need, described in plain words ("user avatar with initials", "confirm before delete", "debounce search") or by name. Understands the vocabulary of other libraries ("modal", "snackbar", "combobox") |
-| `get_component_api` | Exact API of up to 10 components: props with types, defaults and accepted values, `v-model`, events with payload, slots with bindings, exposed methods |
+| `get_project_info` | How the project uses maz-ui, app by app in a monorepo: installed versions, the setup of the toasts, dialogs and animations on scroll (and the deprecated plugins still installed), auto-imported components, icons by name, theme presets, the components, composables and helpers already used |
+| `get_component_api` | Exact API of up to 10 components: props with types, defaults and accepted values, `v-model`, events with payload, slots with bindings, exposed methods, and the sections of their examples to read with `get_doc`. `compact: true` keeps the names and types only |
 | `find_icons` | Icons of `@maz-ui/icons` by meaning ("delete", "settings", "france flag") with their imports |
 | `get_theme_tokens` | The theme of your project (preset values, `@theme` tokens, variants, utilities, read from your files), its effective colors (hex of every color and step in light and dark, contrast ratios, low contrasts and steps that look the same) and every Tailwind class and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints, fonts, z-index, utilities |
 | `get_doc` | Any documentation page by id or name (`components/maz-btn`, `useToast`, `guide/tailwind`), whole or by sections |
@@ -83,6 +84,14 @@ The examples below use `npx -y @maz-ui/mcp@latest`, which works without installi
 
 ### Claude Code
 
+The [maz-ui plugin](./../guide/ai-agents.md#claude-code-plugin) includes the server, with the maz-ui skill and a review hook:
+
+```bash
+claude plugin install maz-ui --marketplace LouisMazel/maz-ui
+```
+
+The server alone:
+
 ```bash
 # for every project, without any file in them
 claude mcp add maz-ui --scope user -- npx -y @maz-ui/mcp@latest
@@ -103,8 +112,6 @@ Or in `.mcp.json`:
   }
 }
 ```
-
-The [Claude Code plugin](./../guide/ai-agents.md#claude-code-plugin) includes the server.
 
 ### Cursor
 
@@ -169,6 +176,7 @@ The package is also a CLI:
 ```bash
 npx @maz-ui/mcp                   # start the MCP server (stdio)
 npx @maz-ui/mcp init              # configure the AI agents of the project
+npx @maz-ui/mcp doctor            # check how Claude Code gets maz-ui: servers of each scope, duplicates, versions
 npx @maz-ui/mcp review <paths...> # review files against maz-ui (CI)
 npx @maz-ui/mcp search <query>    # search the docs from the terminal
 npx @maz-ui/mcp colors [preset]   # effective colors of the project presets, with their contrasts
@@ -190,6 +198,10 @@ const findings = reviewCode('<template><MazBtn color="red" /></template>', {
 ```
 
 ## Troubleshooting
+
+### Claude Code sees each tool twice, or an old version
+
+Run `npx @maz-ui/mcp doctor` in the project. It lists the maz-ui servers of each scope (local, project, user, plugin), the one that runs, and gives the fix of each problem: a server of your user beside the plugin, a server pinned to a prerelease or an older version, outdated rules.
 
 ### The server does not start: `connection timed out`
 

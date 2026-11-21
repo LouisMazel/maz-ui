@@ -3,6 +3,7 @@ import type { Finding, Framework, IconNames, Severity } from './types.ts'
 
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
+import { findWorkspaceDirs } from '@maz-ui/node'
 import { glob } from 'tinyglobby'
 import { loadIconNames } from './icons.ts'
 import { filterBySeverity, reviewCode } from './index.ts'
@@ -59,6 +60,35 @@ export function findProjectRoot(fromDirectory: string): string | undefined {
   }
 }
 
+const DEPENDENCY_FIELDS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
+
+/** `true` when the closest `package.json` of a directory depends on one of the packages (`maz-ui`, `@maz-ui/utils`...) */
+export function dependsOnPackages(fromDirectory: string, packages: string[]): boolean {
+  let directory = fromDirectory
+
+  for (;;) {
+    const file = join(directory, 'package.json')
+
+    if (existsSync(file)) {
+      try {
+        const pkg = JSON.parse(readFileSync(file, 'utf8')) as Record<string, Record<string, string> | undefined>
+
+        return DEPENDENCY_FIELDS.some(field => packages.some(name => pkg[field]?.[name] !== undefined))
+      }
+      catch {
+        return false
+      }
+    }
+
+    const parent = dirname(directory)
+
+    if (parent === directory)
+      return false
+
+    directory = parent
+  }
+}
+
 /** Detects a Nuxt project by walking up from a directory to the closest `package.json` */
 export function detectFramework(fromDirectory: string): Framework {
   const root = findProjectRoot(fromDirectory)
@@ -80,32 +110,46 @@ export function projectIconNames(fromDirectory: string, knowledge: Knowledge, ca
   return cache.get(root)
 }
 
+async function expandPattern(pattern: string, base: string): Promise<string[]> {
+  const absolute = isAbsolute(pattern)
+    ? pattern
+    : resolve(base, pattern)
+
+  if (existsSync(absolute) && statSync(absolute).isFile())
+    return [absolute]
+
+  const globPattern = existsSync(absolute) && statSync(absolute).isDirectory()
+    ? `${relative(base, absolute) || '.'}/**/*.{${REVIEWABLE_EXTENSIONS.join(',')}}`
+    : pattern
+  const matches = await glob(globPattern, {
+    cwd: base,
+    absolute: true,
+    ignore: IGNORED_DIRECTORIES.map(directory => `**/${directory}/**`),
+  })
+
+  // the ignore patterns do not apply to the patterns outside of the base (`../app`)
+  return matches.filter(entry => !isIgnoredPath(relative(base, entry)))
+}
+
+/** The workspaces of a monorepo that use maz-ui: an agent gives the paths of a file relative to its app (`src/App.vue`) */
+export function mazUiWorkspaces(cwd: string): string[] {
+  return findWorkspaceDirs(cwd).filter(directory => dependsOnPackages(directory, ['maz-ui', '@maz-ui/nuxt']))
+}
+
+/** The reviewable files of the paths, folders or globs, relative to `cwd`, else to the workspaces that use maz-ui */
 export async function expandPaths(patterns: string[], cwd: string): Promise<string[]> {
   const files = new Set<string>()
-  const globs: string[] = []
+  let workspaces: string[] | undefined
 
   for (const pattern of patterns) {
-    const absolute = isAbsolute(pattern)
-      ? pattern
-      : resolve(cwd, pattern)
+    let matches = await expandPattern(pattern, cwd)
 
-    if (existsSync(absolute) && statSync(absolute).isFile())
-      files.add(absolute)
-    else if (existsSync(absolute) && statSync(absolute).isDirectory())
-      globs.push(`${relative(cwd, absolute) || '.'}/**/*.{${REVIEWABLE_EXTENSIONS.join(',')}}`)
-    else
-      globs.push(pattern)
-  }
+    if (matches.length === 0 && !isAbsolute(pattern)) {
+      workspaces ??= mazUiWorkspaces(cwd)
+      matches = (await Promise.all(workspaces.map(workspace => expandPattern(pattern, workspace)))).flat()
+    }
 
-  if (globs.length > 0) {
-    const matches = await glob(globs, {
-      cwd,
-      absolute: true,
-      ignore: IGNORED_DIRECTORIES.map(directory => `**/${directory}/**`),
-    })
-
-    // the ignore patterns do not apply to the patterns outside of cwd (`../app`)
-    for (const match of matches.filter(entry => !isIgnoredPath(relative(cwd, entry)))) files.add(match)
+    for (const match of matches) files.add(match)
   }
 
   return [...files].filter(file => REVIEWABLE_EXTENSIONS.includes(file.split('.').pop() ?? '')).sort()

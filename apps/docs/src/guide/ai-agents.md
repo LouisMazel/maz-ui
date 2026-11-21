@@ -11,7 +11,7 @@ description: Make Claude Code, Cursor, GitHub Copilot, Codex and the other AI co
 
 Left alone, coding agents rebuild what maz-ui already provides: native buttons instead of `MazBtn`, lodash instead of `@maz-ui/utils`, inline SVG instead of `@maz-ui/icons`, `bg-blue-500` instead of the theme colors. They also guess APIs from outdated training data.
 
-maz-ui gives them four things:
+maz-ui gives them five things:
 
 | | What | Where |
 | --- | --- | --- |
@@ -19,25 +19,37 @@ maz-ui gives them four things:
 | **Version-matched docs** | Agent-ready markdown of the installed version: guides, component APIs, icons, Tailwind tokens | `node_modules/maz-ui/agent-docs/`, `node_modules/@maz-ui/<package>/agent-docs/` |
 | **MCP server** | Search by need, exact component APIs, icons, theme tokens, setup guides, code review | `npx @maz-ui/mcp` |
 | **Code review** | Static checks against the real maz-ui APIs, in the agent loop and in CI | `review_code` tool, `npx @maz-ui/mcp review` |
+| **Claude Code plugin** | The rules as a skill, the MCP server and a hook that reviews each edited file, in all your projects | `claude plugin install maz-ui --marketplace LouisMazel/maz-ui` |
 
 ## Quick start
 
-Run this command at the root of your project:
+Two ways, use both or either:
+
+- **You use Claude Code**: install the [Claude Code plugin](#claude-code-plugin) once for your user. It works in all your projects, without any file in them.
+- **Your team, every agent**: run `npx @maz-ui/mcp init` in the project and commit the files it writes (rules, MCP config, review hook).
 
 ```bash
+# Claude Code plugin, for your user
+claude plugin install maz-ui --marketplace LouisMazel/maz-ui
+
+# the project, for your team and all its agents
 npx @maz-ui/mcp init
 ```
+
+### Configure a project with init
 
 It detects the agents you use and configures them, using the docs of the maz-ui version installed in the project:
 
 | Agent | Rules | MCP server |
 | --- | --- | --- |
-| Claude Code | `.claude/rules/maz-ui.md` (always loaded) | `.mcp.json` |
+| Claude Code | `.claude/rules/maz-ui.md` (loaded for the files of the workspaces that use maz-ui) and a review hook in `.claude/settings.json` | `.mcp.json` |
 | Cursor | `AGENTS.md` | `.cursor/mcp.json` |
 | GitHub Copilot (VS Code) | `AGENTS.md` | `.vscode/mcp.json` |
 | Codex, Windsurf, Zed, Gemini CLI... | `AGENTS.md` | global config of the agent (see [MCP](./../ecosystem/mcp.md)) |
 
 When no agent is detected, it configures Claude Code and `AGENTS.md`. Commit the generated files: your whole team and your CI agents get them.
+
+The rules list the composables, directives and helpers of the ecosystem by need ("loading state shared between components: `useWait`", "amount of money: `formatCurrency`"): agents rarely search for a tool they do not suspect exists. For Claude Code, `init` also adds a hook that reviews each file Claude edits and sends the errors and warnings back to it, so it fixes them right away (see [Review hook](#review-hook-without-the-plugin)). It adds no hook when the maz-ui Claude Code plugin is enabled: the plugin has its own.
 
 In a project without maz-ui (only `@maz-ui/utils` or `@maz-ui/node`, for example), it only registers the MCP server, which serves the docs bundled with `@maz-ui/mcp`: the rules are about the maz-ui components and are written once maz-ui is installed. Pass `--docs <dir>` to write them anyway.
 
@@ -57,6 +69,7 @@ For a fast start of the MCP server, install it in the project first (`pnpm add -
 npx @maz-ui/mcp init --targets claude,agents-md,cursor,vscode  # choose the agents
 npx @maz-ui/mcp init --no-rules                                # MCP server only
 npx @maz-ui/mcp init --no-mcp                                  # rules only
+npx @maz-ui/mcp init --no-hooks                                # no review hook for Claude Code
 npx @maz-ui/mcp init --dry-run                                 # show the changes
 npx @maz-ui/mcp init --remove                                  # remove everything init added
 ```
@@ -106,6 +119,95 @@ The MCP server carries the rules in its instructions: registering it once for yo
 
 Write the project files (`init`, the Nuxt option) when your whole team, or agents without MCP, need the rules.
 
+## Claude Code plugin
+
+The maz-ui plugin gives Claude Code everything it needs in all your projects, without a file in them:
+
+- the **rules in every session**: in a project that installs maz-ui (also in the apps of a monorepo), the rules and the ecosystem by need of the installed version are added when a session starts, after a `/clear` or a compaction, and when a subagent that writes code starts. Nothing is added when the project already loads them (`.claude/rules/maz-ui.md` or the maz-ui section of `AGENTS.md`);
+- the **`maz-ui` skill**: the rules and the look-up workflow, with the ecosystem by need, loaded when Claude works on Vue or Nuxt code;
+- the **MCP server**: the `@maz-ui/mcp` installed in the project, else the latest one;
+- a **review hook**: each `.vue`, `.ts`, `.js` or `.css` file Claude edits in a project that uses maz-ui is reviewed, and Claude fixes the errors and warnings right away. At the end of a task, the files changed in git are reviewed too, also the ones written through Bash. In a monorepo, each file is reviewed against the maz-ui of its app;
+- the **`maz-ui-editor` subagent**: Claude hands it the UI tasks of a maz-ui project, it looks up and reviews with the maz-ui tools;
+- the **`maz-ui-upgrade` skill**: upgrades maz-ui in a project (`/maz-ui:maz-ui-upgrade`), with the migration guide and `@maz-ui/upgrade`.
+
+### Install
+
+From a terminal:
+
+```bash
+claude plugin install maz-ui --marketplace LouisMazel/maz-ui
+```
+
+Or from a Claude Code session (two steps, the slash command has no shortcut):
+
+```txt
+/plugin marketplace add LouisMazel/maz-ui
+/plugin install maz-ui@maz-ui
+```
+
+The terminal shortcut needs Claude Code 2.1.292 or later. Before, run `claude plugin marketplace add LouisMazel/maz-ui` then `claude plugin install maz-ui@maz-ui`.
+
+It is installed for your user (`--scope user`, the default). `--scope project` enables it in the `.claude/settings.json` of the project, but each teammate still installs it: Claude Code does not download plugins from the project settings.
+
+### Update
+
+Claude Code does not update third-party marketplaces by default. Turn on the auto-update of the `maz-ui` marketplace in `/plugin` (**Marketplaces** tab), or update it by hand:
+
+```bash
+claude plugin marketplace update maz-ui
+claude plugin update maz-ui@maz-ui
+```
+
+Then run `/reload-plugins` in the open sessions.
+
+### With init
+
+`init` adds no review hook when the plugin is enabled: the plugin has its own. The plugin also runs its own MCP server (`plugin:maz-ui:maz-ui`): `init` keeps the `maz-ui` server of `.mcp.json` for the teammates without the plugin, and disables it for you in `.claude/settings.local.json`, a file that is not committed:
+
+```json
+{
+  "disabledMcpjsonServers": ["maz-ui"]
+}
+```
+
+Run `init` again after removing the plugin: it enables the server again. Until `init` runs, the plugin tells Claude at each session to use the tools of its own server.
+
+### Check the setup
+
+`doctor` shows how Claude Code gets maz-ui in a project: the MCP servers of each scope (local, project, user, plugin), the one that runs, the duplicates, the servers pinned to another version than the installed maz-ui, and outdated rules. Each problem comes with its fix:
+
+```bash
+npx @maz-ui/mcp doctor
+```
+
+A server of your user (`claude mcp add -s user`) runs beside the one of the plugin: remove it with `claude mcp remove maz-ui -s user`.
+
+### Review hook without the plugin
+
+The review hook of the plugin is the `review --hook` mode of the CLI. `npx @maz-ui/mcp init` adds it to `.claude/settings.json`; to add it by hand, write it in `.claude/settings.json` (shared with your team) or `.claude/settings.local.json` (your machine only):
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [{ "type": "command", "command": "npx -y @maz-ui/mcp@latest review --hook", "timeout": 90 }]
+      }
+    ],
+    "Stop": [
+      { "hooks": [{ "type": "command", "command": "npx -y @maz-ui/mcp@latest review --hook", "timeout": 90 }] }
+    ],
+    "SubagentStop": [
+      { "hooks": [{ "type": "command", "command": "npx -y @maz-ui/mcp@latest review --hook", "timeout": 90 }] }
+    ]
+  }
+}
+```
+
+- `PostToolUse`: each file Claude edits in a project that uses maz-ui is reviewed. The errors and warnings are sent back to Claude, which fixes them.
+- `Stop` and `SubagentStop`: at the end of a task (or of a subagent), the files changed in git are reviewed, also the ones written another way (a script, a heredoc in Bash). Only the findings not sent yet in the session are sent, once: Claude fixes them before it stops.
+
 ## Version-matched docs
 
 Every package of the ecosystem ships the documentation of its own version for agents in its `agent-docs/` folder, so a package released on its own (`@maz-ui/eslint-config`, `@maz-ui/stylelint-config`, `@maz-ui/upgrade`) is never documented by another version. `maz-ui` also lists the other packages in its index:
@@ -134,7 +236,8 @@ The MCP server gives agents tools that work with the needs they have, and verify
 | Tool | Purpose |
 | --- | --- |
 | `search_docs` | Find what maz-ui provides for a need ("confirm before delete", "phone input", "debounce search") |
-| `get_component_api` | Exact props, values, events, slots of up to 10 components |
+| `get_project_info` | How the project uses maz-ui: installed versions, setup of the toasts, dialogs and aos, auto-imports, icons by name, theme presets, the components and tools already used |
+| `get_component_api` | Exact props, values, events, slots of up to 10 components, with the sections of their examples (`compact: true`: names and types only) |
 | `find_icons` | Icons by meaning ("delete", "settings", "france flag") with their imports |
 | `get_theme_tokens` | The theme of your project (preset, `@theme` tokens, variants, utilities), its effective colors (every step in light and dark, contrasts, what to check) and every Tailwind class and CSS variable of maz-ui |
 | `get_doc` | Any page of the docs, or only some sections |
@@ -143,36 +246,6 @@ The MCP server gives agents tools that work with the needs they have, and verify
 | `review_code` | Review files against the installed maz-ui |
 
 See [MCP](./../ecosystem/mcp.md) for the configuration of each agent.
-
-## Claude Code plugin
-
-The maz-ui plugin bundles the MCP server, a `maz-ui` skill (rules and workflow) and a hook that reviews every `.vue`, `.ts` and `.css` file Claude edits, so it fixes maz-ui mistakes before you see them.
-
-```txt
-/plugin marketplace add LouisMazel/maz-ui
-/plugin install maz-ui@maz-ui
-```
-
-The plugin works in every project, `init` configures one project for your whole team: use both or either.
-
-### Review hook without the plugin
-
-The review hook of the plugin is the `review --hook` mode of the CLI. To use it alone, add it to `.claude/settings.json` (shared with your team) or `.claude/settings.local.json` (your machine only):
-
-```json
-{
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [{ "type": "command", "command": "npx -y @maz-ui/mcp@latest review --hook", "timeout": 90 }]
-      }
-    ]
-  }
-}
-```
-
-Each file Claude edits is reviewed; the errors and warnings are sent back to Claude, which fixes them.
 
 ## Code review in CI
 
@@ -204,7 +277,9 @@ The command exits with an error code when it finds errors (or more warnings than
 | `button-navigation` | warning | A `MazBtn` inside a link, or navigating from `@click` (`router.push`, `navigateTo`, `window.open`): use `to` or `href` |
 | `multiple-primary-actions` | info | Several solid primary `MazBtn` side by side |
 | `native-dialog` | warning | `alert()`, `confirm()`, `prompt()` instead of `useToast()` and `useDialog()` |
-| `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers, and hand-written code it provides (`Intl.NumberFormat` for a currency, a `setTimeout` debounce, `document.cookie`, a `resize` listener...) |
+| `prefer-dialog-confirm` | warning | A `MazDialog` with a cancel and a confirm button: use `useDialog().confirm()` or `MazDialogConfirm` |
+| `table-part-outside-table` | warning | `MazTableRow`, `MazTableCell` or `MazTableTitle` outside of a `MazTable` (invalid HTML): `MazTable` sorts, searches and paginates by itself |
+| `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers, and hand-written code it provides (`Intl.NumberFormat` for a currency, a `setTimeout` debounce, a loading `ref` shared by a module, `JSON.stringify` to compare objects, a click outside listener, `navigator.clipboard`, a countdown with `setInterval`, the iOS detection, a case conversion regex, `document.cookie`, a `resize` or `scroll` listener, a `new IntersectionObserver`, `body.style.overflow`...). Warning when the tool covers the case, info when the hand-written code can be intended |
 | `theme-colors` | warning | Default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`) |
 | `hardcoded-color` | warning | `bg-[#1d90ff]`, `color: #fff` |
 | `pale-brand-color` | warning | A `primary` or `secondary` of `definePreset` under 3:1 against the surface: they are strong brand colors, not subtle backgrounds |
@@ -214,9 +289,13 @@ The command exits with an error code when it finds errors (or more warnings than
 | `manual-dark-mode` | warning | Dark mode handled by hand instead of `useTheme()` |
 | `root-import`, `internal-import` | error | Runtime imports from `maz-ui` (types only) or from `src`/`dist` |
 | `nuxt-auto-import` | info | Imports that `@maz-ui/nuxt` already auto-imports (a component used in the script, `h(MazIcon)`, keeps its import) |
+| `deprecated-api` | warning | `app.use(ToastPlugin)`, `DialogPlugin`, `WaitPlugin`, `$mazToast`... and `mazUi.plugins` in `nuxt.config`: the composables work without them (removed in v6) |
 | `parse-error` | error | A file the parser cannot read (an unclosed tag): it is not reviewed |
+| `invalid-ignore` | error | A `maz-ui-review-ignore` comment without a reason, or on a rule that cannot be ignored |
 
-When something is intended, ignore it with a comment on the line above (`<!-- maz-ui-review-ignore prefer-maz-component -->`, `// maz-ui-review-ignore theme-colors`), or `maz-ui-review-ignore-file` for a whole file. Give the reason after `--`: `<!-- maz-ui-review-ignore theme-colors -- frame over the video -->`.
+When something is intended, ignore it with a comment on the line above, with the reason after `--`: `<!-- maz-ui-review-ignore theme-colors -- frame over the video -->`, `// maz-ui-review-ignore prefer-utils -- mock of capitalize`. `maz-ui-review-ignore-file` ignores a whole file. A comment without a reason is not applied.
+
+The errors of a code that does not work cannot be ignored: an unknown component, prop, value, model, event or slot, a missing required prop, a raw icon used as a tag, a root or internal import, a missing `@reference` and a parse error. Fix them.
 
 ## llms.txt
 

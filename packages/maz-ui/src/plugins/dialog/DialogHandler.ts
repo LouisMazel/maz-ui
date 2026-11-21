@@ -1,5 +1,6 @@
 import type { App, Component, MaybeRefOrGetter } from 'vue'
 import type { MazDialogConfirmProps } from '../../components/MazDialogConfirm.vue'
+import { isClient } from '@maz-ui/utils/helpers/isClient'
 import MazDialogConfirm from '../../components/MazDialogConfirm.vue'
 import { useMazDialogConfirm } from '../../components/MazDialogConfirm/useMazDialogConfirm.ts'
 import { useMountComponent } from '../../composables/useMountComponent.ts'
@@ -73,6 +74,16 @@ export class DialogHandler {
   }
 
   private mount(options: DialogOptions, onDispose?: () => void) {
+    // A dialog is never rendered on the server: `confirm()` resolves `false`
+    if (!isClient()) {
+      onDispose?.()
+
+      return {
+        destroy: () => {},
+        close: () => {},
+      }
+    }
+
     const props: RequiredDialogOptions = {
       ...DEFAULT_OPTIONS,
       ...this.globalOptions,

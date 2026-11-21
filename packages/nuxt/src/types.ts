@@ -107,7 +107,7 @@ export interface MazUiNuxtOptions {
   /**
    * Source of the country flags of `MazSelectCountry` and `MazInputPhoneNumber`
    * @description
-   * - `'cdn'`: images of the flagcdn.com CDN
+   * - `'cdn'`: images of the flagcdn CDN
    * - `'local'`: square flags of `@maz-ui/icons`, one chunk per flag, loaded only when visible, without any request to a third party (works offline)
    * - a URL template of your own files, with `{code}` (lowercase) or `{CODE}` (uppercase): `'/flags/{code}.svg'`
    *
@@ -164,47 +164,61 @@ export interface MazUiNuxtOptions {
   }
 
   /**
-   * Plugins configuration
+   * Global options of the toasts of `useToast()`
+   * @default {}
+   * @example { position: 'top-right', timeout: 5000 }
    */
+  toast?: ToastOptions
+
+  /**
+   * Global options of the dialogs of `useDialog()`
+   * @default {}
+   * @example { acceptText: 'Yes', rejectText: 'No' }
+   */
+  dialog?: DialogOptions
+
+  /**
+   * Animations on scroll: installs the AOS plugin and auto-imports `useAos`
+   * @default false
+   */
+  aos?:
+    | boolean
+    | (Omit<AosOptions, 'router'> & {
+      /**
+       * Auto inject AOS CSS file
+       * @default true
+       */
+      injectCss?: boolean
+      /**
+       * Re-run animations on page change (for SPA navigation)
+       * @default false
+       */
+      router?: boolean
+    })
+
+  /**
+   * Plugins configuration
+   * @deprecated `useToast`, `useDialog` and `useWait` are always auto-imported: use the `toast`, `dialog` and `aos` options. Removed in v6.
+   */
+  // Removed in v6 (plans/ROADMAP.md): deprecated plugins option
   plugins?: {
     /**
-     * Enable auto-import of useAos composable and install AOS plugin
-     * @description Animation On Scroll functionality with advanced configuration options
-     * @default false
+     * @deprecated use the `aos` option
      */
-    aos?:
-      | boolean
-      | (Omit<AosOptions, 'router'> & {
-        /**
-         * Auto inject AOS CSS file
-         * @default true
-         */
-        injectCss?: boolean
-        /**
-         * Re-run animations on page change (for SPA navigation)
-         * @default false
-         */
-        router?: boolean
-      })
+    aos?: MazUiNuxtOptions['aos']
 
     /**
-     * Enable auto-import of useDialog composable and install Dialog plugin
-     * @description Modal dialogs functionality
-     * @default false
+     * @deprecated `useDialog` is always auto-imported, its options go in the `dialog` option
      */
     dialog?: boolean | DialogOptions
 
     /**
-     * Enable auto-import of useToast composable and install Toast plugin
-     * @description Toast notifications functionality
-     * @default false
+     * @deprecated `useToast` is always auto-imported, its options go in the `toast` option
      */
     toast?: boolean | ToastOptions
 
     /**
-     * Enable auto-import of useWait composable and install Wait plugin
-     * @description Loading state management functionality
-     * @default false
+     * @deprecated `useWait` is always auto-imported
      */
     wait?: boolean
   }
@@ -213,6 +227,27 @@ export interface MazUiNuxtOptions {
    * Composables configuration
    */
   composables?: {
+    /**
+     * Enable auto-import of useToast composable
+     * @description Toast notifications, with the options of `toast`
+     * @default true
+     */
+    useToast?: boolean
+
+    /**
+     * Enable auto-import of useDialog composable
+     * @description Dialogs and confirmations, with the options of `dialog`
+     * @default true
+     */
+    useDialog?: boolean
+
+    /**
+     * Enable auto-import of useWait composable
+     * @description Loading states shared by the whole app
+     * @default true
+     */
+    useWait?: boolean
+
     /**
      * Enable auto-import of useTranslations composable
      * @description Provides translations functionality from `@maz-ui/translations` package
@@ -284,6 +319,13 @@ export interface MazUiNuxtOptions {
     useFuzzySearch?: boolean
 
     /**
+     * Enable auto-import of useClipboard composable
+     * @description Copy a text to the clipboard with a `copied` state
+     * @default true
+     */
+    useClipboard?: boolean
+
+    /**
      * Enable auto-import of useTimer composable
      * @description Timer and countdown functionality
      * @default true
@@ -352,6 +394,41 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     usePullToRefresh?: boolean
+
+    /**
+     * Enable auto-import of useIntersectionObserver composable
+     * @description Know when elements enter or leave the viewport
+     * @default true
+     */
+    useIntersectionObserver?: boolean
+
+    /**
+     * Enable auto-import of useScroll composable
+     * @description Scroll position, direction and edges of the page or of an element
+     * @default true
+     */
+    useScroll?: boolean
+
+    /**
+     * Enable auto-import of useInfiniteScroll composable
+     * @description Load the next page of a list when its end gets close
+     * @default true
+     */
+    useInfiniteScroll?: boolean
+
+    /**
+     * Enable auto-import of useScrollLock composable
+     * @description Lock the scroll of the page or of an element (menu, overlay)
+     * @default true
+     */
+    useScrollLock?: boolean
+
+    /**
+     * Enable auto-import of useResizeObserver composable
+     * @description Know when the size of elements changes
+     * @default true
+     */
+    useResizeObserver?: boolean
   }
 
   /**
@@ -385,6 +462,13 @@ export interface MazUiNuxtOptions {
      * @default false
      */
     vFullscreenImg?: boolean | VFullscreenImgOptions
+
+    /**
+     * Install v-intersect directive globally
+     * @description Call a function when an element enters or leaves the viewport
+     * @default false
+     */
+    vIntersect?: boolean
 
     /**
      * Install v-tooltip directive globally

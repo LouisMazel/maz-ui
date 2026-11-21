@@ -59,6 +59,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - `apps/nuxt-app/` - Nuxt 3 demo application
 - `tools/cli/` - Internal CLI tools
 - `tools/agent-docs/` - Generator of the agent knowledge bundle (see below)
+- `tools/agent-evals/` - Evals of the agent tooling: `pnpm -F agent-evals eval` gives tasks to the real Claude Code alone, with `init` and with the plugin (costs tokens, never in CI)
 - `plugins/claude-code/` - Claude Code plugin (skill, MCP server, review hook), exposed by `.claude-plugin/marketplace.json`
 
 ### Main Library Structure (`packages/maz-ui/src/`)
@@ -113,6 +114,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
   - `plugins/claude-code/skills/maz-ui/SKILL.md` (committed: run `pnpm -F agent-docs generate:plugin` after changing `tools/agent-docs/content`, a test fails otherwise)
 - A new published package needs an entry in `tools/agent-docs/src/packages.ts` and a `generate:agent-docs` script in its `build`.
 - The agent rules live in `tools/agent-docs/content/rules.md` (also included in `apps/docs/src/guide/ai-agents.md`).
+- The Claude Code plugin (`plugins/claude-code`) is easy to forget: a change of the MCP server, the CLI, the rules or the review also updates it (its README, hook, `plugin.json` and `marketplace.json` descriptions), and a doc that explains how to set up the agents gives its install command (`claude plugin install maz-ui --marketplace LouisMazel/maz-ui`) next to `init`.
 - The generator warns about broken internal links and unknown alias ids: keep `pnpm -F agent-docs generate --bundle /tmp/x --strict` clean.
 - Docs (site and agent docs): simple and easy to understand but complete, in short sentences, the common case first.
 - Docs examples (code fences) must use plain Tailwind classes, never the internal `maz:` prefix (only live demos rendered by the docs site use it).

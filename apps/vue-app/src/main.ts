@@ -1,4 +1,4 @@
-import { AosPlugin, DialogPlugin, ToastPlugin, WaitPlugin } from 'maz-ui/plugins'
+import { AosPlugin } from 'maz-ui/plugins/aos'
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -9,9 +9,6 @@ const app = createApp(App)
 
 app.use(router)
 
-app.use(ToastPlugin)
-app.use(WaitPlugin)
-app.use(DialogPlugin)
 app.use(AosPlugin, {
   animation: {
     duration: 1000,

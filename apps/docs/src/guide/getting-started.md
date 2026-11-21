@@ -126,7 +126,7 @@ Each component, composable and helper has its own import (`maz-ui/components/Maz
   <MazCard href="/guide/ai-agents" bordered block>
     <MazIcon icon="sparkles" class="maz:text-2xl maz:text-primary" />
     <p class="maz:mt-2 maz:font-semibold">AI agents</p>
-    <p class="maz:text-sm maz:text-muted">MCP server and rules for your coding agents</p>
+    <p class="maz:text-sm maz:text-muted">MCP server, rules and Claude Code plugin for your coding agents</p>
   </MazCard>
 </div>
 

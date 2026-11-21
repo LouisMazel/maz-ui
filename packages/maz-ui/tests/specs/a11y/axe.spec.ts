@@ -108,6 +108,16 @@ const cases: AxeCase[] = [
   },
   { name: 'MazAvatar', component: components.MazAvatar },
   {
+    name: 'MazBtnClipboard',
+    component: components.MazBtnClipboard,
+    props: { value: 'npm install maz-ui', prompt: '$' },
+  },
+  {
+    name: 'MazBtnClipboard icon only',
+    component: components.MazBtnClipboard,
+    props: { value: 'usr_123', iconOnly: true },
+  },
+  {
     name: 'MazCard',
     component: components.MazCard,
     slots: { default: 'Card body' },

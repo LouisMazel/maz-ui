@@ -1,9 +1,12 @@
 import type { GeneratedFragment, GeneratedKnowledge } from '../generate.ts'
 
-import { posix, resolve } from 'node:path'
+import { appendFileSync, cpSync, mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join, posix, resolve } from 'node:path'
 import { generateKnowledge, HOMEPAGE, resolveHrefToId } from '../generate.ts'
 import { PACKAGE_DEFINITIONS } from '../packages.ts'
 import { getSourcePaths } from '../paths.ts'
+import { SESSION_CONTEXT_LIMIT } from '../render/agents.ts'
 import { findOutdatedFiles } from '../write.ts'
 
 describe('given resolveHrefToId', () => {
@@ -97,12 +100,34 @@ describe('given generateKnowledge', () => {
     })
 
     it('then ships the rules and the agent files with maz-ui only', () => {
-      for (const path of ['rules.md', 'agents/claude-rule.md', 'agents/agents-md.md']) {
+      for (const path of ['rules.md', 'agents/claude-rule.md', 'agents/agents-md.md', 'agents/session-context.md']) {
         expect(fragmentFile('maz-ui', path), path).toBeDefined()
         expect(fragmentFile('@maz-ui/themes', path), path).toBeUndefined()
       }
 
       expect(knowledge.skill.map(file => file.path)).toEqual(['skills/maz-ui/SKILL.md'])
+    })
+
+    it('then the rules list the tools of every package by need', () => {
+      for (const path of ['agents/claude-rule.md', 'agents/agents-md.md']) {
+        const content = fragmentFile('maz-ui', path)
+
+        expect(content, path).toContain('### The ecosystem by need')
+        expect(content, path).toContain('`useWait` (`maz-ui/composables/useWait`)')
+        expect(content, path).toContain('`formatCurrency` (`@maz-ui/utils/helpers/formatCurrency`)')
+      }
+
+      expect(knowledge.vitepress.find(file => file.path === 'ecosystem-catalog.doc.md')?.content).toContain('`useTheme` (`@maz-ui/themes`)')
+    })
+
+    it('then the session context of the Claude Code plugin has the compact catalog, under the limit of the hooks', () => {
+      const content = fragmentFile('maz-ui', 'agents/session-context.md') ?? ''
+
+      expect(content).toContain('### The ecosystem by need')
+      expect(content).toContain('fullscreen loader: `useWait`\n')
+      expect(content).not.toContain('WaitPlugin')
+      expect(content).not.toContain('(`maz-ui/composables/useWait`)')
+      expect(content.length).toBeLessThanOrEqual(SESSION_CONTEXT_LIMIT)
     })
 
     it('then gives each doc to the fragment of its package', () => {
@@ -273,6 +298,20 @@ describe('given generateKnowledge', () => {
 
       expect(knowledge.fragments).toEqual([])
       expect(knowledge.vitepress.length).toBeGreaterThan(0)
+    }, 120_000)
+  })
+
+  describe('when the session context exceeds what the hooks inject', () => {
+    it('then it warns', async () => {
+      const content = mkdtempSync(join(tmpdir(), 'agent-docs-content-'))
+
+      cpSync(getSourcePaths().content, content, { recursive: true })
+      appendFileSync(join(content, 'rules-core.md'), `\n${'Reuse the ecosystem. '.repeat(400)}\n`)
+
+      const knowledge = await generateKnowledge({ ...getSourcePaths(), content }, { packages: [], site: false, vitepress: false })
+
+      rmSync(content, { recursive: true, force: true })
+      expect(knowledge.warnings).toEqual([expect.stringMatching(/^agents\/session-context\.md has \d+ characters: the Claude Code hooks inject 10,000/)])
     }, 120_000)
   })
 

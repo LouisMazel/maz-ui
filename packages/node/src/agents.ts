@@ -1,3 +1,4 @@
+export { isClaudePluginEnabled } from './agents/claudeHooks.ts'
 export {
   AGENTS_MD_BEGIN,
   AGENTS_MD_END,
@@ -17,6 +18,8 @@ export {
   writeFileAtomic,
 } from './agents/deprecated.ts'
 export { detectAgentTargets } from './agents/detectAgentTargets.ts'
+export { diagnoseAgents } from './agents/doctor.ts'
+export type { AgentsDiagnosis, AgentsProblem, ClaudeMcpScope, ClaudeMcpServer, DiagnoseAgentsOptions } from './agents/doctor.ts'
 export { mcpServerCommand } from './agents/mcpServer.ts'
 export { setupAgents } from './agents/setupAgents.ts'
 export { MAZ_UI_AGENTS_TOOL } from './agents/tool.ts'

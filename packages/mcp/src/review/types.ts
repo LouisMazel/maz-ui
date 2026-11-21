@@ -38,7 +38,11 @@ export type RuleId
     | 'button-navigation'
     | 'input-label'
     | 'native-dialog'
+    | 'table-part-outside-table'
+    | 'prefer-dialog-confirm'
     | 'parse-error'
+    | 'invalid-ignore'
+    | 'deprecated-api'
 
 export interface Finding {
   rule: RuleId

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { MazColor } from './types.ts'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
 
 export interface MazAnimatedTextProps {
   /**
@@ -101,8 +102,6 @@ const isPending = ref(false)
 
 const element = ref<HTMLElement>()
 
-let observer: IntersectionObserver | null = null
-
 function getAnimationStyle(index: number) {
   return {
     animationDuration: `${duration}ms`,
@@ -116,31 +115,20 @@ function isInViewport(el: HTMLElement) {
   return top < globalThis.innerHeight && bottom > 0
 }
 
+const { resume } = useIntersectionObserver(element, (entries) => {
+  if (entries.at(-1)?.isIntersecting)
+    isPending.value = false
+  else if (!once)
+    isPending.value = true
+}, { once, immediate: false })
+
 onMounted(() => {
   if (!element.value || globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
     return
   }
 
   isPending.value = !isInViewport(element.value)
-
-  observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) {
-      isPending.value = false
-
-      if (once) {
-        observer?.unobserve(entry.target)
-      }
-    }
-    else if (!once) {
-      isPending.value = true
-    }
-  })
-
-  observer.observe(element.value)
-})
-
-onBeforeUnmount(() => {
-  observer?.disconnect()
+  resume()
 })
 
 const gradientStyle = computed(() => {

@@ -55,6 +55,7 @@ export const utils = {
         { text: 'getBrowserLocale', link: '/ecosystem/utils/get-browser-locale' },
         { text: 'isClient', link: '/ecosystem/utils/is-client' },
         { text: 'isIos', link: '/ecosystem/utils/is-ios' },
+        { text: 'isProduction', link: '/ecosystem/utils/is-production' },
         { text: 'isServer', link: '/ecosystem/utils/is-server' },
         { text: 'isStandaloneMode', link: '/ecosystem/utils/is-standalone-mode' },
         { text: 'preventIosInputZoom', link: '/ecosystem/utils/prevent-ios-input-zoom' },

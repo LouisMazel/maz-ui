@@ -1,13 +1,15 @@
 import MazAnimatedElement from '@components/MazAnimatedElement.vue'
 import { IntersectionObserverMock } from '@tests/vitest-global.setup.ts'
 import { shallowMount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 
 function getLastIntersectionCallback(): IntersectionObserverCallback {
   const calls = vi.mocked(IntersectionObserver).mock.calls
   return calls.at(-1)![0]
 }
 
-function intersect(element: Element, isIntersecting: boolean) {
+async function intersect(element: Element, isIntersecting: boolean) {
+  await nextTick()
   getLastIntersectionCallback()(
     [
       { target: element, isIntersecting } as IntersectionObserverEntry,
@@ -73,11 +75,11 @@ describe('given a MazAnimatedElement', () => {
       })
       await wrapper.vm.$nextTick()
 
-      intersect(wrapper.element, true)
+      await intersect(wrapper.element, true)
       await wrapper.vm.$nextTick()
 
       expect(wrapper.classes()).not.toContain('m-animated-element--pending')
-      expect(IntersectionObserverMock.unobserve).toHaveBeenCalledWith(wrapper.element)
+      expect(IntersectionObserverMock.disconnect).toHaveBeenCalled()
     })
   })
 
@@ -89,15 +91,15 @@ describe('given a MazAnimatedElement', () => {
       })
       await wrapper.vm.$nextTick()
 
-      intersect(wrapper.element, true)
+      await intersect(wrapper.element, true)
       await wrapper.vm.$nextTick()
       expect(wrapper.classes()).not.toContain('m-animated-element--pending')
 
-      intersect(wrapper.element, false)
+      await intersect(wrapper.element, false)
       await wrapper.vm.$nextTick()
 
       expect(wrapper.classes()).toContain('m-animated-element--pending')
-      expect(IntersectionObserverMock.unobserve).not.toHaveBeenCalled()
+      expect(IntersectionObserverMock.disconnect).not.toHaveBeenCalled()
     })
   })
 
@@ -108,7 +110,7 @@ describe('given a MazAnimatedElement', () => {
         props: { once: true },
       })
 
-      intersect(wrapper.element, false)
+      await intersect(wrapper.element, false)
       await wrapper.vm.$nextTick()
 
       expect(wrapper.classes()).not.toContain('m-animated-element--pending')
@@ -130,8 +132,9 @@ describe('given a MazAnimatedElement', () => {
   })
 
   describe('when it is unmounted', () => {
-    it('then the observer is disconnected', () => {
+    it('then the observer is disconnected', async () => {
       const wrapper = shallowMount(MazAnimatedElement)
+      await nextTick()
       wrapper.unmount()
 
       expect(IntersectionObserverMock.disconnect).toHaveBeenCalledOnce()

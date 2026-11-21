@@ -13,6 +13,18 @@ function withoutTailwind(): Knowledge {
   })))
 }
 
+function withLegacyPlugins(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: {
+      ...loaded.fragment,
+      docs: loaded.fragment.docs.map(doc => doc.id === 'plugins/toast'
+        ? { ...doc, symbols: ['ToastPlugin'] }
+        : doc),
+    },
+  })))
+}
+
 function review(code: string, filename = 'Test.vue', framework?: Framework): Finding[] {
   return reviewCode(code, {
     knowledge: getKnowledge(),
@@ -688,10 +700,46 @@ describe('given the prefer-ecosystem and prefer-utils rules', () => {
 
   describe('when VueUse functions with a maz-ui equivalent are imported', () => {
     it('then they are reported as info', () => {
-      const findings = review('import { useWindowSize, useFetch, useTimeAgo } from \'@vueuse/core\'', 'a.ts')
+      const findings = review('import { useWindowSize, useFetch, useTimeAgo, useClipboard } from \'@vueuse/core\'', 'a.ts')
 
-      expect(findings).toHaveLength(2)
+      expect(findings).toHaveLength(3)
+      expect(findings[2].suggestion).toContain('maz-ui/composables/useClipboard')
       expect(findings[0].severity).toBe('info')
+    })
+  })
+
+  describe('when packages with a maz-ui equivalent are imported', () => {
+    it.each([
+      ['import copy from \'copy-to-clipboard\'', 'useClipboard'],
+      ['import slugify from \'slugify\'', 'normalizeString'],
+      ['import { paramCase } from \'change-case\'', 'kebabCase'],
+      ['import equal from \'fast-deep-equal\'', 'isEqual'],
+      ['import numeral from \'numeral\'', 'formatNumber'],
+      ['import { parsePhoneNumber } from \'libphonenumber-js\'', 'formatPhoneNumber'],
+      ['import VueCountdown from \'@chenfengyuan/vue-countdown\'', 'useTimer'],
+      ['import VueLazyload from \'vue-lazyload\'', 'vLazyImg'],
+      ['import vClickOutside from \'click-outside-vue3\'', 'vClickOutside'],
+      ['import Hammer from \'hammerjs\'', 'useSwipe'],
+      ['import PullToRefresh from \'pulltorefreshjs\'', 'MazPullToRefresh'],
+      ['import autosize from \'autosize\'', 'MazTextarea'],
+      ['import CurrencyInput from \'vue-currency-input\'', 'MazInputPrice'],
+      ['import loadScript from \'load-script\'', 'ScriptLoader'],
+      ['import { format } from \'timeago.js\'', 'useRelativeTime'],
+      ['import { formatDistanceToNow } from \'date-fns\'', 'useRelativeTime'],
+      ['import { deburr } from \'lodash-es\'', 'normalizeString'],
+      ['import { useTextareaAutosize, useIntersectionObserver } from \'@vueuse/core\'', 'MazTextarea'],
+      ['import { useInfiniteScroll } from \'@vueuse/core\'', 'maz-ui/composables/useInfiniteScroll'],
+      ['import { useWindowScroll } from \'@vueuse/core\'', 'maz-ui/composables/useScroll'],
+    ])('then `%s` suggests %s', (code, suggestion) => {
+      const [finding] = review(code, 'a.ts')
+
+      expect(finding.suggestion).toContain(suggestion)
+    })
+  })
+
+  describe('when date-fns formats a date with a pattern', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('import { format } from \'date-fns\'', 'a.ts')).toEqual([])
     })
   })
 
@@ -831,7 +879,7 @@ describe('given the pale-brand-color rule', () => {
 
   describe('when the line is ignored', () => {
     it('then nothing is reported', () => {
-      const code = 'import { definePreset } from \'@maz-ui/themes\'\ndefinePreset({ base: \'mazUi\', overrides: { colors: { light: {\n// maz-ui-review-ignore pale-brand-color\nsecondary: \'#fafafa\' } } } })'
+      const code = 'import { definePreset } from \'@maz-ui/themes\'\ndefinePreset({ base: \'mazUi\', overrides: { colors: { light: {\n// maz-ui-review-ignore pale-brand-color -- brand guideline\nsecondary: \'#fafafa\' } } } })'
 
       expect(paleRules(code)).toEqual([])
     })
@@ -1036,6 +1084,52 @@ describe('given destructuredNames', () => {
   })
 })
 
+describe('given the table-part-outside-table rule', () => {
+  describe('when rows and cells of MazTable are in another element', () => {
+    it('then each row is reported with MazTable', () => {
+      const findings = review(template('<div class="overflow-x-auto">\n  <MazTableRow is-head><MazTableTitle>Name</MazTableTitle></MazTableRow>\n  <maz-table-row v-for="row in rows" :key="row.id"><MazTableCell>{{ row.name }}</MazTableCell></maz-table-row>\n</div>'))
+
+      expect(findings.map(finding => finding.rule)).toEqual(['table-part-outside-table', 'table-part-outside-table'])
+      expect(findings[0]).toMatchObject({ severity: 'warning', message: '`MazTableRow` outside of a `MazTable`: it renders a table row or cell, invalid HTML without the table.' })
+      expect(findings[0].suggestion).toContain('<MazTable :headers="headers" :rows="rows">')
+    })
+  })
+
+  describe('when they are in a MazTable, a table or at the root of a row component', () => {
+    it.each([
+      '<MazTable><MazTableRow v-for="row in rows" :key="row.id"><MazTableCell>{{ row.name }}</MazTableCell></MazTableRow></MazTable>',
+      '<table><tbody><MazTableRow><MazTableCell>A</MazTableCell></MazTableRow></tbody></table>',
+      '<MazTableRow><MazTableCell>A</MazTableCell></MazTableRow>',
+      '<template v-if="row"><MazTableRow><MazTableCell>A</MazTableCell></MazTableRow></template>',
+    ])('then %s is not reported', (markup) => {
+      expect(rulesOf(template(markup))).not.toContain('table-part-outside-table')
+    })
+  })
+})
+
+describe('given the prefer-dialog-confirm rule', () => {
+  describe('when a MazDialog has a cancel and a confirm button', () => {
+    it.each([
+      '<MazDialog v-model="open" title="Delete?"><p>Sure?</p><template #footer="{ close }"><MazBtn color="transparent" @click="close">Cancel</MazBtn><MazBtn color="destructive" @click="remove">Delete</MazBtn></template></MazDialog>',
+      '<MazDialog v-model="open"><template #footer><MazBtn @click="open = false"><span>Annuler</span></MazBtn><MazBtn @click="save">Confirmer</MazBtn></template></MazDialog>',
+    ])('then %s is reported', (markup) => {
+      const [finding] = review(template(markup))
+
+      expect(finding).toMatchObject({ rule: 'prefer-dialog-confirm', severity: 'warning' })
+      expect(finding.suggestion).toContain('useDialog().confirm({ title, message })')
+    })
+  })
+
+  describe('when a MazDialog has other actions', () => {
+    it.each([
+      '<MazDialog v-model="open"><MazBtn @click="save">Save</MazBtn></MazDialog>',
+      '<MazDialog v-model="open"><template #footer><MazBtn @click="open = false">Cancel</MazBtn><MazBtn @click="next">Next step</MazBtn></template></MazDialog>',
+    ])('then %s is not reported', (markup) => {
+      expect(rulesOf(template(markup))).not.toContain('prefer-dialog-confirm')
+    })
+  })
+})
+
 describe('given the button-navigation rule', () => {
   describe('when a MazBtn is inside a link', () => {
     it.each([
@@ -1106,32 +1200,175 @@ describe('given the native-dialog rule', () => {
 describe('given the hand-written helpers', () => {
   describe('when the script re-implements a helper or a composable of maz-ui', () => {
     it.each([
-      ['new Intl.NumberFormat(\'fr-FR\', { style: \'currency\', currency: \'EUR\' }).format(n)', 'prefer-utils', 'formatCurrency'],
-      ['price.toLocaleString(\'en-US\', { style: \'currency\', currency: \'USD\' })', 'prefer-utils', 'formatCurrency'],
-      ['date.toLocaleDateString(\'fr-FR\')', 'prefer-utils', 'formatDate'],
-      ['new Intl.RelativeTimeFormat(\'en\').format(-1, \'day\')', 'prefer-utils', 'formatRelativeTime'],
-      ['await new Promise(resolve => setTimeout(resolve, 300))', 'prefer-utils', 'sleep'],
-      ['clearTimeout(timer)\ntimer = setTimeout(search, 300)', 'prefer-utils', 'debounce'],
-      ['const token = document.cookie.split(\'; \')', 'prefer-utils', 'getCookie'],
-      ['window.addEventListener(\'resize\', onResize)', 'prefer-ecosystem', 'useBreakpoints'],
-      ['const mobile = window.matchMedia(\'(max-width: 768px)\')', 'prefer-ecosystem', 'useBreakpoints'],
-      ['document.addEventListener(\'visibilitychange\', onChange)', 'prefer-ecosystem', 'useUserVisibility'],
-      ['const observer = new MutationObserver(onMutation)', 'prefer-ecosystem', 'useMutationObserver'],
-      ['zone.addEventListener(\'drop\', onDrop)', 'prefer-ecosystem', 'useDropzone'],
-      ['el.addEventListener(\'touchstart\', onStart)', 'prefer-ecosystem', 'useSwipe'],
-      ['const names = new Intl.DisplayNames([\'en\'], { type: \'region\' })', 'prefer-ecosystem', 'useDisplayNames'],
-      ['const ctx = inject(KEY)\nif (!ctx)\n  throw new Error(\'Missing\')', 'prefer-ecosystem', 'useInjectStrict'],
-    ])('then `%s` is reported', (code, rule, suggestion) => {
+      ['new Intl.NumberFormat(\'fr-FR\', { style: \'currency\', currency: \'EUR\' }).format(n)', 'prefer-utils', 'warning', 'formatCurrency'],
+      ['price.toLocaleString(\'en-US\', { style: \'currency\', currency: \'USD\' })', 'prefer-utils', 'warning', 'formatCurrency'],
+      ['date.toLocaleDateString(\'fr-FR\')', 'prefer-utils', 'warning', 'formatDate'],
+      ['new Intl.RelativeTimeFormat(\'en\').format(-1, \'day\')', 'prefer-utils', 'warning', 'useRelativeTime'],
+      ['await new Promise(resolve => setTimeout(resolve, 300))', 'prefer-utils', 'warning', 'sleep'],
+      ['clearTimeout(timer)\ntimer = setTimeout(search, 300)', 'prefer-utils', 'warning', 'debounce'],
+      ['setTimeout(() => { copied.value = false }, 2000)', 'prefer-utils', 'info', 'debounce'],
+      ['if (JSON.stringify(form) !== JSON.stringify(initial)) save()', 'prefer-utils', 'warning', 'isEqual'],
+      ['const token = document.cookie.split(\'; \')', 'prefer-utils', 'warning', 'getCookie'],
+      ['const slug = title.normalize(\'NFD\').replace(/[\\u0300-\\u036F]/g, \'\')', 'prefer-utils', 'warning', 'normalizeString'],
+      ['const script = document.createElement(\'script\')', 'prefer-utils', 'info', 'ScriptLoader'],
+      ['textarea.style.height = textarea.scrollHeight + \'px\'', 'prefer-ecosystem', 'info', 'TextareaAutogrow'],
+      ['function onClick(event) {\n  if (!menu.value.contains(event.target))\n    open.value = false\n}\ndocument.addEventListener(\'click\', onClick)', 'prefer-ecosystem', 'warning', 'vClickOutside'],
+      ['window.addEventListener(\'resize\', onResize)', 'prefer-ecosystem', 'warning', 'useBreakpoints'],
+      ['const mobile = window.matchMedia(\'(max-width: 768px)\')', 'prefer-ecosystem', 'warning', 'useBreakpoints'],
+      ['document.addEventListener(\'visibilitychange\', onChange)', 'prefer-ecosystem', 'warning', 'useUserVisibility'],
+      ['const observer = new MutationObserver(onMutation)', 'prefer-ecosystem', 'warning', 'useMutationObserver'],
+      ['const observer = new ResizeObserver(onResize)', 'prefer-ecosystem', 'warning', 'useResizeObserver'],
+      ['zone.addEventListener(\'drop\', onDrop)', 'prefer-ecosystem', 'warning', 'useDropzone'],
+      ['el.addEventListener(\'touchstart\', onStart)', 'prefer-ecosystem', 'info', 'useSwipe'],
+      ['const names = new Intl.DisplayNames([\'en\'], { type: \'region\' })', 'prefer-ecosystem', 'warning', 'useDisplayNames'],
+      ['const ctx = inject(KEY)\nif (!ctx)\n  throw new Error(\'Missing\')', 'prefer-ecosystem', 'warning', 'useInjectStrict'],
+      ['export const isSaving = ref(false)', 'prefer-ecosystem', 'warning', 'useWait'],
+      ['await navigator.clipboard.writeText(url)', 'prefer-ecosystem', 'warning', 'useClipboard'],
+      ['await navigator.clipboard.writeText(id)', 'prefer-ecosystem', 'warning', 'MazBtnClipboard'],
+      ['new Intl.NumberFormat(\'en\', { notation: \'compact\' }).format(n)', 'prefer-utils', 'info', 'formatNumber'],
+      ['items.filter(item => item.name.toLowerCase().includes(query))', 'prefer-ecosystem', 'info', 'useFuzzySearch'],
+      ['if (typeof window === \'undefined\') return', 'prefer-utils', 'info', 'isClient'],
+      ['const locale = navigator.language', 'prefer-utils', 'info', 'getBrowserLocale'],
+      ['const timer = setInterval(() => { remaining.value-- }, 1000)', 'prefer-ecosystem', 'warning', 'useTimer'],
+      ['window.addEventListener(\'mousemove\', reset)\nwindow.addEventListener(\'keydown\', reset)\ntimer = setTimeout(logout, 60000)', 'prefer-ecosystem', 'warning', 'useIdleTimeout'],
+      ['const observer = new IntersectionObserver(onIntersect)', 'prefer-ecosystem', 'warning', 'useIntersectionObserver'],
+      ['window.addEventListener(\'scroll\', onScroll, { passive: true })', 'prefer-ecosystem', 'warning', 'useScroll'],
+      ['document.body.style.overflow = \'hidden\'', 'prefer-ecosystem', 'warning', 'useScrollLock'],
+      ['const visible = ref(false)\nfunction onScroll() { visible.value = window.scrollY > 400 }\nfunction top() { window.scrollTo({ top: 0, behavior: \'smooth\' }) }', 'prefer-ecosystem', 'warning', 'MazBtnScroll'],
+      ['const label = name.charAt(0).toUpperCase() + name.slice(1)', 'prefer-utils', 'warning', 'upperFirst'],
+      ['const label = name[0].toUpperCase() + name.slice(1)', 'prefer-utils', 'warning', 'upperFirst'],
+      ['const key = name.replace(/([a-z])([A-Z])/g, \'$1-$2\').toLowerCase()', 'prefer-utils', 'warning', 'kebabCase'],
+      ['const key = name.replace(/-(\\w)/g, (_, c) => c.toUpperCase())', 'prefer-utils', 'warning', 'camelCase'],
+      ['const message = error instanceof Error ? error.message : String(error)', 'prefer-utils', 'warning', 'getErrorMessage'],
+      ['const ios = /iPad|iPhone|iPod/.test(navigator.userAgent)', 'prefer-utils', 'warning', 'isIos'],
+      ['const ios = navigator.userAgent.includes(\'iPhone\')', 'prefer-utils', 'warning', 'isIos'],
+      ['const pwa = window.matchMedia(\'(display-mode: standalone)\').matches', 'prefer-utils', 'warning', 'isStandaloneMode'],
+      ['const flag = String.fromCodePoint(...[...code].map(c => 127397 + c.charCodeAt(0)))', 'prefer-utils', 'warning', 'countryCodeToUnicodeFlag'],
+      ['const src = \'https://flagcdn.com/fr.svg\'', 'prefer-utils', 'warning', 'getCountryFlagUrl'],
+      ['const response = await fetch(\'https://ipapi.co/json\')', 'prefer-utils', 'info', 'fetchLocaleIp'],
+      ['const pretty = JSON.stringify(data, null, 2)', 'prefer-utils', 'info', 'formatJson'],
+      ['const ids = list.filter(Boolean)', 'prefer-utils', 'info', 'truthyFilter'],
+      ['if (Date.now() - last < 200) return', 'prefer-utils', 'info', 'throttle'],
+      ['let attempts = 0\nconst timer = setInterval(() => { if (ready() || ++attempts > 10) clearInterval(timer) }, 100)', 'prefer-utils', 'info', 'checkAvailability'],
+      ['const minutes = Math.ceil(text.split(/\\s+/).length / 200)', 'prefer-ecosystem', 'warning', 'useReadingTime'],
+      ['const id = \'field-\' + Math.random().toString(36).slice(2)', 'prefer-ecosystem', 'info', 'useId'],
+      ['const container = document.createElement(\'div\')\ndocument.body.appendChild(container)\nrender(h(Popup), container)', 'prefer-ecosystem', 'info', 'useMountComponent'],
+      ['function open(image) {\n  image.requestFullscreen()\n}', 'prefer-ecosystem', 'info', 'vFullscreenImg'],
+      ['const viewport = \'width=device-width, maximum-scale=1\'', 'prefer-utils', 'info', 'preventIosInputZoom'],
+    ])('then `%s` is reported', (code, rule, severity, suggestion) => {
       const [finding] = review(code, 'a.ts')
 
-      expect(finding).toMatchObject({ rule, severity: 'info' })
+      expect(finding).toMatchObject({ rule, severity })
       expect(finding.suggestion).toContain(suggestion)
+    })
+  })
+
+  describe('when a state is reset after a delay cleared by hand', () => {
+    it('then only the hand-written debounce is reported', () => {
+      expect(rulesOf('clearTimeout(timer)\ntimer = setTimeout(() => { copied.value = false }, 2000)', 'a.ts')).toEqual(['prefer-utils'])
+    })
+  })
+
+  describe('when a module without filename shares a loading state', () => {
+    it('then it is reported', () => {
+      expect(reviewCode('export const isSaving = ref(false)', { knowledge: getKnowledge() }).map(finding => finding.rule)).toEqual(['prefer-ecosystem'])
+    })
+  })
+
+  describe('when a module shares a loading state under another name or with a type', () => {
+    it.each([
+      'export const isUserLoading = ref<boolean>(false)',
+      'export const userLoading = shallowRef(false)',
+      'const fetchingProjects = ref()',
+    ])('then `%s` is reported with useWait', (code) => {
+      const [finding] = review(code, 'a.ts')
+
+      expect(finding).toMatchObject({ rule: 'prefer-ecosystem', severity: 'warning' })
+      expect(finding.suggestion).toContain('`useWait()`')
+    })
+  })
+
+  describe('when a module boolean is reset in a finally', () => {
+    it('then it is reported as a loading state', () => {
+      const code = 'export const user = ref<User>()\nexport const ready = ref<boolean>(false)\nexport async function loadUser() {\n  ready.value = true\n  try {\n    user.value = await fetchUser()\n  }\n  finally {\n    ready.value = false\n  }\n}'
+      const findings = review(code, 'a.ts')
+
+      expect(findings.map(finding => finding.rule)).toEqual(['prefer-ecosystem'])
+      expect(findings[0].message).toContain('reset in a `finally`')
+    })
+
+    it('then a loading name is reported once', () => {
+      expect(rulesOf('export const loading = ref(false)\nexport async function load() {\n  try { await f() }\n  finally { loading.value = false }\n}', 'a.ts')).toEqual(['prefer-ecosystem'])
+    })
+  })
+
+  describe('when a module boolean is not reset in a finally', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('export const open = ref(false)\nexport function toggle() {\n  open.value = !open.value\n}', 'a.ts')).toEqual([])
+    })
+  })
+
+  describe('when a loading state is local to a component or a composable', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('<script setup lang="ts">\nconst loading = ref(false)\n</script>')).toEqual([])
+      expect(rulesOf('export function useSave() {\n  const loading = ref(false)\n  return { loading }\n}', 'a.ts')).toEqual([])
+    })
+  })
+
+  describe('when an element checks its children without a document listener', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('function onFocusOut(event) {\n  if (!panel.value.contains(event.target))\n    close()\n}', 'a.ts')).toEqual([])
     })
   })
 
   describe('when the script uses the helpers', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf('new Intl.NumberFormat(\'en\').format(n)\nsetTimeout(done, 100)\nclearTimeout(timer)\nwindow.addEventListener(\'scroll\', onScroll)', 'a.ts')).toEqual([])
+      expect(rulesOf('const label = title.toUpperCase()\nconst message = error.message\nconst full = document.documentElement.requestFullscreen()\nconst app = createApp(App)\nconst ok = Date.now() - start\nsetInterval(poll, 5000)\nel.addEventListener(\'mousemove\', onMove)\nsetTimeout(done, 100)\nclearTimeout(timer)', 'a.ts')).toEqual([])
+    })
+  })
+})
+
+describe('given the deprecated-api rule', () => {
+  describe('when main.ts installs the plugins that the composables no longer need', () => {
+    it('then each one is reported with the option of MazUi that takes its options', () => {
+      const findings = review('import { ToastPlugin } from \'maz-ui/plugins/toast\'\napp.use(ToastPlugin, { position: \'top\' })\napp.use(DialogPlugin)\napp.use(WaitPlugin)\napp.use(AosPlugin)', 'main.ts').filter(finding => finding.rule === 'deprecated-api')
+
+      expect(findings.map(finding => finding.line)).toEqual([2, 3, 4])
+      expect(findings[0]?.message).toBe('`ToastPlugin` is deprecated and removed in v6: `useToast()` works without it.')
+      expect(findings[0]?.suggestion).toContain('`app.use(MazUi, { theme, toast: { ... } })`')
+      expect(findings[2]?.suggestion).toBe('Remove `app.use(WaitPlugin)`.')
+    })
+  })
+
+  describe('when the code reads a deprecated $maz property', () => {
+    it('then it is reported with its composable', () => {
+      const findings = review('const { $mazToast } = useNuxtApp()\n$mazToast.success(\'Saved\')', 'a.ts').filter(finding => finding.rule === 'deprecated-api')
+
+      expect(findings).toHaveLength(2)
+      expect(findings[0]?.suggestion).toContain('`useToast()`')
+    })
+  })
+
+  describe('when a Nuxt config enables the deprecated plugins option', () => {
+    it('then the option is reported, and the plugins of Nuxt are left alone', () => {
+      const code = 'export default defineNuxtConfig({ plugins: [\'~/plugins/a\'], mazUi: { plugins: { toast: { position: \'top\' }, wait: true } } })'
+
+      expect(rulesOf(code, 'nuxt.config.ts').filter(rule => rule === 'deprecated-api')).toHaveLength(1)
+      expect(rulesOf(code, 'config.ts')).not.toContain('deprecated-api')
+    })
+  })
+
+  describe('when the installed maz-ui is older and its composables need their plugin', () => {
+    it('then the plugins are not reported', () => {
+      const findings = reviewCode('app.use(ToastPlugin)\nconst { $mazWait } = useNuxtApp()', { knowledge: withLegacyPlugins(), filename: 'main.ts' })
+
+      expect(findings.map(finding => finding.rule)).not.toContain('deprecated-api')
+    })
+  })
+
+  describe('when the code uses the composables', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('const toast = useToast()\nconst wait = useWait()\napp.use(MazUi, { theme, toast: { position: \'top\' } })', 'a.ts')).not.toContain('deprecated-api')
     })
   })
 })

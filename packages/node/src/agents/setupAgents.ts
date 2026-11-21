@@ -2,6 +2,8 @@ import type { AgentsTool, AgentTarget, McpServerCommand, SetupAgentsOptions, Set
 import { findProjectPackage, readPackageVersion } from '../project.ts'
 import { resolveAgentDocs } from './agentDocs.ts'
 import { ChangeSet } from './changeSet.ts'
+import { syncClaudeHooks } from './claudeHooks.ts'
+import { syncPluginMcpServer } from './claudeLocalSettings.ts'
 import { detectAgentTargets } from './detectAgentTargets.ts'
 import { syncMcpConfigs } from './mcpConfig.ts'
 import { mcpServerCommand } from './mcpServer.ts'
@@ -51,6 +53,9 @@ export function setupAgents<T extends AgentTarget = AgentTarget>(options: SetupA
 
   if (mcp || remove)
     syncMcpConfigs(changes, rootDir, targets, server, remove, tool)
+
+  syncClaudeHooks(changes, { rootDir, targets, server, hooks: options.hooks === true, remove }, tool)
+  syncPluginMcpServer(changes, { rootDir, targets, mcp, remove }, tool)
 
   return {
     targets: targets as T[],
