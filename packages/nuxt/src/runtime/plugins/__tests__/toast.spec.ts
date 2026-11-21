@@ -32,7 +32,7 @@ describe('toast plugin', () => {
   })
 
   it('should create ToastHandler with vueApp', async () => {
-    const vueApp = {}
+    const vueApp = { provide: vi.fn() }
     const context = {
       $config: {
         public: {
@@ -52,7 +52,7 @@ describe('toast plugin', () => {
   })
 
   it('should pass toast options when config is an object', async () => {
-    const vueApp = {}
+    const vueApp = { provide: vi.fn() }
     const toastOptions = { position: 'top-right', timeout: 5000 }
     const context = {
       $config: {
@@ -71,7 +71,7 @@ describe('toast plugin', () => {
   })
 
   it('should provide mazToast in client mode (import.meta.server is false)', async () => {
-    const vueApp = {}
+    const vueApp = { provide: vi.fn() }
     const context = {
       $config: {
         public: {
@@ -86,10 +86,11 @@ describe('toast plugin', () => {
     const result = await (toastPlugin as (...args: any[]) => any)(context)
 
     expect(result.provide.mazToast).toBeInstanceOf(MockToastHandler)
+    expect(vueApp.provide).toHaveBeenCalledWith('mazToast', result.provide.mazToast)
   })
 
   it('should pass undefined options when toast is boolean', async () => {
-    const vueApp = {}
+    const vueApp = { provide: vi.fn() }
     const context = {
       $config: {
         public: {
