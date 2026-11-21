@@ -290,8 +290,11 @@ The command exits with an error code when it finds errors (or more warnings than
 | `root-import`, `internal-import` | error | Runtime imports from `maz-ui` (types only) or from `src`/`dist` |
 | `nuxt-auto-import` | info | Imports that `@maz-ui/nuxt` already auto-imports (a component used in the script, `h(MazIcon)`, keeps its import) |
 | `parse-error` | error | A file the parser cannot read (an unclosed tag): it is not reviewed |
+| `invalid-ignore` | error | A `maz-ui-review-ignore` comment without a reason, or on a rule that cannot be ignored |
 
-When something is intended, ignore it with a comment on the line above (`<!-- maz-ui-review-ignore prefer-maz-component -->`, `// maz-ui-review-ignore theme-colors`), or `maz-ui-review-ignore-file` for a whole file. Give the reason after `--`: `<!-- maz-ui-review-ignore theme-colors -- frame over the video -->`.
+When something is intended, ignore it with a comment on the line above, with the reason after `--`: `<!-- maz-ui-review-ignore theme-colors -- frame over the video -->`, `// maz-ui-review-ignore prefer-utils -- mock of capitalize`. `maz-ui-review-ignore-file` ignores a whole file. A comment without a reason is not applied.
+
+The errors of a code that does not work cannot be ignored: an unknown component, prop, value, model, event or slot, a missing required prop, a raw icon used as a tag, a root or internal import, a missing `@reference` and a parse error. Fix them.
 
 ## llms.txt
 
