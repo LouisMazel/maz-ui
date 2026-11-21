@@ -1,6 +1,7 @@
 import type { App } from 'vue'
 import type { MazToastProps } from './MazToast.vue'
 import type { ToastButton, ToastOptions } from './types.ts'
+import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { useMountComponent } from '../../composables/useMountComponent.ts'
 import MazToast from './MazToast.vue'
 
@@ -17,6 +18,13 @@ export class ToastHandler {
   ) {}
 
   private show(message: string, options: ToastOptions) {
+    if (!isClient()) {
+      return {
+        destroy: () => {},
+        close: () => {},
+      }
+    }
+
     const props: MazToastProps = {
       ...DEFAULT_OPTIONS,
       ...this.globalOptions,
