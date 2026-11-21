@@ -529,7 +529,7 @@ describe('given list_docs', () => {
     it('then only this category is listed', () => {
       const output = listDocs(getContext(), { category: 'directive' })
 
-      expect(output).toContain('## Directives (maz-ui) (5)')
+      expect(output).toContain('## Directives (maz-ui) (6)')
       expect(output).not.toContain('## Components')
     })
   })

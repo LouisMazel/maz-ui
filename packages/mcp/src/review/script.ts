@@ -90,7 +90,12 @@ const THIRD_PARTY_RULES: ThirdPartyRule[] = [
       useIntervalFn: '`useTimer` from `maz-ui/composables/useTimer` for a countdown',
       useCountdown: '`useTimer` from `maz-ui/composables/useTimer`',
       useTimeout: '`useTimer` from `maz-ui/composables/useTimer`',
-      useIntersectionObserver: 'the `vLazyImg` directive or MazLazyImg for images, `useAos` or MazAnimatedElement for animations on scroll',
+      useIntersectionObserver: '`useIntersectionObserver` from `maz-ui/composables/useIntersectionObserver` (or the `vIntersect` directive)',
+      useElementVisibility: '`useIntersectionObserver` from `maz-ui/composables/useIntersectionObserver` (`isIntersecting`)',
+      useScroll: '`useScroll` from `maz-ui/composables/useScroll`',
+      useWindowScroll: '`useScroll` from `maz-ui/composables/useScroll`',
+      useInfiniteScroll: '`useInfiniteScroll` from `maz-ui/composables/useInfiniteScroll`',
+      useScrollLock: '`useScrollLock` from `maz-ui/composables/useScrollLock`',
       useMediaQuery: '`useBreakpoints` from `maz-ui/composables/useBreakpoints`',
       useNavigatorLanguage: '`getBrowserLocale` from `@maz-ui/utils/helpers/getBrowserLocale`',
       usePreferredLanguages: '`getBrowserLocale` from `@maz-ui/utils/helpers/getBrowserLocale`',
@@ -589,6 +594,8 @@ interface HandwrittenPattern {
   requires?: RegExp
 }
 
+const WAIT_SUGGESTION = 'Use `useWait()` from `maz-ui/composables/useWait`: `wait.start("USER")`, `wait.stop("USER")` and `wait.isLoading("USER")` in any component. It needs `app.use(WaitPlugin)` once, from `maz-ui/plugins/wait` in `main.ts` (Nuxt: `mazUi: { plugins: { wait: true } }`).'
+
 /** Code written by hand that maz-ui already provides; `(?<![\w$.])` skips the methods of other objects (`toast.confirm()`) */
 const HANDWRITTEN_PATTERNS: HandwrittenPattern[] = [
   {
@@ -606,11 +613,20 @@ const HANDWRITTEN_PATTERNS: HandwrittenPattern[] = [
     suggestion: 'Use `useDialog()` from `maz-ui/composables/useDialog`: `dialog.open({ title, message, buttons })` (DialogPlugin), or a `MazDialogConfirm`.',
   },
   {
-    regex: /^(?:export\s+)?(?:const|let)\s+(?:is)?(?:loading|pending|saving|busy|submitting|fetching|processing)\w*\s*=\s*(?:ref|shallowRef)\(\s*(?:false)?\s*\)/gim,
+    regex: /^(?:export\s+)?(?:const|let)\s+\w*(?:loading|pending|saving|busy|submitting|fetching|processing)\w*\s*=\s*(?:ref|shallowRef)(?:<\s*boolean\s*>)?\(\s*(?:false)?\s*\)/gim,
     rule: 'prefer-ecosystem',
     severity: 'warning',
     message: 'A loading state at the top level of a module, shared by hand between components.',
-    suggestion: 'Use `useWait()` from `maz-ui/composables/useWait` (WaitPlugin): `wait.start("SAVE")`, `wait.stop("SAVE")`, `wait.isLoading("SAVE")` in any component.',
+    suggestion: WAIT_SUGGESTION,
+    modulesOnly: true,
+  },
+  {
+    regex: /^(?:export\s+)?(?:const|let)\s+(?!\w*(?:loading|pending|saving|busy|submitting|fetching|processing))\w+\s*=\s*(?:ref|shallowRef)(?:<\s*boolean\s*>)?\(\s*false\s*\)/gim,
+    requires: /\bfinally\s*\{[^}]*?\.value\s*=\s*false\b/,
+    rule: 'prefer-ecosystem',
+    severity: 'warning',
+    message: 'A boolean at the top level of a module, set during an async call and reset in a `finally`: a loading state shared by hand.',
+    suggestion: WAIT_SUGGESTION,
     modulesOnly: true,
   },
   {
@@ -681,7 +697,7 @@ const HANDWRITTEN_PATTERNS: HandwrittenPattern[] = [
     rule: 'prefer-ecosystem',
     severity: 'warning',
     message: 'Copies to the clipboard by hand.',
-    suggestion: 'Use `useClipboard()` from `maz-ui/composables/useClipboard`: `const { copy, copied } = useClipboard()`, `copied` goes back to `false` after a delay.',
+    suggestion: 'For a button that copies an ID, a command or a token, use `<MazBtnClipboard value="..." />` (copied state, `variant`, `color`, `size`). Else `useClipboard()` from `maz-ui/composables/useClipboard`: `const { copy, copied } = useClipboard()`, `copied` goes back to `false` after a delay.',
   },
   {
     regex: /\bnew\s+Intl\.NumberFormat\((?![^;]*?\bcurrency\b)/g,
@@ -730,9 +746,31 @@ const HANDWRITTEN_PATTERNS: HandwrittenPattern[] = [
   {
     regex: /\bnew\s+IntersectionObserver\(/g,
     rule: 'prefer-ecosystem',
-    severity: 'info',
+    severity: 'warning',
     message: 'Creates an `IntersectionObserver` by hand.',
-    suggestion: 'For images, use the `vLazyImg` directive or MazLazyImg; for animations on scroll, the AOS plugin (`useAos`) or MazAnimatedElement.',
+    suggestion: 'Use `useIntersectionObserver(target, callback)` from `maz-ui/composables/useIntersectionObserver` (`isIntersecting`, `once`, stops on unmount) or the `v-intersect` directive (`maz-ui/directives/vIntersect`). To load the next page of a list: `useInfiniteScroll`. For images: `vLazyImg` or MazLazyImg; for animations on scroll: MazAnimatedElement or `useAos`.',
+  },
+  {
+    regex: /\baddEventListener\(\s*['"`]scroll['"`]/g,
+    rule: 'prefer-ecosystem',
+    severity: 'warning',
+    message: 'Listens to the scroll by hand.',
+    suggestion: 'Use `useScroll(target?)` from `maz-ui/composables/useScroll`: `y`, `directions`, `arrivedState.bottom`, `scrollToTop()`, throttled to one update per frame and removed on unmount. To load the next page at the end of a list: `useInfiniteScroll`; a "back to top" or "scroll to bottom" button: MazBtnScroll (`to="bottom"`).',
+  },
+  {
+    regex: /\bdocument\.(?:body|documentElement)\.style\.overflowY?\s*=(?!=)/g,
+    rule: 'prefer-ecosystem',
+    severity: 'warning',
+    message: 'Locks the scroll of the page by hand.',
+    suggestion: 'Use `useScrollLock()` from `maz-ui/composables/useScrollLock`: `lock()`, `unlock()` or `isLocked`, keeps the width of the scrollbar, handles several locks at once and unlocks on unmount.',
+  },
+  {
+    regex: /\bscrollTo\(\s*\{\s*top:\s*0\b|\bscrollTo\(\s*0\s*,\s*0\s*\)/g,
+    requires: /\b(?:scrollY|pageYOffset|scrollTop)\s*>=?\s*\w/,
+    rule: 'prefer-ecosystem',
+    severity: 'warning',
+    message: 'A "back to top" button made by hand.',
+    suggestion: 'Use `<MazBtnScroll />`: it appears after `threshold` pixels (400 by default) and scrolls back smoothly; `position`, `color`, `icon` and `progress` props.',
   },
   {
     regex: /\.charAt\(0\)\.toUpperCase\(\)\s*\+|\[0\]\??\.toUpperCase\(\)\s*\+/g,

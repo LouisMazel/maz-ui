@@ -353,6 +353,46 @@ export const SEARCH_CASES: SearchCase[] = [
     rank: 1,
   },
   {
+    query: 'infinite scroll',
+    expected: ['composables/use-infinite-scroll'],
+    rank: 1,
+  },
+  {
+    query: 'load more when reaching the end of the list',
+    expected: ['composables/use-infinite-scroll'],
+    rank: 3,
+  },
+  {
+    query: 'back to top button',
+    expected: ['components/maz-btn-scroll'],
+    rank: 1,
+  },
+  {
+    query: 'scroll position',
+    expected: ['composables/use-scroll'],
+    rank: 1,
+  },
+  {
+    query: 'hide header on scroll down',
+    expected: ['composables/use-scroll'],
+    rank: 3,
+  },
+  {
+    query: 'detect when an element is visible',
+    expected: ['composables/use-intersection-observer', 'directives/intersect'],
+    rank: 3,
+  },
+  {
+    query: 'lock body scroll',
+    expected: ['composables/use-scroll-lock'],
+    rank: 1,
+  },
+  {
+    query: 'copy button for an id',
+    expected: ['components/maz-btn-clipboard'],
+    rank: 1,
+  },
+  {
     query: 'lazy load image',
     expected: ['components/maz-lazy-img', 'directives/lazy-img'],
     rank: 1,

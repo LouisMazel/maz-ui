@@ -716,6 +716,8 @@ describe('given the prefer-ecosystem and prefer-utils rules', () => {
       ['import { formatDistanceToNow } from \'date-fns\'', 'useRelativeTime'],
       ['import { deburr } from \'lodash-es\'', 'normalizeString'],
       ['import { useTextareaAutosize, useIntersectionObserver } from \'@vueuse/core\'', 'MazTextarea'],
+      ['import { useInfiniteScroll } from \'@vueuse/core\'', 'maz-ui/composables/useInfiniteScroll'],
+      ['import { useWindowScroll } from \'@vueuse/core\'', 'maz-ui/composables/useScroll'],
     ])('then `%s` suggests %s', (code, suggestion) => {
       const [finding] = review(code, 'a.ts')
 
@@ -1209,13 +1211,17 @@ describe('given the hand-written helpers', () => {
       ['const ctx = inject(KEY)\nif (!ctx)\n  throw new Error(\'Missing\')', 'prefer-ecosystem', 'warning', 'useInjectStrict'],
       ['export const isSaving = ref(false)', 'prefer-ecosystem', 'warning', 'useWait'],
       ['await navigator.clipboard.writeText(url)', 'prefer-ecosystem', 'warning', 'useClipboard'],
+      ['await navigator.clipboard.writeText(id)', 'prefer-ecosystem', 'warning', 'MazBtnClipboard'],
       ['new Intl.NumberFormat(\'en\', { notation: \'compact\' }).format(n)', 'prefer-utils', 'info', 'formatNumber'],
       ['items.filter(item => item.name.toLowerCase().includes(query))', 'prefer-ecosystem', 'info', 'useFuzzySearch'],
       ['if (typeof window === \'undefined\') return', 'prefer-utils', 'info', 'isClient'],
       ['const locale = navigator.language', 'prefer-utils', 'info', 'getBrowserLocale'],
       ['const timer = setInterval(() => { remaining.value-- }, 1000)', 'prefer-ecosystem', 'warning', 'useTimer'],
       ['window.addEventListener(\'mousemove\', reset)\nwindow.addEventListener(\'keydown\', reset)\ntimer = setTimeout(logout, 60000)', 'prefer-ecosystem', 'warning', 'useIdleTimeout'],
-      ['const observer = new IntersectionObserver(onIntersect)', 'prefer-ecosystem', 'info', 'vLazyImg'],
+      ['const observer = new IntersectionObserver(onIntersect)', 'prefer-ecosystem', 'warning', 'useIntersectionObserver'],
+      ['window.addEventListener(\'scroll\', onScroll, { passive: true })', 'prefer-ecosystem', 'warning', 'useScroll'],
+      ['document.body.style.overflow = \'hidden\'', 'prefer-ecosystem', 'warning', 'useScrollLock'],
+      ['const visible = ref(false)\nfunction onScroll() { visible.value = window.scrollY > 400 }\nfunction top() { window.scrollTo({ top: 0, behavior: \'smooth\' }) }', 'prefer-ecosystem', 'warning', 'MazBtnScroll'],
       ['const label = name.charAt(0).toUpperCase() + name.slice(1)', 'prefer-utils', 'warning', 'upperFirst'],
       ['const label = name[0].toUpperCase() + name.slice(1)', 'prefer-utils', 'warning', 'upperFirst'],
       ['const key = name.replace(/([a-z])([A-Z])/g, \'$1-$2\').toLowerCase()', 'prefer-utils', 'warning', 'kebabCase'],
@@ -1256,6 +1262,39 @@ describe('given the hand-written helpers', () => {
     })
   })
 
+  describe('when a module shares a loading state under another name or with a type', () => {
+    it.each([
+      'export const isUserLoading = ref<boolean>(false)',
+      'export const userLoading = shallowRef(false)',
+      'const fetchingProjects = ref()',
+    ])('then `%s` is reported with the WaitPlugin to install', (code) => {
+      const [finding] = review(code, 'a.ts')
+
+      expect(finding).toMatchObject({ rule: 'prefer-ecosystem', severity: 'warning' })
+      expect(finding.suggestion).toContain('`app.use(WaitPlugin)` once')
+    })
+  })
+
+  describe('when a module boolean is reset in a finally', () => {
+    it('then it is reported as a loading state', () => {
+      const code = 'export const user = ref<User>()\nexport const ready = ref<boolean>(false)\nexport async function loadUser() {\n  ready.value = true\n  try {\n    user.value = await fetchUser()\n  }\n  finally {\n    ready.value = false\n  }\n}'
+      const findings = review(code, 'a.ts')
+
+      expect(findings.map(finding => finding.rule)).toEqual(['prefer-ecosystem'])
+      expect(findings[0].message).toContain('reset in a `finally`')
+    })
+
+    it('then a loading name is reported once', () => {
+      expect(rulesOf('export const loading = ref(false)\nexport async function load() {\n  try { await f() }\n  finally { loading.value = false }\n}', 'a.ts')).toEqual(['prefer-ecosystem'])
+    })
+  })
+
+  describe('when a module boolean is not reset in a finally', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('export const open = ref(false)\nexport function toggle() {\n  open.value = !open.value\n}', 'a.ts')).toEqual([])
+    })
+  })
+
   describe('when a loading state is local to a component or a composable', () => {
     it('then nothing is reported', () => {
       expect(rulesOf('<script setup lang="ts">\nconst loading = ref(false)\n</script>')).toEqual([])
@@ -1271,7 +1310,7 @@ describe('given the hand-written helpers', () => {
 
   describe('when the script uses the helpers', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf('const label = title.toUpperCase()\nconst message = error.message\nconst full = document.documentElement.requestFullscreen()\nconst app = createApp(App)\nconst ok = Date.now() - start\nsetInterval(poll, 5000)\nel.addEventListener(\'mousemove\', onMove)\nsetTimeout(done, 100)\nclearTimeout(timer)\nwindow.addEventListener(\'scroll\', onScroll)', 'a.ts')).toEqual([])
+      expect(rulesOf('const label = title.toUpperCase()\nconst message = error.message\nconst full = document.documentElement.requestFullscreen()\nconst app = createApp(App)\nconst ok = Date.now() - start\nsetInterval(poll, 5000)\nel.addEventListener(\'mousemove\', onMove)\nsetTimeout(done, 100)\nclearTimeout(timer)', 'a.ts')).toEqual([])
     })
   })
 })
