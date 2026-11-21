@@ -7,6 +7,10 @@ export const composables = {
   items: [
     { text: 'useAos', link: '/composables/use-aos' },
     { text: 'useBreakpoints', link: '/composables/use-breakpoints' },
+    {
+      text: withNewBadge('useClipboard'),
+      link: '/composables/use-clipboard',
+    },
     { text: 'useDialog', link: '/composables/use-dialog' },
     {
       text: withNewBadge('useDrag'),

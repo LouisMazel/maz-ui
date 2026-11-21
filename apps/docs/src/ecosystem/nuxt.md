@@ -454,6 +454,7 @@ const composables = {
 
   // 🛠️ Utilities
   useTimer: true, // Timer and countdown
+  useClipboard: true, // Copy to the clipboard
   useFormValidator: true, // Form validation
   useStringMatching: true, // String utilities
   useReadingTime: true, // Reading time calculation
