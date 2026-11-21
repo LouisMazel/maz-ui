@@ -556,6 +556,7 @@ export const DOC_ALIASES: Record<string, string[]> = {
   ],
   'composables/use-pull-to-refresh': ['pull to refresh', 'refresh gesture'],
   'composables/use-reading-time': ['reading time', 'minutes to read', 'word count'],
+  'composables/use-resize-observer': ['resize observer', 'element size', 'element resized', 'width of an element', 'observe size'],
   'composables/use-relative-time': [
     'relative time',
     'time ago',

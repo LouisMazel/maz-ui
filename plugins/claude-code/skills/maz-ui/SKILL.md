@@ -46,7 +46,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - the tab is hidden or visible again (pause, refresh on return), instead of `visibilitychange`: `useUserVisibility` (`maz-ui/composables/useUserVisibility`), `UserVisibility` (`@maz-ui/utils/helpers/userVisibility`)
 - a click outside of an element (close a menu), instead of a `document` listener and `contains(event.target)`: `vClickOutside` (`maz-ui/directives/vClickOutside`)
 - the screen size or the breakpoint in the script, instead of `resize` or `matchMedia("(max-width...")`: `useBreakpoints`, `useWindowSize` (`maz-ui/composables/<name>`)
-- react to the changes of a DOM element (children, attributes, text), instead of `new MutationObserver`: `useMutationObserver` (`maz-ui/composables/useMutationObserver`)
+- the changes or the size of a DOM element, instead of `new MutationObserver` or `new ResizeObserver`: `useMutationObserver`, `useResizeObserver` (`maz-ui/composables/<name>`)
 
 **Formatting and text**
 
@@ -59,7 +59,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - the name of a country or a language in any locale, instead of `Intl.DisplayNames`: `useDisplayNames` (`maz-ui/composables/useDisplayNames`)
 - a country flag (emoji or image URL), instead of code points (`127397 +`) or a `flagcdn.com` URL: `countryCodeToUnicodeFlag`, `getCountryFlagUrl` (`@maz-ui/utils/helpers/<name>`)
 - the reading time of a text, instead of `split(/\s+/).length / 200`: `useReadingTime` (`maz-ui/composables/useReadingTime`)
-- change the case of a string (camelCase, kebab-case, snake_case, PascalCase, Capitalized), instead of `charAt(0).toUpperCase()` or a `replace` regex: `camelCase`, `kebabCase`, `snakeCase`, `pascalCase`, `capitalize`, `upperFirst` (`@maz-ui/utils/helpers/<name>`)
+- change the case of a string (camelCase, kebab-case, snake_case...), instead of `charAt(0).toUpperCase()` or a regex: `camelCase`, `kebabCase`, `snakeCase`, `pascalCase`, `capitalize`, `upperFirst` (`@maz-ui/utils/helpers/<name>`)
 - remove accents, compare without case nor accents, make a slug, instead of `normalize("NFD")` + a regex: `normalizeString` (`@maz-ui/utils/helpers/normalizeString`)
 - pretty print JSON, instead of `JSON.stringify(value, null, 2)`: `formatJson` (`@maz-ui/utils/helpers/formatJson`)
 - filter a list by a typed query (typos, accents, words in any order, highlight), instead of `includes()` on lowercased strings: `useFuzzySearch` (`maz-ui/composables/useFuzzySearch`), `highlightMatches` (`@maz-ui/utils/helpers/fuzzySearch`)
@@ -87,7 +87,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - run only in the browser or only on the server, instead of `typeof window`: `isClient`, `isServer` (`@maz-ui/utils/helpers/<name>`)
 - detect iOS, or an app installed as a PWA, instead of `navigator.userAgent` or `display-mode: standalone`: `isIos`, `isStandaloneMode` (`@maz-ui/utils/helpers/<name>`)
 - stop iOS from zooming on a focused field, instead of `maximum-scale=1` (it blocks the zoom for everyone): `preventIosInputZoom` (`@maz-ui/utils/helpers/preventIosInputZoom`)
-- the language of the browser, the country of the visitor, instead of `navigator.language` or a call to an IP API: `getBrowserLocale`, `fetchLocaleIp` (`@maz-ui/utils/helpers/<name>`)
+- the browser language or the visitor country, instead of `navigator.language` or an IP API: `getBrowserLocale`, `fetchLocaleIp` (`@maz-ui/utils/helpers/<name>`)
 - load a third-party script once (SDK), instead of `document.createElement("script")`: `ScriptLoader` (`@maz-ui/utils/helpers/scriptLoader`)
 - dark mode toggle, color mode, brand colors at runtime, instead of the `dark` class or `localStorage`: `useTheme` (`@maz-ui/themes`)
 - the language of the texts of the components: `useTranslations` (`@maz-ui/translations`)
