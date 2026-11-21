@@ -1,18 +1,14 @@
 ---
 title: useWait
-description: Vue composable to manage loading states (start, stop, check) in your components, through the wait plugin and the MazFullscreenLoader
+description: Vue composable to manage loading states (start, stop, check) anywhere in your app (components, stores, modules) without plugin, with the MazFullscreenLoader
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-::: warning
-You must install the [wait plugin](./../plugins/wait.md#install) before using it
-:::
-
 ::: tip
-More info about the [wait plugin](./../plugins/wait.md) in its documentation
+No plugin to install: every call of `useWait()` shares the same loaders, even outside of a component. More info in the [wait documentation](./../plugins/wait.md)
 :::
 
 ## Usage

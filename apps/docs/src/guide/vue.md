@@ -55,6 +55,20 @@ app.use(MazUi, {
 })
 ```
 
+The MazUi plugin also takes the global options of the toasts and dialogs, and enables the animations on scroll:
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  // Global options of useToast()
+  toast: { position: 'top-right' },
+  // Global options of useDialog()
+  dialog: { acceptText: 'Yes' },
+  // Animations on scroll (disabled by default), with `import 'maz-ui/aos.css'`
+  aos: true,
+})
+```
+
 ::: tip Why provide preset and messages?
 - **`preset`** -- Providing the theme preset synchronously avoids FOUC (Flash of Unstyled Content). Without it, components render without their CSS variables until the theme loads.
 - **`messages`** -- By default, Maz-UI does not bundle any translations. If you don't provide messages for the current locale, components will briefly show raw translation keys instead of actual text until the async loading completes.
@@ -188,13 +202,13 @@ More information in the [theme documentation](/ecosystem/themes).
 
 More information in the [translations documentation](/ecosystem/translations).
 
-## Plugins
+## Toast, dialog, wait and aos
 
-More information about installation and usage in:
-- [aos](./../plugins/aos.md) (animations on scroll)
-- [dialog](./../plugins/dialog.md) (display modales without any implementation in template)
-- [toast](./../plugins/toast.md) (display notifications)
-- [wait](./../plugins/wait.md) (display loading states)
+No plugin to install for the toasts, the dialogs and the loading states: use their composable. Their global options go in the [MazUi plugin](#install-plugin).
+- [toast](./../plugins/toast.md) with `useToast()` (display notifications)
+- [dialog](./../plugins/dialog.md) with `useDialog()` (display modales without any implementation in template)
+- [wait](./../plugins/wait.md) with `useWait()` (display loading states, works anywhere, even outside of a component)
+- [aos](./../plugins/aos.md) (animations on scroll), enabled with the `aos` option of the MazUi plugin
 
 ## Directives
 

@@ -1,42 +1,25 @@
 ---
 title: wait
-description: A comprehensive loading state management plugin for Vue.js that provides easy-to-use utilities for handling async operations, loading indicators, and user feedback during data processing or any other async operation
+description: A loading state management for Vue.js, without plugin to install, that provides easy-to-use utilities for handling async operations, loading indicators, and user feedback during data processing or any other async operation
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-::: tip
-This plugin has a composable for easier use, after installing it you can use [useWait](./../composables/use-wait.md)
-:::
+Use the [useWait](./../composables/use-wait.md) composable: no plugin to install, nothing to configure. It works anywhere, in a component, a store or any module, even without Vue app: every call shares the same loaders.
 
-## Installation
+```ts
+import { useWait } from 'maz-ui/composables/useWait'
 
-::: code-group
+const wait = useWait()
 
-```ts [Vue]
-import { WaitPlugin } from 'maz-ui/plugins/wait'
-import { createApp } from 'vue'
-
-const app = createApp(App)
-
-app.use(WaitPlugin)
-app.mount('#app')
+wait.start('DATA_SUBMITTING')
+wait.isLoading('DATA_SUBMITTING') // true
+wait.stop('DATA_SUBMITTING')
 ```
 
-```ts [Nuxt]
-export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt'],
-  mazUi: {
-    composables: {
-      useWait: true,
-    },
-  },
-})
-```
-
-:::
+With Nuxt, `useWait` is auto-imported. On the server, the loaders are never started (a state shared by every request would leak between them).
 
 ## Basic usage
 
