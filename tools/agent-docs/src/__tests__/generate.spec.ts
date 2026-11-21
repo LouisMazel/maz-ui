@@ -124,7 +124,8 @@ describe('given generateKnowledge', () => {
       const content = fragmentFile('maz-ui', 'agents/session-context.md') ?? ''
 
       expect(content).toContain('### The ecosystem by need')
-      expect(content).toContain('`useWait`, `app.use(WaitPlugin)`')
+      expect(content).toContain('fullscreen loader: `useWait`\n')
+      expect(content).not.toContain('WaitPlugin')
       expect(content).not.toContain('(`maz-ui/composables/useWait`)')
       expect(content.length).toBeLessThanOrEqual(SESSION_CONTEXT_LIMIT)
     })

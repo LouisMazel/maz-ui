@@ -16,13 +16,13 @@ Never guess an API: only use documented props, events, slots and imports.
 
 ### The ecosystem by need
 
-Before writing logic by hand (a state shared between components, a timer, an event listener, an observer, a formatter, a browser API), look for the need below: these tools already exist. Read their API with `get_doc` or `search_docs` (or their page in `agent-docs`) before using them, and `search_docs` the needs that are not listed. A composable that works through a plugin needs it once in the app (`app.use(WaitPlugin)` in `main.ts`, or `mazUi.plugins` with Nuxt): that is one line, not a reason to write it by hand.
+Before writing logic by hand (a state shared between components, a timer, an event listener, an observer, a formatter, a browser API), look for the need below: these tools already exist. Read their API with `get_doc` or `search_docs` (or their page in `agent-docs`) before using them, and `search_docs` the needs that are not listed. `useToast`, `useDialog` and `useWait` work without plugin: their global options (and `aos`) go in the MazUi plugin (`app.use(MazUi, { toast, dialog, aos })`, `mazUi` with Nuxt).
 
 **State, feedback and async**
 
-- a `ref` shared by several components (or a module) for a loading or busy state: sync in progress, spinner, disabled buttons, fullscreen loader: `useWait` (`maz-ui/composables/useWait`), `app.use(WaitPlugin)` once (`maz-ui/plugins/wait`)
-- a message after an action (saved, failed, undo), instead of an `alert()` or a hand-made banner: `useToast` (`maz-ui/composables/useToast`), `app.use(ToastPlugin)` once (`maz-ui/plugins/toast`)
-- ask a confirmation or a choice from the code (`await` the answer), instead of `confirm()` or a dialog wired by hand: `useDialog` (`maz-ui/composables/useDialog`), `app.use(DialogPlugin)` once (`maz-ui/plugins/dialog`)
+- a `ref` shared by several components (or a module) for a loading or busy state: sync in progress, spinner, disabled buttons, fullscreen loader: `useWait` (`maz-ui/composables/useWait`)
+- a message after an action (saved, failed, undo), instead of an `alert()` or a hand-made banner: `useToast` (`maz-ui/composables/useToast`)
+- ask a confirmation or a choice from the code (`await` the answer), instead of `confirm()` or a dialog wired by hand: `useDialog` (`maz-ui/composables/useDialog`)
 - copy a text with a "Copied!" state, a copy button for an ID or a command, instead of `navigator.clipboard.writeText`: `MazBtnClipboard` (`maz-ui/components/MazBtnClipboard`), `useClipboard` (`maz-ui/composables/useClipboard`)
 - validate a form with a Zod, Valibot or ArkType schema (errors per field, on blur or submit): `useFormValidator` (`maz-ui/composables/useFormValidator`)
 - keep the initial values of a form (a copy that no longer follows the source): `useFreezeValue` (`maz-ui/composables/useFreezeValue`)
@@ -74,7 +74,8 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - follow a pointer drag live (sheet, slider, reorder), instead of `pointerdown` and `pointermove` listeners: `useDrag` (`maz-ui/composables/useDrag`)
 - pull to refresh: `MazPullToRefresh` (`maz-ui/components/MazPullToRefresh`), `usePullToRefresh` (`maz-ui/composables/usePullToRefresh`)
 - a tooltip on hover: `vTooltip` (`maz-ui/directives/vTooltip`)
-- an element enters the viewport (infinite scroll, lazy images, animations), instead of `new IntersectionObserver`: `useIntersectionObserver`, `useInfiniteScroll`, `useAos` (`maz-ui/composables/<name>`), `vIntersect`, `vLazyImg` (`maz-ui/directives/<name>`), `MazLazyImg`, `MazAnimatedElement` (`maz-ui/components/<name>`), `app.use(AosPlugin)` once (`maz-ui/plugins/aos`)
+- an element enters the viewport (infinite scroll, lazy images, animations), instead of `new IntersectionObserver`: `useIntersectionObserver`, `useInfiniteScroll` (`maz-ui/composables/<name>`), `vIntersect`, `vLazyImg` (`maz-ui/directives/<name>`), `MazLazyImg`, `MazAnimatedElement` (`maz-ui/components/<name>`)
+- animate elements when they appear on scroll (fade, zoom, slide), with `aos: true` in MazUi or `mazUi`: `useAos` (`maz-ui/composables/useAos`)
 - scroll position, direction or end, "back to top" or "to bottom" button, instead of `addEventListener("scroll")`: `useScroll` (`maz-ui/composables/useScroll`), `MazBtnScroll` (`maz-ui/components/MazBtnScroll`)
 - lock the page scroll, instead of `body.style.overflow`: `useScrollLock` (`maz-ui/composables/useScrollLock`)
 - enlarge an image on click, browse a gallery in fullscreen, instead of `requestFullscreen`: `vZoomImg`, `vFullscreenImg` (`maz-ui/directives/<name>`)
@@ -106,7 +107,8 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 ### Feedback, overlays and forms
 
 - `useToast()` for notifications, `useDialog()` or `MazDialogConfirm` for confirmations, `useWait()` for a loading state shared between components, `MazSkeleton` / `MazSpinner` while data loads.
-- These composables need their plugin. Vue: `app.use(ToastPlugin)` from `maz-ui/plugins/toast` (`DialogPlugin`, `WaitPlugin`, `AosPlugin` likewise). Nuxt: `mazUi: { plugins: { toast: true } }`, off by default like the directives (`mazUi.directives.vTooltip`, or import the directive).
+- These composables work without plugin. Their global options go in the MazUi plugin: `app.use(MazUi, { theme, toast: { position: 'top-right' }, dialog: { acceptText: 'Yes' } })` (Nuxt: `mazUi: { toast: {...}, dialog: {...} }`). Outside of a component (store, router guard), `useToast` and `useDialog` need the MazUi plugin, `useWait` works anywhere.
+- Animations on scroll: `aos: true` in the MazUi plugin with `import 'maz-ui/aos.css'` (Nuxt: `mazUi: { aos: true }`), then `useAos`. The directives are off by default with Nuxt (`mazUi.directives.vTooltip`, or import the directive).
 - Forms: `useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType).
 
 ### Icons
@@ -152,7 +154,7 @@ Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <fi
 
 ### Workflow
 
-0. **Know the project**: `get_project_info()` gives the installed versions, the plugins already installed, whether components and icons resolve by name, the theme presets and the components and tools the code already uses.
+0. **Know the project**: `get_project_info()` gives the installed versions, the plugins and options already set up, whether components and icons resolve by name, the theme presets and the components and tools the code already uses.
 1. **Search by need**: `search_docs("<what you need>")`, e.g. "user avatar with initials", "confirm before delete", "phone number input", "debounce search". Pick the most specific result.
 2. **Read the exact API** before writing a template: `get_component_api(["MazBtn", "MazDialog"])` (batch up to 10). Never invent a prop, event or slot.
 3. **Icons**: `find_icons("delete")` returns the icon names and their imports.

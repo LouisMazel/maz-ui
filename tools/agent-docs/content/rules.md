@@ -22,7 +22,8 @@ Never guess an API: only use documented props, events, slots and imports.
 ### Feedback, overlays and forms
 
 - `useToast()` for notifications, `useDialog()` or `MazDialogConfirm` for confirmations, `useWait()` for a loading state shared between components, `MazSkeleton` / `MazSpinner` while data loads.
-- These composables need their plugin. Vue: `app.use(ToastPlugin)` from `maz-ui/plugins/toast` (`DialogPlugin`, `WaitPlugin`, `AosPlugin` likewise). Nuxt: `mazUi: { plugins: { toast: true } }`, off by default like the directives (`mazUi.directives.vTooltip`, or import the directive).
+- These composables work without plugin. Their global options go in the MazUi plugin: `app.use(MazUi, { theme, toast: { position: 'top-right' }, dialog: { acceptText: 'Yes' } })` (Nuxt: `mazUi: { toast: {...}, dialog: {...} }`). Outside of a component (store, router guard), `useToast` and `useDialog` need the MazUi plugin, `useWait` works anywhere.
+- Animations on scroll: `aos: true` in the MazUi plugin with `import 'maz-ui/aos.css'` (Nuxt: `mazUi: { aos: true }`), then `useAos`. The directives are off by default with Nuxt (`mazUi.directives.vTooltip`, or import the directive).
 - Forms: `useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType).
 
 ### Icons
