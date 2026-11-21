@@ -114,6 +114,48 @@ describe('given the context hook of the plugin', () => {
     })
   })
 
+  describe('when the .mcp.json of the project also starts the maz-ui MCP server', () => {
+    it('then it tells to use the server of the plugin and how to disable the other one', () => {
+      installMazUi('.')
+      write('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'npx', args: ['-y', '@maz-ui/mcp'] }, 'other': { command: 'other-mcp' } } }))
+
+      const added = context()
+
+      expect(added).toContain('# maz-ui\n\nReuse the ecosystem.\n')
+      expect(added).toContain('The `.mcp.json` of the project also starts the maz-ui MCP server ("maz-ui")')
+      expect(added).toContain('`npx @maz-ui/mcp init`')
+    })
+
+    describe('when the user disabled it in the local settings', () => {
+      it('then it says nothing about it', () => {
+        installMazUi('.')
+        write('.mcp.json', JSON.stringify({ mcpServers: { ui: { command: 'maz-ui-mcp' } } }))
+        write('.claude/settings.local.json', JSON.stringify({ disabledMcpjsonServers: ['ui'] }))
+
+        expect(context()).not.toContain('.mcp.json')
+      })
+    })
+
+    describe('when the project already loads the rules', () => {
+      it('then it only adds the note', () => {
+        installMazUi('.')
+        write('.claude/rules/maz-ui.md', '# maz-ui rules\n')
+        write('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'npx', args: ['-y', '@maz-ui/mcp@5.8.0'] } } }))
+
+        expect(context()).toMatch(/^The `\.mcp\.json` of the project also starts/)
+      })
+    })
+
+    describe('when the .mcp.json is invalid', () => {
+      it('then it adds the rules alone', () => {
+        installMazUi('.')
+        write('.mcp.json', '{ invalid')
+
+        expect(context()).not.toContain('MCP server')
+      })
+    })
+  })
+
   describe('when the installed maz-ui has no agent docs', () => {
     it('then it asks to use the skill and the MCP tools', () => {
       write('node_modules/maz-ui/package.json', JSON.stringify({ name: 'maz-ui', version: '4.0.0' }))

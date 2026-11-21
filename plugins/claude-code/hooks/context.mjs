@@ -5,6 +5,7 @@
  * also after a `/clear` or a compaction, and in the subagents that write code.
  * Nothing is added outside of a project that installs maz-ui, nor when the project already loads the rules at each
  * session (an unscoped `.claude/rules/maz-ui.md`, or the maz-ui section of `AGENTS.md` imported by `CLAUDE.md`).
+ * When the `.mcp.json` of the project also starts the maz-ui MCP server, the agent is told to use the one of the plugin.
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, join, relative } from 'node:path'
@@ -88,11 +89,48 @@ function loadsRules(cwd) {
     || (/^@AGENTS\.md\s*$/m.test(claudeMd) && (read(join(cwd, 'AGENTS.md')) ?? '').includes('<!-- BEGIN:maz-ui -->'))
 }
 
+function readJson(file) {
+  try {
+    return JSON.parse(read(file) ?? '{}')
+  }
+  catch {
+    return {}
+  }
+}
+
+/** The server of the `.mcp.json` of the project that starts the maz-ui MCP server too, unless it is disabled for this user */
+function duplicateMcpServer(cwd) {
+  const servers = readJson(join(cwd, '.mcp.json')).mcpServers
+
+  if (!servers || typeof servers !== 'object')
+    return undefined
+
+  const name = Object.keys(servers).find(key => /@maz-ui\/mcp|maz-ui-mcp/.test(JSON.stringify(servers[key])))
+  const disabled = readJson(join(cwd, '.claude/settings.local.json')).disabledMcpjsonServers
+
+  return name && !(Array.isArray(disabled) && disabled.includes(name))
+    ? name
+    : undefined
+}
+
+function duplicateNote(name) {
+  return `\nThe \`.mcp.json\` of the project also starts the maz-ui MCP server ("${name}"), next to the one of this plugin, with the same tools: only use the tools of the plugin server (\`mcp__plugin_maz-ui_maz-ui__*\`). To start a single server, tell the user to run \`npx @maz-ui/mcp init\`: it disables "${name}" for them only, in \`.claude/settings.local.json\`.\n`
+}
+
+function output(event, context) {
+  process.stdout.write(JSON.stringify({
+    hookSpecificOutput: {
+      hookEventName: event,
+      additionalContext: context,
+    },
+  }))
+}
+
 const input = JSON.parse(readFileSync(0, 'utf8') || '{}')
 const cwd = input.cwd ?? process.cwd()
 const event = input.hook_event_name ?? 'SessionStart'
 
-if (SKIPPED_AGENTS.has(input.agent_type) || loadsRules(cwd))
+if (SKIPPED_AGENTS.has(input.agent_type))
   process.exit(0)
 
 const projects = mazUiProjects(cwd)
@@ -100,17 +138,24 @@ const projects = mazUiProjects(cwd)
 if (projects.length === 0)
   process.exit(0)
 
+const duplicate = duplicateMcpServer(cwd)
+const note = duplicate
+  ? duplicateNote(duplicate)
+  : ''
+
+if (loadsRules(cwd)) {
+  if (note)
+    output(event, note.trimStart())
+
+  process.exit(0)
+}
+
 const docs = join(projects[0], MAZ_UI)
 const { version } = JSON.parse(read(join(docs, 'package.json')) ?? '{}')
 const where = projects.map(project => `\`${relative(cwd, project) || '.'}\``).join(', ')
 const header = `maz-ui ${version ?? ''} is installed in ${where}. Its rules, from its docs (maz-ui Claude Code plugin):\n\n`
 const rules = [read(join(docs, 'agent-docs/agents/session-context.md')), read(join(docs, 'agent-docs/agents/claude-rule.md'))]
-  .find(content => content && header.length + content.length <= MAX_CONTEXT)
+  .find(content => content && header.length + content.length + note.length <= MAX_CONTEXT)
   ?? 'This project uses maz-ui: reuse its components, composables, directives and helpers instead of writing them by hand. Invoke the `maz-ui` skill and search the need with the `search_docs` tool of the maz-ui MCP server before writing UI code, then run `review_code` on the changed files.\n'
 
-process.stdout.write(JSON.stringify({
-  hookSpecificOutput: {
-    hookEventName: event,
-    additionalContext: `${header}${rules}`,
-  },
-}))
+output(event, `${header}${rules}${note}`)

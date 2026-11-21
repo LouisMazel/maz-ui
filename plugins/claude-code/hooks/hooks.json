@@ -1,5 +1,5 @@
 {
-  "description": "Add the maz-ui rules of the installed version to each session and subagent, and review the Vue, TypeScript and CSS files edited by Claude against the installed maz-ui: after each edit, and at the end of each task for the files written another way (Bash)",
+  "description": "Add the maz-ui rules of the installed version to each session and subagent (and point to the plugin MCP server when the .mcp.json of the project starts a second one), and review the Vue, TypeScript and CSS files edited by Claude against the installed maz-ui: after each edit, and at the end of each task for the files written another way (Bash)",
   "hooks": {
     "SessionStart": [
       {
