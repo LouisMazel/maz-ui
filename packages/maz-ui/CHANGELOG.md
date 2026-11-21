@@ -1,5 +1,37 @@
 # Change Log
 
+## v5.8.1 (2026-11-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** Stop useIdleTimeout, useTimer and useMutationObserver on unmount ([e36e7f846](https://github.com/LouisMazel/maz-ui/commit/e36e7f846))
+
+  They now clean up when the component is unmounted (or the `effectScope` stopped): the idle listeners are removed, the timer no longer calls its callback, and the observer is disconnected even when the observed element outlives the component. The `onBeforeUnmount` calls are no longer needed.
+
+- **maz-ui:** Restore the maz-ui/components/types subpath ([08ddc8e22](https://github.com/LouisMazel/maz-ui/commit/08ddc8e22))
+
+  The types of maz-ui/components/types (MazSize, MazColor, MazSizeUnit...) resolve again since 5.8.0.
+
+### 📦 Build
+
+- **deps:** Update 7 dependencies (patch and minor) ([12d93088f](https://github.com/LouisMazel/maz-ui/commit/12d93088f))
+
+  - @nuxt/devtools-kit ^4.1.0 -> ^4.2.0
+  - dompurify ^3.4.17 -> ^3.4.18
+  - libphonenumber-js ^1.13.16 -> ^1.13.17
+  - marked ^18.2.0 -> ^18.2.1
+  - postcss-html ^2.0.0 -> ^2.0.1
+  - stylelint-config-recess-order ^7.10.0 -> ^7.10.1
+  - stylelint-plugin-tailwindcss ^3.2.2 -> ^3.2.4
+
+  Code adapted to the new versions by an AI agent (Claude Code), then checked by the project's checks.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.0 (2026-11-20)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0...v5.8.0)

@@ -1,5 +1,24 @@
 # Changelog
 
+## v5.8.1 (2026-11-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)
+
+### 💅 Refactors
+
+- **mcp:** Suggest the maz-ui composables for hand-written browser logic ([8fca48b60](https://github.com/LouisMazel/maz-ui/commit/8fca48b60))
+
+  - report `@drop` / `@dragover` in templates and `addEventListener('drop')`: `useDropzone` or MazDropzone
+  - report `touchstart` / `pointerdown` listeners: `useSwipe` / `useDrag`
+  - report `new Intl.DisplayNames`: `useDisplayNames`
+  - report an `inject` followed by a `throw`: `useInjectStrict`
+  - more VueUse functions (`useTimeAgo`, `useTimeoutFn`, `useMutationObserver`, `usePointerSwipe`), and `fuse.js`, `leven`, `reading-time`
+  - the server instructions ask to call `search_docs` before writing browser logic by hand
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.0 (2026-11-20)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.7.0...v5.8.0)
