@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
 
 export interface MazAnimatedElementProps {
   /**
@@ -32,13 +33,18 @@ const animatedClass = computed(() => `animate-slide-${direction}-blur`)
 const element = ref<HTMLDivElement>()
 const isPending = ref(false)
 
-let observer: IntersectionObserver | null = null
-
 function isInViewport(el: HTMLElement) {
   const { top, bottom } = el.getBoundingClientRect()
 
   return top < globalThis.innerHeight && bottom > 0
 }
+
+const { resume } = useIntersectionObserver(element, (entries) => {
+  if (entries.at(-1)?.isIntersecting)
+    isPending.value = false
+  else if (!once)
+    isPending.value = true
+}, { once, immediate: false })
 
 onMounted(() => {
   if (!element.value || globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
@@ -46,25 +52,7 @@ onMounted(() => {
   }
 
   isPending.value = !isInViewport(element.value)
-
-  observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) {
-      isPending.value = false
-
-      if (once) {
-        observer?.unobserve(entry.target)
-      }
-    }
-    else if (!once) {
-      isPending.value = true
-    }
-  })
-
-  observer.observe(element.value)
-})
-
-onBeforeUnmount(() => {
-  observer?.disconnect()
+  resume()
 })
 </script>
 

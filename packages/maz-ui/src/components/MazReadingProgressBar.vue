@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types.ts'
-import { throttle } from '@maz-ui/utils/helpers/throttle'
 import {
   computed,
   nextTick,
-  onBeforeUnmount,
   onMounted,
   ref,
   watch,
 } from 'vue'
+import { useScroll } from '../composables/useScroll.ts'
 
 defineOptions({
   inheritAttrs: false,
@@ -85,8 +84,10 @@ watch(
   },
 )
 
-const handleScroll = throttle(() => {
-  const scrollPosition = window.scrollY
+const { y } = useScroll(undefined, { onScroll: handleScroll })
+
+function handleScroll() {
+  const scrollPosition = y.value
 
   if (scrollPosition >= 0 && scrollPosition <= elementHeight.value) {
     const progress = (scrollPosition / elementHeight.value) * 100
@@ -103,7 +104,7 @@ const handleScroll = throttle(() => {
   else {
     progressBarWidth.value = '0%'
   }
-}, 15)
+}
 
 async function setupScroll() {
   if (elementHeight.value === 0) {
@@ -119,18 +120,10 @@ async function setupScroll() {
     elementHeight.value
       = element.offsetHeight + element.offsetTop + offset - window.innerHeight
   }
-
-  window.addEventListener('scroll', handleScroll, {
-    passive: true,
-  })
 }
 
 onMounted(() => {
   setupScroll()
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll)
 })
 </script>
 

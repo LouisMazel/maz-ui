@@ -180,7 +180,7 @@ describe('given mazCardSpotlight component', () => {
 
       expect(globalThis.IntersectionObserver).toHaveBeenCalledWith(
         expect.any(Function),
-        { threshold: 0 },
+        { root: undefined, rootMargin: '0px', threshold: 0 },
       )
       expect(intersectionObserverInstance.observe).toHaveBeenCalled()
     })

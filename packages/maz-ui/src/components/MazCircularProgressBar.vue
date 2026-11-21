@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import type { SVGAttributes } from 'vue'
 import type { MazColor, MazSizeUnit } from './types.ts'
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
+import { computed, defineAsyncComponent, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
 
 export interface MazCircularProgressBarProps {
   /**
@@ -159,29 +160,19 @@ const isVisible = ref(false)
 const circleRef = ref<HTMLElement | null>(null)
 const hasBeenAnimated = ref(false)
 
-let observer: IntersectionObserver | null = null
+useIntersectionObserver(circleRef, (entries) => {
+  const isIntersecting = !!entries.at(-1)?.isIntersecting
 
-onMounted(() => {
-  observer = new IntersectionObserver(([entry]) => {
-    if (!isVisible.value || !once) {
-      isVisible.value = entry.isIntersecting
-    }
-
-    if (once && circleRef.value) {
-      observer?.unobserve(circleRef.value)
-
-      circleRef.value?.addEventListener('animationend', () => {
-        hasBeenAnimated.value = true
-      })
-    }
-  })
-
-  if (circleRef.value) {
-    observer.observe(circleRef.value)
+  if (!isVisible.value || !once) {
+    isVisible.value = isIntersecting
   }
-})
 
-onBeforeUnmount(() => observer?.disconnect())
+  if (once && isIntersecting) {
+    circleRef.value?.addEventListener('animationend', () => {
+      hasBeenAnimated.value = true
+    }, { once: true })
+  }
+}, { once })
 </script>
 
 <template>
