@@ -1,5 +1,6 @@
 export * from './useAos.ts'
 export * from './useBreakpoints.ts'
+export * from './useClipboard.ts'
 export * from './useDialog.ts'
 export * from './useDisplayNames.ts'
 export * from './useDrag.ts'

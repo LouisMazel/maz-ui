@@ -10,6 +10,7 @@ import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { MazClipboard } from '@maz-ui/icons/lazy/MazClipboard'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, getCurrentInstance, inject, nextTick, onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch } from 'vue'
+import { useClipboard } from '../composables/useClipboard.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { vTooltip } from '../directives/vTooltip.ts'
 import { loadShiki } from './MazCodeHighlight/shiki.ts'
@@ -149,8 +150,7 @@ const isDark = computed(() => {
     return !!themeState.value.isDark
   return hasDarkAncestor.value ?? htmlHasDarkClass()
 })
-const copied = ref(false)
-let copyResetTimer: ReturnType<typeof setTimeout> | undefined
+const { copy: copyText, copied } = useClipboard()
 
 function escapeHtml(value: string): string {
   return value
@@ -334,17 +334,9 @@ async function highlightFull() {
 
 async function copy() {
   const text = resolvedCopyValue.value
-  if (!text || typeof navigator === 'undefined' || !navigator.clipboard)
-    return
-  try {
-    await navigator.clipboard.writeText(text)
-    copied.value = true
-    clearTimeout(copyResetTimer)
-    copyResetTimer = setTimeout(() => {
-      copied.value = false
-    }, 1500)
-  }
-  catch {}
+
+  if (text)
+    await copyText(text)
 }
 
 let observer: MutationObserver | undefined
@@ -429,7 +421,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   observer?.disconnect()
-  clearTimeout(copyResetTimer)
 })
 
 watch([resolvedCode, resolvedTheme], highlight, { immediate: true })
