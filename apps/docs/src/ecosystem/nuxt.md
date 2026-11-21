@@ -468,6 +468,7 @@ const composables = {
   useInfiniteScroll: true, // Load the next page at the end of a list
   useScrollLock: true, // Lock the scroll of the page
   useIntersectionObserver: true, // Element enters or leaves the viewport
+  useResizeObserver: true, // Size of an element
 
   // 🔧 Advanced
   useFreezeValue: true, // Freeze reactive values

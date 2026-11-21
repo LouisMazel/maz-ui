@@ -47,6 +47,10 @@ export const composables = {
       link: '/composables/use-relative-time',
     },
     {
+      text: withNewBadge('useResizeObserver'),
+      link: '/composables/use-resize-observer',
+    },
+    {
       text: withNewBadge('useScroll'),
       link: '/composables/use-scroll',
     },
