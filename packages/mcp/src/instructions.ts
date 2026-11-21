@@ -11,7 +11,7 @@ export function buildInstructions(context: ServerContext): string {
 Use these tools whenever you write, refactor or review Vue/Nuxt UI code, styles or helpers in a project that uses maz-ui. Most UI elements, helpers and icons already exist: reuse them instead of re-implementing them.
 
 Workflow:
-0. get_project_info() once in a project you do not know: Vue or Nuxt, versions, plugins installed (useToast, useDialog and useWait need theirs), icons by name or imported, the Maz* components it already uses.
+0. get_project_info() once in a project you do not know: Vue or Nuxt, versions, the plugins and options to set up, icons by name or imported, the Maz* components it already uses.
 1. search_docs("<the need in plain words>") BEFORE creating a component, composable, helper, icon or style ("confirm before delete", "phone input", "debounce search", "dark mode toggle").
 2. get_component_api(["MazBtn", ...]) BEFORE writing a template with Maz* components (compact: true for the ones you know): use only documented props, values, events and slots. It lists the example sections: get_doc({ id, sections }) reads one.
 3. find_icons("<meaning>") for icons: never inline SVG nor another icon library.
