@@ -5,11 +5,10 @@ import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { GrammarState, ThemedToken, TokensResult } from 'shiki/core'
 import type { Ref, VNode } from 'vue'
 import type { MazSize } from './types.ts'
-import { MazArrowDown } from '@maz-ui/icons/lazy/MazArrowDown'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { MazClipboard } from '@maz-ui/icons/lazy/MazClipboard'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, defineAsyncComponent, getCurrentInstance, inject, nextTick, onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch } from 'vue'
+import { computed, defineAsyncComponent, getCurrentInstance, inject, nextTick, onMounted, onUnmounted, ref, shallowRef, useSlots, useTemplateRef, watch } from 'vue'
 import { useClipboard } from '../composables/useClipboard.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { vTooltip } from '../directives/vTooltip.ts'
@@ -124,6 +123,7 @@ const { theme, lightTheme, darkTheme, colorMode, rounded, copyable, size, wrap, 
 })
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazBtnScroll = defineAsyncComponent(() => import('./MazBtnScroll.vue'))
 
 const { t } = useTranslations()
 
@@ -349,8 +349,10 @@ function codeElement() {
   return contentRef.value?.querySelector<HTMLElement>('pre') ?? undefined
 }
 
-/** The user scrolled the block and its last line is out of view: the scroll-to-bottom button shows. */
+/** The last line of the block is out of view: the scroll-to-bottom button shows. */
 const awayFromBottom = ref(false)
+/** The `pre` of the last render: the target of the scroll-to-bottom button */
+const preElement = shallowRef<HTMLElement>()
 
 function isAtBottom(element: HTMLElement) {
   return element.scrollHeight - element.scrollTop - element.clientHeight <= 4
@@ -381,21 +383,33 @@ function scrollToBottom() {
   awayFromBottom.value = false
 }
 
-watch(highlightedHtml, async () => {
-  await nextTick()
+/** Reads the `pre` of the last render, restores its scroll (or follows the bottom) and shows the button when needed */
+function syncCodeElement(restore: boolean) {
   const element = codeElement()
+  preElement.value = element
   if (!element)
     return
   if (follow && scroll.atBottom) {
     scrollToBottom()
     return
   }
-  element.scrollTop = scroll.top
-  element.scrollLeft = scroll.left
-  // Shown once the user scrolled up, not for a long block displayed from its top.
-  if (awayFromBottom.value)
-    updateAwayFromBottom(element)
+  if (restore) {
+    element.scrollTop = scroll.top
+    element.scrollLeft = scroll.left
+  }
+  updateAwayFromBottom(element)
+}
+
+watch(highlightedHtml, async () => {
+  await nextTick()
+  syncCodeElement(true)
 })
+
+/** The block follows its own scroll state (`follow`): it scrolls itself, instead of MazBtnScroll */
+function onScrollToBottomClick(event: MouseEvent) {
+  event.preventDefault()
+  scrollToBottom()
+}
 
 defineExpose({
   /** Scrolls the block to its last line and follows the next ones again (with `follow`). */
@@ -407,6 +421,7 @@ function updateHasDarkAncestor() {
 }
 
 onMounted(() => {
+  syncCodeElement(false)
   updateHasDarkAncestor()
   observer = new MutationObserver(updateHasDarkAncestor)
   let node: HTMLElement | null = rootRef.value
@@ -440,29 +455,33 @@ watch([resolvedCode, resolvedTheme], highlight, { immediate: true })
       v-tooltip="{
         text: copied ? copiedLabel : copyLabel,
         color: 'surface',
+        position: 'left',
       }"
       size="xs"
-      color="transparent"
-      outlined
-      class="m-code-highlight__copy-btn maz:absolute maz:top-2 maz:right-2 maz:opacity-0 maz:transition-opacity maz:group-hover:opacity-100 maz:focus-visible:opacity-100"
+      color="surface"
+      class="m-code-highlight__copy-btn maz:absolute maz:top-2 maz:right-3 maz:border! maz:border-divider! maz:opacity-0 maz:shadow-elevation maz:transition-opacity maz:group-hover:opacity-100 maz:focus-visible:opacity-100"
       :aria-label="copied ? copiedLabel : copyLabel"
       :icon="copied ? MazCheck : MazClipboard"
       @click="copy"
     />
-    <MazBtn
-      v-if="awayFromBottom"
+    <MazBtnScroll
+      v-if="preElement"
       v-tooltip="{
         text: scrollToBottomLabel,
         color: 'surface',
         position: 'left',
       }"
+      to="bottom"
+      :target="preElement"
+      :visible="awayFromBottom"
       size="xs"
       color="surface"
-      fab
-      class="m-code-highlight__bottom-btn maz:absolute maz:right-3 maz:bottom-3 maz:shadow-elevation"
-      :aria-label="scrollToBottomLabel"
-      :icon="MazArrowDown"
-      @click="scrollToBottom"
+      :progress="false"
+      bordered
+      offset="0.75rem"
+      :label="scrollToBottomLabel"
+      class="m-code-highlight__bottom-btn"
+      @click="onScrollToBottomClick"
     />
   </div>
 </template>

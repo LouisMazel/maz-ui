@@ -732,28 +732,35 @@ describe('given a MazCodeHighlight longer than its max height', () => {
 
   const bottomButton = '.m-code-highlight__bottom-btn'
 
-  describe('when the user scrolls up', () => {
-    it('then a button scrolls back to the last line, without follow too', async () => {
+  function isBottomButtonShown(wrapper: ReturnType<typeof mount>) {
+    const button = wrapper.find(bottomButton)
+
+    return button.exists() && button.find('button').exists() && !button.classes().includes('m-btn-scroll-leave-active')
+  }
+
+  describe('when it is displayed from its top', () => {
+    it('then a button scrolls to the last line, without follow too', async () => {
       await withLayout(500, async () => {
         const wrapper = mount(MazCodeHighlight, {
           props: { code: 'one\ntwo', maxHeight: '4rem' },
         })
         await flushPromises()
-        const pre = () => wrapper.find('pre').element as HTMLElement
-        expect(wrapper.find(bottomButton).exists()).toBe(false)
-
-        pre().scrollTop = 120
-        pre().dispatchEvent(new Event('scroll'))
-        // MazBtn is an async component: wait for its chunk before looking for the button.
+        // MazBtnScroll is an async component: wait for its chunk before looking for the button.
         await vi.dynamicImportSettled()
         await flushPromises()
-        const button = wrapper.find(bottomButton)
-        expect(button.exists()).toBe(true)
+        const pre = () => wrapper.find('pre').element as HTMLElement
+        const button = wrapper.find(`${bottomButton} button`)
+        expect(isBottomButtonShown(wrapper)).toBe(true)
 
         await button.trigger('click')
         await flushPromises()
         expect(pre().scrollTop).toBe(500)
-        expect(wrapper.find(bottomButton).exists()).toBe(false)
+        expect(isBottomButtonShown(wrapper)).toBe(false)
+
+        pre().scrollTop = 120
+        pre().dispatchEvent(new Event('scroll'))
+        await flushPromises()
+        expect(isBottomButtonShown(wrapper)).toBe(true)
         wrapper.unmount()
       })
     })
@@ -768,11 +775,11 @@ describe('given a MazCodeHighlight longer than its max height', () => {
         await flushPromises()
         const pre = () => wrapper.find('pre').element as HTMLElement
         pre().dispatchEvent(new Event('scroll'))
-        // MazBtn is an async component: wait for its chunk before looking for the button.
+        // MazBtnScroll is an async component: wait for its chunk before looking for the button.
         await vi.dynamicImportSettled()
         await flushPromises()
 
-        expect(wrapper.find(bottomButton).exists()).toBe(false)
+        expect(isBottomButtonShown(wrapper)).toBe(false)
         wrapper.unmount()
       })
     })
@@ -792,11 +799,11 @@ describe('given a MazCodeHighlight longer than its max height', () => {
         const pre = () => wrapper.find('pre').element as HTMLElement
         pre().scrollTop = 0
         pre().dispatchEvent(new Event('scroll'))
-        // MazBtn is an async component: wait for its chunk before looking for the button.
+        // MazBtnScroll is an async component: wait for its chunk before looking for the button.
         await vi.dynamicImportSettled()
         await flushPromises()
 
-        expect(wrapper.find(bottomButton).attributes('aria-label')).toBe('Aller en bas')
+        expect(wrapper.find(`${bottomButton} button`).attributes('aria-label')).toBe('Aller en bas')
         wrapper.unmount()
       })
     })
