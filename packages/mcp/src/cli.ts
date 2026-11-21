@@ -7,7 +7,7 @@ import { Buffer } from 'node:buffer'
 import { existsSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
-import { AGENT_TARGETS, detectAgentTargets, detectPackageManager, diagnoseAgents, findProjectPackage, isClaudePluginEnabled, readPackageVersion, setupAgents } from '@maz-ui/node'
+import { AGENT_TARGETS, detectAgentTargets, detectPackageManager, diagnoseAgents, findProjectPackage, isClaudePluginEnabled, isCodexPluginEnabled, readPackageVersion, setupAgents } from '@maz-ui/node'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { createContext } from './context.ts'
 import { startStdioServer } from './server.ts'
@@ -29,7 +29,7 @@ init options:
   --paths <globs>     Comma separated globs the Claude Code rule is scoped to, or all (default: the workspaces that use maz-ui)
   --no-rules          Only register the MCP server (no rule file, no AGENTS.md section)
   --no-mcp            Do not register the MCP server
-  --no-hooks          Do not register the Claude Code hook that reviews each edited file
+  --no-hooks          Do not register the review of each edited file (Claude Code hook, OpenCode plugin)
   --dry-run           Show the changes without writing them
   --remove            Remove what init added
 
@@ -76,6 +76,7 @@ function printChanges(changes: SetupAgentsChange[], dryRun: boolean): void {
 }
 
 export const CLAUDE_PLUGIN_INSTALL = 'claude plugin install maz-ui --marketplace LouisMazel/maz-ui'
+export const CODEX_PLUGIN_INSTALL = 'codex plugin marketplace add LouisMazel/maz-ui && codex plugin add maz-ui@maz-ui'
 
 const INSTALL_DEV_COMMANDS = {
   pnpm: 'pnpm add -D',
@@ -190,8 +191,11 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
   if (!remove && targets.includes('claude') && !isClaudePluginEnabled(cwd))
     console.log(`\nClaude Code: install the maz-ui plugin for your user, it brings the maz-ui skill, the MCP server and the review hook to all your projects, even without init: \`${CLAUDE_PLUGIN_INSTALL}\` (or \`/plugin marketplace add LouisMazel/maz-ui\` then \`/plugin install maz-ui@maz-ui\` in Claude Code).`)
 
+  if (!remove && targets.includes('codex') && !isCodexPluginEnabled())
+    console.log(`\nCodex: install the maz-ui plugin for your user, it brings the maz-ui skill, the MCP server and the review hooks to all your projects: \`${CODEX_PLUGIN_INSTALL}\`. Codex reads .codex/config.toml in the trusted projects only.`)
+
   if (!remove && rules && targets.includes('agents-md'))
-    console.log(`\nCodex, Cline and Zed read AGENTS.md but have no MCP config in the project. To give them the MCP server too, add \`${serverCommand}\` to their global MCP config.`)
+    console.log(`\nCline and Zed read AGENTS.md but have no MCP config in the project. To give them the MCP server too, add \`${serverCommand}\` to their global MCP config.`)
 
   return 0
 }
@@ -254,19 +258,13 @@ export function runDoctor(cwd: string): number {
   return 1
 }
 
-/** Claude Code hook: exit code 2 sends the findings back to the agent */
+/** Claude Code and Codex hook: exit code 2 sends the findings back to the agent */
 async function runReviewHook(context: ServerContext, cwd: string, framework: Framework | undefined, docsDir: string | undefined): Promise<number> {
-  const { reviewHook } = await import('./review/hook.ts')
-  const projects = new Map<string, ServerContext['knowledge']>()
+  const { knowledgeByProject, reviewHook } = await import('./review/hook.ts')
   // `--docs` forces the docs of every file
   const knowledgeFor = docsDir
     ? undefined
-    : (directory: string): ServerContext['knowledge'] => {
-        const knowledge = projects.get(directory) ?? createContext({ cwd: directory }).knowledge
-
-        projects.set(directory, knowledge)
-        return knowledge
-      }
+    : knowledgeByProject()
   const message = await reviewHook(JSON.parse(await readStdin() || '{}'), { knowledge: context.knowledge, knowledgeFor, cwd, framework })
 
   if (!message)

@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process'
 import { realpathSync, renameSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { cleanTempDirs, createTempDir, getKnowledge, writeFile } from '../../__tests__/helpers.ts'
-import { changedFiles, mazUiProjectOf, reviewHook } from '../hook.ts'
+import { changedFiles, mazUiProjectOf, patchFiles, reviewEdits, reviewHook } from '../hook.ts'
 
 const NATIVE_BUTTON = '<template><button>b</button></template>'
 
@@ -110,6 +110,51 @@ describe('given the review hook', () => {
       writeFile(cwd, 'src/Clean.ts', 'export const a = 1')
 
       expect(await review({ hook_event_name: 'Stop' }, cwd)).toBeUndefined()
+    })
+  })
+})
+
+describe('given an apply_patch of Codex', () => {
+  describe('when the patch adds, updates and moves files', () => {
+    it('then it lists the files it writes', () => {
+      const patch = '*** Begin Patch\n*** Add File: src/New.vue\n+<template />\n*** Update File: src/Old.vue\n*** Move to: src/Moved.vue\n@@\n-a\n+b\n*** Delete File: src/Gone.vue\n*** End Patch\n'
+
+      expect(patchFiles(patch)).toEqual(['src/New.vue', 'src/Old.vue', 'src/Moved.vue'])
+    })
+  })
+
+  describe('when the PostToolUse hook of Codex receives the patch', () => {
+    it('then it reviews the files of the patch', async () => {
+      const cwd = createRepository()
+      writeFile(cwd, 'src/Patched.vue', NATIVE_BUTTON)
+
+      const message = await review({ hook_event_name: 'PostToolUse', cwd, tool_input: { command: '*** Begin Patch\n*** Add File: src/Patched.vue\n+<template><button>b</button></template>\n*** End Patch' } }, cwd)
+
+      expect(message).toContain('src/Patched.vue')
+      expect(message).toContain('[prefer-maz-component]')
+    })
+  })
+
+  describe('when the tool input has neither a file nor a patch', () => {
+    it('then nothing is reviewed', async () => {
+      const cwd = createRepository()
+
+      expect(await review({ hook_event_name: 'PostToolUse', cwd, tool_input: {} }, cwd)).toBeUndefined()
+    })
+  })
+})
+
+describe('given the review of the edits of an agent', () => {
+  describe('when the edited files are given at the end of a task', () => {
+    it('then only these files are reviewed', async () => {
+      const cwd = createRepository()
+      writeFile(cwd, 'src/Edited.vue', NATIVE_BUTTON)
+      writeFile(cwd, 'src/Other.vue', NATIVE_BUTTON)
+
+      const message = await reviewEdits({ files: ['src/Edited.vue'], final: true }, { knowledge: getKnowledge(), cwd })
+
+      expect(message).toContain('src/Edited.vue')
+      expect(message).not.toContain('Other.vue')
     })
   })
 })
