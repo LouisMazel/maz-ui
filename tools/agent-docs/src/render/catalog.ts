@@ -72,6 +72,11 @@ export function catalogProblems(catalog: CatalogGroup[], lookup: CatalogLookup, 
   ]
 }
 
+/** A composable documented by its page and by the page of its feature is listed once */
+function uniqueTools(tools: CatalogTool[]): CatalogTool[] {
+  return tools.filter((tool, index) => tools.findIndex(other => other.symbol === tool.symbol && other.specifier === tool.specifier) === index)
+}
+
 /** Symbols only: the imports are a `search_docs` away */
 function renderCompactTools(tools: CatalogTool[]): string {
   return tools.map(tool => tool.specifier.startsWith('maz-ui/plugins/')
@@ -82,7 +87,7 @@ function renderCompactTools(tools: CatalogTool[]): string {
 /** The examples in parentheses of a need, left out of the compact catalog (the code ones are kept: they are the triggers) */
 const ASIDE = / \([^()`]*\)/g
 
-const COMPACT_INTRO = 'Before writing logic by hand, look for the need below: these tools already exist. `search_docs` gives their import and API (or `node_modules/maz-ui/agent-docs`). A plugin (`app.use(...)`) is one line in `main.ts` (`mazUi.plugins` with Nuxt).'
+const COMPACT_INTRO = 'Before writing logic by hand, look for the need below: these tools already exist. `search_docs` gives their import and API (or `node_modules/maz-ui/agent-docs`). `useToast`, `useDialog` and `useWait` need no plugin.'
 
 export interface RenderCatalogOptions {
   /** Symbols without their imports and a short intro, for the context loaded at the start of each session (10,000 characters at most) */
@@ -93,13 +98,13 @@ export interface RenderCatalogOptions {
 export function renderCatalog(catalog: CatalogGroup[], lookup: CatalogLookup, { compact = false }: RenderCatalogOptions = {}): string {
   const groups = catalog.map(({ title, needs }) => {
     const lines = needs.flatMap(({ need, docs, symbols }) => {
-      const tools = docs.flatMap((id) => {
+      const tools = uniqueTools(docs.flatMap((id) => {
         const page = lookup(id)
 
         return page
           ? toolsOf(page, symbols)
           : []
-      })
+      }))
 
       return tools.length > 0
         ? [compact
@@ -116,7 +121,7 @@ export function renderCatalog(catalog: CatalogGroup[], lookup: CatalogLookup, { 
 
   return `### The ecosystem by need
 
-Before writing logic by hand (a state shared between components, a timer, an event listener, an observer, a formatter, a browser API), look for the need below: these tools already exist. Read their API with \`get_doc\` or \`search_docs\` (or their page in \`agent-docs\`) before using them, and \`search_docs\` the needs that are not listed. A composable that works through a plugin needs it once in the app (\`app.use(WaitPlugin)\` in \`main.ts\`, or \`mazUi.plugins\` with Nuxt): that is one line, not a reason to write it by hand.
+Before writing logic by hand (a state shared between components, a timer, an event listener, an observer, a formatter, a browser API), look for the need below: these tools already exist. Read their API with \`get_doc\` or \`search_docs\` (or their page in \`agent-docs\`) before using them, and \`search_docs\` the needs that are not listed. \`useToast\`, \`useDialog\` and \`useWait\` work without plugin: their global options (and \`aos\`) go in the MazUi plugin (\`app.use(MazUi, { toast, dialog, aos })\`, \`mazUi\` with Nuxt).
 
 ${groups.join('\n\n')}`
 }
