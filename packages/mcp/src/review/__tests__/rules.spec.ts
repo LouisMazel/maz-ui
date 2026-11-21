@@ -1205,6 +1205,7 @@ describe('given the hand-written helpers', () => {
       ['const mobile = window.matchMedia(\'(max-width: 768px)\')', 'prefer-ecosystem', 'warning', 'useBreakpoints'],
       ['document.addEventListener(\'visibilitychange\', onChange)', 'prefer-ecosystem', 'warning', 'useUserVisibility'],
       ['const observer = new MutationObserver(onMutation)', 'prefer-ecosystem', 'warning', 'useMutationObserver'],
+      ['const observer = new ResizeObserver(onResize)', 'prefer-ecosystem', 'warning', 'useResizeObserver'],
       ['zone.addEventListener(\'drop\', onDrop)', 'prefer-ecosystem', 'warning', 'useDropzone'],
       ['el.addEventListener(\'touchstart\', onStart)', 'prefer-ecosystem', 'info', 'useSwipe'],
       ['const names = new Intl.DisplayNames([\'en\'], { type: \'region\' })', 'prefer-ecosystem', 'warning', 'useDisplayNames'],

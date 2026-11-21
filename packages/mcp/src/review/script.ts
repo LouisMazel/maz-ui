@@ -78,6 +78,8 @@ const THIRD_PARTY_RULES: ThirdPartyRule[] = [
       useDocumentVisibility: '`useUserVisibility` from `maz-ui/composables/useUserVisibility`',
       useDropZone: 'MazDropzone or `useDropzone` (`maz-ui/composables/useDropzone`)',
       useMutationObserver: '`useMutationObserver` from `maz-ui/composables/useMutationObserver`',
+      useResizeObserver: '`useResizeObserver` from `maz-ui/composables/useResizeObserver`',
+      useElementSize: '`useResizeObserver` from `maz-ui/composables/useResizeObserver` (`width`, `height`)',
       useTimeAgo: '`useRelativeTime` from `maz-ui/composables/useRelativeTime`',
       useTimeoutFn: '`useTimer` from `maz-ui/composables/useTimer`',
       usePointerSwipe: '`useSwipe` (`maz-ui/composables/useSwipe`) or `useDrag` (`maz-ui/composables/useDrag`)',
@@ -943,6 +945,13 @@ const HANDWRITTEN_PATTERNS: HandwrittenPattern[] = [
     severity: 'warning',
     message: 'Creates a `MutationObserver` by hand.',
     suggestion: 'Use `useMutationObserver()` from `maz-ui/composables/useMutationObserver` (follows a template ref, disconnected on unmount).',
+  },
+  {
+    regex: /\bnew\s+ResizeObserver\(/g,
+    rule: 'prefer-ecosystem',
+    severity: 'warning',
+    message: 'Creates a `ResizeObserver` by hand.',
+    suggestion: 'Use `useResizeObserver(target, callback?)` from `maz-ui/composables/useResizeObserver`: `width`, `height`, follows a template ref, disconnected on unmount. For the size of the window: `useWindowSize` or `useBreakpoints`.',
   },
   {
     regex: /addEventListener\(\s*['"`](?:drop|dragover|dragenter)['"`]/g,

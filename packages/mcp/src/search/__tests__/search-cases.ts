@@ -383,6 +383,11 @@ export const SEARCH_CASES: SearchCase[] = [
     rank: 3,
   },
   {
+    query: 'width of an element when it is resized',
+    expected: ['composables/use-resize-observer'],
+    rank: 3,
+  },
+  {
     query: 'lock body scroll',
     expected: ['composables/use-scroll-lock'],
     rank: 1,
