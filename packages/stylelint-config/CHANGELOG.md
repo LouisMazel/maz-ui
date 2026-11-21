@@ -1,5 +1,27 @@
 # Changelog
 
+## @maz-ui/stylelint-config@5.4.1 (2026-11-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/stylelint-config@5.4.0...@maz-ui/stylelint-config@5.4.1)
+
+### 📦 Build
+
+- **deps:** Update 7 dependencies (patch and minor) ([12d93088f](https://github.com/LouisMazel/maz-ui/commit/12d93088f))
+
+  - @nuxt/devtools-kit ^4.1.0 -> ^4.2.0
+  - dompurify ^3.4.17 -> ^3.4.18
+  - libphonenumber-js ^1.13.16 -> ^1.13.17
+  - marked ^18.2.0 -> ^18.2.1
+  - postcss-html ^2.0.0 -> ^2.0.1
+  - stylelint-config-recess-order ^7.10.0 -> ^7.10.1
+  - stylelint-plugin-tailwindcss ^3.2.2 -> ^3.2.4
+
+  Code adapted to the new versions by an AI agent (Claude Code), then checked by the project's checks.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## @maz-ui/stylelint-config@5.4.0 (2026-11-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...@maz-ui/stylelint-config@5.4.0)
