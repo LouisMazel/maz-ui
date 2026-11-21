@@ -170,7 +170,7 @@ Keep importing `maz-ui/style.css` as usual. The build prints a report:
 ### How it works
 
 1. At the build of maz-ui, `dist/css/purge-manifest.json` lists every class of `style.css`, the public utilities, and for each entry (`components/MazBtn`, `plugins/toast`, `directives/vTooltip`...) the classes it renders, with the entries it imports.
-2. In your build, the plugin scans the source files of the project and finds the entries you use by their names: `MazBtn`, `<maz-btn>`, `LazyMazBtn`, `useToast`, `v-tooltip`, `ToastPlugin`... A namespace import of a barrel (`import * as components from 'maz-ui/components'`) keeps every component. It also finds the public utilities used (`text-title-1`, `padded-container`...).
+2. In your build, the plugin scans the source files of the project and finds the entries you use by their names: `MazBtn`, `<maz-btn>`, `LazyMazBtn`, `useToast`, `v-tooltip`, `AosPlugin`... A namespace import of a barrel (`import * as components from 'maz-ui/components'`) keeps every component. It also finds the public utilities used (`text-title-1`, `padded-container`...).
 3. When Vite transforms a CSS file, the plugin removes the rules of the unused entries and utilities, before the hash of the asset is computed, so the cache stays correct. It also removes the classes of `main.css` that no component renders.
 4. At the end of the build, it checks the final JS and HTML: a purged class found there prints a warning, see [Bundle check](#bundle-check).
 
@@ -203,7 +203,7 @@ All options are optional.
 | Option | Type | Description |
 | --- | --- | --- |
 | `content` | `string[]` | Globs of the files that use maz-ui, relative to the root of the project. Added to the defaults |
-| `entries` | `string[]` | Entries of maz-ui to keep even if the plugin does not find them in the code: a component (`MazBtn`), a directive (`vTooltip`), a plugin (`plugins/toast`) |
+| `entries` | `string[]` | Entries of maz-ui to keep even if the plugin does not find them in the code: a component (`MazBtn`), a directive (`vTooltip`), a plugin (`plugins/aos`) |
 | `safelist` | `(string \| RegExp)[]` | Classes to keep: `maz:` classes of the components or public utilities (`text-title-1`, `/^rich-text/`) |
 | `report` | `boolean` | Print the CSS saved by the purge (default: `true`) |
 
@@ -227,7 +227,7 @@ The default scan ignores `node_modules`, the globs of `content` do not: add the 
 MazUiPurgeCss({
   content: ['node_modules/@acme/ui/dist/**/*.js'],
   // or
-  entries: ['MazBtn', 'MazDialog', 'plugins/toast', 'vTooltip'],
+  entries: ['MazBtn', 'MazDialog', 'plugins/aos', 'vTooltip'],
 })
 ```
 

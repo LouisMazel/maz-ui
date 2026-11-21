@@ -7,7 +7,7 @@ export interface NuxtAutoImports {
   components: string[]
   /** Composables auto-imported by default */
   composables: string[]
-  /** Composables auto-imported when the matching `mazUi.plugins.<name>` option is enabled */
+  /** Composables auto-imported when the matching `mazUi.<name>` option is enabled */
   pluginComposables: Record<string, string>
 }
 
@@ -109,10 +109,7 @@ export function collectNuxtAutoImports(moduleFile: string, libSrc: string): Nuxt
       ...objectKeys(source, 'pluginComposables'),
     ],
     pluginComposables: {
-      useToast: 'toast',
-      useDialog: 'dialog',
       useAos: 'aos',
-      useWait: 'wait',
     },
   }
 }

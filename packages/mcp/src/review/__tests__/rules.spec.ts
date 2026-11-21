@@ -13,6 +13,18 @@ function withoutTailwind(): Knowledge {
   })))
 }
 
+function withLegacyPlugins(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: {
+      ...loaded.fragment,
+      docs: loaded.fragment.docs.map(doc => doc.id === 'plugins/toast'
+        ? { ...doc, symbols: ['ToastPlugin'] }
+        : doc),
+    },
+  })))
+}
+
 function review(code: string, filename = 'Test.vue', framework?: Framework): Finding[] {
   return reviewCode(code, {
     knowledge: getKnowledge(),
@@ -1268,11 +1280,11 @@ describe('given the hand-written helpers', () => {
       'export const isUserLoading = ref<boolean>(false)',
       'export const userLoading = shallowRef(false)',
       'const fetchingProjects = ref()',
-    ])('then `%s` is reported with the WaitPlugin to install', (code) => {
+    ])('then `%s` is reported with useWait', (code) => {
       const [finding] = review(code, 'a.ts')
 
       expect(finding).toMatchObject({ rule: 'prefer-ecosystem', severity: 'warning' })
-      expect(finding.suggestion).toContain('`app.use(WaitPlugin)` once')
+      expect(finding.suggestion).toContain('`useWait()`')
     })
   })
 
@@ -1312,6 +1324,51 @@ describe('given the hand-written helpers', () => {
   describe('when the script uses the helpers', () => {
     it('then nothing is reported', () => {
       expect(rulesOf('const label = title.toUpperCase()\nconst message = error.message\nconst full = document.documentElement.requestFullscreen()\nconst app = createApp(App)\nconst ok = Date.now() - start\nsetInterval(poll, 5000)\nel.addEventListener(\'mousemove\', onMove)\nsetTimeout(done, 100)\nclearTimeout(timer)', 'a.ts')).toEqual([])
+    })
+  })
+})
+
+describe('given the deprecated-api rule', () => {
+  describe('when main.ts installs the plugins that the composables no longer need', () => {
+    it('then each one is reported with the option of MazUi that takes its options', () => {
+      const findings = review('import { ToastPlugin } from \'maz-ui/plugins/toast\'\napp.use(ToastPlugin, { position: \'top\' })\napp.use(DialogPlugin)\napp.use(WaitPlugin)\napp.use(AosPlugin)', 'main.ts').filter(finding => finding.rule === 'deprecated-api')
+
+      expect(findings.map(finding => finding.line)).toEqual([2, 3, 4])
+      expect(findings[0]?.message).toBe('`ToastPlugin` is deprecated and removed in v6: `useToast()` works without it.')
+      expect(findings[0]?.suggestion).toContain('`app.use(MazUi, { theme, toast: { ... } })`')
+      expect(findings[2]?.suggestion).toBe('Remove `app.use(WaitPlugin)`.')
+    })
+  })
+
+  describe('when the code reads a deprecated $maz property', () => {
+    it('then it is reported with its composable', () => {
+      const findings = review('const { $mazToast } = useNuxtApp()\n$mazToast.success(\'Saved\')', 'a.ts').filter(finding => finding.rule === 'deprecated-api')
+
+      expect(findings).toHaveLength(2)
+      expect(findings[0]?.suggestion).toContain('`useToast()`')
+    })
+  })
+
+  describe('when a Nuxt config enables the deprecated plugins option', () => {
+    it('then the option is reported, and the plugins of Nuxt are left alone', () => {
+      const code = 'export default defineNuxtConfig({ plugins: [\'~/plugins/a\'], mazUi: { plugins: { toast: { position: \'top\' }, wait: true } } })'
+
+      expect(rulesOf(code, 'nuxt.config.ts').filter(rule => rule === 'deprecated-api')).toHaveLength(1)
+      expect(rulesOf(code, 'config.ts')).not.toContain('deprecated-api')
+    })
+  })
+
+  describe('when the installed maz-ui is older and its composables need their plugin', () => {
+    it('then the plugins are not reported', () => {
+      const findings = reviewCode('app.use(ToastPlugin)\nconst { $mazWait } = useNuxtApp()', { knowledge: withLegacyPlugins(), filename: 'main.ts' })
+
+      expect(findings.map(finding => finding.rule)).not.toContain('deprecated-api')
+    })
+  })
+
+  describe('when the code uses the composables', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('const toast = useToast()\nconst wait = useWait()\napp.use(MazUi, { theme, toast: { position: \'top\' } })', 'a.ts')).not.toContain('deprecated-api')
     })
   })
 })

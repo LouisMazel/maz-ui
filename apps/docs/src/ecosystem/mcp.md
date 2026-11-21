@@ -22,7 +22,7 @@ head:
 | Tool | Purpose |
 | --- | --- |
 | `search_docs` | Find what maz-ui provides for a need, described in plain words ("user avatar with initials", "confirm before delete", "debounce search") or by name. Understands the vocabulary of other libraries ("modal", "snackbar", "combobox") |
-| `get_project_info` | How the project uses maz-ui, app by app in a monorepo: installed versions, plugins (`ToastPlugin`, `DialogPlugin`...), auto-imported components, icons by name, theme presets, the components, composables and helpers already used |
+| `get_project_info` | How the project uses maz-ui, app by app in a monorepo: installed versions, the setup of the toasts, dialogs and animations on scroll (and the deprecated plugins still installed), auto-imported components, icons by name, theme presets, the components, composables and helpers already used |
 | `get_component_api` | Exact API of up to 10 components: props with types, defaults and accepted values, `v-model`, events with payload, slots with bindings, exposed methods, and the sections of their examples to read with `get_doc`. `compact: true` keeps the names and types only |
 | `find_icons` | Icons of `@maz-ui/icons` by meaning ("delete", "settings", "france flag") with their imports |
 | `get_theme_tokens` | The theme of your project (preset values, `@theme` tokens, variants, utilities, read from your files), its effective colors (hex of every color and step in light and dark, contrast ratios, low contrasts and steps that look the same) and every Tailwind class and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints, fonts, z-index, utilities |

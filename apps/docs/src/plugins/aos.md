@@ -7,62 +7,59 @@ description: Plugin to animate elements on your page as you scroll.
 
 {{ $frontmatter.description }}
 
-::: tip
-This plugin has a composable for easier use, after installing it, you can use [useAos](./../composables/use-aos.md)
-:::
-
 ## Installation
 
-All options are listed in the [Global Options](#global-options) section.
+Enable it with the `aos` option of the MazUi plugin (disabled by default) and import its CSS. All options are listed in the [Global Options](#global-options) section.
 
 ::: code-group
 
 ```ts [Vue]
-import { createApp } from 'vue'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
 import router from './router'
-import { AosPlugin, AosOptions } from 'maz-ui/plugins/aos'
 
 // ⚠️ import necessary CSS file ⚠️
 import 'maz-ui/aos.css'
 
-const app = createApp(App)
-
 app.use(router)
 
-const aosOptions: AosOptions = {
-  animation: {
-    duration: 1000,
-    once: false,
-    delay: 0,
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  // `true` for the default options
+  aos: {
+    animation: {
+      duration: 1000,
+      once: false,
+      delay: 0,
+    },
+    delay: 100,
+    // Runs the animations again after each navigation
+    router,
   },
-  delay: 100,
-  router,
-}
-
-app.use(AosPlugin, aosOptions)
-
-app.mount('#app')
+})
 ```
 
 ```ts [Nuxt]
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],
   mazUi: {
-    composables: {
-      useAos: {
-        animation: {
-          duration: 1000,
-          once: false,
-          delay: 0,
-        },
-        delay: 100,
+    // `true` for the default options, the CSS is injected and useAos is auto-imported
+    aos: {
+      animation: {
+        duration: 1000,
+        once: false,
+        delay: 0,
       },
+      delay: 100,
+      // Runs the animations again after each navigation
+      router: true,
     },
   },
 })
 ```
 
 :::
+
+The animations run once the app is installed, and after each navigation with `router`. To run them again by code, use [useAos](./../composables/use-aos.md).
 
 ## Basic usage
 
@@ -230,41 +227,6 @@ You can choose one of these timing function to animate elements nicely:
 - ease-out-quart
 - ease-in-out-quart
 
-## Nuxt
-
-::: tip
-For **NuxtJS v3** and higher, use the dedicated Nuxt module to take advantage of auto-imports of components, plugins, composables and css files: [Nuxt Module Documentation](./../ecosystem/nuxt.md)
-:::
-
-Should be executed on client side
-
-`nuxt.config.(ts|js)`
-
-```ts
-export default defineNuxtConfig({
-  css: ['maz-ui/aos.css'],
-})
-```
-
-`plugins/maz-aos.client.ts`
-
-```ts
-import { AosOptions, installAos } from 'maz-ui/plugins'
-
-export default ({ vueApp, $router: router }) => {
-  const options: AosOptions = {
-    router,
-    animation: {
-      duration: 1000,
-      delay: 0,
-      once: false,
-    },
-  }
-
-  vueApp.use(installAos, options)
-}
-```
-
 ## Run animations programatically
 
 You can run animations programatically with the useAos composable.
@@ -291,7 +253,7 @@ onMounted(() => {
       size="2rem"
       src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=maz-ui"
     >
-      In the heart of Hollywood's narrow alleyways, there existed an actor like no other—a charismatic feline named Whiskers. With his sleek black fur and piercing eyes, he stole the spotlight in every appearance. Whiskers, known for his versatility and natural talent, seamlessly slipped into dramatic, comedic, or action-packed roles.
+      In the heart of Hollywood's narrow alleyways, there existed an actor like no other, a charismatic feline named Whiskers. With his sleek black fur and piercing eyes, he stole the spotlight in every appearance. Whiskers, known for his versatility and natural talent, seamlessly slipped into dramatic, comedic, or action-packed roles.
     </p>
   </div>
 </template>

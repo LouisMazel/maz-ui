@@ -164,47 +164,61 @@ export interface MazUiNuxtOptions {
   }
 
   /**
-   * Plugins configuration
+   * Global options of the toasts of `useToast()`
+   * @default {}
+   * @example { position: 'top-right', timeout: 5000 }
    */
+  toast?: ToastOptions
+
+  /**
+   * Global options of the dialogs of `useDialog()`
+   * @default {}
+   * @example { acceptText: 'Yes', rejectText: 'No' }
+   */
+  dialog?: DialogOptions
+
+  /**
+   * Animations on scroll: installs the AOS plugin and auto-imports `useAos`
+   * @default false
+   */
+  aos?:
+    | boolean
+    | (Omit<AosOptions, 'router'> & {
+      /**
+       * Auto inject AOS CSS file
+       * @default true
+       */
+      injectCss?: boolean
+      /**
+       * Re-run animations on page change (for SPA navigation)
+       * @default false
+       */
+      router?: boolean
+    })
+
+  /**
+   * Plugins configuration
+   * @deprecated `useToast`, `useDialog` and `useWait` are always auto-imported: use the `toast`, `dialog` and `aos` options. Removed in v6.
+   */
+  // Removed in v6 (plans/ROADMAP.md): deprecated plugins option
   plugins?: {
     /**
-     * Enable auto-import of useAos composable and install AOS plugin
-     * @description Animation On Scroll functionality with advanced configuration options
-     * @default false
+     * @deprecated use the `aos` option
      */
-    aos?:
-      | boolean
-      | (Omit<AosOptions, 'router'> & {
-        /**
-         * Auto inject AOS CSS file
-         * @default true
-         */
-        injectCss?: boolean
-        /**
-         * Re-run animations on page change (for SPA navigation)
-         * @default false
-         */
-        router?: boolean
-      })
+    aos?: MazUiNuxtOptions['aos']
 
     /**
-     * Enable auto-import of useDialog composable and install Dialog plugin
-     * @description Modal dialogs functionality
-     * @default false
+     * @deprecated `useDialog` is always auto-imported, its options go in the `dialog` option
      */
     dialog?: boolean | DialogOptions
 
     /**
-     * Enable auto-import of useToast composable and install Toast plugin
-     * @description Toast notifications functionality
-     * @default false
+     * @deprecated `useToast` is always auto-imported, its options go in the `toast` option
      */
     toast?: boolean | ToastOptions
 
     /**
-     * Enable auto-import of useWait composable and install Wait plugin
-     * @description Loading state management functionality
-     * @default false
+     * @deprecated `useWait` is always auto-imported
      */
     wait?: boolean
   }
@@ -213,6 +227,27 @@ export interface MazUiNuxtOptions {
    * Composables configuration
    */
   composables?: {
+    /**
+     * Enable auto-import of useToast composable
+     * @description Toast notifications, with the options of `toast`
+     * @default true
+     */
+    useToast?: boolean
+
+    /**
+     * Enable auto-import of useDialog composable
+     * @description Dialogs and confirmations, with the options of `dialog`
+     * @default true
+     */
+    useDialog?: boolean
+
+    /**
+     * Enable auto-import of useWait composable
+     * @description Loading states shared by the whole app
+     * @default true
+     */
+    useWait?: boolean
+
     /**
      * Enable auto-import of useTranslations composable
      * @description Provides translations functionality from `@maz-ui/translations` package

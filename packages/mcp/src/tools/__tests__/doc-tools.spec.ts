@@ -121,6 +121,30 @@ describe('given search_docs', () => {
       expect(formatDocLine(docs.get('guide/vue')!)).toMatch(/^- \*\*/)
     })
   })
+
+  describe('when a composable has the page of its plugin', () => {
+    const doc = (id: string, title: string, category: 'composable' | 'plugin', symbols: string[]) => fakeDoc({ id, slug: id.split('/')[1], title, category, file: `${id}.md`, symbols })
+    const docsById = new Map([
+      doc('composables/use-aos', 'useAos', 'composable', ['useAos']),
+      doc('plugins/aos', 'aos', 'plugin', ['AosPlugin']),
+      doc('composables/use-wait', 'useWait', 'composable', ['useWait']),
+      doc('plugins/wait', 'wait', 'plugin', ['useWait']),
+    ].map(entry => [entry.id, entry]))
+
+    it('then the line gives the plugin to install once', () => {
+      expect(formatDocLine(docsById.get('composables/use-aos')!, 0, docsById)).toContain('Needs `aos` once: `app.use(MazUi, { theme, aos: true })` in `main.ts` (or `app.use(AosPlugin)` from `maz-ui/plugins/aos`), Nuxt: `mazUi: { aos: true }`.')
+    })
+
+    it('then an older maz-ui, whose composables need their plugin, gets the plugin to install', () => {
+      const legacy = new Map([...docsById, ['plugins/toast', doc('plugins/toast', 'toast', 'plugin', ['ToastPlugin'])]])
+
+      expect(formatDocLine(legacy.get('composables/use-aos')!, 0, legacy)).toContain('Needs its plugin once: `app.use(AosPlugin)` from `maz-ui/plugins/aos` in `main.ts` (Nuxt: `mazUi: { plugins: { aos: true } }`).')
+    })
+
+    it('then nothing is asked when the page of the plugin gives the composable (no plugin needed)', () => {
+      expect(formatDocLine(docsById.get('composables/use-wait')!, 0, docsById)).not.toContain('Needs `')
+    })
+  })
 })
 
 describe('given get_doc', () => {

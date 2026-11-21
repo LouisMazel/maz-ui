@@ -159,6 +159,12 @@ describe('nuxt module', () => {
       })
     })
 
+    it('should have correct toast, dialog and aos defaults', () => {
+      expect(config.defaults.toast).toEqual({})
+      expect(config.defaults.dialog).toEqual({})
+      expect(config.defaults.aos).toBe(false)
+    })
+
     it('should have correct plugins defaults', () => {
       expect(config.defaults.plugins).toEqual({
         aos: false,
@@ -207,6 +213,10 @@ describe('nuxt module', () => {
       expect(composables.useInfiniteScroll).toBe(true)
       expect(composables.useScrollLock).toBe(true)
       expect(composables.useResizeObserver).toBe(true)
+      expect(composables.useToast).toBe(true)
+      expect(composables.useDialog).toBe(true)
+      expect(composables.useWait).toBe(true)
+      expect(composables).not.toHaveProperty('useAos')
     })
   })
 
@@ -231,6 +241,10 @@ describe('nuxt module', () => {
         },
         ...overrides,
       }
+    }
+
+    function getTemplate(filename: string) {
+      return addTemplate.mock.calls.map(([template]) => template).find(template => template.filename === filename)
     }
 
     function callSetup(options: Record<string, any> = {}, nuxtOverrides: Record<string, any> = {}, nuxtOptions: Record<string, any> = {}) {
@@ -299,7 +313,7 @@ describe('nuxt module', () => {
           })
 
           expect((nuxt.options.runtimeConfig.public.mazUi as any).translations).toEqual({ locale: 'fr' })
-          const template = (addTemplate.mock.lastCall as any[])[0]
+          const template = getTemplate('maz-ui-translations.mjs')
           expect(template.filename).toBe('maz-ui-translations.mjs')
           expect(await template.getContents()).toBe('export default {\n  "fr": () => import("/project/locales/fr.ts"),\n  "de": {"greeting":"Hallo"},\n}\n')
         })
@@ -315,7 +329,7 @@ describe('nuxt module', () => {
             },
           })
 
-          expect(await (addTemplate.mock.lastCall as any[])[0].getContents()).toBe('export default {\n\n}\n')
+          expect(await getTemplate('maz-ui-translations.mjs').getContents()).toBe('export default {\n\n}\n')
           expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('translations.messages.fr is a function'))
         })
       })
@@ -326,7 +340,7 @@ describe('nuxt module', () => {
         it('then the template exports no messages', async () => {
           callSetup({ translations: undefined })
 
-          expect(await (addTemplate.mock.lastCall as any[])[0].getContents()).toBe('export default {\n\n}\n')
+          expect(await getTemplate('maz-ui-translations.mjs').getContents()).toBe('export default {\n\n}\n')
         })
       })
     })
@@ -608,6 +622,18 @@ describe('nuxt module', () => {
           })
         })
 
+        describe('when aos is enabled', () => {
+          it('then the aos plugin is an entry of the purge', () => {
+            callSetup({
+              aos: true,
+            })
+
+            expect(MazUiPurgeCss).toHaveBeenCalledWith({
+              entries: ['plugins/aos'],
+            })
+          })
+        })
+
         describe('when purge is false', () => {
           it('then the purge plugin is not added', () => {
             callSetup({
@@ -768,8 +794,7 @@ describe('nuxt module', () => {
 
     describe('plugins', () => {
       it.each([
-        'runtime/plugins/theme',
-        'runtime/plugins/translations',
+        'runtime/plugins/maz-ui',
         'runtime/plugins/maz-link-component',
       ])('always adds %s plugin', (pluginPath) => {
         callSetup()
@@ -778,141 +803,131 @@ describe('nuxt module', () => {
         )
       })
 
-      it('should add defaults plugin when defaults are set', () => {
-        callSetup({
+      it('gives the defaults to the runtime config of the maz-ui plugin', () => {
+        const { nuxt } = callSetup({
           defaults: {
             global: { roundedSize: 'lg' },
           },
         })
-        expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/defaults'),
-        )
-      })
-
-      it('should not add defaults plugin when defaults are empty', () => {
-        callSetup({ defaults: {} })
-        expect(addPlugin).not.toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/defaults'),
-        )
-      })
-
-      it('should add aos plugin when aos is enabled', () => {
-        callSetup({
-          plugins: { aos: true },
+        expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults).toEqual({
+          global: { roundedSize: 'lg' },
         })
-        expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/aos'),
-        )
       })
 
-      it('should add useAos import when aos is enabled', () => {
-        callSetup({
-          plugins: { aos: true },
+      it('gives the toast and dialog options to the runtime config of the maz-ui plugin', () => {
+        const { nuxt } = callSetup({
+          toast: { position: 'top-right' },
+          dialog: { acceptText: 'Yes' },
         })
-        expect(addImports).toHaveBeenCalledWith(
-          expect.objectContaining({
-            name: 'useAos',
-            as: 'useAos',
-          }),
+        expect((nuxt.options.runtimeConfig.public.mazUi as any).toast).toEqual({ position: 'top-right' })
+        expect((nuxt.options.runtimeConfig.public.mazUi as any).dialog).toEqual({ acceptText: 'Yes' })
+      })
+
+      it.each(['useToast', 'useDialog', 'useWait'])('always auto-imports %s from maz-ui', (name) => {
+        callSetup()
+        expect(addImports).toHaveBeenCalledWith({
+          name,
+          from: `maz-ui/composables/${name}`,
+          as: name,
+        })
+      })
+
+      it('adds no plugin of the deprecated plugins option by default', () => {
+        callSetup()
+        const legacyCalls = addPlugin.mock.calls.filter(
+          ([path]) => /runtime\/plugins\/(?:toast|dialog|wait|aos)$/.test(path),
+        )
+        expect(legacyCalls).toHaveLength(0)
+        expect(logger.warn).not.toHaveBeenCalledWith(expect.stringContaining('mazUi.plugins'))
+      })
+
+      it('should add useAos import from maz-ui when aos is enabled', () => {
+        callSetup({
+          aos: true,
+        })
+        expect(addImports).toHaveBeenCalledWith({
+          name: 'useAos',
+          from: 'maz-ui/composables/useAos',
+          as: 'useAos',
+        })
+      })
+
+      it('should not add useAos import when aos is disabled', () => {
+        callSetup()
+        expect(addImports).not.toHaveBeenCalledWith(
+          expect.objectContaining({ name: 'useAos' }),
         )
       })
 
       it('should inject AOS CSS by default when aos is enabled', () => {
         const { nuxt } = callSetup({
-          plugins: { aos: true },
+          aos: true,
         })
         expect(nuxt.options.css).toContain('maz-ui/aos.css')
       })
 
       it('should not inject AOS CSS when injectCss is false', () => {
         const { nuxt } = callSetup({
-          plugins: {
-            aos: { injectCss: false },
-          },
+          aos: { injectCss: false },
         })
         expect(nuxt.options.css).not.toContain('maz-ui/aos.css')
       })
 
       it('should inject AOS CSS when aos is object without injectCss', () => {
         const { nuxt } = callSetup({
-          plugins: {
-            aos: { delay: 100 },
-          },
+          aos: { delay: 100 },
         })
         expect(nuxt.options.css).toContain('maz-ui/aos.css')
       })
 
-      it('should not add aos plugin when aos is disabled', () => {
-        callSetup({
-          plugins: { aos: false },
+      describe('given the deprecated plugins option', () => {
+        it('warns once with a link to the docs', () => {
+          callSetup({
+            plugins: { toast: true, wait: true },
+          })
+          expect(logger.warn).toHaveBeenCalledOnce()
+          expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('https://maz-ui.com/ecosystem/nuxt#toast-dialog-and-wait'))
         })
-        const aosCalls = addPlugin.mock.calls.filter(
-          ([path]) => path.includes('aos'),
-        )
-        expect(aosCalls).toHaveLength(0)
-      })
 
-      it('should add toast plugin when toast is enabled', () => {
-        callSetup({
-          plugins: { toast: true },
+        it.each(['toast', 'dialog', 'wait'])('adds the %s plugin that provides its $maz property', (plugin) => {
+          callSetup({
+            plugins: { [plugin]: true },
+          })
+          expect(addPlugin).toHaveBeenCalledWith(
+            expect.stringContaining(`runtime/plugins/${plugin}`),
+          )
         })
-        expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/toast'),
-        )
-      })
 
-      it('should add useToast import when toast is enabled', () => {
-        callSetup({
-          plugins: { toast: true },
+        it('gives the toast and dialog options of the plugins to the new options', () => {
+          const { nuxt } = callSetup({
+            toast: { timeout: 1000 },
+            plugins: {
+              toast: { position: 'top-right', timeout: 5000 },
+              dialog: { acceptText: 'Yes' },
+            },
+          })
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).toast).toEqual({ position: 'top-right', timeout: 1000 })
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).dialog).toEqual({ acceptText: 'Yes' })
         })
-        expect(addImports).toHaveBeenCalledWith(
-          expect.objectContaining({
-            name: 'useToast',
-            as: 'useToast',
-          }),
-        )
-      })
 
-      it('should add dialog plugin when dialog is enabled', () => {
-        callSetup({
-          plugins: { dialog: true },
+        it('enables aos with the options of plugins.aos', () => {
+          const { nuxt } = callSetup({
+            plugins: { aos: { delay: 100, router: true } },
+          })
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).aos).toEqual({ delay: 100, router: true })
+          expect(nuxt.options.css).toContain('maz-ui/aos.css')
+          expect(addImports).toHaveBeenCalledWith(
+            expect.objectContaining({ name: 'useAos' }),
+          )
         })
-        expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/dialog'),
-        )
-      })
 
-      it('should add useDialog import when dialog is enabled', () => {
-        callSetup({
-          plugins: { dialog: true },
+        it('keeps the aos option over plugins.aos', () => {
+          const { nuxt } = callSetup({
+            aos: { delay: 300 },
+            plugins: { aos: { delay: 100 } },
+          })
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).aos).toEqual({ delay: 300 })
         })
-        expect(addImports).toHaveBeenCalledWith(
-          expect.objectContaining({
-            name: 'useDialog',
-            as: 'useDialog',
-          }),
-        )
-      })
-
-      it('should add wait plugin when wait is enabled', () => {
-        callSetup({
-          plugins: { wait: true },
-        })
-        expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/wait'),
-        )
-      })
-
-      it('should add useWait import when wait is enabled', () => {
-        callSetup({
-          plugins: { wait: true },
-        })
-        expect(addImports).toHaveBeenCalledWith(
-          expect.objectContaining({
-            name: 'useWait',
-            as: 'useWait',
-          }),
-        )
       })
     })
 
@@ -1125,6 +1140,18 @@ describe('nuxt module', () => {
         )
       })
 
+      it('does not register a maz-ui composable disabled in the options', () => {
+        callSetup({
+          composables: { useToast: false },
+        })
+        expect(addImports).not.toHaveBeenCalledWith(
+          expect.objectContaining({ name: 'useToast' }),
+        )
+        expect(addImports).toHaveBeenCalledWith(
+          expect.objectContaining({ name: 'useDialog', from: 'maz-ui/composables/useDialog' }),
+        )
+      })
+
       it('should apply autoImportPrefix to composable names', () => {
         callSetup({
           general: { autoImportPrefix: 'Maz' },
@@ -1243,17 +1270,17 @@ describe('nuxt module', () => {
 
     describe('given the flags option', () => {
       describe('when it is not set', () => {
-        it('then no flags plugin is added and no flag source is set', () => {
+        it('then the flags template exports no loader and no flag source is set', async () => {
           const { nuxt } = callSetup()
 
           expect(config.defaults.flags).toBe('cdn')
-          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
+          expect(await getTemplate('maz-ui-flags.mjs').getContents()).toBe('export default undefined\n')
           expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global?.flagSrc).toBeUndefined()
         })
       })
 
       describe('when it is local', () => {
-        it('then the local flags plugin replaces the defaults plugin', () => {
+        it('then the flags template exports the loader of the local flags', async () => {
           callSetup({
             flags: 'local',
             defaults: {
@@ -1261,13 +1288,12 @@ describe('nuxt module', () => {
             },
           })
 
-          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
-          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/defaults'))
+          expect(await getTemplate('maz-ui-flags.mjs').getContents()).toMatch(/^export \{ loadCountryFlag as default \} from ".*runtime\/utils\/local-flags"\n$/)
         })
       })
 
       describe('when it is a URL template', () => {
-        it('then the template becomes the global flag source through the defaults plugin', () => {
+        it('then the template becomes the global flag source', async () => {
           const { nuxt } = callSetup({
             flags: '/flags/{code}.svg',
             defaults: {
@@ -1276,8 +1302,7 @@ describe('nuxt module', () => {
           })
 
           expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global).toEqual({ flagSrc: '/flags/{code}.svg', size: 'lg' })
-          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/defaults'))
-          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
+          expect(await getTemplate('maz-ui-flags.mjs').getContents()).toBe('export default undefined\n')
         })
       })
 
@@ -1557,7 +1582,7 @@ describe('nuxt module', () => {
           callSetup({ agents: true }, {}, { dev: true })
 
           expect(logger.warn).toHaveBeenCalledWith('Could not configure the AI agents for maz-ui: maz-ui is not installed')
-          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/theme'))
+          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/maz-ui'))
         })
       })
 

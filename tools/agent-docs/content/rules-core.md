@@ -13,7 +13,7 @@ Never guess an API: only use documented props, events, slots and imports.
 
 - `Maz*` components instead of native elements or hand-made widgets (`MazBtn` not `<button>`, `MazInput`, `MazSelect`, `MazDialog`, `MazCard`...). A button with only an icon needs an `aria-label`.
 - Icons from `@maz-ui/icons` (`find_icons`), never inline SVG nor another icon library. With `MazUi()` of `@maz-ui/vite-plugin` or `@maz-ui/nuxt`, by name in the icon props: `<MazBtn start-icon="trash">`.
-- `@maz-ui/utils` and the maz-ui composables instead of lodash, VueUse or custom helpers (list above). `useToast()` for notifications, `useDialog()` for confirmations (they need their plugin).
+- `@maz-ui/utils` and the maz-ui composables instead of lodash, VueUse or custom helpers (list above). `useToast()` for notifications, `useDialog()` for confirmations (no plugin to install).
 - Theme (brand colors, dark mode) through a `@maz-ui/themes` preset and `useTheme()`, never by hand.
 
 ### Styling with Tailwind

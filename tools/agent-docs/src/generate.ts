@@ -120,7 +120,7 @@ function nuxtNote(symbols: string[], category: DocEntry['category'], autoImports
     const plugin = autoImports.pluginComposables[symbols[0]]
 
     if (plugin)
-      return `auto-imported by \`@maz-ui/nuxt\` when \`mazUi.plugins.${plugin}\` is enabled`
+      return `auto-imported by \`@maz-ui/nuxt\` when \`mazUi.${plugin}\` is enabled`
   }
 
   return undefined

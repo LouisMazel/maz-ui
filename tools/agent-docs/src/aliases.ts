@@ -659,6 +659,7 @@ export const DOC_ALIASES: Record<string, string[]> = {
   'ecosystem/utils/is-client': ['is browser', 'client side check', 'ssr guard'],
   'ecosystem/utils/is-equal': ['deep equal', 'compare objects', 'equality'],
   'ecosystem/utils/is-ios': ['detect ios', 'iphone detection'],
+  'ecosystem/utils/is-production': ['production mode', 'node env', 'dev only warning'],
   'ecosystem/utils/is-server': ['server side check', 'ssr check'],
   'ecosystem/utils/is-standalone-mode': ['pwa installed', 'standalone display mode'],
   'ecosystem/utils/fuzzy-search': [

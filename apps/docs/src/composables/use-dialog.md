@@ -1,18 +1,14 @@
 ---
 title: useDialog
-description: Open a confirmation or information dialog from your script and await the answer of the user (confirm or cancel), with customizable buttons - through the dialog plugin, instead of window.confirm.
+description: Open a confirmation or information dialog from your script and await the answer of the user (confirm or cancel), with customizable buttons, without plugin to install, instead of window.confirm.
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-::: warning
-You must install [dialog plugin](./../plugins/dialog.md#install) before use it
-:::
-
 ::: tip
-More info about [dialog plugin](./../plugins/dialog.md) in its documentation
+No plugin to install. Global options, custom buttons, rich content and all the options: [dialog documentation](./../plugins/dialog.md)
 :::
 
 ## Usage
