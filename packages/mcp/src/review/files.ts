@@ -59,6 +59,35 @@ export function findProjectRoot(fromDirectory: string): string | undefined {
   }
 }
 
+const DEPENDENCY_FIELDS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
+
+/** `true` when the closest `package.json` of a directory depends on one of the packages (`maz-ui`, `@maz-ui/utils`...) */
+export function dependsOnPackages(fromDirectory: string, packages: string[]): boolean {
+  let directory = fromDirectory
+
+  for (;;) {
+    const file = join(directory, 'package.json')
+
+    if (existsSync(file)) {
+      try {
+        const pkg = JSON.parse(readFileSync(file, 'utf8')) as Record<string, Record<string, string> | undefined>
+
+        return DEPENDENCY_FIELDS.some(field => packages.some(name => pkg[field]?.[name] !== undefined))
+      }
+      catch {
+        return false
+      }
+    }
+
+    const parent = dirname(directory)
+
+    if (parent === directory)
+      return false
+
+    directory = parent
+  }
+}
+
 /** Detects a Nuxt project by walking up from a directory to the closest `package.json` */
 export function detectFramework(fromDirectory: string): Framework {
   const root = findProjectRoot(fromDirectory)

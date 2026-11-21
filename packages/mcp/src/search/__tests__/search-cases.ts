@@ -38,6 +38,16 @@ export const NOISE_CASES: NoiseCase[] = [
 
 export const SEARCH_CASES: SearchCase[] = [
   {
+    query: 'shared loading state between components',
+    expected: ['composables/use-wait', 'plugins/wait'],
+    rank: 1,
+  },
+  {
+    query: 'remove accents case insensitive compare',
+    expected: ['ecosystem/utils/normalize-string'],
+    rank: 1,
+  },
+  {
     query: 'MazBtn',
     expected: ['components/maz-btn'],
     rank: 1,
