@@ -28,18 +28,19 @@ The content comes from the `docs/agents` folder of the `maz-ui` package installe
 | Target | Files |
 | --- | --- |
 | `claude` | `.claude/rules/maz-ui.md` (a Claude Code rule, loaded on top of your `CLAUDE.md`) and the `maz-ui` server in `.mcp.json` |
-| `agents-md` | A section between `<!-- BEGIN:maz-ui -->` and `<!-- END:maz-ui -->` in `AGENTS.md` (Codex, Cursor, Copilot, Windsurf, Zed...) |
+| `agents-md` | A section between `<!-- BEGIN:maz-ui -->` and `<!-- END:maz-ui -->` in `AGENTS.md` (Codex, OpenCode, Cursor, Copilot, Windsurf, Zed...) |
 | `cursor` | The `maz-ui` server in `.cursor/mcp.json` |
 | `vscode` | The `maz-ui` server in `.vscode/mcp.json` (GitHub Copilot) |
 | `gemini` | The `maz-ui` server in `.gemini/settings.json` (Gemini CLI). With `agents-md`, `AGENTS.md` is also added to its `context.fileName`: Gemini CLI only reads `GEMINI.md` by default |
-| `opencode` | The `maz-ui` server in `opencode.json`, or in the `opencode.jsonc` of the project (OpenCode) |
+| `opencode` | The `maz-ui` server in `opencode.json`, or in the `opencode.jsonc` of the project (OpenCode). With `hooks: true`, the `@maz-ui/mcp` OpenCode plugin in its `plugin` list too |
+| `codex` | The `maz-ui` server in `.codex/config.toml` (Codex, read in the trusted projects), not added when the maz-ui Codex plugin is enabled for the user |
 | `junie` | The `maz-ui` server in `.junie/mcp/mcp.json` (JetBrains Junie) |
 | `windsurf` | The `maz-ui` server in `.devin/mcp_config.json` (Windsurf, Devin) |
 | `warp` | The `maz-ui` server in `.warp/.mcp.json` (Warp), not written with `claude`: Warp also reads `.mcp.json` |
 | `kiro` | The `maz-ui` server in `.kiro/settings/mcp.json` (Kiro) |
 | `roo` | The `maz-ui` server in `.roo/mcp.json` (Roo Code) |
 
-Every agent but Claude Code reads the rules from `AGENTS.md`: add `agents-md` to the targets to give them the rules. Codex, Cline and Zed have no project MCP config: `agents-md` gives them the rules.
+Every agent but Claude Code reads the rules from `AGENTS.md`: add `agents-md` to the targets to give them the rules. Cline and Zed have no project MCP config: `agents-md` gives them the rules.
 
 Guarantees:
 
@@ -50,7 +51,7 @@ Guarantees:
 - An existing entry of the maz-ui MCP server only gets a better command (the installed `@maz-ui/mcp`, a newer pinned version) and keeps its other fields (`env`...). A command written by hand (with `--docs`, for example) is never changed.
 - In a monorepo, rules written by a newer maz-ui and a newer pinned `@maz-ui/mcp` are never downgraded by an app with an older version. Files are written atomically: apps started together never read a half-written file.
 - The Claude rule is scoped with a `paths:` frontmatter, so that Claude Code only loads it when it reads or edits a file of the workspaces that depend on maz-ui (see [Scope of the Claude rule](#scope-of-the-claude-rule)), instead of at every session.
-- With `hooks: true`, the review hook is added to the `PostToolUse` (each edited file), `Stop` and `SubagentStop` (the files changed in git at the end of a task) hooks of `.claude/settings.json`, next to the other settings and hooks, with the command of the MCP server (`pnpm exec maz-ui-mcp review --hook`, or `npx -y @maz-ui/mcp@<version> review --hook`). It is not added, and removed if it was, when the maz-ui Claude Code plugin is enabled (project or user settings): the plugin has its own hook.
+- With `hooks: true`, the review hook is added to the `PostToolUse` (each edited file), `Stop` and `SubagentStop` (the files changed in git at the end of a task) hooks of `.claude/settings.json`, next to the other settings and hooks, with the command of the MCP server (`pnpm exec maz-ui-mcp review --hook`, or `npx -y @maz-ui/mcp@<version> review --hook`). It is not added, and removed if it was, when the maz-ui Claude Code plugin is enabled (project or user settings): the plugin has its own hook. With the `opencode` target, the OpenCode plugin of the tool (`@maz-ui/mcp`, which reviews each edit) is added to the `plugin` list of the OpenCode config, pinned to the version of the MCP server.
 - When the maz-ui Claude Code plugin is enabled and `.mcp.json` has the `maz-ui` server, the server is added to the `disabledMcpjsonServers` of `.claude/settings.local.json` (your machine only, added to an existing `.gitignore`): the plugin runs its own server, and the teammates without the plugin keep the one of `.mcp.json`. It is removed from the list, and the file deleted when left empty, with `remove: true` or when the plugin is gone.
 - Without `CLAUDE.md` in the project, Claude Code reads `AGENTS.md`: the Claude rule is then skipped to avoid loading the rules twice.
 - Running it again is idempotent: unchanged files are reported as `unchanged`. A managed file is only rewritten when its rules change: after a release of the tool that keeps the same rules, it stays as is, its header keeps the version that last changed them.
@@ -137,6 +138,8 @@ const tool: AgentsTool = {
   ruleGlobs: ['relizy.config.*', '**/CHANGELOG.md'],
   // Arguments of the bin that review the files of the Claude Code hooks (PostToolUse, Stop, SubagentStop), written with `hooks: true`, default: no hook
   reviewHookArgs: undefined,
+  // Package of the OpenCode plugin of the tool, added to the OpenCode config with `hooks: true`, default: no plugin
+  openCodePlugin: undefined,
 }
 
 setupAgents({
@@ -209,7 +212,7 @@ result.changes // [{ file: '.mcp.json', action: 'create' | 'update' | 'remove' |
 ```ts
 import { detectAgentTargets } from '@maz-ui/node'
 
-detectAgentTargets(process.cwd()) //  ['claude', 'agents-md', 'cursor', 'vscode', 'gemini', 'opencode', 'junie', 'windsurf', 'warp', 'kiro', 'roo']
+detectAgentTargets(process.cwd()) //  ['claude', 'agents-md', 'cursor', 'vscode', 'gemini', 'opencode', 'codex', 'junie', 'windsurf', 'warp', 'kiro', 'roo']
 ```
 
 `detectAgentTargets` is the default of `targets`. It reads the files of the project, never the home folder nor the environment: every developer and the CI get the same result. `agents-md` is added as soon as an agent other than Claude Code is detected, since they read their rules from `AGENTS.md`.
@@ -217,11 +220,12 @@ detectAgentTargets(process.cwd()) //  ['claude', 'agents-md', 'cursor', 'vscode'
 | Target | Detected from |
 | --- | --- |
 | `claude` | `.claude/`, `CLAUDE.md`, `CLAUDE.local.md`, `.mcp.json` |
-| `agents-md` | `AGENTS.md`, `.agents/`, `.agent/` (Antigravity), `.codex/` (Codex), `.cline/`, `.clinerules` (Cline), `.zed/`, `.rules` (Zed), or any other agent below |
+| `agents-md` | `AGENTS.md`, `.agents/`, `.agent/` (Antigravity), `.cline/`, `.clinerules` (Cline), `.zed/`, `.rules` (Zed), or any other agent below |
 | `cursor` | `.cursor/`, `.cursorrules` |
 | `vscode` | `.vscode/mcp.json`, `.github/copilot-instructions.md`, `.github/instructions/` |
 | `gemini` | `.gemini/`, `GEMINI.md` |
 | `opencode` | `opencode.json`, `opencode.jsonc`, `.opencode/` |
+| `codex` | `.codex/` |
 | `junie` | `.junie/` |
 | `windsurf` | `.windsurf/`, `.windsurfrules`, `.devin/` |
 | `warp` | `.warp/`, `WARP.md` |

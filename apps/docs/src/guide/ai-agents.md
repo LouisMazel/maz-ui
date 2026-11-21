@@ -1,6 +1,6 @@
 ---
 title: AI agents
-description: Make Claude Code, Cursor, GitHub Copilot, Codex and the other AI coding agents use maz-ui and its ecosystem instead of re-implementing it - project rules, MCP server, version-matched docs, llms.txt and automatic code review.
+description: Make Claude Code, Codex, OpenCode, Cursor, GitHub Copilot and the other AI coding agents use maz-ui and its ecosystem instead of re-implementing it - project rules, MCP server, version-matched docs, llms.txt and automatic code review.
 ---
 
 # {{ $frontmatter.title }}
@@ -19,18 +19,22 @@ maz-ui gives them five things:
 | **Version-matched docs** | Agent-ready markdown of the installed version: guides, component APIs, icons, Tailwind tokens | `node_modules/maz-ui/agent-docs/`, `node_modules/@maz-ui/<package>/agent-docs/` |
 | **MCP server** | Search by need, exact component APIs, icons, theme tokens, setup guides, code review | `npx @maz-ui/mcp` |
 | **Code review** | Static checks against the real maz-ui APIs, in the agent loop and in CI | `review_code` tool, `npx @maz-ui/mcp review` |
-| **Claude Code plugin** | The rules as a skill, the MCP server and a hook that reviews each edited file, in all your projects | `claude plugin install maz-ui --marketplace LouisMazel/maz-ui` |
+| **Plugins** | The rules, the MCP server and the review of each edited file, in all your projects: Claude Code, Codex and OpenCode | `claude plugin install maz-ui --marketplace LouisMazel/maz-ui` |
 
 ## Quick start
 
 Two ways, use both or either:
 
-- **You use Claude Code**: install the [Claude Code plugin](#claude-code-plugin) once for your user. It works in all your projects, without any file in them.
+- **You use Claude Code, Codex or OpenCode**: install the plugin once for your user ([Claude Code](#claude-code-plugin), [Codex](#codex-plugin), [OpenCode](#opencode-plugin)). It works in all your projects, without any file in them.
 - **Your team, every agent**: run `npx @maz-ui/mcp init` in the project and commit the files it writes (rules, MCP config, review hook).
 
 ```bash
 # Claude Code plugin, for your user
 claude plugin install maz-ui --marketplace LouisMazel/maz-ui
+
+# Codex plugin, for your user
+codex plugin marketplace add LouisMazel/maz-ui
+codex plugin add maz-ui@maz-ui
 
 # the project, for your team and all its agents
 npx @maz-ui/mcp init
@@ -45,7 +49,9 @@ It detects the agents you use and configures them, using the docs of the maz-ui 
 | Claude Code | `.claude/rules/maz-ui.md` (loaded for the files of the workspaces that use maz-ui) and a review hook in `.claude/settings.json` | `.mcp.json` |
 | Cursor | `AGENTS.md` | `.cursor/mcp.json` |
 | GitHub Copilot (VS Code) | `AGENTS.md` | `.vscode/mcp.json` |
-| Codex, Windsurf, Zed, Gemini CLI... | `AGENTS.md` | global config of the agent (see [MCP](./../ecosystem/mcp.md)) |
+| Codex | `AGENTS.md` | `.codex/config.toml` (read in the trusted projects), not written when the [Codex plugin](#codex-plugin) is enabled |
+| OpenCode | `AGENTS.md`, and the [OpenCode plugin](#opencode-plugin) for the review | `opencode.json` |
+| Windsurf, Zed, Gemini CLI... | `AGENTS.md` | the config of the agent, or its global config (see [MCP](./../ecosystem/mcp.md)) |
 
 When no agent is detected, it configures Claude Code and `AGENTS.md`. Commit the generated files: your whole team and your CI agents get them.
 
@@ -69,7 +75,7 @@ For a fast start of the MCP server, install it in the project first (`pnpm add -
 npx @maz-ui/mcp init --targets claude,agents-md,cursor,vscode  # choose the agents
 npx @maz-ui/mcp init --no-rules                                # MCP server only
 npx @maz-ui/mcp init --no-mcp                                  # rules only
-npx @maz-ui/mcp init --no-hooks                                # no review hook for Claude Code
+npx @maz-ui/mcp init --no-hooks                                # no review hook (Claude Code) nor OpenCode plugin
 npx @maz-ui/mcp init --dry-run                                 # show the changes
 npx @maz-ui/mcp init --remove                                  # remove everything init added
 ```
@@ -115,7 +121,9 @@ Started at the root, the MCP server serves the docs of the first maz-ui it finds
 The MCP server carries the rules in its instructions: registering it once for your user is enough, in every project, without writing anything in them.
 
 - Claude Code: install the [plugin](#claude-code-plugin), or run `claude mcp add maz-ui --scope user -- npx -y @maz-ui/mcp@latest`.
-- Cursor, Windsurf, Codex...: add the server to the global MCP config of the agent (see [MCP](./../ecosystem/mcp.md#configuration)).
+- Codex: install the [plugin](#codex-plugin).
+- OpenCode: add the [plugin](#opencode-plugin) to `~/.config/opencode/opencode.json`.
+- Cursor, Windsurf...: add the server to the global MCP config of the agent (see [MCP](./../ecosystem/mcp.md#configuration)).
 
 Write the project files (`init`, the Nuxt option) when your whole team, or agents without MCP, need the rules.
 
@@ -207,6 +215,42 @@ The review hook of the plugin is the `review --hook` mode of the CLI. `npx @maz-
 
 - `PostToolUse`: each file Claude edits in a project that uses maz-ui is reviewed. The errors and warnings are sent back to Claude, which fixes them.
 - `Stop` and `SubagentStop`: at the end of a task (or of a subagent), the files changed in git are reviewed, also the ones written another way (a script, a heredoc in Bash). Only the findings not sent yet in the session are sent, once: Claude fixes them before it stops.
+
+## Codex plugin
+
+The plugin of Claude Code also works in Codex, from the same marketplace: the rules in every session, the `maz-ui` and `maz-ui-upgrade` skills, the MCP server, and the review of each edited file and, at the end of a task, of the files changed in git.
+
+```bash
+codex plugin marketplace add LouisMazel/maz-ui
+codex plugin add maz-ui@maz-ui
+```
+
+Codex runs the hooks of a plugin once you trust them: review and accept them in `/hooks`. Codex plugins have no subagents: there is no `maz-ui-editor` in Codex.
+
+`init` does not register the MCP server in `.codex/config.toml` when the plugin is enabled: the plugin runs its own.
+
+## OpenCode plugin
+
+OpenCode plugins are npm packages: `@maz-ui/mcp` is the maz-ui plugin of OpenCode, with the same skills, subagent, MCP server and review as the plugin of Claude Code and Codex. Add it to the `plugin` list of `opencode.json`, in the project or in `~/.config/opencode/opencode.json` for all your projects:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["@maz-ui/mcp"]
+}
+```
+
+It brings:
+
+- the **MCP server**: the `@maz-ui/mcp` installed in the project, else its own, unless the config already starts one;
+- the **`maz-ui` and `maz-ui-upgrade` skills**;
+- the **`maz-ui-editor` subagent**, unless the config already has an agent of that name;
+- in a project that uses maz-ui, the **rules** of the installed version in the system prompt, unless `AGENTS.md` already has them;
+- the **review** of each file the agent edits in a project that uses maz-ui: the errors and warnings are added to the result of the edit, and at the end of a task, the findings of the files changed in git are sent back to the agent.
+
+Restart OpenCode after changing its config: it loads its plugins when it starts. `opencode debug skill`, `opencode agent list` and `opencode mcp list` show what the plugin added.
+
+With the `opencode` target, `init` adds it for you, pinned to the version of the MCP server (`--no-hooks` to leave it out).
 
 ## Version-matched docs
 
@@ -307,6 +351,6 @@ The documentation is also published for agents that browse the web:
 
 ## The rules
 
-This is what `init`, the Nuxt option, the Claude Code plugin and the MCP server teach to your agents:
+This is what `init`, the Nuxt option, the plugins and the MCP server teach to your agents:
 
 <!--@include: ../../../../tools/agent-docs/content/rules.md-->

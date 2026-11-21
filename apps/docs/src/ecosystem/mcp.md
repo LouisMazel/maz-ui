@@ -4,7 +4,7 @@ description: The maz-ui MCP server gives AI coding agents the version-matched kn
 head:
   - - meta
     - name: keywords
-      content: mcp, model context protocol, ai agents, claude code, cursor, copilot, codex, windsurf, maz-ui
+      content: mcp, model context protocol, ai agents, claude code, codex, opencode, cursor, copilot, windsurf, maz-ui
 ---
 
 # {{ $frontmatter.title }}
@@ -13,8 +13,8 @@ head:
 
 <NpmBadge package="@maz-ui/mcp" />
 
-::: tip Start with `npx @maz-ui/mcp init`, or the Claude Code plugin
-`init` registers the server and writes the maz-ui rules for the agents of your project. With Claude Code, the [maz-ui plugin](./../guide/ai-agents.md#claude-code-plugin) brings the server, the rules and a review hook to all your projects: `claude plugin install maz-ui --marketplace LouisMazel/maz-ui`. See [AI agents](./../guide/ai-agents.md) for the complete picture (rules, version-matched docs, code review in CI).
+::: tip Start with `npx @maz-ui/mcp init`, or a plugin
+`init` registers the server and writes the maz-ui rules for the agents of your project. With Claude Code, Codex or OpenCode, the maz-ui plugin brings the server, the rules and the review to all your projects ([Claude Code](./../guide/ai-agents.md#claude-code-plugin): `claude plugin install maz-ui --marketplace LouisMazel/maz-ui`, [Codex](./../guide/ai-agents.md#codex-plugin), [OpenCode](./../guide/ai-agents.md#opencode-plugin)). See [AI agents](./../guide/ai-agents.md) for the complete picture (rules, version-matched docs, code review in CI).
 :::
 
 ## Tools
@@ -146,12 +146,35 @@ Or in `.mcp.json`:
 
 ### Codex
 
-`~/.codex/config.toml`:
+The [maz-ui plugin](./../guide/ai-agents.md#codex-plugin) includes the server, with the maz-ui skills and the review hooks:
+
+```bash
+codex plugin marketplace add LouisMazel/maz-ui
+codex plugin add maz-ui@maz-ui
+```
+
+The server alone, in `~/.codex/config.toml` (or the `.codex/config.toml` of a trusted project):
 
 ```toml
 [mcp_servers.maz-ui]
 command = "npx"
 args = ["-y", "@maz-ui/mcp@latest"]
+```
+
+### OpenCode
+
+The [maz-ui plugin](./../guide/ai-agents.md#opencode-plugin) starts the server, with the skills, the subagent, the rules and the review of each edit: `"plugin": ["@maz-ui/mcp"]` in `opencode.json`. The server alone:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "maz-ui": {
+      "type": "local",
+      "command": ["npx", "-y", "@maz-ui/mcp@latest"]
+    }
+  }
+}
 ```
 
 ### Windsurf, Claude Desktop, Cline, Zed...
