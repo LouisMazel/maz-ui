@@ -113,6 +113,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
   - `plugins/claude-code/skills/maz-ui/SKILL.md` (committed: run `pnpm -F agent-docs generate:plugin` after changing `tools/agent-docs/content`, a test fails otherwise)
 - A new published package needs an entry in `tools/agent-docs/src/packages.ts` and a `generate:agent-docs` script in its `build`.
 - The agent rules live in `tools/agent-docs/content/rules.md` (also included in `apps/docs/src/guide/ai-agents.md`).
+- The Claude Code plugin (`plugins/claude-code`) is easy to forget: a change of the MCP server, the CLI, the rules or the review also updates it (its README, hook, `plugin.json` and `marketplace.json` descriptions), and a doc that explains how to set up the agents gives its install command (`claude plugin install maz-ui --marketplace LouisMazel/maz-ui`) next to `init`.
 - The generator warns about broken internal links and unknown alias ids: keep `pnpm -F agent-docs generate --bundle /tmp/x --strict` clean.
 - Docs (site and agent docs): simple and easy to understand but complete, in short sentences, the common case first.
 - Docs examples (code fences) must use plain Tailwind classes, never the internal `maz:` prefix (only live demos rendered by the docs site use it).
