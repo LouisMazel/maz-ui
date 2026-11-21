@@ -66,3 +66,20 @@ describe('useTimer', () => {
     app.unmount()
   })
 })
+
+describe('given a timer started in a component', () => {
+  describe('when the component is unmounted', () => {
+    it('then the callback is never called', () => {
+      vi.useFakeTimers()
+      const callback = vi.fn()
+      const [{ start }, app] = withSetup(() => useTimer({ timeout: 1000, callback }))
+
+      start()
+      app.unmount()
+      vi.advanceTimersByTime(2000)
+
+      expect(callback).not.toHaveBeenCalled()
+      vi.useRealTimers()
+    })
+  })
+})

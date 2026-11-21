@@ -1,6 +1,6 @@
 ---
 title: useBreakpoints
-description: This composable extends the functionality of the useWindowSize composable to manage responsive breakpoints
+description: Reactive responsive breakpoints in JavaScript (isSmallScreen, isMediumScreen, isLargeScreen) from your breakpoint list, to change the behavior or the rendered components by screen size when CSS media queries are not enough. Built on useWindowSize.
 ---
 
 # {{ $frontmatter.title }}

@@ -1,6 +1,6 @@
 ---
 title: useReadingTime
-description: This composable allows you to calculate the reading time of a text
+description: Reactive reading time of a text or an HTML element (word count and duration in minutes), with a configurable reading speed - for a "5 min read" label on an article.
 ---
 
 # {{ $frontmatter.title }}

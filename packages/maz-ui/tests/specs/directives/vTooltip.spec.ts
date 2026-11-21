@@ -58,8 +58,8 @@ describe('given vTooltip directive', () => {
 
       expect(wrapper.exists()).toBe(true)
       expect(wrapper.text()).toContain('Content')
-      expect(wrapper.find('.m-tooltip-panel').exists()).toBe(true)
-      expect(wrapper.find('.m-tooltip-panel').text()).toContain('Tooltip text')
+      expect(document.querySelector('.m-tooltip-panel')).not.toBeNull()
+      expect(document.querySelector('.m-tooltip-panel')?.textContent).toContain('Tooltip text')
     })
   })
 
@@ -77,8 +77,8 @@ describe('given vTooltip directive', () => {
 
       expect(wrapper.exists()).toBe(true)
       expect(wrapper.text()).toContain('Content')
-      expect(wrapper.find('.m-tooltip-panel').exists()).toBe(true)
-      expect(wrapper.find('.m-tooltip-panel').classes()).toContain('--destructive')
+      expect(document.querySelector('.m-tooltip-panel')).not.toBeNull()
+      expect(document.querySelector('.m-tooltip-panel')?.classList).toContain('--destructive')
     })
   })
 
