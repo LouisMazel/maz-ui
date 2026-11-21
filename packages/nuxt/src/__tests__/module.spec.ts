@@ -206,6 +206,7 @@ describe('nuxt module', () => {
       expect(composables.useScroll).toBe(true)
       expect(composables.useInfiniteScroll).toBe(true)
       expect(composables.useScrollLock).toBe(true)
+      expect(composables.useResizeObserver).toBe(true)
     })
   })
 

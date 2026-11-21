@@ -387,6 +387,13 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     useScrollLock?: boolean
+
+    /**
+     * Enable auto-import of useResizeObserver composable
+     * @description Know when the size of elements changes
+     * @default true
+     */
+    useResizeObserver?: boolean
   }
 
   /**
