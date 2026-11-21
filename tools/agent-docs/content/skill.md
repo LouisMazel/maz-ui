@@ -1,5 +1,6 @@
 ### Workflow
 
+0. **Know the project**: `get_project_info()` gives the installed versions, the plugins already installed, whether components and icons resolve by name, the theme presets and the components and tools the code already uses.
 1. **Search by need**: `search_docs("<what you need>")`, e.g. "user avatar with initials", "confirm before delete", "phone number input", "debounce search". Pick the most specific result.
 2. **Read the exact API** before writing a template: `get_component_api(["MazBtn", "MazDialog"])` (batch up to 10). Never invent a prop, event or slot.
 3. **Icons**: `find_icons("delete")` returns the icon names and their imports.

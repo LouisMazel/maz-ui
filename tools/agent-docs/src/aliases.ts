@@ -481,6 +481,7 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'is mobile',
     'screen size',
   ],
+  'composables/use-clipboard': ['copy to clipboard', 'copy button', 'copied state', 'clipboard', 'copy link'],
   'composables/use-dialog': [
     'confirm',
     'confirmation dialog',
@@ -562,6 +563,8 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'fuzzy search',
     'search in list',
     'filter list',
+    'filter by query',
+    'search as you type',
     'typo tolerant search',
   ],
   'composables/use-string-matching': ['string similarity', 'levenshtein', 'compare strings'],
@@ -582,8 +585,11 @@ export const DOC_ALIASES: Record<string, string[]> = {
   'composables/use-user-visibility': ['page visibility', 'tab hidden', 'user away'],
   'composables/use-wait': [
     'loading state',
+    'shared loading state',
+    'busy state',
     'pending state',
     'global loader',
+    'sync in progress',
     'wait',
   ],
   'composables/use-window-size': ['window size', 'viewport size', 'resize'],
@@ -657,6 +663,8 @@ export const DOC_ALIASES: Record<string, string[]> = {
   'ecosystem/utils/normalize-string': [
     'normalize string',
     'remove accents',
+    'strip diacritics',
+    'case insensitive compare',
     'slug',
     'case conversion',
   ],

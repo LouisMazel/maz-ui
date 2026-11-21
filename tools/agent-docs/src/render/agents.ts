@@ -7,16 +7,27 @@ export interface AgentContent {
   rules: string
   /** Core of the rules, always useful: the Claude Code rule, loaded in the context of the agent, stays short */
   rulesCore: string
+  /** Core of the rules with the compact catalog: the context the Claude Code plugin adds at the start of each session */
+  sessionCore: string
   workflow: string
 }
 
 export const SKILL_DESCRIPTION = 'Build Vue and Nuxt UIs with the maz-ui ecosystem (components, composables, directives, @maz-ui/icons, @maz-ui/utils, @maz-ui/themes, Tailwind theme tokens) instead of re-implementing them. Use whenever you write or review Vue/Nuxt components, pages, forms, layouts, styles or helpers in a project that depends on maz-ui.'
 
-export function loadAgentContent(contentDir: string): AgentContent {
+/** File of the catalog in the VitePress output: the rules include it, so that the AI agents guide shows it too */
+export const CATALOG_FILE = 'ecosystem-catalog.doc.md'
+
+const CATALOG_INCLUDE = /\n*^<!--@include: [^\n]*ecosystem-catalog\.doc\.md-->$\n*/m
+
+/** Reads the rules, with `catalog` in place of the include of the catalog */
+export function loadAgentContent(contentDir: string, catalog = '', compactCatalog = catalog): AgentContent {
+  const read = (file: string, section = catalog): string => readFileSync(join(contentDir, file), 'utf8').replace(CATALOG_INCLUDE, () => `\n\n${section}${section ? '\n\n' : ''}`).trim()
+
   return {
-    rules: readFileSync(join(contentDir, 'rules.md'), 'utf8').trim(),
-    rulesCore: readFileSync(join(contentDir, 'rules-core.md'), 'utf8').trim(),
-    workflow: readFileSync(join(contentDir, 'skill.md'), 'utf8').trim(),
+    rules: read('rules.md'),
+    rulesCore: read('rules-core.md'),
+    sessionCore: read('rules-core.md', compactCatalog),
+    workflow: read('skill.md'),
   }
 }
 
@@ -43,6 +54,20 @@ export function renderClaudeRule(content: AgentContent): string {
   return `# maz-ui
 
 ${content.rulesCore}
+`
+}
+
+/** Hooks inject 10,000 characters at most (above, Claude only gets the path of a file and a preview), the hook adds a header */
+export const SESSION_CONTEXT_LIMIT = 9500
+
+/**
+ * Context the SessionStart and SubagentStart hooks of the Claude Code plugin add, read from the installed maz-ui:
+ * always loaded, unlike a skill the agent has to invoke, and version matched
+ */
+export function renderSessionContext(content: AgentContent): string {
+  return `# maz-ui
+
+${content.sessionCore}
 `
 }
 
