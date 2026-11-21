@@ -116,5 +116,6 @@ export const ECOSYSTEM_CATALOG: CatalogGroup[] = [
 
 /** Docs left out of the catalog on purpose */
 export const CATALOG_OMITTED: Record<string, string> = {
+  'ecosystem/utils/is-production': 'for the libraries: an app built by Vite reads `import.meta.env.PROD`',
   'ecosystem/utils/debounce-callback': 'one timer shared by the whole app: `debounce` or `debounceId` fit better',
 }
