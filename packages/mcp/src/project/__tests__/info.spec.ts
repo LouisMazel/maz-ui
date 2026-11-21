@@ -33,6 +33,7 @@ describe('given readProjectInfo', () => {
         framework: 'vue',
         versions: { 'maz-ui': '5.8.0' },
         plugins: ['ToastPlugin'],
+        aos: false,
         mazUiPlugin: true,
         iconsByName: true,
         componentsAutoImported: true,
@@ -50,7 +51,7 @@ describe('given readProjectInfo', () => {
 
       const [app] = await readProjectInfo(cwd, COMPONENTS)
 
-      expect(app).toMatchObject({ framework: 'nuxt', plugins: ['ToastPlugin', 'WaitPlugin'], mazUiPlugin: true, iconsByName: true, componentsAutoImported: true, versions: {} })
+      expect(app).toMatchObject({ framework: 'nuxt', plugins: ['ToastPlugin', 'WaitPlugin'], aos: false, mazUiPlugin: true, iconsByName: true, componentsAutoImported: true, versions: {} })
     })
   })
 
@@ -84,8 +85,8 @@ describe('given renderProjectInfo', () => {
       expect(output).toContain('## Project: Vue')
       expect(output).toContain('- Installed: maz-ui 5.8.0')
       expect(output).toContain('`app.use(MazUi)` (`maz-ui/plugins/maz-ui`) not found')
-      expect(output).toContain('- Plugins: none. Before using `useToast`')
-      expect(output).toContain('`app.use(ToastPlugin)` from `maz-ui/plugins/toast` in `main.ts`')
+      expect(output).toContain('- Toast, dialog and wait: `useToast`, `useDialog` and `useWait` need no plugin')
+      expect(output).toContain('- Animations on scroll: disabled')
       expect(output).toContain('import each one')
       expect(output).toContain('add `MazUi()` of `@maz-ui/vite-plugin` to use them by name')
       expect(output).toContain('Theme presets: the default one')
@@ -106,7 +107,7 @@ describe('given renderProjectInfo', () => {
       const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS))
 
       expect(output).not.toContain('not found')
-      expect(output).toContain('- Plugins: `ToastPlugin`. Before using')
+      expect(output).toContain('- Deprecated: `app.use(ToastPlugin)` still works, removed in v6')
       expect(output).toContain('- Components: auto-imported in the templates. Composables: deep imports')
       expect(output).toContain('- Icons: by name in the icon props')
       expect(output).toContain('- Theme presets: `brandPreset`')
@@ -127,9 +128,103 @@ describe('given renderProjectInfo', () => {
 
       expect(output).toContain('## App `apps/shop`: Nuxt (`@maz-ui/nuxt`)')
       expect(output).toContain('no package of the ecosystem in node_modules')
-      expect(output).toContain('- Plugins: `ToastPlugin`, `DialogPlugin`, `WaitPlugin`, `AosPlugin`.\n')
+      expect(output).toContain('- Animations on scroll: enabled (`useAos`).\n')
+      expect(output).toContain('- Deprecated: `mazUi.plugins` still works, removed in v6')
       expect(output).toContain('Components: auto-imported in the templates. Composables: auto-imported.')
       expect(output).toContain('- Components already used: `MazCard` (1)')
+    })
+  })
+})
+
+describe('given the setup of the toasts, dialogs, loaders and animations', () => {
+  describe('when the installed maz-ui is older and its composables need their plugin', () => {
+    it('then it tells the plugins to install', async () => {
+      const cwd = createTempDir()
+      createVueApp(cwd, { mainTs: 'app.use(MazUi)\napp.use(ToastPlugin)\n' })
+
+      const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS), { standaloneComposables: false })
+
+      expect(output).toContain('- Plugins: `ToastPlugin`. Before using `useToast`, `useDialog`, `useWait` or `useAos`, install the missing plugin once: `app.use(ToastPlugin)` from `maz-ui/plugins/toast` in `main.ts`.')
+      expect(output).not.toContain('Deprecated')
+    })
+  })
+
+  describe('when the installed maz-ui is older and a Nuxt app enables every plugin', () => {
+    it('then nothing is left to install', async () => {
+      const cwd = createTempDir()
+      writeFile(cwd, 'package.json', JSON.stringify({ dependencies: { '@maz-ui/nuxt': '^5.0.0' } }))
+      writeFile(cwd, 'nuxt.config.ts', 'export default { mazUi: { plugins: { toast: true, dialog: true, wait: true, aos: true } } }\n')
+
+      const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS), { standaloneComposables: false })
+
+      expect(output).toContain('- Plugins: `ToastPlugin`, `DialogPlugin`, `WaitPlugin`, `AosPlugin`.\n')
+    })
+  })
+
+  describe('when the installed maz-ui is older and a Nuxt app enables no plugin', () => {
+    it('then it tells the option of the module', async () => {
+      const cwd = createTempDir()
+      writeFile(cwd, 'package.json', JSON.stringify({ dependencies: { '@maz-ui/nuxt': '^5.0.0' } }))
+      writeFile(cwd, 'nuxt.config.ts', 'export default { mazUi: {} }\n')
+
+      const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS), { standaloneComposables: false })
+
+      expect(output).toContain('- Plugins: none. Before using `useToast`, `useDialog`, `useWait` or `useAos`, install the missing plugin once: `mazUi: { plugins: { toast: true } }` in `nuxt.config`.')
+    })
+  })
+
+  describe('when a Vue app installs no plugin', () => {
+    it('then toast, dialog and wait need nothing and aos tells how to enable it', async () => {
+      const cwd = createTempDir()
+      createVueApp(cwd, { mainTs: 'app.use(MazUi, { theme: { preset } })\n' })
+
+      const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS))
+
+      expect(output).toContain('- Toast, dialog and wait: `useToast`, `useDialog` and `useWait` need no plugin, their global options go in `app.use(MazUi, { toast, dialog })`.')
+      expect(output).toContain('- Animations on scroll: disabled, enable them with `app.use(MazUi, { aos: true })` and `import \'maz-ui/aos.css\'` before using `useAos`.')
+      expect(output).not.toContain('Before using')
+      expect(output).not.toContain('Deprecated')
+    })
+  })
+
+  describe('when a Vue app still installs the deprecated plugins and enables aos in MazUi', () => {
+    it('then it reports the deprecated plugins with their replacement', async () => {
+      const cwd = createTempDir()
+      createVueApp(cwd, { mainTs: 'app.use(MazUi, { theme: { preset }, aos: { delay: 100 } })\napp.use(ToastPlugin)\napp.use(WaitPlugin)\n' })
+
+      const [app] = await readProjectInfo(cwd, COMPONENTS)
+      const output = renderProjectInfo([app])
+
+      expect(app.aos).toBe(true)
+      expect(output).toContain('- Animations on scroll: enabled (`useAos`).')
+      expect(output).toContain('- Deprecated: `app.use(ToastPlugin)`, `app.use(WaitPlugin)` still works, removed in v6: remove it and move its options to `app.use(MazUi, { toast, dialog })`.')
+    })
+  })
+
+  describe('when a Nuxt app uses the deprecated plugins option', () => {
+    it('then it reports the option with the new ones', async () => {
+      const cwd = createTempDir()
+      writeFile(cwd, 'package.json', JSON.stringify({ devDependencies: { '@maz-ui/nuxt': '^5.0.0' } }))
+      writeFile(cwd, 'nuxt.config.ts', 'export default defineNuxtConfig({ mazUi: { plugins: { toast: { position: \'top\' }, aos: true } } })\n')
+
+      const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS))
+
+      expect(output).toContain('their global options go in `mazUi.toast` and `mazUi.dialog` in `nuxt.config`.')
+      expect(output).toContain('- Animations on scroll: enabled (`useAos`).')
+      expect(output).toContain('- Deprecated: `mazUi.plugins` still works, removed in v6')
+    })
+  })
+
+  describe('when a Nuxt app does not enable aos', () => {
+    it('then it gives the Nuxt option', async () => {
+      const cwd = createTempDir()
+      writeFile(cwd, 'package.json', JSON.stringify({ devDependencies: { '@maz-ui/nuxt': '^5.0.0' } }))
+      writeFile(cwd, 'nuxt.config.ts', 'export default defineNuxtConfig({ mazUi: { toast: { position: \'top\' } } })\n')
+
+      const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS))
+
+      expect(output).toContain('enable them with `mazUi: { aos: true }` before using `useAos`.')
+      expect(output).not.toContain('Deprecated')
     })
   })
 })

@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import themePlugin from '../theme'
+import { createVueAppMock } from '../../../__tests__/fixtures/vue-app'
+import mazUiPlugin from '../maz-ui'
 
 const { mockInstall, mockUseHead, mockGetSystemColorMode } = vi.hoisted(() => ({
   mockInstall: vi.fn(),
@@ -8,8 +9,12 @@ const { mockInstall, mockUseHead, mockGetSystemColorMode } = vi.hoisted(() => ({
   mockGetSystemColorMode: vi.fn(() => 'light'),
 }))
 
-vi.mock('@maz-ui/themes/plugin', () => ({
-  MazUiTheme: { install: mockInstall },
+vi.mock('maz-ui/plugins/maz-ui', () => ({
+  MazUi: { install: mockInstall },
+}))
+
+vi.mock('maz-ui/plugins/aos', () => ({
+  getAosInstance: vi.fn(),
 }))
 
 vi.mock('@maz-ui/themes/utils', async importOriginal => ({
@@ -21,13 +26,14 @@ vi.mock('nuxt/app', () => ({
   defineNuxtPlugin: vi.fn((fn: (...args: any[]) => any) => fn),
   useHead: (...args: any[]) => mockUseHead(...args),
   useRequestHeaders: vi.fn(),
+  useRouter: vi.fn(),
 }))
 
 async function runPlugin(themeOptions: Record<string, any> = {}, cookie = '') {
   vi.stubGlobal('document', { cookie })
   vi.stubGlobal('window', {})
   const context = {
-    vueApp: {},
+    vueApp: createVueAppMock(),
     $config: {
       public: {
         mazUi: {
@@ -36,12 +42,12 @@ async function runPlugin(themeOptions: Record<string, any> = {}, cookie = '') {
       },
     },
   }
-  await (themePlugin as (...args: any[]) => any)(context)
+  await (mazUiPlugin as (...args: any[]) => any)(context)
 
-  return mockInstall.mock.lastCall?.[1]
+  return mockInstall.mock.lastCall?.[1].theme
 }
 
-describe('theme plugin (client)', () => {
+describe('maz-ui plugin theme (client)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockGetSystemColorMode.mockReturnValue('light')

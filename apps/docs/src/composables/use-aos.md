@@ -8,7 +8,7 @@ description: Vue composable to access the AOS plugin instance (animations on scr
 {{ $frontmatter.description }}
 
 ::: warning
-You must install the [aos plugin](./../plugins/aos.md#install) before you start using it
+Enable aos with the `aos` option of the MazUi plugin (or of the Nuxt module) before using it: [installation](./../plugins/aos.md#installation)
 :::
 
 ::: tip

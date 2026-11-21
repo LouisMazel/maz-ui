@@ -2,6 +2,7 @@ import type { ServerContext } from '../context.ts'
 import type { DocCategory, DocEntry } from '../knowledge/schema.ts'
 
 import { z } from 'zod'
+import { hasStandaloneComposables } from '../knowledge/features.ts'
 import { docCategories } from '../knowledge/schema.ts'
 import { searchIcons } from '../search/engine.ts'
 import { truncateText } from './markdown.ts'
@@ -23,17 +24,24 @@ export function nextCall(doc: DocEntry): string {
   return `get_doc({ id: "${doc.id}" })`
 }
 
-/** What a composable that works through a plugin of maz-ui (`useWait` and `WaitPlugin`) needs once in the app */
+/** What a composable that works through a plugin of maz-ui (`useAos` and `AosPlugin`) needs once in the app. The page of a plugin that its composable no longer needs gives the composable (`useWait`) */
 export function pluginSetup(doc: DocEntry, docsById: ReadonlyMap<string, DocEntry>): string | undefined {
   const slug = doc.category === 'composable'
     ? /^use(\w+)$/.exec(doc.title)?.[1].toLowerCase()
     : undefined
-  const plugin = slug
+  const symbol = slug
     ? docsById.get(`plugins/${slug}`)?.symbols[0]
     : undefined
+  const plugin = symbol?.endsWith('Plugin')
+    ? symbol
+    : undefined
+
+  // Removed in v6 (plans/ROADMAP.md): the plugins of a maz-ui older than the standalone composables
+  if (plugin && !hasStandaloneComposables(docsById))
+    return `Needs its plugin once: \`app.use(${plugin})\` from \`maz-ui/plugins/${slug}\` in \`main.ts\` (Nuxt: \`mazUi: { plugins: { ${slug}: true } }\`).`
 
   return plugin
-    ? `Needs its plugin once: \`app.use(${plugin})\` from \`maz-ui/plugins/${slug}\` in \`main.ts\` (Nuxt: \`mazUi: { plugins: { ${slug}: true } }\`).`
+    ? `Needs \`${slug}\` once: \`app.use(MazUi, { theme, ${slug}: true })\` in \`main.ts\` (or \`app.use(${plugin})\` from \`maz-ui/plugins/${slug}\`), Nuxt: \`mazUi: { ${slug}: true }\`.`
     : undefined
 }
 

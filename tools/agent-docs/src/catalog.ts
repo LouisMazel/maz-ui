@@ -89,7 +89,8 @@ export const ECOSYSTEM_CATALOG: CatalogGroup[] = [
       { need: 'follow a pointer drag live (sheet, slider, reorder), instead of `pointerdown` and `pointermove` listeners', docs: ['composables/use-drag'] },
       { need: 'pull to refresh', docs: ['components/maz-pull-to-refresh', 'composables/use-pull-to-refresh'] },
       { need: 'a tooltip on hover', docs: ['directives/tooltip'] },
-      { need: 'an element enters the viewport (infinite scroll, lazy images, animations), instead of `new IntersectionObserver`', docs: ['composables/use-intersection-observer', 'directives/intersect', 'composables/use-infinite-scroll', 'directives/lazy-img', 'components/maz-lazy-img', 'components/maz-animated-element', 'composables/use-aos', 'plugins/aos'] },
+      { need: 'an element enters the viewport (infinite scroll, lazy images, animations), instead of `new IntersectionObserver`', docs: ['composables/use-intersection-observer', 'directives/intersect', 'composables/use-infinite-scroll', 'directives/lazy-img', 'components/maz-lazy-img', 'components/maz-animated-element'] },
+      { need: 'animate elements when they appear on scroll (fade, zoom, slide), with `aos: true` in MazUi or `mazUi`', docs: ['composables/use-aos', 'plugins/aos'], symbols: ['useAos'] },
       { need: 'scroll position, direction or end, "back to top" or "to bottom" button, instead of `addEventListener("scroll")`', docs: ['composables/use-scroll', 'components/maz-btn-scroll'] },
       { need: 'lock the page scroll, instead of `body.style.overflow`', docs: ['composables/use-scroll-lock'] },
       { need: 'enlarge an image on click, browse a gallery in fullscreen, instead of `requestFullscreen`', docs: ['directives/zoom-img', 'directives/fullscreen-img'] },
@@ -115,5 +116,6 @@ export const ECOSYSTEM_CATALOG: CatalogGroup[] = [
 
 /** Docs left out of the catalog on purpose */
 export const CATALOG_OMITTED: Record<string, string> = {
+  'ecosystem/utils/is-production': 'for the libraries: an app built by Vite reads `import.meta.env.PROD`',
   'ecosystem/utils/debounce-callback': 'one timer shared by the whole app: `debounce` or `debounceId` fit better',
 }

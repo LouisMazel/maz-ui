@@ -170,13 +170,12 @@ export default defineNuxtConfig({
     // Icons by name (<MazIcon icon="x-mark" />), with the SVG of app/icons (default: true)
     icons: { prefix: 'app' },
 
-    // Plugins (not enabled by default)
-    plugins: {
-      aos: true,
-      dialog: true,
-      toast: true,
-      wait: true,
-    },
+    // Global options of useToast() and useDialog()
+    toast: { position: 'top-right' },
+    dialog: { acceptText: 'Yes' },
+
+    // Animations on scroll (not enabled by default)
+    aos: { router: true },
 
     // Composables (enabled by default)
     composables: {
@@ -243,7 +242,7 @@ const css = {
 }
 ```
 
-`css.purge` adds [`@maz-ui/vite-plugin`](./vite-plugin.md) at build time, with the entries of the enabled `plugins` and `directives` of the module. On a Nuxt app of 2 pages (MazBtn, MazCard, MazBadge, LazyMazAccordion, MazInput, MazCheckbox, the toast plugin and vTooltip, `nuxi generate`), the CSS files go from 122.3 kB (21.0 kB gzip) to 78.6 kB (14.8 kB gzip), which is -36%. The gain depends on your app. To keep components the purge cannot find (names built at runtime, dependencies), pass the options of the plugin:
+`css.purge` adds [`@maz-ui/vite-plugin`](./vite-plugin.md) at build time, with the entries of `aos` and of the enabled `directives` of the module. On a Nuxt app of 2 pages (MazBtn, MazCard, MazBadge, LazyMazAccordion, MazInput, MazCheckbox, useToast and vTooltip, `nuxi generate`), the CSS files go from 122.3 kB (21.0 kB gzip) to 78.6 kB (14.8 kB gzip), which is -36%. The gain depends on your app. To keep components the purge cannot find (names built at runtime, dependencies), pass the options of the plugin:
 
 ```ts
 css: {
@@ -441,6 +440,11 @@ All composables are auto-imported and ready to use:
 
 ```ts
 const composables = {
+  // 🎭 Toast, dialog and loading states
+  useToast: true, // UI notifications
+  useDialog: true, // Display modales without any implementation in template
+  useWait: true, // Loading states
+
   // 🎨 Theming
   useTheme: true, // Theme management and dark mode
 
@@ -478,19 +482,47 @@ const composables = {
 }
 ```
 
-### Plugins
+### Toast, dialog and wait
+
+`useToast`, `useDialog` and `useWait` are auto-imported, without plugin to enable. Their global options:
 
 ```ts
-const plugins = {
-  // Animations
-  aos: true,
-  // 🎭 Display modales without any implementation in template
-  dialog: true,
-  // 🎭 UI Notifications
-  toast: true,
-  // 🔄 Loading States
-  wait: true,
-}
+export default defineNuxtConfig({
+  mazUi: {
+    // Options of every toast: https://maz-ui.com/plugins/toast
+    toast: {
+      position: 'bottom-right',
+      timeout: 10_000,
+    },
+    // Options of every dialog: https://maz-ui.com/plugins/dialog
+    dialog: {
+      acceptText: 'Yes',
+      rejectText: 'No',
+    },
+  },
+})
+```
+
+### Animations on scroll
+
+Disabled by default. `aos` installs the [aos plugin](./../plugins/aos.md), injects its CSS and auto-imports `useAos`:
+
+```ts
+export default defineNuxtConfig({
+  mazUi: {
+    // `true` for the default options
+    aos: {
+      // Runs the animations again after each navigation
+      router: true,
+      // Inject maz-ui/aos.css (default: true)
+      injectCss: true,
+      animation: {
+        duration: 1000,
+        once: false,
+      },
+    },
+  },
+})
 ```
 
 ### Directives
@@ -604,7 +636,7 @@ You can use [`MazUiProvider`](../guide/maz-ui-provider.md) within a Nuxt app to 
 
 ### Two versions of maz-ui
 
-If the module warns `The app installs maz-ui X and @maz-ui/nuxt uses maz-ui Y`, your app and the module load two copies of `maz-ui`: the options of the module (`mazUi.general`, `mazUi.plugins`...) may not apply to the components. Install the same version of `maz-ui` and `@maz-ui/nuxt`, they are released together:
+If the module warns `The app installs maz-ui X and @maz-ui/nuxt uses maz-ui Y`, your app and the module load two copies of `maz-ui`: the options of the module (`mazUi.general`, `mazUi.toast`...) may not apply to the components. Install the same version of `maz-ui` and `@maz-ui/nuxt`, they are released together:
 
 ```bash
 npm install maz-ui@latest @maz-ui/nuxt@latest

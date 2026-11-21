@@ -11,6 +11,7 @@ const dialogServer = {
   },
 } as unknown as DialogHandler
 
+// Removed in v6 (plans/ROADMAP.md): plugin of the deprecated `plugins.dialog` option, for `$mazDialog`
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   if (import.meta.server) {
     return {
@@ -27,15 +28,22 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     ? dialogOptions
     : undefined
 
+  const mazDialog = new DialogHandler(vueApp, options)
+  // `useDialog()` uses the same handler
+  vueApp.provide('mazDialog', mazDialog)
+
   return {
     provide: {
-      mazDialog: new DialogHandler(vueApp, options),
+      mazDialog,
     },
   }
 })
 
 declare module 'nuxt/app' {
   interface NuxtApp {
+    /**
+     * @deprecated use `useDialog()`, removed in v6
+     */
     $mazDialog: DialogHandler
   }
 }

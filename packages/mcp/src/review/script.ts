@@ -1,5 +1,6 @@
 import type { ReviewContext, Severity } from './types.ts'
 
+import { hasStandaloneComposables } from '../knowledge/features.ts'
 import { closest } from '../knowledge/resolve.ts'
 import { checkClassStrings } from './classes.ts'
 import { checkPresetColors } from './preset.ts'
@@ -596,7 +597,57 @@ interface HandwrittenPattern {
   requires?: RegExp
 }
 
-const WAIT_SUGGESTION = 'Use `useWait()` from `maz-ui/composables/useWait`: `wait.start("USER")`, `wait.stop("USER")` and `wait.isLoading("USER")` in any component. It needs `app.use(WaitPlugin)` once, from `maz-ui/plugins/wait` in `main.ts` (Nuxt: `mazUi: { plugins: { wait: true } }`).'
+/** The plugins that `useToast`, `useDialog` and `useWait` no longer need, removed in v6, with the option of `MazUi` that takes their options */
+const DEPRECATED_PLUGINS: Record<string, { composable: string, option?: string }> = {
+  ToastPlugin: { composable: 'useToast', option: 'toast' },
+  DialogPlugin: { composable: 'useDialog', option: 'dialog' },
+  WaitPlugin: { composable: 'useWait' },
+}
+
+const NUXT_CONFIG = /(?:^|[\\/])nuxt\.config\.[cm]?[jt]s$/
+
+/** The deprecated plugins of the composables, their `$maz*` properties and the `mazUi.plugins` option of the Nuxt module, when the installed maz-ui no longer needs them */
+function checkDeprecatedApis(code: string, offset: number, context: ReviewContext): void {
+  if (!hasStandaloneComposables(context.knowledge.docsById))
+    return
+
+  for (const match of code.matchAll(/\.use\(\s*(ToastPlugin|DialogPlugin|WaitPlugin)\b/g)) {
+    const plugin = match[1]!
+    const { composable, option } = DEPRECATED_PLUGINS[plugin]!
+
+    context.report({
+      rule: 'deprecated-api',
+      severity: 'warning',
+      message: `\`${plugin}\` is deprecated and removed in v6: \`${composable}()\` works without it.`,
+      suggestion: option
+        ? `Remove \`app.use(${plugin})\` and give its options to the MazUi plugin: \`app.use(MazUi, { theme, ${option}: { ... } })\`.`
+        : `Remove \`app.use(${plugin})\`.`,
+    }, offset + match.index)
+  }
+
+  for (const match of code.matchAll(/\$maz(Toast|Dialog|Wait)\b/g)) {
+    context.report({
+      rule: 'deprecated-api',
+      severity: 'warning',
+      message: `\`$maz${match[1]}\` is deprecated and removed in v6.`,
+      suggestion: `Use \`use${match[1]}()\` from \`maz-ui/composables/use${match[1]}\` (auto-imported with Nuxt).`,
+    }, offset + match.index)
+  }
+
+  if (!NUXT_CONFIG.test(String(context.filename)))
+    return
+
+  for (const match of code.matchAll(/\bplugins\s*:\s*\{[^}]*\b(?:toast|dialog|wait|aos)\s*:/g)) {
+    context.report({
+      rule: 'deprecated-api',
+      severity: 'warning',
+      message: '`mazUi.plugins` is deprecated and removed in v6: `useToast`, `useDialog` and `useWait` are always auto-imported.',
+      suggestion: 'Remove `plugins` and give the options to `mazUi.toast`, `mazUi.dialog` and `mazUi.aos`.',
+    }, offset + match.index)
+  }
+}
+
+const WAIT_SUGGESTION = 'Use `useWait()` from `maz-ui/composables/useWait`: `wait.start("USER")`, `wait.stop("USER")` and `wait.isLoading("USER")` in any component (`get_doc` gives its setup).'
 
 /** Code written by hand that maz-ui already provides; `(?<![\w$.])` skips the methods of other objects (`toast.confirm()`) */
 const HANDWRITTEN_PATTERNS: HandwrittenPattern[] = [
@@ -605,14 +656,14 @@ const HANDWRITTEN_PATTERNS: HandwrittenPattern[] = [
     rule: 'native-dialog',
     severity: 'warning',
     message: '`alert()` blocks the page with a dialog of the browser.',
-    suggestion: 'Use `useToast()` from `maz-ui/composables/useToast`: `toast.success("Saved")`, `toast.error(...)` (ToastPlugin).',
+    suggestion: 'Use `useToast()` from `maz-ui/composables/useToast`: `toast.success("Saved")`, `toast.error(...)`.',
   },
   {
     regex: /(?<![\w$.])(?:window\.)?(?:confirm|prompt)\(/g,
     rule: 'native-dialog',
     severity: 'warning',
     message: '`confirm()` / `prompt()` block the page with a dialog of the browser.',
-    suggestion: 'Use `useDialog()` from `maz-ui/composables/useDialog`: `dialog.open({ title, message, buttons })` (DialogPlugin), or a `MazDialogConfirm`.',
+    suggestion: 'Use `useDialog()` from `maz-ui/composables/useDialog`: `dialog.open({ title, message, buttons })`, or a `MazDialogConfirm`.',
   },
   {
     regex: /^(?:export\s+)?(?:const|let)\s+\w*(?:loading|pending|saving|busy|submitting|fetching|processing)\w*\s*=\s*(?:ref|shallowRef)(?:<\s*boolean\s*>)?\(\s*(?:false)?\s*\)/gim,
@@ -1036,6 +1087,7 @@ export function reviewScript(code: string, offset: number, context: ReviewContex
   }
 
   checkPresetColors(code, offset, context)
+  checkDeprecatedApis(body, offset, context)
   checkHandwrittenCode(code, body, offset, context)
   checkClassStrings(body, offset, context)
 }

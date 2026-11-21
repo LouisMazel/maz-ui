@@ -1,8 +1,10 @@
 import type { App } from 'vue'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { MazUiTranslations } from '@maz-ui/translations/plugin'
+import { AosPlugin } from '@plugins/aos.ts'
 import { MazUi } from '@plugins/maz-ui.ts'
 import { vi } from 'vitest'
+import { MAZ_UI_CONTEXT_INJECTION_KEY } from '@/utils/mazUiContext.ts'
 
 vi.mock('@maz-ui/themes/plugin', () => ({
   MazUiTheme: {
@@ -22,6 +24,7 @@ describe('given MazUi plugin', () => {
   beforeEach(() => {
     mockApp = {
       use: vi.fn(),
+      provide: vi.fn(),
     } as unknown as App
     vi.clearAllMocks()
   })
@@ -125,6 +128,52 @@ describe('given MazUi plugin', () => {
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, themeOptions)
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTranslations, translationsOptions)
       expect(mockApp.use).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('when installing with toast and dialog options', () => {
+    it('then it provides the app and the options to the composables', () => {
+      const toast = { position: 'top-right' as const }
+      const dialog = { acceptText: 'Yes' }
+
+      MazUi.install?.(mockApp, {
+        theme: {
+          preset: {} as any,
+        },
+        toast,
+        dialog,
+      })
+
+      expect(mockApp.provide).toHaveBeenCalledWith(MAZ_UI_CONTEXT_INJECTION_KEY, { app: mockApp, toast, dialog })
+      expect(mockApp.use).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('when installing with aos enabled', () => {
+    it('then it installs the aos plugin with the default options', () => {
+      MazUi.install?.(mockApp, {
+        theme: {
+          preset: {} as any,
+        },
+        aos: true,
+      })
+
+      expect(mockApp.use).toHaveBeenCalledWith(AosPlugin, undefined)
+    })
+  })
+
+  describe('when installing with aos options', () => {
+    it('then it installs the aos plugin with these options', () => {
+      const aos = { delay: 200 }
+
+      MazUi.install?.(mockApp, {
+        theme: {
+          preset: {} as any,
+        },
+        aos,
+      })
+
+      expect(mockApp.use).toHaveBeenCalledWith(AosPlugin, aos)
     })
   })
 })
