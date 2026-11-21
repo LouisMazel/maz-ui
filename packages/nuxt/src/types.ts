@@ -284,6 +284,13 @@ export interface MazUiNuxtOptions {
     useFuzzySearch?: boolean
 
     /**
+     * Enable auto-import of useClipboard composable
+     * @description Copy a text to the clipboard with a `copied` state
+     * @default true
+     */
+    useClipboard?: boolean
+
+    /**
      * Enable auto-import of useTimer composable
      * @description Timer and countdown functionality
      * @default true
