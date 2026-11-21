@@ -59,6 +59,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - `apps/nuxt-app/` - Nuxt 3 demo application
 - `tools/cli/` - Internal CLI tools
 - `tools/agent-docs/` - Generator of the agent knowledge bundle (see below)
+- `tools/agent-evals/` - Evals of the agent tooling: `pnpm -F agent-evals eval` gives tasks to the real Claude Code alone, with `init` and with the plugin (costs tokens, never in CI)
 - `plugins/claude-code/` - Claude Code plugin (skill, MCP server, review hook), exposed by `.claude-plugin/marketplace.json`
 
 ### Main Library Structure (`packages/maz-ui/src/`)
