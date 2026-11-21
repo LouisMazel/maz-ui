@@ -1,6 +1,6 @@
 import type { AgentDocs, AgentsTool, AgentTarget, SetupAgentsResult } from '../agents/types.ts'
 import { createHash } from 'node:crypto'
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { parse } from 'jsonc-parser'
@@ -55,6 +55,18 @@ function changeOf(result: SetupAgentsResult, file: string) {
   return result.changes.find(change => change.file === file)
 }
 
+let userHome: string
+let realHome: string | undefined
+let realConfigDir: string | undefined
+
+beforeAll(() => {
+  userHome = mkdtempSync(join(tmpdir(), 'maz-ui-agents-user-'))
+  realHome = process.env.HOME
+  realConfigDir = process.env.CLAUDE_CONFIG_DIR
+  process.env.HOME = userHome
+  delete process.env.CLAUDE_CONFIG_DIR
+})
+
 beforeEach(() => {
   rootDir = mkdtempSync(join(tmpdir(), 'maz-ui-agents-project-'))
   docsDir = mkdtempSync(join(tmpdir(), 'maz-ui-agents-docs-'))
@@ -64,6 +76,15 @@ beforeEach(() => {
 afterEach(() => {
   rmSync(rootDir, { recursive: true, force: true })
   rmSync(docsDir, { recursive: true, force: true })
+})
+
+afterAll(() => {
+  process.env.HOME = realHome
+
+  if (realConfigDir !== undefined)
+    process.env.CLAUDE_CONFIG_DIR = realConfigDir
+
+  rmSync(userHome, { recursive: true, force: true })
 })
 
 describe('given readAgentDocs', () => {
@@ -3084,12 +3105,14 @@ describe('given the agents entry', () => {
         'MCP_SERVER_NAME',
         'compareVersions',
         'detectAgentTargets',
+        'diagnoseAgents',
         'detectPackageManager',
         'findInstalledPackage',
         'findProjectPackage',
         'findWorkspaceDirs',
         'findWorkspacesUsing',
         'installsMcpPackage',
+        'isClaudePluginEnabled',
         'isEditedManagedContent',
         'mcpServerCommand',
         'readAgentDocs',
@@ -3715,6 +3738,631 @@ describe('given setupAgents without target', () => {
       expect(result.changes).toEqual([])
       expect(result.version).toBe('')
       expect(readdirSync(rootDir)).toEqual([])
+    })
+  })
+})
+
+describe('given setupAgents with the hooks option', () => {
+  const settingsFile = '.claude/settings.json'
+  const npxCommand = 'npx -y @maz-ui/mcp@latest review --hook'
+  let home: string
+  let previousHome: string | undefined
+
+  function hookCommands(): string[] {
+    const settings = JSON.parse(readProjectFile(settingsFile)) as { hooks?: { PostToolUse?: Array<{ hooks: Array<{ command: string }> }> } }
+
+    return (settings.hooks?.PostToolUse ?? []).flatMap(group => group.hooks.map(hook => hook.command))
+  }
+
+  function setup(options: { remove?: boolean, hooks?: boolean } = {}): SetupAgentsResult {
+    return setupAgents({
+      rootDir,
+      docsDir,
+      targets: ['claude'],
+      hooks: true,
+      ...options,
+    })
+  }
+
+  beforeEach(() => {
+    home = mkdtempSync(join(tmpdir(), 'maz-ui-agents-home-'))
+    previousHome = process.env.HOME
+    process.env.HOME = home
+    writeProjectFile('CLAUDE.md', '# project')
+  })
+
+  afterEach(() => {
+    process.env.HOME = previousHome
+    rmSync(home, { recursive: true, force: true })
+  })
+
+  describe('when the project has no Claude Code settings', () => {
+    it('then it registers the review hook after each edit and at the end of each task', () => {
+      const result = setup()
+      const hook = { type: 'command', command: npxCommand, timeout: 90 }
+
+      expect(JSON.parse(readProjectFile(settingsFile))).toEqual({
+        hooks: {
+          PostToolUse: [{ matcher: 'Edit|Write|MultiEdit', hooks: [hook] }],
+          Stop: [{ hooks: [hook] }],
+          SubagentStop: [{ hooks: [hook] }],
+        },
+      })
+      expect(changeOf(result, settingsFile)?.action).toBe('create')
+    })
+  })
+
+  describe('when the option is omitted', () => {
+    it('then it writes no hook', () => {
+      setup({ hooks: undefined })
+
+      expect(projectFileExists(settingsFile)).toBe(false)
+    })
+  })
+
+  describe('when it runs twice', () => {
+    it('then the second run leaves the settings unchanged', () => {
+      setup()
+
+      expect(changeOf(setup(), settingsFile)?.action).toBe('unchanged')
+      expect(hookCommands()).toEqual([npxCommand])
+    })
+  })
+
+  describe('when the project installs @maz-ui/mcp', () => {
+    it('then the hook runs the installed package and replaces the npx one', () => {
+      setup()
+      writeProjectFile('package.json', JSON.stringify({ devDependencies: { '@maz-ui/mcp': '^5.8.0' } }))
+      writeProjectFile('pnpm-lock.yaml', '')
+
+      const result = setup()
+
+      expect(hookCommands()).toEqual(['pnpm exec maz-ui-mcp review --hook'])
+      expect(changeOf(result, settingsFile)?.reason).toBe('review hooks now run pnpm exec maz-ui-mcp review --hook')
+    })
+  })
+
+  describe('when the hook runs a pinned version and the project does not install @maz-ui/mcp', () => {
+    it('then it keeps the pin instead of latest', () => {
+      writeProjectFile(settingsFile, JSON.stringify({
+        hooks: { PostToolUse: [{ matcher: 'Edit', hooks: [{ type: 'command', command: 'npx -y @maz-ui/mcp@5.9.0 review --hook' }] }] },
+      }))
+
+      setup()
+      const settings = JSON.parse(readProjectFile(settingsFile))
+
+      expect(hookCommands()).toEqual(['npx -y @maz-ui/mcp@5.9.0 review --hook'])
+      expect(settings.hooks.Stop[0].hooks[0].command).toBe('npx -y @maz-ui/mcp@5.9.0 review --hook')
+      expect(changeOf(setup(), settingsFile)?.action).toBe('unchanged')
+    })
+  })
+
+  describe('when the settings hold other settings and hooks', () => {
+    beforeEach(() => {
+      writeProjectFile(settingsFile, `${JSON.stringify({
+        permissions: { allow: ['Bash(pnpm test)'] },
+        hooks: {
+          PostToolUse: [{ matcher: 'Write', hooks: [{ type: 'command', command: 'pnpm lint:fix' }] }],
+        },
+      }, null, 2)}\n`)
+    })
+
+    it('then it keeps them and appends the review hook', () => {
+      setup()
+
+      const settings = JSON.parse(readProjectFile(settingsFile))
+
+      expect(settings.permissions).toEqual({ allow: ['Bash(pnpm test)'] })
+      expect(hookCommands()).toEqual(['pnpm lint:fix', npxCommand])
+    })
+
+    it('then the removal only takes the review hook away', () => {
+      setup()
+      setup({ remove: true })
+
+      expect(hookCommands()).toEqual(['pnpm lint:fix'])
+    })
+  })
+
+  describe('when the settings only hold the review hook and it is removed', () => {
+    it('then it deletes the settings file', () => {
+      setup()
+
+      const result = setup({ remove: true })
+
+      expect(projectFileExists(settingsFile)).toBe(false)
+      expect(changeOf(result, settingsFile)?.action).toBe('remove')
+    })
+  })
+
+  describe('when the review hook shares its group with a hook of the user', () => {
+    it('then the removal keeps the hook of the user in its group', () => {
+      writeProjectFile(settingsFile, JSON.stringify({
+        hooks: {
+          PostToolUse: [{ matcher: 'Edit|Write|MultiEdit', hooks: [{ type: 'command', command: 'pnpm lint:fix' }, { type: 'command', command: npxCommand }] }],
+        },
+      }))
+
+      setup({ remove: true })
+
+      expect(JSON.parse(readProjectFile(settingsFile)).hooks.PostToolUse).toEqual([
+        { matcher: 'Edit|Write|MultiEdit', hooks: [{ type: 'command', command: 'pnpm lint:fix' }] },
+      ])
+    })
+  })
+
+  describe('when a hook of the user runs another review command', () => {
+    it('then it keeps it and adds its own', () => {
+      writeProjectFile(settingsFile, JSON.stringify({
+        hooks: { PostToolUse: [{ matcher: 'Edit', hooks: [{ type: 'command', command: 'node scripts/maz-ui-mcp review --hook' }] }] },
+      }))
+
+      setup()
+
+      expect(hookCommands()).toEqual(['node scripts/maz-ui-mcp review --hook', npxCommand])
+    })
+  })
+
+  describe('when the maz-ui Claude Code plugin is enabled', () => {
+    it('then it adds no hook, the plugin already reviews the edits', () => {
+      writeFile(join(home, settingsFile), JSON.stringify({ enabledPlugins: { 'maz-ui@maz-ui': true } }))
+
+      const result = setup()
+
+      expect(projectFileExists(settingsFile)).toBe(false)
+      expect(changeOf(result, settingsFile)).toEqual({
+        file: settingsFile,
+        action: 'skip',
+        reason: 'the maz-ui Claude Code plugin already reviews the edited files: no hook added',
+      })
+    })
+
+    it('then it removes the hook added before the plugin', () => {
+      setup()
+      writeProjectFile('.claude/settings.local.json', JSON.stringify({ enabledPlugins: { 'maz-ui@maz-ui': true } }))
+
+      setup()
+
+      expect(projectFileExists(settingsFile)).toBe(false)
+    })
+  })
+
+  describe('when the hook runs an older pinned version than the one requested', () => {
+    it('then it runs the requested version', () => {
+      writeProjectFile(settingsFile, JSON.stringify({
+        hooks: { PostToolUse: [{ matcher: 'Edit', hooks: [{ type: 'command', command: 'npx -y @maz-ui/mcp@5.0.0 review --hook' }] }] },
+      }))
+
+      setupAgents({ rootDir, docsDir, targets: ['claude'], hooks: true, mcpVersion: '5.8.0' })
+
+      expect(hookCommands()).toEqual(['npx -y @maz-ui/mcp@5.8.0 review --hook'])
+    })
+  })
+
+  describe('when a group of the settings has no hooks list', () => {
+    it('then the removal keeps it', () => {
+      writeProjectFile(settingsFile, JSON.stringify({
+        hooks: { PostToolUse: [{ matcher: 'Write' }, { matcher: 'Edit', hooks: [{ type: 'command', command: npxCommand }] }] },
+      }))
+
+      setup({ remove: true })
+
+      expect(JSON.parse(readProjectFile(settingsFile)).hooks.PostToolUse).toEqual([{ matcher: 'Write' }])
+    })
+  })
+
+  describe('when the local settings are not an object', () => {
+    it('then they do not enable the plugin', () => {
+      writeProjectFile('.claude/settings.local.json', '[]')
+
+      setup()
+
+      expect(hookCommands()).toEqual([npxCommand])
+    })
+  })
+
+  describe('when another tool with MCP arguments has a review hook', () => {
+    it('then the hook runs its bin with the arguments of the hook', () => {
+      const tool: AgentsTool = { name: 'relizy', mcpPackage: 'relizy', mcpBin: 'relizy', mcpArgs: ['mcp'], generatedBy: '`relizy mcp init`', reviewHookArgs: ['review', '--hook'] }
+
+      setupAgents({ rootDir, targets: ['claude'], hooks: true, rules: false, tool, mcpVersion: '2.4.0' })
+
+      expect(hookCommands()).toEqual(['npx -y relizy@2.4.0 review --hook'])
+    })
+  })
+
+  describe.each([
+    ['the settings are not an object', '[]'],
+    ['the hooks are not an object', '{ "hooks": [] }'],
+    ['the hooks of the event are not a list', '{ "hooks": { "PostToolUse": {} } }'],
+  ])('when %s', (_, content) => {
+    it('then it leaves the settings untouched', () => {
+      writeProjectFile(settingsFile, content)
+
+      expect(changeOf(setup(), settingsFile)?.action).toBe('skip')
+      expect(readProjectFile(settingsFile)).toBe(content)
+    })
+  })
+
+  describe('when the settings are not valid JSON', () => {
+    it('then it leaves them untouched', () => {
+      writeProjectFile(settingsFile, '{ "hooks": ')
+
+      const result = setup()
+
+      expect(readProjectFile(settingsFile)).toBe('{ "hooks": ')
+      expect(changeOf(result, settingsFile)?.action).toBe('skip')
+    })
+  })
+
+  describe('when the target is not claude', () => {
+    it('then it writes no hook', () => {
+      setupAgents({ rootDir, docsDir, targets: ['agents-md'], hooks: true })
+
+      expect(projectFileExists(settingsFile)).toBe(false)
+    })
+  })
+})
+
+describe('given setupAgents with the maz-ui Claude Code plugin', () => {
+  const localSettings = '.claude/settings.local.json'
+  const plugin = { enabledPlugins: { 'maz-ui@maz-ui': true } }
+  let home: string
+  let previousHome: string | undefined
+  let previousConfigDir: string | undefined
+
+  function setup(options: { remove?: boolean, mcp?: boolean } = {}): SetupAgentsResult {
+    return setupAgents({ rootDir, docsDir, targets: ['claude'], ...options })
+  }
+
+  function disabledServers(): unknown {
+    return JSON.parse(readProjectFile(localSettings)).disabledMcpjsonServers
+  }
+
+  function installPlugin(name = 'maz-ui@maz-ui'): void {
+    writeFile(join(home, '.claude/plugins/installed_plugins.json'), JSON.stringify({ version: 2, plugins: { [name]: [{ scope: 'user' }] } }))
+  }
+
+  beforeEach(() => {
+    home = mkdtempSync(join(tmpdir(), 'maz-ui-agents-home-'))
+    previousHome = process.env.HOME
+    previousConfigDir = process.env.CLAUDE_CONFIG_DIR
+    process.env.HOME = home
+    delete process.env.CLAUDE_CONFIG_DIR
+    writeProjectFile('CLAUDE.md', '# project')
+    writeFile(join(home, '.claude/settings.json'), JSON.stringify(plugin))
+    installPlugin()
+  })
+
+  afterEach(() => {
+    process.env.HOME = previousHome
+
+    if (previousConfigDir === undefined)
+      delete process.env.CLAUDE_CONFIG_DIR
+    else
+      process.env.CLAUDE_CONFIG_DIR = previousConfigDir
+
+    rmSync(home, { recursive: true, force: true })
+  })
+
+  describe('when the plugin is installed and enabled for the user', () => {
+    it('then the server of .mcp.json is disabled in the local settings, kept for the team', () => {
+      writeProjectFile('.gitignore', 'node_modules')
+
+      const result = setup()
+
+      expect(disabledServers()).toEqual(['maz-ui'])
+      expect(readProjectFile('.mcp.json')).toContain('"maz-ui"')
+      expect(readProjectFile('.gitignore')).toBe('node_modules\n.claude/settings.local.json\n')
+      expect(changeOf(result, localSettings)).toEqual({
+        file: localSettings,
+        action: 'create',
+        reason: 'the maz-ui Claude Code plugin runs its own MCP server: "maz-ui" of .mcp.json disabled for you',
+      })
+    })
+  })
+
+  describe('when it runs twice', () => {
+    it('then the second run changes nothing', () => {
+      setup()
+      const result = setup()
+
+      expect(disabledServers()).toEqual(['maz-ui'])
+      expect(changeOf(result, localSettings)).toBeUndefined()
+    })
+  })
+
+  describe('when the local settings already hold other settings', () => {
+    it('then they are kept', () => {
+      writeProjectFile(localSettings, JSON.stringify({ disabledMcpjsonServers: ['other'], permissions: { allow: [] } }))
+
+      setup()
+
+      expect(JSON.parse(readProjectFile(localSettings))).toEqual({ disabledMcpjsonServers: ['other', 'maz-ui'], permissions: { allow: [] } })
+    })
+  })
+
+  describe('when the gitignore already ignores the folder of Claude Code', () => {
+    it('then it is left untouched', () => {
+      writeProjectFile('.gitignore', '.claude/\n')
+
+      setup()
+
+      expect(readProjectFile('.gitignore')).toBe('.claude/\n')
+    })
+  })
+
+  describe('when the gitignore is empty', () => {
+    it('then the entry is its first line', () => {
+      writeProjectFile('.gitignore', '')
+
+      setup()
+
+      expect(readProjectFile('.gitignore')).toBe('.claude/settings.local.json\n')
+    })
+  })
+
+  describe('when the gitignore has no final newline', () => {
+    it('then the entry is added on its own line', () => {
+      writeProjectFile('.gitignore', 'dist')
+
+      setup()
+
+      expect(readProjectFile('.gitignore')).toBe('dist\n.claude/settings.local.json\n')
+    })
+  })
+
+  describe('when the plugin is enabled by the project but not installed for the user', () => {
+    it('then the server of .mcp.json stays enabled', () => {
+      installPlugin('other@market')
+
+      setup()
+
+      expect(projectFileExists(localSettings)).toBe(false)
+    })
+  })
+
+  describe('when the local settings disable the plugin', () => {
+    it('then they win over the user settings', () => {
+      writeProjectFile(localSettings, JSON.stringify({ enabledPlugins: { 'maz-ui@maz-ui': false } }))
+
+      setup()
+
+      expect(disabledServers()).toBeUndefined()
+    })
+  })
+
+  describe('when the plugin is not there anymore', () => {
+    it('then the server of .mcp.json is enabled again', () => {
+      setup()
+      writeFile(join(home, '.claude/settings.json'), '{}')
+
+      const result = setup()
+
+      expect(projectFileExists(localSettings)).toBe(false)
+      expect(changeOf(result, localSettings)?.action).toBe('remove')
+    })
+  })
+
+  describe('when the setup is removed', () => {
+    it('then the server is enabled again and the other settings are kept', () => {
+      writeProjectFile(localSettings, JSON.stringify({ model: 'opus' }))
+      setup()
+
+      setup({ remove: true })
+
+      expect(JSON.parse(readProjectFile(localSettings))).toEqual({ model: 'opus' })
+    })
+  })
+
+  describe('when the MCP server is not configured', () => {
+    it('then the local settings are left untouched', () => {
+      setup({ mcp: false })
+
+      expect(projectFileExists(localSettings)).toBe(false)
+    })
+  })
+
+  describe('when the local settings are invalid', () => {
+    it('then they are left untouched', () => {
+      writeProjectFile(localSettings, '{ "disabledMcpjsonServers": "maz-ui" }')
+
+      const result = setup()
+
+      expect(readProjectFile(localSettings)).toBe('{ "disabledMcpjsonServers": "maz-ui" }')
+      expect(changeOf(result, localSettings)?.action).toBe('skip')
+    })
+  })
+
+  describe('when the local settings give the plugin a value that is not a boolean', () => {
+    it('then the next settings decide', () => {
+      writeProjectFile(localSettings, JSON.stringify({ enabledPlugins: { 'maz-ui@maz-ui': 'yes' } }))
+
+      setup()
+
+      expect(disabledServers()).toEqual(['maz-ui'])
+    })
+  })
+
+  describe('when the installed plugins list has an unknown format', () => {
+    it('then the settings decide', () => {
+      writeFile(join(home, '.claude/plugins/installed_plugins.json'), '[]')
+
+      setup()
+
+      expect(disabledServers()).toEqual(['maz-ui'])
+    })
+  })
+
+  describe('when CLAUDE_CONFIG_DIR is set', () => {
+    it('then the user settings are read from it', () => {
+      const configDir = join(home, 'config')
+      writeFile(join(configDir, 'settings.json'), JSON.stringify({ enabledPlugins: { 'maz-ui@maz-ui': false } }))
+      process.env.CLAUDE_CONFIG_DIR = configDir
+
+      setup()
+
+      expect(projectFileExists(localSettings)).toBe(false)
+    })
+  })
+})
+
+describe('given diagnoseAgents', () => {
+  let home: string
+  let previousHome: string | undefined
+
+  function writeClaudeJson(content: Record<string, unknown>): void {
+    writeFile(join(home, '.claude.json'), JSON.stringify(content))
+  }
+
+  function enablePlugin(): void {
+    writeFile(join(home, '.claude/settings.json'), JSON.stringify({ enabledPlugins: { 'maz-ui@maz-ui': true } }))
+  }
+
+  function diagnose(version?: string) {
+    return agentsEntry.diagnoseAgents({ rootDir, version })
+  }
+
+  beforeEach(() => {
+    home = mkdtempSync(join(tmpdir(), 'maz-ui-agents-doctor-'))
+    previousHome = process.env.HOME
+    process.env.HOME = home
+  })
+
+  afterEach(() => {
+    process.env.HOME = previousHome
+    rmSync(home, { recursive: true, force: true })
+  })
+
+  describe('when the project only has its .mcp.json server', () => {
+    it('then it reports it, without problem', () => {
+      writeProjectFile('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'pnpm', args: ['exec', 'maz-ui-mcp'] } } }))
+
+      expect(diagnose('5.8.0')).toEqual({
+        plugin: false,
+        servers: [{ scope: 'project', name: 'maz-ui', command: 'pnpm exec maz-ui-mcp', file: '.mcp.json', active: true }],
+        problems: [],
+      })
+    })
+  })
+
+  describe('when a local server of the same name shadows the one of the project', () => {
+    it('then it asks to remove the local one', () => {
+      writeProjectFile('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'pnpm', args: ['exec', 'maz-ui-mcp'] } } }))
+      writeClaudeJson({ projects: { [realpathSync(rootDir)]: { mcpServers: { 'maz-ui': { command: 'npx', args: ['@maz-ui/mcp@beta'] } } } } })
+
+      const { servers, problems } = diagnose('5.8.0')
+
+      expect(servers.map(server => [server.scope, server.active])).toEqual([['local', true], ['project', false]])
+      expect(problems.map(problem => problem.fix)).toEqual(['claude mcp remove maz-ui -s local', 'claude mcp remove maz-ui -s local, then rely on the plugin or on the .mcp.json of the project'])
+      expect(problems[1].message).toContain('runs @maz-ui/mcp@beta, the project installs maz-ui 5.8.0')
+    })
+  })
+
+  describe('when the plugin runs beside a user server and the server of the project', () => {
+    it('then it reports both duplicates and the review hooks run twice', () => {
+      enablePlugin()
+      writeClaudeJson({ mcpServers: { 'maz-ui': { command: 'npx', args: ['@maz-ui/mcp'] } } })
+      writeProjectFile('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui-docs': { type: 'stdio', command: 'npx', args: ['-y', '@maz-ui/mcp@5.8.0'] } } }))
+      writeProjectFile('.claude/settings.json', JSON.stringify({ hooks: { Stop: [{ hooks: [{ type: 'command', command: 'npx -y @maz-ui/mcp@5.8.0 review --hook' }] }] } }))
+
+      const { plugin, servers, problems } = diagnose('5.8.0')
+
+      expect(plugin).toBe(true)
+      expect(servers.map(server => server.scope)).toEqual(['project', 'user', 'plugin'])
+      expect(problems.map(problem => problem.fix)).toEqual([
+        'claude mcp remove maz-ui -s user',
+        expect.stringContaining('"disabledMcpjsonServers": ["maz-ui-docs"]'),
+        expect.stringContaining('npx @maz-ui/mcp init'),
+      ])
+      expect(problems[2].message).toContain('each file is reviewed twice')
+    })
+  })
+
+  describe('when the project server is disabled for the user of the plugin', () => {
+    it('then it is inactive, without problem', () => {
+      enablePlugin()
+      writeProjectFile('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'npx', args: ['-y', '@maz-ui/mcp@5.8.0'] } } }))
+      writeProjectFile('.claude/settings.local.json', JSON.stringify({ disabledMcpjsonServers: ['maz-ui'] }))
+
+      const { servers, problems } = diagnose('5.8.0')
+
+      expect(servers.map(server => [server.scope, server.active])).toEqual([['project', false], ['plugin', true]])
+      expect(problems).toEqual([])
+    })
+  })
+
+  describe('when the project server is pinned to an older version', () => {
+    it('then it asks to run init again', () => {
+      writeProjectFile('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'npx', args: ['-y', '@maz-ui/mcp@5.1.0'] } } }))
+
+      expect(diagnose('5.8.0').problems).toEqual([{
+        message: '"maz-ui" of the project scope runs @maz-ui/mcp@5.1.0, the project installs maz-ui 5.8.0: its docs and review do not match.',
+        fix: expect.stringContaining('run `npx @maz-ui/mcp init`'),
+      }])
+    })
+  })
+
+  describe('when the project installs a prerelease', () => {
+    it('then a server pinned to a prerelease is fine', () => {
+      writeProjectFile('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'npx', args: ['-y', '@maz-ui/mcp@5.9.0-beta.1'] } } }))
+
+      expect(diagnose('5.9.0-beta.1').problems).toEqual([])
+    })
+  })
+
+  describe('when the Claude rule was written for an older version', () => {
+    it('then it asks to run init again', () => {
+      writeProjectFile('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'pnpm', args: ['exec', 'maz-ui-mcp'] } } }))
+      setupAgents({ rootDir, docsDir, targets: ['claude'], mcp: false })
+      createDocs(docsDir, { version: '5.9.0' })
+
+      expect(diagnose('5.9.0').problems.map(problem => problem.message)).toEqual(['.claude/rules/maz-ui.md was written for maz-ui 5.1.0, the project installs 5.9.0.'])
+    })
+  })
+
+  describe('when Claude Code has no server of the tool', () => {
+    it('then it asks to run init or to install the plugin', () => {
+      writeClaudeJson({ mcpServers: { other: { url: 'https://example.com/mcp' } }, projects: { [rootDir]: [] } })
+
+      expect(diagnose().problems).toEqual([{ message: 'Claude Code has no maz-ui MCP server in this project.', fix: expect.stringContaining('init') }])
+    })
+  })
+
+  describe('when a server runs a prerelease and the installed version is unknown', () => {
+    it('then it is reported', () => {
+      writeClaudeJson({ mcpServers: { 'maz-ui': { command: 'npx', args: ['-y', '@maz-ui/mcp@beta'] }, 'maz-ui-remote': { url: 'http://localhost:3000/maz-ui-mcp' } } })
+
+      const { servers, problems } = diagnose()
+
+      expect(servers.map(server => server.command)).toEqual(['npx -y @maz-ui/mcp@beta', 'http://localhost:3000/maz-ui-mcp'])
+      expect(problems.map(problem => problem.message)).toEqual(['"maz-ui" of the user scope runs @maz-ui/mcp@beta: its docs and review do not match.'])
+    })
+  })
+
+  describe('when the config files hold unexpected values', () => {
+    it('then they are read without failing', () => {
+      writeClaudeJson({ mcpServers: { 'maz-ui': 'broken' }, projects: 'none' })
+      writeProjectFile('.claude/settings.local.json', JSON.stringify({ disabledMcpjsonServers: [1, 'maz-ui'] }))
+      writeProjectFile('.claude/settings.json', JSON.stringify({ disabledMcpjsonServers: 'maz-ui' }))
+      writeProjectFile('.mcp.json', '[]')
+
+      expect(diagnose().servers).toEqual([{ scope: 'user', name: 'maz-ui', command: undefined, file: join(home, '.claude.json'), active: true }])
+    })
+  })
+
+  describe('when CLAUDE_CONFIG_DIR is set', () => {
+    it('then the user servers are read from it', () => {
+      const configDir = join(home, 'config')
+      writeFile(join(configDir, '.claude.json'), JSON.stringify({ mcpServers: { 'maz-ui': { command: 'maz-ui-mcp' } } }))
+      process.env.CLAUDE_CONFIG_DIR = configDir
+
+      try {
+        expect(diagnose().servers).toEqual([{ scope: 'user', name: 'maz-ui', command: 'maz-ui-mcp', file: join(configDir, '.claude.json'), active: true }])
+      }
+      finally {
+        delete process.env.CLAUDE_CONFIG_DIR
+      }
     })
   })
 })

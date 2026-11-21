@@ -41,6 +41,12 @@ export interface SetupAgentsOptions<T extends AgentTarget = AgentTarget> {
   rules?: boolean
   /** Register the MCP server of the tool. Default `true` */
   mcp?: boolean
+  /**
+   * With the `claude` target, register the review hook of the tool (`tool.reviewHookArgs`) in `.claude/settings.json`:
+   * Claude Code runs it after each edit of a file and sends the findings back to the agent. Skipped when the Claude
+   * Code plugin of the tool is enabled, it has its own hook. Default `false`
+   */
+  hooks?: boolean
   /** Compute the changes without writing anything */
   dryRun?: boolean
   /** Remove everything `setupAgents` added */
@@ -121,6 +127,11 @@ export interface AgentsTool {
    * contains the version would rewrite it at every release of the tool.
    */
   versionNote?: ((version: string) => string) | false
+  /**
+   * Arguments of `mcpBin` that review the file a Claude Code `PostToolUse` hook receives on stdin (e.g.
+   * `['review', '--hook']`), registered by the `hooks` option. Default: no hook
+   */
+  reviewHookArgs?: string[]
   /**
    * Packages (or bins) of former MCP servers of the tool: an entry of the MCP config files that references one of
    * them, when the tool has no entry yet, is replaced by the entry of the tool. Default: none
