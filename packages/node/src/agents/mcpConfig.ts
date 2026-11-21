@@ -108,28 +108,31 @@ export function detectFormatting(content: string): FormattingOptions {
   }
 }
 
-/** Replaces the command of an existing entry of the MCP server of the tool, its other fields (`env`...) are kept */
-function updateMcpCommand(changes: ChangeSet, config: McpConfigFile, [key, entry]: [string, unknown], server: McpServerCommand, tool: AgentsTool): void {
-  const current = config.fromEntry(entry)
-  const label = [server.command, ...server.args].join(' ')
+/** Why the command of an existing entry of the MCP server of the tool is kept, `undefined` when it is replaced by `server` */
+export function keptMcpCommandReason(current: Partial<McpServerCommand>, key: string, server: McpServerCommand, tool: AgentsTool): string | undefined {
+  if (current.command === server.command && JSON.stringify(current.args) === JSON.stringify(server.args))
+    return `${tool.name} MCP server already registered as "${key}"`
 
-  if (current.command === server.command && JSON.stringify(current.args) === JSON.stringify(server.args)) {
-    changes.unchanged(config.file, `${tool.name} MCP server already registered as "${key}"`)
-    return
-  }
-
-  if (!isGeneratedMcpCommand(current, tool)) {
-    changes.unchanged(config.file, `"${key}" runs a custom command: left untouched`)
-    return
-  }
+  if (!isGeneratedMcpCommand(current, tool))
+    return `"${key}" runs a custom command: left untouched`
 
   const pinned = pinnedMcpVersion(current, tool)
   const wanted = pinnedMcpVersion(server, tool)
   const isLocal = !server.args.includes('-y')
 
   // A pin is only replaced by the installed package or a newer pin: never by `latest`, nor by an older version (monorepos)
-  if (pinned && !isLocal && (!wanted || compareVersions(pinned, wanted) >= 0)) {
-    changes.unchanged(config.file, `"${key}" runs ${tool.mcpPackage} ${pinned}`)
+  return pinned && !isLocal && (!wanted || compareVersions(pinned, wanted) >= 0)
+    ? `"${key}" runs ${tool.mcpPackage} ${pinned}`
+    : undefined
+}
+
+/** Replaces the command of an existing entry of the MCP server of the tool, its other fields (`env`...) are kept */
+function updateMcpCommand(changes: ChangeSet, config: McpConfigFile, [key, entry]: [string, unknown], server: McpServerCommand, tool: AgentsTool): void {
+  const label = [server.command, ...server.args].join(' ')
+  const kept = keptMcpCommandReason(config.fromEntry(entry), key, server, tool)
+
+  if (kept) {
+    changes.unchanged(config.file, kept)
     return
   }
 
@@ -269,4 +272,98 @@ export function claudeMcpServerKey(changes: ChangeSet, rootDir: string, tool: Ag
   return isJsonObject(servers)
     ? Object.entries(servers).find(([, value]) => referencesToolMcp(value, tool, config))?.[0]
     : undefined
+}
+
+export interface SyncOpenCodePluginOptions {
+  rootDir: string
+  targets: AgentTarget[]
+  /** Version the plugin is pinned to: the one of the MCP server */
+  version: string
+  hooks: boolean
+  remove: boolean
+}
+
+/** Version of an entry of the `plugin` list of OpenCode that loads the package: `''` when it is not pinned */
+function pluginVersion(entry: unknown, name: string): string | undefined {
+  if (typeof entry !== 'string')
+    return undefined
+
+  return entry === name || entry.startsWith(`${name}@`)
+    ? entry.slice(name.length + 1)
+    : undefined
+}
+
+/** The `plugin` list of an OpenCode config, `undefined` when the config or the list is invalid */
+function readPluginList(current: string | undefined): unknown[] | undefined {
+  const errors: ParseError[] = []
+  const parsed: unknown = current === undefined
+    ? {}
+    : parse(current, errors, { allowTrailingComma: true })
+  const plugins: unknown = isJsonObject(parsed) && errors.length === 0
+    ? parsed.plugin ?? []
+    : undefined
+
+  return Array.isArray(plugins)
+    ? plugins
+    : undefined
+}
+
+function removePlugin(changes: ChangeSet, file: string, current: string, rest: unknown[]): void {
+  // The list is written again: jsonc-parser breaks a minified array when it removes its last element
+  const content = applyEdits(current, modify(current, ['plugin'], rest.length > 0
+    ? rest
+    : undefined, { formattingOptions: detectFormatting(current) }))
+
+  if (Object.keys(parse(content) as Record<string, unknown>).length === 0)
+    changes.delete(file)
+  else
+    changes.write(file, content, current)
+}
+
+/**
+ * Adds (or removes) the OpenCode plugin of the tool (`tool.openCodePlugin`) to the `plugin` list of the OpenCode
+ * config, pinned to the version of the MCP server: like the review hook of Claude Code, it reviews each edited file.
+ * An entry written by hand (no version, with options) is kept.
+ */
+export function syncOpenCodePlugin(changes: ChangeSet, { rootDir, targets, version, hooks, remove }: SyncOpenCodePluginOptions, tool: AgentsTool): void {
+  const name = tool.openCodePlugin
+
+  if (!name || !targets.includes('opencode') || (!hooks && !remove))
+    return
+
+  const { file } = openCodeConfig(rootDir)
+  const current = changes.read(file)
+  const plugins = readPluginList(current)
+
+  if (!plugins) {
+    changes.skip(file, 'invalid JSON or plugin list: left untouched')
+    return
+  }
+
+  const index = plugins.findIndex(entry => pluginVersion(entry, name) !== undefined)
+  const pinned = pluginVersion(plugins[index], name)
+  const wanted = version === 'latest'
+    ? name
+    : `${name}@${version}`
+  const base = current ?? '{}\n'
+  const formattingOptions = detectFormatting(base)
+
+  if (remove) {
+    if (index !== -1)
+      removePlugin(changes, file, current as string, plugins.filter((_, position) => position !== index))
+    return
+  }
+
+  if (index !== -1 && (!pinned || version === 'latest' || compareVersions(pinned, version) >= 0)) {
+    changes.unchanged(file, `the ${tool.name} OpenCode plugin is already loaded (${plugins[index]})`)
+    return
+  }
+
+  const content = applyEdits(base, index === -1
+    ? modify(base, ['plugin', plugins.length], wanted, { formattingOptions, isArrayInsertion: true })
+    : modify(base, ['plugin', index], wanted, { formattingOptions }))
+
+  changes.write(file, content.endsWith('\n')
+    ? content
+    : `${content}\n`, current, `review of the edited files by the ${tool.name} OpenCode plugin`)
 }

@@ -13,12 +13,11 @@ const AGENT_MARKERS: Record<AgentTarget, string[]> = {
     'CLAUDE.local.md',
     '.mcp.json',
   ],
-  // The agents that only read AGENTS.md: Codex, Cline, Zed, Antigravity...
+  // The agents that only read AGENTS.md: Cline, Zed, Antigravity...
   'agents-md': [
     'AGENTS.md',
     '.agents',
     '.agent',
-    '.codex',
     '.cline',
     '.clinerules',
     '.zed',
@@ -28,6 +27,7 @@ const AGENT_MARKERS: Record<AgentTarget, string[]> = {
   'vscode': ['.vscode/mcp.json', '.github/copilot-instructions.md', '.github/instructions'],
   'gemini': ['.gemini', 'GEMINI.md'],
   'opencode': ['opencode.json', 'opencode.jsonc', '.opencode'],
+  'codex': ['.codex'],
   'junie': ['.junie'],
   'windsurf': ['.windsurf', '.windsurfrules', '.devin'],
   'warp': ['.warp', 'WARP.md'],

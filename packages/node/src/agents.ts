@@ -1,4 +1,5 @@
 export { isClaudePluginEnabled } from './agents/claudeHooks.ts'
+export { isCodexPluginEnabled } from './agents/codexConfig.ts'
 export {
   AGENTS_MD_BEGIN,
   AGENTS_MD_END,

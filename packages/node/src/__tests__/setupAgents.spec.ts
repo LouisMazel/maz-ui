@@ -1,4 +1,4 @@
-import type { AgentDocs, AgentsTool, AgentTarget, SetupAgentsResult } from '../agents/types.ts'
+import type { AgentDocs, AgentsTool, AgentTarget, SetupAgentsOptions, SetupAgentsResult } from '../agents/types.ts'
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -3113,6 +3113,7 @@ describe('given the agents entry', () => {
         'findWorkspacesUsing',
         'installsMcpPackage',
         'isClaudePluginEnabled',
+        'isCodexPluginEnabled',
         'isEditedManagedContent',
         'mcpServerCommand',
         'readAgentDocs',
@@ -4363,6 +4364,250 @@ describe('given diagnoseAgents', () => {
       finally {
         delete process.env.CLAUDE_CONFIG_DIR
       }
+    })
+  })
+})
+
+describe('given setupAgents with the codex target', () => {
+  const CODEX_ENTRY = '[mcp_servers.maz-ui]\ncommand = "npx"\nargs = ["-y", "@maz-ui/mcp@latest"]\n'
+
+  function setupCodex(options: Partial<SetupAgentsOptions> = {}): SetupAgentsResult {
+    return setupAgents({ rootDir, docsDir, targets: ['codex'], ...options })
+  }
+
+  describe('when the project has no Codex config', () => {
+    it('then it creates .codex/config.toml with the MCP server', () => {
+      const result = setupCodex()
+
+      expect(readProjectFile('.codex/config.toml')).toBe(CODEX_ENTRY)
+      expect(changeOf(result, '.codex/config.toml')?.action).toBe('create')
+    })
+  })
+
+  describe('when the Codex config has other settings', () => {
+    it('then it appends the MCP server and keeps them', () => {
+      writeProjectFile('.codex/config.toml', 'model = "gpt-5"\n\n[mcp_servers.docs]\nurl = "https://mcp.example.com"\n')
+
+      setupCodex()
+
+      expect(readProjectFile('.codex/config.toml')).toBe(`model = "gpt-5"\n\n[mcp_servers.docs]\nurl = "https://mcp.example.com"\n\n${CODEX_ENTRY}`)
+    })
+  })
+
+  describe('when the MCP server is already registered', () => {
+    it('then the config is unchanged', () => {
+      setupCodex()
+
+      expect(changeOf(setupCodex(), '.codex/config.toml')).toEqual({ file: '.codex/config.toml', action: 'unchanged', reason: 'maz-ui MCP server already registered as "maz-ui"' })
+    })
+  })
+
+  describe('when the entry runs npx and @maz-ui/mcp is now installed', () => {
+    it('then it replaces the command and keeps the other fields', () => {
+      writeProjectFile('.codex/config.toml', '[mcp_servers."maz-ui"]\ncommand = "npx"\nargs = [\n  "-y",\n  "@maz-ui/mcp@latest",\n]\nstartup_timeout_sec = 30\n\n[mcp_servers."maz-ui".env]\nDEBUG = "1"\n')
+      writeProjectFile('package.json', JSON.stringify({ devDependencies: { '@maz-ui/mcp': '^5.0.0' } }))
+      writeProjectFile('pnpm-lock.yaml', '')
+
+      setupCodex()
+
+      expect(readProjectFile('.codex/config.toml')).toBe('[mcp_servers."maz-ui"]\ncommand = "pnpm"\nargs = ["exec", "maz-ui-mcp"]\nstartup_timeout_sec = 30\n\n[mcp_servers."maz-ui".env]\nDEBUG = "1"\n')
+    })
+  })
+
+  describe('when a maz-ui server runs a custom command', () => {
+    it('then it is left untouched', () => {
+      writeProjectFile('.codex/config.toml', '[mcp_servers.maz-ui]\ncommand = "node"\nargs = ["./tools/mcp.mjs"]\n')
+
+      expect(changeOf(setupCodex(), '.codex/config.toml')).toEqual({ file: '.codex/config.toml', action: 'skip', reason: 'a "maz-ui" server already exists with another command: left untouched' })
+    })
+  })
+
+  describe('when the Codex plugin of maz-ui is enabled for the user', () => {
+    it('then the MCP server is not added', () => {
+      writeFile(join(userHome, '.codex/config.toml'), '[plugins."maz-ui@maz-ui"]\nenabled = true\n')
+
+      try {
+        expect(changeOf(setupCodex(), '.codex/config.toml')).toEqual({ file: '.codex/config.toml', action: 'skip', reason: 'the maz-ui Codex plugin runs its own MCP server: not added' })
+        expect(projectFileExists('.codex/config.toml')).toBe(false)
+      }
+      finally {
+        rmSync(join(userHome, '.codex'), { recursive: true, force: true })
+      }
+    })
+  })
+
+  describe('when the Codex plugin of maz-ui is disabled for the user', () => {
+    it('then the MCP server is added', () => {
+      writeFile(join(userHome, '.codex/config.toml'), '[plugins."maz-ui@maz-ui"]\nenabled = false\n\n[features]\nhooks = true\n')
+
+      try {
+        expect(changeOf(setupCodex(), '.codex/config.toml')?.action).toBe('create')
+      }
+      finally {
+        rmSync(join(userHome, '.codex'), { recursive: true, force: true })
+      }
+    })
+  })
+
+  describe('when the entry is written with literal strings', () => {
+    it('then it is left untouched as a custom command', () => {
+      writeProjectFile('.codex/config.toml', '[mcp_servers.ui]\ncommand = \'npx\'\nargs = [\'-y\', \'@maz-ui/mcp\']\n')
+
+      expect(changeOf(setupCodex(), '.codex/config.toml')).toEqual({ file: '.codex/config.toml', action: 'unchanged', reason: '"ui" runs a custom command: left untouched' })
+    })
+  })
+
+  describe('when the MCP server is not wanted', () => {
+    it('then the Codex config is not written', () => {
+      setupCodex({ mcp: false })
+
+      expect(projectFileExists('.codex/config.toml')).toBe(false)
+    })
+  })
+
+  describe('when the tool has a name that is not a bare key and arguments', () => {
+    it('then the table key is quoted', () => {
+      const tool: AgentsTool = { ...MAZ_UI_AGENTS_TOOL, name: 'maz.ui', mcpArgs: ['mcp'] }
+
+      setupAgents({ rootDir, targets: ['codex'], rules: false, tool })
+
+      expect(readProjectFile('.codex/config.toml')).toBe('[mcp_servers."maz.ui"]\ncommand = "npx"\nargs = ["-y", "@maz-ui/mcp@latest", "mcp"]\n')
+      expect(changeOf(setupAgents({ rootDir, targets: ['codex'], rules: false, tool }), '.codex/config.toml')?.action).toBe('unchanged')
+    })
+  })
+
+  describe('when the codex target is removed', () => {
+    it('then it removes the MCP server and keeps the other settings', () => {
+      writeProjectFile('.codex/config.toml', 'model = "gpt-5"\n')
+      setupCodex()
+
+      setupCodex({ remove: true })
+
+      expect(readProjectFile('.codex/config.toml')).toBe('model = "gpt-5"\n')
+    })
+
+    it('then it deletes the config it created', () => {
+      setupCodex()
+
+      setupCodex({ remove: true })
+
+      expect(projectFileExists('.codex')).toBe(false)
+    })
+
+    it('then a server registered under another key is kept', () => {
+      writeProjectFile('.codex/config.toml', CODEX_ENTRY.replace('maz-ui]', 'ui]'))
+
+      setupCodex({ remove: true })
+
+      expect(readProjectFile('.codex/config.toml')).toBe(CODEX_ENTRY.replace('maz-ui]', 'ui]'))
+    })
+  })
+})
+
+describe('given setupAgents with the OpenCode plugin', () => {
+  function setupOpenCode(options: Partial<SetupAgentsOptions> = {}): SetupAgentsResult {
+    return setupAgents({ rootDir, docsDir, targets: ['opencode'], hooks: true, mcpVersion: '5.9.0', ...options })
+  }
+
+  describe('when the hooks are enabled', () => {
+    it('then it loads the plugin of @maz-ui/mcp, pinned to the version of the MCP server', () => {
+      setupOpenCode()
+
+      expect(parse(readProjectFile('opencode.json')).plugin).toEqual(['@maz-ui/mcp@5.9.0'])
+    })
+  })
+
+  describe('when the version of the MCP server is unknown', () => {
+    it('then the plugin is not pinned', () => {
+      setupOpenCode({ mcpVersion: undefined })
+
+      expect(parse(readProjectFile('opencode.json')).plugin).toEqual(['@maz-ui/mcp'])
+    })
+  })
+
+  describe('when the hooks are disabled', () => {
+    it('then the plugin is not added', () => {
+      setupOpenCode({ hooks: false })
+
+      expect(parse(readProjectFile('opencode.json')).plugin).toBeUndefined()
+    })
+  })
+
+  describe('when an older version of the plugin is loaded', () => {
+    it('then it is replaced and the other plugins are kept', () => {
+      writeProjectFile('opencode.json', `${JSON.stringify({ plugin: ['opencode-wakatime', '@maz-ui/mcp@5.1.0'] }, null, 2)}\n`)
+
+      setupOpenCode()
+
+      expect(parse(readProjectFile('opencode.json')).plugin).toEqual(['opencode-wakatime', '@maz-ui/mcp@5.9.0'])
+    })
+  })
+
+  describe('when the OpenCode config is minified', () => {
+    it('then it ends with a new line', () => {
+      writeProjectFile('opencode.json', '{"plugin":[]}')
+
+      setupOpenCode({ mcp: false })
+
+      expect(readProjectFile('opencode.json')).toBe('{\n  "plugin": [\n    "@maz-ui/mcp@5.9.0"\n  ]\n}\n')
+    })
+  })
+
+  describe('when the plugin is loaded without version', () => {
+    it('then it is left as it is', () => {
+      writeProjectFile('opencode.json', `${JSON.stringify({ plugin: ['@maz-ui/mcp'] }, null, 2)}\n`)
+
+      expect(changeOf(setupOpenCode({ mcp: false }), 'opencode.json')).toEqual({ file: 'opencode.json', action: 'unchanged', reason: 'the maz-ui OpenCode plugin is already loaded (@maz-ui/mcp)' })
+    })
+  })
+
+  describe('when the OpenCode config is invalid JSON', () => {
+    it('then the config is left untouched', () => {
+      writeProjectFile('opencode.json', '{ "plugin": [\n')
+
+      expect(changeOf(setupOpenCode({ mcp: false }), 'opencode.json')).toEqual({ file: 'opencode.json', action: 'skip', reason: 'invalid JSON or plugin list: left untouched' })
+    })
+  })
+
+  describe('when the plugin list is invalid', () => {
+    it('then the config is left untouched', () => {
+      writeProjectFile('opencode.json', '{ "plugin": "@maz-ui/mcp" }\n')
+
+      expect(changeOf(setupOpenCode({ mcp: false }), 'opencode.json')).toEqual({ file: 'opencode.json', action: 'skip', reason: 'invalid JSON or plugin list: left untouched' })
+    })
+  })
+
+  describe('when the opencode target is removed', () => {
+    it('then it removes the plugin and the MCP server', () => {
+      setupOpenCode()
+
+      setupOpenCode({ remove: true })
+
+      expect(projectFileExists('opencode.json')).toBe(false)
+    })
+
+    it('then a config without the plugin is left as it is', () => {
+      writeProjectFile('opencode.json', '{ "model": "anthropic/claude" }\n')
+
+      setupOpenCode({ remove: true })
+
+      expect(readProjectFile('opencode.json')).toBe('{ "model": "anthropic/claude" }\n')
+    })
+
+    it('then it keeps the other plugins', () => {
+      writeProjectFile('opencode.json', `${JSON.stringify({ plugin: ['opencode-wakatime', '@maz-ui/mcp@5.9.0'] }, null, 2)}\n`)
+
+      setupOpenCode({ remove: true })
+
+      expect(parse(readProjectFile('opencode.json'))).toEqual({ plugin: ['opencode-wakatime'] })
+    })
+
+    it('then it deletes a config that only loaded the plugin', () => {
+      writeProjectFile('opencode.json', `${JSON.stringify({ plugin: ['@maz-ui/mcp@5.9.0'] }, null, 2)}\n`)
+
+      setupOpenCode({ remove: true })
+
+      expect(projectFileExists('opencode.json')).toBe(false)
     })
   })
 })
