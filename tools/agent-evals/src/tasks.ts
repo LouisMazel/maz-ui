@@ -17,7 +17,13 @@ export const TASKS: EvalTask[] = [
   {
     id: 'copy-link',
     prompt: 'Create `src/components/ShareLink.vue`: it shows the `url` prop and a button that copies it, the button shows "Copied" for 2 seconds after a copy.',
-    expects: [/\buseClipboard\b/, /<MazBtn\b/],
+    expects: [/\buseClipboard\b|<MazBtnClipboard\b/],
+    forbids: [/navigator\.clipboard/, NATIVE_BUTTON],
+  },
+  {
+    id: 'copy-command',
+    prompt: 'Create `src/components/InstallCommand.vue`: it shows the command `npm install my-lib` with a button to copy it, for the docs of a library.',
+    expects: [/<MazBtnClipboard\b/],
     forbids: [/navigator\.clipboard/, NATIVE_BUTTON],
   },
   {
@@ -103,5 +109,11 @@ export const TASKS: EvalTask[] = [
     prompt: 'Create `src/api.ts` with a `fetchUser()` that resolves after one second, load the user in `src/App.vue`, and create `src/components/AppHeader.vue`, shown by `App.vue`, with a spinner while the user loads. Share the loading state between them without a prop nor an event.',
     expects: [/\buseWait\b/, /\bWaitPlugin\b/],
     forbids: [/\bprovide\(/, /\bdefineStore\(/],
+  },
+  {
+    id: 'infinite-feed',
+    prompt: 'Create `src/components/ActivityFeed.vue`: a list of the activities given 20 at a time by the async `loadPage(page: number)` prop (an empty array at the end). The next page loads when the user gets close to the end of the list, with a spinner meanwhile, and a button that brings the user back to the top appears after some scroll.',
+    expects: [/\buseInfiniteScroll\b|\buseIntersectionObserver\b|\bv-intersect\b/, /<MazBtnScroll\b|\buseScroll\b/],
+    forbids: [/new\s+IntersectionObserver\(/, /addEventListener\(\s*['"]scroll/],
   },
 ]

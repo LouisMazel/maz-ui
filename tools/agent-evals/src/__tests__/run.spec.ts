@@ -17,6 +17,7 @@ const SUCCESS = [
   JSON.stringify({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'mcp__maz-ui__search_docs', input: { query: 'copy' } }] } }),
   JSON.stringify({ type: 'result', subtype: 'success', is_error: false, total_cost_usd: 0.3, num_turns: 8, duration_ms: 45_000, result: 'Done' }),
 ].join('\n')
+// maz-ui-review-ignore prefer-ecosystem -- fixture of the hand-made version the eval detects
 const HAND_MADE = '<script setup lang="ts">\nfunction copy(url: string) {\n  navigator.clipboard.writeText(url)\n}\n</script>\n\n<template>\n  <button class="bg-blue-500" @click="copy(\'x\')">\n    Copy\n  </button>\n</template>\n'
 const REUSED = '<script setup lang="ts">\nimport MazBtn from \'maz-ui/components/MazBtn\'\nimport { useClipboard } from \'maz-ui/composables/useClipboard\'\n\nconst props = defineProps<{ url: string }>()\nconst { copy, copied } = useClipboard()\n</script>\n\n<template>\n  <MazBtn @click="copy(props.url)">\n    {{ copied ? \'Copied\' : \'Copy\' }}\n  </MazBtn>\n</template>\n'
 
@@ -136,7 +137,7 @@ describe('given runTask', () => {
 
       const score = await runTask({ repoRoot: REPO_ROOT, templateDir: TEMPLATE_DIR, task: COPY_LINK, condition: 'baseline', run: 1, outDir, runClaude: runner })
 
-      expect(score).toMatchObject({ passed: false, files: ['src/components/ShareLink.vue'], missing: ['/\\buseClipboard\\b/', '/<MazBtn\\b/'], forbidden: ['/navigator\\.clipboard/', '/<button\\b/'], costUsd: 0.3 })
+      expect(score).toMatchObject({ passed: false, files: ['src/components/ShareLink.vue'], missing: ['/\\buseClipboard\\b|<MazBtnClipboard\\b/'], forbidden: ['/navigator\\.clipboard/', '/<button\\b/'], costUsd: 0.3 })
       expect(score.findings).toEqual(expect.arrayContaining([expect.stringMatching(/^prefer-ecosystem \(src\/components\/ShareLink\.vue:3\)$/), expect.stringMatching(/^theme-colors /)]))
       expect(calls[0].args).toContain('--strict-mcp-config')
       expect(readFileSync(join(outDir, 'baseline-copy-link-1/transcript.jsonl'), 'utf8')).toBe(SUCCESS)
