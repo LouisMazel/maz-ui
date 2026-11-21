@@ -79,7 +79,7 @@ npx @maz-ui/mcp review app --min-severity warning --max-warnings 0 --format json
 npx @maz-ui/mcp search "date range picker"
 ```
 
-Ignore an intended finding with a `maz-ui-review-ignore [rule]` comment on the line above, or `maz-ui-review-ignore-file`.
+Ignore an intended finding with a `maz-ui-review-ignore <rule> -- <reason>` comment on the line above, or `maz-ui-review-ignore-file -- <reason>`. A comment without a reason is not applied, and the errors of a code that does not work (unknown component, prop or import...) cannot be ignored.
 
 Options: `--docs <dir>` (or `MAZ_UI_DOCS_DIR`) to use another docs bundle, `--cwd <dir>` for the project root.
 

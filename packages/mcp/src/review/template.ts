@@ -711,7 +711,7 @@ function checkNativeElement(element: ElementNode, context: ReviewContext): void 
       message: `Native \`<${element.tag}>\`${element.tag === 'input'
         ? ` (type "${staticAttribute(element, 'type')?.value?.content ?? 'text'}")`
         : ''}.`,
-      suggestion: `Use ${replacement.component}: themed, accessible and consistent with the rest of the UI. Add \`<!-- maz-ui-review-ignore -->\` above it if the native element is intended.`,
+      suggestion: `Use ${replacement.component}: themed, accessible and consistent with the rest of the UI. Add \`<!-- maz-ui-review-ignore prefer-maz-component -- <reason> -->\` above it if the native element is intended.`,
     }, element.loc.start.offset)
   }
 }

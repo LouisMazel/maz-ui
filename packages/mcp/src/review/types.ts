@@ -41,6 +41,7 @@ export type RuleId
     | 'table-part-outside-table'
     | 'prefer-dialog-confirm'
     | 'parse-error'
+    | 'invalid-ignore'
 
 export interface Finding {
   rule: RuleId

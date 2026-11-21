@@ -36,7 +36,7 @@ const STOP_EVENTS = ['Stop', 'SubagentStop']
 /** A task that changed more files is reviewed with `review_code` or the CLI, not at each stop */
 const MAX_STOP_FILES = 50
 
-const FOOTER = 'Fix these maz-ui issues now: each one gives the import to use (the maz-ui MCP tools give the details). When one is intended, add a `maz-ui-review-ignore <rule> -- <reason>` comment above the line.'
+const FOOTER = 'Fix these maz-ui issues now: each one gives the import to use (the maz-ui MCP tools give the details). When one is intended, add a `maz-ui-review-ignore <rule> -- <reason>` comment above the line (an unknown component, prop or import is always fixed).'
 
 /** The closest folder of a file where maz-ui is installed, `undefined` without one */
 export function mazUiProjectOf(file: string): string | undefined {

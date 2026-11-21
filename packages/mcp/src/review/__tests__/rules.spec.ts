@@ -867,7 +867,7 @@ describe('given the pale-brand-color rule', () => {
 
   describe('when the line is ignored', () => {
     it('then nothing is reported', () => {
-      const code = 'import { definePreset } from \'@maz-ui/themes\'\ndefinePreset({ base: \'mazUi\', overrides: { colors: { light: {\n// maz-ui-review-ignore pale-brand-color\nsecondary: \'#fafafa\' } } } })'
+      const code = 'import { definePreset } from \'@maz-ui/themes\'\ndefinePreset({ base: \'mazUi\', overrides: { colors: { light: {\n// maz-ui-review-ignore pale-brand-color -- brand guideline\nsecondary: \'#fafafa\' } } } })'
 
       expect(paleRules(code)).toEqual([])
     })

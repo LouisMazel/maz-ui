@@ -13,7 +13,7 @@ export interface ReviewCodeArgs {
   minSeverity?: Severity
 }
 
-const LEGEND = 'Fix every error and warning (info are suggestions). If a native element or a rule is intended, add a `maz-ui-review-ignore [rule]` comment on the line above.'
+const LEGEND = 'Fix every error and warning (info are suggestions). If a native element or a rule is intended, add a `maz-ui-review-ignore <rule> -- <reason>` comment on the line above (unknown components, props and imports cannot be ignored: fix them).'
 
 export async function reviewCodeTool(context: ServerContext, { paths, code, filename, framework, minSeverity = 'info' }: ReviewCodeArgs): Promise<string> {
   if (!paths?.length && !code)
