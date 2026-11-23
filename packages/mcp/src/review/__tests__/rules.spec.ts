@@ -540,6 +540,19 @@ describe('given the internal-prefix rule', () => {
       expect(rulesOf(template('<div class="flex bg-primary"></div>'))).toEqual([])
     })
   })
+
+  describe('when the code is the source of the maz-ui repository', () => {
+    it('then the prefix is not reported and the other rules still are', () => {
+      const findings = reviewCode(template('<div class="maz:flex hover:maz:bg-primary bg-red-500"></div>'), {
+        knowledge: getKnowledge(),
+        filename: 'Test.vue',
+        internalSource: true,
+      })
+
+      expect(findings.map(finding => finding.rule)).toEqual(['theme-colors'])
+      expect(reviewCode('.a { @apply maz:flex; }', { knowledge: getKnowledge(), filename: 'a.css', internalSource: true })).toEqual([])
+    })
+  })
 })
 
 describe('given the theme-colors rule', () => {

@@ -2,7 +2,7 @@ import type { Finding } from '../index.ts'
 
 import { join } from 'node:path'
 import { cleanTempDirs, createTempDir, getKnowledge, writeFile } from '../../__tests__/helpers.ts'
-import { detectFramework, displayPath, expandPaths, findProjectRoot, MAX_REVIEWED_FILES, projectIconNames, reviewFiles } from '../files.ts'
+import { dependsOnPackages, detectFramework, displayPath, expandPaths, findProjectRoot, isMazUiSource, MAX_REVIEWED_FILES, projectIconNames, reviewFiles } from '../files.ts'
 import { countBySeverity, detectKind, filterBySeverity, formatFindings, reviewCode } from '../index.ts'
 
 function review(code: string, filename?: string): Finding[] {
@@ -314,6 +314,47 @@ describe('given the file helpers', () => {
     })
   })
 
+  describe('when checking the dependencies of a project', () => {
+    it('then the closest package.json is read, in every dependency field', () => {
+      const root = createTempDir()
+      writeFile(root, 'package.json', JSON.stringify({ dependencies: { 'maz-ui': '^5.0.0' } }))
+      writeFile(root, 'apps/web/package.json', JSON.stringify({ peerDependencies: { '@maz-ui/nuxt': '^5.0.0' } }))
+      writeFile(root, 'apps/web/src/A.vue', '')
+      writeFile(root, 'apps/api/package.json', JSON.stringify({ dependencies: { vue: '^3.5.0' } }))
+      writeFile(root, 'apps/broken/package.json', '{')
+
+      expect(dependsOnPackages(root, ['maz-ui'])).toBe(true)
+      expect(dependsOnPackages(join(root, 'apps/web/src'), ['maz-ui', '@maz-ui/nuxt'])).toBe(true)
+      expect(dependsOnPackages(join(root, 'apps/web'), ['maz-ui'])).toBe(false)
+      expect(dependsOnPackages(join(root, 'apps/api'), ['maz-ui'])).toBe(false)
+      expect(dependsOnPackages(join(root, 'apps/broken'), ['maz-ui'])).toBe(false)
+      expect(dependsOnPackages('/', ['maz-ui'])).toBe(false)
+    })
+  })
+
+  describe('when checking the source of the maz-ui repository', () => {
+    it('then the library and the projects that use it from the workspace are its source', () => {
+      const repo = createTempDir()
+      writeFile(repo, 'packages/maz-ui/package.json', JSON.stringify({ name: 'maz-ui', version: '5.0.0' }))
+      writeFile(repo, 'apps/docs/package.json', JSON.stringify({ devDependencies: { 'maz-ui': 'workspace:^' } }))
+      writeFile(repo, 'apps/nuxt-app/package.json', JSON.stringify({ dependencies: { '@maz-ui/nuxt': 'workspace:*' } }))
+
+      expect(isMazUiSource(join(repo, 'packages/maz-ui'))).toBe(true)
+      expect(isMazUiSource(join(repo, 'apps/docs'))).toBe(true)
+      expect(isMazUiSource(join(repo, 'apps/nuxt-app'))).toBe(true)
+    })
+
+    it('then a project that installs maz-ui or cannot be read is not', () => {
+      const project = createTempDir()
+      writeFile(project, 'app/package.json', JSON.stringify({ name: 'app', dependencies: { 'maz-ui': '^5.0.0', '@maz-ui/utils': 'workspace:^' } }))
+      writeFile(project, 'broken/package.json', '{')
+
+      expect(isMazUiSource(join(project, 'app'))).toBe(false)
+      expect(isMazUiSource(join(project, 'broken'))).toBe(false)
+      expect(isMazUiSource('/')).toBe(false)
+    })
+  })
+
   describe('when expanding paths', () => {
     it('then files, folders and globs are expanded without node_modules and unsupported files', async () => {
       const project = createTempDir()
@@ -406,6 +447,24 @@ describe('given the file helpers', () => {
       })
 
       expect(reviews[0].findings.map(finding => finding.rule)).toEqual(['unregistered-icon-names', 'unknown-icon'])
+    })
+
+    it('then the maz: prefix is reported in a project that installs maz-ui, not in the maz-ui repository', async () => {
+      const root = createTempDir()
+      writeFile(root, 'docs/package.json', JSON.stringify({ devDependencies: { 'maz-ui': 'workspace:^' } }))
+      writeFile(root, 'docs/A.vue', '<template><div class="maz:flex" /></template>')
+      writeFile(root, 'app/package.json', JSON.stringify({ dependencies: { 'maz-ui': '^5.0.0' } }))
+      writeFile(root, 'app/A.vue', '<template><div class="maz:flex" /></template>')
+
+      const { reviews } = await reviewFiles(['docs', 'app'], {
+        knowledge: getKnowledge(),
+        cwd: root,
+      })
+
+      expect(reviews.map(entry => [entry.file, entry.findings.map(finding => finding.rule)])).toEqual([
+        [join('app', 'A.vue'), ['internal-prefix']],
+        [join('docs', 'A.vue'), []],
+      ])
     })
 
     it('then it stops after the maximum number of files', async () => {

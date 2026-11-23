@@ -182,6 +182,23 @@ function reportBlackWhite(token: string, utility: string, color: string, backgro
   }, position)
 }
 
+/** Reports a class with the internal `maz:` prefix, allowed in the maz-ui repository only: `true` when the class has it */
+function checkInternalPrefix(token: string, position: number, context: ReviewContext): boolean {
+  if (!/^(?:[\w-]+:)*maz:/.test(token))
+    return false
+
+  if (!context.internalSource) {
+    context.report({
+      rule: 'internal-prefix',
+      severity: 'error',
+      message: `\`${token}\` uses the \`maz:\` prefix, which is internal to the maz-ui library and its docs: it does not exist in your project.`,
+      suggestion: `Use \`${token.replace(/maz:/g, '')}\`.`,
+    }, position)
+  }
+
+  return true
+}
+
 /**
  * Checks a list of Tailwind classes. `offset` is the position of the first class in the reviewed source,
  * `inherited` the background set by a parent element
@@ -193,15 +210,8 @@ export function checkClassList(value: string, offset: number, context: ReviewCon
     const token = match[0]
     const position = offset + (match.index ?? 0)
 
-    if (/^(?:[\w-]+:)*maz:/.test(token) || token.startsWith('maz:')) {
-      context.report({
-        rule: 'internal-prefix',
-        severity: 'error',
-        message: `\`${token}\` uses the \`maz:\` prefix, which is internal to the maz-ui library and its docs: it does not exist in your project.`,
-        suggestion: `Use \`${token.replace(/maz:/g, '')}\`.`,
-      }, position)
+    if (checkInternalPrefix(token, position, context))
       continue
-    }
 
     const palette = PALETTE_CLASS.exec(token)
 

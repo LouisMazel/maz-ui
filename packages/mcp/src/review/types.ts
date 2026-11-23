@@ -71,6 +71,8 @@ export interface ReviewOptions {
   framework?: Framework
   /** The icon names of the project, the ones of maz-ui by default */
   icons?: IconNames
+  /** The code of the maz-ui repository (the library, its docs and demo apps): its internal `maz:` prefix is not reported */
+  internalSource?: boolean
 }
 
 export interface ReviewContext extends ReviewOptions {

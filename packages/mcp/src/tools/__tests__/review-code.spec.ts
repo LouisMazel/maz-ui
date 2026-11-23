@@ -33,6 +33,17 @@ describe('given the review_code tool', () => {
       expect(output).toContain('A.vue: no issue found.')
     })
 
+    it('then the maz: prefix is allowed in the maz-ui repository only', async () => {
+      const docs = createTempDir()
+      writeFile(docs, 'package.json', JSON.stringify({ devDependencies: { 'maz-ui': 'workspace:^' } }))
+      const app = createTempDir()
+      writeFile(app, 'package.json', JSON.stringify({ dependencies: { 'maz-ui': '^5.0.0' } }))
+      const code = '<template><div class="maz:flex" /></template>'
+
+      expect(await reviewCodeTool(createContextFor(docs), { code, filename: 'A.vue' })).toContain('A.vue: no issue found.')
+      expect(await reviewCodeTool(createContextFor(app), { code, filename: 'A.vue' })).toContain('[internal-prefix]')
+    })
+
     it('then it labels anonymous code and applies the minimum severity', async () => {
       const output = await reviewCodeTool(getContext(), { code: '<table></table>', minSeverity: 'warning', framework: 'vue' })
 

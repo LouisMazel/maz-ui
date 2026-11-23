@@ -62,31 +62,57 @@ export function findProjectRoot(fromDirectory: string): string | undefined {
 
 const DEPENDENCY_FIELDS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
 
-/** `true` when the closest `package.json` of a directory depends on one of the packages (`maz-ui`, `@maz-ui/utils`...) */
-export function dependsOnPackages(fromDirectory: string, packages: string[]): boolean {
-  let directory = fromDirectory
+type PackageJson = Record<string, Record<string, string> | string | undefined>
 
-  for (;;) {
+/** The closest `package.json` of a directory, `undefined` without one or when it cannot be parsed */
+function closestPackageJson(fromDirectory: string): PackageJson | undefined {
+  for (let directory = fromDirectory; ; directory = dirname(directory)) {
     const file = join(directory, 'package.json')
 
     if (existsSync(file)) {
       try {
-        const pkg = JSON.parse(readFileSync(file, 'utf8')) as Record<string, Record<string, string> | undefined>
-
-        return DEPENDENCY_FIELDS.some(field => packages.some(name => pkg[field]?.[name] !== undefined))
+        return JSON.parse(readFileSync(file, 'utf8')) as PackageJson
       }
       catch {
-        return false
+        return undefined
       }
     }
 
-    const parent = dirname(directory)
-
-    if (parent === directory)
-      return false
-
-    directory = parent
+    if (dirname(directory) === directory)
+      return undefined
   }
+}
+
+/** The version range of a dependency of a `package.json`, in any dependency field */
+function dependencyRange(pkg: PackageJson, name: string): string | undefined {
+  for (const field of DEPENDENCY_FIELDS) {
+    const dependencies = pkg[field]
+    const range = typeof dependencies === 'object'
+      ? dependencies[name]
+      : undefined
+
+    if (range !== undefined)
+      return range
+  }
+
+  return undefined
+}
+
+/** `true` when the closest `package.json` of a directory depends on one of the packages (`maz-ui`, `@maz-ui/utils`...) */
+export function dependsOnPackages(fromDirectory: string, packages: string[]): boolean {
+  const pkg = closestPackageJson(fromDirectory)
+
+  return !!pkg && packages.some(name => dependencyRange(pkg, name) !== undefined)
+}
+
+/**
+ * `true` in the maz-ui repository: the library itself, or a project of its monorepo that uses it from the workspace
+ * (docs, demo apps). Its code uses the internal `maz:` prefix of the library, a project that installs maz-ui never does.
+ */
+export function isMazUiSource(fromDirectory: string): boolean {
+  const pkg = closestPackageJson(fromDirectory)
+
+  return !!pkg && (pkg.name === 'maz-ui' || ['maz-ui', '@maz-ui/nuxt'].some(name => dependencyRange(pkg, name)?.startsWith('workspace:')))
 }
 
 /** Detects a Nuxt project by walking up from a directory to the closest `package.json` */
@@ -174,6 +200,13 @@ export interface ReviewFilesOptions {
 export async function reviewFiles(patterns: string[], { knowledge, cwd, framework, minSeverity = 'info' }: ReviewFilesOptions): Promise<{ reviews: FileReview[], truncated: boolean }> {
   const files = await expandPaths(patterns, cwd)
   const icons = new Map<string, IconNames>()
+  const internalSources = new Map<string, boolean>()
+  const isInternal = (directory: string) => {
+    if (!internalSources.has(directory))
+      internalSources.set(directory, isMazUiSource(directory))
+
+    return internalSources.get(directory)!
+  }
 
   return {
     truncated: files.length > MAX_REVIEWED_FILES,
@@ -185,6 +218,7 @@ export async function reviewFiles(patterns: string[], { knowledge, cwd, framewor
           filename: file,
           framework: framework ?? detectFramework(dirname(file)),
           icons: projectIconNames(dirname(file), knowledge, icons),
+          internalSource: isInternal(dirname(file)),
         }),
         minSeverity,
       ),
