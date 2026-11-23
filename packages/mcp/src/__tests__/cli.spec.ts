@@ -357,6 +357,24 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(logged()).not.toContain('claude plugin install')
     })
 
+    it('then it registers the MCP server of Codex and recommends its plugin until it is enabled', async () => {
+      const cwd = createTempDir()
+      const codexHome = createTempDir()
+      const args = ['init', '--targets', 'codex', '--docs', BUNDLE_DIR, '--cwd', cwd]
+      vi.stubEnv('CODEX_HOME', codexHome)
+
+      await runCli(args)
+
+      expect(readFileSync(join(cwd, '.codex/config.toml'), 'utf8')).toContain('[mcp_servers.maz-ui]')
+      expect(logged()).toContain('codex plugin marketplace add LouisMazel/maz-ui')
+
+      log.mockClear()
+      writeFile(codexHome, 'config.toml', '[plugins."maz-ui@maz-ui"]\nenabled = true\n')
+      await runCli(args)
+
+      expect(logged()).not.toContain('codex plugin marketplace add')
+    })
+
     it('then it rejects unknown targets', async () => {
       expect(await runCli([
         'init',
@@ -395,7 +413,7 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(logged()).toContain('created')
       expect(readFileSync(join(cwd, '.cursor/mcp.json'), 'utf8')).toContain('@maz-ui/mcp')
       expect(readFileSync(join(cwd, 'AGENTS.md'), 'utf8')).toContain('<!-- BEGIN:maz-ui -->')
-      expect(logged()).toContain('Codex, Cline and Zed read AGENTS.md')
+      expect(logged()).toContain('Cline and Zed read AGENTS.md')
     })
 
     it('then explicit targets, --no-mcp and --remove are applied', async () => {
@@ -427,7 +445,7 @@ describe('given the maz-ui-mcp CLI', () => {
 
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(logged()).toContain('removed')
-      expect(logged()).not.toContain('Codex, Cline and Zed')
+      expect(logged()).not.toContain('Cline and Zed')
     })
 
     it('then --paths scopes the Claude rule with a frontmatter and reports it', async () => {
@@ -485,7 +503,7 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(existsSync(join(cwd, '.mcp.json'))).toBe(true)
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
-      expect(logged()).not.toContain('Codex, Cline and Zed')
+      expect(logged()).not.toContain('Cline and Zed')
     })
 
     it('then a project without maz-ui only gets the MCP server', async () => {
@@ -502,7 +520,7 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
       expect(logged()).toContain('maz-ui is not installed in this project: only the MCP server is registered')
-      expect(logged()).not.toContain('Codex, Cline and Zed')
+      expect(logged()).not.toContain('Cline and Zed')
     })
 
     it('then a project without maz-ui gets the rules of an explicit docs bundle', async () => {

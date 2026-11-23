@@ -18,7 +18,7 @@ describe('given claudeArgs', () => {
 
   describe('when the condition is the plugin with a model and a budget', () => {
     it('then the plugin of the repository is loaded', () => {
-      expect(claudeArgs('plugin', { ...OPTIONS, model: 'sonnet', maxBudgetUsd: 2 })).toEqual([...COMMON, '--plugin-dir', '/repo/plugins/claude-code', '--model', 'sonnet', '--max-budget-usd', '2'])
+      expect(claudeArgs('plugin', { ...OPTIONS, model: 'sonnet', maxBudgetUsd: 2 })).toEqual([...COMMON, '--plugin-dir', '/repo/plugins/maz-ui', '--model', 'sonnet', '--max-budget-usd', '2'])
     })
   })
 })

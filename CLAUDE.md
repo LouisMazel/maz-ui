@@ -60,7 +60,7 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - `tools/cli/` - Internal CLI tools
 - `tools/agent-docs/` - Generator of the agent knowledge bundle (see below)
 - `tools/agent-evals/` - Evals of the agent tooling: `pnpm -F agent-evals eval` gives tasks to the real Claude Code alone, with `init` and with the plugin (costs tokens, never in CI)
-- `plugins/claude-code/` - Claude Code plugin (skill, MCP server, review hook), exposed by `.claude-plugin/marketplace.json`
+- `plugins/maz-ui/` - Claude Code and Codex plugin (skill, MCP server, review hooks), exposed by `.claude-plugin/marketplace.json`; the OpenCode plugin is `packages/mcp/src/opencode.ts` (its build copies the skills and agents of `plugins/maz-ui`)
 
 ### Main Library Structure (`packages/maz-ui/src/`)
 
@@ -111,10 +111,10 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - Single source of the docs for AI agents: it reads `apps/docs/src`, the component sources (vue-component-meta + vue-docgen-api), the Tailwind CSS of the lib and the icon list, and writes:
   - `packages/<dir>/agent-docs/` per published package (its fragment: the docs whose `DocEntry.package` is it, built with the package, gitignored) and `packages/mcp/agent-docs/` (every fragment in `<short>/` + `index.json`)
   - `apps/docs/.vitepress/generated-docs/*.doc.md` (API tables of the component pages) and `llms.txt` / `llms-full.txt` / one flat `.md` per page on maz-ui.com
-  - `plugins/claude-code/skills/maz-ui/SKILL.md` (committed: run `pnpm -F agent-docs generate:plugin` after changing `tools/agent-docs/content`, a test fails otherwise)
+  - `plugins/maz-ui/skills/maz-ui/SKILL.md` and `plugins/maz-ui/.mcp.json` (inline copy of `scripts/start-server.mjs`, Codex does not expand `${CLAUDE_PLUGIN_ROOT}`) (committed: run `pnpm -F agent-docs generate:plugin` after changing `tools/agent-docs/content` or `start-server.mjs`, a test fails otherwise)
 - A new published package needs an entry in `tools/agent-docs/src/packages.ts` and a `generate:agent-docs` script in its `build`.
 - The agent rules live in `tools/agent-docs/content/rules.md` (also included in `apps/docs/src/guide/ai-agents.md`).
-- The Claude Code plugin (`plugins/claude-code`) is easy to forget: a change of the MCP server, the CLI, the rules or the review also updates it (its README, hook, `plugin.json` and `marketplace.json` descriptions), and a doc that explains how to set up the agents gives its install command (`claude plugin install maz-ui --marketplace LouisMazel/maz-ui`) next to `init`.
+- The plugins are easy to forget: a change of the MCP server, the CLI, the rules or the review also updates `plugins/maz-ui` (its README, hooks, `plugin.json` and `marketplace.json` descriptions; its hooks run in Claude Code and Codex) and the OpenCode plugin, and a doc that explains how to set up the agents gives the install command (`claude plugin install maz-ui --marketplace LouisMazel/maz-ui`) next to `init`.
 - The generator warns about broken internal links and unknown alias ids: keep `pnpm -F agent-docs generate --bundle /tmp/x --strict` clean.
 - Docs (site and agent docs): simple and easy to understand but complete, in short sentences, the common case first.
 - Docs examples (code fences) must use plain Tailwind classes, never the internal `maz:` prefix (only live demos rendered by the docs site use it).

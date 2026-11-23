@@ -38,7 +38,7 @@ function conditionArgs(condition: ConditionId, { repoRoot, fixtureDir }: ClaudeA
     case 'init':
       return ['--strict-mcp-config', '--mcp-config', join(fixtureDir, '.mcp.json')]
     case 'plugin':
-      return ['--plugin-dir', join(repoRoot, 'plugins/claude-code')]
+      return ['--plugin-dir', join(repoRoot, 'plugins/maz-ui')]
   }
 }
 

@@ -6,16 +6,18 @@ import { execFileSync } from 'node:child_process'
 import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
+import { createContext } from '../context.ts'
 import { dependsOnPackages, isIgnoredPath, REVIEWABLE_EXTENSIONS, reviewFiles } from './files.ts'
 import { formatFindings } from './index.ts'
 
-/** Input of a Claude Code hook, on stdin */
+/** Input of a Claude Code or Codex hook, on stdin */
 export interface HookInput {
   hook_event_name?: string
   session_id?: string
   /** `true` when the agent already continues because of a `Stop` hook: it is not blocked twice */
   stop_hook_active?: boolean
-  tool_input?: { file_path?: string }
+  /** `file_path` of the `Edit` and `Write` of Claude Code, `command` (the patch) of the `apply_patch` of Codex */
+  tool_input?: { file_path?: string, command?: string }
   cwd?: string
 }
 
@@ -28,6 +30,18 @@ export interface HookReviewOptions {
    * root and pnpm installs maz-ui in the apps only, each file is reviewed with the version of its app
    */
   knowledgeFor?: (projectDirectory: string) => Knowledge
+}
+
+/** The docs of the maz-ui installed in each project folder, read once per folder */
+export function knowledgeByProject(): (projectDirectory: string) => Knowledge {
+  const projects = new Map<string, Knowledge>()
+
+  return (directory) => {
+    const knowledge = projects.get(directory) ?? createContext({ cwd: directory }).knowledge
+
+    projects.set(directory, knowledge)
+    return knowledge
+  }
 }
 
 /** Packages whose projects the hook reviews: the review is about the maz-ui components */
@@ -103,6 +117,21 @@ export function changedFiles(directory: string): string[] {
   }
 }
 
+/** The files an `apply_patch` adds, updates or moves to (Codex, OpenCode), relative to the folder of the session */
+export function patchFiles(patch: string): string[] {
+  return [...patch.matchAll(/^\*\*\* (?:Add File|Update File|Move to): (.+)$/gm)].map(match => match[1].trim())
+}
+
+/** The files of an edit, relative to the folder of the session */
+function editedFiles(toolInput: HookInput['tool_input']): string[] {
+  if (toolInput?.file_path)
+    return [toolInput.file_path]
+
+  return toolInput?.command
+    ? patchFiles(toolInput.command)
+    : []
+}
+
 /** Findings already sent to the agent in the session: a stop does not send them again */
 class ReportedFindings {
   private readonly file: string | undefined
@@ -135,36 +164,36 @@ class ReportedFindings {
   }
 }
 
+export interface ReviewEditsInput {
+  /** The edited files, absolute or relative to `cwd`; at the end of a task (`final`), the files changed in git by default */
+  files?: string[]
+  /** `true` at the end of a task: only the findings not sent yet in the session are sent */
+  final?: boolean
+  sessionId?: string
+}
+
 /**
- * Claude Code hook: after an edit (`PostToolUse`), reviews the edited file; at the end of a task (`Stop`,
- * `SubagentStop`), reviews the files changed in git, written by `Edit` or another way (a heredoc in Bash), and only
- * sends the findings not sent yet in the session. Returns the message for the agent, `undefined` when there is
- * nothing to fix.
+ * Reviews the files an agent edited, each one with the docs of the maz-ui of its project. After an edit, reviews the
+ * edited files; at the end of a task (`final`), the files changed in git, written by an edit or another way (a heredoc
+ * in a shell), and only sends the findings not sent yet in the session. Returns the message for the agent, `undefined`
+ * when there is nothing to fix.
  */
-export async function reviewHook(input: HookInput, options: HookReviewOptions): Promise<string | undefined> {
+export async function reviewEdits({ files: edited, final = false, sessionId }: ReviewEditsInput, options: HookReviewOptions): Promise<string | undefined> {
   // git gives the real paths (`/private/var` on macOS): the findings of an edit and of a stop share their keys
-  const directory = realpathSync(input.cwd ?? options.cwd)
-  const isStop = STOP_EVENTS.includes(input.hook_event_name ?? '')
-
-  if (isStop && input.stop_hook_active)
-    return undefined
-
-  const file = input.tool_input?.file_path
-  const files = (isStop
+  const directory = realpathSync(options.cwd)
+  const files = (edited ?? (final
     ? changedFiles(directory)
-    : file
-      ? [resolve(directory, file)]
-      : []).filter(path => existsSync(path) && isReviewable(path)).map(path => realpathSync(path)).slice(0, MAX_STOP_FILES)
+    : [])).map(file => resolve(directory, file)).filter(path => existsSync(path) && isReviewable(path)).map(path => realpathSync(path)).slice(0, MAX_STOP_FILES)
 
   if (files.length === 0)
     return undefined
 
-  const reported = new ReportedFindings(input.session_id)
+  const reported = new ReportedFindings(sessionId)
   const reviews = await reviewByProject(files, { ...options, cwd: directory })
   const fresh = reviews
     .map(review => ({
       ...review,
-      findings: review.findings.filter(finding => !isStop || !reported.has(ReportedFindings.key(review.file, finding))),
+      findings: review.findings.filter(finding => !final || !reported.has(ReportedFindings.key(review.file, finding))),
     }))
     .filter(review => review.findings.length > 0)
 
@@ -173,9 +202,28 @@ export async function reviewHook(input: HookInput, options: HookReviewOptions): 
   if (fresh.length === 0)
     return undefined
 
-  const intro = isStop
+  const intro = final
     ? 'maz-ui review of the files changed in this task:\n\n'
     : ''
 
   return `${intro}${fresh.map(review => formatFindings(review.findings, review.file)).join('\n\n')}\n\n${FOOTER}`
+}
+
+/**
+ * Claude Code and Codex hook: after an edit (`PostToolUse`), reviews the edited files; at the end of a task (`Stop`,
+ * `SubagentStop`), reviews the files changed in git (see `reviewEdits`).
+ */
+export function reviewHook(input: HookInput, options: HookReviewOptions): Promise<string | undefined> {
+  const final = STOP_EVENTS.includes(input.hook_event_name ?? '')
+
+  if (final && input.stop_hook_active)
+    return Promise.resolve(undefined)
+
+  return reviewEdits({
+    files: final
+      ? undefined
+      : editedFiles(input.tool_input),
+    final,
+    sessionId: input.session_id,
+  }, { ...options, cwd: input.cwd ?? options.cwd })
 }

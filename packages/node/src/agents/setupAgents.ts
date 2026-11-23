@@ -4,27 +4,29 @@ import { resolveAgentDocs } from './agentDocs.ts'
 import { ChangeSet } from './changeSet.ts'
 import { syncClaudeHooks } from './claudeHooks.ts'
 import { syncPluginMcpServer } from './claudeLocalSettings.ts'
+import { syncCodexConfig } from './codexConfig.ts'
 import { detectAgentTargets } from './detectAgentTargets.ts'
-import { syncMcpConfigs } from './mcpConfig.ts'
-import { mcpServerCommand } from './mcpServer.ts'
+import { syncMcpConfigs, syncOpenCodePlugin } from './mcpConfig.ts'
+import { mcpServerCommand, pinnedMcpVersion } from './mcpServer.ts'
 import { resolveRulePaths } from './rulePaths.ts'
 import { syncRules } from './rules.ts'
 import { MAZ_UI_AGENTS_TOOL, resolveTool } from './tool.ts'
 
 /**
  * Command of the MCP server: the given one, else the command for the project, pinned to the given version, else to
- * the version of the MCP package installed for the app
+ * the version of the MCP package installed for the app. With the version of the MCP package it runs (`latest` when unknown)
  */
-function resolveMcpServer(options: SetupAgentsOptions, tool: AgentsTool): McpServerCommand {
-  if (options.mcpServer)
-    return options.mcpServer
-
+function resolveMcpServer(options: SetupAgentsOptions, tool: AgentsTool): { server: McpServerCommand, version: string } {
   const packageDir = findProjectPackage(options.appDir ?? options.rootDir, tool.mcpPackage)
   const installedVersion = packageDir
     ? readPackageVersion(packageDir)
     : undefined
+  const server = options.mcpServer ?? mcpServerCommand(options.rootDir, options.mcpVersion ?? installedVersion, tool)
 
-  return mcpServerCommand(options.rootDir, options.mcpVersion ?? installedVersion, tool)
+  return {
+    server,
+    version: pinnedMcpVersion(server, tool) ?? installedVersion ?? options.mcpVersion ?? 'latest',
+  }
 }
 
 /**
@@ -37,7 +39,7 @@ export function setupAgents<T extends AgentTarget = AgentTarget>(options: SetupA
   const { rootDir, rules = true, mcp = true, dryRun = false, remove = false, tool = MAZ_UI_AGENTS_TOOL } = options
   const setup = resolveTool(tool)
   const targets: AgentTarget[] = options.targets ?? detectAgentTargets(rootDir)
-  const server = resolveMcpServer(options, tool)
+  const { server, version: mcpVersion } = resolveMcpServer(options, tool)
   const docs = remove || !rules || targets.length === 0
     ? undefined
     : resolveAgentDocs(options, tool)
@@ -51,8 +53,13 @@ export function setupAgents<T extends AgentTarget = AgentTarget>(options: SetupA
   if (rules || remove)
     syncRules(changes, rootDir, targets, docs, setup, claudeRulePaths)
 
+  // Before the MCP server: an OpenCode config left empty by the removal of the server is deleted
+  syncOpenCodePlugin(changes, { rootDir, targets, version: mcpVersion, hooks: options.hooks === true, remove }, tool)
+
   if (mcp || remove)
     syncMcpConfigs(changes, rootDir, targets, server, remove, tool)
+
+  syncCodexConfig(changes, { targets, server, mcp, remove }, tool)
 
   syncClaudeHooks(changes, { rootDir, targets, server, hooks: options.hooks === true, remove }, tool)
   syncPluginMcpServer(changes, { rootDir, targets, mcp, remove }, tool)

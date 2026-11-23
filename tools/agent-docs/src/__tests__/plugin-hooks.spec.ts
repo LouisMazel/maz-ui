@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const HOOKS_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '../../../../plugins/claude-code/hooks')
+const HOOKS_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '../../../../plugins/maz-ui/hooks')
 const FAKE_MCP_BIN = 'process.stderr.write("reviewed")\nprocess.exit(2)\n'
 
 let root: string
@@ -19,14 +19,17 @@ function installMazUi(project: string, version = '5.9.0'): void {
   write(`${project}/node_modules/maz-ui/agent-docs/agents/session-context.md`, '# maz-ui\n\nReuse the ecosystem.\n')
 }
 
-function runHook(script: string, input: Record<string, unknown>) {
-  const result = spawnSync(process.execPath, [join(HOOKS_DIR, script)], { input: JSON.stringify({ cwd: root, ...input }), encoding: 'utf8' })
+/** Codex sets `PLUGIN_ROOT` for the hooks of a plugin */
+const CODEX_ENV = { PLUGIN_ROOT: '/plugins/maz-ui' }
+
+function runHook(script: string, input: Record<string, unknown>, env: Record<string, string> = {}) {
+  const result = spawnSync(process.execPath, [join(HOOKS_DIR, script)], { input: JSON.stringify({ cwd: root, ...input }), encoding: 'utf8', env: { ...process.env, ...env } })
 
   return { status: result.status, stdout: result.stdout, stderr: result.stderr }
 }
 
-function context(input: Record<string, unknown> = {}): string | undefined {
-  const { stdout } = runHook('context.mjs', { hook_event_name: 'SessionStart', ...input })
+function context(input: Record<string, unknown> = {}, env: Record<string, string> = {}): string | undefined {
+  const { stdout } = runHook('context.mjs', { hook_event_name: 'SessionStart', ...input }, env)
 
   return stdout
     ? (JSON.parse(stdout) as { hookSpecificOutput: { additionalContext: string } }).hookSpecificOutput.additionalContext
@@ -46,7 +49,7 @@ describe('given the context hook of the plugin', () => {
     it('then it adds the rules of the installed version', () => {
       installMazUi('.')
 
-      expect(context()).toBe('maz-ui 5.9.0 is installed in `.`. Its rules, from its docs (maz-ui Claude Code plugin):\n\n# maz-ui\n\nReuse the ecosystem.\n')
+      expect(context()).toBe('maz-ui 5.9.0 is installed in `.`. Its rules, from its docs (maz-ui plugin):\n\n# maz-ui\n\nReuse the ecosystem.\n')
     })
   })
 
@@ -165,6 +168,37 @@ describe('given the context hook of the plugin', () => {
   })
 })
 
+describe('given the context hook of the plugin in Codex', () => {
+  describe('when the .mcp.json of the project starts the maz-ui MCP server', () => {
+    it('then the rules are added without the note of Claude Code', () => {
+      installMazUi('.')
+      write('.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'npx', args: ['-y', '@maz-ui/mcp'] } } }))
+
+      const added = context({}, CODEX_ENV)
+
+      expect(added).toContain('# maz-ui\n\nReuse the ecosystem.\n')
+      expect(added).not.toContain('.mcp.json')
+    })
+  })
+
+  describe('when the AGENTS.md of the project has the maz-ui section', () => {
+    it('then nothing is added', () => {
+      installMazUi('.')
+      write('AGENTS.md', '# Project\n\n<!-- BEGIN:maz-ui -->\n## maz-ui\n<!-- END:maz-ui -->\n')
+
+      expect(context({}, CODEX_ENV)).toBeUndefined()
+    })
+  })
+
+  describe('when the read-only explorer subagent starts', () => {
+    it('then nothing is added', () => {
+      installMazUi('.')
+
+      expect(context({ hook_event_name: 'SubagentStart', agent_type: 'explorer' }, CODEX_ENV)).toBeUndefined()
+    })
+  })
+})
+
 describe('given the review hook of the plugin', () => {
   function createMonorepo(): void {
     // eslint-disable-next-line sonarjs/no-os-command-from-path -- the git of the machine, in a temporary folder
@@ -209,6 +243,14 @@ describe('given the review hook of the plugin', () => {
       createMonorepo()
 
       expect(runHook('review.mjs', { hook_event_name: 'PostToolUse', tool_input: { file_path: 'apps/desktop/src/App.vue' } }).status).toBe(2)
+    })
+  })
+
+  describe('when Codex edits a file of an app with apply_patch', () => {
+    it('then the files of the patch are reviewed', () => {
+      createMonorepo()
+
+      expect(runHook('review.mjs', { hook_event_name: 'PostToolUse', tool_name: 'apply_patch', tool_input: { command: '*** Begin Patch\n*** Add File: apps/desktop/src/App.vue\n+<template />\n*** End Patch\n' } }, CODEX_ENV).status).toBe(2)
     })
   })
 

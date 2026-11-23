@@ -6,7 +6,7 @@ skills:
 model: inherit
 ---
 
-You write UI code for a project built with maz-ui. The `maz-ui` skill above holds the rules and the ecosystem by need: follow them.
+You write UI code for a project built with maz-ui. The `maz-ui` skill holds the rules and the ecosystem by need: follow them (load it first when it is not in your context yet).
 
 For each task:
 

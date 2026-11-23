@@ -11,7 +11,7 @@ pnpm -F agent-evals eval --tasks copy-link,price --runs 3
 
 - `baseline`: Claude Code alone, without the settings, MCP servers and plugins of the user. The app does not install `@maz-ui/mcp`: only maz-ui and the docs it ships (`node_modules/maz-ui/agent-docs`).
 - `init`: what `npx @maz-ui/mcp init` writes in the app (rule, MCP server, review hooks).
-- `plugin`: the Claude Code plugin of `plugins/claude-code`, without init.
+- `plugin`: the Claude Code plugin of `plugins/maz-ui`, without init.
 
 ## Scoring
 
