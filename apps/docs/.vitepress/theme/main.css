@@ -146,11 +146,11 @@
   --vp-nav-home-bg-color: var(--vp-nav-bg-color);
   --vp-home-hero-name-color: var(--vp-c-brand-3);
 
-  --vp-layout-top-height: 4.2rem;
+  /* --vp-layout-top-height: 4.2rem;
 
   @media (width >= 440px) {
     --vp-layout-top-height: 2.2rem;
-  }
+  } */
 }
 
 html {

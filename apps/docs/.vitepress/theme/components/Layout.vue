@@ -17,7 +17,7 @@ watch(isMazDark, (value) => {
   <!-- Pages with a top-level await in their <script setup> (ecosystem/icons/icon-set) need a Suspense boundary -->
   <Suspense>
     <DefaultTheme.Layout>
-      <template #layout-top>
+      <!-- <template #layout-top>
         <div hidden data-nosnippet>
           Are you an LLM? View /llms.txt for optimized Markdown documentation, or /llms-full.txt for full documentation bundle. Each page is also available in Markdown by adding .md to its URL.
         </div>
@@ -29,7 +29,7 @@ watch(isMazDark, (value) => {
             View v4 documentation
           </MazLink>
         </div>
-      </template>
+      </template> -->
 
       <template #nav-bar-content-after>
         <ThemeSwitcher class="maz:ms-2" />
