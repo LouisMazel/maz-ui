@@ -1,5 +1,19 @@
 # Changelog
 
+## @maz-ui/node@5.8.0-beta.1 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/node@5.8.0-beta.0...@maz-ui/node@5.8.0-beta.1)
+
+### 🩹 Fixes
+
+- **node:** Bundle jsonc-parser to fix the builds of Nitro v3 consumers ([4e2f82389](https://github.com/LouisMazel/maz-ui/commit/4e2f82389))
+
+  The UMD build of `jsonc-parser` required its own files at runtime and broke the bundlers of the consumers (Nitro v3): its ESM build is now inlined in `@maz-ui/node`.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## @maz-ui/node@5.8.0-beta.0 (2026-11-24)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/node@5.7.0...@maz-ui/node@5.8.0-beta.0)
