@@ -1484,9 +1484,15 @@ importers:
       '@maz-ui/mcp':
         specifier: workspace:^
         version: link:../../packages/mcp
+      '@tailwindcss/vite':
+        specifier: 'catalog:'
+        version: 4.3.5(vite@8.3.8)
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.6
+      '@vitejs/plugin-vue':
+        specifier: 'catalog:'
+        version: 6.0.11(vite@8.3.8)(vue@3.5.46(typescript@6.0.3))
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 5.1.1(vitest@5.1.1)
@@ -1499,15 +1505,24 @@ importers:
       maz-ui:
         specifier: workspace:^
         version: link:../../packages/maz-ui
+      tailwindcss:
+        specifier: 'catalog:'
+        version: 4.3.5
       tsx:
         specifier: 'catalog:'
         version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
+      vite:
+        specifier: 'catalog:'
+        version: 8.3.8(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
         version: 5.1.1(@types/node@26.6.6)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1)(vite@8.3.8)
+      vue-tsc:
+        specifier: 'catalog:'
+        version: 3.3.14(typescript@6.0.3)
 
   tools/cli:
     dependencies:

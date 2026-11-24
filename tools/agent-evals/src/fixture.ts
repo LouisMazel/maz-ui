@@ -14,6 +14,16 @@ export const LINKED_PACKAGES: Record<string, string> = {
   '@maz-ui/vite-plugin': 'packages/vite-plugin',
 }
 
+/** The tools of the app (`vite build`, `vue-tsc`), linked to the ones of agent-evals */
+export const LINKED_TOOLS = ['@tailwindcss/vite', '@vitejs/plugin-vue', 'tailwindcss', 'typescript', 'vite', 'vue-tsc']
+
+/** Their commands, for the agent: `node_modules/.bin/<name>` */
+const TOOL_BINS: Record<string, string> = {
+  'tsc': 'typescript/bin/tsc',
+  'vite': 'vite/bin/vite.js',
+  'vue-tsc': 'vue-tsc/bin/vue-tsc.js',
+}
+
 /** Files of the app the agent may change: the review and the patterns only read these */
 export const SOURCE_FILE = /\.(?:vue|[cm]?[jt]sx?|css)$/
 
@@ -52,7 +62,7 @@ export function checkBuilt(repoRoot: string): string[] {
 
 /**
  * A new Vue app that uses maz-ui, in a temporary folder: the template of `fixture/`, its `node_modules` linked to the
- * packages of the repository and to their Vue, and a first git commit (the review reads the changes from it). Without
+ * packages of the repository, to their Vue and to the build tools of agent-evals, and a first git commit (the review reads the changes from it). Without
  * `mcp`, the app does not install `@maz-ui/mcp`.
  */
 export function createFixture(repoRoot: string, templateDir: string, { parent = tmpdir(), mcp = true } = {}): string {
@@ -64,6 +74,7 @@ export function createFixture(repoRoot: string, templateDir: string, { parent = 
   const links = {
     ...Object.fromEntries(packages.map(([name, path]) => [name, join(repoRoot, path)])),
     vue: realpathSync(join(repoRoot, 'packages/maz-ui/node_modules/vue')),
+    ...Object.fromEntries(LINKED_TOOLS.map(name => [name, realpathSync(join(repoRoot, 'tools/agent-evals/node_modules', name))])),
   }
 
   for (const [name, target] of Object.entries(links)) {
@@ -73,11 +84,16 @@ export function createFixture(repoRoot: string, templateDir: string, { parent = 
     symlinkSync(target, link, 'dir')
   }
 
-  if (mcp) {
-    mkdirSync(join(directory, 'node_modules/.bin'))
-    symlinkSync(join(repoRoot, 'packages/mcp/bin/maz-ui-mcp.mjs'), join(directory, 'node_modules/.bin/maz-ui-mcp'))
+  const bins = {
+    ...Object.fromEntries(Object.entries(TOOL_BINS).map(([name, path]) => [name, join(directory, 'node_modules', path)])),
+    ...(mcp ? { 'maz-ui-mcp': join(repoRoot, 'packages/mcp/bin/maz-ui-mcp.mjs') } : {}),
   }
-  else {
+
+  mkdirSync(join(directory, 'node_modules/.bin'))
+
+  for (const [name, target] of Object.entries(bins)) symlinkSync(target, join(directory, 'node_modules/.bin', name))
+
+  if (!mcp) {
     const manifest = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8')) as { devDependencies: Record<string, string> }
 
     delete manifest.devDependencies['@maz-ui/mcp']
