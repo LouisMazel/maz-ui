@@ -1,5 +1,22 @@
 # Maz-UI agent-first
 
+## Où on en est
+
+- Branche : `claude/ecstatic-mccarthy-7ilaex`, PR [#1756](https://github.com/LouisMazel/maz-ui/pull/1756) en draft vers `develop`. On continue dans cette branche.
+- Fait : ce plan, et les nouvelles mesures des evals (tokens, tool calls, lignes, dépendances, typecheck, build : voir 1).
+- Prochaine étape : l'étape 1 de l'ordre proposé (la première série d'evals), puis le POC des layers (étape 2).
+
+Pour repartir :
+
+```bash
+git fetch origin claude/ecstatic-mccarthy-7ilaex
+git checkout claude/ecstatic-mccarthy-7ilaex
+pnpm install
+pnpm build:packages
+```
+
+Les evals se lancent avec `pnpm -F agent-evals eval`. Les options, les conditions et le coût sont dans `tools/agent-evals/README.md`.
+
 ## Positionnement
 
 Faire de maz-ui la lib Vue et Nuxt avec laquelle un agent (Claude Code, Codex, OpenCode, Cursor...) travaille seul, du début à la fin :
