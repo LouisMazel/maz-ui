@@ -102,7 +102,8 @@ La cible : tout le CSS de la lib dans des sous-layers de `components`, sous les 
   - que `MazUiPurgeCss` (`@maz-ui/vite-plugin`) garde bien les enveloppes de layer ;
   - que tout marche aussi sous Nuxt.
 - Résultat : les utilities et le CSS hors layer de l'utilisateur passent au-dessus de la lib, sans `!important`. Entre eux, les styles scoped restent plus forts que les classes des templates, comme aujourd'hui.
-- Risque : c'est un breaking change probable. Une app avec des styles globaux hors layer (un ancien reset, `button { background: none }`) écrasera les composants. À sortir en v6, ou derrière une option d'abord.
+- Deux layers pour toute la lib, pas un par composant. Chaque fichier CSS répète seulement la ligne qui fixe leur ordre.
+- Décision : on le sort dans une version mineure, sans attendre une v6. Une app avec des styles globaux hors layer (un ancien reset, `button { background: none }`) écrasera les composants : c'est à elle de corriger ses règles. On l'annonce clairement dans le changelog et la doc.
 
 ### Thème : le style et la densité par composant
 
@@ -224,7 +225,7 @@ Le titre actuel de la home met « AI tooling » en dernier, comme un bonus.
 ## Ordre proposé
 
 1. Evals : la première série, puis les tâches « projet existant » et « thème ».
-2. CSS des composants dans des layers : un POC d'abord, puis la décision v6 ou option.
+2. CSS des composants dans des layers : un POC, puis une version mineure.
 3. `generate_preset`, `check_project` et le prompt `adopt` ; l'option d'installation dans `init`.
 4. Le rôle de `maz-ui-editor` et la délégation.
 5. Les composants de structure, puis les blocks et les pages d'exemple.
@@ -234,7 +235,7 @@ Le titre actuel de la home met « AI tooling » en dernier, comme un bonus.
 ## Points de vigilance
 
 - La maintenance : les plugins, OpenCode, les agent-docs et les rules sont déjà à garder en phase. Les blocks, le starter et les nouveaux outils en ajoutent.
-- Les layers changent la priorité du CSS pour tous les utilisateurs : à annoncer et documenter (migration v6).
+- Les layers changent la priorité du CSS pour tous les utilisateurs : à annoncer clairement dans le changelog et la doc.
 - Le coût des evals : environ 0,25 $ pour une petite tâche, bien plus pour une app entière. Jamais en CI.
 
 ## Trouvé en chemin
