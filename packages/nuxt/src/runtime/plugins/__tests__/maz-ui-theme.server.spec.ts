@@ -28,6 +28,7 @@ vi.mock('nuxt/app', () => ({
 function createContext(themeOptions: Record<string, any> = {}) {
   return {
     vueApp: createVueAppMock(),
+    runWithContext: vi.fn((fn: () => any) => fn()),
     $config: {
       public: {
         mazUi: {
@@ -97,11 +98,39 @@ describe('maz-ui plugin theme (server)', () => {
     })
   })
 
+  describe('given the theme head resolved asynchronously', () => {
+    describe('when the plugin renders the page', () => {
+      it('then the head is added in the Nuxt context, which the await loses', async () => {
+        const context = createContext()
+        let inContext = false
+        context.runWithContext.mockImplementation((fn: () => any) => {
+          inContext = true
+          try {
+            return fn()
+          }
+          finally {
+            inContext = false
+          }
+        })
+        mockUseHead.mockImplementationOnce(() => {
+          if (!inContext) {
+            throw new Error('[NUXT_E1001] called outside of the Nuxt context')
+          }
+        })
+
+        await (mazUiPlugin as (...args: any[]) => any)(context)
+
+        expect(mockUseHead).toHaveBeenCalledOnce()
+      })
+    })
+  })
+
   describe('given no theme config', () => {
     describe('when the plugin renders the page', () => {
       it('then it installs the default preset', async () => {
         await (mazUiPlugin as (...args: any[]) => any)({
           vueApp: createVueAppMock(),
+          runWithContext: (fn: () => any) => fn(),
           $config: {
             public: { mazUi: {} },
           },

@@ -45,6 +45,7 @@ async function renderRequest(translations: Record<string, unknown> = { locale: '
   const vueApp = createApp({})
   await (mazUiPlugin as (...args: any[]) => any)({
     vueApp,
+    runWithContext: (fn: () => any) => fn(),
     $config: {
       public: {
         mazUi: { translations },
