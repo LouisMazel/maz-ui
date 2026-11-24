@@ -1,5 +1,52 @@
 # Change Log
 
+## v5.9.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
+
+### 🚀 Features
+
+- **maz-ui:** Add the useClipboard composable ([1e4076807](https://github.com/LouisMazel/maz-ui/commit/1e4076807))
+
+  Copy a text with `const { copy, copied } = useClipboard()`: `copied` stays `true` for 1.5 seconds after a copy (`copiedDuring` to change it), the delay restarts on each copy and stops when the component unmounts. `copy` resolves with `false` when the clipboard is refused or unsupported.
+
+  `MazCodeHighlight` and `MazWindowMockup` use it for their copy buttons.
+
+- **maz-ui:** Add useIntersectionObserver, useScroll, useInfiniteScroll, useScrollLock and vIntersect ([260465526](https://github.com/LouisMazel/maz-ui/commit/260465526))
+
+  useIntersectionObserver and the v-intersect directive tell when elements enter the viewport. useScroll gives the position, the direction and the edges of the page or of an element. useInfiniteScroll loads the next page when the end of a list gets close. useScrollLock locks the scroll of the page, keeps the width of the scrollbar and handles nested locks.
+
+- **maz-ui:** Add MazBtnClipboard and MazBtnScroll ([b69335a3d](https://github.com/LouisMazel/maz-ui/commit/b69335a3d))
+
+  MazBtnClipboard copies an ID, a command or a token in one click, with a copied state, four variants, the colors, sizes and radius of the theme. MazBtnScroll is a floating button that scrolls the page or an element back to the top, or down to the bottom with to="bottom", with a ring of the scroll progress.
+
+- **maz-ui:** MazCodeHighlight shows its scroll-to-bottom button as soon as the last line is out of view ([3fe487e53](https://github.com/LouisMazel/maz-ui/commit/3fe487e53))
+
+  The button is a MazBtnScroll, also shown for a long block displayed from its top and after a reload. The copy button and the scroll button share the same look in light and dark mode.
+
+- **maz-ui:** Add the useResizeObserver composable ([fdd5a5128](https://github.com/LouisMazel/maz-ui/commit/fdd5a5128))
+- **maz-ui:** The toast, dialog and wait composables work without their plugin ([22da2eaed](https://github.com/LouisMazel/maz-ui/commit/22da2eaed))
+
+  `useWait` works anywhere, even outside of a Vue app. `useToast` and `useDialog` work in the setup of a component, and in a store or a router guard with the MazUi plugin, which now takes their global options (`toast`, `dialog`) and enables the animations on scroll (`aos`, disabled by default).
+
+  `ToastPlugin`, `DialogPlugin`, `WaitPlugin` and the `$mazToast`, `$mazDialog` and `$mazWait` properties are deprecated and removed in v6: they still work, with a warning in development.
+
+### 🩹 Fixes
+
+- **maz-ui:** The development warnings no longer throw without bundler ([81ff1b950](https://github.com/LouisMazel/maz-ui/commit/81ff1b950))
+
+### 💅 Refactors
+
+- **maz-ui:** Observe the viewport and the scroll with the new composables in the components ([535c9c7b4](https://github.com/LouisMazel/maz-ui/commit/535c9c7b4))
+
+  MazCircularProgressBar with once now animates when it enters the viewport after being mounted out of it.
+
+- **maz-ui:** MazSegmented follows its size with useResizeObserver ([75d0cce84](https://github.com/LouisMazel/maz-ui/commit/75d0cce84))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.1 (2026-11-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)

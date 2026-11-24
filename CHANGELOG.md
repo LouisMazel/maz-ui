@@ -1,5 +1,116 @@
 # Change Log
 
+## v5.9.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
+
+### 🚀 Features
+
+- **maz-ui:** Add the useClipboard composable ([1e4076807](https://github.com/LouisMazel/maz-ui/commit/1e4076807))
+
+  Copy a text with `const { copy, copied } = useClipboard()`: `copied` stays `true` for 1.5 seconds after a copy (`copiedDuring` to change it), the delay restarts on each copy and stops when the component unmounts. `copy` resolves with `false` when the clipboard is refused or unsupported.
+
+  `MazCodeHighlight` and `MazWindowMockup` use it for their copy buttons.
+
+- **nuxt:** Auto-import useClipboard ([2470b09f8](https://github.com/LouisMazel/maz-ui/commit/2470b09f8))
+- **mcp:** Flag more hand-written code that maz-ui already provides ([239f55188](https://github.com/LouisMazel/maz-ui/commit/239f55188))
+
+  - Clipboard, countdowns, idle detection, case conversion, `charAt(0).toUpperCase()`, flags, iOS and PWA detection, reading time: the review points to the maz-ui helper or composable
+  - More packages with a maz-ui equivalent: clipboard, slugify, change-case, deep equal, countdown, lazy load, click outside, pull to refresh, autosize, currency input
+  - `prefer-dialog-confirm`: a `MazDialog` with a cancel and a confirm button, use `useDialog().confirm()` or `MazDialogConfirm`
+  - `table-part-outside-table`: `MazTableRow`, `MazTableCell` or `MazTableTitle` outside of a `MazTable`
+
+- **mcp:** Give the agents the setup of the project and lighter component APIs ([4ae91d923](https://github.com/LouisMazel/maz-ui/commit/4ae91d923))
+
+  - `get_project_info`: the apps that use maz-ui, their versions, the plugins installed, auto-imported components, icons by name, theme presets, and the components and tools the code already uses
+  - `get_component_api` lists the sections of the examples of each component (to read with `get_doc`), and `compact: true` keeps the names and types only
+  - `search_docs` tells which plugin a composable needs once in the app (`useWait` and `WaitPlugin`)
+
+- **mcp:** Review the files of a task at its end and add the doctor command ([9e0a140de](https://github.com/LouisMazel/maz-ui/commit/9e0a140de))
+
+  - `review --hook` also runs on the `Stop` and `SubagentStop` hooks of Claude Code: the files changed in git are reviewed at the end of a task, also the ones written through Bash
+  - In a monorepo, each file is reviewed against the maz-ui of its app
+  - `init` adds the review hooks to `.claude/settings.json` (`--no-hooks` to skip them), none when the maz-ui Claude Code plugin is enabled
+  - `npx @maz-ui/mcp doctor` checks how Claude Code gets maz-ui in the project: the MCP servers of each scope, the duplicates, the versions, with the fix of each problem
+
+- **translations:** Add the texts of MazBtnClipboard and MazBtnScroll ([9a03b9949](https://github.com/LouisMazel/maz-ui/commit/9a03b9949))
+- **maz-ui:** Add useIntersectionObserver, useScroll, useInfiniteScroll, useScrollLock and vIntersect ([260465526](https://github.com/LouisMazel/maz-ui/commit/260465526))
+
+  useIntersectionObserver and the v-intersect directive tell when elements enter the viewport. useScroll gives the position, the direction and the edges of the page or of an element. useInfiniteScroll loads the next page when the end of a list gets close. useScrollLock locks the scroll of the page, keeps the width of the scrollbar and handles nested locks.
+
+- **maz-ui:** Add MazBtnClipboard and MazBtnScroll ([b69335a3d](https://github.com/LouisMazel/maz-ui/commit/b69335a3d))
+
+  MazBtnClipboard copies an ID, a command or a token in one click, with a copied state, four variants, the colors, sizes and radius of the theme. MazBtnScroll is a floating button that scrolls the page or an element back to the top, or down to the bottom with to="bottom", with a ring of the scroll progress.
+
+- **maz-ui:** MazCodeHighlight shows its scroll-to-bottom button as soon as the last line is out of view ([3fe487e53](https://github.com/LouisMazel/maz-ui/commit/3fe487e53))
+
+  The button is a MazBtnScroll, also shown for a long block displayed from its top and after a reload. The copy button and the scroll button share the same look in light and dark mode.
+
+- **nuxt:** Add the vIntersect directive and the scroll composables options ([cb450b7d0](https://github.com/LouisMazel/maz-ui/commit/cb450b7d0))
+- **mcp:** Resolve the paths of review_code from the apps of a monorepo too ([696f51f48](https://github.com/LouisMazel/maz-ui/commit/696f51f48))
+
+  A path relative to an app that uses maz-ui (src/Card.vue from apps/desktop) is found, and the error lists these apps when nothing matches.
+
+- **mcp:** Review the hand-made loading states, scroll listeners, observers and scroll locks ([a9ceb216c](https://github.com/LouisMazel/maz-ui/commit/a9ceb216c))
+
+  A loading ref shared by a module points to useWait and its WaitPlugin. A scroll listener points to useScroll, useInfiniteScroll or MazBtnScroll, an IntersectionObserver to useIntersectionObserver or v-intersect, body.style.overflow to useScrollLock, a copy button to MazBtnClipboard. They are warnings.
+
+- **maz-ui:** Add the useResizeObserver composable ([fdd5a5128](https://github.com/LouisMazel/maz-ui/commit/fdd5a5128))
+- **nuxt:** Add the useResizeObserver option ([570176706](https://github.com/LouisMazel/maz-ui/commit/570176706))
+- **mcp:** Suggest useResizeObserver for a hand-made ResizeObserver ([6599f83c7](https://github.com/LouisMazel/maz-ui/commit/6599f83c7))
+- **mcp:** Refuse the review ignores without a reason or on the errors of a code that does not work ([3dbc31e63](https://github.com/LouisMazel/maz-ui/commit/3dbc31e63))
+
+  A `maz-ui-review-ignore` comment needs its reason after `--`, else it is not applied and reported as an `invalid-ignore` error. The unknown components, props, values, models, events and slots, the missing required props, the raw icons used as tags, the root and internal imports, the missing `@reference` and the parse errors can no longer be ignored.
+
+- **maz-ui:** The toast, dialog and wait composables work without their plugin ([22da2eaed](https://github.com/LouisMazel/maz-ui/commit/22da2eaed))
+
+  `useWait` works anywhere, even outside of a Vue app. `useToast` and `useDialog` work in the setup of a component, and in a store or a router guard with the MazUi plugin, which now takes their global options (`toast`, `dialog`) and enables the animations on scroll (`aos`, disabled by default).
+
+  `ToastPlugin`, `DialogPlugin`, `WaitPlugin` and the `$mazToast`, `$mazDialog` and `$mazWait` properties are deprecated and removed in v6: they still work, with a warning in development.
+
+- **nuxt:** Install maz-ui with the MazUi plugin and add the toast, dialog and aos options ([e9967eff8](https://github.com/LouisMazel/maz-ui/commit/e9967eff8))
+
+  `useToast`, `useDialog` and `useWait` are always auto-imported. Their global options go in `mazUi.toast` and `mazUi.dialog`, the animations on scroll in `mazUi.aos`.
+
+  `mazUi.plugins` is deprecated and removed in v6: it still works, with a warning at build time, and its options go to the new ones.
+
+- **mcp:** Report the deprecated plugins of the toast, dialog and wait composables ([d12cde795](https://github.com/LouisMazel/maz-ui/commit/d12cde795))
+
+  `get_project_info` gives the setup of the toasts, dialogs and animations on scroll, and the deprecated plugins still installed. The new `deprecated-api` rule of the review reports `app.use(ToastPlugin)`, `DialogPlugin`, `WaitPlugin`, `$mazToast`... and `mazUi.plugins` in `nuxt.config`.
+
+- **utils:** Add isProduction, the production mode without crashing when there is no bundler ([e05fa4ad4](https://github.com/LouisMazel/maz-ui/commit/e05fa4ad4))
+
+  `isProduction()` reads the `process.env.NODE_ENV` replaced by the bundler of the app, and returns `false` when `process` does not exist (a CDN with an import map).
+
+- **mcp:** OpenCode plugin, and Codex in init and in the review hook ([f4d2d88cb](https://github.com/LouisMazel/maz-ui/commit/f4d2d88cb))
+
+  - @maz-ui/mcp is the maz-ui plugin of OpenCode ("plugin": ["@maz-ui/mcp"] in opencode.json): it starts the MCP server, adds the maz-ui and maz-ui-upgrade skills, the maz-ui-editor subagent and the rules of the installed maz-ui, reviews each edited file and, at the end of a task, the files changed in git.
+  - init: new codex target (MCP server in .codex/config.toml), and with the opencode target, the OpenCode plugin is added for the review (--no-hooks to leave it out).
+  - review --hook also reviews the files of the apply_patch of Codex.
+
+### 🩹 Fixes
+
+- **maz-ui:** The development warnings no longer throw without bundler ([81ff1b950](https://github.com/LouisMazel/maz-ui/commit/81ff1b950))
+- **mcp:** Allow the maz: prefix in the maz-ui repository ([c60285d8b](https://github.com/LouisMazel/maz-ui/commit/c60285d8b))
+
+  The review no longer reports the `maz:` prefix in the code of the maz-ui repository (the library, and the projects of its monorepo that use it from the workspace), where it is the prefix of the library. Projects that install maz-ui keep the `internal-prefix` error.
+
+### 💅 Refactors
+
+- **maz-ui:** Observe the viewport and the scroll with the new composables in the components ([535c9c7b4](https://github.com/LouisMazel/maz-ui/commit/535c9c7b4))
+
+  MazCircularProgressBar with once now animates when it enters the viewport after being mounted out of it.
+
+- **maz-ui:** MazSegmented follows its size with useResizeObserver ([75d0cce84](https://github.com/LouisMazel/maz-ui/commit/75d0cce84))
+
+### 📖 Documentation
+
+- Plan the removal of the deprecated plugins in v6 ([06554fd06](https://github.com/LouisMazel/maz-ui/commit/06554fd06))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.1 (2026-11-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)

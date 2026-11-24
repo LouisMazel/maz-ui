@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.9.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
+
+### 🚀 Features
+
+- **utils:** Add isProduction, the production mode without crashing when there is no bundler ([e05fa4ad4](https://github.com/LouisMazel/maz-ui/commit/e05fa4ad4))
+
+  `isProduction()` reads the `process.env.NODE_ENV` replaced by the bundler of the app, and returns `false` when `process` does not exist (a CDN with an import map).
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.1 (2026-11-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)
