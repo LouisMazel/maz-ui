@@ -1,5 +1,11 @@
 # Changelog
 
+## @maz-ui/upgrade@5.4.2-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/upgrade@5.4.1...@maz-ui/upgrade@5.4.2-beta.0)
+
+No relevant changes since last release
+
 ## @maz-ui/upgrade@5.4.1 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/upgrade@5.4.0...@maz-ui/upgrade@5.4.1)

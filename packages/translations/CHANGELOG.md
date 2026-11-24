@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.9.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
+
+### 🚀 Features
+
+- **translations:** Add the texts of MazBtnClipboard and MazBtnScroll ([9a03b9949](https://github.com/LouisMazel/maz-ui/commit/9a03b9949))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.1 (2026-11-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)

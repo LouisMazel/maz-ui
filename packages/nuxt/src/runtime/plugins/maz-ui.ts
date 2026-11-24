@@ -3,6 +3,7 @@ import type { MazUiTranslationsInstance } from '@maz-ui/translations'
 import type { MazUiDefaultsOptions } from 'maz-ui/composables/useGlobalConfig'
 import type { AosHandler, AosOptions } from 'maz-ui/plugins/aos'
 import type { MazUiOptions } from 'maz-ui/plugins/maz-ui'
+import type { NuxtApp } from 'nuxt/app'
 import type { Ref } from 'vue'
 import type { MazUiNuxtOptions } from '../../types'
 import { getRequestThemeContext, getSystemColorMode, getThemeHead, getThemeHeadTags, resolveThemeContext } from '@maz-ui/themes/utils'
@@ -15,11 +16,12 @@ import messages from '#build/maz-ui-translations.mjs'
 type NuxtThemeOptions = NonNullable<MazUiNuxtOptions['theme']>
 
 /** On the server, the theme of the user is read from the request and rendered in the head */
-async function resolveTheme(options: NuxtThemeOptions): Promise<MazUiOptions['theme']> {
+async function resolveTheme(options: NuxtThemeOptions, nuxtApp: NuxtApp): Promise<MazUiOptions['theme']> {
   let context
   if (import.meta.server) {
     const head = await getThemeHead(options, getRequestThemeContext(useRequestHeaders(['cookie', 'sec-ch-prefers-color-scheme'])))
-    useHead(getThemeHeadTags(head))
+    // The await loses the Nuxt context, which Nuxt only restores in the body of the plugin
+    nuxtApp.runWithContext(() => useHead(getThemeHeadTags(head)))
     context = head
   }
   else {
@@ -70,11 +72,12 @@ function resolveAos(aos: MazUiNuxtOptions['aos']): MazUiOptions['aos'] {
   } satisfies AosOptions
 }
 
-export default defineNuxtPlugin(async ({ vueApp, $config }) => {
+export default defineNuxtPlugin(async (nuxtApp) => {
+  const { vueApp, $config } = nuxtApp
   const { theme = {}, translations, defaults, toast, dialog, aos, plugins } = $config.public.mazUi
 
   vueApp.use(MazUi, {
-    theme: await resolveTheme(theme as NuxtThemeOptions),
+    theme: await resolveTheme(theme as NuxtThemeOptions, nuxtApp),
     translations: {
       ...translations,
       messages,
