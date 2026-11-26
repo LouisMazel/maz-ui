@@ -1115,8 +1115,8 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))(tailwindcss@4.3.5)
       stylelint-use-logical-spec:
-        specifier: ^5.0.1
-        version: 5.0.1(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
+        specifier: ^6.0.1
+        version: 6.0.1(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
     devDependencies:
       '@arethetypeswrong/cli':
         specifier: 'catalog:'
@@ -8748,11 +8748,12 @@ packages:
     peerDependencies:
       stylelint: ^16.8.2 || ^17.0.0
 
-  stylelint-use-logical-spec@5.0.1:
-    resolution: {integrity: sha512-UfLB4LW6iG4r3cXxjxkiHQrFyhWFqt8FpNNngD+TyvgMWSokk5TYwTvBHS3atUvZhOogllTOe/PUrGE+4z84AA==}
-    engines: {node: '>=8.0.0'}
+  stylelint-use-logical-spec@6.0.1:
+    resolution: {integrity: sha512-xDKLMSXQWAiC02RoatDFfeGE0msEoItfiw/YPdkPzvAhylZgnDmcwypdSr+SbMnIoaV0OaOS4W2GGB+dOLh3fA==}
+    engines: {node: '>=22'}
+    hasBin: true
     peerDependencies:
-      stylelint: '>=11 < 17'
+      stylelint: ^16.7.0 || ^17.0.0 || ^18.0.0
 
   stylelint@17.16.0:
     resolution: {integrity: sha512-ejlWnbJ13x1GU32+zZXa6sYQJsKKkwSdv2B4rAdO3OWdEmvhSJKcXi5pOphQYSzyaj1kXpuGJr7pcMBNfDIuPw==}
@@ -18578,8 +18579,9 @@ snapshots:
       postcss-value-parser: 4.2.0
       stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
 
-  stylelint-use-logical-spec@5.0.1(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
+  stylelint-use-logical-spec@6.0.1(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
     dependencies:
+      postcss-value-parser: 4.2.0
       stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
 
   stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3):
