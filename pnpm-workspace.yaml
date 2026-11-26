@@ -33,6 +33,14 @@ packages:
   - tools/*
   - .
 
+permissions:
+  '@modelcontextprotocol/inspector':
+    skills: false
+
+overrides:
+  tinypool@>=2.0.0 <2.1.1: ^2.1.1
+  tinypool@>=2.0.0 <2.1.2: ^2.1.2
+
 allowBuilds:
   '@modelcontextprotocol/inspector': false
   '@parcel/watcher': true
@@ -41,10 +49,6 @@ allowBuilds:
   nx: true
   sharp: false
   vue-demi: true
-
-permissions:
-  '@modelcontextprotocol/inspector':
-    skills: false
 
 # Versions of the dependencies shared by several projects of the workspace, referenced with `catalog:`
 catalog:
