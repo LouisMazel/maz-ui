@@ -237,7 +237,7 @@
     "@tanstack/vue-virtual": "^3.13.52",
     "chart.js": "catalog:",
     "dayjs": "catalog:",
-    "dompurify": "^3.4.18",
+    "dompurify": "^3.5.0",
     "libphonenumber-js": "catalog:",
     "marked": "^18.2.1"
   },
