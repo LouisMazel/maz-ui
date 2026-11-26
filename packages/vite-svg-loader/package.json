@@ -95,7 +95,7 @@
     "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",
     "eslint": "catalog:",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.5",
     "typescript": "catalog:",
     "unbuild": "catalog:",
     "vite": "catalog:",
