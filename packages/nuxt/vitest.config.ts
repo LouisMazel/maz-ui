@@ -6,6 +6,7 @@ import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/con
 const resolveAliases = {
   '#build/maz-ui-translations.mjs': resolve(import.meta.dirname, 'src/runtime/plugins/__tests__/fixtures/maz-ui-translations.mjs'),
   '#build/maz-ui-flags.mjs': resolve(import.meta.dirname, 'src/runtime/plugins/__tests__/fixtures/maz-ui-flags.mjs'),
+  '#build/maz-ui-open-external.mjs': resolve(import.meta.dirname, 'src/runtime/plugins/__tests__/fixtures/maz-ui-open-external.mjs'),
   '@maz-ui/utils/helpers': resolve(import.meta.dirname, '../utils/src/helpers'),
   '@maz-ui/utils': resolve(import.meta.dirname, '../utils/src/index.ts'),
   '@maz-ui/translations/plugin': resolve(import.meta.dirname, '../translations/src/plugin.ts'),

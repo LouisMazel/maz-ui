@@ -9,3 +9,8 @@ declare module '#build/maz-ui-flags.mjs' {
   const loadCountryFlag: ((code: string) => Promise<string | undefined>) | undefined
   export default loadCountryFlag
 }
+
+declare module '#build/maz-ui-open-external.mjs' {
+  const openExternal: ((href: string, event: MouseEvent) => void) | undefined
+  export default openExternal
+}

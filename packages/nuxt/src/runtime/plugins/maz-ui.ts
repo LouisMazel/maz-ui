@@ -11,6 +11,7 @@ import { getAosInstance } from 'maz-ui/plugins/aos'
 import { MazUi } from 'maz-ui/plugins/maz-ui'
 import { defineNuxtPlugin, useHead, useRequestHeaders, useRouter } from 'nuxt/app'
 import loadCountryFlag from '#build/maz-ui-flags.mjs'
+import openExternal from '#build/maz-ui-open-external.mjs'
 import messages from '#build/maz-ui-translations.mjs'
 
 type NuxtThemeOptions = NonNullable<MazUiNuxtOptions['theme']>
@@ -86,6 +87,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     toast,
     dialog,
     aos: resolveAos(aos),
+    openExternal,
   })
 
   // The server renders with the messages, and the client hydrates with the same ones

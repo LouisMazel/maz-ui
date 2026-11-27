@@ -1268,6 +1268,24 @@ describe('nuxt module', () => {
       })
     })
 
+    describe('given the openExternal option', () => {
+      describe('when it is not set', () => {
+        it('then the template exports nothing', async () => {
+          callSetup()
+
+          expect(await getTemplate('maz-ui-open-external.mjs').getContents()).toBe('export default undefined\n')
+        })
+      })
+
+      describe('when it is a path', () => {
+        it('then the template re-exports the file as default', async () => {
+          callSetup({ openExternal: '~/utils/open-external' })
+
+          expect(await getTemplate('maz-ui-open-external.mjs').getContents()).toBe('export { default } from "/project/utils/open-external"\n')
+        })
+      })
+    })
+
     describe('given the flags option', () => {
       describe('when it is not set', () => {
         it('then the flags template exports no loader and no flag source is set', async () => {

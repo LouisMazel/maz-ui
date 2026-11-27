@@ -118,6 +118,16 @@ export interface MazUiNuxtOptions {
   flags?: 'cdn' | 'local' | (string & {})
 
   /**
+   * Path of a file whose default export opens a link outside of the app, for a Tauri or Electron WebView
+   * @description `(href: string, event: MouseEvent) => void`. Called instead of the navigation (prevented) by every
+   * component with an `href` (`MazLink`, `MazBtn`, `MazCard`, `MazAvatar`, `MazListItem`, `MazSidebarMenuButton`, `MazMarkdown`),
+   * for the absolute `http(s)` URLs of another origin and the `target="_blank"` links. The external icon of `MazLink` follows the same rule.
+   * A path is needed because a function cannot go through the module options. Nothing is added to the build when it is not set.
+   * @example '~/utils/open-external'
+   */
+  openExternal?: string
+
+  /**
    * Icons by name: `<MazIcon icon="x-mark" />`, `<MazBtn start-icon="moon">`, with the SVG of the project
    * (`app/icons/hero.svg` is `hero`, or `app:hero` with `prefix: 'app'`). Only the icons a page uses are in its chunk.
    * The types of the names are generated. `false` disables it.
@@ -282,6 +292,48 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     useRelativeTime?: boolean
+
+    /**
+     * Enable auto-import of useEventListener composable
+     * @description Event listener on a window, a document or an element, removed on unmount
+     * @default true
+     */
+    useEventListener?: boolean
+
+    /**
+     * Enable auto-import of useWindow composable
+     * @description The window and its listeners, SSR safe
+     * @default true
+     */
+    useWindow?: boolean
+
+    /**
+     * Enable auto-import of useWindowFocus composable
+     * @description Reactive focus of the window
+     * @default true
+     */
+    useWindowFocus?: boolean
+
+    /**
+     * Enable auto-import of useMediaQuery composable
+     * @description Reactive CSS media query
+     * @default true
+     */
+    useMediaQuery?: boolean
+
+    /**
+     * Enable auto-import of useReducedMotion composable
+     * @description Reactive `prefers-reduced-motion` preference
+     * @default true
+     */
+    useReducedMotion?: boolean
+
+    /**
+     * Enable auto-import of useShortcut composable
+     * @description Platform aware keyboard shortcut (Cmd on macOS, Ctrl elsewhere) and its label
+     * @default true
+     */
+    useShortcut?: boolean
 
     /**
      * Enable auto-import of useWindowSize composable
