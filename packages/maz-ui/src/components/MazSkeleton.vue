@@ -3,6 +3,7 @@ import type { MazRoundedSize, MazSizeUnit } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 export interface MazSkeletonProps {
   /**
@@ -63,14 +64,7 @@ const { roundedSize } = useGlobalConfig<{ roundedSize: MazRoundedSize }>('MazSke
 
 const { t } = useTranslations()
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
 const ariaLabelValue = computed(() => ariaLabel || t('skeleton.ariaLabel'))
 const loadingTextValue = computed(() => loadingText || t('skeleton.loadingText'))

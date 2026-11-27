@@ -3,6 +3,7 @@ import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { Component, HTMLAttributes } from 'vue'
 import type { MazColor, MazRoundedSize } from './types.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 export type MazMarkdownEditorMode = 'write' | 'preview' | 'split'
 
@@ -769,14 +770,7 @@ const stateLabelColor = computed(() => ({
   'maz:text-warning-600': warning,
 }))
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-xl',
-} as const
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, full: 'maz:rounded-xl' }
 
 const writePanelId = computed(() => `${instanceId.value}-write`)
 const previewPanelId = computed(() => `${instanceId.value}-preview`)

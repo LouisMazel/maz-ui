@@ -4,6 +4,7 @@ import type { MazBtnProps } from './MazBtn.vue'
 import type { MazIndicatorProps } from './MazIndicator.vue'
 import type { MazTabsOrientation, MazTabsProvide } from './MazTabs.vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 /**
  * Props of MazBtn that an item is not allowed to forward, because they are
@@ -217,14 +218,7 @@ const resolvedColor = computed<MazColor | undefined>(() => color ?? tabsContext.
 const resolvedOrientation = computed<MazTabsOrientation>(() => orientation ?? tabsContext.value?.orientation?.value ?? 'horizontal')
 const isVertical = computed(() => resolvedOrientation.value === 'vertical')
 
-const ROUNDED_CLASS: Record<MazRoundedSize, string> = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS: Record<MazRoundedSize, string> = ROUNDED_SIZE_CLASS
 
 /** A badge with `content: true` is a dot: no text, so no padding nor line box */
 const DOT_BADGE_STYLE = {

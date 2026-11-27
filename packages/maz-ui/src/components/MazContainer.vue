@@ -6,6 +6,7 @@ import { defineAsyncComponent } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 export interface MazContainerProps {
   /**
@@ -102,14 +103,7 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const { iconProps: startIconProps } = useMazIconProps(() => startIcon, () => ({ size: iconSize }))
 const { iconProps: endIconProps } = useMazIconProps(() => endIcon, () => ({ size: iconSize }))
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 </script>
 
 <template>

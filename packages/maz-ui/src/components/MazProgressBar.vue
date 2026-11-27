@@ -2,6 +2,7 @@
 import type { MazColor, MazColorOrFree, MazSize } from './types.ts'
 import { computed } from 'vue'
 import { resolveColor } from '../utils/freeColor.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 export interface MazProgressBarSegment {
   /** Value of the segment, on the same scale as `max` */
@@ -87,12 +88,7 @@ const SIZE_CLASS = {
   xl: 'maz:h-4',
 } as const satisfies Record<MazSize, string>
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
 function accentColor(color: string) {
   return color === 'neutral' ? 'neutral-foreground' : color

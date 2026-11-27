@@ -5,7 +5,7 @@ import { useTranslations } from '@maz-ui/translations/composables/useTranslation
 import { computed, onBeforeUnmount, ref, useTemplateRef } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
-import { SIZE_TEXT_CLASS } from './constants.ts'
+import { ROUNDED_SIZE_CLASS, SIZE_TEXT_CLASS } from './constants.ts'
 import MazBadge from './MazBadge.vue'
 
 defineOptions({
@@ -116,14 +116,7 @@ const tags = computed(() => modelValue ?? [])
 /** No floating label in a field of tags: the label is the placeholder of the input */
 const inputPlaceholder = computed(() => placeholder || hint || label)
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const satisfies Record<MazRoundedSize, string>
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
 const stateTextClass = computed(() => {
   if (error)

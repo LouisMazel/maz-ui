@@ -59,6 +59,7 @@ export interface MazListProps {
 import { computed, provide, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 const {
   title,
@@ -95,13 +96,7 @@ provide(mazListKey, {
   size: computed(() => size),
 })
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-sm',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-} as const
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, sm: 'maz:rounded-sm' }
 </script>
 
 <template>

@@ -8,6 +8,7 @@ import { useMazIconProps } from '../composables/useMazIconProps.ts'
 import { useExternalLinks } from '../utils/externalLinks.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 import { getColor } from './types.ts'
 
 export interface MazBtnProps {
@@ -230,14 +231,7 @@ const SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
   mini: 'maz:min-h-6 maz:px-1 maz:text-xs',
 } as const
 
-const ROUNDED_CLASS: Record<NonNullable<MazBtnProps['roundedSize']>, string> = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS: Record<NonNullable<MazBtnProps['roundedSize']>, string> = ROUNDED_SIZE_CLASS
 
 const FAB_SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
   xl: 'maz:size-16',

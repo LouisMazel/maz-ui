@@ -8,6 +8,7 @@ import { useTranslations } from '@maz-ui/translations/composables/useTranslation
 import { computed } from 'vue'
 import { useClipboard } from '../composables/useClipboard.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
 import { getColor } from './types.ts'
 
@@ -138,14 +139,7 @@ const state = computed(() => {
 })
 const icon = computed(() => ({ idle: MazSquare2Stack, copied: MazCheck, error: MazExclamationCircle })[state.value])
 
-const ROUNDED_CLASS = {
-  none: 'maz:rounded-none',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const satisfies Record<MazBtnClipboardRoundedSize, string>
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, none: 'maz:rounded-none' }
 
 const SIZE_CLASS = {
   mini: 'maz:text-[0.6875rem]',

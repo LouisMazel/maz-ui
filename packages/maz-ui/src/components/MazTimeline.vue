@@ -7,6 +7,7 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useId,
 import { useMazIconProps } from '../composables/index.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { resolveColor, resolveColorForeground, shiftColorLightness } from '../utils/freeColor.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 export type MazTimelineColor = Exclude<MazColor, 'transparent'>
 export type MazTimelineDirection = 'horizontal' | 'vertical' | 'auto'
@@ -374,16 +375,7 @@ function findNextEnabledStep(fromIndex: number, direction: 1 | -1): number | und
 
 const hasCheckIcon = computed(() => autoValidateSteps)
 
-const ROUNDED_CLASS = {
-  'none': 'maz:rounded-none',
-  'sm': 'maz:rounded-xs',
-  'md': 'maz:rounded-md',
-  'lg': 'maz:rounded-lg',
-  'xl': 'maz:rounded-xl',
-  '2xl': 'maz:rounded-2xl',
-  '3xl': 'maz:rounded-3xl',
-  'full': 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, none: 'maz:rounded-none' }
 
 const TITLE_SIZE_CLASS: Record<MazSize, string> = {
   mini: 'maz:text-[0.625rem]',

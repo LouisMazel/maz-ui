@@ -6,6 +6,7 @@ import { useTranslations } from '@maz-ui/translations/composables/useTranslation
 import { computed } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { isFreeColor, resolveColorForeground } from '../utils/freeColor.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
 import { getColor } from './types.ts'
 
@@ -88,14 +89,7 @@ const resolvedColor = computed(() => freeColor.value
   ? 'free'
   : getColor(color as MazBadgeColor))
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
 const SIZE_CLASS = {
   mini: 'maz:text-[0.625rem]',

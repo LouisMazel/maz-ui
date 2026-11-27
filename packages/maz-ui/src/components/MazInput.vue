@@ -18,7 +18,7 @@ import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
 import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
-import { SIZE_TEXT_CLASS } from './constants.ts'
+import { ROUNDED_SIZE_CLASS, SIZE_TEXT_CLASS } from './constants.ts'
 
 export type MazInputValue = string | number | null | undefined | boolean
 
@@ -429,14 +429,7 @@ const stateColor = computed(() => {
   return undefined
 })
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 </script>
 
 <template>

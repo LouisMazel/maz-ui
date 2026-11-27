@@ -10,6 +10,7 @@ import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useResizeObserver } from '../composables/useResizeObserver.ts'
 import { createLazyTooltipDirective } from '../utils/lazyTooltip.ts'
 import { resolveMazIconProps } from '../utils/resolveMazIconProps.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 import { getColor } from './types.ts'
 
 export type MazSegmentedValue = string | number | boolean
@@ -274,14 +275,7 @@ const BADGE_SIZE = {
   xl: 'md',
 } as const satisfies Record<MazSize, MazSize>
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-sm',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, sm: 'maz:rounded-sm' }
 
 function setSegmentRef(el: HTMLButtonElement | null, index: number) {
   if (el)

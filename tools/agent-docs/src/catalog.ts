@@ -120,6 +120,8 @@ export const CATALOG_OMITTED: Record<string, string> = {
   ...Object.fromEntries(['deep-partial', 'deep-required', 'deep-key-of', 'flatten-object-keys', 'generic-instance-type', 'infer-maybe-ref'].map(name => [`ecosystem/utils/types/${name}`, 'TypeScript types, not logic to write by hand: found by `search_docs`'])),
   'ecosystem/utils/is-production': 'for the libraries: an app built by Vite reads `import.meta.env.PROD`',
   'composables/use-window': 'base of useWindowSize and useWindowFocus: `useEventListener` covers the need',
+  'composables/use-sliding-indicator': 'found by `search_docs` (sliding indicator, active pill)',
+  'composables/use-roving-focus': 'found by `search_docs` (roving tabindex, arrow keys navigation)',
   'ecosystem/utils/is-apple': 'found through useShortcut (`formatShortcut`, `matchesShortcut`)',
   'ecosystem/utils/debounce-callback': 'one timer shared by the whole app: `debounce` or `debounceId` fit better',
 }

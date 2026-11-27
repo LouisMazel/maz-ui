@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
-import { SIZE_TEXT_CLASS } from './constants.ts'
+import { ROUNDED_SIZE_CLASS, SIZE_TEXT_CLASS } from './constants.ts'
 
 export interface MazTextareaProps<T extends string | undefined | null> {
   /** Style attribut of the component root element */
@@ -223,14 +223,7 @@ onBeforeUnmount(() => {
   autofillCleanup?.()
 })
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
 const SIZE_CONFIG = {
   xl: { height: '4rem', lineHeight: '1.75rem', paddingInline: '1.25rem' },

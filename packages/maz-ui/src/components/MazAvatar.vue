@@ -9,6 +9,7 @@ import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useExternalLinks } from '../utils/externalLinks.ts'
 import { resolveColor, resolveColorForeground } from '../utils/freeColor.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 defineOptions({
   inheritAttrs: false,
@@ -230,14 +231,7 @@ const indicatorProps = computed<MazIndicatorProps | undefined>(() => {
   }
 })
 
-const ROUNDED_CLASS = {
-  none: 'maz:rounded-none',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, none: 'maz:rounded-none' }
 
 const SIZE_MAP: Record<MazSize, string> = {
   mini: '1.5rem',
