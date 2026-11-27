@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types.ts'
+import type { MazColor, MazSize } from './types.ts'
 import { computed } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
@@ -65,6 +66,12 @@ export interface MazSwitchProps {
   label?: string
   /** The color of the switch */
   color?: MazColor
+  /**
+   * The size of the switch, same scale as MazCheckbox
+   * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
+   * @default 'md'
+   */
+  size?: MazSize
   /** Whether there is an error with the input. */
   error?: boolean
   /** Whether the input is successful. */
@@ -79,6 +86,17 @@ const instanceId = useInstanceUniqId({
   componentName: 'MazSwitch',
   providedId: id,
 })
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazSwitch', { size: 'md' })
+
+const SWITCH_HEIGHT: Record<MazSize, string> = {
+  xl: '2rem',
+  lg: '1.75rem',
+  md: '1.5rem',
+  sm: '1.25rem',
+  xs: '1rem',
+  mini: '0.75rem',
+}
 
 const bgColorClassVar = computed(() => {
   return `var(--maz-${color})`
@@ -106,7 +124,7 @@ function onFocus(event: FocusEvent) {
     :for="instanceId"
     class="m-switch m-reset-css maz:relative maz:inline-flex maz:cursor-interactive maz:items-center maz:gap-2 maz:align-top"
     :class="[{ '--is-disabled': disabled, 'maz:disabled-cursor': disabled }, classProp]"
-    :style="[style, { '--switch-color': bgColorClassVar, '--switch-foreground': fgColorClassVar }]"
+    :style="[style, { '--switch-color': bgColorClassVar, '--switch-foreground': fgColorClassVar, '--switch-height': SWITCH_HEIGHT[size] }]"
   >
     <input
       :id="instanceId"
@@ -122,7 +140,7 @@ function onFocus(event: FocusEvent) {
       @blur="onBlur"
       @focus="onFocus"
     >
-    <span class="m-switch__toggle maz:relative maz:h-6 maz:w-12" />
+    <span class="m-switch__toggle maz:relative" />
 
     <span v-if="hasSlotContent($slots.default) || label || hint" class="m-switch__text maz:flex maz:flex-col maz:gap-0">
       <!--
@@ -157,8 +175,8 @@ function onFocus(event: FocusEvent) {
 }
 
 .m-switch__input:focus-visible + .m-switch__toggle::before {
-  outline: var(--maz-border-width) solid var(--switch-color);
-  outline-offset: 2px;
+  outline: var(--maz-focus-ring-width, var(--maz-border-width)) solid var(--maz-focus-ring-color, var(--switch-color));
+  outline-offset: var(--maz-focus-ring-offset, 2px);
 }
 
 .m-switch:not(.--is-disabled):hover .m-switch__input:not(:checked) + .m-switch__toggle::before {
@@ -167,8 +185,7 @@ function onFocus(event: FocusEvent) {
 
 .m-switch__input:checked + .m-switch__toggle {
   &::after {
-    @apply maz:translate-x-6;
-
+    transform: translateX(var(--switch-height));
     background-color: var(--switch-foreground);
   }
 
@@ -178,7 +195,14 @@ function onFocus(event: FocusEvent) {
   }
 }
 
+:where([dir='rtl']) .m-switch__input:checked + .m-switch__toggle::after {
+  transform: translateX(calc(var(--switch-height) * -1));
+}
+
 .m-switch__toggle {
+  inline-size: calc(var(--switch-height) * 2);
+  block-size: var(--switch-height);
+
   /* No light-dark() here: the build rewrites it into variables that only exist with a color-scheme rule */
   --m-switch-track: color-mix(in srgb, var(--maz-foreground) 16%, transparent);
   --m-switch-thumb: oklch(100% 0 0deg);
@@ -192,7 +216,7 @@ function onFocus(event: FocusEvent) {
     content: '';
     transition: all 200ms ease-in-out;
 
-    @apply maz:relative maz:left-0 maz:top-0.5 maz:block maz:h-6 maz:w-12 maz:rounded-full;
+    @apply maz:absolute maz:inset-0 maz:rounded-full;
     @apply maz:border maz:border-solid;
 
     /* Translucent foreground so the track stays visible on any background, in both modes */
@@ -203,8 +227,12 @@ function onFocus(event: FocusEvent) {
   &::after {
     content: '';
 
-    @apply maz:absolute maz:left-0.5 maz:top-1 maz:block maz:h-5 maz:w-5 maz:rounded-full;
+    @apply maz:absolute maz:rounded-full;
 
+    inset-block-start: 0.125rem;
+    inset-inline-start: 0.125rem;
+    inline-size: calc(var(--switch-height) - 0.25rem);
+    block-size: calc(var(--switch-height) - 0.25rem);
     background-color: var(--m-switch-thumb);
     box-shadow: 0 1px 3px 0 hsl(0deg 0% 0% / 25%);
     transition: all 200ms ease-in-out;
