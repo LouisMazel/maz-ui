@@ -237,9 +237,13 @@ const ATTRIBUTE_TYPES: Record<string, string> = {
   target: 'string',
 }
 
-/** Attributes the component reads itself (`const { href, to } = useAttrs()`): documented like props */
+/** Attributes the component reads itself (`const { href, to } = useAttrs()`, or from the `useAttrs()` variable): documented like props */
 export function attributeProps(source: string, props: PropApi[]): PropApi[] {
-  const names = /const\s*\{([^}]+)\}\s*=\s*useAttrs\(\)/.exec(source)?.[1].split(',').map(name => name.trim().split(/\s*:/)[0]).filter(Boolean) ?? []
+  const variable = /const\s+(\w+)\s*=\s*useAttrs\(\)/.exec(source)?.[1]
+  const from = variable
+    ? `(?:useAttrs\\(\\)|${variable}\\b)`
+    : 'useAttrs\\(\\)'
+  const names = new RegExp(`const\\s*\\{([^}]+)\\}\\s*=\\s*${from}`).exec(source)?.[1].split(',').map(name => name.trim().split(/\s*:/)[0]).filter(Boolean) ?? []
 
   return names
     .filter(name => !props.some(prop => prop.name === name))

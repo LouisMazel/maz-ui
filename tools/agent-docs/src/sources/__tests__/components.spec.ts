@@ -416,6 +416,10 @@ describe('given attributeProps', () => {
     it('then an unknown attribute has an unknown type', () => {
       expect(attributeProps('const { foo } = useAttrs()', [])[0].type).toBe('unknown')
     })
+
+    it('then the attributes read from the useAttrs variable are documented too', () => {
+      expect(attributeProps('const attrs = useAttrs()\nconst { href, to } = attrs', []).map(prop => prop.name)).toEqual(['href', 'to'])
+    })
   })
 
   describe('when the component does not read attributes', () => {

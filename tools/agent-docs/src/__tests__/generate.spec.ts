@@ -8,6 +8,7 @@ import { PACKAGE_DEFINITIONS } from '../packages.ts'
 import { getSourcePaths } from '../paths.ts'
 import { SESSION_CONTEXT_LIMIT } from '../render/agents.ts'
 import { renderPluginFiles } from '../render/plugin.ts'
+import { pascalToKebab } from '../utils/strings.ts'
 import { findOutdatedFiles } from '../write.ts'
 
 describe('given resolveHrefToId', () => {
@@ -168,6 +169,21 @@ describe('given generateKnowledge', () => {
       expect(select?.props.length).toBeGreaterThan(20)
       expect(color?.strictValues).toBe(true)
       expect(color?.values).toContain('primary')
+    })
+
+    it('then renders the props of every component that has some in its page', () => {
+      const { components, docs } = fragmentOf('maz-ui').fragment
+      const missing = components
+        .filter(component => component.props.length > 0)
+        .filter((component) => {
+          const doc = docs.find(entry => entry.id === component.docId)
+          const content = doc && fragmentFile('maz-ui', doc.file)
+
+          return !content?.includes(`## ${component.name} API`) || !content.includes(`- \`${pascalToKebab(component.props[0].name)}\``)
+        })
+        .map(component => component.name)
+
+      expect(missing).toEqual([])
     })
 
     it('then marks sub-components with their parent', () => {
