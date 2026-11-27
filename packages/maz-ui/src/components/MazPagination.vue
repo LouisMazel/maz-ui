@@ -48,7 +48,7 @@ export interface MazPaginationProps {
   buttonProps?: Partial<MazBtnProps>
   /**
    * Color of the active button.
-   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'surface', 'container'
+   * @values 'contrast', 'neutral', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'surface', 'container'
    * @default 'contrast'
    */
   activeColor?: MazColor | MazNeutralColor

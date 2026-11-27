@@ -56,6 +56,14 @@ describe('given MazBtn text color', () => {
       expect(wrapper.classes()).not.toContain('maz:text-success!')
     })
   })
+
+  describe('when text-color is neutral', () => {
+    it('then the text uses the foreground of the neutral color', () => {
+      const wrapper = mount(MazBtn, { props: { textColor: 'neutral' } })
+
+      expect(wrapper.classes()).toContain('maz:text-neutral-foreground')
+    })
+  })
 })
 
 describe('given MazBtn variant classes', () => {

@@ -136,12 +136,14 @@ const gradientStyle = computed(() => {
     return undefined
   }
 
+  const toVar = (color: MazColor) => color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})`
+
   const colors: string[] = [
-    `var(--maz-${gradientFrom})`,
+    toVar(gradientFrom),
     ...(gradientVia
-      ? [`var(--maz-${gradientVia})`]
+      ? [toVar(gradientVia)]
       : []),
-    `var(--maz-${gradientTo})`,
+    toVar(gradientTo),
   ]
 
   return `linear-gradient(to right, ${colors.join(', ')})`

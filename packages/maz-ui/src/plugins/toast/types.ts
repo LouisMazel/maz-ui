@@ -62,7 +62,7 @@ export interface ToastOptions {
    * The type of the toast
    * @default 'info'
    */
-  type?: 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'accent'
+  type?: 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'accent' | 'neutral'
   /**
    * The maximum number of toasts to display
    * @default false
@@ -96,7 +96,7 @@ export interface ToastOptions {
   persistent?: boolean
   /**
    * Icon of the toast, in the formats of MazIcon: a name (`'bell'`, `'app:logo'`), a component, a URL or a raw SVG.
-   * `true` displays the icon of the type (none for `contrast` and `accent`), `false` hides it.
+   * `true` displays the icon of the type (none for `contrast`, `accent` and `neutral`), `false` hides it.
    * @default true
    */
   icon?: boolean | MazIconValue

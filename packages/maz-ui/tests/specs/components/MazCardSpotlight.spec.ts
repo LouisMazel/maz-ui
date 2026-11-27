@@ -498,6 +498,17 @@ describe('given mazCardSpotlight component', () => {
   })
 })
 
+describe('given MazCardSpotlight with the neutral color', () => {
+  describe('when the color is neutral', () => {
+    it('then the halo uses the neutral foreground', () => {
+      const wrapper = mount(MazCardSpotlight, { props: { color: 'neutral' } })
+
+      expect(wrapper.attributes('style')).toContain('color-mix(in srgb, var(--maz-neutral-foreground) 20%')
+      expect(wrapper.find('.blob').attributes('style')).toContain('color-mix(in srgb, var(--maz-neutral-foreground) 60%')
+    })
+  })
+})
+
 describe('given MazCardSpotlight with a free color', () => {
   describe('when the color is a variable', () => {
     it('then the halo and the border tint derive from it', () => {

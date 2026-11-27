@@ -31,6 +31,7 @@ export interface MazCircularProgressBarProps {
    * The color of the progress bar: a theme color or a free CSS color (`#e11d48`, `oklch(...)`, `var(--brand)`)
    * @type Color
    * @default undefined
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColorOrFree
   /**
@@ -124,11 +125,12 @@ const adjustedPercentage = computed<number>(() => {
   return percentage
 })
 
-const currentColor = computed<MazColorOrFree | undefined>(() =>
-  autoColor
+const currentColor = computed<string | undefined>(() => {
+  const resolved: MazColorOrFree | undefined = autoColor
     ? getStatusColor(adjustedPercentage.value)
-    : color,
-)
+    : color
+  return resolved === 'neutral' ? 'neutral-foreground' : resolved
+})
 
 /* Gradient stops derived via OKLCh offsets (mirrors SCALE_OFFSETS: -400, -700). */
 const gradientStart = computed(() =>

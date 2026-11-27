@@ -360,6 +360,10 @@ function focusInput() {
     --m-input-tags-focus: var(--maz-contrast);
   }
 
+  &.--neutral {
+    --m-input-tags-focus: var(--maz-neutral-foreground);
+  }
+
   &:not(.--has-state) .m-input-tags__field.--focused {
     border-color: var(--m-input-tags-focus);
   }

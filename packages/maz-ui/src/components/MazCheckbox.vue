@@ -171,11 +171,19 @@ const checkIconColor = computed(() => {
     return 'var(--maz-surface)'
   }
 
+  if (color === 'neutral') {
+    return 'var(--maz-neutral)'
+  }
+
   return `var(--maz-${color}-foreground)`
 })
 const checkboxSelectedColor = computed(() => {
   if (color === 'contrast') {
     return 'var(--maz-contrast)'
+  }
+
+  if (color === 'neutral') {
+    return 'var(--maz-neutral-foreground)'
   }
 
   return `var(--maz-${color})`
@@ -191,7 +199,7 @@ const checkboxBoxShadow = computed(() => {
     return `var(--maz-success)`
   }
 
-  return ['transparent', 'contrast'].includes(color)
+  return ['transparent', 'contrast', 'neutral'].includes(color)
     ? `var(--maz-muted)`
     : `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`
 })

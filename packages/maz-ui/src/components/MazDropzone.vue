@@ -986,7 +986,7 @@ defineExpose({
       'm-dropzone--is-over-error': isOverError,
     }"
     :style="{
-      '--active-color': `var(--maz-${color})`,
+      '--active-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})`,
     }"
   >
     <!--

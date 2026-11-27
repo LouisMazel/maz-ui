@@ -149,6 +149,7 @@ const COLOR_CLASSES: Record<MazMarkdownColor, string> = {
   success: 'maz:text-success! maz:[&_:where(h1,h2,h3,h4,h5,h6)]:text-success!',
   warning: 'maz:text-warning! maz:[&_:where(h1,h2,h3,h4,h5,h6)]:text-warning!',
   destructive: 'maz:text-destructive! maz:[&_:where(h1,h2,h3,h4,h5,h6)]:text-destructive!',
+  neutral: 'maz:text-neutral-foreground! maz:[&_:where(h1,h2,h3,h4,h5,h6)]:text-neutral-foreground!',
 }
 
 const rootClasses = computed(() => [

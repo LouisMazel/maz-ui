@@ -39,7 +39,7 @@ export interface MazTabsBarProps<Item extends MazTabsBarItem = MazTabsBarItem> {
   /**
    * Color of the active tab indicator. When omitted, the default neutral
    * indicator is used.
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
   /**
@@ -485,9 +485,10 @@ function getTabStyle(index: number, disabled: boolean): StyleValue {
   }
 
   if (currentTab.value === index + 1) {
-    return resolvedColor.value
-      ? `color: var(--maz-${resolvedColor.value}-foreground)`
-      : 'color: var(--maz-foreground)'
+    if (!resolvedColor.value)
+      return 'color: var(--maz-foreground)'
+    const token = resolvedColor.value === 'neutral' ? 'neutral' : `${resolvedColor.value}-foreground`
+    return `color: var(--maz-${token})`
   }
 
   return 'color: var(--maz-muted)'
@@ -563,7 +564,7 @@ onMounted(() => {
           'maz:bg-surface-600 maz:dark:bg-surface-400': !resolvedColor,
         },
       ]"
-      :style="[tabsIndicatorState, resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor})` } : {}]"
+      :style="[tabsIndicatorState, resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor === 'neutral' ? 'neutral-foreground' : resolvedColor})` } : {}]"
     />
     <template v-for="(item, index) in normalizedItems" :key="index">
       <MazBtn

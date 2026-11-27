@@ -50,6 +50,7 @@ export interface MazStepperProps {
   /**
    * The color of the stepper
    * @default primary
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
   /** Disable the next steps */
@@ -70,6 +71,7 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
 
 const roundStepBgColor = computed(() => `var(--maz-${color})`)
+const roundStepBorderColor = computed(() => color === 'neutral' ? 'var(--maz-divider)' : 'transparent')
 const roundStepTextColor = computed(() => `var(--maz-${color}-foreground)`)
 
 const slots = useSlots()
@@ -191,7 +193,7 @@ function isLastStep(step: number): boolean {
 </script>
 
 <template>
-  <div class="m-stepper m-reset-css" :style="[{ '--round-step-bg-color': roundStepBgColor, '--round-step-text-color': roundStepTextColor }]">
+  <div class="m-stepper m-reset-css" :style="[{ '--round-step-bg-color': roundStepBgColor, '--round-step-text-color': roundStepTextColor, '--round-step-border-color': roundStepBorderColor }]">
     <template v-for="step in stepCount" :key="step">
       <button
         v-if="hasDataForStep('title', step)"
@@ -316,6 +318,7 @@ function isLastStep(step: number): boolean {
 .m-stepper__count {
   background-color: var(--round-step-bg-color);
   color: var(--round-step-text-color);
+  border: 1px solid var(--round-step-border-color);
 
   svg {
     @apply maz:text-success-foreground;

@@ -99,11 +99,11 @@ const SWITCH_HEIGHT: Record<MazSize, string> = {
 }
 
 const bgColorClassVar = computed(() => {
-  return `var(--maz-${color})`
+  return color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})`
 })
 
 const fgColorClassVar = computed(() => {
-  return `var(--maz-${color}-foreground, var(--maz-foreground))`
+  return color === 'neutral' ? 'var(--maz-neutral)' : `var(--maz-${color}-foreground, var(--maz-foreground))`
 })
 
 function emit() {

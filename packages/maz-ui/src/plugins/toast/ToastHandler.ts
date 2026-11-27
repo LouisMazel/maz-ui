@@ -93,4 +93,8 @@ export class ToastHandler {
   accent(message: string, options?: Omit<ToastOptions, 'type'>) {
     return this.show(message, this.getLocalOptions({ ...options, type: 'accent' }))
   }
+
+  neutral(message: string, options?: Omit<ToastOptions, 'type'>) {
+    return this.show(message, this.getLocalOptions({ ...options, type: 'neutral' }))
+  }
 }

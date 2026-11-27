@@ -154,6 +154,7 @@ const TOAST_BUTTON_COLOR: Record<NonNullable<ToastOptions['type']>, string> = {
   warning: 'maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600 maz:dark:bg-warning/10 maz:dark:text-warning-400 maz:dark:border-warning/20 maz:dark:hover:bg-warning/20',
   destructive: 'maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600 maz:dark:bg-destructive/10 maz:dark:text-destructive-400 maz:dark:border-destructive/20 maz:dark:hover:bg-destructive/20',
   contrast: 'maz:bg-contrast maz:text-contrast-foreground maz:border-contrast-600/20 maz:hover:bg-contrast-500 maz:dark:hover:bg-contrast/70',
+  neutral: 'maz:bg-neutral maz:text-neutral-foreground maz:border-divider maz:hover:bg-[color-mix(in_oklab,var(--maz-neutral-foreground)_10%,var(--maz-neutral))]',
   accent: 'maz:bg-accent maz:text-accent-foreground maz:border-accent-600 maz:hover:bg-accent-600 maz:dark:bg-accent/10 maz:dark:text-accent-400 maz:dark:border-accent/20 maz:dark:hover:bg-accent/20',
 } as const
 
@@ -163,6 +164,7 @@ const TOAST_CLOSE_COLOR: Record<NonNullable<ToastOptions['type']>, string> = {
   warning: 'maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600 maz:dark:bg-warning/10 maz:dark:border-warning/20 maz:dark:text-warning-600 maz:dark:hover:bg-warning/20',
   destructive: 'maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600 maz:dark:bg-destructive/10 maz:dark:border-destructive/20 maz:dark:text-destructive-600 maz:dark:hover:bg-destructive/20',
   contrast: 'maz:bg-contrast maz:text-contrast-foreground maz:border-contrast-600/20 maz:hover:bg-contrast/70',
+  neutral: 'maz:bg-neutral maz:text-neutral-foreground maz:border-divider maz:hover:bg-[color-mix(in_oklab,var(--maz-neutral-foreground)_10%,var(--maz-neutral))]',
   accent: 'maz:bg-accent maz:text-accent-foreground maz:border-accent-600 maz:hover:bg-accent-600 maz:dark:bg-accent/10 maz:dark:text-accent-400 maz:dark:border-accent/20 maz:dark:hover:bg-accent/20',
 } as const
 
@@ -251,6 +253,9 @@ function getProgressBarColor() {
     }
     case 'warning': {
       return 'maz:bg-warning-800'
+    }
+    case 'neutral': {
+      return 'maz:bg-neutral-foreground'
     }
     default: {
       return 'maz:bg-contrast-foreground'

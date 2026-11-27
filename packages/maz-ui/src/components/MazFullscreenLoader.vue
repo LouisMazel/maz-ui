@@ -11,7 +11,10 @@ defineOptions({
 const { color = 'primary', size = '3em', teleportSelector = 'body' } = defineProps<MazFullscreenLoaderProps>()
 
 export interface MazFullscreenLoaderProps {
-  /** The color of the spinner */
+  /**
+   * The color of the spinner
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
+   */
   color?: MazColor
   /** The size of the spinner */
   size?: MazSizeUnit

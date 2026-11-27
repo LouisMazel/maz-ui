@@ -84,3 +84,15 @@ describe('given MazCircularProgressBar with a free color', () => {
     })
   })
 })
+
+describe('given MazCircularProgressBar with the neutral color', () => {
+  describe('when the color is neutral', () => {
+    it('then the gradient derives from the neutral foreground', () => {
+      const wrapper = mount(MazCircularProgressBar, { props: { percentage: 50, color: 'neutral' } })
+      const stops = wrapper.findAll('svg stop')
+
+      expect(stops[0]!.attributes('stop-color')).toContain('var(--maz-neutral-foreground)')
+      expect(stops[1]!.attributes('stop-color')).toContain('var(--maz-neutral-foreground)')
+    })
+  })
+})

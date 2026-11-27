@@ -40,6 +40,26 @@ describe('given MazAlert component', () => {
     })
   })
 
+  describe('when rendered with the neutral color', () => {
+    it.each(['soft', 'solid'] as const)('then the %s variant uses the foreground text and the divider border', (variant) => {
+      const wrapper = mount(MazAlert, {
+        props: { color: 'neutral', variant, title: 'Test' },
+      })
+
+      expect(wrapper.classes()).toContain('--neutral')
+      expect(wrapper.attributes('style')).toContain('--m-alert-border: var(--maz-divider)')
+      expect(wrapper.attributes('style')).toContain('--m-alert-color: var(--maz-neutral-foreground)')
+    })
+
+    it('then it has an icon', () => {
+      const wrapper = mount(MazAlert, {
+        props: { color: 'neutral', title: 'Test' },
+      })
+
+      expect(wrapper.find('.m-alert-icon').exists()).toBe(true)
+    })
+  })
+
   describe('when rendered with different colors', () => {
     it.each([
       'primary',
@@ -50,6 +70,7 @@ describe('given MazAlert component', () => {
       'warning',
       'destructive',
       'contrast',
+      'neutral',
     ] as MazAlertColor[])('then it applies the %s color CSS variables', (color) => {
       const wrapper = mount(MazAlert, {
         props: { color, title: 'Test' },

@@ -231,6 +231,15 @@ describe('given MazBtnScroll component', () => {
     })
   })
 
+  describe('when the progress color is neutral', () => {
+    it('then the ring uses the foreground of the neutral color', async () => {
+      const wrapper = mount(MazBtnScroll, { props: { visible: true, progress: true, progressColor: 'neutral' } })
+      await nextTick()
+
+      expect(wrapper.find('.m-btn-scroll').attributes('style')).toContain('--m-btn-scroll-progress-color: var(--maz-neutral-foreground)')
+    })
+  })
+
   describe('when the global config sets the size', () => {
     it('then the button uses it', async () => {
       const wrapper = mount(MazBtnScroll, {

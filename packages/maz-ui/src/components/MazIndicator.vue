@@ -27,7 +27,7 @@ export interface MazIndicatorProps {
   /**
    * Color of the indicator: a theme color, or a free CSS color (`#22c55e`, `oklch(...)`, `var(--status-online)`) for a
    * business status
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    * @default 'primary'
    */
   color?: MazColorOrFree<Exclude<MazColor, 'transparent'>>
@@ -159,10 +159,10 @@ const indicatorClass = computed(() => [
   { '--bordered': bordered ?? isPlaced.value },
 ])
 
-const indicatorStyle = computed(() => ({
-  backgroundColor: resolveColor(color),
-  color: resolveColorForeground(color),
-}))
+/** A light grey dot would disappear: neutral uses its foreground as the mark, and its grey for what sits on it */
+const indicatorStyle = computed(() => color === 'neutral'
+  ? { backgroundColor: 'var(--maz-neutral-foreground)', color: 'var(--maz-neutral)' }
+  : { backgroundColor: resolveColor(color), color: resolveColorForeground(color) })
 </script>
 
 <template>

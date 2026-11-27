@@ -250,7 +250,7 @@ const borderColorState = computed(() => {
     class="m-input-code m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top"
     :class="[size ? `--${size}` : undefined, SIZE_TEXT_CLASS[size], classProp]"
     :disabled
-    :style="[style, { '--input-border-color': `var(--maz-${color})` }]"
+    :style="[style, { '--input-border-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})` }]"
   >
     <div class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
       <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:size-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:border-divider-400 maz:dark:bg-input" :class="borderColorState">
