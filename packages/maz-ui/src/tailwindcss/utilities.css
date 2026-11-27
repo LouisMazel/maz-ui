@@ -601,6 +601,11 @@
   }
 }
 
+/* Even smaller `rich-text` (release notes, tooltips, compact panels) */
+@utility rich-text-xs {
+  --maz-rich-text-scale: 0.8125;
+}
+
 /* Smaller `rich-text` (sidebars, comments, dense content) */
 @utility rich-text-sm {
   --maz-rich-text-scale: 0.875;

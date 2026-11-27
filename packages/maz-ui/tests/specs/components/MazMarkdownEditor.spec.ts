@@ -82,6 +82,22 @@ describe('given MazMarkdownEditor component', () => {
     })
   })
 
+  describe('when the exposed renderPreview method is called', () => {
+    it('then it renders the preview again', async () => {
+      const { marked } = await import('marked')
+      const wrapper = mount(MazMarkdownEditor, {
+        props: { modelValue: 'x', mode: 'preview' },
+      })
+      await flushPromises()
+      vi.mocked(marked.parse).mockClear()
+
+      wrapper.vm.renderPreview()
+      await flushPromises()
+
+      expect(marked.parse).toHaveBeenCalledTimes(1)
+    })
+  })
+
   describe('when sanitize is disabled', () => {
     it('then it renders the raw markdown output without DOMPurify', async () => {
       const { default: DOMPurify } = await import('dompurify')
