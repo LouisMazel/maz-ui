@@ -264,7 +264,7 @@ describe('given get_component_api', () => {
     it('then it keeps the names, types and defaults without the descriptions', () => {
       const output = getComponentApi(getContext(), { names: ['MazBtn'], compact: true })
 
-      expect(output).toContain('- `color` (`"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent" | "surface" | "container"`, default: `"primary"`)\n')
+      expect(output).toContain('- `color` (`"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent" | "surface" | "container" | "neutral"`, default: `"primary"`)\n')
       expect(output).not.toContain('Predifined sizes of the button')
       expect(output.length).toBeLessThan(getComponentApi(getContext(), { names: ['MazBtn'] }).length * 0.7)
     })
@@ -352,6 +352,15 @@ describe('given find_icons', () => {
 
       expect(output).toContain('- `MazCog`')
       expect(output).toContain('import { MazCog } from \'@maz-ui/icons/static/MazCog\'')
+    })
+  })
+
+  describe('when the query is pin, pinned or unpin', () => {
+    it('then the pin icons are found', () => {
+      expect(findIcons(getContext(), { query: 'pin' })).toMatch(/^- `MazPin` \(`pin`\)$/m)
+      expect(findIcons(getContext(), { query: 'pinned' })).toContain('- `MazPin`')
+      expect(findIcons(getContext(), { query: 'unpin' })).toContain('- `MazPin`')
+      expect(findIcons(getContext(), { query: 'pin' })).toContain('<MazIcon icon="pin" />')
     })
   })
 

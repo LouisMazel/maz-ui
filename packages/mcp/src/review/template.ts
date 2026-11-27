@@ -121,11 +121,59 @@ function checkIconName(value: string, offset: number, component: ComponentApi, c
   }, offset)
 }
 
+/** The components whose `color` carries data (category, series, person, status) and accepts a free CSS color */
+const FREE_COLOR_COMPONENTS = new Set([
+  'MazProgressBar',
+  'MazCircularProgressBar',
+  'MazBadge',
+  'MazIndicator',
+  'MazAvatar',
+  'MazTimeline',
+  'MazCardSpotlight',
+])
+
+/** A free CSS color of the `color` prop: a hex, a color function or a variable (a named color is not accepted) */
+const FREE_COLOR_VALUE = /^(?:#[\da-f]{3,8}|var\(--[\w-][^)]*\)|(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color|color-mix|light-dark)\(.+\))$/i
+
+const FREE_COLOR_HINT = `A free CSS color is accepted by ${[...FREE_COLOR_COMPONENTS].join(', ')} only (a category, a series, a person, a status): the other components take the colors of the theme (a role of the interface).`
+
+function checkColorValue(prop: PropApi, value: string, offset: number, component: ComponentApi, context: ReviewContext): boolean {
+  const free = FREE_COLOR_VALUE.test(value.trim())
+
+  if (FREE_COLOR_COMPONENTS.has(component.name)) {
+    if (free || !prop.values || prop.values.includes(value))
+      return true
+
+    context.report({
+      rule: 'invalid-prop-value',
+      severity: 'error',
+      message: `"${value}" is neither a theme color nor a free CSS color for the \`color\` of ${component.name}.`,
+      suggestion: `Use a theme color (${prop.values.map(entry => `"${entry}"`).join(', ')}) or a free CSS color: a hex ("#e11d48"), a color function ("oklch(0.7 0.15 20)") or a variable ("var(--brand)"). A named color ("red") is not accepted.`,
+    }, offset)
+    return true
+  }
+
+  if (free && prop.strictValues && prop.values && !prop.values.includes(value)) {
+    context.report({
+      rule: 'invalid-prop-value',
+      severity: 'error',
+      message: `"${value}" is not a valid \`color\` for ${component.name}: it only accepts the colors of the theme.`,
+      suggestion: `Accepted values: ${prop.values.map(entry => `"${entry}"`).join(', ')}. ${FREE_COLOR_HINT}`,
+    }, offset)
+    return true
+  }
+
+  return false
+}
+
 function checkPropValue(prop: PropApi, value: string, offset: number, component: ComponentApi, context: ReviewContext): void {
   if (ICON_PROP_TYPE.test(prop.type)) {
     checkIconName(value, offset, component, context)
     return
   }
+
+  if (prop.name === 'color' && checkColorValue(prop, value, offset, component, context))
+    return
 
   if (prop.type === 'boolean' && (value === 'false' || value === 'true')) {
     context.report({
@@ -259,6 +307,8 @@ function checkModel(directive: DirectiveNode, component: ComponentApi, context: 
   }
 }
 
+const BACKDROP_COMPONENTS = new Set(['MazDialog', 'MazDrawer', 'MazBottomSheet', 'MazBackdrop'])
+
 function checkEvent(directive: DirectiveNode, component: ComponentApi, context: ReviewContext): void {
   const name = directiveArg(directive)
 
@@ -269,6 +319,9 @@ function checkEvent(directive: DirectiveNode, component: ComponentApi, context: 
   const events = withForwarded(component, context).flatMap(entry => entry.events.map(event => event.name))
 
   if (events.includes(kebab) || events.includes(name) || NATIVE_EVENTS.has(kebab.split('.')[0]))
+    return
+
+  if (kebab === 'before-close' && BACKDROP_COMPONENTS.has(component.name))
     return
 
   const updateMatch = /^update:(.+)$/.exec(kebab)
@@ -498,6 +551,8 @@ const FORM_FIELDS = new Set([
   'MazInput',
   'MazInputNumber',
   'MazInputTags',
+  'MazInputKeyValue',
+  'MazInputSecret',
   'MazInputAutocomplete',
   'MazTextarea',
   'MazSelect',
@@ -688,6 +743,15 @@ function checkNativeElement(element: ElementNode, context: ReviewContext): void 
     }, drop.loc.start.offset)
   }
 
+  if (staticAttribute(element, 'role')?.value?.content === 'tablist') {
+    context.report({
+      rule: 'prefer-maz-component',
+      severity: 'warning',
+      message: 'Hand-made tab list (`role="tablist"`).',
+      suggestion: 'MazTabs + MazTabsBar (+ MazTabsContent): roving tabindex, arrow keys and `aria-selected` included, `orientation="vertical"` for a column of sections on the side, `badge` or `indicator` per tab for counters. MazSegmented for a short switch between modes of a view.',
+    }, element.loc.start.offset)
+  }
+
   if (element.tag === 'svg' && isIconLikeSvg(element)) {
     context.report({
       rule: 'inline-svg',
@@ -774,6 +838,25 @@ function checkIconButtonLabel(element: ElementNode, context: ReviewContext): voi
   }, element.loc.start.offset)
 }
 
+/** A text utility with the important flag (`!text-red-500`, `text-red-500!`) */
+const NOT_A_TEXT_COLOR = String.raw`(?!(?:xs|sm|base|lg|[2-9]?xl|left|right|center|justify|start|end|wrap|nowrap|balance|pretty|ellipsis|clip)(?:[\s!/]|$)|\[\d)`
+const IMPORTANT_TEXT_CLASS = new RegExp(String.raw`(?:^|\s)(?:[\w-]+:)*(?:!text-${NOT_A_TEXT_COLOR}[\w/[\]-]+|text-${NOT_A_TEXT_COLOR}[\w/[\]-]+!)(?=\s|$)`)
+
+/** The text colors of MazBtn are plain utilities: the important flag used to override them is not needed */
+function checkBtnImportantText(element: ElementNode, context: ReviewContext): void {
+  const attribute = staticAttribute(element, 'class')
+
+  if (!attribute?.value || !IMPORTANT_TEXT_CLASS.test(attribute.value.content))
+    return
+
+  context.report({
+    rule: 'btn-important-text',
+    severity: 'warning',
+    message: 'Important text color class on `MazBtn`.',
+    suggestion: 'The text colors of `MazBtn` can be overridden by a plain utility class (`class="text-warning"`), drop the `!`. Use the `text-color` prop for a theme color.',
+  }, attribute.loc.start.offset)
+}
+
 /** Rows, cells and titles of MazTable */
 const TABLE_PARTS = new Set(['MazTableRow', 'MazTableCell', 'MazTableTitle'])
 
@@ -787,13 +870,26 @@ function checkMazTag(element: ElementNode, mazName: string, source: string, cont
     if (mazName === 'MazBtn') {
       checkIconButtonLabel(element, context)
       checkButtonNavigation(element, ancestry.link, context)
+      checkBtnImportantText(element, context)
     }
+
+    if (mazName === 'MazLink')
+      checkOpenExternalLink(element, context)
 
     if (TABLE_PARTS.has(mazName))
       checkTablePart(element, mazName, ancestry, context)
 
     if (mazName === 'MazDialog')
       checkConfirmDialog(element, context)
+
+    if (BACKDROP_COMPONENTS.has(mazName))
+      checkBeforeCloseEvent(element, mazName, context)
+
+    if (mazName === 'MazInput')
+      checkFakeSecret(element, context)
+
+    if (mazName === 'MazMarkdownEditor')
+      checkPreviewOnlyEditor(element, context)
     return
   }
 
@@ -920,6 +1016,74 @@ function checkConfirmDialog(element: ElementNode, context: ReviewContext): void 
   }, element.loc.start.offset)
 }
 
+/** The `before-close` event only notifies: a close is cancelled by the `before-close` prop returning `false` */
+function checkBeforeCloseEvent(element: ElementNode, name: string, context: ReviewContext): void {
+  const listener = element.props.find((prop): prop is DirectiveNode => prop.type === NodeTypes.DIRECTIVE
+    && prop.name === 'on'
+    && directiveArg(prop) !== undefined
+    && toCamel(directiveArg(prop)!) === 'beforeClose')
+
+  if (!listener)
+    return
+
+  context.report({
+    rule: 'before-close-event',
+    severity: 'warning',
+    message: `\`@before-close\` on \`${name}\` cannot cancel the close: the event only notifies.`,
+    suggestion: 'Pass a function to the prop: `:before-close="confirmLeave"`. Returning `false` (or a promise of `false`) keeps it open, on the close button, Escape and the click outside.',
+  }, listener.loc.start.offset)
+}
+
+const BULLET_PLACEHOLDER = /^[\u2022\u25CF\u00B7*]{3,}$/
+
+/** A password `MazInput` with a bullet placeholder fakes the saved secret that `MazInputSecret` handles */
+function checkFakeSecret(element: ElementNode, context: ReviewContext): void {
+  if (staticAttribute(element, 'type')?.value?.content !== 'password')
+    return
+
+  if (!BULLET_PLACEHOLDER.test(staticAttribute(element, 'placeholder')?.value?.content ?? ''))
+    return
+
+  context.report({
+    rule: 'prefer-input-secret',
+    severity: 'warning',
+    message: '`MazInput type="password"` with a bullet placeholder: a saved secret faked by hand.',
+    suggestion: 'Use `<MazInputSecret v-model="secret" :saved="hasSecret" @clear="clear">`: a masked saved state with replace and clear actions, and the secret is never read back.',
+  }, element.loc.start.offset)
+}
+
+/** `MazMarkdownEditor` fixed on its preview renders markdown without editing it: `MazMarkdown` is that renderer */
+function checkPreviewOnlyEditor(element: ElementNode, context: ReviewContext): void {
+  const mode = staticAttribute(element, 'mode')
+
+  if (mode?.value?.content !== 'preview')
+    return
+
+  context.report({
+    rule: 'prefer-markdown',
+    severity: 'warning',
+    message: '`MazMarkdownEditor mode="preview"` used as a plain markdown renderer.',
+    suggestion: 'Use `<MazMarkdown :content="markdown" />`: read-only, no tabs or textarea, with `size`, `color`, `inline`, code highlighting, external links and the `link-click` event.',
+  }, mode.loc.start.offset)
+}
+
+const MANUAL_MARKDOWN = /\bmarked(?:\.parse(?:Inline)?)?\s*\(/
+
+/** `v-html` fed by `marked(...)` renders unsanitized markdown by hand: `MazMarkdown` parses and sanitizes it */
+function checkManualMarkdown(element: ElementNode, context: ReviewContext): void {
+  const directive = element.props.find((prop): prop is DirectiveNode => prop.type === NodeTypes.DIRECTIVE && prop.name === 'html')
+
+  if (!directive || !MANUAL_MARKDOWN.test(directiveExpression(directive)?.content ?? ''))
+    return
+
+  context.report({
+    rule: 'prefer-markdown',
+    severity: 'warning',
+    message: '`v-html` of a `marked(...)` output: markdown rendered by hand, without sanitizing.',
+    suggestion: 'Use `<MazMarkdown :content="markdown" />`: it parses with `marked`, sanitizes with DOMPurify and styles the result with the type scale of the theme.',
+  }, directive.loc.start.offset)
+}
+
 const LINK_TAGS = new Set([
   'a',
   'RouterLink',
@@ -949,6 +1113,25 @@ function checkButtonNavigation(element: ElementNode, link: string | undefined, c
       severity: 'warning',
       message: 'MazBtn navigating from `@click`: no link to open in a new tab, to copy nor for crawlers.',
       suggestion: 'Use `to` (`<MazBtn to="/path">`, a RouterLink or NuxtLink) or `href` (`<MazBtn href="https://..." target="_blank">`) instead of the click handler.',
+    }, handler.offset)
+  }
+}
+
+const OPEN_EXTERNAL_CALL = /(?<![\w.$])(?:openExternal|openUrl)\(|(?<![\w.$])open\(\s*(?:['"`]https?:|[\w$.]*(?:url|href|link)\b)|\b(?:shell|window\.api|window\.electron|window\.electronAPI)\.openExternal\(|\bwindow\.open\(/
+
+function checkOpenExternalLink(element: ElementNode, context: ReviewContext): void {
+  if (staticAttribute(element, 'as')?.value?.content !== 'button')
+    return
+
+  const click = element.props.find((prop): prop is DirectiveNode => prop.type === NodeTypes.DIRECTIVE && prop.name === 'on' && directiveArg(prop) === 'click')
+  const handler = click && directiveExpression(click)
+
+  if (handler && OPEN_EXTERNAL_CALL.test(handler.content)) {
+    context.report({
+      rule: 'prefer-open-external',
+      severity: 'warning',
+      message: 'MazLink as a button opening a URL from `@click`: a hand-made link for the system browser (Tauri, Electron), with no real link to copy nor to open in a tab.',
+      suggestion: 'Keep the `href` (`<MazLink href="https://...">`) and set the `openExternal` option of the MazUi plugin (or the `open-external` prop of MazUiProvider, `mazUi.openExternal` in Nuxt) once: every component with an `href` opens its external links through it.',
     }, handler.offset)
   }
 }
@@ -990,6 +1173,7 @@ function walk(node: ElementNode | RootNode, source: string, context: ReviewConte
     if (mazName === 'MazBtn')
       buttons.push(child)
 
+    checkManualMarkdown(child, context)
     checkClassBindings(child, source, context, ancestry.background)
     walk(child, source, context, childAncestry(child, mazName ?? pascal ?? child.tag, ancestry))
   }
