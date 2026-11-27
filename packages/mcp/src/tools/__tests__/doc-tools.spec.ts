@@ -264,7 +264,7 @@ describe('given get_component_api', () => {
     it('then it keeps the names, types and defaults without the descriptions', () => {
       const output = getComponentApi(getContext(), { names: ['MazBtn'], compact: true })
 
-      expect(output).toContain('- `color` (`"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent" | "surface" | "container" | "neutral"`, default: `"primary"`)\n')
+      expect(output).toContain('- `color` (`"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "neutral" | "transparent" | "surface" | "container"`, default: `"primary"`)\n')
       expect(output).not.toContain('Predifined sizes of the button')
       expect(output.length).toBeLessThan(getComponentApi(getContext(), { names: ['MazBtn'] }).length * 0.7)
     })
