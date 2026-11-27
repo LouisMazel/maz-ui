@@ -418,9 +418,9 @@ Three presets imitate the look of a native desktop app, for Tauri, Electron or a
 
 | Preset | Look | Specifics |
 | --- | --- | --- |
-| `macos` | macOS 26: SF Pro at `13px`, white blocks on a light gray window, translucent sidebars and toolbars | `primary` follows the system accent color, the labels and separators follow the system through [`systemColors`](#system-colors) (WebKit). `secondary`, `accent` and `info` are the system purple, pink and teal |
+| `macos` | macOS 26: SF Pro at `13px`, neutral grays measured on the system, translucent sidebars and toolbars | The labels and separators follow the system through [`systemColors`](#system-colors) (Safari and WebKit views). Browsers never expose the user accent: override `primary` if your app reads it natively. `secondary`, `accent` and `info` are the system purple, pink and teal |
 | `windows` | Windows 11, Fluent 2: Segoe UI Variable at `14px`, Mica window, 4px controls and 8px cards | Acrylic `glass`. The user accent is not exposed to the web: override `primary` if your app reads it natively. `secondary`, `accent` and `info` are the Fluent purple, magenta and teal |
-| `linux` | GNOME, libadwaita: Adwaita Sans at `14px`, white cards, 6px controls and 12px cards | Opaque `glass` (GNOME draws no blurred material). Override `primary` if your app reads the desktop accent. `secondary`, `accent` and `info` are the Adwaita purple, pink and teal |
+| `linux` | GNOME, libadwaita 1.8: Adwaita Sans at `11pt` (`14.67px`), white cards, 9px controls and 12px cards | Opaque `glass` (GNOME draws no blurred material). Override `primary` if your app reads the desktop accent. `secondary`, `accent` and `info` are the Adwaita purple, pink and teal |
 
 ```typescript
 import { linux, macos, windows } from '@maz-ui/themes/presets'
@@ -428,15 +428,15 @@ import { linux, macos, windows } from '@maz-ui/themes/presets'
 
 Each of them also sets the [`typography`](#typography) of the preset on the scale of its system: the `text-display`, `text-title-1`...`text-caption` utilities follow the text styles of macOS, the Fluent type ramp and the libadwaita style classes, so headings and body text look native without any class change.
 
-| Utility | `macos` | `windows` | `linux` (at `14px`) |
+| Utility | `macos` | `windows` | `linux` (at `14.67px`) |
 | --- | --- | --- | --- |
-| `text-display` | 34px, bold | 68px, semibold | 42px, light |
-| `text-title-1` | 26px, bold | 28px, semibold | 25px, extra bold |
-| `text-title-2` | 22px, bold | 20px, semibold | 19px, extra bold |
-| `text-title-3` | 17px, semibold | 18px, semibold | 19px, bold |
-| `text-title-4` | 13px, semibold | 14px, semibold | 17px, bold |
-| `text-body` | 13px | 14px | 14px |
-| `text-body-sm`, `text-caption` | 12px, 11px | 12px | 11.5px |
+| `text-display` | 26px | 68px, semibold | 44px, light |
+| `text-title-1` | 22px | 28px, semibold | 26.5px, extra bold |
+| `text-title-2` | 17px | 20px, semibold | 20px, extra bold |
+| `text-title-3` | 15px | 18px, semibold | 20px, bold |
+| `text-title-4` | 13px, bold | 14px, semibold | 17.3px, bold |
+| `text-body` | 13px | 14px | 14.67px |
+| `text-body-sm`, `text-caption` | 12px, 11px | 12px | 12px |
 
 Pick the preset from the platform of the user. In a browser, `navigator.userAgentData?.platform` is the modern source (Chromium), `navigator.platform` the fallback. In Tauri or Electron, prefer the OS reported by the shell (`@tauri-apps/plugin-os`, `process.platform`): it is reliable and available before the first render.
 
@@ -894,7 +894,7 @@ A system keyword is only understood by some browsers: a browser that does not kn
 
 ### System colors
 
-`systemColors` binds a color role to a system color of the platform: the accent color chosen by the user, the label and separator colors... Each keyword is emitted under `@supports (color: <keyword>)` after the colors, so it replaces the color of its role only where the browser supports it. Everywhere else, the color of `colors` stays: it is the fallback, keep it a good color.
+`systemColors` binds a color role to a system color of the platform: the label and separator colors, the canvas... Each keyword is emitted under `@supports (color: <keyword>)` after the colors, so it replaces the color of its role only where the browser supports it. Everywhere else, the color of `colors` stays: it is the fallback, keep it a good color.
 
 ```typescript
 const myMacPreset = definePreset({
@@ -902,9 +902,7 @@ const myMacPreset = definePreset({
   overrides: {
     name: 'my-mac-app',
     systemColors: {
-      primary: '-apple-system-control-accent',
       foreground: '-apple-system-label',
-      muted: '-apple-system-secondary-label',
       divider: '-apple-system-separator',
     },
   },
@@ -914,17 +912,18 @@ const myMacPreset = definePreset({
 The generated CSS:
 
 ```css
-@supports (color: -apple-system-control-accent) {
+@supports (color: -apple-system-label) {
   :root {
-    --maz-primary: -apple-system-control-accent;
+    --maz-foreground: -apple-system-label;
   }
 }
 ```
 
 - The keys are the color roles of [`colors`](#colors) (`primary`, `foreground`, `divider`...). Values are system keywords: `AccentColor`, `AccentColorText`, `Canvas`, `CanvasText`, `LinkText`... or the WebKit keywords of macOS.
 - A system color follows the color scheme by itself: one keyword serves the light and the dark mode.
-- The `macos` preset uses it for the accent, the labels and the separators. The steps of `primary` (`primary-300`...) and its `-foreground` are computed from the system color, so they follow it.
-- Check the contrast of the fallback colors: the system color is chosen by the user and cannot be checked ahead.
+- The `macos` preset uses it for the labels and the separators. The `-apple-system-*` keywords only exist in Safari and the WebKit views (Tauri on macOS): every other browser keeps the fallback colors.
+- Browsers never expose the accent color of the user: `AccentColor` and `-apple-system-control-accent` return a fixed blue (fingerprinting protection), also in Tauri. Read the accent natively and override `primary` instead.
+- A system color can be translucent (`-apple-system-label` is black or white at 85%): colors mixed from it keep some transparency.
 
 ### Glass material
 
