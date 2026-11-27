@@ -8,7 +8,7 @@ import type { Ref } from 'vue'
 import type { MazUiNuxtOptions } from '../../types'
 import { getRequestThemeContext, getSystemColorMode, getThemeHead, getThemeHeadTags, resolveThemeContext } from '@maz-ui/themes/utils'
 import { getAosInstance } from 'maz-ui/plugins/aos'
-import { MazUi } from 'maz-ui/plugins/maz-ui'
+import { getMotionClasses, MazUi } from 'maz-ui/plugins/maz-ui'
 import { defineNuxtPlugin, useHead, useRequestHeaders, useRouter } from 'nuxt/app'
 import loadCountryFlag from '#build/maz-ui-flags.mjs'
 import openExternal from '#build/maz-ui-open-external.mjs'
@@ -75,7 +75,12 @@ function resolveAos(aos: MazUiNuxtOptions['aos']): MazUiOptions['aos'] {
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const { vueApp, $config } = nuxtApp
-  const { theme = {}, translations, defaults, toast, dialog, aos, plugins } = $config.public.mazUi
+  const { theme = {}, translations, defaults, toast, dialog, aos, motion, plugins } = $config.public.mazUi
+
+  // Rendered by the server: no animation before the hydration when the motion is reduced
+  const motionClasses = getMotionClasses(motion)
+  if (motionClasses.length > 0)
+    useHead({ htmlAttrs: { class: motionClasses.join(' ') } })
 
   vueApp.use(MazUi, {
     theme: await resolveTheme(theme as NuxtThemeOptions, nuxtApp),
@@ -87,6 +92,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     toast,
     dialog,
     aos: resolveAos(aos),
+    motion,
     openExternal,
   })
 

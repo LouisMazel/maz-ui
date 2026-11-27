@@ -11,6 +11,7 @@ const { mockInstall, mockUseHead, mockGetSystemColorMode } = vi.hoisted(() => ({
 
 vi.mock('maz-ui/plugins/maz-ui', () => ({
   MazUi: { install: mockInstall },
+  getMotionClasses: (motion?: string) => (motion && motion !== 'auto' ? [`m-motion-${motion}`] : []),
 }))
 
 vi.mock('maz-ui/plugins/aos', () => ({

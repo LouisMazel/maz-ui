@@ -103,6 +103,7 @@ const defaults = {
   toast: {},
   dialog: {},
   aos: false,
+  motion: 'auto',
   plugins: {
     aos: false,
     dialog: false,

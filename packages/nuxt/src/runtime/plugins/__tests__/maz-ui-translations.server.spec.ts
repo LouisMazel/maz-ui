@@ -23,6 +23,7 @@ vi.mock('maz-ui/plugins/maz-ui', async () => {
   const { MazUiTranslations } = await import('@maz-ui/translations/plugin')
 
   return {
+    getMotionClasses: () => [],
     MazUi: {
       install: (app: any, options: any) => MazUiTranslations.install?.(app, options.translations),
     },

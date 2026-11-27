@@ -5,6 +5,7 @@ import type { MazUiIconsOptions, MazUiPurgeCssOptions } from '@maz-ui/vite-plugi
 import type { MazUiDefaultsOptions } from 'maz-ui/composables/useGlobalConfig'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
+import type { MazUiOptions } from 'maz-ui/plugins/maz-ui'
 
 /**
  * Messages of each locale: the path of a file that exports them by default (loaded when the locale
@@ -186,6 +187,14 @@ export interface MazUiNuxtOptions {
    * @example { acceptText: 'Yes', rejectText: 'No' }
    */
   dialog?: DialogOptions
+
+  /**
+   * Motion of the components: `'auto'` follows `prefers-reduced-motion`, `'reduced'` and `'full'` force it.
+   * `{ scope: 'page' }` also stops the animations of the whole page under reduced motion.
+   * @default 'auto'
+   * @example 'reduced'
+   */
+  motion?: MazUiOptions['motion']
 
   /**
    * Animations on scroll: installs the AOS plugin and auto-imports `useAos`

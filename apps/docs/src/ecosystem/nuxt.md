@@ -523,6 +523,21 @@ export default defineNuxtConfig({
 })
 ```
 
+### Motion
+
+By default, the components follow the `prefers-reduced-motion` preference of the user: under reduced motion, they stop their animations. The animations of your app are not touched. The server renders the classes of the option in `<html>`: no animation plays before the hydration.
+
+```ts
+export default defineNuxtConfig({
+  mazUi: {
+    // 'auto' (default) follows the preference, 'reduced' and 'full' force it
+    motion: 'reduced',
+  },
+})
+```
+
+`motion: { scope: 'page' }` also stops the animations of the whole page under reduced motion.
+
 ### Animations on scroll
 
 Disabled by default. `aos` installs the [aos plugin](./../plugins/aos.md), injects its CSS and auto-imports `useAos`:
