@@ -45,6 +45,7 @@ const colors: Color[] = [
   'destructive',
   'accent',
   'contrast',
+  'neutral',
 ]
 </script>
 
@@ -134,6 +135,7 @@ const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
     'destructive',
     'accent',
     'contrast',
+    'neutral',
   ]
 
   const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']

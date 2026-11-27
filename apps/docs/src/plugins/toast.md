@@ -267,7 +267,7 @@ interface ToastOptions {
   persistent?: boolean
   /**
    * Icon of the toast, in the formats of MazIcon: a name, a component, a URL or a raw SVG.
-   * `true` displays the icon of the type (none for `contrast` and `accent`), `false` hides it
+   * `true` displays the icon of the type (none for `contrast`, `accent` and `neutral`), `false` hides it
    * @default true
    */
   icon?: boolean | MazIconValue

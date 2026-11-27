@@ -116,6 +116,7 @@ The sizes have the heights of `MazInput`: aligned in a form, a `MazInputTags` an
 <MazInputTags v-model="tags" color="secondary" label="secondary" />
 <MazInputTags v-model="tags" color="success" label="success" />
 <MazInputTags v-model="tags" color="contrast" label="contrast" />
+<MazInputTags v-model="tags" color="neutral" label="neutral" />
 ```
 
   </template>
@@ -167,5 +168,5 @@ The other attributes (`name`, `autocomplete`, `@focus`...) are passed to the `<i
   const tags = ref(['vue', 'nuxt'])
   const topLabelTags = ref(['vue'])
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
-  const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast']
+  const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral']
 </script>

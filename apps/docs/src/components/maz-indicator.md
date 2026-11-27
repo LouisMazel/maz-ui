@@ -97,7 +97,7 @@ A counter at `0` is hidden, like an empty notification count. Set `show-zero` to
 
 ## Colors
 
-Available colors: `primary` (default), `secondary`, `accent`, `info`, `success`, `warning`, `destructive` and `contrast`.
+Available colors: `primary` (default), `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` and `neutral` (drawn with the foreground color of the theme, a light grey dot would disappear).
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
@@ -582,7 +582,7 @@ import { MazBell } from '@maz-ui/icons/static/MazBell'
 import { MazEnvelope } from '@maz-ui/icons/static/MazEnvelope'
 import { ref } from 'vue'
 
-const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast']
+const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral']
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 const positions = ['top-start', 'top-end', 'bottom-start', 'bottom-end']
 

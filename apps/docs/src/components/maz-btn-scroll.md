@@ -43,7 +43,7 @@ import MazBtnScroll from 'maz-ui/components/MazBtnScroll'
 
 ## Progress
 
-A ring around the button shows the scroll progress. `progress-color` sets its color: `primary` (default), `secondary`, `accent`, `info`, `success`, `warning`, `destructive` or `contrast`. `:progress="false"` removes it.
+A ring around the button shows the scroll progress. `progress-color` sets its color: `primary` (default), `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` or `neutral` (drawn with the foreground color of the theme). `:progress="false"` removes it.
 
 ```vue
 <template>

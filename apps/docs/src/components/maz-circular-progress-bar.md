@@ -82,6 +82,7 @@ The duration of the animation can be changed by passing the `duration` prop. The
     <MazCircularProgressBar :percentage="75" color="success" />
     <MazCircularProgressBar :percentage="75" color="warning" />
     <MazCircularProgressBar :percentage="75" color="destructive" />
+    <MazCircularProgressBar :percentage="75" color="neutral" />
   </div>
 
 <template #code>

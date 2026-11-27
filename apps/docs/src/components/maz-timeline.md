@@ -131,6 +131,7 @@ Use the `color` prop to change the theme color.
   <MazTimeline :steps="steps" color="success" />
   <MazTimeline :steps="steps" color="warning" />
   <MazTimeline :steps="steps" color="destructive" />
+  <MazTimeline :steps="steps" color="neutral" />
 </template>
 ```
 
@@ -519,7 +520,7 @@ MazTimeline provides scoped slots for full customization.
     { title: 'QA', subtitle: 'Testing', icon: MazClipboardDocumentCheck },
   ]
 
-  const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive']
+  const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'neutral']
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
   const roundedSizes = ['full', 'lg', 'md', 'sm', 'none']
 </script>

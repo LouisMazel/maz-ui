@@ -254,7 +254,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
 
 ## Colors
 
-The `color` prop is applied to the trigger button and accepts the neutral colors `surface` and `container` (`MazNeutralColor`). The dropdown panel uses the `container` color.
+The `color` prop is applied to the trigger button and accepts `neutral` and the neutral colors `surface` and `container` (`MazNeutralColor`). The dropdown panel uses the `container` color.
 
 <div class="vp-raw maz:flex maz:gap-4 maz:flex-wrap">
   <MazDropdown color="surface" label="Surface" :items="[{ label: 'Action' }]" />

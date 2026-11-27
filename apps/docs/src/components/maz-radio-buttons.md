@@ -359,7 +359,7 @@ This option will display a select icon on the left of the label. With `equal-siz
 
 ## Colors
 
-The `color` prop accepts the brand colors and the neutral colors `surface` and `container` (`MazNeutralColor`). With a neutral color, the selected option gets the neutral background and a foreground border, and the selector bubble uses the foreground color. Use `container` for white options on a grey page with presets like macOS.
+The `color` prop accepts the brand colors and the neutral colors `surface` and `container` (`MazNeutralColor`), and `neutral` (the grey of the theme, selected option with a border and a graphite bubble). With a neutral color, the selected option gets the neutral background and a foreground border, and the selector bubble uses the foreground color. Use `container` for white options on a grey page with presets like macOS.
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-4">

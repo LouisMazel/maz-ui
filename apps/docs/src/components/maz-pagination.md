@@ -58,7 +58,7 @@ const props: MazPaginationProps = {
 
 ## Colors
 
-The page buttons use the neutral `container` color by default (see `color`) and the active page uses `activeColor` (`contrast` by default).
+The page buttons use the neutral `container` color by default (see `color`) and the active page uses `activeColor` (`contrast` by default, `neutral` is also available).
 
 <div class="vp-raw maz:flex maz:flex-col maz:gap-4">
   <MazPagination :total-pages="10" v-model="currentPage" active-color="primary" />

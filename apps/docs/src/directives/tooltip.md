@@ -90,6 +90,9 @@ import { vTooltip } from 'maz-ui/directives'
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'contrast' }" color="contrast">
       Contrast
     </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'neutral' }" color="neutral">
+      Neutral
+    </MazBtn>
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'surface' }" color="surface">
       Background
     </MazBtn>
@@ -128,6 +131,10 @@ import { vTooltip } from 'maz-ui/directives'
 
 <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'contrast' }" color="contrast">
   Contrast
+</MazBtn>
+
+<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'neutral' }" color="neutral">
+  Neutral
 </MazBtn>
 
 <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'default' }" color="surface">

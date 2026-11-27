@@ -526,7 +526,7 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 ## Colors
 
-The default color is `container`, the background of cards and panels (white in light mode with presets like macOS). `surface` renders the real page background.
+The default color is `container`, the background of cards and panels (white in light mode with presets like macOS). `surface` renders the real page background. `neutral` is the soft grey of the theme, with a divider border.
 
 <ComponentDemo>
   <div class="maz:flex maz:gap-4 maz:flex-wrap">

@@ -68,6 +68,7 @@ description: MazSwitch is a standalone component that replaces the standard html
     'destructive',
     'accent',
     'contrast',
+    'neutral',
   ]
 </script>
 ```
@@ -111,5 +112,6 @@ description: MazSwitch is a standalone component that replaces the standard html
     'destructive',
     'accent',
     'contrast',
+    'neutral',
   ]
 </script>

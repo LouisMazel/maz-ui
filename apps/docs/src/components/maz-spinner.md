@@ -40,6 +40,7 @@ By default the color is `theme`
   <MazSpinner color="info" />
   <MazSpinner color="accent" />
   <MazSpinner color="contrast" />
+  <MazSpinner color="neutral" />
 </div>
 
 ```vue
@@ -58,6 +59,8 @@ By default the color is `theme`
 <MazSpinner color="accent" />
 
 <MazSpinner color="contrast" />
+
+<MazSpinner color="neutral" />
 ```
 
 ### Sizes

@@ -377,7 +377,7 @@ Click on each input to show colors
 
 ```vue
 <script setup>
-const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'contrast']
+const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'contrast', 'neutral']
 </script>
 
 <template>
@@ -483,6 +483,7 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
     'destructive',
     'accent',
     'contrast',
+    'neutral',
   ]
 </script>
 

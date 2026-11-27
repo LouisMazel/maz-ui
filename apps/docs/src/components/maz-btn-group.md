@@ -124,7 +124,7 @@ Use the `size` prop to apply a size to all buttons in the group.
 
 ## Colors
 
-Use the `color` prop to apply a color to all buttons in the group. Neutral colors (`surface`, `container`) are supported, see the [surface vs container tip](./maz-btn.md#colors).
+Use the `color` prop to apply a color to all buttons in the group. Neutral colors (`neutral`, `surface`, `container`) are supported, see the [surface vs container tip](./maz-btn.md#colors).
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
@@ -422,7 +422,7 @@ interface MazButtonGroupProps {
    * The color of all buttons (only applies to props-based buttons)
    * @default 'primary'
    */
-  color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent' | 'surface' | 'container'
+  color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'neutral' | 'accent' | 'surface' | 'container'
 }
 ```
 
@@ -437,7 +437,7 @@ import { MazSquares2x2 } from '@maz-ui/icons/raw/MazSquares2x2'
 import { useToast } from 'maz-ui/composables/useToast'
 
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
-const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'surface', 'container'] as const
+const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'neutral', 'surface', 'container'] as const
 
 const basicItems: MazButtonGroupOption[] = [
   { text: 'Day' },

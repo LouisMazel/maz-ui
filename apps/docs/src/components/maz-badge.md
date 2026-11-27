@@ -55,6 +55,7 @@ description: MazBadge is a standalone component to show short text in colored co
     'warning',
     'destructive',
     'contrast',
+    'neutral',
     'accent',
     'surface',
     'container',
@@ -91,6 +92,7 @@ const colors = [
   'warning',
   'destructive',
   'contrast',
+  'neutral',
   'accent',
   'surface',
   'container',
@@ -127,6 +129,7 @@ const colors = [
     'warning',
     'destructive',
     'contrast',
+    'neutral',
     'accent',
     'surface',
     'container',
@@ -165,7 +168,7 @@ For a category or a tag, `color` also takes any CSS color: a hex, `oklch()`, `rg
   </template>
 </ComponentDemo>
 
-`surface` and `container` badges get a light foreground tint and a divider border, so they stay visible on a page or a card of the same color. In dark mode, `contrast` is softened to avoid a full white pill, and its `pastel` text uses the `contrast` color.
+`surface` and `container` badges get a light foreground tint and a divider border, so they stay visible on a page or a card of the same color. In dark mode, `contrast` is softened to avoid a full white pill, and its `pastel` text uses the `contrast` color. `neutral` is the soft grey of the theme (the push button grey of the native presets) with a divider border: `pastel` renders it like solid, and `outlined` keeps the foreground text.
 
 ### Size
 
@@ -263,6 +266,7 @@ function removeTag(tag: string) {
     'warning',
     'destructive',
     'contrast',
+    'neutral',
     'accent',
     'surface',
     'container',
