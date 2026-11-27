@@ -149,6 +149,34 @@
   }
 
   /*
+   * Moves of the items of a list (`<TransitionGroup name="maz-list">`): a new item fades and rises,
+   * a removed one shrinks away while the others glide to their new place
+   */
+  .maz-list-move,
+  .maz-list-enter-active {
+    transition:
+      transform calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1)) var(--maz-easing-spring, ease-out),
+      opacity calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+  }
+
+  .maz-list-leave-active {
+    position: absolute;
+    transition:
+      transform calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+      opacity calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
+  }
+
+  .maz-list-enter-from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+
+  .maz-list-leave-to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  /*
    * Reduced motion: only the elements of the library (an `m-` class or an internal `maz:` utility),
    * never the ones of the app. `motion: 'full'` of MazUi ignores the preference, `motion: 'reduced'`
    * forces it, `motion: { scope: 'page' }` applies it to the whole page.

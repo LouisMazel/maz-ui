@@ -404,6 +404,10 @@ Prefer them to `text-2xl font-semibold` or `text-xs text-muted`. See [Typography
 | `cursor-interactive` | Cursor of the interactive controls of the preset (`pointer`, `default` on the macOS, Windows and Linux presets) |
 | `glass` | Translucent material of the preset: `bg-glass` background, blurred backdrop and hairline `border-glass` edge. See [Glass material](./../ecosystem/themes.md#glass-material) |
 | `z-default-backdrop` | `z-index: 1050`, the layer of `MazDialog`, `MazDrawer` and the toasts |
+| `focus-ring` | Focus ring of the preset, on keyboard focus only (`:focus-visible`) |
+| `focus-within-ring` | The same ring when an element inside has the keyboard focus: put it on the wrapper of a field |
+| `press` | Press feedback: the element sinks a little while pressed and springs back |
+| `border-draw` | A border that draws itself on hover and focus (see [Border that draws itself](#border-that-draws-itself)) |
 
 ### Glass and transparency
 
@@ -413,6 +417,26 @@ Prefer them to `text-2xl font-semibold` or `text-xs text-muted`. See [Typography
 <header class="glass transparency-reduce:bg-container transparency-reduce:backdrop-blur-none">...</header>
 ```
 
+### Focus and press
+
+```html
+<a href="/docs" class="focus-ring rounded-md">Docs</a>
+<div class="focus-within-ring rounded-md border border-divider"><input class="outline-none"></div>
+<button class="press focus-ring">Save</button>
+```
+
+`press` animates the `scale` property, so it combines with any `transform` of the element.
+
+### Border that draws itself
+
+A line runs around the element from its top, in both directions, on hover and keyboard focus. It also stays drawn on a checked element (`aria-checked="true"`, `data-state="checked"`, or a checked input inside).
+
+```html
+<a href="/pricing" class="border-draw rounded-xl p-6">Pricing</a>
+```
+
+Set the start with `--maz-border-draw-from` (an angle, `90deg` is the end side), the color with `--maz-border-draw-color` and the width with `--maz-border-draw-width`.
+
 ### z-index
 
 `z-1` to `z-5`, `z-15`, `z-25`, `z-35`, `z-45`, `z-75`, `z-100`, and `z-default-backdrop` (`1050`, the layer of `MazDialog` and the toasts).
@@ -420,6 +444,20 @@ Prefer them to `text-2xl font-semibold` or `text-xs text-muted`. See [Typography
 ### Vue transitions
 
 `maz-ui/style.css` ships transition classes you can reuse with `<Transition name="...">`: `maz-scale-fade`, `maz-scale`, `maz-slide`, `maz-slideinvert`, `maz-slidevnext`, `maz-slidevprev`, `maz-expand`.
+
+For lists, `maz-list` animates the items of a `<TransitionGroup>`: a new item fades in and rises, a removed one shrinks away while the others glide to their new place.
+
+```vue
+<template>
+  <TransitionGroup name="maz-list" tag="ul" class="relative">
+    <li v-for="item in items" :key="item.id">
+      {{ item.label }}
+    </li>
+  </TransitionGroup>
+</template>
+```
+
+The container needs `position: relative`: a removed item leaves in `position: absolute`.
 
 ## Dark mode variant
 

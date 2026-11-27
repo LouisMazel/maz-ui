@@ -635,3 +635,73 @@
     backdrop-filter: none;
   }
 }
+
+/* Focus ring of the theme on keyboard focus only (`:focus-visible`): `components.focusRing` of the preset (width, offset, color), the primary color by default */
+@utility focus-ring {
+  outline: var(--maz-focus-ring-width, 2px) solid transparent;
+  outline-offset: var(--maz-focus-ring-offset, 2px);
+
+  &:focus-visible {
+    outline-color: var(--maz-focus-ring-color, var(--maz-primary));
+  }
+}
+
+/* Focus ring of the theme when an element inside has the keyboard focus (fields: put it on the wrapper of the input) */
+@utility focus-within-ring {
+  outline: var(--maz-focus-ring-width, 2px) solid transparent;
+  outline-offset: var(--maz-focus-ring-offset, 2px);
+
+  &:has(:focus-visible) {
+    outline-color: var(--maz-focus-ring-color, var(--maz-primary));
+  }
+}
+
+/* Press feedback: the element sinks a little while pressed and springs back (independent `scale`, combines with any `transform`), not when disabled */
+@utility press {
+  transition: scale calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1));
+
+  &:active:not(:disabled, [aria-disabled='true']) {
+    scale: 0.97;
+    transition-duration: calc(var(--maz-motion-instant, 80ms) * var(--maz-motion-scale, 1));
+    transition-timing-function: var(--maz-easing-out, ease-out);
+  }
+}
+
+/* Progress of the `border-draw` utility (0 to 1), registered to be animatable */
+@property --maz-border-draw-progress {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+/* Border drawn on hover and keyboard focus: a line runs around the element from `--maz-border-draw-from` (angle, `0deg` is the top) in both directions; color `--maz-border-draw-color` (primary by default), width `--maz-border-draw-width` */
+@utility border-draw {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    padding: var(--maz-border-draw-width, var(--maz-border-width, 1px));
+    border-radius: inherit;
+    background: conic-gradient(
+      from calc(var(--maz-border-draw-from, 0deg) - var(--maz-border-draw-progress) * 180deg),
+      var(--maz-border-draw-color, var(--maz-primary)) calc(var(--maz-border-draw-progress) * 360deg),
+      transparent 0
+    );
+    content: '';
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    pointer-events: none;
+    transition: --maz-border-draw-progress calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+  }
+
+  &:hover::after,
+  &:focus-visible::after,
+  &:focus-within::after,
+  &[data-state='checked']::after,
+  &[aria-checked='true']::after,
+  &:has(:checked)::after {
+    --maz-border-draw-progress: 1;
+  }
+}
