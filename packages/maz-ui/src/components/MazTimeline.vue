@@ -2,10 +2,11 @@
 import type { CSSProperties, HTMLAttributes } from 'vue'
 
 import type { MazIconLike } from '../composables/index.ts'
-import type { MazColor, MazSize } from './types.ts'
+import type { MazColor, MazColorOrFree, MazSize } from './types.ts'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useId, useSlots, watch } from 'vue'
 import { useMazIconProps } from '../composables/index.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { resolveColor, resolveColorForeground, shiftColorLightness } from '../utils/freeColor.ts'
 
 export type MazTimelineColor = Exclude<MazColor, 'transparent'>
 export type MazTimelineDirection = 'horizontal' | 'vertical' | 'auto'
@@ -33,6 +34,12 @@ export interface MazTimelineItem {
    * @default 'pending'
    */
   state?: MazTimelineStepState
+  /**
+   * Color of the step beyond its state (a type of event): a theme color or a free CSS color
+   * (`#e11d48`, `oklch(...)`, `var(--brand)`). It replaces the color of the state; a `pending` step stays muted
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   */
+  color?: MazColorOrFree<MazTimelineColor>
   /**
    * Whether the step is disabled (not clickable, visually muted)
    * @default false
@@ -106,6 +113,10 @@ export interface MazTimelineProps {
    * @default 'md'
    */
   roundedSize?: MazTimelineRoundedSize
+  /**
+   * Maximum number of lines of the subtitle of each step, the rest is cut with an ellipsis (the `subtitle` slot included)
+   */
+  subtitleLines?: number
 }
 
 const {
@@ -117,6 +128,7 @@ const {
   autoValidateSteps = true,
   clickable = false,
   animated = true,
+  subtitleLines = undefined,
   steps,
 } = defineProps<MazTimelineProps>()
 
@@ -149,7 +161,7 @@ const isVertical = ref(false)
 let mediaQuery: MediaQueryList | undefined
 
 function getStepIconProps(icon?: MazIconLike) {
-  return useMazIconProps(() => icon, () => ({ size: 'md' })).iconProps.value
+  return useMazIconProps(() => icon).iconProps.value
 }
 
 function cleanupMediaQuery() {
@@ -245,6 +257,28 @@ function getStateStyle(state: MazTimelineStepState): CSSProperties | undefined {
     '--m-timeline-state-fg': `var(--maz-${mappedColor}-foreground)`,
   }
 }
+
+function getStepStyle(step: MazTimelineItem, state: MazTimelineStepState): CSSProperties | undefined {
+  if (!step.color || state === 'pending') {
+    return getStateStyle(state)
+  }
+  return {
+    '--m-timeline-bg': resolveColor(step.color),
+    '--m-timeline-fg': resolveColorForeground(step.color),
+    '--m-timeline-state-bg': resolveColor(step.color),
+    '--m-timeline-state-fg': resolveColorForeground(step.color),
+    '--m-timeline-color': shiftColorLightness(step.color, -0.1),
+  }
+}
+
+const subtitleStyle = computed<CSSProperties | undefined>(() => subtitleLines
+  ? {
+      display: '-webkit-box',
+      WebkitBoxOrient: 'vertical',
+      WebkitLineClamp: subtitleLines,
+      overflow: 'hidden',
+    }
+  : undefined)
 
 function getStepAriaLabel(step: MazTimelineItem, index: number): string {
   const state = getStepState(step, index)
@@ -387,7 +421,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
             '--disabled': step.disabled,
           },
         ]"
-        :style="getStateStyle(getStepState(step, index))"
+        :style="getStepStyle(step, getStepState(step, index))"
         v-on="clickable ? { click: () => onStepClick(step, index), keydown: (e: KeyboardEvent) => onStepKeydown(e, step, index) } : {}"
       >
         <div class="m-timeline-indicator maz:flex maz:shrink-0 maz:flex-center" :class="ROUNDED_CLASS[roundedSize]" aria-hidden="true">
@@ -457,7 +491,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
                 {{ step.title }}
               </slot>
             </p>
-            <p v-if="step.subtitle || slots.subtitle" class="m-timeline-subtitle" :class="SUBTITLE_SIZE_CLASS[size]">
+            <p v-if="step.subtitle || slots.subtitle" class="m-timeline-subtitle" :class="SUBTITLE_SIZE_CLASS[size]" :style="subtitleStyle">
               <!--
                 @slot subtitle - Custom subtitle content
                 @binding {MazTimelineItem} step - The step data
@@ -593,12 +627,10 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   .m-timeline-step {
     &.--active .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-bg) maz:text-(--m-timeline-fg);
-      @apply maz:dark:border maz:dark:border-solid maz:dark:border-(--m-timeline-bg) maz:dark:bg-(--m-timeline-bg)/20 maz:dark:text-(--m-timeline-bg);
     }
 
     &.--completed .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
-      @apply maz:dark:border maz:dark:border-solid maz:dark:border-(--m-timeline-state-bg) maz:dark:bg-(--m-timeline-state-bg)/20 maz:dark:text-(--m-timeline-state-bg);
     }
 
     &.--error .m-timeline-indicator {
@@ -649,8 +681,9 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
   /* --- Step icon --- */
   .m-timeline-step-icon {
-    inline-size: var(--m-timeline-icon-size);
-    block-size: var(--m-timeline-icon-size);
+    font-size: var(--m-timeline-icon-size);
+    inline-size: 1em;
+    block-size: 1em;
   }
 
   /* --- Check icon --- */

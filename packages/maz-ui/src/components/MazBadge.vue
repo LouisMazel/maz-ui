@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazColor, MazNeutralColor, MazSize } from './types.ts'
+import type { MazColor, MazColorOrFree, MazNeutralColor, MazSize } from './types.ts'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { isFreeColor, resolveColorForeground } from '../utils/freeColor.ts'
 import MazIcon from './MazIcon.vue'
 import { getColor } from './types.ts'
 
@@ -14,11 +15,13 @@ export type MazBadgeSize = MazSize
 
 export interface MazBadgeProps {
   /**
-   * Color of the badge: `surface` and `container` are the neutral colors of the theme, with the foreground text
+   * Color of the badge: a theme color, or a free CSS color (`#e11d48`, `oklch(...)`, `var(--brand)`) for a category or a
+   * tag (text, border and `pastel` are derived from it). `surface` and `container` are the neutral colors of the theme,
+   * with the foreground text
    * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface' | 'container'`
    * @default primary
    */
-  color?: MazBadgeColor
+  color?: MazColorOrFree<MazBadgeColor>
   /**
    * Size of the badge — drives font-size; padding, line-height and dimensions
    * scale relative to it via `em` units.
@@ -79,7 +82,11 @@ const { t } = useTranslations()
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazBadgeSize, roundedSize: MazBadgeRoundedSize }>('MazBadge', { size: 'md', roundedSize: 'md' })
 
-const resolvedColor = computed(() => getColor(color))
+const freeColor = computed(() => isFreeColor(color))
+
+const resolvedColor = computed(() => freeColor.value
+  ? 'free'
+  : getColor(color as MazBadgeColor))
 
 const ROUNDED_CLASS = {
   none: '',
@@ -100,15 +107,24 @@ const SIZE_CLASS = {
 } as const satisfies Record<MazBadgeSize, string>
 
 const badgeStyle = computed<CSSProperties | undefined>(() => {
+  if (freeColor.value) {
+    return {
+      '--m-badge-bg': color,
+      '--m-badge-fg': resolveColorForeground(color),
+    }
+  }
+
   const c = resolvedColor.value
   if (c === 'surface' || c === 'container' || c === 'transparent')
     return undefined
 
   return {
-    '--m-badge-bg': `var(--maz-${c})`,
+    '--m-badge-bg': c === 'contrast'
+      ? 'var(--m-badge-contrast-bg)'
+      : `var(--maz-${c})`,
     '--m-badge-fg': `var(--maz-${c}-foreground)`,
     ...(pastel && c === 'contrast' && {
-      '--m-badge-pastel-fg': `var(--maz-contrast-foreground)`,
+      '--m-badge-pastel-fg': `var(--maz-contrast)`,
     }),
   }
 })
@@ -182,12 +198,23 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
   }
 
   /* Neutral colors: a pastel neutral color has no meaning, it keeps the solid rendering */
+
+  /* A foreground tint and a divider border keep them visible on a page or a container of the same color */
   &.--surface {
-    --m-badge-bg: var(--maz-surface);
+    --m-badge-bg: color-mix(in srgb, var(--maz-foreground) 6%, var(--maz-surface));
   }
 
   &.--container {
-    --m-badge-bg: var(--maz-container-bg, var(--maz-surface));
+    --m-badge-bg: color-mix(in srgb, var(--maz-foreground) 6%, var(--maz-container-bg, var(--maz-surface)));
+  }
+
+  /* Solid contrast: a full white pill is harsh on a dark background */
+  &.--contrast {
+    --m-badge-contrast-bg: var(--maz-contrast);
+
+    @variant dark {
+      --m-badge-contrast-bg: color-mix(in oklch, var(--maz-contrast) 78%, var(--maz-surface));
+    }
   }
 
   &.--surface,
@@ -207,6 +234,8 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
     }
   }
 
+  &.--surface,
+  &.--surface.--pastel,
   &.--container,
   &.--container.--pastel {
     @apply maz:border-divider;

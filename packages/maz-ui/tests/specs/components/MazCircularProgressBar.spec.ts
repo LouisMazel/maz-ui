@@ -64,3 +64,23 @@ describe('mazCircularProgressBar', () => {
     expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-success')
   })
 })
+
+describe('given MazCircularProgressBar with a free color', () => {
+  describe('when the color is a hex', () => {
+    it('then the gradient stops derive from it', () => {
+      const wrapper = mount(MazCircularProgressBar, { props: { percentage: 50, color: '#e11d48' } })
+      const stops = wrapper.findAll('svg stop')
+
+      expect(stops[0]!.attributes('stop-color')).toBe('oklch(from #e11d48 clamp(0, calc(l + 0.06), 1) c h)')
+      expect(stops[1]!.attributes('stop-color')).toBe('oklch(from #e11d48 clamp(0, calc(l - 0.1), 1) c h)')
+    })
+  })
+
+  describe('when the color is a theme color', () => {
+    it('then the gradient stops derive from its variable', () => {
+      const wrapper = mount(MazCircularProgressBar, { props: { percentage: 50, color: 'info' } })
+
+      expect(wrapper.find('svg stop').attributes('stop-color')).toContain('var(--maz-info)')
+    })
+  })
+})

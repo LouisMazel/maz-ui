@@ -244,3 +244,46 @@ describe('given a MazUi global default for roundedSize', () => {
     })
   })
 })
+
+describe('given MazBadge with a free color', () => {
+  describe('when the color is a hex', () => {
+    const wrapper = mount(MazBadge, { props: { color: '#e11d48' }, slots: { default: 'Label' } })
+
+    it('then it sets the background and a derived foreground', () => {
+      const style = wrapper.attributes('style')
+
+      expect(style).toContain('--m-badge-bg: #e11d48')
+      expect(style).toContain('--m-badge-fg: oklch(from #e11d48')
+    })
+
+    it('then it uses the free class instead of a theme class', () => {
+      expect(wrapper.classes()).toContain('--free')
+      expect(wrapper.classes()).not.toContain('--#e11d48')
+    })
+  })
+
+  describe('when the color is a variable with pastel', () => {
+    it('then the pastel tint derives from the same custom property', () => {
+      const wrapper = mount(MazBadge, { props: { color: 'var(--tag)', pastel: true } })
+
+      expect(wrapper.attributes('style')).toContain('--m-badge-bg: var(--tag)')
+      expect(wrapper.classes()).toContain('--pastel')
+    })
+  })
+
+  describe('when the color is a solid contrast', () => {
+    it('then the background goes through the softened dark token', () => {
+      const wrapper = mount(MazBadge, { props: { color: 'contrast' } })
+
+      expect(wrapper.attributes('style')).toContain('--m-badge-bg: var(--m-badge-contrast-bg)')
+    })
+  })
+
+  describe('when the color is a pastel contrast', () => {
+    it('then the text uses the contrast color, not its foreground', () => {
+      const wrapper = mount(MazBadge, { props: { color: 'contrast', pastel: true } })
+
+      expect(wrapper.attributes('style')).toContain('--m-badge-pastel-fg: var(--maz-contrast)')
+    })
+  })
+})

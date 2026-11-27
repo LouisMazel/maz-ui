@@ -497,3 +497,14 @@ describe('given mazCardSpotlight component', () => {
     })
   })
 })
+
+describe('given MazCardSpotlight with a free color', () => {
+  describe('when the color is a variable', () => {
+    it('then the halo and the border tint derive from it', () => {
+      const wrapper = mount(MazCardSpotlight, { props: { color: 'var(--brand)' } })
+
+      expect(wrapper.attributes('style')).toContain('color-mix(in srgb, var(--brand) 20%')
+      expect(wrapper.find('.blob').attributes('style')).toContain('color-mix(in srgb, var(--brand) 60%')
+    })
+  })
+})

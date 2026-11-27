@@ -848,3 +848,21 @@ describe('given a native image', () => {
     })
   })
 })
+
+describe('given MazAvatar with a free color', () => {
+  describe('when the color is a hex and the avatar shows initials', () => {
+    const wrapper = mount(MazAvatar, { props: { caption: 'Louis Mazel', color: '#e11d48' } })
+
+    it('then the initials background is the color', () => {
+      expect(wrapper.find('.m-avatar__wrapper').attributes('style')).toContain('background-color: rgb(225, 29, 72)')
+    })
+  })
+
+  describe('when the color is a theme color', () => {
+    it('then the initials use its variable', () => {
+      const wrapper = mount(MazAvatar, { props: { caption: 'Louis Mazel', color: 'success' } })
+
+      expect(wrapper.find('.m-avatar__wrapper').attributes('style')).toContain('background-color: var(--maz-success)')
+    })
+  })
+})
