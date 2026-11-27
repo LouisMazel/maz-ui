@@ -288,6 +288,82 @@ Set `:rounded="false"` to render the highlighted block with squared corners — 
   </template>
 </ComponentDemo>
 
+## Diff
+
+Pass the previous version to `diff` and the new one to `code`: the block shows the changes line by line (Myers algorithm, the one of git).
+
+- added and removed lines are highlighted, with the numbers of the old and the new text;
+- the unchanged lines are folded, a button shows them again;
+- the counts of added (`+`) and removed (`-`) lines show next to the language;
+- the code is highlighted with the same themes as a normal block, and the copy button copies `code`.
+
+The diff code is loaded only when `diff` is set: a block without it costs nothing more.
+
+<ComponentDemo>
+  <MazCodeHighlight :code="after" :diff="before" language="json" />
+
+  <template #code>
+
+```vue
+<template>
+  <MazCodeHighlight :code="after" :diff="before" language="json" />
+</template>
+
+<script lang="ts" setup>
+  import MazCodeHighlight from 'maz-ui/components/MazCodeHighlight'
+
+  const before = `{
+  "name": "my-app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  }
+}`
+
+  const after = `{
+  "name": "my-app",
+  "version": "1.1.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest"
+  }
+}`
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
+When both texts are the same, the block shows "No differences".
+
+### Folded lines and whitespace
+
+Only 3 unchanged lines are kept around each change, the others are folded into a button ("Show unchanged lines (12)"). Set `diff-context` to change it, or `:diff-context="Infinity"` to fold nothing. `diff-ignore-whitespace` treats lines that only differ by their whitespace as unchanged.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazCodeHighlight :code="longAfter" :diff="longBefore" size="sm" />
+    <MazCodeHighlight :code="longAfter" :diff="longBefore" :diff-context="1" size="sm" />
+  </div>
+
+  <template #code>
+
+```vue
+<template>
+  <MazCodeHighlight :code="after" :diff="before" />
+  <MazCodeHighlight :code="after" :diff="before" :diff-context="1" />
+  <MazCodeHighlight :code="after" :diff="before" :diff-context="Infinity" />
+  <MazCodeHighlight :code="after" :diff="before" diff-ignore-whitespace />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+Every other prop applies: `language`, `size`, `wrap`, `max-height`, `rounded`, the themes and the color mode. The algorithm is also available alone: see [diffLines](/ecosystem/utils/diff-lines).
+
 ## Long code: max height and line wrap
 
 `max-height` (any CSS length) caps the height of the block: longer code scrolls inside it. `wrap` breaks long lines instead of scrolling horizontally, and `hide-language` removes the language badge. Once the user scrolls up in a long block, a button scrolls it back to its last line (with or without `follow`).
@@ -391,7 +467,7 @@ Globalizable props: `lightTheme`, `darkTheme`, `theme` (one theme in both modes)
 
 ## Custom translations
 
-The labels and tooltips of the copy button and of the scroll-to-bottom button come from the `@maz-ui/translations` package (`codeHighlight.copyToClipboard`, `codeHighlight.copiedToClipboard`, `codeHighlight.scrollToBottom`). You can override any key per-instance with the `translations` prop without touching the global locale:
+The labels and tooltips of the copy button and of the scroll-to-bottom button come from the `@maz-ui/translations` package (`codeHighlight.copyToClipboard`, `codeHighlight.copiedToClipboard`, `codeHighlight.scrollToBottom`, and `codeHighlight.diff.additions`, `.deletions`, `.identical`, `.expand` for the `diff` mode, where `{count}` is replaced). You can override any key per-instance with the `translations` prop without touching the global locale:
 
 <ComponentDemo>
   <MazCodeHighlight
@@ -431,6 +507,28 @@ For app-wide translations, set up the [maz-ui translations plugin](/ecosystem/tr
 <template>
   <button @click="count++">Count: {{ count }}</button>
 </template>`
+
+  const before = `{
+  "name": "my-app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  }
+}`
+
+  const after = `{
+  "name": "my-app",
+  "version": "1.1.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest"
+  }
+}`
+
+  const longBefore = Array.from({ length: 30 }, (_, i) => `line ${i + 1}`).join('\n')
+  const longAfter = Array.from({ length: 30 }, (_, i) => i === 14 ? 'a changed line' : `line ${i + 1}`).join('\n')
 
   const longLog = Array.from({ length: 12 }, (_, i) => `2026-11-13T09:${String(20 + i).padStart(2, '0')}:00.000Z [build] ${i % 4 === 3 ? 'WARN' : 'INFO'} packages/core/src/module-${i}.ts compiled in ${40 + i * 7}ms, output written to dist/module-${i}.js`).join('\n')
 

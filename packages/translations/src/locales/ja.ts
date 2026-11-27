@@ -17,6 +17,7 @@ export default {
     nextYears: '次の年',
     selectAll: 'すべての行を選択',
     selectRow: '行を選択',
+    rowDetails: '行の詳細',
     removeFile: 'ファイルを削除',
     remove: '削除',
     sidebar: 'サイドバー',
@@ -73,6 +74,7 @@ export default {
     loading: '読み込み中...',
     error: 'エラーが発生しました。もう一度お試しください',
     results: '結果: {count}',
+    freeEntry: '"{query}" を使用',
   },
   table: {
     noResults: '結果なし',
@@ -112,6 +114,19 @@ export default {
       placeholder: '検索',
     },
   },
+  inputKeyValue: {
+    key: 'キー',
+    value: '値',
+    add: '追加',
+    duplicateKey: 'このキーはすでに使われています',
+  },
+  inputSecret: {
+    saved: '保存済み',
+    replace: '置き換える',
+    clear: 'クリア',
+    cancel: 'キャンセル',
+    savedDescription: '値は保存され、非表示です',
+  },
   readMore: {
     expand: 'もっと読む',
     collapse: '閉じる',
@@ -130,6 +145,12 @@ export default {
     copyToClipboard: 'クリップボードにコピー',
     copiedToClipboard: 'クリップボードにコピーされました',
     scrollToBottom: '一番下へスクロール',
+    diff: {
+      additions: '追加された行: {count}',
+      deletions: '削除された行: {count}',
+      identical: '差分はありません',
+      expand: '変更のない行を表示 ({count})',
+    },
   },
   colorPicker: {
     openPicker: 'カラーピッカーを開く',

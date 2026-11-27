@@ -197,6 +197,56 @@ describe('given the invalid-prop-value rule', () => {
   })
 })
 
+describe('given the free colors of the data components', () => {
+  describe('when a data component gets a hex, a color function or a variable', () => {
+    it.each([
+      '<MazBadge color="#e11d48">x</MazBadge>',
+      '<MazBadge color="oklch(0.7 0.15 20)">x</MazBadge>',
+      '<MazProgressBar :value="3" color="var(--brand)" />',
+      '<MazAvatar caption="Louis Mazel" color="#e11d48" />',
+      '<MazIndicator color="rgb(34 197 94)" />',
+      '<MazCardSpotlight color="color-mix(in srgb, red, blue)">x</MazCardSpotlight>',
+      '<MazCircularProgressBar :percentage="40" color="#e11d48" />',
+      '<MazTimeline :steps="steps" color="var(--brand)" />',
+      '<MazBadge :color="\'#e11d48\'">x</MazBadge>',
+    ])('then %s is accepted', (markup) => {
+      expect(rulesOf(template(markup))).toEqual([])
+    })
+  })
+
+  describe('when a data component gets a named color', () => {
+    it('then it asks for a theme color or a free CSS color', () => {
+      const [finding] = review(template('<MazBadge color="red">x</MazBadge>'))
+
+      expect(finding.rule).toBe('invalid-prop-value')
+      expect(finding.suggestion).toContain('free CSS color')
+      expect(finding.suggestion).toContain('"primary"')
+    })
+  })
+
+  describe('when a data component gets a theme color', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<MazBadge color="success">x</MazBadge>'))).toEqual([])
+    })
+  })
+
+  describe('when an interface component gets a free color', () => {
+    it('then it is reported and the hint names the components that accept one', () => {
+      const [finding] = review(template('<MazBtn color="#e11d48">x</MazBtn>'))
+
+      expect(finding.rule).toBe('invalid-prop-value')
+      expect(finding.suggestion).toContain('MazBadge')
+      expect(finding.suggestion).toContain('a role of the interface')
+    })
+  })
+
+  describe('when a default palette class is used on a data component', () => {
+    it('then it stays flagged', () => {
+      expect(rulesOf(template('<MazBadge class="bg-blue-500">x</MazBadge>'))).toContain('theme-colors')
+    })
+  })
+})
+
 describe('given the boolean-prop-string rule', () => {
   describe('when a boolean prop receives "false"', () => {
     it('then it is an error', () => {
@@ -437,6 +487,19 @@ describe('given the prefer-maz-component rule', () => {
       expect(finding.rule).toBe('prefer-maz-component')
       expect(finding.severity).toBe(severity)
       expect(finding.suggestion).toContain(component)
+    })
+  })
+
+  describe('when a tab list is built by hand', () => {
+    it.each([
+      ['<div role="tablist"><MazBtn>A</MazBtn><MazBtn>B</MazBtn></div>'],
+      ['<nav role="tablist" class="flex flex-col"><MazBtn role="tab">A</MazBtn></nav>'],
+    ])('then %s suggests MazTabsBar', (markup) => {
+      const [finding] = review(template(markup))
+
+      expect(finding).toMatchObject({ rule: 'prefer-maz-component', severity: 'warning' })
+      expect(finding.suggestion).toContain('MazTabsBar')
+      expect(finding.suggestion).toContain('orientation="vertical"')
     })
   })
 
@@ -704,6 +767,8 @@ describe('given the prefer-ecosystem and prefer-utils rules', () => {
       ['@vuepic/vue-datepicker', 'MazDatePicker'],
       ['js-cookie', 'cookie'],
       ['@fortawesome/vue-fontawesome', '@maz-ui/icons'],
+      ['diff', 'MazCodeHighlight'],
+      ['diff2html', 'diffLines'],
     ])('then %s suggests %s', (specifier, replacement) => {
       const [finding] = review(`import x from '${specifier}'`, 'a.ts')
 
@@ -1143,6 +1208,89 @@ describe('given the prefer-dialog-confirm rule', () => {
   })
 })
 
+describe('given the before-close-event rule', () => {
+  describe('when a backdrop component listens to before-close', () => {
+    it.each([
+      '<MazDialog v-model="open" @before-close="check">Body</MazDialog>',
+      '<MazDrawer v-model="open" @before-close="check">Body</MazDrawer>',
+      '<MazBottomSheet v-model="open" @before-close="check">Body</MazBottomSheet>',
+      '<MazBackdrop v-model="open" @before-close="check">Body</MazBackdrop>',
+    ])('then %s is reported', (markup) => {
+      const finding = review(template(markup)).find(item => item.rule === 'before-close-event')
+
+      expect(finding).toMatchObject({ severity: 'warning' })
+      expect(finding?.suggestion).toContain(':before-close=')
+    })
+  })
+
+  describe('when the before-close prop is used', () => {
+    it.each([
+      '<MazDialog v-model="open" :before-close="check">Body</MazDialog>',
+      '<MazDialog v-model="open" @close="done">Body</MazDialog>',
+    ])('then %s is not reported', (markup) => {
+      expect(rulesOf(template(markup))).not.toContain('before-close-event')
+    })
+  })
+
+  describe('when the before-close event is listened to', () => {
+    it('then it is not reported as an unknown event too', () => {
+      expect(rulesOf(template('<MazDialog v-model="open" @before-close="check">Body</MazDialog>'))).not.toContain('unknown-event')
+    })
+  })
+})
+
+describe('given the btn-important-text rule', () => {
+  describe('when a MazBtn has an important text class', () => {
+    it.each([
+      '<MazBtn class="!text-warning">Save</MazBtn>',
+      '<MazBtn class="px-2 text-warning!">Save</MazBtn>',
+      '<MazBtn class="hover:!text-primary">Save</MazBtn>',
+    ])('then %s is reported', (markup) => {
+      const finding = review(template(markup)).find(item => item.rule === 'btn-important-text')
+
+      expect(finding).toMatchObject({ severity: 'warning' })
+      expect(finding?.suggestion).toContain('text-color')
+    })
+  })
+
+  describe('when a MazBtn has a plain text class', () => {
+    it.each([
+      '<MazBtn class="text-warning">Save</MazBtn>',
+      '<MazBtn text-color="success">Save</MazBtn>',
+      '<div class="!text-warning">Save</div>',
+      '<MazBtn class="!text-sm">Save</MazBtn>',
+      '<MazBtn class="text-center!">Save</MazBtn>',
+      '<MazBtn class="text-[14px]!">Save</MazBtn>',
+    ])('then %s is not reported', (markup) => {
+      expect(rulesOf(template(markup))).not.toContain('btn-important-text')
+    })
+  })
+})
+
+describe('given the prefer-input-secret rule', () => {
+  describe('when a password MazInput has a bullet placeholder', () => {
+    it.each([
+      '<MazInput v-model="key" type="password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022" label="Key" />',
+      '<MazInput v-model="key" type="password" placeholder="******" label="Key" />',
+    ])('then %s is reported', (markup) => {
+      const finding = review(template(markup)).find(item => item.rule === 'prefer-input-secret')
+
+      expect(finding).toMatchObject({ severity: 'warning' })
+      expect(finding?.suggestion).toContain('MazInputSecret')
+    })
+  })
+
+  describe('when a MazInput is a regular field', () => {
+    it.each([
+      '<MazInput v-model="key" type="password" label="Password" />',
+      '<MazInput v-model="key" type="password" placeholder="Enter your password" label="Password" />',
+      '<MazInput v-model="key" placeholder="******" label="Mask" />',
+    ])('then %s is not reported', (markup) => {
+      expect(rulesOf(template(markup))).not.toContain('prefer-input-secret')
+    })
+  })
+})
+
 describe('given the button-navigation rule', () => {
   describe('when a MazBtn is inside a link', () => {
     it.each([
@@ -1173,6 +1321,28 @@ describe('given the button-navigation rule', () => {
   describe('when the button has a link or another click handler', () => {
     it('then nothing is reported', () => {
       expect(rulesOf(template('<MazBtn to="/x">Go</MazBtn><MazBtn outlined @click="save">Save</MazBtn><MazBtn outlined @click="location === \'x\'">Go</MazBtn><a href="/x">Go</a>'))).toEqual([])
+    })
+  })
+})
+
+describe('given the prefer-open-external rule', () => {
+  describe('when a MazLink as a button opens a URL from its click handler', () => {
+    it.each([
+      '<MazLink as="button" @click="openExternal(url)">Docs</MazLink>',
+      '<MazLink as="button" @click="openUrl(\'https://x.com\')">Docs</MazLink>',
+      '<MazLink as="button" @click="shell.openExternal(url)">Docs</MazLink>',
+      '<MazLink as="button" @click="window.api.openExternal(url)">Docs</MazLink>',
+      '<MazLink as="button" @click="open(url)">Docs</MazLink>',
+      '<MazLink as="button" @click="open(item.href)">Docs</MazLink>',
+      '<MazLink as="button" @click="open(\'https://x.com\')">Docs</MazLink>',
+    ])('then %s is reported', (markup) => {
+      expect(review(template(markup))[0]).toMatchObject({ rule: 'prefer-open-external', severity: 'warning' })
+    })
+  })
+
+  describe('when the link keeps its href, is not a button or runs another handler', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<MazLink href="https://x.com">Docs</MazLink><MazLink @click="openExternal(url)">Docs</MazLink><MazLink as="button" @click="save()">Save</MazLink><MazLink as="button" @click="dialog.open()">Open</MazLink><MazLink as="button" @click="reopen()">Open</MazLink><MazLink as="button" @click="open()">Menu</MazLink><MazLink as="button" @click="open(menuId)">Menu</MazLink>'))).toEqual([])
     })
   })
 })
@@ -1256,6 +1426,16 @@ describe('given the hand-written helpers', () => {
       ['const ios = /iPad|iPhone|iPod/.test(navigator.userAgent)', 'prefer-utils', 'warning', 'isIos'],
       ['const ios = navigator.userAgent.includes(\'iPhone\')', 'prefer-utils', 'warning', 'isIos'],
       ['const pwa = window.matchMedia(\'(display-mode: standalone)\').matches', 'prefer-utils', 'warning', 'isStandaloneMode'],
+      ['const reduced = window.matchMedia(\'(prefers-reduced-motion: reduce)\').matches', 'prefer-ecosystem', 'warning', 'useReducedMotion'],
+      ['const query = matchMedia(\'(orientation: landscape)\')', 'prefer-ecosystem', 'warning', 'useMediaQuery'],
+      ['window.addEventListener(\'online\', onOnline)', 'prefer-ecosystem', 'warning', 'useEventListener'],
+      ['window.addEventListener(\'blur\', onBlur)', 'prefer-ecosystem', 'warning', 'useWindowFocus'],
+      ['document.addEventListener(\'fullscreenchange\', onChange)', 'prefer-ecosystem', 'warning', 'useEventListener'],
+      ['if (event.key === \'k\' && (event.metaKey || event.ctrlKey)) openPalette()', 'prefer-ecosystem', 'warning', 'useShortcut'],
+      ['function onKeydown(e: KeyboardEvent) {\n  const mod = e.ctrlKey || e.metaKey\n}', 'prefer-ecosystem', 'warning', 'useShortcut'],
+      ['const isMac = navigator.platform.includes(\'Mac\')', 'prefer-utils', 'info', 'isApple'],
+      ['const isMac = /Mac/.test(navigator.userAgent)', 'prefer-utils', 'info', 'isApple'],
+      ['const label = Math.floor(seconds / 60) + \':\' + String(seconds % 60).padStart(2, \'0\')', 'prefer-utils', 'warning', 'formatDuration'],
       ['const flag = String.fromCodePoint(...[...code].map(c => 127397 + c.charCodeAt(0)))', 'prefer-utils', 'warning', 'countryCodeToUnicodeFlag'],
       ['const src = \'https://flagcdn.com/fr.svg\'', 'prefer-utils', 'warning', 'getCountryFlagUrl'],
       ['const response = await fetch(\'https://ipapi.co/json\')', 'prefer-utils', 'info', 'fetchLocaleIp'],
@@ -1285,6 +1465,24 @@ describe('given the hand-written helpers', () => {
   describe('when a module without filename shares a loading state', () => {
     it('then it is reported', () => {
       expect(reviewCode('export const isSaving = ref(false)', { knowledge: getKnowledge() }).map(finding => finding.rule)).toEqual(['prefer-ecosystem'])
+    })
+  })
+
+  describe('when a click handler opens a link in a new tab with Cmd or Ctrl', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('function onClick(e: MouseEvent) {\n  if (e.metaKey || e.ctrlKey) openInNewTab()\n}', 'a.ts')).toEqual([])
+    })
+  })
+
+  describe('when a date is padded next to a division by 60', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('const hours = Math.floor(total / 60)\nconst day = String(date.getDate()).padStart(2, \'0\')', 'a.ts')).toEqual([])
+    })
+  })
+
+  describe('when the code already uses the composables for events and media queries', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf('useEventListener(window, \'online\', onOnline)\nconst { matches } = useMediaQuery(\'(min-width: 10px)\')\nuseShortcut(\'mod+k\', open)\nconst ok = event.ctrlKey && event.shiftKey\nconst minutes = Math.floor(total / 60)', 'a.ts')).toEqual([])
     })
   })
 
@@ -1382,6 +1580,50 @@ describe('given the deprecated-api rule', () => {
   describe('when the code uses the composables', () => {
     it('then nothing is reported', () => {
       expect(rulesOf('const toast = useToast()\nconst wait = useWait()\napp.use(MazUi, { theme, toast: { position: \'top\' } })', 'a.ts')).not.toContain('deprecated-api')
+    })
+  })
+})
+
+describe('given the prefer-markdown rule', () => {
+  describe('when MazMarkdownEditor is fixed on its preview', () => {
+    it('then it is reported with MazMarkdown as the fix', () => {
+      const finding = review(template('<MazMarkdownEditor v-model="text" mode="preview" />')).find(item => item.rule === 'prefer-markdown')
+
+      expect(finding).toMatchObject({ severity: 'warning' })
+      expect(finding?.suggestion).toContain('<MazMarkdown :content="markdown" />')
+    })
+  })
+
+  describe('when MazMarkdownEditor edits the markdown', () => {
+    it.each([
+      '<MazMarkdownEditor v-model="text" />',
+      '<MazMarkdownEditor v-model="text" mode="split" />',
+      '<MazMarkdownEditor v-model="text" :mode="mode" />',
+    ])('then %s is not reported', (markup) => {
+      expect(rulesOf(template(markup))).not.toContain('prefer-markdown')
+    })
+  })
+
+  describe('when v-html renders the output of marked', () => {
+    it.each([
+      '<div v-html="marked(text)" />',
+      '<article class="prose" v-html="marked.parse(text)" />',
+      '<span v-html="marked.parseInline(text)" />',
+    ])('then %s is reported', (markup) => {
+      const finding = review(template(markup)).find(item => item.rule === 'prefer-markdown')
+
+      expect(finding).toMatchObject({ severity: 'warning' })
+      expect(finding?.suggestion).toContain('MazMarkdown')
+    })
+  })
+
+  describe('when v-html renders something else', () => {
+    it.each([
+      '<div v-html="html" />',
+      '<div v-html="sanitize(html)" />',
+      '<div v-html="remarked" />',
+    ])('then %s is not reported', (markup) => {
+      expect(rulesOf(template(markup))).not.toContain('prefer-markdown')
     })
   })
 })

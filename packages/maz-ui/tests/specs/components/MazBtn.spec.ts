@@ -239,3 +239,17 @@ describe('given a component-scoped default that differs from the global default'
     })
   })
 })
+
+describe('given MazBtn with the neutral color', () => {
+  describe('when the color is neutral', () => {
+    const wrapper = mount(MazBtn, { props: { color: 'neutral' }, slots: { default: 'Cancel' } })
+
+    it('then it uses the neutral class', () => {
+      expect(wrapper.classes()).toContain('--neutral')
+    })
+
+    it('then it sets no inline color so the theme tokens drive it', () => {
+      expect(wrapper.attributes('style') ?? '').not.toContain('--m-btn-bg')
+    })
+  })
+})

@@ -17,6 +17,7 @@ export const composables = {
       link: '/composables/use-drag',
     },
     { text: 'useDropzone', link: '/composables/use-dropzone' },
+    { text: withNewBadge('useEventListener'), link: '/composables/use-event-listener' },
     { text: 'useFormValidator', link: '/composables/use-form-validator' },
     { text: 'useFreezeValue', link: '/composables/use-freeze-value' },
     {
@@ -35,6 +36,7 @@ export const composables = {
       link: '/composables/use-intersection-observer',
     },
     { text: 'useDisplayNames', link: '/composables/use-display-names' },
+    { text: withNewBadge('useMediaQuery'), link: '/composables/use-media-query' },
     { text: 'useMountComponent', link: '/composables/use-mount-component' },
     { text: 'useMutationObserver', link: '/composables/use-mutation-observer' },
     {
@@ -58,12 +60,15 @@ export const composables = {
       text: withNewBadge('useScrollLock'),
       link: '/composables/use-scroll-lock',
     },
+    { text: withNewBadge('useShortcut'), link: '/composables/use-shortcut' },
     { text: 'useStringMatching', link: '/composables/use-string-matching' },
     { text: 'useSwipe', link: '/composables/use-swipe' },
     { text: 'useTimer', link: '/composables/use-timer' },
     { text: 'useToast', link: '/composables/use-toast' },
     { text: 'useUserVisibility', link: '/composables/use-user-visibility' },
     { text: 'useWait', link: '/composables/use-wait' },
+    { text: withNewBadge('useWindow'), link: '/composables/use-window' },
+    { text: withNewBadge('useWindowFocus'), link: '/composables/use-window-focus' },
     { text: 'useWindowSize', link: '/composables/use-window-size' },
   ],
 } satisfies DefaultTheme.SidebarItem

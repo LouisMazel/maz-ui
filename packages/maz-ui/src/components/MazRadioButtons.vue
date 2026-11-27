@@ -233,7 +233,10 @@ const SIZE_CLASS: Record<MazSize, string> = {
             @binding {string | number | boolean} option - The value of the option
         -->
         <slot :option="option" :selected="isSelected(option.value)">
-          {{ option.label }}
+          <span v-if="equalSize" class="m-radio-buttons__label maz:min-w-0 maz:truncate">{{ option.label }}</span>
+          <template v-else>
+            {{ option.label }}
+          </template>
         </slot>
       </label>
     </div>
@@ -258,7 +261,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
 
 .m-radio-buttons__items {
   &.--equal-size {
-    @apply maz:flex-1;
+    @apply maz:min-w-0 maz:flex-1;
   }
 
   &:not(.--is-selected) {

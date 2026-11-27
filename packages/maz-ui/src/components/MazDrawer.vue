@@ -14,6 +14,7 @@ const {
   backdropClass,
   size = '30rem',
   hideCloseButton,
+  beforeClose,
 } = defineProps<MazDrawerProps>()
 
 defineEmits<{
@@ -46,6 +47,8 @@ export interface MazDrawerProps {
   backdropClass?: string
   /** Disable the close button */
   hideCloseButton?: boolean
+  /** Function called before the drawer closes, return `false` (or a promise of `false`) to keep it open */
+  beforeClose?: () => Promise<boolean | void> | boolean | void
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -90,6 +93,7 @@ const titleId = computed(() => `${instanceId.value}-title`)
     :justify
     :align
     variant="drawer"
+    :before-close
     :aria-labelledby="hasTitle ? titleId : undefined"
     :transition-name="`drawer-anim-${variant}`"
     @close="$emit('close')"

@@ -79,6 +79,37 @@ With `max`, `value` is on its scale: 3 of 5 steps.
   </template>
 </ComponentDemo>
 
+## Free colors
+
+`color` (the bar and the segments without their own color) and the `color` of each segment also take any CSS color, for categories and series that are not roles of the interface. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazProgressBar :value="65" color="#8b5cf6" label="Design" />
+    <MazProgressBar :segments="[{ value: 8, color: '#e11d48', label: 'bugs' }, { value: 5, color: 'oklch(0.75 0.15 150)', label: 'features' }, { value: 3, color: 'success', label: 'docs' }]" size="md" gap label="Issues" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazProgressBar :value="65" color="#8b5cf6" label="Design" />
+  <MazProgressBar
+    :segments="[
+      { value: 8, color: '#e11d48', label: 'bugs' },
+      { value: 5, color: 'oklch(0.75 0.15 150)', label: 'features' },
+      { value: 3, color: 'success', label: 'docs' },
+    ]"
+    size="md"
+    gap
+    label="Issues"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Sizes and rounded
 
 `size` sets the thickness (default `sm`), `rounded-size` the rounded of the bar (default `full`).

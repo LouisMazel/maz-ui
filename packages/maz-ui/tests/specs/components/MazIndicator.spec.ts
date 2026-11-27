@@ -139,3 +139,25 @@ describe('given MazIndicator component', () => {
     })
   })
 })
+
+describe('given MazIndicator with a free color', () => {
+  describe('when the color is a hex', () => {
+    const wrapper = mount(MazIndicator, { props: { color: '#22c55e' } })
+
+    it('then it is the background', () => {
+      expect(wrapper.attributes('style')).toContain('background-color: rgb(34, 197, 94)')
+    })
+
+    it('then it uses the free class', () => {
+      expect(wrapper.classes()).toContain('--free')
+    })
+  })
+
+  describe('when the color is a variable around a slot', () => {
+    it('then the badge takes the variable', () => {
+      const wrapper = mount(MazIndicator, { props: { color: 'var(--status)', content: 3 }, slots: { default: '<span>x</span>' } })
+
+      expect(wrapper.find('.m-indicator__badge').attributes('style')).toContain('background-color: var(--status)')
+    })
+  })
+})

@@ -396,7 +396,7 @@ Prefer them to `text-2xl font-semibold` or `text-xs text-muted`. See [Typography
 | `flex-center` | `align-items: center; justify-content: center` (combine with `flex` or `grid`) |
 | `text-display`, `text-title-1` ... `text-code` | [Type scale](./typography.md#type-scale) |
 | `type-display`, `type-title-1` ... `type-code` | A level of the [type scale](./typography.md#type-scale) without its font size |
-| `rich-text`, `rich-text-sm`, `rich-text-lg` | [Rich text](./typography.md#rich-text) |
+| `rich-text`, `rich-text-xs`, `rich-text-sm`, `rich-text-lg` | [Rich text](./typography.md#rich-text) |
 | `cap-f` | Capitalizes the first letter |
 | `scrollbar-themed` | Thin scrollbar tinted from the text color, for scrollable areas (lists, panels, code). The scrollable parts of the components already use it, the page scrollbar stays native |
 | `disabled-state`, `disabled-opacity`, `disabled-cursor` | The disabled look of the preset |

@@ -5,6 +5,7 @@ import type { MazColor, MazNeutralColor, MazRoundedSize, MazSize } from './types
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { useExternalLinks } from '../utils/externalLinks.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 import { getColor } from './types.ts'
@@ -21,10 +22,10 @@ export interface MazBtnProps {
    */
   size?: MazSize
   /**
-   * The color of the button: `surface` and `container` are the neutral colors of the theme (`container` is white in the light mode of most presets), with the foreground text
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface' | 'container'`
+   * The color of the button: `surface` and `container` are the neutral colors of the theme (`container` is white in the light mode of most presets), with the foreground text. `neutral` is the grey push button of the native presets (`colors.neutral` of the preset), the `container` background without it
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface' | 'container' | 'neutral'`
    */
-  color?: MazColor | MazNeutralColor
+  color?: MazColor | MazNeutralColor | 'neutral'
   /**
    * The text color of the button
    * @values `primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'muted'`
@@ -61,6 +62,12 @@ export interface MazBtnProps {
    * @default false
    */
   loading?: boolean
+  /**
+   * Where the loader is displayed: `overlay` covers the button (the label is hidden), `start` replaces the start icon and keeps the label
+   * @values `'overlay' | 'start'`
+   * @default 'overlay'
+   */
+  loadingPosition?: 'overlay' | 'start'
   /**
    * Disable the button
    * @default false
@@ -120,6 +127,7 @@ const {
   pastel,
   outlined,
   loading,
+  loadingPosition = 'overlay',
   disabled,
   block,
   padding = true,
@@ -135,7 +143,9 @@ const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazR
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
-const { href, to } = useAttrs()
+const attrs = useAttrs()
+const { href, to } = attrs
+const { onLinkClick } = useExternalLinks()
 
 const component = computed(() => {
   if (href)
@@ -144,6 +154,14 @@ const component = computed(() => {
     return resolveLinkComponent()
   return 'button'
 })
+
+function onClick(event: MouseEvent) {
+  if (component.value === 'a')
+    onLinkClick(event, href as string | undefined, attrs.target as string | undefined)
+}
+
+const isStartLoader = computed(() => !!loading && loadingPosition === 'start')
+const isOverlayLoader = computed(() => !!loading && loadingPosition !== 'start')
 
 const resolvedColor = computed(() => getColor(color))
 
@@ -176,7 +194,7 @@ const { iconProps: fabIconProps } = useMazIconProps(() => icon, () => ({ size: i
 const btnStyle = computed<CSSProperties>(() => {
   const c = resolvedColor.value
   const base: Record<string, string> = { '--m-btn-justify': justify }
-  if (c === 'transparent' || c === 'surface' || c === 'container')
+  if (c === 'transparent' || c === 'surface' || c === 'container' || c === 'neutral')
     return base
 
   return {
@@ -184,22 +202,22 @@ const btnStyle = computed<CSSProperties>(() => {
     '--m-btn-bg': `var(--maz-${c})`,
     '--m-btn-fg': `var(--maz-${c}-foreground)`,
     ...(pastel && c === 'contrast' && {
-      '--m-btn-pastel-fg': `var(--maz-contrast-foreground)`,
+      '--m-btn-pastel-fg': `var(--maz-contrast)`,
     }),
   }
 })
 
 const TEXT_COLOR: Record<NonNullable<MazBtnProps['textColor']>, string> = {
-  primary: 'maz:text-primary!',
-  secondary: 'maz:text-secondary!',
-  accent: 'maz:text-accent!',
-  info: 'maz:text-info!',
-  success: 'maz:text-success!',
-  warning: 'maz:text-warning!',
-  destructive: 'maz:text-destructive!',
-  contrast: 'maz:text-contrast!',
-  transparent: 'maz:text-transparent!',
-  muted: 'maz:text-muted!',
+  primary: 'maz:text-primary',
+  secondary: 'maz:text-secondary',
+  accent: 'maz:text-accent',
+  info: 'maz:text-info',
+  success: 'maz:text-success',
+  warning: 'maz:text-warning',
+  destructive: 'maz:text-destructive',
+  contrast: 'maz:text-contrast',
+  transparent: 'maz:text-transparent',
+  muted: 'maz:text-muted',
 } as const
 
 const SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
@@ -243,7 +261,7 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
   <component
     :is="component"
     :disabled="isDisabled"
-    class="m-btn m-reset-css maz:inline-flex maz:cursor-interactive maz:items-center maz:gap-2 maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out"
+    class="m-btn m-reset-css maz:inline-flex maz:cursor-interactive maz:items-center maz:gap-2 maz:border maz:border-solid maz:py-0.5 maz:text-center maz:align-top maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out"
     :class="[
       `--${resolvedColor}`,
       `--${size}`,
@@ -252,10 +270,10 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
       !fab && SIZE_CLASS[size],
       fab ? 'maz:flex maz:flex-center maz:rounded-full maz:p-1' : ROUNDED_CLASS[roundedSize],
       fab ? FAB_SIZE_CLASS[size] : '',
-      (!!startIcon || hasSlotContent($slots['start-icon'])) ? ICON_PADDING_CLASS[size].start : '',
+      (isStartLoader || !!startIcon || hasSlotContent($slots['start-icon'])) ? ICON_PADDING_CLASS[size].start : '',
       (!!endIcon || hasSlotContent($slots['end-icon'])) ? ICON_PADDING_CLASS[size].end : '',
       {
-        'maz:relative': loading,
+        'maz:relative': isOverlayLoader,
         'maz:overflow-hidden': overflowHidden,
         '--outlined': outlined,
         '--pastel': pastel,
@@ -264,17 +282,21 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
         '--loading': loading,
         '--active': active,
         '--no-padding': !padding,
-        '--has-start-icon': !!startIcon || hasSlotContent($slots['start-icon']),
+        '--has-start-icon': isStartLoader || !!startIcon || hasSlotContent($slots['start-icon']),
         '--has-end-icon': !!endIcon || hasSlotContent($slots['end-icon']),
       },
     ]"
     :style="btnStyle"
     :type="btnType"
+    @click="onClick"
   >
     <!--
       @slot start-icon - The icon to display on the inline-start edge (left in LTR, right in RTL)
     -->
-    <slot name="start-icon">
+    <slot v-if="isStartLoader" name="loader">
+      <MazSpinner size="1.25em" />
+    </slot>
+    <slot v-else name="start-icon">
       <MazIcon v-if="startIconProps" v-bind="startIconProps" />
     </slot>
 
@@ -299,7 +321,7 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
       <MazIcon v-if="endIconProps" v-bind="endIconProps" />
     </slot>
 
-    <div v-if="loading" class="m-btn-loader-container">
+    <div v-if="isOverlayLoader" class="m-btn-loader-container">
       <!--
         @slot loader - The loader to display in the button
       -->
@@ -312,158 +334,180 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
 
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
+@layer theme, base, components, utilities;
 
-.m-btn {
-  /* State variants derived from --m-btn-bg via OKLCh lightness offsets
-   * (matches the SCALE_OFFSETS table: -600, -700, -400 steps). */
-  --m-btn-bg-hover: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.05), 1) c h); /* ↔ scale -600 */
-  --m-btn-bg-active: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
-  --m-btn-bd-light: oklch(from var(--m-btn-bg) clamp(0, calc(l + 0.06), 1) c h); /* ↔ scale -400 */
-  --m-btn-bd-dark: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
-  --m-btn-pastel-bg: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
-  --m-btn-pastel-fg: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+@layer components {
+  .m-btn {
+    /* State variants derived from --m-btn-bg via OKLCh lightness offsets
+     * (matches the SCALE_OFFSETS table: -600, -700, -400 steps). */
+    --m-btn-bg-hover: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.05), 1) c h); /* ↔ scale -600 */
+    --m-btn-bg-active: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+    --m-btn-bd-light: oklch(from var(--m-btn-bg) clamp(0, calc(l + 0.06), 1) c h); /* ↔ scale -400 */
+    --m-btn-bd-dark: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+    --m-btn-pastel-bg: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
+    --m-btn-pastel-fg: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
 
-  /* On a dark background the tint is dark too: the text goes lighter to stay readable (↔ scale -300, like MazBadge). */
-  @variant dark {
-    --m-btn-pastel-fg: oklch(from var(--m-btn-bg) clamp(0, calc(l + 0.15), 1) c h);
-  }
-
-  justify-content: var(--m-btn-justify, center);
-  background-color: var(--m-btn-bg);
-  color: var(--m-btn-fg);
-  font-weight: var(--maz-btn-font-weight, 500);
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-
-  &:not(:disabled):hover {
-    background-color: var(--m-btn-bg-hover);
-  }
-
-  &:not(:disabled):active,
-  &.--active {
-    background-color: var(--m-btn-bg-active);
-  }
-
-  &:focus-visible {
-    outline-color: var(--m-btn-bg, var(--maz-primary));
-  }
-
-  /* Outlined variant */
-  &.--outlined {
-    @apply maz:bg-transparent maz:border-(--m-btn-bd-light) maz:dark:border-(--m-btn-bd-dark);
-
-    color: var(--m-btn-bg);
-
-    &:not(:disabled):hover {
-      background-color: color-mix(in srgb, var(--m-btn-bg) 10%, transparent);
+    /* On a dark background the tint is dark too: the text goes lighter to stay readable (↔ scale -300, like MazBadge). */
+    @variant dark {
+      --m-btn-pastel-fg: oklch(from var(--m-btn-bg) clamp(0, calc(l + 0.15), 1) c h);
     }
 
-    &:not(:disabled):active,
-    &.--active {
-      background-color: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
-    }
-  }
-
-  /* Pastel variant */
-  &.--pastel {
-    background-color: var(--m-btn-pastel-bg);
-    color: var(--m-btn-pastel-fg);
-
-    &:not(:disabled):hover {
-      background-color: var(--m-btn-bg);
-      color: var(--m-btn-fg);
-    }
-
-    &:not(:disabled):active,
-    &.--active {
-      background-color: var(--m-btn-bg-hover);
-      color: var(--m-btn-fg);
-    }
-  }
-
-  /* Transparent: no theme color, a foreground tint on hover/active */
-  &.--transparent {
-    @apply maz:bg-transparent maz:text-foreground;
-
-    --m-btn-bg-hover: color-mix(in oklab, var(--maz-foreground) 6%, transparent);
-    --m-btn-bg-active: color-mix(in oklab, var(--maz-foreground) 12%, transparent);
-
-    &:focus-visible {
-      outline-color: var(--maz-primary);
-    }
-
-    &.--outlined {
-      @apply maz:border-divider;
-    }
+    justify-content: var(--m-btn-justify, center);
+    border-color: transparent;
+    background-color: var(--m-btn-bg);
+    color: var(--m-btn-fg);
+    font-weight: var(--maz-btn-font-weight, 500);
+    outline: var(--maz-focus-ring-width, 2px) solid transparent;
+    outline-offset: var(--maz-focus-ring-offset, 2px);
 
     &:not(:disabled):hover {
       background-color: var(--m-btn-bg-hover);
-      color: var(--maz-foreground);
     }
 
     &:not(:disabled):active,
-    &.--active {
+    &.--active:not(:disabled) {
       background-color: var(--m-btn-bg-active);
-      color: var(--maz-foreground);
     }
-
-    .m-btn-loader-container {
-      @apply maz:bg-surface maz:text-foreground;
-    }
-  }
-
-  /* Neutral colors: color="surface" and color="container", a foreground tint on hover/active */
-  &.--surface {
-    --m-btn-bg: var(--maz-surface);
-  }
-
-  &.--container {
-    --m-btn-bg: var(--maz-container-bg, var(--maz-surface));
-
-    @apply maz:border-divider;
-  }
-
-  &.--surface,
-  &.--container {
-    --m-btn-fg: var(--maz-foreground);
-    --m-btn-bg-hover: color-mix(in oklab, var(--m-btn-bg), var(--maz-foreground) 6%);
-    --m-btn-bg-active: color-mix(in oklab, var(--m-btn-bg), var(--maz-foreground) 12%);
 
     &:focus-visible {
-      outline-color: var(--maz-primary);
+      outline-color: var(--maz-focus-ring-color, var(--m-btn-bg, var(--maz-primary)));
     }
 
-    /* A pastel neutral color has no meaning: the solid rendering */
+    /* Outlined variant */
+    &.--outlined {
+      @apply maz:bg-transparent maz:border-(--m-btn-bd-light) maz:dark:border-(--m-btn-bd-dark);
+
+      color: var(--m-btn-bg);
+
+      &:not(:disabled):hover {
+        background-color: color-mix(in srgb, var(--m-btn-bg) 10%, transparent);
+      }
+
+      &:not(:disabled):active,
+      &.--active:not(:disabled) {
+        background-color: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
+      }
+    }
+
+    /* Pastel variant */
     &.--pastel {
-      background-color: var(--m-btn-bg);
-      color: var(--m-btn-fg);
+      background-color: var(--m-btn-pastel-bg);
+      color: var(--m-btn-pastel-fg);
+
+      &:not(:disabled):hover {
+        background-color: var(--m-btn-bg);
+        color: var(--m-btn-fg);
+      }
+
+      &:not(:disabled):active,
+      &.--active:not(:disabled) {
+        background-color: var(--m-btn-bg-hover);
+        color: var(--m-btn-fg);
+      }
+    }
+
+    /* Transparent: no theme color, a foreground tint on hover/active */
+    &.--transparent {
+      @apply maz:bg-transparent maz:text-foreground;
+
+      --m-btn-bg-hover: color-mix(in oklab, var(--maz-foreground) 6%, transparent);
+      --m-btn-bg-active: color-mix(in oklab, var(--maz-foreground) 12%, transparent);
+
+      &:focus-visible {
+        outline-color: var(--maz-focus-ring-color, var(--maz-primary));
+      }
+
+      &.--outlined {
+        @apply maz:border-divider;
+      }
 
       &:not(:disabled):hover {
         background-color: var(--m-btn-bg-hover);
+        color: var(--maz-foreground);
       }
 
       &:not(:disabled):active,
-      &.--active {
+      &.--active:not(:disabled) {
         background-color: var(--m-btn-bg-active);
+        color: var(--maz-foreground);
+      }
+
+      .m-btn-loader-container {
+        @apply maz:bg-surface maz:text-foreground;
       }
     }
 
-    &.--outlined {
-      @apply maz:bg-transparent maz:border-divider;
+    /* Neutral colors: color="surface" and color="container", a foreground tint on hover/active */
+    &.--surface {
+      --m-btn-bg: var(--maz-surface);
+    }
 
-      color: var(--m-btn-fg);
+    &.--container {
+      --m-btn-bg: var(--maz-container-bg, var(--maz-surface));
 
-      &:not(:disabled):hover {
-        background-color: color-mix(in oklab, var(--maz-foreground) 6%, transparent);
+      @apply maz:border-divider;
+    }
+
+    &.--neutral {
+      --m-btn-bg: var(--maz-neutral, var(--maz-container-bg, var(--maz-surface)));
+      --m-btn-neutral-fg: var(--maz-neutral-foreground, var(--maz-foreground));
+
+      @apply maz:border-divider;
+    }
+
+    &.--surface,
+    &.--container,
+    &.--neutral {
+      --m-btn-fg: var(--m-btn-neutral-fg, var(--maz-foreground));
+      --m-btn-bg-hover: color-mix(in oklab, var(--m-btn-bg), var(--maz-foreground) 6%);
+      --m-btn-bg-active: color-mix(in oklab, var(--m-btn-bg), var(--maz-foreground) 12%);
+
+      &:focus-visible {
+        outline-color: var(--maz-focus-ring-color, var(--maz-primary));
       }
 
-      &:not(:disabled):active,
-      &.--active {
-        background-color: color-mix(in oklab, var(--maz-foreground) 12%, transparent);
+      /* A pastel neutral color has no meaning: the solid rendering */
+      &.--pastel {
+        background-color: var(--m-btn-bg);
+        color: var(--m-btn-fg);
+
+        &:not(:disabled):hover {
+          background-color: var(--m-btn-bg-hover);
+        }
+
+        &:not(:disabled):active,
+        &.--active:not(:disabled) {
+          background-color: var(--m-btn-bg-active);
+        }
+      }
+
+      &.--outlined {
+        @apply maz:bg-transparent maz:border-divider;
+
+        color: var(--m-btn-fg);
+
+        &:not(:disabled):hover {
+          background-color: color-mix(in oklab, var(--maz-foreground) 6%, transparent);
+        }
+
+        &:not(:disabled):active,
+        &.--active:not(:disabled) {
+          background-color: color-mix(in oklab, var(--maz-foreground) 12%, transparent);
+        }
       }
     }
   }
 
+  .m-btn-loader-container {
+    @apply maz:absolute maz:inset-0 maz:flex maz:flex-center;
+
+    background-color: var(--m-btn-bg);
+    color: var(--m-btn-fg);
+  }
+}
+
+/* Outside of the layer: these states keep winning over the utility classes of the button and of its parents */
+.m-btn {
   &.--block {
     @apply maz:w-full;
   }
@@ -479,12 +523,5 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
   &.--no-padding {
     @apply maz:p-0;
   }
-}
-
-.m-btn-loader-container {
-  @apply maz:absolute maz:inset-0 maz:flex maz:flex-center;
-
-  background-color: var(--m-btn-bg);
-  color: var(--m-btn-fg);
 }
 </style>

@@ -148,6 +148,16 @@ export const SEARCH_CASES: SearchCase[] = [
     rank: 3,
   },
   {
+    query: 'environment variables editor',
+    expected: ['components/maz-input-key-value'],
+    rank: 3,
+  },
+  {
+    query: 'api key input',
+    expected: ['components/maz-input-secret'],
+    rank: 3,
+  },
+  {
     query: 'tags input',
     expected: ['components/maz-input-tags'],
     rank: 1,
@@ -496,6 +506,26 @@ export const SEARCH_CASES: SearchCase[] = [
     query: 'markdown editor',
     expected: ['components/maz-markdown-editor'],
     rank: 1,
+  },
+  {
+    query: 'compare two texts',
+    expected: ['components/maz-code-highlight'],
+    rank: 1,
+  },
+  {
+    query: 'terminal output',
+    expected: ['components/maz-log-stream'],
+    rank: 1,
+  },
+  {
+    query: 'render markdown',
+    expected: ['components/maz-markdown'],
+    rank: 1,
+  },
+  {
+    query: 'display release notes markdown',
+    expected: ['components/maz-markdown'],
+    rank: 3,
   },
   {
     query: 'read more truncate text',

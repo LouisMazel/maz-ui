@@ -643,6 +643,44 @@ When the sidebar is hidden, keep a control to bring it back somewhere else (a bu
   </template>
 </ComponentDemo>
 
+## End icon and end content
+
+`end-icon` displays an icon after the label (an external link arrow, a chevron), and the `end` slot takes any content (a shortcut, a status). It comes after the badge, and the label keeps its truncation when the sidebar is narrow. Both are hidden when the sidebar is collapsed to its icons.
+
+<ComponentDemo>
+  <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[16rem] maz:flex">
+    <MazSidebar v-model:open="endOpen" class="maz:h-full">
+      <MazSidebarContent>
+        <MazSidebarMenu>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton label="Documentation with a very long label to show the truncation" href="https://maz-ui.com" end-icon="arrow-top-right-on-square" />
+          </MazSidebarMenuItem>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton label="Search">
+              <template #end><kbd class="maz:text-xs">Ctrl K</kbd></template>
+            </MazSidebarMenuButton>
+          </MazSidebarMenuItem>
+        </MazSidebarMenu>
+      </MazSidebarContent>
+    </MazSidebar>
+    <main class="maz:flex-1 maz:p-4">
+      <MazBtn @click="endOpen = !endOpen">Toggle sidebar</MazBtn>
+    </main>
+  </div>
+
+<template #code>
+
+```html
+<MazSidebarMenuButton label="Documentation" href="https://maz-ui.com" end-icon="arrow-top-right-on-square" />
+
+<MazSidebarMenuButton label="Search">
+  <template #end><kbd>Ctrl K</kbd></template>
+</MazSidebarMenuButton>
+```
+
+  </template>
+</ComponentDemo>
+
 ## User menu in footer
 
 <ComponentDemo>
@@ -873,6 +911,7 @@ const overlayOpen = ref(false)
 const offcanvasOpen = ref(true)
 const userMenuOpen = ref(true)
 const badgesOpen = ref(true)
+const endOpen = ref(true)
 const sideEndOpen = ref(true)
 const iconModeOpen = ref(true)
 const submenusOpen = ref(true)

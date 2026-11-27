@@ -96,6 +96,11 @@ export interface MazMarkdownEditorProps {
    */
   markedOptions?: Record<string, unknown>
   /**
+   * Highlight the fenced code blocks of the preview with MazCodeHighlight (needs `shiki`)
+   * @default false
+   */
+  highlight?: boolean
+  /**
    * Minimum number of visible rows of the editor textarea
    * @default 6
    */
@@ -110,6 +115,7 @@ export interface MazMarkdownEditorProps {
 
 <script lang="ts" setup>
 import type { MazDropdownMenuItem } from './MazDropdown.vue'
+import type { MazMarkdownExposed } from './MazMarkdown.vue'
 import { MazBold } from '@maz-ui/icons/lazy/MazBold'
 import { MazChatBubbleBottomCenterText } from '@maz-ui/icons/lazy/MazChatBubbleBottomCenterText'
 import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
@@ -127,7 +133,7 @@ import { MazStrikethrough } from '@maz-ui/icons/lazy/MazStrikethrough'
 import { MazTableCells } from '@maz-ui/icons/lazy/MazTableCells'
 import { MazViewColumns } from '@maz-ui/icons/lazy/MazViewColumns'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, useTemplateRef } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazBtn from './MazBtn.vue'
@@ -160,6 +166,7 @@ const {
   sanitize = true,
   renderFunction,
   markedOptions,
+  highlight = false,
   rows = 6,
   translations,
 } = defineProps<MazMarkdownEditorProps>()
@@ -222,6 +229,8 @@ const mode = defineModel<MazMarkdownEditorMode>('mode', { default: 'write' })
 
 const { roundedSize } = useGlobalConfig<{ roundedSize: MazRoundedSize }>('MazMarkdownEditor', { roundedSize: 'md' })
 
+const MazMarkdown = defineAsyncComponent(() => import('./MazMarkdown.vue'))
+
 const { t } = useTranslations()
 
 const instanceId = useInstanceUniqId({
@@ -231,8 +240,7 @@ const instanceId = useInstanceUniqId({
 
 const textareaEl = ref<HTMLTextAreaElement>()
 const gutterEl = ref<HTMLElement>()
-const previewHtml = ref('')
-const isRendering = ref(false)
+const markdownEl = useTemplateRef<MazMarkdownExposed>('markdownEl')
 
 /* eslint-disable complexity */
 const labels = computed(() => ({
@@ -271,65 +279,6 @@ const inputValue = computed({
 function updateValue(value?: string) {
   emits('update:model-value', value)
   emits('input', value)
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-}
-
-let renderSeq = 0
-
-async function parseToHtml(source: string): Promise<string> {
-  if (renderFunction)
-    return renderFunction(source)
-
-  const { marked } = await import('marked')
-  return marked.parse(source, { gfm: true, breaks: true, ...markedOptions })
-}
-
-async function sanitizeHtml(html: string, source: string): Promise<string> {
-  if (!sanitize)
-    return html
-
-  try {
-    const { default: DOMPurify } = await import('dompurify')
-    return DOMPurify.sanitize(html)
-  }
-  catch {
-    return `<pre>${escapeHtml(source)}</pre>`
-  }
-}
-
-async function renderPreview() {
-  const seq = ++renderSeq
-  const source = modelValue ?? ''
-
-  if (!source.trim() || typeof globalThis.window === 'undefined') {
-    if (seq === renderSeq)
-      previewHtml.value = ''
-    return
-  }
-
-  isRendering.value = true
-
-  try {
-    const html = await sanitizeHtml(await parseToHtml(source), source)
-    if (seq === renderSeq)
-      previewHtml.value = html
-  }
-  catch {
-    if (seq === renderSeq)
-      previewHtml.value = `<pre>${escapeHtml(source)}</pre>`
-  }
-  finally {
-    if (seq === renderSeq)
-      isRendering.value = false
-  }
 }
 
 function setMode(value: MazMarkdownEditorMode) {
@@ -925,25 +874,13 @@ const tabItems = computed(() => [
   },
 ])
 
-watch(
-  [
-    () => modelValue,
-    mode,
-  ],
-  ([, currentMode]) => {
-    if (currentMode !== 'write')
-      renderPreview()
-  },
-  { immediate: true },
-)
-
 defineExpose({
   /** The underlying textarea element */
   textarea: textareaEl,
   /** The current editor mode (write / preview / split) */
   mode,
   /** Programmatically re-render the markdown preview */
-  renderPreview,
+  renderPreview: () => markdownEl.value?.render(),
   /** Focus the editor textarea */
   focus: () => textareaEl.value?.focus(),
 })
@@ -1102,8 +1039,18 @@ defineExpose({
           :aria-labelledby="getTabId('preview')"
           :style="{ minHeight: `${rows * 1.5}rem` }"
         >
-          <div v-if="previewHtml" class="m-markdown-editor__preview-content maz:rich-text maz:[--maz-rich-text-max-width:none] maz:rich-text-sm" v-html="previewHtml" />
-          <p v-else-if="!isRendering" class="m-markdown-editor__preview-empty maz:text-muted maz:italic">
+          <MazMarkdown
+            v-if="modelValue?.trim()"
+            ref="markdownEl"
+            class="m-markdown-editor__preview-content"
+            :content="modelValue"
+            size="sm"
+            :sanitize="sanitize"
+            :highlight="highlight"
+            :render-function="renderFunction"
+            :marked-options="markedOptions"
+          />
+          <p v-else class="m-markdown-editor__preview-empty maz:text-muted maz:italic">
             <!--
               @slot empty-preview - Content displayed in the preview pane when there is nothing to render
             -->

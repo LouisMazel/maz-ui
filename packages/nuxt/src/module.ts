@@ -125,6 +125,7 @@ const defaults = {
     rules: false,
     mcp: false,
   },
+  openExternal: '',
 } satisfies Required<MazUiNuxtOptions>
 
 function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult, options: { rules: boolean, mcp: boolean, requestedTargets?: AgentTarget[] }): string {
@@ -148,6 +149,8 @@ function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult
 const ICON_TYPES_TEMPLATE = 'types/maz-icons.d.ts'
 
 const FLAGS_TEMPLATE = 'maz-ui-flags.mjs'
+
+const OPEN_EXTERNAL_TEMPLATE = 'maz-ui-open-external.mjs'
 
 type LegacyPlugin = keyof NonNullable<MazUiNuxtOptions['plugins']>
 
@@ -494,6 +497,13 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         : 'export default undefined\n',
     })
 
+    addTemplate({
+      filename: OPEN_EXTERNAL_TEMPLATE,
+      getContents: async () => moduleOptions.openExternal
+        ? `export { default } from ${JSON.stringify(await resolvePath(moduleOptions.openExternal))}\n`
+        : 'export default undefined\n',
+    })
+
     // The MazUi plugin: theme, translations, defaults, toast, dialog and aos
 
     addPlugin(resolve(_dirname, './runtime/plugins/maz-ui'))
@@ -539,6 +549,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       }
     }
 
+    // maz-ui-review-ignore deprecated-api -- names of the legacy plugins kept until v6
     // Removed in v6 (plans/ROADMAP.md): `$mazToast`, `$mazDialog` and `$mazWait` of the deprecated plugins option
 
     for (const plugin of ['toast', 'dialog', 'wait'] as const) {

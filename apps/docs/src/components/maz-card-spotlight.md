@@ -65,6 +65,28 @@ const { setColorMode } = useTheme()
   </template>
 </ComponentDemo>
 
+## Free color
+
+`color` also takes any CSS color for the halo, which is purely decorative. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <MazCardSpotlight color="#8b5cf6" style="width: 500px; max-width: 100%;">
+    Hover this card, the halo is violet.
+  </MazCardSpotlight>
+
+<template #code>
+
+```vue
+<template>
+  <MazCardSpotlight color="#8b5cf6">
+    Hover this card, the halo is violet.
+  </MazCardSpotlight>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Effect with multiple cards and with secondary color
 
 <ComponentDemo>

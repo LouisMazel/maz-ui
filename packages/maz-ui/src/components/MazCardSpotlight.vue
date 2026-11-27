@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import type { HTMLAttributes, StyleValue } from 'vue'
-import type { MazColor } from './types.ts'
+import type { MazColorOrFree } from './types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
 import { useScroll } from '../composables/useScroll.ts'
+import { mixColor } from '../utils/freeColor.ts'
 
 export interface MazCardSpotlightProps {
   /**
-   * The color of the component.
+   * The color of the halo: a theme color or a free CSS color (`#e11d48`, `oklch(...)`, `var(--brand)`)
    * @default primary
    */
-  color?: MazColor
+  color?: MazColorOrFree
   /**
    * Add elevation to the component
    * @default true
@@ -61,8 +62,8 @@ const { isIntersecting } = useIntersectionObserver(containerElement, () => {
 })
 let cachedRect: DOMRect | null = null
 
-const alphaColor = computed(() => `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`)
-const alphaColor20 = computed(() => `color-mix(in srgb, var(--maz-${color}) 20%, transparent)`)
+const alphaColor = computed(() => mixColor(color, 60))
+const alphaColor20 = computed(() => mixColor(color, 20))
 
 function updateCachedRect() {
   if (containerElement.value) {

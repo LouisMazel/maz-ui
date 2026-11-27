@@ -661,6 +661,7 @@ Each token has a precise role. Pick the values with that role in mind, not from 
 | `divider` | Borders and separators. |
 | `overlay` | Backdrop behind dialogs and drawers. |
 | `shadow` | Tint of the shadows. |
+| `neutral`, `neutral-foreground` | Optional. Grey of the push buttons of the native presets and its text (`MazBtn color="neutral"`). See [Neutral button color](#neutral-button-color). |
 
 Every brand and state color (`primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast`) has a `-foreground` color: the text or icon color to put on top of it (`bg-primary text-primary-foreground`). The token and its `-foreground` are chosen as a pair, in light and dark modes.
 
@@ -999,6 +1000,72 @@ const calmTheme = definePreset({
 
 ```html
 <div role="button" tabindex="0" class="cursor-interactive">Custom control</div>
+```
+
+### Focus ring
+
+By default each component draws its own focus ring: 2px, offset 2px, in its color. `components.focusRing` sets one ring for all of them, distinct from `primary`: a color per mode, a width and an offset. It applies to `MazBtn` and `MazSwitch`.
+
+```typescript
+const ringTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'ring',
+    components: {
+      focusRing: {
+        color: { light: '#000000', dark: '#ffffff' },
+        width: '2px',
+        offset: '2px',
+      },
+    },
+  },
+})
+```
+
+The variables are `--maz-focus-ring-color`, `--maz-focus-ring-width` and `--maz-focus-ring-offset`: use them in your own controls (`outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary))`). The `windows` preset uses the Fluent ring, black in light mode and white in dark mode.
+
+### Shadow per color mode
+
+A black shadow is barely visible on a dark background. Each entry of `scales.shadow` is a string, or `{ light, dark }` for a shadow per mode: a stronger shadow, or a light hairline, in dark mode.
+
+```typescript
+const shadowTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'shadow',
+    scales: {
+      shadow: {
+        elevation: {
+          light: '0 8px 24px rgb(0 0 0 / 0.15)',
+          dark: '0 8px 24px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.08)',
+        },
+      },
+    },
+  },
+})
+```
+
+The light value goes in `:root`, the dark one under the dark class (`darkModeStrategy: 'class'`) or in a `prefers-color-scheme: dark` query (`'media'`). A plain string is emitted once and costs nothing more. The `macos`, `windows` and `linux` presets use it for `elevation`.
+
+### Neutral button color
+
+`surface` and `container` do not fit a native push button: the grey of the macOS, Windows and Linux buttons is neither the page nor the card. The optional `neutral` and `neutral-foreground` colors of a preset give it, and `MazBtn color="neutral"` uses it. The `macos`, `windows` and `linux` presets declare `neutral` (light and dark). On another preset, `neutral` falls back to the `container` background and `foreground` text, so the button still renders.
+
+```vue
+<MazBtn color="neutral">Cancel</MazBtn>
+```
+
+```typescript
+const buttonTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'buttons',
+    colors: {
+      light: { neutral: '#ebebeb' },
+      dark: { neutral: '#3a3a3a' },
+    },
+  },
+})
 ```
 
 ## useTheme Composable API
@@ -1345,6 +1412,8 @@ Defined per mode under `colors.light` / `colors.dark`. Each base color also gets
 | `muted` | `--maz-muted` | `--maz-muted-50..900` | Muted / secondary text. |
 | `overlay` | `--maz-overlay` | `--maz-overlay-50..900` | Backdrop / dialog scrim. |
 | `shadow` | `--maz-shadow` | `--maz-shadow-50..900` | Tint used by Tailwind `shadow-*` utilities (via `--color-elevation`). |
+| `neutral` | `--maz-neutral` | none | Optional. Push button of the native presets (`MazBtn color="neutral"`). |
+| `neutral-foreground` | `--maz-neutral-foreground` | none | Optional. Text on `neutral`. |
 
 ### Scales
 
@@ -1353,7 +1422,7 @@ Multi-step scales under `scales.<key>`.
 | Preset key | CSS variables | Tailwind utility |
 | --- | --- | --- |
 | `rounded.xs..3xl` | `--maz-rounded-xs..3xl` | `rounded-{key}` (bridged to `--radius-{key}`) |
-| `shadow.{sm, md, lg, xl, elevation}` | `--maz-shadow-style-{key}` | `shadow-{key}` (bridged to `--shadow-{key}`) |
+| `shadow.{sm, md, lg, xl, elevation}` | `--maz-shadow-style-{key}` | `shadow-{key}` (bridged to `--shadow-{key}`). A string, or `{ light, dark }` for a [shadow per mode](#shadow-per-color-mode). |
 | `color` (`'relative'` \| `'perceptual'`) | `--maz-color-<role>-50..950`, `--color-<role>-50..950` | `bg-primary-300`... (see [Color scales](#color-scales)) |
 
 > Same naming-collision avoidance as foundation: `rounded.*` (instead of `radius.*`) and `shadow-style-*` (instead of plain `shadow-*`) keep the bridge cycle-free under `prefix(maz)`.
@@ -1371,6 +1440,9 @@ Per-component knobs under `components.<key>`. All optional — omit to fall back
 | `glass.border.light` / `.dark` | `--maz-glass-border` (per mode) | Hairline edge of the material. Defaults to the divider color. Bridged to `--color-glass-border` (`border-glass`). |
 | `glass.blur` | `--maz-glass-blur` | Backdrop blur. Defaults to `24px`. |
 | `glass.saturate` | `--maz-glass-saturate` | Backdrop saturation. Defaults to `1.4`. |
+| `focusRing.color.light` / `.dark` | `--maz-focus-ring-color` (per mode) | Color of the focus ring of `MazBtn` and `MazSwitch`. Without it, the ring takes the color of the control. See [Focus ring](#focus-ring). |
+| `focusRing.width` | `--maz-focus-ring-width` | Thickness of the focus ring. Defaults to `2px`. |
+| `focusRing.offset` | `--maz-focus-ring-offset` | Gap between the control and its ring. Defaults to `2px`. |
 | `dialog.max-width` | `--maz-dialog-max-width` | Max-width of `MazDialog` on tablet and up. Defaults to `38rem` (`33.25rem` on `ocean`). Overridable via the `max-width` prop. |
 | `dialog.min-width` | `--maz-dialog-min-width` | Min-width of `MazDialog` on tablet and up. Defaults to `32rem` (`28rem` on `ocean`). Overridable via the `min-width` prop. |
 

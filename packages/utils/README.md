@@ -63,19 +63,21 @@ import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 
 - **formatDate** - Format dates with locale support
 - **formatRelativeTime** / **getRelativeTime** - Localized relative time (`3 minutes ago`) with `Intl`
+- **formatDuration** - Localized duration (`3 min 05 s`) with `Intl`
 - **formatNumber** - Format numbers with locale support
 - **formatCurrency** - Format currency values with locale support
 
 ### Performance Utilities
 
-- **debounce** - Debounce function calls
+- **debounce** - Debounce function calls (`cancel`, `flush`)
 - **debounceCallback** - Debounce with callback support
 - **debounceId** - Debounce with unique identifiers
-- **throttle** - Throttle function calls
+- **throttle** - Throttle function calls (`cancel`)
 - **throttleId** - Throttle with unique identifiers
 
 ### Browser and Environment
 
+- **isApple** / **formatShortcut** / **matchesShortcut** - Platform aware keyboard shortcuts (`mod` is Cmd on macOS, Ctrl elsewhere)
 - **isClient** - Check if running in client environment
 - **isServer** - Check if running in server environment
 - **isStandaloneMode** - Check if app is in standalone mode

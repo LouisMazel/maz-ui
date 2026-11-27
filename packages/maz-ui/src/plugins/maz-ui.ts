@@ -2,16 +2,18 @@ import type { MazUiThemeOptions } from '@maz-ui/themes/plugin'
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { Plugin } from 'vue'
 import type { MazUiDefaultsOptions } from '../composables/useGlobalConfig.ts'
+import type { MazUiExternalLinksOptions } from '../utils/externalLinks.ts'
 import type { AosOptions } from './aos.ts'
 import type { DialogOptions } from './dialog/DialogHandler.ts'
 import type { ToastOptions } from './toast/types.ts'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { MazUiTranslations } from '@maz-ui/translations/plugin'
 import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig.ts'
+import { EXTERNAL_LINKS_INJECTION_KEY } from '../utils/externalLinks.ts'
 import { MAZ_UI_CONTEXT_INJECTION_KEY } from '../utils/mazUiContext.ts'
 import { AosPlugin } from './aos.ts'
 
-export interface MazUiOptions {
+export interface MazUiOptions extends MazUiExternalLinksOptions {
   /**
    * The theme configurations
    * Can not be disabled
@@ -81,7 +83,7 @@ export interface MazUiOptions {
  */
 export const MazUi: Plugin<[MazUiOptions]> = {
   install(app, options) {
-    const { theme, translations, defaults, toast, dialog, aos } = options
+    const { theme, translations, defaults, toast, dialog, aos, openExternal, isExternalLink } = options
 
     app.use(MazUiTheme, theme)
     app.use(MazUiTranslations, translations)
@@ -93,6 +95,9 @@ export const MazUi: Plugin<[MazUiOptions]> = {
         ? undefined
         : aos)
     }
+
+    if (openExternal || isExternalLink)
+      app.provide(EXTERNAL_LINKS_INJECTION_KEY, { openExternal, isExternalLink })
 
     if (defaults) {
       app.provide(GLOBAL_CONFIG_INJECTION_KEY, defaults)

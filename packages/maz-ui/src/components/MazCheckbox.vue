@@ -2,7 +2,8 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types.ts'
 import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
-import { computed, ref } from 'vue'
+import { MazMinus } from '@maz-ui/icons/raw/MazMinus'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
@@ -31,6 +32,12 @@ export interface MazCheckboxProps<T = boolean | (string | number)[]> {
   label?: string
   /** If the checkbox is disabled */
   disabled?: boolean
+  /**
+   * Mixed state (a dash instead of the check, `aria-checked="mixed"`), for a "select all" checkbox
+   * whose children are partly selected. It does not change the model: set it from the children
+   * @default false
+   */
+  indeterminate?: boolean
   /** Whether there is an error with the input. */
   error?: boolean
   /** Whether the input is successful. */
@@ -53,6 +60,7 @@ const {
   value,
   name = 'm-checkbox',
   disabled,
+  indeterminate = false,
   error,
   success,
   warning,
@@ -89,6 +97,15 @@ const instanceId = useInstanceUniqId({
 })
 
 const isFocused = ref(false)
+const inputRef = ref<HTMLInputElement>()
+
+function syncIndeterminate() {
+  if (inputRef.value)
+    inputRef.value.indeterminate = indeterminate
+}
+
+onMounted(syncIndeterminate)
+watch(() => indeterminate, syncIndeterminate, { flush: 'post' })
 
 const isChecked = computed(() => {
   if (typeof value !== 'boolean' && Array.isArray(modelValue)) {
@@ -203,6 +220,7 @@ function emitValue(value: boolean | string | number) {
 
   emits('update:model-value', newValue as T)
   emits('change', newValue as T)
+  nextTick(syncIndeterminate)
 }
 
 function onBlur(event: FocusEvent) {
@@ -220,15 +238,17 @@ function onFocus(event: FocusEvent) {
     :for="instanceId"
     class="m-checkbox m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
     :class="[
-      { '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-interactive': !disabled },
+      { '--indeterminate': indeterminate, '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-interactive': !disabled },
       classProp,
     ]"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
   >
     <input
       :id="instanceId"
+      ref="inputRef"
       :checked="isChecked"
       v-bind="$attrs"
+      :aria-checked="indeterminate ? 'mixed' : undefined"
       :disabled
       :name
       type="checkbox"
@@ -237,7 +257,7 @@ function onFocus(event: FocusEvent) {
       @focus="onFocus"
     >
     <span :style="{ width: checkboxSize, height: checkboxSize }">
-      <MazIcon :icon="MazCheck" class="check-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="[isChecked ? 'maz:scale-100' : 'maz:scale-0', checkIconSize]" :style="{ color: checkIconColor }" />
+      <MazIcon :icon="indeterminate ? MazMinus : MazCheck" class="check-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="[isChecked || indeterminate ? 'maz:scale-100' : 'maz:scale-0', checkIconSize]" :style="{ color: checkIconColor }" />
     </span>
     <div v-if="label || hasSlotContent($slots.default) || hint" class="m-checkbox__text maz:flex maz:flex-col maz:gap-0">
       <slot :value>
@@ -279,7 +299,8 @@ function onFocus(event: FocusEvent) {
       @apply maz:bg-input;
     }
 
-    &:checked ~ span {
+    &:checked ~ span,
+    &[aria-checked='mixed'] ~ span {
       border-color: var(--checkbox-selected-color);
       background-color: var(--checkbox-selected-color);
     }
@@ -294,7 +315,8 @@ function onFocus(event: FocusEvent) {
       @apply maz:text-muted!;
     }
 
-    input:checked ~ span {
+    input:checked ~ span,
+    input[aria-checked='mixed'] ~ span {
       @apply maz:border-divider;
 
       .check-icon {

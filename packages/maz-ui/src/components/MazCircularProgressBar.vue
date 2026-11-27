@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import type { SVGAttributes } from 'vue'
-import type { MazColor, MazSizeUnit } from './types.ts'
+import type { MazColorOrFree, MazSizeUnit } from './types.ts'
 import { computed, defineAsyncComponent, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
+import { shiftColorLightness } from '../utils/freeColor.ts'
 
 export interface MazCircularProgressBarProps {
   /**
@@ -27,11 +28,11 @@ export interface MazCircularProgressBarProps {
    */
   delay?: number
   /**
-   * The color of the progress bar
+   * The color of the progress bar: a theme color or a free CSS color (`#e11d48`, `oklch(...)`, `var(--brand)`)
    * @type Color
    * @default undefined
    */
-  color?: MazColor
+  color?: MazColorOrFree
   /**
    * Auto color based on the count (destructive, warning, success)
    * @default false
@@ -123,7 +124,7 @@ const adjustedPercentage = computed<number>(() => {
   return percentage
 })
 
-const currentColor = computed<MazColor | undefined>(() =>
+const currentColor = computed<MazColorOrFree | undefined>(() =>
   autoColor
     ? getStatusColor(adjustedPercentage.value)
     : color,
@@ -132,12 +133,12 @@ const currentColor = computed<MazColor | undefined>(() =>
 /* Gradient stops derived via OKLCh offsets (mirrors SCALE_OFFSETS: -400, -700). */
 const gradientStart = computed(() =>
   currentColor.value
-    ? `oklch(from var(--maz-${currentColor.value}) clamp(0, calc(l + 0.06), 1) c h)`
+    ? shiftColorLightness(currentColor.value, 0.06)
     : `var(--maz-primary)`,
 )
 const gradientEnd = computed(() =>
   currentColor.value
-    ? `oklch(from var(--maz-${currentColor.value}) clamp(0, calc(l - 0.1), 1) c h)`
+    ? shiftColorLightness(currentColor.value, -0.1)
     : `var(--maz-secondary)`,
 )
 function getStatusColor(percent: number) {

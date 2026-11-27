@@ -31,6 +31,8 @@ const {
   maxWidth = 'var(--maz-dialog-max-width, 38rem)',
   minWidth = 'var(--maz-dialog-min-width, 32rem)',
   scrollable,
+  headerDivider,
+  contentPadding = true,
   closeOnEscape = true,
   ...backdropProps
 } = defineProps<DialogProps & MazBackdropProps>()
@@ -67,6 +69,13 @@ export interface DialogProps {
   scrollable?: boolean
   /** Persistent dialog (not closable by clicking outside and remove close button) */
   persistent?: boolean
+  /** Add a divider under the header (always present with `scrollable`) */
+  headerDivider?: boolean
+  /**
+   * Add horizontal and bottom padding around the content of the dialog, set `false` for full-bleed content (list, image, table)
+   * @default true
+   */
+  contentPadding?: boolean
 }
 
 export interface MazDialogProps extends DialogProps, MazBackdropProps {}
@@ -146,7 +155,13 @@ if (scrollable) {
           @binding {Function} close close function
       -->
       <slot name="header" :close>
-        <div class="m-dialog-header maz:flex maz:items-baseline maz:ps-6 maz:pe-2 maz:pt-2 maz:pb-4" :class="[hasSlotContent(slots.title) || title ? '--has-title' : '', hasSlotContent(slots.title) || title ? 'maz:justify-between' : 'maz:justify-end']">
+        <div
+          class="m-dialog-header maz:flex maz:items-center maz:py-3 maz:ps-6 maz:pe-3"
+          :class="[
+            hasSlotContent(slots.title) || title ? '--has-title maz:justify-between' : 'maz:justify-end',
+            { '--divider maz:border-b maz:border-divider': headerDivider && !scrollable },
+          ]"
+        >
           <h2
             v-if="hasSlotContent(slots.title) || title"
             :id="titleId"
@@ -173,11 +188,14 @@ if (scrollable) {
       <div
         :id="descriptionId"
         ref="dialogContent"
-        class="m-dialog-content maz:flex-1 maz:px-6"
+        class="m-dialog-content maz:flex-1"
         :class="{
           '--bottom-padding': !hasFooter,
-          'maz:pb-4': !hasFooter,
-          'maz:scrollbar-themed maz:overflow-auto maz:border-t maz:border-divider maz:py-4': scrollable,
+          'maz:px-6': contentPadding,
+          'maz:pb-4': contentPadding && !hasFooter,
+          'maz:scrollbar-themed maz:overflow-auto maz:border-t maz:border-divider': scrollable,
+          'maz:py-4': scrollable && contentPadding,
+          'maz:pt-4': contentPadding && headerDivider && !scrollable,
           'maz:border-b': scrollable && hasFooter,
         }"
       >

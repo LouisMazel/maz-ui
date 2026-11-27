@@ -20,20 +20,20 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 
 **State, feedback and async**
 
-- a `ref` shared by several components (or a module) for a loading or busy state: sync in progress, spinner, disabled buttons, fullscreen loader: `useWait` (`maz-ui/composables/useWait`)
+- a loading or busy state shared by several components (or a module): spinner, disabled buttons, fullscreen loader: `useWait` (`maz-ui/composables/useWait`)
 - a message after an action (saved, failed, undo), instead of an `alert()` or a hand-made banner: `useToast` (`maz-ui/composables/useToast`)
 - ask a confirmation or a choice from the code (`await` the answer), instead of `confirm()` or a dialog wired by hand: `useDialog` (`maz-ui/composables/useDialog`)
 - copy a text with a "Copied!" state, a copy button for an ID or a command, instead of `navigator.clipboard.writeText`: `MazBtnClipboard` (`maz-ui/components/MazBtnClipboard`), `useClipboard` (`maz-ui/composables/useClipboard`)
 - validate a form with a Zod, Valibot or ArkType schema (errors per field, on blur or submit): `useFormValidator` (`maz-ui/composables/useFormValidator`)
 - keep the initial values of a form (a copy that no longer follows the source): `useFreezeValue` (`maz-ui/composables/useFreezeValue`)
 - know if two objects, arrays or dates are equal (unsaved changes), instead of `JSON.stringify(a) === JSON.stringify(b)`: `isEqual` (`@maz-ui/utils/helpers/isEqual`)
-- a readable message from anything a `catch` receives, instead of `error instanceof Error ? error.message : String(error)`: `getErrorMessage` (`@maz-ui/utils/helpers/getErrorMessage`)
+- a readable message from a caught error, instead of `error instanceof Error ? error.message : String(error)`: `getErrorMessage` (`@maz-ui/utils/helpers/getErrorMessage`)
 - wait until a value exists or matches (poll a getter with a timeout), instead of `setInterval` with a count of attempts: `checkAvailability` (`@maz-ui/utils/helpers/checkAvailability`)
 - pause an async function, instead of `new Promise(resolve => setTimeout(resolve, ms))`: `sleep` (`@maz-ui/utils/helpers/sleep`)
-- remove `null`, `undefined` and the falsy values of an array, with the type narrowed, instead of `.filter(Boolean)`: `truthyFilter` (`@maz-ui/utils/helpers/truthyFilter`)
-- the context a parent component gives its children, with an error when it is missing, instead of `inject()` + `throw`: `useInjectStrict` (`maz-ui/composables/useInjectStrict`)
+- remove the falsy values of an array with the type narrowed, instead of `.filter(Boolean)`: `truthyFilter` (`@maz-ui/utils/helpers/truthyFilter`)
+- a required `inject()`, instead of `inject()` + `throw`: `useInjectStrict` (`maz-ui/composables/useInjectStrict`)
 - a unique and SSR safe id per component instance (label `for`, `aria-describedby`), instead of `Math.random().toString(36)`: `useInstanceUniqId` (`maz-ui/composables/useInstanceUniqId`)
-- render a component from a function, outside of any template (a popup opened by code), instead of `createApp` or `render(h())` + `document.body.appendChild`: `useMountComponent` (`maz-ui/composables/useMountComponent`)
+- render a component from a function (a popup opened by code), instead of `createApp` or `render(h())`: `useMountComponent` (`maz-ui/composables/useMountComponent`)
 
 **Timers and events**
 
@@ -41,11 +41,12 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - a search field that waits for the user to stop typing: the `debounce` prop: `MazInput` (`maz-ui/components/MazInput`)
 - only the last call of an async function per id resolves (one request per row): `debounceId` (`@maz-ui/utils/helpers/debounceId`)
 - run at most every N ms (scroll, resize, mousemove handlers), instead of a `Date.now() - last` check: `throttle`, `throttleId` (`@maz-ui/utils/helpers/<name>`)
-- a countdown or a timeout with pause, resume and the remaining time, instead of `setInterval`: `useTimer` (`maz-ui/composables/useTimer`)
+- a countdown or a timeout with pause and resume, instead of `setInterval`: `useTimer` (`maz-ui/composables/useTimer`)
 - the user is inactive (auto logout, pause polling), instead of listeners on `mousemove` and `keydown`: `useIdleTimeout` (`maz-ui/composables/useIdleTimeout`), `IdleTimeout` (`@maz-ui/utils/helpers/idleTimeout`)
 - the tab is hidden or visible again (pause, refresh on return), instead of `visibilitychange`: `useUserVisibility` (`maz-ui/composables/useUserVisibility`), `UserVisibility` (`@maz-ui/utils/helpers/userVisibility`)
 - a click outside of an element (close a menu), instead of a `document` listener and `contains(event.target)`: `vClickOutside` (`maz-ui/directives/vClickOutside`)
 - the screen size or the breakpoint in the script, instead of `resize` or `matchMedia("(max-width...")`: `useBreakpoints`, `useWindowSize` (`maz-ui/composables/<name>`)
+- an event listener, a media query, the window focus, a Cmd/Ctrl shortcut, instead of `addEventListener`, `matchMedia`, `metaKey`: `useEventListener`, `useMediaQuery`, `useWindowFocus`, `useShortcut` (`maz-ui/composables/<name>`), `formatShortcut` (`@maz-ui/utils/helpers/shortcut`)
 - the changes or the size of a DOM element, instead of `new MutationObserver` or `new ResizeObserver`: `useMutationObserver`, `useResizeObserver` (`maz-ui/composables/<name>`)
 
 **Formatting and text**
@@ -53,7 +54,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - an amount of money, instead of `Intl.NumberFormat` with `currency`: `formatCurrency` (`@maz-ui/utils/helpers/formatCurrency`)
 - an input of an amount of money: `MazInputPrice` (`maz-ui/components/MazInputPrice`)
 - a date or a time, instead of `toLocaleDateString` or `Intl.DateTimeFormat`: `formatDate` (`@maz-ui/utils/helpers/formatDate`)
-- time ago ("3 minutes ago") that refreshes by itself, instead of `Intl.RelativeTimeFormat` and a timer: `useRelativeTime` (`maz-ui/composables/useRelativeTime`), `formatRelativeTime` (`@maz-ui/utils/helpers/formatRelativeTime`)
+- time ago ("3 minutes ago") that refreshes by itself, instead of `Intl.RelativeTimeFormat` and a timer; a duration ("3 min 05 s"): `useRelativeTime` (`maz-ui/composables/useRelativeTime`), `formatRelativeTime`, `formatDuration` (`@maz-ui/utils/helpers/<name>`)
 - a number, a percentage, a compact number (1.2K), instead of `Intl.NumberFormat`: `formatNumber` (`@maz-ui/utils/helpers/formatNumber`)
 - a phone number in its international format, instead of `libphonenumber-js`: `formatPhoneNumber` (`@maz-ui/utils/helpers/formatPhoneNumber`)
 - the name of a country or a language in any locale, instead of `Intl.DisplayNames`: `useDisplayNames` (`maz-ui/composables/useDisplayNames`)
@@ -63,6 +64,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - remove accents, compare without case nor accents, make a slug, instead of `normalize("NFD")` + a regex: `normalizeString` (`@maz-ui/utils/helpers/normalizeString`)
 - pretty print JSON, instead of `JSON.stringify(value, null, 2)`: `formatJson` (`@maz-ui/utils/helpers/formatJson`)
 - filter a list by a typed query (typos, accents, words in any order, highlight), instead of `includes()` on lowercased strings: `useFuzzySearch` (`maz-ui/composables/useFuzzySearch`), `highlightMatches` (`@maz-ui/utils/helpers/fuzzySearch`)
+- a diff of two texts; a growing log: `MazCodeHighlight`, `MazLogStream` (`maz-ui/components/<name>`), `diffLines` (`@maz-ui/utils/helpers/diffLines`)
 - a select or a list with a search field: the `search` prop: `MazSelect`, `MazChecklist` (`maz-ui/components/<name>`)
 - how close two strings are ("did you mean"): `useStringMatching` (`maz-ui/composables/useStringMatching`)
 - a long text cut with "Read more": `MazReadMore` (`maz-ui/components/MazReadMore`)
@@ -92,7 +94,6 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - load a third-party script once (SDK), instead of `document.createElement("script")`: `ScriptLoader` (`@maz-ui/utils/helpers/scriptLoader`)
 - dark mode toggle, color mode, brand colors at runtime, instead of the `dark` class or `localStorage`: `useTheme` (`@maz-ui/themes`)
 - the language of the texts of the components: `useTranslations` (`@maz-ui/translations`)
-- TypeScript helpers (deep partial, key paths, instance type of a generic component): `DeepPartial`, `DeepRequired`, `DeepKeyOf`, `FlattenObjectKeys`, `GenericInstanceType`, `InferMaybeRef` (`@maz-ui/utils/ts-helpers/<name>`)
 
 ### Which package for what
 

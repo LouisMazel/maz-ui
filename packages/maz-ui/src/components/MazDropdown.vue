@@ -13,12 +13,15 @@ import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
+import { createLazyTooltipDirective } from '../utils/lazyTooltip.ts'
 import MazPopover from './MazPopover.vue'
 
 export type MazDropdownMenuItem = Record<string, unknown> & {
   label: string
   class?: unknown
   color?: MazColor
+  /** Tooltip shown on hover of the entry (position `right` by default) */
+  tooltip?: string
   onClick?: () => unknown
 } & MazBtnProps & {
   target?: string
@@ -199,6 +202,8 @@ const emits = defineEmits<{
   'update:model-value': [value: boolean]
 }>()
 
+const vTooltip = createLazyTooltipDirective()
+
 const { size } = useGlobalConfig<{ size: MazSize }>('MazDropdown', { size: 'md' })
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -375,7 +380,7 @@ watch(
       <div
         :id="instanceId"
         tabindex="-1"
-        class="m-dropdown__wrapper maz:size-full maz:rounded-md maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400"
+        class="m-dropdown__wrapper maz:relative maz:size-full maz:rounded-md maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400"
       >
         <span :id="`${instanceId}-labelspan`" class="maz:sr-only">
           <!--
@@ -469,7 +474,8 @@ watch(
             -->
             <slot name="menuitem" :item="item" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
               <MazBtn
-                v-bind="{ ...item, onClick: undefined, label: undefined }"
+                v-tooltip="item.tooltip ? { text: item.tooltip, position: 'right' } : false"
+                v-bind="{ ...item, onClick: undefined, label: undefined, tooltip: undefined }"
                 role="menuitem"
                 :target="isLinkItem(item) ? item.target ?? '_self' : undefined"
                 :to="isLinkItem(item) ? item.to : undefined"

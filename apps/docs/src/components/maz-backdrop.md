@@ -206,6 +206,16 @@ MazBackdrop comes with built-in animations, but you can customize them with the 
   </template>
 </ComponentDemo>
 
+## Cancel the close
+
+`before-close` is called before every close (Escape, click outside, `close()`). Return `false`, or a promise of `false`, to keep the backdrop open. Any other result closes it, a thrown error or a rejected promise keeps it open. The `@before-close` event only notifies and cannot cancel.
+
+```vue
+<MazBackdrop v-model="isOpen" :before-close="() => !hasChanges">
+  ...
+</MazBackdrop>
+```
+
 ## Accessibility features
 
 MazBackdrop automatically handles:

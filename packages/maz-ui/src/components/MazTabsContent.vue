@@ -6,7 +6,7 @@ import { useInjectStrict } from '../composables/useInjectStrict.ts'
 
 const hideOverflow = ref(false)
 
-const { currentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab, orientation } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
 const allowOverFlow = debounce(() => {
   hideOverflow.value = false
@@ -25,7 +25,10 @@ watch(
 </script>
 
 <template>
-  <div class="m-tabs-content m-reset-css maz:relative" :class="{ 'maz:overflow-hidden': hideOverflow }">
+  <div
+    class="m-tabs-content m-reset-css maz:relative"
+    :class="{ 'maz:overflow-hidden': hideOverflow, 'maz:min-w-0 maz:flex-1': orientation === 'vertical' }"
+  >
     <slot />
   </div>
 </template>

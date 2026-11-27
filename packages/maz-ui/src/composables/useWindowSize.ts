@@ -1,5 +1,5 @@
-import { isClient } from '@maz-ui/utils/helpers/isClient'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
+import { useWindow } from './useWindow.ts'
 
 export interface UseWindowSizeOptions {
   /**
@@ -33,43 +33,33 @@ export interface UseWindowSizeOptions {
 
 export function useWindowSize(options: UseWindowSizeOptions = {}) {
   const {
-    internalWindow = isClient()
-      ? globalThis
-      : undefined,
+    internalWindow,
     initialWidth = Number.POSITIVE_INFINITY,
     initialHeight = Number.POSITIVE_INFINITY,
     includeScrollbar = true,
   } = options
 
+  const { window, on } = useWindow({ internalWindow })
+
   const width = ref(initialWidth)
   const height = ref(initialHeight)
 
   function update() {
-    if (internalWindow) {
+    if (window) {
       if (includeScrollbar) {
-        width.value = internalWindow.innerWidth
-        height.value = internalWindow.innerHeight
+        width.value = window.innerWidth
+        height.value = window.innerHeight
       }
       else {
-        width.value = internalWindow.document.documentElement.clientWidth
-        height.value = internalWindow.document.documentElement.clientHeight
+        width.value = window.document.documentElement.clientWidth
+        height.value = window.document.documentElement.clientHeight
       }
     }
   }
 
   update()
 
-  onMounted(() => {
-    if (internalWindow) {
-      internalWindow.addEventListener('resize', update, { passive: true })
-    }
-  })
-
-  onUnmounted(() => {
-    if (internalWindow) {
-      internalWindow.removeEventListener('resize', update)
-    }
-  })
+  on('resize', update, { passive: true })
 
   return { width, height }
 }

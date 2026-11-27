@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import type { MazColor, MazSize } from './types.ts'
+import type { MazColor, MazColorOrFree, MazSize } from './types.ts'
 import { computed } from 'vue'
-import { getColor } from './types.ts'
+import { resolveColor } from '../utils/freeColor.ts'
 
 export interface MazProgressBarSegment {
   /** Value of the segment, on the same scale as `max` */
   value: number
   /**
-   * Color of the segment
+   * Color of the segment: a theme color or a free CSS color (`#e11d48`, `oklch(...)`, `var(--brand)`)
    * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
    * @default the `color` of the bar
    */
-  color?: Exclude<MazColor, 'transparent'>
+  color?: MazColorOrFree<Exclude<MazColor, 'transparent'>>
   /** Name of the segment, read in the accessible description of the bar ("12 patch") */
   label?: string
 }
@@ -29,11 +29,12 @@ export interface MazProgressBarProps {
    */
   segments?: MazProgressBarSegment[]
   /**
-   * Color of the bar (and of the segments without their own color)
+   * Color of the bar (and of the segments without their own color): a theme color or a free CSS color
+   * (`#e11d48`, `oklch(...)`, `var(--brand)`)
    * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
    * @default 'primary'
    */
-  color?: Exclude<MazColor, 'transparent'>
+  color?: MazColorOrFree<Exclude<MazColor, 'transparent'>>
   /**
    * Thickness of the bar
    * @values `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
@@ -117,7 +118,7 @@ const parts = computed(() => {
     left -= width
     return {
       width,
-      color: getColor(segment.color ?? color),
+      color: resolveColor(segment.color ?? color),
     }
   }).filter(part => part.width > 0)
 })
@@ -149,7 +150,7 @@ const describedText = computed(() => valueText ?? (segments?.some(segment => seg
       :key="index"
       class="m-progress-bar__part maz:h-full maz:min-w-0 maz:transition-[flex-grow] maz:duration-300 maz:ease-out maz:motion-reduce:transition-none"
       :class="gap && ROUNDED_CLASS[roundedSize]"
-      :style="{ flex: `${part.width} 1 0%`, backgroundColor: `var(--maz-${part.color})` }"
+      :style="{ flex: `${part.width} 1 0%`, backgroundColor: part.color }"
     />
     <span v-if="empty > 0.01" class="m-progress-bar__rest maz:min-w-0 maz:transition-[flex-grow] maz:duration-300 maz:ease-out maz:motion-reduce:transition-none" :style="{ flex: `${empty} 1 0%` }" />
   </div>

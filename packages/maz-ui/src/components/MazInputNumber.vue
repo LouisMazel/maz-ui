@@ -9,6 +9,7 @@ import { throttle } from '@maz-ui/utils/helpers/throttle'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables/index.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
@@ -29,6 +30,8 @@ const {
   textCenter = true,
   inputmode = 'numeric',
   topLabel = undefined,
+  prefix = undefined,
+  suffix = undefined,
   error = false,
   success = false,
   warning = false,
@@ -60,6 +63,13 @@ const emits = defineEmits<{
    * @property {Event} value - event object
    */
   'change': [value: Event]
+}>()
+
+defineSlots<{
+  /** Content before the number, inside the field (a unit, an icon) */
+  prefix?: () => unknown
+  /** Content after the number, inside the field (a unit, an icon) */
+  suffix?: () => unknown
 }>()
 
 const { size } = useGlobalConfig<{ size: MazSize }>('MazInputNumber', { size: 'md' })
@@ -158,6 +168,14 @@ export interface MazInputNumberProps {
    * @type {MazInputProps}
    */
   inputProps?: MazInputProps
+  /**
+   * Text displayed before the number, inside the field (a unit like `$`). Use the `prefix` slot for rich content
+   */
+  prefix?: string
+  /**
+   * Text displayed after the number, inside the field (a unit like `min` or `kg`). Use the `suffix` slot for rich content
+   */
+  suffix?: string
   /**
    * Static label displayed above the input field. Unlike the floating label, this remains fixed
    * @example "User Information"
@@ -294,7 +312,20 @@ const stateColor = computed(() => {
         @blur="$emit('blur', $event)"
         @click="$emit('click', $event)"
         @update:model-value="emitThrottled($event as number | undefined)"
-      />
+      >
+        <template v-if="prefix || hasSlotContent($slots.prefix)" #start-icon>
+          <!-- @slot prefix - Content before the number, inside the field (a unit, an icon) -->
+          <slot name="prefix">
+            <span class="m-input-number__affix maz:whitespace-nowrap maz:text-muted">{{ prefix }}</span>
+          </slot>
+        </template>
+        <template v-if="suffix || hasSlotContent($slots.suffix)" #end-icon>
+          <!-- @slot suffix - Content after the number, inside the field (a unit, an icon) -->
+          <slot name="suffix">
+            <span class="m-input-number__affix maz:whitespace-nowrap maz:text-muted">{{ suffix }}</span>
+          </slot>
+        </template>
+      </MazInput>
       <MazBtn
         v-if="!hideButtons"
         color="transparent"
@@ -332,15 +363,19 @@ const stateColor = computed(() => {
     }
   }
 
-  /* Chrome, Safari, Edge, Opera */
+  /* Chrome, Safari, Edge, Opera: Safari needs the prefixed property on the pseudo-elements */
   &:deep(input::-webkit-outer-spin-button),
   &:deep(input::-webkit-inner-spin-button) {
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-appearance: none;
     appearance: none;
     margin: 0;
   }
 
-  /* Firefox */
+  /* Firefox and Safari */
   &:deep(input[type='number']) {
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-appearance: textfield;
     appearance: textfield;
   }
 }

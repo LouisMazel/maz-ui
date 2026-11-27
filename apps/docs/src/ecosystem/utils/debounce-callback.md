@@ -29,8 +29,10 @@ debounceCallback(() => {
 function debounceCallback(
   callback: (...args: unknown[]) => unknown,
   delay: number,
-): void
+): () => void
 ```
+
+It returns a function that cancels the pending call.
 
 | Parameter  | Type       | Description                                |
 | ---------- | ---------- | ------------------------------------------ |

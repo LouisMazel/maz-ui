@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazIndicatorProps } from './MazIndicator.vue'
-import type { MazColor, MazRoundedSize, MazSize, MazSizeUnit } from './types.ts'
+import type { MazColor, MazColorOrFree, MazRoundedSize, MazSize, MazSizeUnit } from './types.ts'
 import { MazPencil } from '@maz-ui/icons/lazy/MazPencil'
 import { isProduction } from '@maz-ui/utils/helpers/isProduction'
 import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useExternalLinks } from '../utils/externalLinks.ts'
+import { resolveColor, resolveColorForeground } from '../utils/freeColor.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 
 defineOptions({
@@ -123,10 +125,11 @@ export interface MazAvatarProps {
   loading?: 'lazy' | 'eager' | 'intersecting'
   /**
    * The color of the avatar. `auto` derives a stable hue from the caption: the
-   * same name always gets the same color, different names get distinct ones
+   * same name always gets the same color, different names get distinct ones. A free CSS color
+   * (`#e11d48`, `oklch(...)`, `var(--user-color)`) gives each person their own color
    * @values `"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent" | "auto"`
    */
-  color?: MazColor | 'auto'
+  color?: MazColorOrFree<MazColor | 'auto'>
   /**
    * Indicator (`MazIndicator`) on a corner of the avatar: `true` (or the attribute
    * alone) for a status dot at the bottom, a number or a short text for a counter
@@ -145,6 +148,8 @@ const componentType = computed(() => {
 })
 const isLink = computed(() => !!to || !!href)
 
+const { onLinkClick } = useExternalLinks()
+
 function getInitials(name: string, count = letterCount) {
   const words = name.trim().split(/\s+/).filter(Boolean)
 
@@ -154,6 +159,9 @@ function getInitials(name: string, count = letterCount) {
 
   return letters.slice(0, count).toUpperCase()
 }
+
+const initials = computed(() => caption ? getInitials(caption) : '')
+const initialFontSize = computed(() => initials.value.length > 2 ? `${Number.parseFloat((3 / initials.value.length).toFixed(3))}em` : undefined)
 
 const shouldDisplayImg = computed(() => src || (!src && !caption))
 
@@ -197,8 +205,8 @@ const initialStyle = computed(() => {
     }
   }
   return {
-    backgroundColor: `var(--maz-${color})`,
-    color: `var(--maz-${color}-foreground)`,
+    backgroundColor: resolveColor(color),
+    color: resolveColorForeground(color),
   }
 })
 
@@ -267,6 +275,7 @@ const fontSize = computed(() => {
     :href
     :to="to"
     :target="isLink ? target : undefined"
+    @click="!to && onLinkClick($event, href, target)"
   >
     <span class="m-avatar__frame maz:relative maz:inline-flex maz:flex-none">
       <div
@@ -319,7 +328,7 @@ const fontSize = computed(() => {
         @slot round-text - Replace the initials displayed when a caption is set and no image source is provided
       -->
         <slot v-if="caption && !src" name="round-text">
-          <span class="m-avatar__initial maz:text-[1.5em] maz:uppercase"> {{ getInitials(caption) }} </span>
+          <span class="m-avatar__initial maz:text-[1.5em] maz:uppercase" :style="{ fontSize: initialFontSize }"> {{ initials }} </span>
         </slot>
 
         <button

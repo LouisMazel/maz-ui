@@ -194,6 +194,50 @@ When the `source` throws, the `error` slot (with a `retry` function) is displaye
   </template>
 </ComponentDemo>
 
+## Free entry
+
+By default a text that is not in the list shows "No results". With `free-entry`, the text is a valid value: the list offers to use it as it is (<kbd>Enter</kbd> or a click) and the `free-entry` event is emitted. `selected` stays `undefined` for such a value, so you can tell a suggestion from a new value.
+
+<ComponentDemo>
+  <MazInputAutocomplete
+    v-model="tag"
+    :items="fruits"
+    label="Fruit or new one"
+    free-entry
+    @free-entry="freeValue = $event"
+  />
+  <p class="maz:mt-2 maz:text-sm maz:text-muted">New value: {{ freeValue || 'none' }}</p>
+
+<template #code>
+
+```vue
+<script lang="ts" setup>
+import MazInputAutocomplete from 'maz-ui/components/MazInputAutocomplete'
+import { ref } from 'vue'
+
+const tag = ref('')
+const freeValue = ref('')
+const fruits = ['Apple', 'Apricot', 'Banana', 'Cherry', 'Grape']
+</script>
+
+<template>
+  <MazInputAutocomplete
+    v-model="tag"
+    :items="fruits"
+    label="Fruit or new one"
+    free-entry
+    @free-entry="freeValue = $event"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Input props
+
+The component forwards the props of [MazInput](./maz-input.md) that make sense for a text with suggestions: `rounded-size`, `start-icon`, `end-icon`, `hint`, `assistive-text`, `error`, `success`, `warning`, `required`, `readonly`, `name`, `inputmode`, `input-classes` and `border`.
+
 ## Accessibility
 
 The input is a [combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) (`aria-autocomplete="list"`): the focus stays in it, `aria-activedescendant` points to the active suggestion, and the number of results is announced to the screen readers.
@@ -256,5 +300,7 @@ The input is a [combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) (`
   }
 
   const fruit = ref('')
+  const tag = ref('')
+  const freeValue = ref('')
   const fruits = ['Apple', 'Apricot', 'Banana', 'Cherry', 'Grape', 'Kiwi', 'Mango', 'Orange', 'Peach', 'Pear']
 </script>

@@ -72,10 +72,32 @@ You can remove the buttons with the props `hide-buttons`
   </template>
 </ComponentDemo>
 
+## Prefix and suffix
+
+`prefix` and `suffix` display a unit before or after the number, inside the field. Use the `prefix` and `suffix` slots for rich content (an icon, a badge).
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:gap-4">
+    <MazInputNumber v-model="price" prefix="$" :min="0" :step="5" />
+    <MazInputNumber v-model="duration" suffix="min" :min="0" />
+  </div>
+
+<template #code>
+
+```html
+<MazInputNumber v-model="price" prefix="$" :min="0" :step="5" />
+<MazInputNumber v-model="duration" suffix="min" :min="0" />
+```
+
+  </template>
+</ComponentDemo>
+
 <!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../../.vitepress/generated-docs/maz-input-number.doc.md-->
 
 <script lang="ts" setup>
   import { ref } from 'vue'
   const numberValue = ref()
+  const price = ref(20)
+  const duration = ref(30)
 </script>

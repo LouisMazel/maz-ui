@@ -4,6 +4,7 @@ import { MazUiTranslations } from '@maz-ui/translations/plugin'
 import { AosPlugin } from '@plugins/aos.ts'
 import { MazUi } from '@plugins/maz-ui.ts'
 import { vi } from 'vitest'
+import { EXTERNAL_LINKS_INJECTION_KEY } from '@/utils/externalLinks.ts'
 import { MAZ_UI_CONTEXT_INJECTION_KEY } from '@/utils/mazUiContext.ts'
 
 vi.mock('@maz-ui/themes/plugin', () => ({
@@ -174,6 +175,25 @@ describe('given MazUi plugin', () => {
       })
 
       expect(mockApp.use).toHaveBeenCalledWith(AosPlugin, aos)
+    })
+  })
+
+  describe('when installing with openExternal', () => {
+    it('then it provides the external links options', () => {
+      const openExternal = vi.fn()
+      const isExternalLink = vi.fn()
+
+      MazUi.install?.(mockApp, { theme: { preset: {} as any }, openExternal, isExternalLink })
+
+      expect(mockApp.provide).toHaveBeenCalledWith(EXTERNAL_LINKS_INJECTION_KEY, { openExternal, isExternalLink })
+    })
+  })
+
+  describe('when installing without openExternal', () => {
+    it('then it provides nothing for the external links', () => {
+      MazUi.install?.(mockApp, { theme: { preset: {} as any } })
+
+      expect(mockApp.provide).not.toHaveBeenCalledWith(EXTERNAL_LINKS_INJECTION_KEY, expect.anything())
     })
   })
 })

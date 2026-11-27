@@ -3,7 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createVueAppMock } from '../../../__tests__/fixtures/vue-app'
 import mazUiPlugin from '../maz-ui'
 
-const { mockInstall, mockRouter, mockAosInstance, flags } = vi.hoisted(() => ({
+const { mockInstall, mockRouter, mockAosInstance, flags, externalOpener } = vi.hoisted(() => ({
+  externalOpener: { fn: undefined as undefined | (() => void) },
   mockInstall: vi.fn(),
   mockRouter: { afterEach: vi.fn() },
   mockAosInstance: { runAnimations: vi.fn() },
@@ -21,6 +22,12 @@ vi.mock('maz-ui/plugins/aos', () => ({
 vi.mock('#build/maz-ui-flags.mjs', () => ({
   get default() {
     return flags.loader
+  },
+}))
+
+vi.mock('#build/maz-ui-open-external.mjs', () => ({
+  get default() {
+    return externalOpener.fn
   },
 }))
 
@@ -55,6 +62,27 @@ describe('maz-ui plugin', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     flags.loader = undefined
+    externalOpener.fn = undefined
+  })
+
+  describe('given the openExternal template', () => {
+    describe('when it exports a function', () => {
+      it('then it is given to the MazUi plugin', async () => {
+        externalOpener.fn = vi.fn()
+
+        const { options } = await runPlugin({})
+
+        expect(options.openExternal).toBe(externalOpener.fn)
+      })
+    })
+
+    describe('when it exports nothing', () => {
+      it('then no opener is given', async () => {
+        const { options } = await runPlugin({})
+
+        expect(options.openExternal).toBeUndefined()
+      })
+    })
   })
 
   describe('given toast and dialog options', () => {

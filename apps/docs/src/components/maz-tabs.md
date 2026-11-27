@@ -206,6 +206,12 @@ You can choose the name of this query parameter with the props `query-param` `@d
     { label: 'Settings' },
   ]
 
+  const sectionTabs: MazTabsBarItem[] = [
+    { label: 'General' },
+    { label: 'Notifications', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+    { label: 'Security', badge: { content: true, color: 'destructive' } },
+  ]
+
   const standaloneModel = ref('weekly')
 
   const standaloneItems = [
@@ -295,6 +301,54 @@ The active tab is highlighted by the indicator. Use the `color` prop (`MazColor`
   <MazTabsBar :items="tabs" color="primary" />
 </template>
 ```
+
+## Vertical orientation
+
+Set `orientation="vertical"` on `MazTabs` for a column of sections with the content beside it, like a settings page. The bar stacks the tabs, the content takes the remaining width, and the arrows <kbd>↑</kbd> / <kbd>↓</kbd> move between tabs. A `badge` per tab gives a counter that sticks to the end of the row.
+
+<div class="vp-raw">
+<MazTabs orientation="vertical" color="primary" size="sm">
+  <MazTabsBar :items="sectionTabs" aria-label="Settings sections" />
+
+  <MazTabsContent>
+    <MazTabsContentItem :tab="1" class="maz:px-4">
+      General settings
+    </MazTabsContentItem>
+    <MazTabsContentItem :tab="2" class="maz:px-4">
+      Notifications
+    </MazTabsContentItem>
+    <MazTabsContentItem :tab="3" class="maz:px-4">
+      Security
+    </MazTabsContentItem>
+  </MazTabsContent>
+</MazTabs>
+</div>
+
+```vue
+<script lang="ts" setup>
+import type { MazTabsBarItem } from 'maz-ui/components'
+
+const sectionTabs: MazTabsBarItem[] = [
+  { label: 'General' },
+  { label: 'Notifications', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+  { label: 'Security', badge: { content: true, color: 'destructive' } },
+]
+</script>
+
+<template>
+  <MazTabs orientation="vertical" color="primary" size="sm">
+    <MazTabsBar :items="sectionTabs" aria-label="Settings sections" />
+
+    <MazTabsContent>
+      <MazTabsContentItem :tab="1" class="px-4">General settings</MazTabsContentItem>
+      <MazTabsContentItem :tab="2" class="px-4">Notifications</MazTabsContentItem>
+      <MazTabsContentItem :tab="3" class="px-4">Security</MazTabsContentItem>
+    </MazTabsContent>
+  </MazTabs>
+</template>
+```
+
+`MazTabsBar` also takes `orientation` on its own, for a standalone side navigation (without `MazTabs`, with its own `v-model`). Do not build a column of `MazBtn` with `role="tablist"` by hand: it loses the roving tabindex, the arrow keys and the active indicator.
 
 ## Standalone usage
 
@@ -396,7 +450,8 @@ type MazTabsBarItem<Value extends string | number = string | number>
 The tabs follow the [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/):
 
 - `MazTabsBar` is a `tablist` (pass an `aria-label` to name it), each item is a `tab` with `aria-selected`, linked to its `MazTabsContentItem` (`tabpanel`) through `aria-controls` / `aria-labelledby`.
-- **Keyboard**: only the selected tab is in the tab sequence, <kbd>←</kbd> / <kbd>→</kbd> select the previous / next tab (reversed in RTL), <kbd>Home</kbd> / <kbd>End</kbd> the first / last one. Disabled tabs are skipped.
+- **Keyboard**: only the selected tab is in the tab sequence, <kbd>←</kbd> / <kbd>→</kbd> select the previous / next tab (reversed in RTL), <kbd>↑</kbd> / <kbd>↓</kbd> when the orientation is `vertical`, <kbd>Home</kbd> / <kbd>End</kbd> the first / last one. Disabled tabs are skipped.
+- The tab list exposes `aria-orientation` (`horizontal` or `vertical`).
 
 ## Props & Events emitted
 

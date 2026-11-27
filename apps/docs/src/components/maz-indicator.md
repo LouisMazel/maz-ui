@@ -118,6 +118,30 @@ Available colors: `primary` (default), `secondary`, `accent`, `info`, `success`,
   </template>
 </ComponentDemo>
 
+## Free color
+
+For a business status (online, away, priority), `color` also takes any CSS color. The text of a counter is black or white, chosen from the lightness of the color. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
+    <MazIndicator color="#22c55e" />
+    <MazIndicator color="oklch(0.7 0.17 55)" :content="3" />
+    <MazIndicator color="#8b5cf6" content="P1" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazIndicator color="#22c55e" />
+  <MazIndicator color="oklch(0.7 0.17 55)" :content="3" />
+  <MazIndicator color="var(--priority-high)" content="P1" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Sizes
 
 By default, the indicator is sized in `em`: it follows the font size of its context (a text, a badge, an avatar). Set `size` to force one of the maz-ui sizes.

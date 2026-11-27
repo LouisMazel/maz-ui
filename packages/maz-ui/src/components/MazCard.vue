@@ -5,6 +5,7 @@ import type { MazGalleryProps } from './MazGallery.vue'
 import { MazChevronDown } from '@maz-ui/icons/lazy/MazChevronDown'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useExternalLinks } from '../utils/externalLinks.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 import MazIcon from './MazIcon.vue'
@@ -47,6 +48,8 @@ const { elevation, radius, padding, scale, bordered, overflowHidden } = useGloba
 })
 
 const isLinked = computed(() => !!href || !!to)
+
+const { onLinkClick } = useExternalLinks()
 
 const DEFAULT_GALLERY_OPTIONS: MazGalleryProps = {
   displayedCount: 3,
@@ -217,6 +220,7 @@ function toggleCollapse() {
         orientation === 'row' ? 'maz:flex-row' : orientation === 'row-reverse' ? 'maz:flex-row-reverse' : orientation === 'column' ? 'maz:flex-col' : 'maz:flex-col-reverse',
         { 'm-card__link maz:cursor-pointer maz:no-underline': isLinked },
       ]"
+      @click="!to && onLinkClick($event, href, hrefTarget)"
     >
       <div v-if="galleryOptions.images" class="m-card__gallery__wrapper maz:relative maz:flex maz:overflow-hidden">
         <MazGallery

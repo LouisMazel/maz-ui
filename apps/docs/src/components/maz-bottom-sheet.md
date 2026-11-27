@@ -250,6 +250,16 @@ A `persistent` sheet cannot be closed by clicking outside or pressing escape, an
   </template>
 </ComponentDemo>
 
+## Keep the sheet open
+
+`before-close` returning `false` (or a promise of `false`) keeps the sheet open, drag to close, Escape and click outside included. Any other result closes it.
+
+```vue
+<MazBottomSheet v-model="isOpen" :before-close="() => !hasChanges">
+  ...
+</MazBottomSheet>
+```
+
 ## Full example
 
 <ComponentDemo expanded>

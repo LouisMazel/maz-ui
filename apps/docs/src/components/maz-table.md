@@ -24,6 +24,8 @@ description: MazTable is designed to be a reusable data table with advanced feat
 
 ## Available models
 
+* v-model:expanded: `(string | number)[]` (keys of the opened rows, with `expandable`)
+
 * v-model: `(string | boolean | number)[] | undefined` (list of selected key)
 * v-model:search-query: `string | undefined`
 * v-model:page: `number`
@@ -505,6 +507,45 @@ The example below renders **10 000 rows** but only keeps ~20 `<tr>` in the DOM a
 * **Ignored** (with a dev warning) when `animated-rows` is enabled or when you provide a custom default slot - those paths render every row.
 * **Rendered client-side:** the virtualized body is empty during SSR and fills in on hydration.
 
+## Expandable rows
+
+Add `expandable` to show a detail under a row. A toggle (a button with `aria-expanded`) is added at the start of each row, and the detail goes in the `expanded-row` slot. It is rendered the first time the row is opened, then kept (hidden when closed) so its state survives.
+
+Set a stable `row-key` so the opened rows follow their data when the table is sorted or paginated. `v-model:expanded` holds the keys of the opened rows, and the `expand` event gives the row and its new state. It is ignored with `virtualized` and `animated-rows`.
+
+<ComponentDemo>
+  <MazTable
+    v-model:expanded="expandedRows"
+    expandable
+    row-key="id"
+    sortable
+    :headers="[{ label: 'Name', key: 'name', sortable: true }, { label: 'Email', key: 'email' }]"
+    :rows="expandableRows"
+  >
+    <template #expanded-row="{ row }">
+      <p class="maz:text-sm">Details of {{ row.name }}: any content, a form, a chart...</p>
+    </template>
+  </MazTable>
+
+<template #code>
+
+```vue
+<MazTable
+  v-model:expanded="expandedRows"
+  expandable
+  row-key="id"
+  :headers="headers"
+  :rows="rows"
+>
+  <template #expanded-row="{ row }">
+    <p>Details of {{ row.name }}</p>
+  </template>
+</MazTable>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Loading
 
 Enable the loading state with the prop `loading`
@@ -668,8 +709,15 @@ Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
     id: i + 1,
     name: `User ${i + 1}`,
     email: `user${i + 1}@maz-ui.com`,
-    score: Math.round(Math.random() * 100),
+    score: (i * 37) % 101,
   }))
+
+  const expandedRows = ref([])
+  const expandableRows = [
+    { id: 1, name: 'John Doe', email: 'john@maz-ui.com' },
+    { id: 2, name: 'Jane Roe', email: 'jane@maz-ui.com' },
+    { id: 3, name: 'Alex Poe', email: 'alex@maz-ui.com' },
+  ]
 </script>
 
 ## Types
@@ -713,6 +761,7 @@ export interface MazTableHeadersEnriched {
 
 - The column headers have `scope="col"` by default (override it with the `scope` of the header).
 - A sortable column header exposes its state with `aria-sort` (`ascending`, `descending` or `none`), is focusable and sorted with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+- With `expandable`, the toggle of a row is a button with `aria-expanded` and `aria-controls` pointing to its detail (`aria.rowDetails`).
 - The selection checkboxes are labelled from `@maz-ui/translations` (`aria.selectAll`, `aria.selectRow`).
 
 ## Props & Events emitted

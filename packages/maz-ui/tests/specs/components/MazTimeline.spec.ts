@@ -815,3 +815,89 @@ describe('given MazTimeline component', () => {
     })
   })
 })
+
+describe('given MazTimeline step colors', () => {
+  describe('when a step has a free color and an active state', () => {
+    const wrapper = mountTimeline({
+      steps: [
+        { title: 'Deploy', color: '#e11d48', state: 'active' },
+        { title: 'Review', color: 'var(--review)', state: 'completed' },
+        { title: 'Later', color: '#e11d48' },
+        { title: 'Plain', state: 'error' },
+      ],
+    })
+    const steps = wrapper.findAll('.m-timeline-step')
+
+    it('then the active step takes the color', () => {
+      expect(steps[0]!.attributes('style')).toContain('--m-timeline-bg: #e11d48')
+      expect(steps[0]!.attributes('style')).toContain('--m-timeline-fg: oklch(from #e11d48')
+    })
+
+    it('then the completed step takes the color instead of the success color', () => {
+      expect(steps[1]!.attributes('style')).toContain('--m-timeline-state-bg: var(--review)')
+    })
+
+    it('then a pending step stays muted', () => {
+      expect(steps[2]!.attributes('style')).toBeUndefined()
+    })
+
+    it('then a step without color keeps its state color', () => {
+      expect(steps[3]!.attributes('style')).toContain('--m-timeline-state-bg: var(--maz-destructive)')
+    })
+  })
+
+  describe('when a step has a theme color', () => {
+    it('then it resolves the variables of the theme', () => {
+      const wrapper = mountTimeline({ steps: [{ title: 'A', color: 'info', state: 'completed' }] })
+
+      expect(wrapper.find('.m-timeline-step').attributes('style')).toContain('--m-timeline-state-bg: var(--maz-info)')
+    })
+  })
+})
+
+describe('given MazTimeline subtitle-lines', () => {
+  describe('when the prop is set', () => {
+    it('then the subtitle is clamped to that number of lines', () => {
+      const wrapper = mountTimeline({ subtitleLines: 2 })
+      const style = wrapper.find('.m-timeline-subtitle').attributes('style')
+
+      expect(style).toContain('line-clamp: 2')
+      expect(style).toContain('overflow: hidden')
+    })
+
+    it('then a subtitle slot is clamped too', () => {
+      const wrapper = mount(MazTimeline, {
+        props: { steps: [{ title: 'A' }], subtitleLines: 1 },
+        slots: { subtitle: 'Long text' },
+      })
+
+      expect(wrapper.find('.m-timeline-subtitle').attributes('style')).toContain('line-clamp: 1')
+    })
+  })
+
+  describe('when the prop is not set', () => {
+    it('then the subtitle has no inline style', () => {
+      const wrapper = mountTimeline()
+
+      expect(wrapper.find('.m-timeline-subtitle').attributes('style')).toBeUndefined()
+    })
+  })
+})
+
+describe('given MazTimeline icons in the small size', () => {
+  describe('when an error step has an icon', () => {
+    const wrapper = mountTimeline({
+      size: 'sm',
+      steps: [{ title: 'Failed', state: 'error', icon: '<svg viewBox="0 0 24 24"></svg>' }],
+    })
+
+    it('then the icon has no fixed size class that overflows the indicator', async () => {
+      await vi.dynamicImportSettled()
+
+      const icon = wrapper.find('.m-timeline-step-icon')
+
+      expect(icon.exists()).toBe(true)
+      expect(icon.classes().join(' ')).not.toMatch(/m-icon--|maz:text-/)
+    })
+  })
+})

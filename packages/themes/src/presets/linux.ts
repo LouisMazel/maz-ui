@@ -64,7 +64,10 @@ export const linux: ThemePreset = {
       md: '0 0 0 1px rgb(0 0 6 / 0.03), 0 1px 3px 1px rgb(0 0 6 / 0.07), 0 2px 6px 2px rgb(0 0 6 / 0.03)',
       lg: '0 1px 5px 1px rgb(0 0 6 / 0.09), 0 2px 14px 3px rgb(0 0 6 / 0.05)',
       xl: '0 2px 8px 2px rgb(0 0 6 / 0.13), 0 3px 20px 10px rgb(0 0 6 / 0.09)',
-      elevation: '0 0 0 1px rgb(0 0 6 / 0.03), 0 1px 3px 1px rgb(0 0 6 / 0.07), 0 2px 6px 2px rgb(0 0 6 / 0.03)',
+      elevation: {
+        light: '0 0 0 1px rgb(0 0 6 / 0.03), 0 1px 3px 1px rgb(0 0 6 / 0.07), 0 2px 6px 2px rgb(0 0 6 / 0.03)',
+        dark: '0 0 0 1px rgb(255 255 255 / 0.06), 0 1px 3px 1px rgb(0 0 0 / 0.4), 0 2px 6px 2px rgb(0 0 0 / 0.25)',
+      },
     },
   },
   // libadwaita style classes, relative to the body: large-title 300%
@@ -159,6 +162,7 @@ export const linux: ThemePreset = {
       'divider': '#dcdcde',
       'overlay': 'rgb(0 0 6 / 0.25)',
       'shadow': '#000006',
+      'neutral': '#ebebeb',
     },
     dark: {
       'surface': '#222226',
@@ -183,6 +187,7 @@ export const linux: ThemePreset = {
       'divider': '#434347',
       'overlay': 'rgb(0 0 0 / 0.5)',
       'shadow': '#000000',
+      'neutral': '#3a3a3a',
     },
   },
 }

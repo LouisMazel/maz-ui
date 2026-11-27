@@ -89,7 +89,7 @@ defaults: {
 | --- | --- | --- |
 | `roundedSize` | `MazRoundedSize` (`'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'`) | `MazBtn`, `MazBtnGroup`, `MazBtnDropdown`, `MazContainer`, `MazInput`, `MazTextarea`, `MazTable`, `MazBadge`, `MazAlert`, `MazAvatar`, `MazSkeleton`, `MazTimeline`, `MazSegmented` |
 | `flagSrc` | `MazCountryFlagSrc` (URL template or function, e.g. `loadCountryFlag` from `maz-ui/country-flags`) | `MazSelectCountry`, `MazInputPhoneNumber` (see [flags source](../components/maz-select-country.md#flags-source)) |
-| `size` | `MazSize` (`'mini' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`) | `MazBtn`, `MazBtnGroup`, `MazBtnDropdown`, `MazBadge`, `MazInput`, `MazSelect`, `MazSelectCountry`, `MazInputNumber`, `MazInputTags`, `MazInputPhoneNumber`, `MazCheckbox`, `MazRadio`, `MazRadioButtons`, `MazDropdown`, `MazPagination`, `MazTable`, `MazTimeline`, `MazSegmented`, `MazCodeHighlight` |
+| `size` | `MazSize` (`'mini' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`) | `MazBtn`, `MazBtnGroup`, `MazBtnDropdown`, `MazBadge`, `MazInput`, `MazSelect`, `MazSelectCountry`, `MazInputNumber`, `MazInputTags`, `MazInputPhoneNumber`, `MazCheckbox`, `MazRadio`, `MazRadioButtons`, `MazDropdown`, `MazPagination`, `MazTable`, `MazTimeline`, `MazSegmented`, `MazCodeHighlight`, `MazLogStream` |
 | `bordered`, `elevation`, `padding`, `transparent`, `overflowHidden` | `boolean` | `MazContainer` |
 | `bordered`, `elevation`, `padding`, `radius`, `scale`, `overflowHidden` | `boolean` | `MazCard` |
 | `as`, `maxWidth`, `gutter`, `fullBleed`, `container` | `MazPageSectionTag`, `string \| number`, `boolean`, `boolean`, `boolean` | `MazPageSection` |

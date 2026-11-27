@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { VNode } from 'vue'
-import type { MazColor, MazSize } from './types.ts'
+import type { MazColor, MazColorOrFree, MazSize } from './types.ts'
 import { computed } from 'vue'
+import { isFreeColor, resolveColor, resolveColorForeground } from '../utils/freeColor.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { getColor } from './types.ts'
 
@@ -24,11 +25,12 @@ export interface MazIndicatorProps {
    */
   showZero?: boolean
   /**
-   * Color of the indicator
+   * Color of the indicator: a theme color, or a free CSS color (`#22c55e`, `oklch(...)`, `var(--status-online)`) for a
+   * business status
    * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
    * @default 'primary'
    */
-  color?: Exclude<MazColor, 'transparent'>
+  color?: MazColorOrFree<Exclude<MazColor, 'transparent'>>
   /**
    * Corner of the wrapped content where the indicator sits (with a default slot or `attached`)
    * @values `'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'`
@@ -118,7 +120,7 @@ const text = computed(() => {
   return content ?? ''
 })
 
-const resolvedColor = computed(() => getColor(color))
+const resolvedColor = computed(() => isFreeColor(color) ? 'free' : getColor(color))
 
 const SIZE_CLASS = {
   mini: 'maz:text-[0.5rem]',
@@ -158,8 +160,8 @@ const indicatorClass = computed(() => [
 ])
 
 const indicatorStyle = computed(() => ({
-  backgroundColor: `var(--maz-${resolvedColor.value})`,
-  color: `var(--maz-${resolvedColor.value}-foreground)`,
+  backgroundColor: resolveColor(color),
+  color: resolveColorForeground(color),
 }))
 </script>
 

@@ -64,6 +64,16 @@ const cases: AxeCase[] = [
     component: components.MazInputTags,
     props: { label: 'Tags' },
   },
+  {
+    name: 'MazInputKeyValue',
+    component: components.MazInputKeyValue,
+    props: { label: 'Variables', modelValue: { KEY: 'value' } },
+  },
+  {
+    name: 'MazInputSecret',
+    component: components.MazInputSecret,
+    props: { label: 'API key', saved: true },
+  },
   { name: 'MazInputCode', component: components.MazInputCode },
   {
     name: 'MazCheckbox',
@@ -171,6 +181,11 @@ const cases: AxeCase[] = [
     name: 'MazCodeHighlight',
     component: components.MazCodeHighlight,
     props: { code: 'const a = 1', language: 'js' },
+  },
+  {
+    name: 'MazLogStream',
+    component: components.MazLogStream,
+    props: { lines: ['starting', { text: 'failed', type: 'error', label: 'run' }] },
   },
   {
     name: 'MazTable',
@@ -388,6 +403,11 @@ const cases: AxeCase[] = [
       mode: 'split',
       modelValue: '# Title',
     },
+  },
+  {
+    name: 'MazMarkdown',
+    component: components.MazMarkdown,
+    props: { content: '# Title\n\nSome **bold** text and a [link](https://maz-ui.com).', highlight: false },
   },
   {
     name: 'MazTable (sortable, selectable)',

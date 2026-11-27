@@ -69,7 +69,10 @@ export const macos: ThemePreset = {
       md: '0 1px 3px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.08)',
       lg: '0 6px 16px rgb(0 0 0 / 0.16), 0 0 0 0.5px rgb(0 0 0 / 0.1)',
       xl: '0 12px 32px rgb(0 0 0 / 0.22), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
-      elevation: '0 10px 30px rgb(0 0 0 / 0.2), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
+      elevation: {
+        light: '0 10px 30px rgb(0 0 0 / 0.2), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
+        dark: '0 10px 30px rgb(0 0 0 / 0.5), 0 0 0 0.5px rgb(255 255 255 / 0.12)',
+      },
     },
   },
   // macOS text styles (points = px): Large Title 26/32, Title 1 22/26, Title 2
@@ -170,6 +173,7 @@ export const macos: ThemePreset = {
       'divider': '#e6e6e6',
       'overlay': 'rgb(0 0 0 / 0.2)',
       'shadow': '#000000',
+      'neutral': '#ffffff',
     },
     dark: {
       'surface': '#1e1e1e',
@@ -194,6 +198,7 @@ export const macos: ThemePreset = {
       'divider': '#343434',
       'overlay': 'rgb(0 0 0 / 0.4)',
       'shadow': '#000000',
+      'neutral': '#505050',
     },
   },
 }

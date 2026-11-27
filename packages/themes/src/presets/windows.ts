@@ -61,7 +61,10 @@ export const windows: ThemePreset = {
       md: '0 2px 4px rgb(0 0 0 / 0.14)',
       lg: '0 8px 16px rgb(0 0 0 / 0.14)',
       xl: '0 32px 64px rgb(0 0 0 / 0.19), 0 2px 21px rgb(0 0 0 / 0.15)',
-      elevation: '0 8px 16px rgb(0 0 0 / 0.14), 0 0 0 1px rgb(0 0 0 / 0.06)',
+      elevation: {
+        light: '0 8px 16px rgb(0 0 0 / 0.14), 0 0 0 1px rgb(0 0 0 / 0.06)',
+        dark: '0 8px 16px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.08)',
+      },
     },
   },
   // Fluent type ramp (px): Display 68/92, Title Large 40/52, Title 28/36,
@@ -117,6 +120,12 @@ export const windows: ThemePreset = {
   },
   components: {
     btn: { 'font-weight': '400' },
+    // Fluent focus rectangle: a black (light) or white (dark) 2px ring, not the accent
+    focusRing: {
+      color: { light: '#000000', dark: '#ffffff' },
+      width: '2px',
+      offset: '2px',
+    },
     container: {
       bg: { light: '#fbfbfb', dark: '#2b2b2b' },
     },
@@ -156,6 +165,7 @@ export const windows: ThemePreset = {
       'divider': '#e5e5e5',
       'overlay': 'rgb(0 0 0 / 0.3)',
       'shadow': '#000000',
+      'neutral': '#fbfbfb',
     },
     dark: {
       'surface': '#202020',
@@ -180,6 +190,7 @@ export const windows: ThemePreset = {
       'divider': '#323232',
       'overlay': 'rgb(0 0 0 / 0.5)',
       'shadow': '#000000',
+      'neutral': '#323232',
     },
   },
 }

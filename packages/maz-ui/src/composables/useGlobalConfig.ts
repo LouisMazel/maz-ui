@@ -17,6 +17,8 @@ import type { MazInputAutocompleteProps } from '../components/MazInputAutocomple
 import type { MazInputNumberProps } from '../components/MazInputNumber.vue'
 import type { MazInputPhoneNumberProps } from '../components/MazInputPhoneNumber.vue'
 import type { MazInputTagsProps } from '../components/MazInputTags.vue'
+import type { MazLogStreamProps } from '../components/MazLogStream.vue'
+import type { MazMarkdownProps } from '../components/MazMarkdown.vue'
 import type { MazMarkdownEditorProps } from '../components/MazMarkdownEditor.vue'
 import type { MazPageSectionProps } from '../components/MazPageSection.vue'
 import type { MazPaginationProps } from '../components/MazPagination.vue'
@@ -26,6 +28,7 @@ import type { MazSegmentedProps } from '../components/MazSegmented.vue'
 import type { MazSelectProps } from '../components/MazSelect.vue'
 import type { MazSelectCountryProps } from '../components/MazSelectCountry.vue'
 import type { MazSkeletonProps } from '../components/MazSkeleton.vue'
+import type { MazSwitchProps } from '../components/MazSwitch.vue'
 import type { MazTableProps } from '../components/MazTable.vue'
 import type { MazTabsBarProps } from '../components/MazTabsBar.vue'
 import type { MazTextareaProps } from '../components/MazTextarea.vue'
@@ -79,6 +82,8 @@ export interface MazUiDefaultsOptions {
   MazInputNumber?: Partial<MazInputNumberProps>
   MazInputPhoneNumber?: Partial<MazInputPhoneNumberProps>
   MazInputTags?: Partial<MazInputTagsProps>
+  MazLogStream?: Partial<MazLogStreamProps>
+  MazMarkdown?: Partial<MazMarkdownProps>
   MazMarkdownEditor?: Partial<MazMarkdownEditorProps>
   MazPageSection?: Partial<MazPageSectionProps>
   MazPagination?: Partial<MazPaginationProps>
@@ -88,6 +93,7 @@ export interface MazUiDefaultsOptions {
   MazSelectCountry?: Partial<MazSelectCountryProps>
   MazSegmented?: Partial<MazSegmentedProps>
   MazSkeleton?: Partial<MazSkeletonProps>
+  MazSwitch?: Partial<MazSwitchProps>
   MazTable?: Partial<MazTableProps<any>>
   MazTabsBar?: Partial<MazTabsBarProps<any>>
   MazTextarea?: Partial<MazTextareaProps<string>>

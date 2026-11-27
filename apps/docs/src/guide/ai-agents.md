@@ -322,6 +322,11 @@ The command exits with an error code when it finds errors (or more warnings than
 | `multiple-primary-actions` | info | Several solid primary `MazBtn` side by side |
 | `native-dialog` | warning | `alert()`, `confirm()`, `prompt()` instead of `useToast()` and `useDialog()` |
 | `prefer-dialog-confirm` | warning | A `MazDialog` with a cancel and a confirm button: use `useDialog().confirm()` or `MazDialogConfirm` |
+| `before-close-event` | warning | `@before-close` on `MazDialog`, `MazDrawer`, `MazBottomSheet` or `MazBackdrop`: the event cannot cancel the close, use the `before-close` prop returning `false` |
+| `btn-important-text` | warning | An important text class on `MazBtn` (`!text-red-500`): its text colors are plain utilities now, drop the `!` |
+| `prefer-input-secret` | warning | A password `MazInput` with a bullet placeholder: use `MazInputSecret` for a saved secret |
+| `prefer-markdown` | warning | `MazMarkdownEditor mode="preview"` or `v-html` of `marked(...)` used as a markdown renderer: use `MazMarkdown` |
+| `prefer-open-external` | warning | A `MazLink as="button"` whose click opens a URL (`openExternal`, `openUrl`, `window.open`): keep the `href` and set the `openExternal` option of the MazUi plugin |
 | `table-part-outside-table` | warning | `MazTableRow`, `MazTableCell` or `MazTableTitle` outside of a `MazTable` (invalid HTML): `MazTable` sorts, searches and paginates by itself |
 | `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers, and hand-written code it provides (`Intl.NumberFormat` for a currency, a `setTimeout` debounce, a loading `ref` shared by a module, `JSON.stringify` to compare objects, a click outside listener, `navigator.clipboard`, a countdown with `setInterval`, the iOS detection, a case conversion regex, `document.cookie`, a `resize` or `scroll` listener, a `new IntersectionObserver`, `body.style.overflow`...). Warning when the tool covers the case, info when the hand-written code can be intended |
 | `theme-colors` | warning | Default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`) |

@@ -77,4 +77,18 @@ describe('given throttle function', () => {
       expect(func).toHaveBeenCalledTimes(2)
     })
   })
+
+  describe('when cancel is called with a trailing call pending', () => {
+    it('then the trailing call is dropped', () => {
+      const func = vi.fn()
+      const throttled = throttle(func, 1000)
+
+      throttled()
+      throttled()
+      throttled.cancel()
+      vi.advanceTimersByTime(1000)
+
+      expect(func).toHaveBeenCalledTimes(1)
+    })
+  })
 })

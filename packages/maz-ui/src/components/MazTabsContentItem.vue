@@ -6,9 +6,9 @@ import { useInjectStrict } from '../composables/useInjectStrict.ts'
 const props = defineProps({
   tab: { type: Number, required: true },
 })
-const transitionName = ref<string>('maz-tab-transition')
+const isForward = ref(true)
 
-const { currentTab, idPrefix } = useInjectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab, idPrefix, orientation } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
 const panelId = computed(() => idPrefix
   ? `${idPrefix.value}-panel-${props.tab}`
@@ -21,12 +21,21 @@ watch(
   () => currentTab.value,
   (value, oldValue) => {
     if (typeof value === 'number' && typeof oldValue === 'number') {
-      const newTabIsBigger = oldValue < value
-      transitionName.value = newTabIsBigger ? 'maz-tab-transition' : 'maz-tab-reverse-transition'
+      isForward.value = oldValue < value
     }
   },
   { immediate: true },
 )
+
+const transitionName = computed(() => {
+  const base = orientation?.value === 'vertical'
+    ? 'maz-tab-vertical'
+    : 'maz-tab'
+
+  return isForward.value
+    ? `${base}-transition`
+    : `${base}-reverse-transition`
+})
 
 const itemTabNumber = computed(() => props.tab - 1)
 
@@ -86,5 +95,23 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 
 .maz-tab-reverse-transition-enter-from {
   transform: translate(-100%, 0);
+}
+
+.maz-tab-vertical-transition-leave-to,
+.maz-tab-vertical-transition-leave-active,
+.maz-tab-vertical-reverse-transition-leave-to,
+.maz-tab-vertical-reverse-transition-leave-active {
+  position: absolute !important;
+  inset-block-start: 0;
+}
+
+.maz-tab-vertical-transition-leave-to,
+.maz-tab-vertical-reverse-transition-enter-from {
+  transform: translate(0, -100%);
+}
+
+.maz-tab-vertical-transition-enter-from,
+.maz-tab-vertical-reverse-transition-leave-to {
+  transform: translate(0, 100%);
 }
 </style>

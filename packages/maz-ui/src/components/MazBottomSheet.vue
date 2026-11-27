@@ -135,10 +135,11 @@ const { isDragging } = useDrag(handleEl, {
   onMove: ({ offsetY }) => {
     dragOffset.value = Math.max(0, offsetY)
   },
-  onEnd: ({ offsetY }) => {
+  onEnd: async ({ offsetY }) => {
     if (!persistent && offsetY >= CLOSE_THRESHOLD)
-      closeSheet()
-    else
+      await closeSheet()
+
+    if (backdrop.value?.present !== false)
       dragOffset.value = 0
   },
 })
