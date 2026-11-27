@@ -66,8 +66,12 @@ app.use(MazUi, {
   dialog: { acceptText: 'Yes' },
   // Animations on scroll (disabled by default), with `import 'maz-ui/aos.css'`
   aos: true,
+  // Open the external links outside of the WebView (Tauri, Electron), see the desktop apps guide
+  openExternal: href => openUrl(href),
 })
 ```
+
+See [Desktop apps](./desktop-apps.md) for `openExternal` and `isExternalLink`.
 
 ::: tip Why provide preset and messages?
 - **`preset`** -- Providing the theme preset synchronously avoids FOUC (Flash of Unstyled Content). Without it, components render without their CSS variables until the theme loads.

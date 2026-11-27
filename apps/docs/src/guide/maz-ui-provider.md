@@ -92,6 +92,8 @@ The entire Maz-UI setup is now code-split into the Dashboard chunk.
 |------|------|----------|-------------|
 | `theme` | `object` | Yes | Theme configuration. Must include `preset`. See [Theming](../ecosystem/themes.md) for details. |
 | `translations` | `object` | Yes | Translations configuration. Must include `locale` and `messages` with at least the current locale's messages. See [Translations](../ecosystem/translations.md) for details. |
+| `openExternal` | `(href: string, event: MouseEvent) => void` | No | Opens the external links outside of the WebView (Tauri, Electron). See [Desktop apps](./desktop-apps.md). |
+| `isExternalLink` | `(href: string, target?: string) => boolean` | No | Which links are external. Default: absolute `http(s)` URL of another origin, or `target="_blank"`. |
 
 ### theme
 

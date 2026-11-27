@@ -383,6 +383,20 @@ export default defineNuxtConfig({
 
 Nothing is added to your build unless `flags` is `'local'`. See [MazSelectCountry](/components/maz-select-country#flags-source) for the details (Content Security Policy, PWA precache).
 
+### External links (Tauri, Electron)
+
+Opens the links of the components outside of the WebView. The option is the path of a file whose default export is `(href: string, event: MouseEvent) => void`.
+
+```ts
+export default defineNuxtConfig({
+  mazUi: {
+    openExternal: '~/utils/open-external',
+  },
+})
+```
+
+Nothing is added to your build unless it is set. See [Desktop apps](/guide/desktop-apps).
+
 ## Theme Strategies Explained
 
 ### Runtime (Recommended)
@@ -453,6 +467,12 @@ const composables = {
 
   // 📱 Responsive & Detection
   useWindowSize: true, // Reactive window dimensions
+  useWindow: true, // The window and its listeners
+  useWindowFocus: true, // Window focus state
+  useMediaQuery: true, // Reactive CSS media query
+  useReducedMotion: true, // prefers-reduced-motion
+  useEventListener: true, // Listener removed on unmount
+  useShortcut: true, // Platform aware shortcut (Cmd or Ctrl)
   useBreakpoints: true, // Responsive breakpoints
   useUserVisibility: true, // Page visibility detection
   useIdleTimeout: true, // User idle detection

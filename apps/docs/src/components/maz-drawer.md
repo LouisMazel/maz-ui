@@ -182,6 +182,16 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   const isOpenedLeft = ref(false)
 </script>
 
+## Keep the drawer open
+
+`before-close` returning `false` (or a promise of `false`) keeps the drawer open, Escape and click outside included. Any other result closes it.
+
+```vue
+<MazDrawer v-model="isOpen" :before-close="() => !hasChanges">
+  ...
+</MazDrawer>
+```
+
 ## Accessibility
 
 The drawer is a modal `dialog` labelled by its `title`. The focus is trapped inside while it is open, <kbd>Esc</kbd> closes it, and the rest of the page is `inert` (except the toasts and the live regions). The close button is labelled from `@maz-ui/translations` (`aria.close`).

@@ -145,6 +145,8 @@ When you use the `autoExternal` prop, the component will have an external icon i
   </template>
 </ComponentDemo>
 
+In a Tauri or Electron app, the `openExternal` option of the MazUi plugin opens these links in the system browser, and the icon then follows its rule (absolute URL of another origin). See [Desktop apps](/guide/desktop-apps).
+
 ## As button
 
 If no `to` or `href` is provided, the component will be a `button` by default. You can force the component to be a `button`, `a`, `router-link` or `nuxt-link` with the `as` prop.

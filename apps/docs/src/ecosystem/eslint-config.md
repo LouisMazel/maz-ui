@@ -313,5 +313,20 @@ defineConfig({ vue: true, tailwindcss: { preset: 'recommended', cwd: 'apps/web' 
 | --- | --- |
 | ESLint | `>=9.0.0 <11.0.0` |
 | Node.js | `>=20.19.0` |
-| TypeScript | `^5.0.0` |
+| TypeScript | `^5.0.0 \|\| ^6.0.0` *(the `typescript` package, optional peer: only needed for TypeScript files)* |
 | Tailwind CSS | `^3.3.0 \|\| ^4.0.0` *(when `tailwindcss` is on)* |
+
+### TypeScript 7
+
+TypeScript 7 has no compiler API yet, and `typescript-eslint` (the TypeScript parser of this config) needs one: it refuses to load with `typescript` 7. Keep the `typescript` package on 6 for ESLint, and install 7 next to it with npm aliases (`tsc` then runs 7):
+
+```json
+{
+  "devDependencies": {
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  }
+}
+```
+
+See [Running side-by-side with TypeScript 6.0](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0).

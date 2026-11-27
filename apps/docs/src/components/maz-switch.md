@@ -72,12 +72,35 @@ description: MazSwitch is a standalone component that replaces the standard html
 </script>
 ```
 
+## Sizes
+
+`size` uses the same scale as [MazCheckbox](./maz-checkbox.md): `mini`, `xs`, `sm`, `md` (default), `lg` and `xl`. The track is twice as wide as high, so a switch and a checkbox of the same size share their height in a form. It can be set once for every switch through the [global defaults](./../guide/global-defaults.md) (`MazSwitch`).
+
+<div class="vp-raw maz:flex maz:flex-col maz:gap-3">
+  <MazSwitch v-for="size in sizes" :key="size" v-model="sizeValue" :size="size" :name="`size-${size}`">
+    {{ size }}
+  </MazSwitch>
+</div>
+
+```vue
+<template>
+  <MazSwitch v-model="value" size="mini">mini</MazSwitch>
+  <MazSwitch v-model="value" size="xs">xs</MazSwitch>
+  <MazSwitch v-model="value" size="sm">sm</MazSwitch>
+  <MazSwitch v-model="value" size="md">md</MazSwitch>
+  <MazSwitch v-model="value" size="lg">lg</MazSwitch>
+  <MazSwitch v-model="value" size="xl">xl</MazSwitch>
+</template>
+```
+
 <!--@include: ./../../.vitepress/generated-docs/maz-switch.doc.md-->
 
 <script lang="ts" setup>
   import { ref } from 'vue'
   const switchValue = ref(false)
   const switchValueDisabled = ref(false)
+  const sizeValue = ref(true)
+  const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
   const colors = [
     'primary',

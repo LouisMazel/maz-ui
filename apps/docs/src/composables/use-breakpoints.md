@@ -7,6 +7,8 @@ description: Reactive responsive breakpoints in JavaScript (isSmallScreen, isMed
 
 {{ $frontmatter.description }}
 
+For any other CSS media query (`prefers-reduced-motion`, `orientation`, `hover`), use [useMediaQuery](./use-media-query).
+
 ## Basic usage
 
 ```ts

@@ -284,7 +284,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
 
 ## Selector icon with options equal-size
 
-This option will display a select icon on the left of the label
+This option will display a select icon on the left of the label. With `equal-size`, the tiles share the width and a long label is truncated instead of widening its tile (a custom slot keeps the control: add `min-w-0` and `truncate` to your content).
 
 <ComponentDemo>
   <MazRadioButtons

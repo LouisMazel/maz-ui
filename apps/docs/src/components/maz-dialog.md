@@ -148,6 +148,72 @@ You can set these defaults globally per preset — see [the theme `components.di
 The default widths are expressed in `rem`, so they scale with the preset's `base-font-size`. Presets with a larger base size (e.g. `ocean` at `16px`) ship rem values adjusted to keep the rendered pixel width consistent across presets.
 :::
 
+## Header divider and content padding
+
+The header has the same space on every side. `header-divider` adds a line under it (a `scrollable` dialog always has one). The content is padded by default, set `:content-padding="false"` for full-bleed content (a list, a table, an image).
+
+<ComponentDemo>
+  <MazBtn @click="dividerOpened = true">Open dialog with divider</MazBtn>
+
+  <MazDialog v-model="dividerOpened" title="Settings" header-divider>
+    <p>Content under the divider.</p>
+  </MazDialog>
+
+<template #code>
+
+```vue
+<MazDialog v-model="isOpen" title="Settings" header-divider>
+  <p>Content under the divider.</p>
+</MazDialog>
+
+<MazDialog v-model="isOpen" title="Files" :content-padding="false">
+  <MazList>...</MazList>
+</MazDialog>
+```
+
+  </template>
+</ComponentDemo>
+
+## Keep the dialog open
+
+`before-close` is called before every close (close button, <kbd>Esc</kbd>, click outside, `close()`). Return `false`, or a promise of `false`, to keep the dialog open, for example while changes are not saved. Any other result closes it, and a thrown error or a rejected promise keeps it open. It is also available on `MazDrawer`, `MazBottomSheet` and `MazBackdrop`.
+
+<ComponentDemo>
+  <MazBtn @click="guardedOpened = true">Open guarded dialog</MazBtn>
+
+  <MazDialog v-model="guardedOpened" title="Unsaved changes" :before-close="askBeforeClose">
+    <p>Closing asks for a confirmation.</p>
+  </MazDialog>
+
+<template #code>
+
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const dirty = ref(true)
+
+function askBeforeClose() {
+  if (dirty.value)
+    return confirm('Discard the changes?')
+}
+</script>
+
+<template>
+  <MazDialog v-model="isOpen" title="Unsaved changes" :before-close="askBeforeClose">
+    ...
+  </MazDialog>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+::: tip
+`@before-close` is only an event: it cannot cancel the close. Use the `before-close` prop. For a confirmation, `useDialog().confirm()` returns a `Promise<boolean>`: `before-close` can return it directly.
+:::
+
 ## Accessibility
 
 - The dialog is a modal `dialog` (`aria-modal`), labelled by its title and described by its content (override them with the `aria-labelledby` / `aria-describedby` props).
@@ -161,4 +227,10 @@ The default widths are expressed in `rem`, so they scale with the preset's `base
   const isOpen = ref(false)
   const scollableOpened = ref(false)
   const widthOpened = ref(false)
+  const dividerOpened = ref(false)
+  const guardedOpened = ref(false)
+
+  function askBeforeClose() {
+    return globalThis.confirm('Discard the changes?')
+  }
 </script>

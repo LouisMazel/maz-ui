@@ -57,6 +57,10 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 ## Colors
 
+::: tip Neutral color
+`color="neutral"` is the grey push button of the native presets (`macos`, `windows`, `linux`), set by the `neutral` color of the preset: see [Neutral button color](./../ecosystem/themes.md#neutral-button-color). On another preset, it falls back to the `container` background.
+:::
+
 ::: tip Surface vs container
 `surface` is the background of the page and `container` the background of cards, panels and fields. With presets like macOS the surface is light grey and the container is white in light mode: use `container` for a white button on a grey page. Both are neutral colors (`MazNeutralColor`): text uses the foreground color, hover and active states tint the background with the foreground, and `container` has a divider border by default. Outlined neutral buttons are transparent with a divider border, and pastel neutral buttons fall back to the solid rendering.
 :::
@@ -162,6 +166,22 @@ const colors = [
     {{ color }}
   </MazBtn>
 </template>
+```
+
+  </template>
+</ComponentDemo>
+
+### Loader at the start
+
+By default the loader covers the button and hides its label. With `loading-position="start"` it replaces the start icon and the label stays visible, handy for a "Saving..." button.
+
+<ComponentDemo>
+  <MazBtn loading loading-position="start" start-icon="user">Saving</MazBtn>
+
+<template #code>
+
+```html
+<MazBtn loading loading-position="start">Saving</MazBtn>
 ```
 
   </template>
@@ -354,6 +374,27 @@ const current = ref('Overview')
     </MazBtn>
   </div>
 </template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Text color
+
+`text-color` sets the text color from the theme. The text colors are plain utilities, so a class of your own overrides them (`class="text-warning"`), whatever the variant.
+
+<ComponentDemo>
+  <div class="maz:flex maz:gap-2">
+    <MazBtn color="transparent" text-color="success">Success</MazBtn>
+    <MazBtn color="transparent" text-color="destructive">Destructive</MazBtn>
+    <MazBtn color="transparent" text-color="success" class="maz:text-warning">Overridden</MazBtn>
+  </div>
+
+<template #code>
+
+```html
+<MazBtn color="transparent" text-color="success">Success</MazBtn>
+<MazBtn color="transparent" text-color="success" class="text-warning">Overridden</MazBtn>
 ```
 
   </template>

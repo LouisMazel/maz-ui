@@ -32,8 +32,10 @@ export const components = {
           link: '/components/maz-input-autocomplete',
         },
         { text: 'InputCode', link: '/components/maz-input-code' },
+        { text: withNewBadge('InputKeyValue'), link: '/components/maz-input-key-value' },
         { text: 'InputNumber', link: '/components/maz-input-number' },
         { text: 'InputPrice', link: '/components/maz-input-price' },
+        { text: withNewBadge('InputSecret'), link: '/components/maz-input-secret' },
         { text: 'InputTags', link: '/components/maz-input-tags' },
         { text: 'InputPhoneNumber', link: '/components/maz-input-phone-number' },
         {
@@ -127,8 +129,16 @@ export const components = {
           link: '/components/maz-code-highlight',
         },
         {
+          text: withNewBadge('Markdown'),
+          link: '/components/maz-markdown',
+        },
+        {
           text: withNewBadge('Indicator'),
           link: '/components/maz-indicator',
+        },
+        {
+          text: withNewBadge('LogStream'),
+          link: '/components/maz-log-stream',
         },
         {
           text: withNewBadge('WindowMockup'),

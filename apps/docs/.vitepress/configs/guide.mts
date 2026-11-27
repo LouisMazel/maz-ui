@@ -14,12 +14,17 @@ export const guide = {
       text: withNewBadge('Typography'),
       link: '/guide/typography',
     },
+    {
+      text: withNewBadge('Free colors'),
+      link: '/guide/free-colors',
+    },
     { text: 'Translations (i18n)', link: '/ecosystem/translations' },
     {
       text: withNewBadge('Global component defaults'),
       link: '/guide/global-defaults',
     },
     { text: 'MazUiProvider', link: '/guide/maz-ui-provider' },
+    { text: 'Desktop apps (Tauri, Electron)', link: '/guide/desktop-apps' },
     { text: 'Resolvers (auto-imports)', link: '/guide/resolvers' },
     {
       text: 'Icons',

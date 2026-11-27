@@ -133,6 +133,58 @@ const sizes: MazSize[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 :::
 
+## Indeterminate
+
+`indeterminate` shows a dash instead of the check, sets `aria-checked="mixed"` and the native `indeterminate` property of the input. It is the state of a "select all" checkbox when only some of the children are selected. It only changes the display: it does not change the model, so compute it from the children. A click on an indeterminate checkbox emits the opposite of its model, so a "select all" checkbox with `false` as model selects everything.
+
+<div class="vp-raw maz:flex maz:flex-col maz:gap-2">
+  <MazCheckbox
+    :model-value="allSelected"
+    :indeterminate="someSelected"
+    @update:model-value="toggleAll"
+  >
+    Select all
+  </MazCheckbox>
+  <div class="maz:flex maz:flex-col maz:gap-2 maz:ps-8">
+    <MazCheckbox v-for="fruit in fruits" :key="fruit" v-model="selectedFruits" :value="fruit" size="sm">
+      {{ fruit }}
+    </MazCheckbox>
+  </div>
+</div>
+
+::: details View code
+
+```vue
+<script lang="ts" setup>
+import MazCheckbox from 'maz-ui/components/MazCheckbox'
+import { computed, ref } from 'vue'
+
+const fruits = ['Apple', 'Banana', 'Cherry']
+const selectedFruits = ref<string[]>(['Banana'])
+
+const allSelected = computed(() => selectedFruits.value.length === fruits.length)
+const someSelected = computed(() => selectedFruits.value.length > 0 && !allSelected.value)
+
+function toggleAll(checked: boolean) {
+  selectedFruits.value = checked ? [...fruits] : []
+}
+</script>
+
+<template>
+  <MazCheckbox :model-value="allSelected" :indeterminate="someSelected" @update:model-value="toggleAll">
+    Select all
+  </MazCheckbox>
+
+  <MazCheckbox v-for="fruit in fruits" :key="fruit" v-model="selectedFruits" :value="fruit" size="sm">
+    {{ fruit }}
+  </MazCheckbox>
+</template>
+```
+
+:::
+
+[MazChecklist](./maz-checklist.md) has no select-all row: put a `MazCheckbox` with `indeterminate` above it, computed from the `v-model` of the checklist as above.
+
 ## Disabled
 
 <div class="vp-raw maz:flex maz:flex-col maz:gap-2">
@@ -146,12 +198,20 @@ const sizes: MazSize[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </div>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { type Color, type Size } from 'maz-ui/components'
 
   const checked = ref(false)
   const chosenColors = ref([])
   const chosenSizes = ref([])
+
+  const fruits = ['Apple', 'Banana', 'Cherry']
+  const selectedFruits = ref<string[]>(['Banana'])
+  const allSelected = computed(() => selectedFruits.value.length === fruits.length)
+  const someSelected = computed(() => selectedFruits.value.length > 0 && !allSelected.value)
+  function toggleAll(checked: boolean) {
+    selectedFruits.value = checked ? [...fruits] : []
+  }
 
   const colors: Color[] = [
     'primary',

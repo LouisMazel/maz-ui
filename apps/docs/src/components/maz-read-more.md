@@ -71,6 +71,10 @@ import MazReadMore from 'maz-ui/components/MazReadMore'
 </template>
 </ComponentDemo>
 
+## Content changes
+
+The toggle is measured at mount, then again when the text, the slot content or the size of the component changes (window resize, async content, a language switch). Nothing to do on your side.
+
 ## Truncation with max lines
 
 Control the number of visible lines using the `max-lines` prop.

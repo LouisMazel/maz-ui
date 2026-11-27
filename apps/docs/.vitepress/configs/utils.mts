@@ -10,6 +10,7 @@ export const utils = {
       items: [
         { text: 'camelCase', link: '/ecosystem/utils/camel-case' },
         { text: 'capitalize', link: '/ecosystem/utils/capitalize' },
+        { text: 'diffLines', link: '/ecosystem/utils/diff-lines' },
         { text: 'fuzzySearch', link: '/ecosystem/utils/fuzzy-search' },
         { text: 'kebabCase', link: '/ecosystem/utils/kebab-case' },
         { text: 'normalizeString', link: '/ecosystem/utils/normalize-string' },
@@ -31,6 +32,7 @@ export const utils = {
       collapsed: false,
       items: [
         { text: 'formatDate', link: '/ecosystem/utils/date' },
+        { text: 'formatDuration', link: '/ecosystem/utils/format-duration' },
         { text: 'formatRelativeTime', link: '/ecosystem/utils/relative-time' },
       ],
     },
@@ -53,6 +55,7 @@ export const utils = {
       items: [
         { text: 'cookie', link: '/ecosystem/utils/cookie' },
         { text: 'getBrowserLocale', link: '/ecosystem/utils/get-browser-locale' },
+        { text: 'isApple', link: '/ecosystem/utils/is-apple' },
         { text: 'isClient', link: '/ecosystem/utils/is-client' },
         { text: 'isIos', link: '/ecosystem/utils/is-ios' },
         { text: 'isProduction', link: '/ecosystem/utils/is-production' },
@@ -60,6 +63,7 @@ export const utils = {
         { text: 'isStandaloneMode', link: '/ecosystem/utils/is-standalone-mode' },
         { text: 'preventIosInputZoom', link: '/ecosystem/utils/prevent-ios-input-zoom' },
         { text: 'ScriptLoader', link: '/ecosystem/utils/script-loader' },
+        { text: 'shortcut', link: '/ecosystem/utils/shortcut' },
         { text: 'Swipe', link: '/ecosystem/utils/swipe-handler' },
         { text: 'TextareaAutogrow', link: '/ecosystem/utils/textarea-autogrow' },
         { text: 'UserVisibility', link: '/ecosystem/utils/user-visibility' },

@@ -244,6 +244,30 @@ const names = ['Camille Durand', 'Sam Okafor', 'Nina Rossi', 'Louis Mazel', 'Aya
 
 The color is computed from the caption only (no storage, no server): it is the same on every page, device and session. White initials sit on a medium-lightness tone, so they stay readable in light and dark modes. With an `src` image, `color` has no effect.
 
+## Free color
+
+`color` also takes any CSS color, for a color chosen per person (a profile color, a team). The color of the initials is black or white, chosen from the lightness of the color. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-3">
+    <MazAvatar caption="Louis Mazel" color="#e11d48" />
+    <MazAvatar caption="Aya Tanaka" color="oklch(0.8 0.14 90)" />
+    <MazAvatar caption="Omar Haddad" color="#0ea5e9" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazAvatar caption="Louis Mazel" color="#e11d48" />
+  <MazAvatar caption="Aya Tanaka" color="oklch(0.8 0.14 90)" />
+  <MazAvatar caption="Omar Haddad" color="var(--user-color)" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Indicator
 
 The `indicator` prop adds a [MazIndicator](./maz-indicator.md) on a corner of the avatar:

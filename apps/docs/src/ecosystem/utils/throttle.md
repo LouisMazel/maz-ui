@@ -27,8 +27,10 @@ window.addEventListener('scroll', onScroll)
 function throttle<T extends (...args: any[]) => any>(
   func: T,
   limit: number,
-): (...args: Parameters<T>) => void
+): ((...args: Parameters<T>) => void) & { cancel: () => void }
 ```
+
+`throttled.cancel()` drops the trailing call that is still waiting (on unmount for example).
 
 | Parameter | Type       | Description                                |
 | --------- | ---------- | ------------------------------------------ |

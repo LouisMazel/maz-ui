@@ -53,6 +53,37 @@ The button has a main action of its own and the menu lists its variants ("Save",
   </template>
 </ComponentDemo>
 
+## Tooltip on an entry
+
+An item accepts a `tooltip` that is shown on hover, to the right of the entry. Use it to explain an entry that is short or disabled.
+
+<ComponentDemo>
+  <MazDropdown
+    :items="[
+      { label: 'Archive', onClick: () => {}, tooltip: 'Move to the archive, you can restore it later' },
+      { label: 'Delete', onClick: () => {}, color: 'destructive', tooltip: 'Delete it for good' },
+      { label: 'No tooltip', onClick: () => {} },
+    ]"
+  >
+    Actions
+  </MazDropdown>
+
+<template #code>
+
+```html
+<MazDropdown
+  :items="[
+    { label: 'Archive', onClick: archive, tooltip: 'Move to the archive, you can restore it later' },
+    { label: 'Delete', onClick: remove, color: 'destructive', tooltip: 'Delete it for good' },
+  ]"
+>
+  Actions
+</MazDropdown>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Open dropdown with adaptive trigger
 
 The `adaptive` trigger mode automatically adapts to the user's device:
@@ -687,6 +718,7 @@ isOpen: {{ isOpen }}
 type MazDropdownMenuItem = {
   label: string
   onClick?: () => unknown
+  tooltip?: string
   target?: string
   href?: string
   to?: RouteLocationRaw

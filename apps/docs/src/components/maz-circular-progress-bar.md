@@ -93,6 +93,28 @@ The duration of the animation can be changed by passing the `duration` prop. The
   </template>
 </ComponentDemo>
 
+## Free color
+
+`color` also takes any CSS color, for a gauge that shows data. The gradient of the stroke is derived from it. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <div class="maz:flex maz:gap-3 maz:flex-wrap maz:items-center">
+    <MazCircularProgressBar :percentage="75" color="#8b5cf6" />
+    <MazCircularProgressBar :percentage="40" color="oklch(0.75 0.15 150)" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazCircularProgressBar :percentage="75" color="#8b5cf6" />
+  <MazCircularProgressBar :percentage="40" color="oklch(0.75 0.15 150)" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Auto-color
 
 The color of the component is automatically according to the percentage. The color will be green if the percentage is egal to 100%, orange if below 100%, and red if below 50%.
