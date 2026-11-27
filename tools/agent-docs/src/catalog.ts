@@ -122,6 +122,7 @@ export const CATALOG_OMITTED: Record<string, string> = {
   'composables/use-window': 'base of useWindowSize and useWindowFocus: `useEventListener` covers the need',
   'composables/use-sliding-indicator': 'found by `search_docs` (sliding indicator, active pill)',
   'composables/use-roving-focus': 'found by `search_docs` (roving tabindex, arrow keys navigation)',
+  'composables/use-origin-transition': 'found by `search_docs` (grow from the button, open from the origin)',
   'ecosystem/utils/is-apple': 'found through useShortcut (`formatShortcut`, `matchesShortcut`)',
   'ecosystem/utils/debounce-callback': 'one timer shared by the whole app: `debounce` or `debounceId` fit better',
 }

@@ -108,6 +108,15 @@ function normalizeDefault(value: string | undefined): string | undefined {
     : cleaned
 }
 
+/** The text of the `@deprecated` tag (`'Deprecated'` without text), `undefined` when the tag is absent */
+export function deprecation(tags: Array<{ name: string, text?: string }> | undefined): string | undefined {
+  const entry = tags?.find(tag => tag.name === 'deprecated')
+
+  return entry
+    ? oneLine(entry.text?.trim() || 'Deprecated')
+    : undefined
+}
+
 export function toPropApi(prop: PropertyMeta, models: Set<string>): PropApi {
   const type = cleanType(prop.type)
   const { values, strict } = propValues(type, tag(prop.tags, 'values'))
@@ -116,6 +125,7 @@ export function toPropApi(prop: PropertyMeta, models: Set<string>): PropApi {
     tag(prop.tags, 'description'),
   ].filter(Boolean).map(text => oneLine(text as string)).join(' - ')
   const defaultValue = normalizeDefault(prop.default) ?? normalizeDefault(tag(prop.tags, 'default'))
+  const deprecated = deprecation(prop.tags)
 
   return {
     name: prop.name,
@@ -134,15 +144,22 @@ export function toPropApi(prop: PropertyMeta, models: Set<string>): PropApi {
     ...(models.has(prop.name)
       ? { model: prop.name }
       : {}),
+    ...(deprecated === undefined
+      ? {}
+      : { deprecated }),
   }
 }
 
 export function toEventApi(event: EventMeta): EventApi {
   const payload = cleanType(event.type).replace(/^\[|\]$/g, '')
   const description = (event as EventMeta & { description?: string }).description
+  const deprecated = deprecation((event as EventMeta & { tags?: Array<{ name: string, text?: string }> }).tags)
 
   return {
     name: event.name,
+    ...(deprecated === undefined
+      ? {}
+      : { deprecated }),
     ...(description
       ? {
           description: oneLine(description),
