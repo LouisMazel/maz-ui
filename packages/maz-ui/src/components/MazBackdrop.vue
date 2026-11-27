@@ -68,8 +68,11 @@ export interface MazBackdropProps {
   modelValue?: boolean
   /** Teleport selector */
   teleportSelector?: string
-  /** Function called before modal is close */
-  beforeClose?: () => Promise<void> | void
+  /**
+   * Function called before the modal closes (button, Escape, backdrop click, `close()`).
+   * Return `false` (or a promise of `false`) to keep it open; any other value closes it, and a throw or a rejection keeps it open.
+   */
+  beforeClose?: () => Promise<boolean | void> | boolean | void
   /** Persistent dialog (not closable by clicking outside and remove close button) */
   persistent?: boolean
   /** Prevent close on escape key */
@@ -101,7 +104,7 @@ function close() {
     return
   }
 
-  toggleModal(false)
+  return toggleModal(false)
 }
 
 async function toggleModal(value?: boolean) {
@@ -109,7 +112,9 @@ async function toggleModal(value?: boolean) {
 
   if (!newValue) {
     emits('before-close')
-    await beforeClose?.()
+
+    if (await beforeClose?.() === false)
+      return
   }
 
   present.value = newValue
