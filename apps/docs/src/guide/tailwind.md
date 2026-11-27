@@ -96,6 +96,7 @@ Each one has a paired `-foreground` color for text on top of it, and an 11-step 
 | `warning` | Warning state (caution, pending attention) |
 | `destructive` | Errors, invalid fields, destructive actions |
 | `contrast` | Neutral high-contrast color (near black in light mode, near white in dark mode) |
+| `neutral` | Soft grey of the neutral components (`color="neutral"`: push buttons, secondary actions, badges, chips), text in `neutral-foreground` |
 
 ```html
 <button class="bg-primary text-primary-foreground hover:bg-primary-600">Save</button>
