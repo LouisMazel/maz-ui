@@ -148,10 +148,38 @@
     opacity: 0;
   }
 
+  /*
+   * Reduced motion: only the elements of the library (an `m-` class or an internal `maz:` utility),
+   * never the ones of the app. `motion: 'full'` of MazUi ignores the preference, `motion: 'reduced'`
+   * forces it, `motion: { scope: 'page' }` applies it to the whole page.
+   */
   @media (prefers-reduced-motion: reduce) {
-    * {
+    html:not(.m-motion-full) {
+      --maz-motion-scale: 0.01 !important;
+    }
+
+    html:not(.m-motion-full) :where([class^='m-'], [class*=' m-'], [class*='maz:']),
+    html:not(.m-motion-full) :where([class^='m-'], [class*=' m-'], [class*='maz:'])::before,
+    html:not(.m-motion-full) :where([class^='m-'], [class*=' m-'], [class*='maz:'])::after,
+    html.m-motion-page:not(.m-motion-full) *,
+    html.m-motion-page:not(.m-motion-full) *::before,
+    html.m-motion-page:not(.m-motion-full) *::after {
       animation: none !important;
       transition: none !important;
     }
+  }
+
+  html.m-motion-reduced {
+    --maz-motion-scale: 0.01 !important;
+  }
+
+  html.m-motion-reduced :where([class^='m-'], [class*=' m-'], [class*='maz:']),
+  html.m-motion-reduced :where([class^='m-'], [class*=' m-'], [class*='maz:'])::before,
+  html.m-motion-reduced :where([class^='m-'], [class*=' m-'], [class*='maz:'])::after,
+  html.m-motion-reduced.m-motion-page *,
+  html.m-motion-reduced.m-motion-page *::before,
+  html.m-motion-reduced.m-motion-page *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

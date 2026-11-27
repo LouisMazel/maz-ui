@@ -33,14 +33,20 @@ function useMediaQuery(
 
 ## useReducedMotion
 
-`prefers-reduced-motion: reduce`: turn the animations off or shorten them when it is `true`.
+`shouldReduceMotion` says when to turn your animations off or shorten them: the `prefers-reduced-motion: reduce` preference of the user, unless the [`motion` option](./../guide/vue.md#motion) of MazUi forces it. `prefersReducedMotion` is the preference alone.
 
 ```ts
 import { useReducedMotion } from 'maz-ui/composables/useReducedMotion'
 
-const { prefersReducedMotion } = useReducedMotion()
+const { shouldReduceMotion } = useReducedMotion()
+
+element.animate(keyframes, { duration: shouldReduceMotion.value ? 0 : 200 })
 ```
 
 ```ts
-function useReducedMotion(options?: UseMediaQueryOptions): { prefersReducedMotion: Ref<boolean>, isSupported: boolean }
+function useReducedMotion(options?: UseMediaQueryOptions): {
+  shouldReduceMotion: ComputedRef<boolean>
+  prefersReducedMotion: Ref<boolean>
+  isSupported: boolean
+}
 ```

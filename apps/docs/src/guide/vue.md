@@ -66,12 +66,28 @@ app.use(MazUi, {
   dialog: { acceptText: 'Yes' },
   // Animations on scroll (disabled by default), with `import 'maz-ui/aos.css'`
   aos: true,
+  // Motion of the components: 'auto' (default), 'reduced' or 'full'
+  motion: 'auto',
   // Open the external links outside of the WebView (Tauri, Electron), see the desktop apps guide
   openExternal: href => openUrl(href),
 })
 ```
 
 See [Desktop apps](./desktop-apps.md) for `openExternal` and `isExternalLink`.
+
+### Motion
+
+By default, the components follow the `prefers-reduced-motion` preference of the user: under reduced motion, they stop their animations. The animations of your app are not touched.
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  // 'auto' follows the preference, 'reduced' and 'full' force it
+  motion: 'reduced',
+})
+```
+
+To also stop the animations of the whole page under reduced motion, use `motion: { scope: 'page' }`. In your own code, `shouldReduceMotion` of [useReducedMotion](./../composables/use-media-query.md#usereducedmotion) follows the same option.
 
 ::: tip Why provide preset and messages?
 - **`preset`** -- Providing the theme preset synchronously avoids FOUC (Flash of Unstyled Content). Without it, components render without their CSS variables until the theme loads.

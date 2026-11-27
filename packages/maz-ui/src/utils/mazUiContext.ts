@@ -1,12 +1,14 @@
 import type { App, InjectionKey } from 'vue'
 import type { DialogOptions } from '../plugins/dialog/DialogHandler.ts'
 import type { ToastOptions } from '../plugins/toast/types.ts'
+import type { MazUiMotion } from './motion.ts'
 import { getCurrentInstance, hasInjectionContext, inject } from 'vue'
 
 export interface MazUiContext {
   app: App
   toast?: ToastOptions
   dialog?: DialogOptions
+  motion?: MazUiMotion
 }
 
 export const MAZ_UI_CONTEXT_INJECTION_KEY: InjectionKey<MazUiContext> = Symbol('mazUiContext')

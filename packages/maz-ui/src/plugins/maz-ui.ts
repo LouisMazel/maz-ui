@@ -3,6 +3,7 @@ import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { Plugin } from 'vue'
 import type { MazUiDefaultsOptions } from '../composables/useGlobalConfig.ts'
 import type { MazUiExternalLinksOptions } from '../utils/externalLinks.ts'
+import type { MazUiMotion } from '../utils/motion.ts'
 import type { AosOptions } from './aos.ts'
 import type { DialogOptions } from './dialog/DialogHandler.ts'
 import type { ToastOptions } from './toast/types.ts'
@@ -11,6 +12,7 @@ import { MazUiTranslations } from '@maz-ui/translations/plugin'
 import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig.ts'
 import { EXTERNAL_LINKS_INJECTION_KEY } from '../utils/externalLinks.ts'
 import { MAZ_UI_CONTEXT_INJECTION_KEY } from '../utils/mazUiContext.ts'
+import { applyMotionClasses } from '../utils/motion.ts'
 import { AosPlugin } from './aos.ts'
 
 export interface MazUiOptions extends MazUiExternalLinksOptions {
@@ -45,6 +47,12 @@ export interface MazUiOptions extends MazUiExternalLinksOptions {
    * @default false
    */
   aos?: boolean | AosOptions
+  /**
+   * Motion of the components: `'auto'` follows `prefers-reduced-motion`, `'reduced'` and `'full'` force it.
+   * `{ scope: 'page' }` also stops the animations of the whole page under reduced motion.
+   * @default 'auto'
+   */
+  motion?: MazUiMotion
 }
 
 /**
@@ -83,12 +91,13 @@ export interface MazUiOptions extends MazUiExternalLinksOptions {
  */
 export const MazUi: Plugin<[MazUiOptions]> = {
   install(app, options) {
-    const { theme, translations, defaults, toast, dialog, aos, openExternal, isExternalLink } = options
+    const { theme, translations, defaults, toast, dialog, aos, motion, openExternal, isExternalLink } = options
 
     app.use(MazUiTheme, theme)
     app.use(MazUiTranslations, translations)
 
-    app.provide(MAZ_UI_CONTEXT_INJECTION_KEY, { app, toast, dialog })
+    app.provide(MAZ_UI_CONTEXT_INJECTION_KEY, { app, toast, dialog, motion })
+    applyMotionClasses(motion)
 
     if (aos) {
       app.use(AosPlugin, aos === true
@@ -114,3 +123,6 @@ declare module 'vue' {
     $mazGlobalConfig?: MazUiDefaultsOptions
   }
 }
+
+export type { MazUiMotion, MazUiMotionMode, MazUiMotionOptions } from '../utils/motion.ts'
+export { getMotionClasses } from '../utils/motion.ts'

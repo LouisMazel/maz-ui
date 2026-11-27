@@ -375,8 +375,8 @@ The `review_code` tool of the [MCP server](./../ecosystem/mcp.md) reports solid 
 | `font-sans` | `var(--maz-font-family)` (preset `foundation.font-family`) |
 | `font-mono` | `var(--maz-font-mono-stack)` |
 | `font-display` | `var(--maz-font-display-stack)` (headings) |
-| `ease-out`, `ease-in`, `ease-in-out` | `var(--maz-easing-*)` |
-| `duration-(--duration-fast)`, `duration-(--duration-normal)`, `duration-(--duration-slow)` | `var(--maz-motion-*)` |
+| `ease-out`, `ease-in`, `ease-in-out`, `ease-spring`, `ease-bounce` | `var(--maz-easing-*)` |
+| `duration-(--duration-instant)`, `duration-(--duration-fast)`, `duration-(--duration-normal)`, `duration-(--duration-slow)`, `duration-(--duration-slower)` | `var(--maz-motion-*)` times `var(--maz-motion-scale)` |
 
 The default border width and the default transition duration and easing follow the preset too. Durations are theme variables, not named utilities: write `transition-colors duration-(--duration-fast)`.
 
