@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, ref, watch } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 
 export type MazInputCodeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -35,6 +36,10 @@ export interface MazInputCodeProps<T = string | number> {
   color?: MazColor
   /** The hint text to display below the input. */
   hint?: string
+  /**
+   * Base of the ids of the inputs (`<id>-1`, `<id>-2`...), unique by default
+   */
+  id?: string
 }
 
 defineOptions({
@@ -54,6 +59,7 @@ const {
   warning = false,
   size = 'md',
   color = 'primary',
+  id,
 } = defineProps<MazInputCodeProps<T>>()
 
 const emits = defineEmits<{
@@ -69,6 +75,8 @@ const emits = defineEmits<{
 }>()
 
 const { t } = useTranslations()
+
+const instanceId = useInstanceUniqId({ componentName: 'm-input-code', providedId: id })
 
 const inputList = ref<HTMLInputElement[]>([])
 const localMap = ref<Map<number, string | undefined>>(new Map())
@@ -115,7 +123,15 @@ function getMapValues(value = modelValue) {
 }
 
 function handleNewValue(event: Event, item: number) {
-  const newValue = getValueSanitized((event.target as HTMLInputElement)?.value)
+  const rawValue = (event.target as HTMLInputElement)?.value ?? ''
+
+  // SMS autofill (`one-time-code`) or a fast typing puts several characters in one input
+  if (rawValue.length > 1) {
+    fillFromIndex(item, rawValue)
+    return
+  }
+
+  const newValue = getValueSanitized(rawValue)
 
   inputValues.value = localMap.value.set(item, newValue)
 
@@ -150,11 +166,15 @@ function getValueSanitized(value: string) {
 function handleKeydown(event: KeyboardEvent, inputIndex: number) {
   const currentInputValue = localMap.value.get(inputIndex)
 
-  if (event.key === 'ArrowRight') {
+  const isRtl = globalThis.getComputedStyle(event.target as HTMLElement).direction === 'rtl'
+  const nextKey = isRtl ? 'ArrowLeft' : 'ArrowRight'
+  const previousKey = isRtl ? 'ArrowRight' : 'ArrowLeft'
+
+  if (event.key === nextKey) {
     focusAndSelectInputByIndex(inputIndex)
   }
 
-  if (event.key === 'ArrowLeft') {
+  if (event.key === previousKey) {
     focusAndSelectInputByIndex(inputIndex - 2)
   }
 
@@ -167,6 +187,27 @@ function handleKeydown(event: KeyboardEvent, inputIndex: number) {
 
     focusAndSelectInputByIndex(previousInputIndexToFocus - 1)
   }
+}
+
+function fillFromIndex(startIndex: number, value: string) {
+  const characters = [...value].map(getValueSanitized).filter(Boolean) as string[]
+
+  for (const [offset, character] of characters.entries()) {
+    const index = startIndex + offset
+
+    if (index > codeLength)
+      break
+
+    localMap.value.set(index, character)
+  }
+
+  inputValues.value = localMap.value
+
+  const nextIndex = Math.min(startIndex + characters.length, codeLength) - 1
+  focusAndSelectInputByIndex(nextIndex, false)
+
+  if (inputList.value[startIndex - 1])
+    inputList.value[startIndex - 1].value = localMap.value.get(startIndex) ?? ''
 }
 
 function setValueOnPaste(event: ClipboardEvent) {
@@ -255,7 +296,7 @@ const borderColorState = computed(() => {
     <div class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
       <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:size-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:border-divider-400 maz:dark:bg-input" :class="borderColorState">
         <input
-          :id="`m-input-code-${item}`"
+          :id="`${instanceId}-${item}`"
           :ref="
             (el) => {
               inputList[item - 1] = el as HTMLInputElement
@@ -265,10 +306,12 @@ const borderColorState = computed(() => {
           :name="`m-input-code-${item}`"
           :aria-label="`${t('aria.character')} ${item}`"
           minlength="1"
-          maxlength="1"
+          :maxlength="item === 1 ? undefined : 1"
           :inputmode="acceptAlpha ? 'text' : 'numeric'"
           :pattern="acceptAlpha ? '[a-zA-Z0-9]{1}' : '[0-9]{1}'"
-          autocomplete="off"
+          :autocomplete="item === 1 ? 'one-time-code' : 'off'"
+          :aria-invalid="error || undefined"
+          :aria-describedby="hint ? `${instanceId}-hint` : undefined"
           :required="required"
           v-bind="$attrs"
           :value="inputValues.get(item)"
@@ -280,6 +323,7 @@ const borderColorState = computed(() => {
       </div>
     </div>
     <span
+      :id="`${instanceId}-hint`"
       class="m-input-code__hint maz:text-body-sm" :class="{
         '--error': error,
         '--success': success,

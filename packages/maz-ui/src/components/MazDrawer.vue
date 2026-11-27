@@ -125,11 +125,11 @@ const titleId = computed(() => `${instanceId.value}-title`)
             hasTitle ? 'maz:justify-between' : 'maz:justify-end',
           ]"
         >
-          <h4 :id="hasTitle ? titleId : undefined" class="m-drawer-header__title maz:m-0 maz:text-title-3">
+          <h2 :id="hasTitle ? titleId : undefined" class="m-drawer-header__title maz:m-0 maz:text-title-3">
             <slot name="title" :close="close">
               {{ title }}
             </slot>
-          </h4>
+          </h2>
           <div v-if="!hideCloseButton" class="m-drawer-header__close maz:flex maz:justify-end">
             <MazBtn size="sm" color="transparent" :aria-label="t('aria.close')" @click="close">
               <MazIcon :icon="MazXMark" class="icon maz:text-lg" aria-hidden="true" />

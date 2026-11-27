@@ -65,6 +65,12 @@ export interface MazAlertProps {
    * @default 'soft'
    */
   variant?: MazAlertVariant
+  /**
+   * How a screen reader announces the alert when it appears: `alert` interrupts the user, `status` waits
+   * for a pause. By default `alert` for the `destructive` and `warning` colors, `status` otherwise
+   * @values `'alert' | 'status'`
+   */
+  role?: 'alert' | 'status'
 }
 
 const {
@@ -76,7 +82,10 @@ const {
   iconSize = 'md',
   bordered = true,
   variant = 'soft',
+  role,
 } = defineProps<MazAlertProps>()
+
+const computedRole = computed(() => role ?? (color === 'destructive' || color === 'warning' ? 'alert' : 'status'))
 
 const { roundedSize } = useGlobalConfig<{ roundedSize: MazAlertRoundedSize }>('MazAlert', { roundedSize: 'md' })
 
@@ -139,7 +148,7 @@ const currentIcon = computed(() => {
 <template>
   <div
     class="m-alert m-reset-css maz:flex maz:items-start maz:gap-3 maz:p-4"
-    role="alert"
+    :role="computedRole"
     :aria-labelledby="hasTitle ? headingId : undefined"
     :aria-describedby="hasContent ? contentId : undefined"
     :style="colorStyles"
