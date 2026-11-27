@@ -266,15 +266,34 @@ function closeDropdown() {
     setDropdown(false)
 }
 
+/**
+ * The keys are handled only when the focus is on the trigger or in the menu: elsewhere in the page,
+ * the arrows still scroll and Enter still submits
+ */
+function isFocusInDropdown() {
+  const active = document.activeElement
+
+  return !!active && (
+    !!document.getElementById(instanceId.value)?.contains(active)
+    || !!document.getElementById(`${instanceId.value}-menu`)?.contains(active)
+  )
+}
+
 function keydownHandler(event: KeyboardEvent) {
+  if (!isFocusInDropdown())
+    return
+
   if (['ArrowDown', 'ArrowUp'].includes(event.key)) {
     arrowHandler(event)
   }
   else if (event.key === 'Enter') {
-    event.preventDefault()
-    const item = document.activeElement as HTMLElement | undefined
+    const item = document.activeElement as HTMLElement | null
 
-    item?.click()
+    if (!item?.classList.contains('menuitem'))
+      return
+
+    event.preventDefault()
+    item.click()
 
     closeDropdown()
   }
