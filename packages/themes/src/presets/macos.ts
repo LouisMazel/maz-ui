@@ -174,6 +174,7 @@ export const macos: ThemePreset = {
       'overlay': 'rgb(0 0 0 / 0.2)',
       'shadow': '#000000',
       'neutral': '#ffffff',
+      'neutral-foreground': '#272727',
     },
     dark: {
       'surface': '#1e1e1e',
@@ -199,6 +200,7 @@ export const macos: ThemePreset = {
       'overlay': 'rgb(0 0 0 / 0.4)',
       'shadow': '#000000',
       'neutral': '#505050',
+      'neutral-foreground': '#dddddd',
     },
   },
 }

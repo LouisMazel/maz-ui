@@ -204,3 +204,33 @@ describe('given getColorDistance', () => {
 function formatted(css: string): string {
   return formatAsOklch(evaluateColor(css)!)
 }
+
+describe('given evaluateColor with color-mix', () => {
+  describe('when two colors are mixed in oklch with a share', () => {
+    const mixed = evaluateColor('color-mix(in oklch, oklch(1 0 0), oklch(0 0 0) 25%)')
+
+    it('then the lightness moves by the share toward the second color', () => {
+      expect(mixed?.l).toBeCloseTo(0.75)
+      expect(mixed?.c).toBeCloseTo(0)
+    })
+  })
+
+  describe('when the mix is not in a color space', () => {
+    it('then the color is not resolved', () => {
+      expect(evaluateColor('color-mix(oklch(1 0 0), oklch(0 0 0))')).toBeUndefined()
+    })
+  })
+})
+
+describe('given resolvePreset with a preset without a neutral color', () => {
+  describe('when resolving the light and dark modes', () => {
+    const strip = ({ 'neutral': _neutral, 'neutral-foreground': _text, ...rest }: ThemePreset['colors']['light']) => rest
+    const resolved = resolvePreset({ ...mazUi, colors: { light: strip(mazUi.colors.light), dark: strip(mazUi.colors.dark) } })
+
+    it('then the neutral grey is mixed from the surface and the foreground', () => {
+      expect(resolved.light.colors.neutral?.oklch).toBe('oklch(0.9629 0.0003 253.69)')
+      expect(resolved.dark.colors.neutral?.oklch).toBe('oklch(0.3409 0.0182 280.69)')
+      expect(Object.keys(resolved.light.scales)).toContain('neutral')
+    })
+  })
+})

@@ -40,8 +40,8 @@ export interface ThemeColors {
   'divider': CSSColor
   'shadow': CSSColor
   /**
-   * Neutral grey of the push buttons of the native platforms (`MazBtn color="neutral"`). Optional: without it,
-   * `neutral` falls back to the `container` background.
+   * Neutral grey of the components (`color="neutral"`: the push button of the native platforms, badges, chips...).
+   * Every built-in preset sets it; without it, a grey mixed from `surface` and `foreground` is used.
    */
   'neutral'?: CSSColor
   /** Text on `neutral`. Falls back to `foreground`. */

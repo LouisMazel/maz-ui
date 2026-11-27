@@ -103,6 +103,8 @@ exports[`given generateCSS function > when generating with mode=both and darkSel
     --maz-info-foreground: light-dark(oklch(1 0 0), oklch(1 0 0));
     --maz-contrast: light-dark(oklch(0.2524 0.0212 280.69), oklch(1 0 0));
     --maz-contrast-foreground: light-dark(oklch(0.9619 0 0), oklch(0.2573 0.0068 248.09));
+    --maz-neutral: light-dark(oklch(0.955 0.004 264), oklch(0.36 0.022 281));
+    --maz-neutral-foreground: light-dark(oklch(0.2573 0.0068 248.09), oklch(0.8845 0 0));
     --maz-divider: light-dark(oklch(0.9276 0.0058 264.53), oklch(0.3399 0.0366 282.73));
     --maz-overlay: light-dark(oklch(0.5103 0 0), oklch(0.2697 0 0));
     --maz-muted: light-dark(oklch(0.5624 0 0), oklch(0.6324 0 0));
