@@ -445,10 +445,6 @@ function scrollToTab(tabsBar: HTMLElement, activeTab: HTMLElement) {
 }
 
 async function setIndicatorAndScroll() {
-  if (!autoScroll) {
-    return
-  }
-
   await sleep(150)
 
   const tabsBar = tabsBarRef.value
@@ -458,7 +454,8 @@ async function setIndicatorAndScroll() {
     return
   }
 
-  scrollToTab(tabsBar, activeTab)
+  if (autoScroll)
+    scrollToTab(tabsBar, activeTab)
 
   if (typeof currentTab.value !== 'number') {
     return
