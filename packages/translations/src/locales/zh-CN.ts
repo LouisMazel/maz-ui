@@ -17,6 +17,7 @@ export default {
     nextYears: '后几年',
     selectAll: '选择所有行',
     selectRow: '选择行',
+    rowDetails: '行详情',
     removeFile: '删除文件',
     remove: '删除',
     sidebar: '侧边栏',
@@ -73,6 +74,7 @@ export default {
     loading: '加载中...',
     error: '发生错误，请重试',
     results: '结果：{count}',
+    freeEntry: '使用 "{query}"',
   },
   table: {
     noResults: '无结果',
@@ -112,6 +114,19 @@ export default {
       placeholder: '搜索',
     },
   },
+  inputKeyValue: {
+    key: '键',
+    value: '值',
+    add: '添加',
+    duplicateKey: '此键已被使用',
+  },
+  inputSecret: {
+    saved: '已保存',
+    replace: '替换',
+    clear: '清除',
+    cancel: '取消',
+    savedDescription: '值已保存并隐藏',
+  },
   readMore: {
     expand: '阅读更多',
     collapse: '阅读更少',
@@ -130,6 +145,12 @@ export default {
     copyToClipboard: '复制到剪贴板',
     copiedToClipboard: '已复制到剪贴板',
     scrollToBottom: '滚动到底部',
+    diff: {
+      additions: '新增行数：{count}',
+      deletions: '删除行数：{count}',
+      identical: '没有差异',
+      expand: '显示未更改的行 ({count})',
+    },
   },
   colorPicker: {
     openPicker: '打开颜色选择器',

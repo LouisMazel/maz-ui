@@ -17,6 +17,7 @@ export default {
     nextYears: 'Années suivantes',
     selectAll: 'Sélectionner toutes les lignes',
     selectRow: 'Sélectionner la ligne',
+    rowDetails: 'Détails de la ligne',
     removeFile: 'Supprimer le fichier',
     remove: 'Supprimer',
     sidebar: 'Barre latérale',
@@ -85,6 +86,7 @@ export default {
     loading: 'Chargement...',
     error: 'Une erreur est survenue, réessayez',
     results: 'Résultats : {count}',
+    freeEntry: 'Utiliser « {query} »',
   },
   pagination: {
     navAriaLabel: 'Navigation',
@@ -112,6 +114,19 @@ export default {
       of: 'sur',
     },
   },
+  inputKeyValue: {
+    key: 'Clé',
+    value: 'Valeur',
+    add: 'Ajouter',
+    duplicateKey: 'Cette clé est déjà utilisée',
+  },
+  inputSecret: {
+    saved: 'Enregistré',
+    replace: 'Remplacer',
+    clear: 'Effacer',
+    cancel: 'Annuler',
+    savedDescription: 'La valeur est enregistrée et masquée',
+  },
   readMore: {
     expand: 'Lire plus',
     collapse: 'Lire moins',
@@ -130,6 +145,12 @@ export default {
     copyToClipboard: 'Copier dans le presse-papiers',
     copiedToClipboard: 'Copié dans le presse-papiers',
     scrollToBottom: 'Aller en bas',
+    diff: {
+      additions: 'Lignes ajoutées : {count}',
+      deletions: 'Lignes retirées : {count}',
+      identical: 'Aucune différence',
+      expand: 'Afficher les lignes identiques ({count})',
+    },
   },
   colorPicker: {
     openPicker: 'Ouvrir le sélecteur de couleur',

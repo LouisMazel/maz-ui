@@ -20,6 +20,7 @@ export default {
     nextYears: 'Next years',
     selectAll: 'Select all rows',
     selectRow: 'Select row',
+    rowDetails: 'Row details',
     removeFile: 'Remove file',
     remove: 'Remove',
     sidebar: 'Sidebar',
@@ -128,6 +129,7 @@ export default {
     loading: 'Loading...',
     error: 'An error occurred, try again',
     results: 'Results: {count}',
+    freeEntry: 'Use "{query}"',
   },
   /**
    * This is the translation for the table component.
@@ -199,6 +201,36 @@ export default {
     },
   },
   /**
+   * This is the translation for the input key value component.
+   * The keys are:
+   * - key: The translation for the key column and its input.
+   * - value: The translation for the value column and its input.
+   * - add: The translation for the add button.
+   * - duplicateKey: The translation for the error of a key used twice.
+   */
+  inputKeyValue: {
+    key: 'Key',
+    value: 'Value',
+    add: 'Add',
+    duplicateKey: 'This key is already used',
+  },
+  /**
+   * This is the translation for the input secret component.
+   * The keys are:
+   * - saved: The translation for the badge of a saved value.
+   * - replace: The translation for the replace button.
+   * - clear: The translation for the clear button.
+   * - cancel: The translation for the cancel button.
+   * - savedDescription: The translation for the description of a saved value.
+   */
+  inputSecret: {
+    saved: 'Saved',
+    replace: 'Replace',
+    clear: 'Clear',
+    cancel: 'Cancel',
+    savedDescription: 'The value is saved and hidden',
+  },
+  /**
    * This is the translation for the read more component.
    * The keys are:
    * - expand: The translation for the expand text.
@@ -238,11 +270,18 @@ export default {
    * - copyToClipboard: Label/tooltip for the copy button (default state).
    * - copiedToClipboard: Label/tooltip for the copy button after a successful copy.
    * - scrollToBottom: Label/tooltip for the button that scrolls a long block back to its last line.
+   * - diff: Texts of the `diff` mode: additions / deletions (labels of the counts of added and removed lines, `{count}`), identical (shown when both texts are the same), expand (button that shows the unchanged lines folded between two changes, `{count}`).
    */
   codeHighlight: {
     copyToClipboard: 'Copy to clipboard',
     copiedToClipboard: 'Copied to clipboard',
     scrollToBottom: 'Scroll to bottom',
+    diff: {
+      additions: 'Added lines: {count}',
+      deletions: 'Removed lines: {count}',
+      identical: 'No differences',
+      expand: 'Show unchanged lines ({count})',
+    },
   },
   /**
    * This is the translation for the color picker component.

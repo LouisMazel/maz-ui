@@ -17,6 +17,7 @@ export default {
     nextYears: 'Próximos anos',
     selectAll: 'Selecionar todas as linhas',
     selectRow: 'Selecionar linha',
+    rowDetails: 'Detalhes da linha',
     removeFile: 'Remover arquivo',
     remove: 'Remover',
     sidebar: 'Barra lateral',
@@ -73,6 +74,7 @@ export default {
     loading: 'Carregando...',
     error: 'Ocorreu um erro, tente novamente',
     results: 'Resultados: {count}',
+    freeEntry: 'Usar "{query}"',
   },
   table: {
     noResults: 'Sem resultados',
@@ -112,6 +114,19 @@ export default {
       placeholder: 'Pesquisar',
     },
   },
+  inputKeyValue: {
+    key: 'Chave',
+    value: 'Valor',
+    add: 'Adicionar',
+    duplicateKey: 'Esta chave já está em uso',
+  },
+  inputSecret: {
+    saved: 'Guardado',
+    replace: 'Substituir',
+    clear: 'Limpar',
+    cancel: 'Cancelar',
+    savedDescription: 'O valor está guardado e oculto',
+  },
   readMore: {
     expand: 'Ler mais',
     collapse: 'Ler menos',
@@ -130,6 +145,12 @@ export default {
     copyToClipboard: 'Copiar para a área de transferência',
     copiedToClipboard: 'Copiado para a área de transferência',
     scrollToBottom: 'Rolar até o fim',
+    diff: {
+      additions: 'Linhas adicionadas: {count}',
+      deletions: 'Linhas removidas: {count}',
+      identical: 'Sem diferenças',
+      expand: 'Mostrar linhas inalteradas ({count})',
+    },
   },
   colorPicker: {
     openPicker: 'Abrir o seletor de cor',
