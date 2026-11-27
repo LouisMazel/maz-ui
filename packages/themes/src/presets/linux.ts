@@ -1,9 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SPACE,
-} from './_defaults.ts'
+import { DEFAULT_DISABLED_OPACITY, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SPACE } from './_defaults.ts'
 
 /**
  * Linux preset: the look of a native GNOME app (libadwaita).
@@ -40,6 +36,7 @@ export const linux: ThemePreset = {
     'motion-fast': '100ms',
     'motion-normal': '200ms',
     'motion-slow': '300ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
     'easing-in': 'cubic-bezier(0.55, 0.06, 0.68, 0.19)',
     'easing-in-out': 'cubic-bezier(0.65, 0.05, 0.36, 1)',

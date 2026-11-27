@@ -1,9 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SPACE,
-} from './_defaults.ts'
+import { DEFAULT_DISABLED_OPACITY, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SPACE } from './_defaults.ts'
 
 /**
  * Windows preset: the look of a native Windows 11 app (Fluent 2).
@@ -37,6 +33,10 @@ export const windows: ThemePreset = {
     'motion-fast': '83ms',
     'motion-normal': '167ms',
     'motion-slow': '250ms',
+    ...DEFAULT_MOTION,
+    // Fluent motion does not bounce
+    'motion-instant': '50ms',
+    'easing-bounce': DEFAULT_MOTION['easing-spring'],
     'easing-out': 'cubic-bezier(0, 0, 0, 1)',
     'easing-in': 'cubic-bezier(1, 0, 1, 1)',
     'easing-in-out': 'cubic-bezier(0.33, 0, 0.67, 1)',

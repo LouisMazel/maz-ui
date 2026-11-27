@@ -74,9 +74,34 @@ export interface ThemeFoundation {
   'motion-fast'?: Duration
   'motion-normal'?: Duration
   'motion-slow'?: Duration
+  /**
+   * Shortest duration: press, hover, toggle. Bridged into Tailwind's `--duration-instant`.
+   * @default '80ms'
+   */
+  'motion-instant'?: Duration
+  /**
+   * Longest duration: large layout transitions and reveals. Bridged into Tailwind's `--duration-slower`.
+   * @default '450ms'
+   */
+  'motion-slower'?: Duration
+  /**
+   * Multiplier of every duration of the components: `0.5` twice faster, `0` no motion.
+   * Lowered under `prefers-reduced-motion: reduce`.
+   * @default '1'
+   */
+  'motion-scale'?: string
   'easing-out'?: string
   'easing-in'?: string
   'easing-in-out'?: string
+  /**
+   * Spring without bounce (a `linear()` easing, see `springEasing`): sliding indicators, sheets.
+   * Bridged into Tailwind's `--ease-spring`.
+   */
+  'easing-spring'?: string
+  /**
+   * Spring with a small bounce: check marks, press feedback, badges. Bridged into Tailwind's `--ease-bounce`.
+   */
+  'easing-bounce'?: string
   /**
    * Opacity applied to disabled interactive elements (buttons, inputs, etc.).
    * @default '0.5'

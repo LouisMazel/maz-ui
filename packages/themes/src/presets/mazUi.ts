@@ -1,18 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_BTN_FONT_WEIGHT,
-  DEFAULT_CONTAINER_BG,
-  DEFAULT_DIALOG_MAX_WIDTH,
-  DEFAULT_DIALOG_MIN_WIDTH,
-  DEFAULT_DISABLED_CURSOR,
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_FONT_MONO,
-  DEFAULT_INPUT_BG,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SHADOW,
-  DEFAULT_SPACE,
-  DEFAULT_TYPOGRAPHY,
-} from './_defaults.ts'
+import { DEFAULT_BTN_FONT_WEIGHT, DEFAULT_CONTAINER_BG, DEFAULT_DIALOG_MAX_WIDTH, DEFAULT_DIALOG_MIN_WIDTH, DEFAULT_DISABLED_CURSOR, DEFAULT_DISABLED_OPACITY, DEFAULT_FONT_MONO, DEFAULT_INPUT_BG, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SHADOW, DEFAULT_SPACE, DEFAULT_TYPOGRAPHY } from './_defaults.ts'
 
 const FONT_FAMILY = `Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
 
@@ -27,9 +14,10 @@ export const mazUi: ThemePreset = {
     'motion-fast': '100ms',
     'motion-normal': '200ms',
     'motion-slow': '300ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
     'easing-in': 'cubic-bezier(0.4, 0, 1, 1)',
-    'easing-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
+    'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
     'space': DEFAULT_SPACE,

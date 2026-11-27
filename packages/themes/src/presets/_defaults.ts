@@ -32,6 +32,19 @@ export const DEFAULT_SHADOW: ThemeScales['shadow'] = {
   elevation: '0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06)',
 }
 
+/**
+ * Motion tokens added after the first presets: shared by every preset, which keeps its own
+ * `motion-fast/normal/slow` and `easing-out/in/in-out`. The springs are `springEasing()` and
+ * `springEasing({ stiffness: 260, damping: 20 })`, written out to cost nothing at runtime.
+ */
+export const DEFAULT_MOTION = {
+  'motion-instant': '80ms',
+  'motion-slower': '450ms',
+  'motion-scale': '1',
+  'easing-spring': 'linear(0, 0.062, 0.184, 0.318, 0.451, 0.568, 0.665, 0.744, 0.807, 0.854, 0.891, 0.919, 0.941, 0.957, 0.968, 0.977, 0.983, 0.988, 0.991, 0.994, 0.995, 0.997, 0.998, 0.998, 0.999, 0.999, 0.999, 1, 1, 1, 1, 1, 1)',
+  'easing-bounce': 'linear(0, 0.066, 0.211, 0.388, 0.566, 0.726, 0.857, 0.955, 1.021, 1.06, 1.079, 1.081, 1.074, 1.061, 1.047, 1.032, 1.019, 1.009, 1.002, 0.997, 0.995, 0.993, 0.993, 0.994, 0.995, 0.996, 0.998, 0.999, 0.999, 1, 1, 1, 1)',
+} satisfies Partial<ThemeFoundation>
+
 export const DEFAULT_DISABLED_OPACITY = '0.5'
 export const DEFAULT_DISABLED_CURSOR = 'not-allowed'
 

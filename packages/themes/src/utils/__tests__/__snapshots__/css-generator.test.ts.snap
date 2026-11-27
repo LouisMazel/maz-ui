@@ -12,9 +12,14 @@ exports[`given generateCSS function > when generating with mode=both and darkSel
     --maz-motion-fast: 100ms;
     --maz-motion-normal: 200ms;
     --maz-motion-slow: 300ms;
+    --maz-motion-instant: 80ms;
+    --maz-motion-slower: 450ms;
+    --maz-motion-scale: 1;
+    --maz-easing-spring: linear(0, 0.062, 0.184, 0.318, 0.451, 0.568, 0.665, 0.744, 0.807, 0.854, 0.891, 0.919, 0.941, 0.957, 0.968, 0.977, 0.983, 0.988, 0.991, 0.994, 0.995, 0.997, 0.998, 0.998, 0.999, 0.999, 0.999, 1, 1, 1, 1, 1, 1);
+    --maz-easing-bounce: linear(0, 0.066, 0.211, 0.388, 0.566, 0.726, 0.857, 0.955, 1.021, 1.06, 1.079, 1.081, 1.074, 1.061, 1.047, 1.032, 1.019, 1.009, 1.002, 0.997, 0.995, 0.993, 0.993, 0.994, 0.995, 0.996, 0.998, 0.999, 0.999, 1, 1, 1, 1);
     --maz-easing-out: cubic-bezier(0.4, 0, 0.2, 1);
     --maz-easing-in: cubic-bezier(0.4, 0, 1, 1);
-    --maz-easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --maz-easing-in-out: cubic-bezier(0.65, 0, 0.35, 1);
     --maz-disabled-opacity: 0.5;
     --maz-disabled-cursor: not-allowed;
     --maz-space: 0.25rem;

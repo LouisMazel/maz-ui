@@ -1,9 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SPACE,
-} from './_defaults.ts'
+import { DEFAULT_DISABLED_OPACITY, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SPACE } from './_defaults.ts'
 
 /**
  * macOS preset: the look of a native Mac app (macOS 26).
@@ -44,6 +40,7 @@ export const macos: ThemePreset = {
     'motion-fast': '120ms',
     'motion-normal': '200ms',
     'motion-slow': '300ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.25, 0.1, 0.25, 1)',
     'easing-in': 'cubic-bezier(0.42, 0, 1, 1)',
     'easing-in-out': 'cubic-bezier(0.42, 0, 0.58, 1)',

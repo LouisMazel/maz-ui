@@ -1377,15 +1377,43 @@ Single-value design tokens. Set via `foundation.<key>` on the preset.
 | `font-family` | `--maz-font-family` | preset-specific | Sans / body font stack. Bridged to Tailwind `--font-sans`. |
 | `font-mono-stack` | `--maz-font-mono-stack` | `ui-monospace, …` | Monospace stack — `MazInputCode`, `<code>`, `<kbd>`. Bridged to `--font-mono`. |
 | `font-display-stack` | `--maz-font-display-stack` | same as `font-family` | Display / heading stack. Bridged to `--font-display`. |
-| `motion-fast` | `--maz-motion-fast` | `100ms` | Bridged to Tailwind `--duration-fast`. |
-| `motion-normal` | `--maz-motion-normal` | `200ms` | Default transition duration (`--default-transition-duration`). |
-| `motion-slow` | `--maz-motion-slow` | `300ms` | Bridged to `--duration-slow`. |
-| `easing-out` | `--maz-easing-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Default easing (`--ease-out`, also `--default-transition-timing-function`). |
-| `easing-in` | `--maz-easing-in` | `cubic-bezier(0.4, 0, 1, 1)` | Bridged to `--ease-in`. |
-| `easing-in-out` | `--maz-easing-in-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Bridged to `--ease-in-out`. |
+| `motion-instant` | `--maz-motion-instant` | `80ms` | Press, hover, toggle. Bridged to `--duration-instant`. |
+| `motion-fast` | `--maz-motion-fast` | `100ms` | Tooltip, menu, switch. Bridged to `--duration-fast`. |
+| `motion-normal` | `--maz-motion-normal` | `200ms` | Popover, dialog, drawer. Default transition duration (`--default-transition-duration`). |
+| `motion-slow` | `--maz-motion-slow` | `300ms` | Moves of a layout, bottom sheet, toast. Bridged to `--duration-slow`. |
+| `motion-slower` | `--maz-motion-slower` | `450ms` | Large transitions and reveals. Bridged to `--duration-slower`. |
+| `motion-scale` | `--maz-motion-scale` | `1` | Multiplies every duration: `0.5` is twice faster. Near `0` under reduced motion (see [Reduced motion](#reduced-motion)). |
+| `easing-out` | `--maz-easing-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Entrances. Default easing (`--ease-out`, also `--default-transition-timing-function`). |
+| `easing-in` | `--maz-easing-in` | `cubic-bezier(0.4, 0, 1, 1)` | Exits. Bridged to `--ease-in`. |
+| `easing-in-out` | `--maz-easing-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | Moves on the screen. Bridged to `--ease-in-out`. |
+| `easing-spring` | `--maz-easing-spring` | `linear(...)` spring, no bounce | Sliding indicators, sheets. Bridged to `--ease-spring`. |
+| `easing-bounce` | `--maz-easing-bounce` | `linear(...)` spring, small bounce | Check marks, press feedback, badges. Bridged to `--ease-bounce`. |
 | `disabled-opacity` | `--maz-disabled-opacity` | `0.5` | Applied to disabled buttons / inputs. |
 | `disabled-cursor` | `--maz-disabled-cursor` | `not-allowed` | Cursor for disabled interactive elements. |
 | `interactive-cursor` | `--maz-interactive-cursor` | `pointer` | Cursor of the interactive controls, `default` on the platform presets. Utility `cursor-interactive` (see [Interactive cursor](#interactive-cursor)). |
+
+Each preset has its own rhythm: `windows` is short and never bounces, `pristine` and `ocean` are softer. Build your own springs with `springEasing`:
+
+```ts
+import { definePreset } from '@maz-ui/themes'
+import { mazUi } from '@maz-ui/themes/presets'
+import { springEasing } from '@maz-ui/themes/utils'
+
+export const myPreset = definePreset({
+  base: mazUi,
+  overrides: {
+    foundation: {
+      'easing-bounce': springEasing({ stiffness: 300, damping: 18 }),
+    },
+  },
+})
+```
+
+`springEasing` simulates a spring and returns a CSS `linear()` easing. A lower `damping` bounces more, a higher `stiffness` is faster.
+
+#### Reduced motion
+
+When the user asks for reduced motion (`prefers-reduced-motion: reduce`), the components of maz-ui stop their animations and `motion-scale` is near `0`. The animations of your app are not touched. Force it either way, or apply it to the whole page, with the `motion` option of the [MazUi plugin](./../guide/vue.md#motion) or of the [Nuxt module](./nuxt.md#motion).
 
 > **Why `font-mono-stack` / `font-display-stack` / `motion-*`?** Under Tailwind v4 `prefix(maz)`, the bridge LHS gets prefixed (`--font-mono` → `--maz-font-mono`), so a same-named source token would self-cycle. The `-stack` and `motion-` suffixes break the collision.
 
