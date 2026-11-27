@@ -16,14 +16,19 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/mcp": "workspace:^",
+    "@tailwindcss/vite": "catalog:",
     "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",
     "eslint": "catalog:",
     "maz-ui": "workspace:^",
+    "tailwindcss": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
-    "vitest": "catalog:"
+    "vite": "catalog:",
+    "vitest": "catalog:",
+    "vue-tsc": "catalog:"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

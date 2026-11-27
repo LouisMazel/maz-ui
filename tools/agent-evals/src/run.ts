@@ -5,6 +5,7 @@ import { execFileSync, spawn, spawnSync } from 'node:child_process'
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import process from 'node:process'
+import { addedDependencies, addedLines, runChecks } from './checks.ts'
 import { claudeArgs, installsMcp, setupCommand } from './conditions.ts'
 import { changedFiles, commitAll, createFixture, readSources } from './fixture.ts'
 import { parseClaudeResult, scoreTask } from './score.ts'
@@ -84,8 +85,9 @@ export async function runTask(options: RunTaskOptions): Promise<TaskScore> {
     const claude = parseClaudeResult(stdout)
     const files = changedFiles(fixtureDir)
     const sources = readSources(fixtureDir, files)
+    const checks = files.length > 0 ? runChecks(fixtureDir) : undefined
     const score: TaskScore = {
-      ...scoreTask({ task, condition, run, sources, review: review(repoRoot, fixtureDir, files), claude }),
+      ...scoreTask({ task, condition, run, sources, review: review(repoRoot, fixtureDir, files), claude, checks, addedDependencies: addedDependencies(fixtureDir), linesAdded: addedLines(fixtureDir, files) }),
       ...(options.keep ? { app: fixtureDir } : {}),
     }
     const resultDir = join(options.outDir, `${condition}-${task.id}-${run}`)
@@ -93,6 +95,11 @@ export async function runTask(options: RunTaskOptions): Promise<TaskScore> {
     save(resultDir, 'score.json', `${JSON.stringify(score, null, 2)}\n`)
     save(resultDir, 'result.md', `${claude.result}\n`)
     save(resultDir, 'transcript.jsonl', stdout)
+
+    for (const [name, result] of Object.entries(checks ?? {})) {
+      if (!result.passed)
+        save(resultDir, `${name}.log`, `${result.output}\n`)
+    }
 
     for (const [file, content] of Object.entries(sources)) save(resultDir, join('files', file), content)
 

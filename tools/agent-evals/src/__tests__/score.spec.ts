@@ -3,9 +3,11 @@ import type { EvalTask } from '../tasks.ts'
 import { parseClaudeResult, scoreTask } from '../score.ts'
 
 const TASK: EvalTask = { id: 'copy-link', prompt: 'Copy a link', expects: [/useClipboard/, /<MazBtn/], forbids: [/navigator\.clipboard/] }
-const NO_USAGE: AgentUsage = { mcpTools: [], readAgentDocs: false, reviewed: false, skills: [], subagents: [] }
-const CLAUDE: ClaudeResult = { costUsd: 0.4, turns: 12, durationMs: 90_000, isError: false, result: 'Done', usage: NO_USAGE }
+const NO_USAGE: AgentUsage = { toolCalls: 0, mcpTools: [], readAgentDocs: false, reviewed: false, skills: [], subagents: [] }
+const NO_TOKENS = { input: 0, output: 0, cacheRead: 0, cacheCreation: 0 }
+const CLAUDE: ClaudeResult = { costUsd: 0.4, tokens: NO_TOKENS, turns: 12, durationMs: 90_000, isError: false, result: 'Done', usage: NO_USAGE }
 const CLEAN_REVIEW: ReviewOutput = { totals: { error: 0, warning: 0, info: 0 }, files: [{ file: 'src/ShareLink.vue', findings: [] }] }
+const PASSED_CHECKS = { typecheck: { passed: true, output: '' }, build: { passed: true, output: '' } }
 const GOOD_SOURCE = { 'src/ShareLink.vue': '<script setup>\nconst { copy } = useClipboard()\n</script>\n<template><MazBtn /></template>\n' }
 
 function toolUse(...tools: Array<[string, Record<string, unknown>]>): string {
@@ -20,8 +22,33 @@ const RESULT = JSON.stringify({ type: 'result', subtype: 'success', is_error: fa
 
 describe('given parseClaudeResult', () => {
   describe('when claude succeeds without a tool of maz-ui', () => {
-    it('then it reads the cost, the turns, the duration and the last message', () => {
-      expect(parseClaudeResult(transcript(JSON.stringify({ type: 'system', subtype: 'init' }), toolUse(['Read', { file_path: 'src/App.vue' }]), RESULT))).toEqual(CLAUDE)
+    it('then it reads the cost, the turns, the duration, the tool calls and the last message', () => {
+      expect(parseClaudeResult(transcript(JSON.stringify({ type: 'system', subtype: 'init' }), toolUse(['Read', { file_path: 'src/App.vue' }]), RESULT))).toEqual({ ...CLAUDE, usage: { ...NO_USAGE, toolCalls: 1 } })
+    })
+  })
+
+  describe('when the result has the usage of every model', () => {
+    it('then it sums the tokens of the models', () => {
+      const result = JSON.stringify({
+        type: 'result',
+        subtype: 'success',
+        usage: { input_tokens: 1, output_tokens: 1 },
+        modelUsage: {
+          'claude-sonnet': { inputTokens: 100, outputTokens: 50, cacheReadInputTokens: 1000, cacheCreationInputTokens: 200 },
+          'claude-haiku': { inputTokens: 10, outputTokens: 5 },
+          'claude-opus': {},
+        },
+      })
+
+      expect(parseClaudeResult(result).tokens).toEqual({ input: 110, output: 55, cacheRead: 1000, cacheCreation: 200 })
+    })
+  })
+
+  describe('when the result only has the usage of the main model', () => {
+    it('then it reads its tokens', () => {
+      const result = JSON.stringify({ type: 'result', subtype: 'success', usage: { input_tokens: 3, output_tokens: 4, cache_read_input_tokens: 5, cache_creation_input_tokens: 6 } })
+
+      expect(parseClaudeResult(result).tokens).toEqual({ input: 3, output: 4, cacheRead: 5, cacheCreation: 6 })
     })
   })
 
@@ -37,6 +64,7 @@ describe('given parseClaudeResult', () => {
       )
 
       expect(parseClaudeResult(stdout).usage).toEqual({
+        toolCalls: 9,
         mcpTools: ['search_docs', 'get_component_api'],
         readAgentDocs: true,
         reviewed: true,
@@ -52,7 +80,7 @@ describe('given parseClaudeResult', () => {
 
   describe('when claude stops on its budget', () => {
     it('then it is an error', () => {
-      expect(parseClaudeResult(JSON.stringify({ type: 'result', subtype: 'error_max_budget_usd', total_cost_usd: 2 }))).toEqual({ costUsd: 2, turns: 0, durationMs: 0, isError: true, result: '', usage: NO_USAGE })
+      expect(parseClaudeResult(JSON.stringify({ type: 'result', subtype: 'error_max_budget_usd', total_cost_usd: 2 }))).toEqual({ costUsd: 2, tokens: NO_TOKENS, turns: 0, durationMs: 0, isError: true, result: '', usage: NO_USAGE })
     })
   })
 
@@ -66,7 +94,7 @@ describe('given parseClaudeResult', () => {
     it('then it keeps the output as the error', () => {
       expect(parseClaudeResult('Invalid API key\n')).toMatchObject({ isError: true, result: 'Invalid API key' })
       expect(parseClaudeResult('')).toMatchObject({ isError: true, result: 'no output' })
-      expect(parseClaudeResult('null\n{"type":"assistant"}\n{"type":"assistant","message":{"content":[{"type":"tool_use","name":"Read"}]}}')).toMatchObject({ isError: true, usage: NO_USAGE })
+      expect(parseClaudeResult('null\n{"type":"assistant"}\n{"type":"assistant","message":{"content":[{"type":"tool_use","name":"Read"}]}}')).toMatchObject({ isError: true, tokens: NO_TOKENS, usage: { ...NO_USAGE, toolCalls: 1 } })
     })
   })
 })
@@ -74,16 +102,22 @@ describe('given parseClaudeResult', () => {
 describe('given scoreTask', () => {
   describe('when the agent reuses the expected tools and the review is clean', () => {
     it('then the run passes', () => {
-      expect(scoreTask({ task: TASK, condition: 'plugin', run: 1, sources: GOOD_SOURCE, review: CLEAN_REVIEW, claude: CLAUDE })).toEqual({
+      const claude = { ...CLAUDE, tokens: { input: 10, output: 20, cacheRead: 300, cacheCreation: 40 } }
+
+      expect(scoreTask({ task: TASK, condition: 'plugin', run: 1, sources: GOOD_SOURCE, review: CLEAN_REVIEW, claude, checks: PASSED_CHECKS, linesAdded: 4 })).toEqual({
         task: 'copy-link',
         condition: 'plugin',
         run: 1,
         passed: true,
         files: ['src/ShareLink.vue'],
+        linesAdded: 4,
+        addedDependencies: [],
+        checks: PASSED_CHECKS,
         findings: [],
         missing: [],
         forbidden: [],
         costUsd: 0.4,
+        tokens: 370,
         turns: 12,
         durationMs: 90_000,
         usage: NO_USAGE,
@@ -107,6 +141,21 @@ describe('given scoreTask', () => {
         missing: ['/useClipboard/'],
         forbidden: ['/navigator\\.clipboard/'],
       })
+    })
+  })
+
+  describe('when the agent adds a dependency', () => {
+    it('then the run fails', () => {
+      expect(scoreTask({ task: TASK, condition: 'baseline', run: 1, sources: GOOD_SOURCE, review: CLEAN_REVIEW, claude: CLAUDE, checks: PASSED_CHECKS, addedDependencies: ['@vueuse/core'] })).toMatchObject({ passed: false, addedDependencies: ['@vueuse/core'] })
+    })
+  })
+
+  describe('when the app does not typecheck or build', () => {
+    it('then the run fails', () => {
+      const failed = { passed: false, output: 'error TS2322' }
+
+      expect(scoreTask({ task: TASK, condition: 'init', run: 1, sources: GOOD_SOURCE, review: CLEAN_REVIEW, claude: CLAUDE, checks: { ...PASSED_CHECKS, typecheck: failed } })).toMatchObject({ passed: false })
+      expect(scoreTask({ task: TASK, condition: 'init', run: 1, sources: GOOD_SOURCE, review: CLEAN_REVIEW, claude: CLAUDE, checks: { ...PASSED_CHECKS, build: failed } })).toMatchObject({ passed: false })
     })
   })
 

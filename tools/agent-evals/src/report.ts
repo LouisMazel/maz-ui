@@ -7,6 +7,15 @@ export interface ConditionSummary {
   passed: number
   /** Errors and warnings of the review, by run */
   findingsPerRun: number
+  /** Runs whose app typechecks and builds */
+  typecheck: number
+  build: number
+  /** Runs that added a dependency to the app */
+  addedDependencies: number
+  linesPerRun: number
+  toolCallsPerRun: number
+  /** Thousands of tokens, by run */
+  tokensPerRun: number
   costUsd: number
   turnsPerRun: number
   minutesPerRun: number
@@ -34,6 +43,12 @@ export function summarize(scores: TaskScore[]): ConditionSummary[] {
       runs: runs.length,
       passed: runs.filter(score => score.passed).length,
       findingsPerRun: round(total(score => score.findings.length) / runs.length),
+      typecheck: runs.filter(score => score.checks?.typecheck.passed).length,
+      build: runs.filter(score => score.checks?.build.passed).length,
+      addedDependencies: runs.filter(score => score.addedDependencies.length > 0).length,
+      linesPerRun: round(total(score => score.linesAdded) / runs.length, 0),
+      toolCallsPerRun: round(total(score => score.usage.toolCalls) / runs.length, 1),
+      tokensPerRun: round(total(score => score.tokens) / runs.length / 1000, 0),
       costUsd: round(total(score => score.costUsd)),
       turnsPerRun: round(total(score => score.turns) / runs.length, 1),
       minutesPerRun: round(total(score => score.durationMs) / runs.length / 60_000, 1),
@@ -53,6 +68,9 @@ function failure(score: TaskScore): string {
     score.error,
     ...score.missing.map(pattern => `missing ${pattern}`),
     ...score.forbidden.map(pattern => `hand-made ${pattern}`),
+    ...score.addedDependencies.map(name => `added ${name}`),
+    score.checks?.typecheck.passed === false ? 'typecheck failed' : '',
+    score.checks?.build.passed === false ? 'build failed' : '',
     ...score.findings,
   ].filter(Boolean).join(', ')
 }
@@ -64,9 +82,19 @@ export function renderReport(scores: TaskScore[]): string {
   const lines = [
     '# maz-ui agent evals',
     '',
-    '| Condition | Pass rate | Review findings / run | MCP calls / run | Read agent-docs | Reviewed | Turns / run | Minutes / run | Cost |',
+    '## Quality',
+    '',
+    '| Condition | Pass rate | Review findings / run | Typecheck | Build | Added a dependency | Lines / run |',
+    '| --- | --- | --- | --- | --- | --- | --- |',
+    ...summaries.map(summary => `| ${summary.condition} | ${percent(summary.passed, summary.runs)} (${summary.passed}/${summary.runs}) | ${summary.findingsPerRun} | ${percent(summary.typecheck, summary.runs)} | ${percent(summary.build, summary.runs)} | ${percent(summary.addedDependencies, summary.runs)} | ${summary.linesPerRun} |`),
+    '',
+    '## Effort',
+    '',
+    '| Condition | Tool calls / run | MCP calls / run | Read agent-docs | Reviewed | Tokens / run | Turns / run | Minutes / run | Cost |',
     '| --- | --- | --- | --- | --- | --- | --- | --- | --- |',
-    ...summaries.map(summary => `| ${summary.condition} | ${percent(summary.passed, summary.runs)} (${summary.passed}/${summary.runs}) | ${summary.findingsPerRun} | ${summary.mcpCallsPerRun} | ${percent(summary.readAgentDocs, summary.runs)} | ${percent(summary.reviewed, summary.runs)} | ${summary.turnsPerRun} | ${summary.minutesPerRun} | $${summary.costUsd.toFixed(2)} |`),
+    ...summaries.map(summary => `| ${summary.condition} | ${summary.toolCallsPerRun} | ${summary.mcpCallsPerRun} | ${percent(summary.readAgentDocs, summary.runs)} | ${percent(summary.reviewed, summary.runs)} | ${summary.tokensPerRun}k | ${summary.turnsPerRun} | ${summary.minutesPerRun} | $${summary.costUsd.toFixed(2)} |`),
+    '',
+    '## Tasks',
     '',
     `| Task | ${conditions.join(' | ')} |`,
     `| --- |${conditions.map(() => ' --- |').join('')}`,

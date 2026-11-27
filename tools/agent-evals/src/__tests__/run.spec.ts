@@ -66,7 +66,8 @@ describe('given createFixture', () => {
       const app = createFixture(REPO_ROOT, TEMPLATE_DIR, { parent, mcp: false })
 
       expect(existsSync(join(app, 'node_modules/@maz-ui/mcp'))).toBe(false)
-      expect(existsSync(join(app, 'node_modules/.bin'))).toBe(false)
+      expect(existsSync(join(app, 'node_modules/.bin/maz-ui-mcp'))).toBe(false)
+      expect(existsSync(join(app, 'node_modules/.bin/vue-tsc'))).toBe(true)
       expect(readFileSync(join(app, 'package.json'), 'utf8')).not.toContain('@maz-ui/mcp')
       expect(changedFiles(app)).toEqual([])
     })
@@ -137,7 +138,7 @@ describe('given runTask', () => {
 
       const score = await runTask({ repoRoot: REPO_ROOT, templateDir: TEMPLATE_DIR, task: COPY_LINK, condition: 'baseline', run: 1, outDir, runClaude: runner })
 
-      expect(score).toMatchObject({ passed: false, files: ['src/components/ShareLink.vue'], missing: ['/\\buseClipboard\\b|<MazBtnClipboard\\b/'], forbidden: ['/navigator\\.clipboard/', '/<button\\b/'], costUsd: 0.3 })
+      expect(score).toMatchObject({ passed: false, files: ['src/components/ShareLink.vue'], linesAdded: 11, addedDependencies: [], checks: { typecheck: { passed: true }, build: { passed: true } }, missing: ['/\\buseClipboard\\b|<MazBtnClipboard\\b/'], forbidden: ['/navigator\\.clipboard/', '/<button\\b/'], costUsd: 0.3 })
       expect(score.findings).toEqual(expect.arrayContaining([expect.stringMatching(/^prefer-ecosystem \(src\/components\/ShareLink\.vue:3\)$/), expect.stringMatching(/^theme-colors /)]))
       expect(calls[0].args).toContain('--strict-mcp-config')
       expect(readFileSync(join(outDir, 'baseline-copy-link-1/transcript.jsonl'), 'utf8')).toBe(SUCCESS)
@@ -145,6 +146,30 @@ describe('given runTask', () => {
       expect(JSON.parse(readFileSync(join(outDir, 'baseline-copy-link-1/score.json'), 'utf8'))).toEqual(score)
       expect(readFileSync(join(outDir, 'baseline-copy-link-1/result.md'), 'utf8')).toBe('Done\n')
       expect(readFileSync(join(outDir, 'baseline-copy-link-1/files/src/components/ShareLink.vue'), 'utf8')).toBe(HAND_MADE)
+    })
+  })
+
+  describe('when the agent writes code that does not typecheck', () => {
+    it('then the run fails and the output of the typecheck is saved', async () => {
+      const { runner } = writer({ 'src/count.ts': 'export const count: number = \'one\'\n' })
+      const outDir = join(parent, 'results')
+
+      const score = await runTask({ repoRoot: REPO_ROOT, templateDir: TEMPLATE_DIR, task: COPY_LINK, condition: 'baseline', run: 1, outDir, runClaude: runner })
+
+      expect(score).toMatchObject({ passed: false, checks: { typecheck: { passed: false }, build: { passed: true } } })
+      expect(readFileSync(join(outDir, 'baseline-copy-link-1/typecheck.log'), 'utf8')).toContain('TS2322')
+      expect(existsSync(join(outDir, 'baseline-copy-link-1/build.log'))).toBe(false)
+    })
+  })
+
+  describe('when the agent writes no file', () => {
+    it('then nothing is checked', async () => {
+      const { runner } = writer({})
+
+      const score = await runTask({ repoRoot: REPO_ROOT, templateDir: TEMPLATE_DIR, task: COPY_LINK, condition: 'baseline', run: 1, outDir: join(parent, 'results'), runClaude: runner })
+
+      expect(score).toMatchObject({ passed: false, error: 'no source file written', linesAdded: 0 })
+      expect(score.checks).toBeUndefined()
     })
   })
 

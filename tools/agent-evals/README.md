@@ -19,12 +19,23 @@ A run passes when:
 
 - `maz-ui-mcp review` finds no error nor warning in the files of the agent;
 - the code uses the expected maz-ui tools (`useClipboard`, `MazBtn`...);
-- the code has no hand-made version (`navigator.clipboard`, `<button>`...).
+- the code has no hand-made version (`navigator.clipboard`, `<button>`...);
+- the agent added no dependency to the `package.json` of the app (a library for something maz-ui covers);
+- the app typechecks (`vue-tsc --noEmit`) and builds (`vite build`).
+
+The app has the tools to check itself: `npm run build` and `npm run typecheck` work in it (linked to the ones of agent-evals).
 
 The tasks live in `src/tasks.ts`. Their prompts never name maz-ui: the eval measures whether the agent finds the ecosystem by itself.
 
 ## Results
 
-`results/<date>/` (or `--out`): `report.md`, `scores.json` and one folder per run with its score, the files of the agent, its last message and its transcript (`transcript.jsonl`). The report also tells what the agents used: the calls of the maz-ui MCP tools, the runs that read the agent docs and the ones that reviewed their code. `--keep` keeps the apps.
+`results/<date>/` (or `--out`): `report.md`, `scores.json` and one folder per run with its score, the files of the agent, its last message, its transcript (`transcript.jsonl`) and the output of a failed check (`typecheck.log`, `build.log`). `--keep` keeps the apps.
+
+The report has two tables by condition:
+
+- **Quality**: pass rate, review findings, runs that typecheck and build, runs that added a dependency, lines added by the agent.
+- **Effort**: tool calls (all tools, then the maz-ui MCP tools), runs that read the agent docs and that reviewed their code, tokens (every model, cached ones included), turns, minutes and cost.
+
+Compare models with one `--out` per model (`--model sonnet --out results/sonnet`).
 
 Each run costs tokens (about $0.25 for a small task): never run it in CI. `--dry-run` prints the runs and the commands.

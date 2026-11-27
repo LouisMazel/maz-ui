@@ -9,7 +9,8 @@ export const HELP = `agent-evals: does Claude Code reuse maz-ui, alone, with \`i
 Usage: pnpm -F agent-evals eval [options]
 
 Each run creates a new Vue app that uses maz-ui, gives a task to \`claude -p\`, then scores what it wrote:
-no review error nor warning, the expected maz-ui tools used, no hand-made version.
+no review error nor warning, the expected maz-ui tools used, no hand-made version, no dependency added,
+the app typechecks and builds.
 It calls the real Claude Code with your auth: each run costs tokens. Never run it in CI.
 
 Options:
