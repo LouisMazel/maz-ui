@@ -137,6 +137,9 @@ const targetElement = computed(() => {
 })
 
 function scrollHeight() {
+  if (!isClient())
+    return 0
+
   if (targetElement.value)
     return targetElement.value.scrollHeight - targetElement.value.clientHeight
 
