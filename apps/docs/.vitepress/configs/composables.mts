@@ -39,6 +39,7 @@ export const composables = {
     { text: withNewBadge('useMediaQuery'), link: '/composables/use-media-query' },
     { text: 'useMountComponent', link: '/composables/use-mount-component' },
     { text: 'useMutationObserver', link: '/composables/use-mutation-observer' },
+    { text: withNewBadge('useOriginTransition'), link: '/composables/use-origin-transition' },
     {
       text: withNewBadge('usePullToRefresh'),
       link: '/composables/use-pull-to-refresh',
@@ -52,6 +53,7 @@ export const composables = {
       text: withNewBadge('useResizeObserver'),
       link: '/composables/use-resize-observer',
     },
+    { text: withNewBadge('useRovingFocus'), link: '/composables/use-roving-focus' },
     {
       text: withNewBadge('useScroll'),
       link: '/composables/use-scroll',
@@ -61,6 +63,7 @@ export const composables = {
       link: '/composables/use-scroll-lock',
     },
     { text: withNewBadge('useShortcut'), link: '/composables/use-shortcut' },
+    { text: withNewBadge('useSlidingIndicator'), link: '/composables/use-sliding-indicator' },
     { text: 'useStringMatching', link: '/composables/use-string-matching' },
     { text: 'useSwipe', link: '/composables/use-swipe' },
     { text: 'useTimer', link: '/composables/use-timer' },
