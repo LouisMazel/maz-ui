@@ -16,6 +16,7 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/mcp": "workspace:^",
+    "@maz-ui/utils": "workspace:^",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",

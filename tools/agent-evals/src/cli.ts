@@ -3,6 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { claudeArgs, setupCommand } from './conditions.ts'
 import { checkBuilt } from './fixture.ts'
 import { HELP, parseOptions, pool } from './options.ts'
@@ -53,7 +54,21 @@ async function main(): Promise<number> {
   console.log(`${runs.length} run(s), ${options.concurrency} at once. Results: ${outDir}`)
 
   const scores: TaskScore[] = await pool(runs, options.concurrency, async ({ condition, task, run }) => {
-    const score = await runTask({ repoRoot: REPO_ROOT, templateDir: TEMPLATE_DIR, task, condition, run, outDir, model: options.model, maxBudgetUsd: options.maxBudgetUsd, keep: options.keep })
+    const score = await runTask({ repoRoot: REPO_ROOT, templateDir: TEMPLATE_DIR, task, condition, run, outDir, model: options.model, maxBudgetUsd: options.maxBudgetUsd, keep: options.keep }).catch((error: unknown): TaskScore => ({
+      task: task.id,
+      condition,
+      run,
+      passed: false,
+      files: [],
+      findings: [],
+      missing: [],
+      forbidden: [],
+      costUsd: 0,
+      turns: 0,
+      durationMs: 0,
+      usage: { mcpTools: [], readAgentDocs: false, reviewed: false, skills: [], subagents: [] },
+      error: getErrorMessage(error),
+    }))
 
     console.log(`[${++done}/${runs.length}] ${condition} / ${task.id} #${run}: ${score.passed ? 'pass' : 'fail'} ($${score.costUsd.toFixed(2)})`)
 
@@ -70,6 +85,6 @@ async function main(): Promise<number> {
 }
 
 main().then(code => process.exit(code), (error: unknown) => {
-  console.error(error instanceof Error ? error.message : error)
+  console.error(getErrorMessage(error))
   process.exit(1)
 })

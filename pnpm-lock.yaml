@@ -1485,6 +1485,9 @@ importers:
       '@maz-ui/mcp':
         specifier: workspace:^
         version: link:../../packages/mcp
+      '@maz-ui/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.6

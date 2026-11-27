@@ -86,8 +86,8 @@ export function parseOptions(argv: string[]): EvalOptions {
   return {
     conditions: parseConditions(values.conditions),
     tasks: parseTasks(values.tasks),
-    runs: Math.floor(positiveNumber(values.runs, 'runs', 1)),
-    concurrency: Math.floor(positiveNumber(values.concurrency, 'concurrency', 3)),
+    runs: Math.max(1, Math.floor(positiveNumber(values.runs, 'runs', 1))),
+    concurrency: Math.max(1, Math.floor(positiveNumber(values.concurrency, 'concurrency', 3))),
     model: values.model,
     maxBudgetUsd: values['max-budget-usd'] === undefined
       ? undefined
