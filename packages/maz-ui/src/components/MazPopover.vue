@@ -18,8 +18,9 @@ import {
   watch,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { getFocusableElements, trapTabKey } from '../utils/focusable.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
-import { addPopoverLayer, isInUpperPopoverLayer, isTopPopoverLayer, removePopoverLayer } from '../utils/popoverLayers.ts'
+import { addOverlayLayer, isInUpperOverlayLayer, isTopOverlayLayer, removeOverlayLayer } from '../utils/overlayLayers.ts'
 import { getColor } from './types.ts'
 
 defineOptions({
@@ -585,7 +586,7 @@ const layer = {
 }
 
 function removeDocumentListeners() {
-  removePopoverLayer(layer)
+  removeOverlayLayer(layer)
 
   if (isClient()) {
     document.removeEventListener('keydown', onKeydown)
@@ -658,7 +659,7 @@ function setOpen(value: boolean) {
     emits('toggle', value)
 
     if (role !== 'tooltip')
-      addPopoverLayer(layer)
+      addOverlayLayer(layer)
 
     nextTick(() => {
       if (!appliedOpenState)
@@ -733,8 +734,6 @@ function getTransformOrigin(position: Omit<MazPopoverPosition, 'auto'>): string 
   }
 }
 
-const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
-
 function setupFocusTrap() {
   if (role === 'tooltip' || effectiveTrigger.value === 'hover' || !trapFocus || !isClient())
     return
@@ -742,9 +741,9 @@ function setupFocusTrap() {
   initialFocusElement = document.activeElement as HTMLElement
 
   nextTick(() => {
-    const focusableElements = panelRef.value?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+    const focusableElements = getFocusableElements(panelRef.value)
 
-    if (focusableElements && focusableElements.length > 0) {
+    if (focusableElements.length > 0) {
       focusableElements[0].focus({ preventScroll: true })
     }
     else {
@@ -764,7 +763,7 @@ function restoreFocus() {
 
 function onKeydown(event: KeyboardEvent) {
   // A popover opened from this panel handles the keys first
-  if (!isOpen.value || (role !== 'tooltip' && !isTopPopoverLayer(layer)))
+  if (!isOpen.value || (role !== 'tooltip' && !isTopOverlayLayer(layer)))
     return
 
   if (event.key === 'Escape' && closeOnEscape && !persistent) {
@@ -778,30 +777,10 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function handleTrapFocus(event: KeyboardEvent) {
-  if (!panelRef.value || !isClient())
+  if (!isClient())
     return
 
-  const focusableElements = panelRef.value.querySelectorAll(FOCUSABLE_SELECTOR)
-
-  if (focusableElements.length === 0)
-    return
-
-  const firstElement = focusableElements[0] as HTMLElement
-
-  const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
-
-  if (event.shiftKey) {
-    if (document.activeElement === firstElement) {
-      event.preventDefault()
-      lastElement.focus()
-    }
-  }
-  else {
-    if (document.activeElement === lastElement) {
-      event.preventDefault()
-      firstElement.focus()
-    }
-  }
+  trapTabKey(event, panelRef.value)
 }
 
 function onDocumentPointerDown(event: PointerEvent) {
@@ -813,7 +792,7 @@ function onDocumentPointerDown(event: PointerEvent) {
     return
 
   // Inside the panel, the trigger or a popover opened from the panel: not outside
-  if (layer.contains(target) || isInUpperPopoverLayer(layer, target))
+  if (layer.contains(target) || isInUpperOverlayLayer(layer, target))
     return
 
   close()

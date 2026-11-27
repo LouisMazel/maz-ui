@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { getFocusableElements, trapTabKey } from '../utils/focusable.ts'
 import { holdInertBackground, releaseInertBackground } from '../utils/inertBackground.ts'
+import { addOverlayLayer, isTopOverlayLayer, removeOverlayLayer } from '../utils/overlayLayers.ts'
 
 defineOptions({
   inheritAttrs: false,
@@ -130,13 +132,24 @@ function onBackdropAnimationLeave() {
   removeClassAndEventToDocument()
 }
 
-function onKeyPress(event: KeyboardEvent) {
-  if (closeOnEscape && event.key === 'Escape') {
-    close()
-  }
+const backdropRef = useTemplateRef<HTMLElement>('backdrop')
+const contentRef = useTemplateRef<HTMLElement>('content')
+
+const layer = {
+  contains: (target: Node) => !!backdropRef.value?.contains(target),
 }
 
-const backdropRef = useTemplateRef<HTMLElement>('backdrop')
+/**
+ * Escape only closes the top overlay: a popover, a tooltip or a dialog opened above this one
+ * handles it first (and prevents its default)
+ */
+function onKeyPress(event: KeyboardEvent) {
+  if (event.key !== 'Escape' || event.defaultPrevented || !isTopOverlayLayer(layer))
+    return
+
+  if (closeOnEscape)
+    close()
+}
 
 let inertElements: HTMLElement[] = []
 
@@ -161,13 +174,16 @@ function releaseBackgroundInert() {
 
 function addClassAndEventToDocument() {
   addClassToDocument()
-  document.addEventListener('keyup', onKeyPress, false)
+  addOverlayLayer(layer)
+  // On window: the listeners of the popovers and tooltips, on document, run first
+  globalThis.addEventListener('keydown', onKeyPress, false)
   document.addEventListener('keydown', trapFocus, false)
 }
 
 function removeEventsFromDocument() {
   try {
-    document.removeEventListener('keyup', onKeyPress)
+    removeOverlayLayer(layer)
+    globalThis.removeEventListener('keydown', onKeyPress)
     document.removeEventListener('keydown', trapFocus)
   }
   catch (error) {
@@ -200,55 +216,9 @@ onUnmounted(removeClassFromDocument)
 
 let initialFocusableElement: HTMLElement | null = null
 
-function getAllFocusableElements(selector: string) {
-  const modal = document.querySelector(selector)
-  const focusableElements = 'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], input[type="email"], input[type="password"], input[type="url"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], input[type="time"], select, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
-
-  const focusableElementsArray = modal && [
-    ...modal.querySelectorAll<HTMLElement>(focusableElements),
-  ]
-
-  const visibleFocusableElements = focusableElementsArray?.filter((el) => {
-    const style = globalThis.getComputedStyle(el)
-    const isDisabled = 'disabled' in el
-      ? (el as HTMLInputElement | HTMLButtonElement | HTMLSelectElement | HTMLTextAreaElement).disabled
-      : false
-    return style.display !== 'none' && style.visibility !== 'hidden' && !isDisabled && el.tabIndex !== -1
-  })
-
-  return visibleFocusableElements || []
-}
-
-function findFirstFocusableElement(selector: string) {
-  const focusableElements = getAllFocusableElements(selector)
-  return focusableElements.length > 0
-    ? focusableElements[0]
-    : null
-}
-
 function trapFocus(event: KeyboardEvent) {
-  if (event.key !== 'Tab')
-    return
-
-  const focusableElements = getAllFocusableElements('.m-backdrop-content')
-  if (focusableElements.length === 0)
-    return
-
-  const firstFocusable = focusableElements[0]
-  const lastFocusable = focusableElements.at(-1)
-
-  if (event.shiftKey) {
-    if (document.activeElement === firstFocusable) {
-      event.preventDefault()
-      lastFocusable?.focus()
-    }
-  }
-  else {
-    if (document.activeElement === lastFocusable) {
-      event.preventDefault()
-      firstFocusable?.focus()
-    }
-  }
+  if (isTopOverlayLayer(layer))
+    trapTabKey(event, contentRef.value)
 }
 
 watch(
@@ -263,8 +233,7 @@ watch(
 
       await nextTick()
       setBackgroundInert()
-      const firstFocusableElement = findFirstFocusableElement('.m-backdrop-content')
-      firstFocusableElement?.focus()
+      getFocusableElements(contentRef.value)[0]?.focus()
     }
     else {
       removeClassAndEventToDocument()
@@ -351,6 +320,7 @@ defineExpose({
           <div class="m-backdrop-wrapper maz:fixed maz:inset-0 maz:scrollbar-themed maz:overflow-y-auto">
             <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
             <div
+              ref="content"
               class="m-backdrop-content maz:flex maz:min-h-full maz:tab-s:p-0"
               :class="[
                 backdropContentClass,
@@ -400,6 +370,17 @@ html.--backdrop-present.--has-scrollbar {
   /*
 * Animations
 */
+  &.backdrop-anim-enter-active,
+  &.backdrop-anim-leave-active {
+    transition: opacity 250ms ease-in-out;
+    transition-behavior: allow-discrete;
+  }
+
+  &.backdrop-anim-enter-from,
+  &.backdrop-anim-leave-to {
+    opacity: 0;
+  }
+
   &.bottom-sheet-anim-enter-active,
   &.bottom-sheet-anim-leave-active {
     transition: opacity 250ms ease-in-out;
@@ -529,17 +510,6 @@ html.--backdrop-present.--has-scrollbar {
     & .m-backdrop-content > * {
       transform: translateX(-100%);
     }
-  }
-
-  &.backdrop-anim-enter-active,
-  &.backdrop-anim-leave-active {
-    transition: opacity 250ms ease-in-out;
-    transition-behavior: allow-discrete;
-  }
-
-  &.backdrop-anim-enter-from,
-  &.backdrop-anim-leave-to {
-    opacity: 0;
   }
 }
 </style>
