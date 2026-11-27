@@ -17,6 +17,11 @@ export interface MazSidebarMenuButtonProps {
    * or a full `MazIconProps` object for fine-grained control (size, title, fallback, …).
    */
   icon?: MazIconLike
+  /**
+   * Icon to display after the label (an external link arrow, a chevron...). Accepts a bare icon value
+   * or a full `MazIconProps` object. Use the `end` slot for rich content.
+   */
+  endIcon?: MazIconLike
   /** Label text */
   label?: string
   /**
@@ -50,14 +55,34 @@ import type { Component } from 'vue'
 import { computed, defineAsyncComponent, getCurrentInstance } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { useExternalLinks } from '../utils/externalLinks.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 import { mazSidebarKey } from './MazSidebar.vue'
 
-const { to, href, icon, badge, tooltip, tooltipMode, active, size = 'md' } = defineProps<MazSidebarMenuButtonProps>()
+const { to, href, disabled, icon, endIcon, badge, tooltip, tooltipMode, active, size = 'md' } = defineProps<MazSidebarMenuButtonProps>()
 
-defineEmits<{
+const emits = defineEmits<{
   click: [event: MouseEvent]
 }>()
+
+defineSlots<{
+  /** Replace the icon before the label */
+  icon: () => unknown
+  /** The label */
+  default: () => unknown
+  /** Content after the label and the badge (an icon, a shortcut, a status) */
+  end: () => unknown
+}>()
+
+const { onLinkClick } = useExternalLinks()
+
+function onClick(event: MouseEvent) {
+  if (disabled)
+    return
+  if (!to)
+    onLinkClick(event, href)
+  emits('click', event)
+}
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
@@ -91,6 +116,8 @@ const linkProps = computed(() => {
 })
 
 const { iconProps } = useMazIconProps(() => icon, () => ({ size: 'sm' as const }))
+
+const { iconProps: endIconProps } = useMazIconProps(() => endIcon, () => ({ size: 'sm' as const }))
 
 const badgeText = computed(() => {
   const b = badge
@@ -188,7 +215,7 @@ const stateClass = computed(() => {
     :aria-disabled="disabled || undefined"
     :disabled="tag === 'button' && disabled ? true : undefined"
     v-bind="linkProps"
-    @click="!disabled && $emit('click', $event)"
+    @click="onClick"
   >
     <span v-if="iconProps || hasSlotContent($slots.icon)" class="m-sidebar-menu-btn__icon maz:relative maz:flex maz:shrink-0 maz:flex-center" :class="{ 'maz:text-primary': sidebar.variant.value === 'floating' }">
       <slot name="icon">
@@ -217,6 +244,16 @@ const stateClass = computed(() => {
     >
       <span v-if="sidebar.variant.value === 'floating' && typeof badge !== 'object'" class="maz:text-xs maz:text-muted maz:tabular-nums">{{ badgeText }}</span>
       <MazBadge v-else v-bind="badgeBindings">{{ badgeText }}</MazBadge>
+    </span>
+
+    <span
+      v-if="!isIconCollapsed && (endIconProps || hasSlotContent($slots.end))"
+      class="m-sidebar-menu-btn__end maz:flex maz:shrink-0 maz:items-center maz:gap-1 maz:text-muted"
+    >
+      <!-- @slot end - Content after the label and the badge (an icon, a shortcut, a status) -->
+      <slot name="end">
+        <MazIcon v-if="endIconProps" v-bind="endIconProps" />
+      </slot>
     </span>
   </component>
 </template>
