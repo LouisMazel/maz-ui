@@ -81,7 +81,7 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
   /**
    * Color theme for the dropdown button
    * @type {MazColor}
-   * @values primary, secondary, info, success, warning, destructive, transparent, contrast, accent, surface, container
+   * @values primary, secondary, info, success, warning, destructive, transparent, contrast, neutral, accent, surface, container
    * @default 'transparent'
    */
   color?: MazColor | MazNeutralColor

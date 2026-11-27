@@ -35,7 +35,7 @@ export interface MazBtnClipboardProps {
   variant?: MazBtnClipboardVariant
   /**
    * Color of the button: `container` and `surface` are the neutral colors of the theme
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'surface' | 'container'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral' | 'surface' | 'container'`
    * @default container
    */
   color?: MazBtnClipboardColor
@@ -401,6 +401,53 @@ async function onClick() {
     &.--solid.--copied .m-btn-clipboard__icon,
     &.--solid.--error .m-btn-clipboard__icon {
       color: inherit;
+    }
+  }
+
+  /* Neutral: the soft grey of the theme, `soft` and `solid` share it, the foreground is the accent (a light grey would disappear) */
+  &.--neutral {
+    --m-btn-clipboard-tint: color-mix(in oklab, var(--maz-neutral-foreground) 8%, transparent);
+    --m-btn-clipboard-tint-strong: color-mix(in oklab, var(--maz-neutral-foreground) 14%, transparent);
+    --m-btn-clipboard-tint-fg: var(--maz-neutral-foreground);
+
+    &:focus-visible {
+      outline-color: var(--maz-neutral-foreground);
+    }
+
+    &.--soft,
+    &.--solid {
+      background-color: var(--maz-neutral);
+      color: var(--maz-neutral-foreground);
+
+      @apply maz:border-divider;
+
+      &:not(:disabled):hover {
+        background-color: color-mix(in oklab, var(--maz-neutral-foreground) 10%, var(--maz-neutral));
+      }
+    }
+
+    &.--outlined {
+      color: var(--maz-neutral-foreground);
+
+      @apply maz:border-divider;
+
+      &:not(:disabled):hover {
+        @apply maz:border-divider;
+
+        background-color: var(--m-btn-clipboard-tint);
+      }
+    }
+
+    &.--ghost {
+      color: var(--maz-neutral-foreground);
+    }
+
+    &.--copied .m-btn-clipboard__icon {
+      color: var(--maz-success);
+    }
+
+    &.--error .m-btn-clipboard__icon {
+      color: var(--maz-destructive);
     }
   }
 

@@ -105,7 +105,7 @@ const radioSize = computed(() => {
   }
 })
 
-const radioSelectedColor = computed(() => `var(--maz-${color})`)
+const radioSelectedColor = computed(() => color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})`)
 const radioBoxShadow = computed(() => {
   if (error && !isFocused.value) {
     return `var(--maz-destructive)`
@@ -117,7 +117,7 @@ const radioBoxShadow = computed(() => {
     return `var(--maz-success)`
   }
 
-  return ['transparent', 'contrast'].includes(color)
+  return ['transparent', 'contrast', 'neutral'].includes(color)
     ? `var(--maz-muted)`
     : `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`
 })

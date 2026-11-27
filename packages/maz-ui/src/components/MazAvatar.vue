@@ -97,7 +97,7 @@ export interface MazAvatarProps {
   hideLoader?: boolean
   /**
    * The color of the clickable button
-   * @values `"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent"`
+   * @values `"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "neutral" | "transparent"`
    */
   buttonColor?: MazColor
   /** Remove the icon on hover when component is clickable */
@@ -127,7 +127,7 @@ export interface MazAvatarProps {
    * The color of the avatar. `auto` derives a stable hue from the caption: the
    * same name always gets the same color, different names get distinct ones. A free CSS color
    * (`#e11d48`, `oklch(...)`, `var(--user-color)`) gives each person their own color
-   * @values `"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent" | "auto"`
+   * @values `"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "neutral" | "transparent" | "auto"`
    */
   color?: MazColorOrFree<MazColor | 'auto'>
   /**
@@ -290,7 +290,7 @@ const fontSize = computed(() => {
             '--bordered': bordered,
             '--has-initial': hasInitial,
             'maz:shadow-sm': !noElevation,
-            'maz:border maz:border-solid maz:border-divider': bordered,
+            'maz:border maz:border-solid maz:border-divider': bordered || (hasInitial && color === 'neutral'),
             'maz:items-center': hasInitial,
           },
         ]"
@@ -348,7 +348,7 @@ const fontSize = computed(() => {
           @slot icon - The icon displayed on the clickable button overlay (shown on hover/focus)
         -->
           <slot v-if="!hideClickableIcon" name="icon">
-            <MazPencil class="m-avatar__button__icon maz:text-white" />
+            <MazPencil class="m-avatar__button__icon" :class="buttonColor === 'neutral' ? 'maz:text-neutral-foreground' : 'maz:text-white'" />
           </slot>
         </button>
       </div>

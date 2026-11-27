@@ -72,6 +72,16 @@ describe('given MazBtnClipboard component', () => {
     })
   })
 
+  describe('when rendered with the neutral color', () => {
+    it('then the neutral variables and class are set', () => {
+      const wrapper = mount(MazBtnClipboard, { props: { value: 'abc', color: 'neutral' } })
+
+      expect(wrapper.classes()).toContain('--neutral')
+      expect(wrapper.attributes('style')).toContain('--m-btn-clipboard-color: var(--maz-neutral)')
+      expect(wrapper.attributes('style')).toContain('--m-btn-clipboard-color-fg: var(--maz-neutral-foreground)')
+    })
+  })
+
   describe('when rendered with a neutral color', () => {
     it('then no color variable is set', () => {
       const wrapper = mount(MazBtnClipboard, { props: { value: 'abc', color: 'surface' } })

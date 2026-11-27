@@ -224,7 +224,7 @@ export interface MazInputPhoneNumberProps {
   /**
    * Component color applied
    * @type {MazColor}
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, neutral
    * @default "primary"
    */
   color?: MazColor

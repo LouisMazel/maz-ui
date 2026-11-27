@@ -128,7 +128,7 @@ function themeSuggestion(utility: string, hue: string, step: string): string {
   return colors.map(color => `\`${utility}-${color}${scale}\``).join(' or ')
 }
 
-const THEME_BACKGROUND = /^(?:[\w-]+:)*!?bg-(primary|secondary|accent|info|success|warning|destructive|contrast)(?:-\d{2,3})?(?:\/\d+)?!?$/
+const THEME_BACKGROUND = /^(?:[\w-]+:)*!?bg-(primary|secondary|accent|info|success|warning|destructive|contrast|neutral)(?:-\d{2,3})?(?:\/\d+)?!?$/
 /** Backgrounds that keep the same color in light and dark mode (overlay, black, media, gradients...) */
 const FIXED_BACKGROUND = /^(?:[\w-]+:)*!?(?:bg-(?:overlay|black|white|transparent|linear|radial|conic|gradient|none)|bg-\[|bg-\(|from-|via-|to-)/
 

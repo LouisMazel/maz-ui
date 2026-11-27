@@ -67,7 +67,7 @@ Four styles: `soft` (default), `solid`, `outlined` and `ghost`.
 
 ## Colors
 
-`container` (default) and `surface` are the neutral colors of the theme. The theme colors are `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive` and `contrast`.
+`container` (default) and `surface` are the neutral colors of the theme. The theme colors are `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive` and `contrast`. `neutral` is the soft grey of the theme, with a divider border (`soft` and `solid` look the same).
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-3">
@@ -225,7 +225,7 @@ For a copy action of your own (a menu item, a shortcut), use the [useClipboard](
 
 <script lang="ts" setup>
 const variants = ['soft', 'solid', 'outlined', 'ghost'] as const
-const colors = ['container', 'surface', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast'] as const
+const colors = ['container', 'surface', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral'] as const
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', 'full'] as const
 </script>

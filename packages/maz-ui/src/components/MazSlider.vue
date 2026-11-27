@@ -98,7 +98,7 @@ const wrapperStyle = computed(() => {
 const sliderStyle = computed<StyleValue>(() => {
   if (color === 'transparent')
     return {}
-  return { '--m-slider-color': `var(--maz-${color})` }
+  return { '--m-slider-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})` }
 })
 const hasMultipleValues = computed(() => Array.isArray(modelValue))
 

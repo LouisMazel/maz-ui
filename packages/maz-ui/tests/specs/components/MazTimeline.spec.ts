@@ -901,3 +901,39 @@ describe('given MazTimeline icons in the small size', () => {
     })
   })
 })
+
+describe('given MazTimeline with the neutral color', () => {
+  describe('when the timeline color is neutral', () => {
+    it('then the indicator is neutral with a divider border and the accents use the neutral foreground', () => {
+      const wrapper = mountTimeline({ color: 'neutral' })
+      const style = wrapper.attributes('style')
+
+      expect(style).toContain('--m-timeline-bg: var(--maz-neutral)')
+      expect(style).toContain('--m-timeline-fg: var(--maz-neutral-foreground)')
+      expect(style).toContain('--m-timeline-border: var(--maz-divider)')
+      expect(style).toContain('--m-timeline-accent: var(--maz-neutral-foreground)')
+      expect(style).toContain('--m-timeline-color: var(--maz-neutral-foreground)')
+    })
+  })
+
+  describe('when a step is neutral', () => {
+    it('then it sets the neutral variables with the state border', () => {
+      const wrapper = mountTimeline({ steps: [{ title: 'A', color: 'neutral', state: 'completed' }] })
+      const style = wrapper.find('.m-timeline-step').attributes('style')
+
+      expect(style).toContain('--m-timeline-state-bg: var(--maz-neutral)')
+      expect(style).toContain('--m-timeline-state-fg: var(--maz-neutral-foreground)')
+      expect(style).toContain('--m-timeline-state-border: var(--maz-divider)')
+    })
+  })
+
+  describe('when a step has another color in a neutral timeline', () => {
+    it('then it resets the accent and the border', () => {
+      const wrapper = mountTimeline({ color: 'neutral', steps: [{ title: 'A', color: 'info', state: 'active' }] })
+      const style = wrapper.find('.m-timeline-step').attributes('style')
+
+      expect(style).toContain('--m-timeline-accent: var(--maz-info)')
+      expect(style).toContain('--m-timeline-border: transparent')
+    })
+  })
+})

@@ -163,6 +163,7 @@ export const linux: ThemePreset = {
       'overlay': 'rgb(0 0 6 / 0.25)',
       'shadow': '#000006',
       'neutral': '#ebebeb',
+      'neutral-foreground': '#323237',
     },
     dark: {
       'surface': '#222226',
@@ -188,6 +189,7 @@ export const linux: ThemePreset = {
       'overlay': 'rgb(0 0 0 / 0.5)',
       'shadow': '#000000',
       'neutral': '#3a3a3a',
+      'neutral-foreground': '#ffffff',
     },
   },
 }

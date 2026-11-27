@@ -3,7 +3,10 @@ import type { MazColor } from './types.ts'
 import { computed } from 'vue'
 
 export interface MazLoadingBarProps {
-  /** The color of the component. */
+  /**
+   * The color of the component.
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
+   */
   color?: MazColor
   /** The height of the component. */
   height?: string
@@ -11,9 +14,11 @@ export interface MazLoadingBarProps {
 
 const { color = 'primary' } = defineProps<MazLoadingBarProps>()
 
+const accent = computed(() => (color === 'neutral' ? 'neutral-foreground' : color))
+
 const colorCSSVariables = computed(() => ({
-  alpha: `color-mix(in srgb, var(--maz-${color}) 20%, transparent)`,
-  main: `var(--maz-${color})`,
+  alpha: `color-mix(in srgb, var(--maz-${accent.value}) 20%, transparent)`,
+  main: `var(--maz-${accent.value})`,
 }))
 </script>
 

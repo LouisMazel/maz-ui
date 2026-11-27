@@ -37,6 +37,7 @@ export interface MazReadingProgressBarProps {
   /**
    * Color of the progress bar
    * @default primary
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
   /**
@@ -67,7 +68,7 @@ export interface MazReadingProgressBarProps {
 }
 
 const barColor = computed<string>(() => {
-  return `var(--maz-${color})`
+  return `var(--maz-${color === 'neutral' ? 'neutral-foreground' : color})`
 })
 
 const progressBarWidth = ref<string>()

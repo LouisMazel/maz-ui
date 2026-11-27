@@ -1097,6 +1097,10 @@ defineExpose({
   @apply maz:border-contrast;
 }
 
+.m-markdown-editor__box.--neutral:focus-within {
+  border-color: var(--maz-neutral-foreground);
+}
+
 .m-markdown-editor__box.--destructive:focus-within {
   @apply maz:border-destructive;
 }

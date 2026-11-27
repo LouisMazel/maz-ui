@@ -102,7 +102,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 ### Components
 
 - Use `Maz*` components instead of native elements or hand-made widgets: `MazBtn` (not `<button>`), `MazLink`, `MazInput`, `MazSelect`, `MazCheckbox`, `MazDialog`, `MazDrawer`, `MazPopover`, `MazDropdown`, `MazTabs`, `MazTable`, `MazCard`, `MazAvatar`, `MazBadge`, `MazAlert`, `MazDatePicker`, `MazInputPhoneNumber`, `MazDropzone`, `MazPagination`...
-- Prop values are typed: colors are `primary | secondary | accent | info | success | warning | destructive | contrast | transparent` (plus `surface` on some components), sizes `mini | xs | sm | md | lg | xl`.
+- Prop values are typed: colors are `primary | secondary | accent | info | success | warning | destructive | contrast | neutral | transparent` (plus `surface` and `container` on some components), sizes `mini | xs | sm | md | lg | xl`.
 - A button with only an icon needs an `aria-label`.
 
 ### Feedback, overlays and forms
@@ -130,7 +130,7 @@ The texts built in the components come from `@maz-ui/translations`: change the l
 The maz-ui theme is exposed to Tailwind (`@import 'maz-ui/tailwindcss/theme.css'`) and the project usually extends it. Only use theme tokens:
 
 - **Project tokens first**: the Tailwind entry of the project adds its own `@theme` tokens, variants and utilities, and the `definePreset` file sets the brand values. `get_theme_tokens` lists both (or read these files). When a value is missing, add a token to the project `@theme` instead of an arbitrary value.
-- Colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` (each with `-foreground` and `-50` to `-950`), `surface`, `foreground`, `muted`, `divider`, `overlay`, `bg-container`, `bg-input`. Example: `bg-surface text-foreground border-divider`. The page color is `surface`, not shadcn's `background` (`bg-background` does not exist).
+- Colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast`, `neutral` (each with `-foreground` and `-50` to `-950`), `surface`, `foreground`, `muted`, `divider`, `overlay`, `bg-container`, `bg-input`. Example: `bg-surface text-foreground border-divider`. The page color is `surface`, not shadcn's `background` (`bg-background` does not exist).
 - `secondary` is the second strong brand color, not a muted surface (unlike shadcn/ui): never make `primary` or `secondary` pale (3:1 minimum against `surface`, light and dark); discreet backgrounds use `surface`, `container`, `muted` or the `-50`/`-100` steps.
 - Never the default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`, `text-black`) nor hard-coded colors (`#fff`, `rgb()`, `bg-[#...]`). Theme colors already adapt to dark mode: no `dark:` color overrides.
 - Radius `rounded-*`, shadows `shadow-sm` to `shadow-xl` and `shadow-elevation`, spacing scale (`p-4`, `gap-2`), utilities `flex-center`, `disabled-state`.

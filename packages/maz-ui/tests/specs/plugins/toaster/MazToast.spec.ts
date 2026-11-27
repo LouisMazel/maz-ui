@@ -132,6 +132,23 @@ describe('given MazToast component', () => {
       expect(wrapper.classes()).toContain('--success')
     })
 
+    it('then the neutral type uses the neutral tokens', async () => {
+      wrapper = mount(MazToast, {
+        props: {
+          message: 'Test message',
+          type: 'neutral',
+        },
+      })
+
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.classes()).toContain('--neutral')
+      expect(wrapper.find('.m-toast__button').classes()).toContain('maz:bg-neutral')
+      expect(wrapper.find('.m-toast__button').classes()).toContain('maz:text-neutral-foreground')
+      expect(wrapper.find('.m-toast__close').classes()).toContain('maz:bg-neutral')
+      expect(wrapper.find('.m-toast__progress-bar-inner').classes()).toContain('maz:bg-neutral-foreground')
+    })
+
     it('then it uses role=status for polite types', async () => {
       wrapper = mount(MazToast, {
         props: { message: 'Test message', type: 'info' },

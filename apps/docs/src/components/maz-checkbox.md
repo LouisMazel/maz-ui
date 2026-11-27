@@ -66,6 +66,7 @@ const colors: Color[] = [
   'warning',
   'destructive',
   'contrast',
+  'neutral',
   'accent',
 ]
 </script>
@@ -221,6 +222,7 @@ function toggleAll(checked: boolean) {
     'warning',
     'destructive',
     'contrast',
+    'neutral',
     'accent',
   ]
 

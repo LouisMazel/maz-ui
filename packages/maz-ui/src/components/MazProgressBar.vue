@@ -8,7 +8,7 @@ export interface MazProgressBarSegment {
   value: number
   /**
    * Color of the segment: a theme color or a free CSS color (`#e11d48`, `oklch(...)`, `var(--brand)`)
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    * @default the `color` of the bar
    */
   color?: MazColorOrFree<Exclude<MazColor, 'transparent'>>
@@ -31,7 +31,7 @@ export interface MazProgressBarProps {
   /**
    * Color of the bar (and of the segments without their own color): a theme color or a free CSS color
    * (`#e11d48`, `oklch(...)`, `var(--brand)`)
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    * @default 'primary'
    */
   color?: MazColorOrFree<Exclude<MazColor, 'transparent'>>
@@ -94,6 +94,10 @@ const ROUNDED_CLASS = {
   full: 'maz:rounded-full',
 } as const
 
+function accentColor(color: string) {
+  return color === 'neutral' ? 'neutral-foreground' : color
+}
+
 function positive(n: number) {
   return Number.isFinite(n) && n > 0
     ? n
@@ -118,7 +122,7 @@ const parts = computed(() => {
     left -= width
     return {
       width,
-      color: resolveColor(segment.color ?? color),
+      color: resolveColor(accentColor(segment.color ?? color)),
     }
   }).filter(part => part.width > 0)
 })

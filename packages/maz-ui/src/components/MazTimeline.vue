@@ -37,7 +37,7 @@ export interface MazTimelineItem {
   /**
    * Color of the step beyond its state (a type of event): a theme color or a free CSS color
    * (`#e11d48`, `oklch(...)`, `var(--brand)`). It replaces the color of the state; a `pending` step stays muted
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColorOrFree<MazTimelineColor>
   /**
@@ -75,7 +75,7 @@ export interface MazTimelineProps {
   /**
    * Color theme for active and completed steps
    * @type {MazTimelineColor}
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    * @default 'primary'
    */
   color?: MazTimelineColor
@@ -234,10 +234,20 @@ function isConnectorActive(index: number): boolean {
   return isStepActive(steps[index]!, index)
 }
 
-const colorStyles = computed<CSSProperties>(() => ({
-  '--m-timeline-bg': `var(--maz-${color})`,
-  '--m-timeline-fg': `var(--maz-${color}-foreground)`,
-}))
+const NEUTRAL_STYLE = {
+  '--m-timeline-bg': 'var(--maz-neutral)',
+  '--m-timeline-fg': 'var(--maz-neutral-foreground)',
+  '--m-timeline-border': 'var(--maz-divider)',
+  '--m-timeline-accent': 'var(--maz-neutral-foreground)',
+  '--m-timeline-color': 'var(--maz-neutral-foreground)',
+} as const satisfies CSSProperties
+
+const colorStyles = computed<CSSProperties>(() => color === 'neutral'
+  ? NEUTRAL_STYLE
+  : {
+      '--m-timeline-bg': `var(--maz-${color})`,
+      '--m-timeline-fg': `var(--maz-${color}-foreground)`,
+    })
 
 const stateColorMap: Record<MazTimelineStepState, string> = {
   completed: 'success',
@@ -262,9 +272,19 @@ function getStepStyle(step: MazTimelineItem, state: MazTimelineStepState): CSSPr
   if (!step.color || state === 'pending') {
     return getStateStyle(state)
   }
+  if (step.color === 'neutral') {
+    return {
+      ...NEUTRAL_STYLE,
+      '--m-timeline-state-bg': 'var(--maz-neutral)',
+      '--m-timeline-state-fg': 'var(--maz-neutral-foreground)',
+      '--m-timeline-state-border': 'var(--maz-divider)',
+    }
+  }
   return {
     '--m-timeline-bg': resolveColor(step.color),
     '--m-timeline-fg': resolveColorForeground(step.color),
+    '--m-timeline-accent': resolveColor(step.color),
+    '--m-timeline-border': 'transparent',
     '--m-timeline-state-bg': resolveColor(step.color),
     '--m-timeline-state-fg': resolveColorForeground(step.color),
     '--m-timeline-color': shiftColorLightness(step.color, -0.1),
@@ -627,18 +647,26 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   .m-timeline-step {
     &.--active .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-bg) maz:text-(--m-timeline-fg);
+
+      border: 1px solid var(--m-timeline-border, transparent);
     }
 
     &.--completed .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
+
+      border: 1px solid var(--m-timeline-state-border, transparent);
     }
 
     &.--error .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
+
+      border: 1px solid var(--m-timeline-state-border, transparent);
     }
 
     &.--warning .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
+
+      border: 1px solid var(--m-timeline-state-border, transparent);
     }
 
     &.--disabled {
@@ -652,7 +680,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   }
 
   .m-timeline-connector-fill {
-    @apply maz:bg-(--m-timeline-bg);
+    background-color: var(--m-timeline-accent, var(--m-timeline-bg));
   }
 
   .m-timeline-connector.--completed .m-timeline-connector-fill {
@@ -774,11 +802,11 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 @keyframes m-timeline-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--m-timeline-bg) 90%, transparent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--m-timeline-accent, var(--m-timeline-bg)) 90%, transparent);
   }
 
   50% {
-    box-shadow: 0 0 0 6px color-mix(in srgb, var(--m-timeline-bg) 0%, transparent);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--m-timeline-accent, var(--m-timeline-bg)) 0%, transparent);
   }
 }
 

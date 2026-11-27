@@ -1,7 +1,12 @@
 import type { ThemePreset } from '../../types.ts'
+import { folio } from '../../presets/folio.ts'
 import { linux } from '../../presets/linux.ts'
 import { macos } from '../../presets/macos.ts'
 import { mazUi } from '../../presets/mazUi.ts'
+import { nova } from '../../presets/nova.ts'
+import { obsidian } from '../../presets/obsidian.ts'
+import { ocean } from '../../presets/ocean.ts'
+import { pristine } from '../../presets/pristine.ts'
 import { windows } from '../../presets/windows.ts'
 import { generateCSS } from '../css-generator.ts'
 import { mergePresets } from '../preset-merger.ts'
@@ -140,11 +145,48 @@ describe('given the native presets', () => {
     })
   })
 
-  describe('when generating the CSS of a preset without a neutral color', () => {
-    it('then no neutral variable is emitted', () => {
-      const css = generateCSS(mazUi, { ...BASE_OPTIONS, mode: 'both' })
+  describe.each([
+    ['mazUi', mazUi],
+    ['nova', nova],
+    ['obsidian', obsidian],
+    ['ocean', ocean],
+    ['pristine', pristine],
+    ['folio', folio],
+    ['macos', macos],
+    ['windows', windows],
+    ['linux', linux],
+  ])('when reading the neutral color of %s', (_name, preset) => {
+    const css = generateCSS(preset, { ...BASE_OPTIONS, mode: 'both' })
 
-      expect(css).not.toContain('--maz-neutral')
+    it('then the preset sets the neutral color and its text in both modes', () => {
+      expect(preset.colors.light.neutral).toBeTruthy()
+      expect(preset.colors.dark.neutral).toBeTruthy()
+      expect(preset.colors.light['neutral-foreground']).toBe(preset.colors.light.foreground)
+      expect(preset.colors.dark['neutral-foreground']).toBe(preset.colors.dark.foreground)
+    })
+
+    it('then the neutral color differs between light and dark', () => {
+      expect(preset.colors.light.neutral).not.toBe(preset.colors.dark.neutral)
+      expect(css).toContain(`--maz-neutral: light-dark(${preset.colors.light.neutral}, ${preset.colors.dark.neutral});`)
+    })
+  })
+
+  describe('when generating the CSS of a preset without a neutral color', () => {
+    const preset = {
+      ...mazUi,
+      colors: {
+        light: { ...mazUi.colors.light, 'neutral': undefined, 'neutral-foreground': undefined },
+        dark: { ...mazUi.colors.dark, 'neutral': undefined, 'neutral-foreground': undefined },
+      },
+    }
+    const css = generateCSS(preset, { ...BASE_OPTIONS, mode: 'both' })
+
+    it('then a neutral grey mixed from the surface and the foreground is emitted', () => {
+      expect(css).toContain('--maz-neutral: light-dark(color-mix(in oklch, var(--maz-surface), var(--maz-foreground) 5%), color-mix(in oklch, var(--maz-surface), var(--maz-foreground) 14%));')
+    })
+
+    it('then the neutral text is the foreground', () => {
+      expect(css).toContain('--maz-neutral-foreground: light-dark(var(--maz-foreground), var(--maz-foreground));')
     })
   })
 

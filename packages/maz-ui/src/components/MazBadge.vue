@@ -18,7 +18,7 @@ export interface MazBadgeProps {
    * Color of the badge: a theme color, or a free CSS color (`#e11d48`, `oklch(...)`, `var(--brand)`) for a category or a
    * tag (text, border and `pastel` are derived from it). `surface` and `container` are the neutral colors of the theme,
    * with the foreground text
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface' | 'container'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral' | 'transparent' | 'surface' | 'container'`
    * @default primary
    */
   color?: MazColorOrFree<MazBadgeColor>
@@ -239,6 +239,22 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
   &.--container,
   &.--container.--pastel {
     @apply maz:border-divider;
+  }
+
+  /* Neutral: the soft grey of the theme (inline --m-badge-bg and --m-badge-fg), solid for `pastel` too, a divider border keeps it visible on a grey page */
+  &.--neutral {
+    @apply maz:border-divider;
+
+    &.--pastel {
+      background-color: var(--m-badge-bg);
+      color: var(--m-badge-fg);
+    }
+
+    &.--outlined {
+      @apply maz:bg-transparent;
+
+      color: var(--m-badge-fg);
+    }
   }
 
   &.--transparent {

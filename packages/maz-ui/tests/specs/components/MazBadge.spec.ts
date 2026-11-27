@@ -32,6 +32,7 @@ describe('given MazBadge component', () => {
         'warning',
         'destructive',
         'contrast',
+        'neutral',
         'surface',
         'container',
       ] as MazBadgeColor[],
@@ -276,6 +277,22 @@ describe('given MazBadge with a free color', () => {
       const wrapper = mount(MazBadge, { props: { color: 'contrast' } })
 
       expect(wrapper.attributes('style')).toContain('--m-badge-bg: var(--m-badge-contrast-bg)')
+    })
+  })
+
+  describe('when the color is neutral', () => {
+    it('then the background and the text use the neutral tokens', () => {
+      const wrapper = mount(MazBadge, { props: { color: 'neutral' } })
+
+      expect(wrapper.attributes('style')).toContain('--m-badge-bg: var(--maz-neutral)')
+      expect(wrapper.attributes('style')).toContain('--m-badge-fg: var(--maz-neutral-foreground)')
+    })
+
+    it('then pastel keeps the solid tokens', () => {
+      const wrapper = mount(MazBadge, { props: { color: 'neutral', pastel: true } })
+
+      expect(wrapper.classes()).toContain('--neutral')
+      expect(wrapper.attributes('style')).not.toContain('--m-badge-pastel-fg')
     })
   })
 

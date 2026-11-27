@@ -46,7 +46,7 @@ export interface MazSegmentedProps<T = MazSegmentedValue, O extends MazSegmented
   options: O[]
   /**
    * Color of the selected segment. Without it, the selected segment is a neutral raised surface
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
   /**
@@ -321,6 +321,7 @@ function iconProps(icon: MazIconLike) {
       :class="[
         ROUNDED_CLASS[roundedSize],
         resolvedColor ? '' : 'maz:bg-container maz:dark:bg-foreground/28',
+        resolvedColor === 'neutral' ? 'maz:border maz:border-divider' : '',
         { 'maz:transition-[transform,width] maz:duration-200 maz:ease-out maz:motion-reduce:transition-none': animated },
       ]"
       :style="[indicatorStyle, resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor})` } : {}]"

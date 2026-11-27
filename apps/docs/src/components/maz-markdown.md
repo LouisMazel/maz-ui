@@ -71,6 +71,7 @@ The content is parsed with [`marked`](https://marked.js.org) (GitHub flavored, l
     <MazMarkdown content="**Muted** text with a [link](https://maz-ui.com)" color="muted" />
     <MazMarkdown content="**Success** text" color="success" />
     <MazMarkdown content="**Destructive** text" color="destructive" />
+    <MazMarkdown content="**Neutral** text" color="neutral" />
   </div>
 
   <template #code>
@@ -80,6 +81,7 @@ The content is parsed with [`marked`](https://marked.js.org) (GitHub flavored, l
   <MazMarkdown content="**Muted** text" color="muted" />
   <MazMarkdown content="**Success** text" color="success" />
   <MazMarkdown content="**Destructive** text" color="destructive" />
+  <MazMarkdown content="**Neutral** text" color="neutral" />
 </template>
 ```
 

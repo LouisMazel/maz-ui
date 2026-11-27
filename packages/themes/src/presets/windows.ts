@@ -166,6 +166,7 @@ export const windows: ThemePreset = {
       'overlay': 'rgb(0 0 0 / 0.3)',
       'shadow': '#000000',
       'neutral': '#fbfbfb',
+      'neutral-foreground': '#1b1b1b',
     },
     dark: {
       'surface': '#202020',
@@ -191,6 +192,7 @@ export const windows: ThemePreset = {
       'overlay': 'rgb(0 0 0 / 0.5)',
       'shadow': '#000000',
       'neutral': '#323232',
+      'neutral-foreground': '#ffffff',
     },
   },
 }

@@ -949,7 +949,7 @@ function checkActionHierarchy(buttons: ElementNode[], context: ReviewContext): v
     rule: 'multiple-primary-actions',
     severity: 'info',
     message: `${solid.length} solid primary \`MazBtn\` side by side: the main action does not stand out.`,
-    suggestion: 'Keep one solid `color="primary"` button for the main action; make the others `outlined`, `pastel` or `color="contrast" outlined`, and use a `MazLink` for cancel or back.',
+    suggestion: 'Keep one solid `color="primary"` button for the main action; make the others `color="neutral"` (the grey push button), `outlined` or `pastel`, and use a `MazLink` for cancel or back.',
   }, solid[1].loc.start.offset)
 }
 

@@ -12,6 +12,7 @@ export interface MazSpinnerProps {
   /**
    * The color of the spinner
    * @default theme
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
 }
@@ -29,7 +30,7 @@ const spinnerStyle = computed<CSSProperties>(() => {
     return { color: 'var(--maz-foreground)' }
   if (c === 'transparent')
     return { color: 'white' }
-  return { color: `var(--maz-${c})` }
+  return { color: `var(--maz-${c === 'neutral' ? 'neutral-foreground' : c})` }
 })
 </script>
 

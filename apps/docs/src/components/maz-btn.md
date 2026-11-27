@@ -58,7 +58,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 ## Colors
 
 ::: tip Neutral color
-`color="neutral"` is the grey push button of the native presets (`macos`, `windows`, `linux`), set by the `neutral` color of the preset: see [Neutral button color](./../ecosystem/themes.md#neutral-button-color). On another preset, it falls back to the `container` background.
+`color="neutral"` is the grey push button: the measured grey of the native buttons on the `macos`, `windows` and `linux` presets, a soft grey on the others. Use it for the secondary actions next to the main one. See [Neutral color](./../ecosystem/themes.md#neutral-color).
 :::
 
 ::: tip Surface vs container
@@ -80,6 +80,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 <MazBtn color="warning">warning</MazBtn>
 <MazBtn color="destructive">destructive</MazBtn>
 <MazBtn color="contrast">contrast</MazBtn>
+<MazBtn color="neutral">neutral</MazBtn>
 <MazBtn color="accent">accent</MazBtn>
 <MazBtn color="surface">surface</MazBtn>
 <MazBtn color="container">container</MazBtn>
@@ -149,6 +150,7 @@ const colors = [
   'warning',
   'destructive',
   'contrast',
+  'neutral',
   'accent',
   'transparent',
   'surface',
@@ -704,6 +706,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
     'warning',
     'destructive',
     'contrast',
+    'neutral',
     'surface',
     'container',
     'transparent',

@@ -21,7 +21,7 @@ export interface MazTabsProps {
   roundedSize?: MazRoundedSize
   /**
    * Color of the active tab indicator, forwarded to MazTabsBar
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
   /**

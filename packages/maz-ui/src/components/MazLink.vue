@@ -46,6 +46,7 @@ export interface MazLinkProps {
   to?: RouteLocationRaw
   /**
    * The color of the link
+   * @values 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral' | 'transparent' | 'surface' | 'container' | 'muted' | 'inherit'
    * @default 'primary'
    * When 'none', the link will not have any color, so it will inherit the color of the parent
    */
@@ -163,6 +164,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
   success: 'maz:not-disabled:text-success maz:not-disabled:hover:text-success-700 maz:not-disabled:dark:hover:text-success-300',
   accent: 'maz:not-disabled:text-accent maz:not-disabled:hover:text-accent-700 maz:not-disabled:dark:hover:text-accent-300',
   contrast: 'maz:not-disabled:text-foreground maz:not-disabled:hover:text-foreground-900 maz:not-disabled:dark:hover:text-foreground-100',
+  neutral: 'maz:not-disabled:text-neutral-foreground maz:not-disabled:hover:text-neutral-foreground/70',
   muted: 'maz:not-disabled:text-muted maz:not-disabled:hover:text-muted-700 maz:not-disabled:dark:hover:text-muted-300',
   surface: 'maz:not-disabled:text-surface maz:not-disabled:hover:text-surface-700',
   container: 'maz:not-disabled:text-container maz:not-disabled:hover:text-container/80',

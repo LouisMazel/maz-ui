@@ -56,13 +56,13 @@ export interface MazBtnScrollProps {
   progress?: boolean
   /**
    * Color of the progress ring
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    * @default primary
    */
   progressColor?: MazBtnScrollProgressColor
   /**
    * Color of the button
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface' | 'container'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral' | 'transparent' | 'surface' | 'container'`
    * @default contrast
    */
   color?: MazColor | MazNeutralColor
@@ -176,7 +176,7 @@ const POSITION_CLASS = {
 const style = computed<CSSProperties>(() => ({
   '--m-btn-scroll-offset': offset,
   '--m-btn-scroll-progress': `${percentage.value}%`,
-  '--m-btn-scroll-progress-color': `var(--maz-${progressColor})`,
+  '--m-btn-scroll-progress-color': progressColor === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${progressColor})`,
 }))
 
 function onClick(event: MouseEvent) {

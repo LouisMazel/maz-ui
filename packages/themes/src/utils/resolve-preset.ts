@@ -2,7 +2,7 @@ import type { ColorScaleMode, ThemeColors, ThemePreset } from '../types.ts'
 import type { OklchChannels } from './color-conversions.ts'
 import { colorToHex, formatAsOklch, parseColorAsOklch } from './color-conversions.ts'
 import { normalizeColor } from './color-parser.ts'
-import { BRAND_COLOR_ROLES, getPerceptualColorScale, getRelativeColorScale } from './css-generator.ts'
+import { BRAND_COLOR_ROLES, getPerceptualColorScale, getRelativeColorScale, withNeutralColors } from './css-generator.ts'
 
 export const COLOR_SCALE_STEPS = [
   '50',
@@ -24,6 +24,7 @@ export type ColorScaleStep = typeof COLOR_SCALE_STEPS[number]
 export const SCALED_COLORS = [
   ...BRAND_COLOR_ROLES,
   'contrast',
+  'neutral',
   'surface',
   'foreground',
   'divider',
@@ -233,6 +234,40 @@ function evaluateRelative(inner: string, mode: Mode, resolve: VariableResolver):
  * `light-dark()` and the OKLCh relative color syntax (`oklch(from var(--maz-primary) calc(l + 0.1) c h)`).
  * Returns `undefined` when the value cannot be computed (unknown variable, unsupported syntax).
  */
+/** A color and its optional share in a `color-mix()`: `var(--maz-foreground) 14%` */
+function mixPart(part: string): { color: string, share?: number } {
+  const trimmed = part.trim()
+  const space = trimmed.lastIndexOf(' ')
+  const last = trimmed.slice(space + 1)
+  return space > 0 && /^\d+(?:\.\d+)?%$/.test(last)
+    ? { color: trimmed.slice(0, space).trim(), share: Number.parseFloat(last) / 100 }
+    : { color: trimmed }
+}
+
+/** `color-mix(in oklch, A, B N%)`: mixed in OKLCh, the hue along the shortest arc (the hue of a grey does not count) */
+function evaluateMix(inner: string, mode: Mode, resolve: VariableResolver): OklchChannels | undefined {
+  const [space, first, second] = splitTopLevel(inner, /,/)
+  if (!space?.trim().startsWith('in ') || !first || !second)
+    return undefined
+  const a = mixPart(first)
+  const b = mixPart(second)
+  const shareB = b.share ?? (a.share === undefined ? 0.5 : 1 - a.share)
+  const from = evaluateColor(a.color, { mode, resolve })
+  const to = evaluateColor(b.color, { mode, resolve })
+  if (!from || !to)
+    return undefined
+  const GREY = 0.02
+  const hueFrom = from.c < GREY ? to.h : from.h
+  const hueTo = to.c < GREY ? from.h : to.h
+  const delta = ((hueTo - hueFrom + 540) % 360) - 180
+  return {
+    ...from,
+    l: from.l + (to.l - from.l) * shareB,
+    c: from.c + (to.c - from.c) * shareB,
+    h: (hueFrom + delta * shareB + 360) % 360,
+  }
+}
+
 export function evaluateColor(value: string, { mode = 'light', resolve = () => undefined }: { mode?: Mode, resolve?: VariableResolver } = {}): OklchChannels | undefined {
   const trimmed = value.trim()
   const variable = functionArguments(trimmed, 'var')
@@ -257,6 +292,11 @@ export function evaluateColor(value: string, { mode = 'light', resolve = () => u
       ? evaluateColor(picked, { mode, resolve })
       : undefined
   }
+
+  const mix = functionArguments(trimmed, 'color-mix')
+
+  if (mix !== undefined)
+    return evaluateMix(mix, mode, resolve)
 
   const oklch = functionArguments(trimmed, 'oklch')
 
@@ -283,7 +323,7 @@ function toResolvedColor(channels: OklchChannels): ResolvedColor {
 /** The CSS of every color variable of a mode, as the preset and the maz-ui Tailwind theme declare them */
 function colorDefinitions(preset: ThemePreset, mode: Mode): Map<string, string> {
   const definitions = new Map<string, string>()
-  const { light, dark } = preset.colors
+  const { light, dark } = withNeutralColors(preset.colors, 'maz')
 
   for (const [key, lightValue] of Object.entries(light) as Array<[keyof ThemeColors, string]>) {
     const value = mode === 'dark'
@@ -351,7 +391,11 @@ function resolveMode(preset: ThemePreset, mode: Mode): ResolvedThemeColors {
 
   const colors: ResolvedThemeColors['colors'] = {}
   const names: ResolvedColorName[] = [
-    ...Object.keys(preset.colors.light) as Array<keyof ThemeColors>,
+    ...new Set([
+      ...Object.keys(preset.colors.light) as Array<keyof ThemeColors>,
+      'neutral',
+      'neutral-foreground',
+    ] as const),
     ...COMPONENT_COLORS,
   ]
 

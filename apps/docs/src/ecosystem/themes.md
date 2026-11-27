@@ -661,9 +661,9 @@ Each token has a precise role. Pick the values with that role in mind, not from 
 | `divider` | Borders and separators. |
 | `overlay` | Backdrop behind dialogs and drawers. |
 | `shadow` | Tint of the shadows. |
-| `neutral`, `neutral-foreground` | Optional. Grey of the push buttons of the native presets and its text (`MazBtn color="neutral"`). See [Neutral button color](#neutral-button-color). |
+| `neutral`, `neutral-foreground` | Soft grey of the neutral components and its text (`color="neutral"`). Optional in a custom preset. See [Neutral color](#neutral-color). |
 
-Every brand and state color (`primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast`) has a `-foreground` color: the text or icon color to put on top of it (`bg-primary text-primary-foreground`). The token and its `-foreground` are chosen as a pair, in light and dark modes.
+Every brand and state color (`primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast`, `neutral`) has a `-foreground` color: the text or icon color to put on top of it (`bg-primary text-primary-foreground`). The token and its `-foreground` are chosen as a pair, in light and dark modes.
 
 For a discreet background, never make `secondary` pale. Use:
 
@@ -1047,12 +1047,17 @@ const shadowTheme = definePreset({
 
 The light value goes in `:root`, the dark one under the dark class (`darkModeStrategy: 'class'`) or in a `prefers-color-scheme: dark` query (`'media'`). A plain string is emitted once and costs nothing more. The `macos`, `windows` and `linux` presets use it for `elevation`.
 
-### Neutral button color
+### Neutral color
 
-`surface` and `container` do not fit a native push button: the grey of the macOS, Windows and Linux buttons is neither the page nor the card. The optional `neutral` and `neutral-foreground` colors of a preset give it, and `MazBtn color="neutral"` uses it. The `macos`, `windows` and `linux` presets declare `neutral` (light and dark). On another preset, `neutral` falls back to the `container` background and `foreground` text, so the button still renders.
+`neutral` is the soft grey of the neutral components, with `neutral-foreground` as its text: the push button of the native platforms, a secondary action, a badge or a chip that should not draw the eye. `surface` and `container` do not fit: the grey of a push button is neither the page nor the card.
+
+Every component with a `color` prop accepts it. As a large fill (button, badge, alert, avatar, selected segment), it takes the `neutral` background with a `divider` border. As a small accent (checkbox, radio, switch, progress, spinner, tab indicator, link), a light grey would disappear: the component uses `neutral-foreground` instead, like the graphite accent of macOS.
+
+Every built-in preset sets both colors, in light and dark mode: the measured grey of the push buttons on `macos`, `windows` and `linux`, a grey a bit darker than the page (light) or lighter than the cards (dark) on the others. A custom preset without them gets a grey mixed from `surface` and `foreground`.
 
 ```vue
 <MazBtn color="neutral">Cancel</MazBtn>
+<MazBadge color="neutral">Draft</MazBadge>
 ```
 
 ```typescript
@@ -1412,8 +1417,8 @@ Defined per mode under `colors.light` / `colors.dark`. Each base color also gets
 | `muted` | `--maz-muted` | `--maz-muted-50..900` | Muted / secondary text. |
 | `overlay` | `--maz-overlay` | `--maz-overlay-50..900` | Backdrop / dialog scrim. |
 | `shadow` | `--maz-shadow` | `--maz-shadow-50..900` | Tint used by Tailwind `shadow-*` utilities (via `--color-elevation`). |
-| `neutral` | `--maz-neutral` | none | Optional. Push button of the native presets (`MazBtn color="neutral"`). |
-| `neutral-foreground` | `--maz-neutral-foreground` | none | Optional. Text on `neutral`. |
+| `neutral` | `--maz-neutral` | `--maz-neutral-50..950` | Soft grey of the neutral components (`color="neutral"`). |
+| `neutral-foreground` | `--maz-neutral-foreground` | — | Text on `neutral`. |
 
 ### Scales
 

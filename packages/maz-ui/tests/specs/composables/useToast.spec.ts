@@ -12,6 +12,7 @@ function createMockToastHandler() {
     info: vi.fn(),
     warning: vi.fn(),
     accent: vi.fn(),
+    neutral: vi.fn(),
   }
 }
 
@@ -34,6 +35,7 @@ describe('given useToast composable', () => {
       toast.info('Info message')
       toast.warning('Warning message')
       toast.accent('Accent message')
+      toast.neutral('Neutral message')
 
       expect(mockToastHandler.message).toHaveBeenCalledWith('Test message')
       expect(mockToastHandler.success).toHaveBeenCalledWith('Success message')
@@ -41,6 +43,7 @@ describe('given useToast composable', () => {
       expect(mockToastHandler.info).toHaveBeenCalledWith('Info message')
       expect(mockToastHandler.warning).toHaveBeenCalledWith('Warning message')
       expect(mockToastHandler.accent).toHaveBeenCalledWith('Accent message')
+      expect(mockToastHandler.neutral).toHaveBeenCalledWith('Neutral message')
     })
   })
 

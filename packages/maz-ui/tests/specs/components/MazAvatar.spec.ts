@@ -858,6 +858,27 @@ describe('given MazAvatar with a free color', () => {
     })
   })
 
+  describe('when the color is neutral', () => {
+    it('then the initials use its tokens with a divider border', () => {
+      const wrapper = mount(MazAvatar, { props: { caption: 'Louis Mazel', color: 'neutral' } })
+      const frame = wrapper.find('.m-avatar__wrapper')
+
+      expect(frame.attributes('style')).toContain('background-color: var(--maz-neutral)')
+      expect(frame.attributes('style')).toContain('color: var(--maz-neutral-foreground)')
+      expect(frame.classes()).toContain('maz:border-divider')
+    })
+  })
+
+  describe('when the clickable button color is neutral', () => {
+    it('then the icon uses the neutral foreground', () => {
+      const wrapper = mount(MazAvatar, { props: { clickable: true, caption: 'AB', buttonColor: 'neutral' } })
+      const button = wrapper.find('.m-avatar__button')
+
+      expect(button.attributes('style')).toContain('var(--maz-neutral)')
+      expect(button.find('.m-avatar__button__icon').classes()).toContain('maz:text-neutral-foreground')
+    })
+  })
+
   describe('when the color is a theme color', () => {
     it('then the initials use its variable', () => {
       const wrapper = mount(MazAvatar, { props: { caption: 'Louis Mazel', color: 'success' } })

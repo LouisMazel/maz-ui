@@ -25,10 +25,10 @@ export interface MazBtnProps {
    * The color of the button: `surface` and `container` are the neutral colors of the theme (`container` is white in the light mode of most presets), with the foreground text. `neutral` is the grey push button of the native presets (`colors.neutral` of the preset), the `container` background without it
    * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface' | 'container' | 'neutral'`
    */
-  color?: MazColor | MazNeutralColor | 'neutral'
+  color?: MazColor | MazNeutralColor
   /**
    * The text color of the button
-   * @values `primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'muted'`
+   * @values `primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral' | 'transparent' | 'muted'`
    */
   textColor?: MazColor | 'muted'
   /**
@@ -216,6 +216,7 @@ const TEXT_COLOR: Record<NonNullable<MazBtnProps['textColor']>, string> = {
   warning: 'maz:text-warning',
   destructive: 'maz:text-destructive',
   contrast: 'maz:text-contrast',
+  neutral: 'maz:text-neutral-foreground',
   transparent: 'maz:text-transparent',
   muted: 'maz:text-muted',
 } as const
@@ -449,8 +450,8 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
     }
 
     &.--neutral {
-      --m-btn-bg: var(--maz-neutral, var(--maz-container-bg, var(--maz-surface)));
-      --m-btn-neutral-fg: var(--maz-neutral-foreground, var(--maz-foreground));
+      --m-btn-bg: var(--maz-neutral);
+      --m-btn-neutral-fg: var(--maz-neutral-foreground);
 
       @apply maz:border-divider;
     }

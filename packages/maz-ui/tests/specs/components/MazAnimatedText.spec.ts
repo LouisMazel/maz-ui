@@ -20,6 +20,18 @@ function mockRect(top: number, bottom: number) {
   return vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ top, bottom } as DOMRect)
 }
 
+describe('given a MazAnimatedText with a neutral gradient', () => {
+  describe('when a gradient color is neutral', () => {
+    it('then the gradient uses the neutral foreground', () => {
+      const wrapper = mount(MazAnimatedText, {
+        props: { text: 'Hello', lastWord: 'world', gradientFrom: 'neutral', gradientVia: 'primary', gradientTo: 'neutral' },
+      })
+
+      expect(wrapper.attributes('style')).toContain('linear-gradient(to right, var(--maz-neutral-foreground), var(--maz-primary), var(--maz-neutral-foreground))')
+    })
+  })
+})
+
 describe('given a MazAnimatedText', () => {
   beforeEach(() => {
     vi.mocked(IntersectionObserver).mockClear()

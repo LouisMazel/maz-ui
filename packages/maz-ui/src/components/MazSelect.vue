@@ -277,7 +277,7 @@ const searchInputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('sea
 const listboxRef = useTemplateRef('listbox')
 
 // Readable for every color: a neutral one (no chroma, e.g. a very light preset `secondary`) goes near the text color, a vivid one keeps its tone
-const selectedTextColor = computed(() => `light-dark(oklch(from var(--maz-${color}) min(l, calc(0.25 + c * 2)) c h), oklch(from var(--maz-${color}) max(l, calc(0.92 - c * 2)) c h))`)
+const selectedTextColor = computed(() => color === 'neutral' ? 'var(--maz-neutral-foreground)' : `light-dark(oklch(from var(--maz-${color}) min(l, calc(0.25 + c * 2)) c h), oklch(from var(--maz-${color}) max(l, calc(0.92 - c * 2)) c h))`)
 // Tinted from the text color: a neutral color stays visible (its own 10% would vanish on the surface)
 const selectedBgColor = 'color-mix(in srgb, var(--selected-text-color) 12%, transparent)'
 

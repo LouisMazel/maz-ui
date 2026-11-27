@@ -36,7 +36,7 @@ export interface MazAlertProps {
   /**
    * Color of the alert
    * @type {MazAlertColor}
-   * @values `'success' | 'warning' | 'destructive' | 'info' | 'primary' | 'secondary' | 'accent' | 'contrast'`
+   * @values `'success' | 'warning' | 'destructive' | 'info' | 'primary' | 'secondary' | 'accent' | 'contrast' | 'neutral'`
    * @default 'info'
    */
   color?: MazAlertColor
@@ -94,6 +94,11 @@ const hasContent = computed(() => !!content || !!slots.default)
 const colorStyles = computed<CSSProperties>(() => ({
   '--m-alert-bg': `var(--maz-${color})`,
   '--m-alert-fg': `var(--maz-${color}-foreground)`,
+  ...(color === 'neutral' && {
+    '--m-alert-color': 'var(--maz-neutral-foreground)',
+    '--m-alert-color-dark': 'var(--maz-neutral-foreground)',
+    '--m-alert-border': 'var(--maz-divider)',
+  }),
 }))
 
 const ROUNDED_CLASS = {
@@ -124,6 +129,7 @@ const currentIcon = computed(() => {
     secondary: MazInformationCircle,
     accent: MazInformationCircle,
     contrast: MazInformationCircle,
+    neutral: MazInformationCircle,
   }
 
   return iconMap[color]
@@ -140,6 +146,7 @@ const currentIcon = computed(() => {
     :class="[
       ROUNDED_CLASS[roundedSize],
       `--${variant}`,
+      `--${color}`,
       `--rounded-${roundedSize}`,
       {
         '--bordered': bordered,
@@ -184,6 +191,16 @@ const currentIcon = computed(() => {
 
     &.--bordered {
       border-color: color-mix(in srgb, var(--m-alert-color) 30%, transparent);
+    }
+  }
+
+  /* Neutral: the soft grey of the theme in both variants, with a divider border */
+  &.--neutral {
+    background-color: var(--m-alert-bg);
+    color: var(--m-alert-fg);
+
+    &.--bordered {
+      border-color: var(--m-alert-border);
     }
   }
 }

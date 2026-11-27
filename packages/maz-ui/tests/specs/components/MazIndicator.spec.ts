@@ -140,6 +140,18 @@ describe('given MazIndicator component', () => {
   })
 })
 
+describe('given MazIndicator with the neutral color', () => {
+  describe('when the color is neutral', () => {
+    it('then the mark is the foreground and its content the neutral grey', () => {
+      const wrapper = mount(MazIndicator, { props: { color: 'neutral', content: 3 } })
+
+      expect(wrapper.attributes('style')).toContain('background-color: var(--maz-neutral-foreground)')
+      expect(wrapper.attributes('style')).toContain('color: var(--maz-neutral)')
+      expect(wrapper.classes()).toContain('--neutral')
+    })
+  })
+})
+
 describe('given MazIndicator with a free color', () => {
   describe('when the color is a hex', () => {
     const wrapper = mount(MazIndicator, { props: { color: '#22c55e' } })

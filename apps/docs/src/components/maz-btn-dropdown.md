@@ -371,7 +371,7 @@ const shortcutItems = [
   { label: 'Save and publish', shortcut: '⌘ ⇧ S', onClick: () => { lastAction.value = 'Save and publish' } },
 ]
 
-const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast']
+const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral']
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 

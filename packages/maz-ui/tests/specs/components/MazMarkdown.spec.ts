@@ -346,3 +346,11 @@ describe('given MazMarkdown component', () => {
     })
   })
 })
+
+describe('given MazMarkdown with the neutral color', () => {
+  it('then it applies the neutral foreground text classes', async () => {
+    const wrapper = await mountMarkdown({ content: 'x', color: 'neutral' })
+
+    expect(wrapper.classes()).toContain('maz:text-neutral-foreground!')
+  })
+})

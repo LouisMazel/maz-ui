@@ -346,7 +346,7 @@ Recurring blocks of an app screen, with the maz-ui classes and components:
 
 <!-- Actions bar (form or dialog footer): low emphasis first, main action last -->
 <div class="flex flex-wrap justify-end gap-2">
-  <MazBtn color="contrast" outlined>Cancel</MazBtn>
+  <MazBtn color="neutral">Cancel</MazBtn>
   <MazBtn>Save</MazBtn>
 </div>
 
@@ -358,8 +358,8 @@ Recurring blocks of an app screen, with the maz-ui classes and components:
 
 ### Action hierarchy
 
-- **One main action per view or group**: a solid `MazBtn` (`color="primary"`, the default). The other actions are `outlined`, `pastel`, or `color="contrast" outlined`.
-- **Low emphasis** for cancel, back and "learn more": an outlined button or a `MazLink`, placed before the main action.
+- **One main action per view or group**: a solid `MazBtn` (`color="primary"`, the default). The other actions are `color="neutral"` (the grey push button), `outlined` or `pastel`.
+- **Low emphasis** for cancel, back and "learn more": a `color="neutral"` button or a `MazLink`, placed before the main action.
 - **Destructive actions** use `color="destructive"` and ask for a confirmation (`useDialog`, `MazDialogConfirm`).
 - **Same size** for neighbouring buttons.
 

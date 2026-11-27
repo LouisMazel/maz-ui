@@ -62,8 +62,10 @@ const { isIntersecting } = useIntersectionObserver(containerElement, () => {
 })
 let cachedRect: DOMRect | null = null
 
-const alphaColor = computed(() => mixColor(color, 60))
-const alphaColor20 = computed(() => mixColor(color, 20))
+/** A light grey halo would disappear: neutral uses its foreground */
+const haloColor = computed(() => color === 'neutral' ? 'var(--maz-neutral-foreground)' : color)
+const alphaColor = computed(() => mixColor(haloColor.value, 60))
+const alphaColor20 = computed(() => mixColor(haloColor.value, 20))
 
 function updateCachedRect() {
   if (containerElement.value) {

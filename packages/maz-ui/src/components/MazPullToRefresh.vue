@@ -49,6 +49,7 @@ export interface MazPullToRefreshProps {
   /**
    * Color of the progress ring and the spinner
    * @default 'primary'
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   spinnerColor?: MazColor
   /**
@@ -197,7 +198,7 @@ const accentStyle = computed<CSSProperties>(() => {
     return {}
   if (color === 'normal')
     return { color: 'var(--maz-foreground)' }
-  return { color: `var(--maz-${color})` }
+  return { color: `var(--maz-${color === 'neutral' ? 'neutral-foreground' : color})` }
 })
 
 defineExpose({

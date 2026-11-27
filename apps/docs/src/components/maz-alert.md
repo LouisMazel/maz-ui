@@ -124,6 +124,7 @@ MazAlert supports all theme colors to convey different types of messages.
   <MazAlert color="secondary" title="Secondary" content="This is a secondary alert." />
   <MazAlert color="accent" title="Accent" content="This is an accent alert." />
   <MazAlert color="contrast" title="Contrast" content="This is a contrast alert." />
+  <MazAlert color="neutral" title="Neutral" content="This is a neutral alert." />
 </template>
 ```
 
@@ -363,7 +364,7 @@ You can use either title, content, or both.
 </ComponentDemo>
 
 <script lang="ts" setup>
-  const colors = ['info', 'success', 'warning', 'destructive', 'primary', 'secondary', 'accent', 'contrast']
+  const colors = ['info', 'success', 'warning', 'destructive', 'primary', 'secondary', 'accent', 'contrast', 'neutral']
   const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
 
   function capitalize(str: string) {

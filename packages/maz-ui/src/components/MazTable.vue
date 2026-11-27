@@ -231,6 +231,7 @@ export interface MazTableProps<T extends MazTableRow<T>> {
    * Color of the component
    * @type {MazColor}
    * @default primary
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
   /**

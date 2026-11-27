@@ -430,3 +430,22 @@ describe('given MazPickerHeader component', () => {
     })
   })
 })
+
+describe('given MazPickerHeader with the neutral color', () => {
+  it('then it applies the neutral class', () => {
+    const wrapper = mount(MazPickerHeader, {
+      props: {
+        color: 'neutral' as const,
+        locale: 'en-US',
+        hideShortcuts: false,
+        double: false,
+        hasDate: true,
+        hasTime: false,
+        formatterOptions: {} as Intl.DateTimeFormatOptions,
+        modelValue: undefined,
+      },
+    })
+
+    expect(wrapper.find('.m-date-picker-header.--neutral').exists()).toBe(true)
+  })
+})

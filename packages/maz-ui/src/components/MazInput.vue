@@ -67,7 +67,7 @@ export interface MazInputProps<T = MazInputValue> {
   assistiveText?: string
   /**
    * Theme color that affects the border and focus states of the input
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, neutral
    * @type {MazColor}
    * @example "primary"
    */
@@ -670,6 +670,11 @@ const ROUNDED_CLASS = {
   &.--contrast .m-input-wrapper:focus-within,
   &.--contrast.--border-active .m-input-wrapper {
     @apply maz:border-contrast;
+  }
+
+  &.--neutral .m-input-wrapper:focus-within,
+  &.--neutral.--border-active .m-input-wrapper {
+    border-color: var(--maz-neutral-foreground);
   }
 }
 

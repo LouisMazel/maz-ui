@@ -42,7 +42,7 @@ const HUE_SHIFT = 20
 const LIGHTNESS_SHIFT = 0.25
 const SHIFT_DISTANCE = 0.08
 const COLORED = 0.04
-const FOREGROUND_COLORS = new Set<string>([...BRAND_COLOR_ROLES, 'contrast'])
+const FOREGROUND_COLORS = new Set<string>([...BRAND_COLOR_ROLES, 'contrast', 'neutral'])
 
 function bundledPreset(base: string | undefined): ThemePreset | undefined {
   return base && Object.hasOwn(BUNDLED_PRESETS, base)

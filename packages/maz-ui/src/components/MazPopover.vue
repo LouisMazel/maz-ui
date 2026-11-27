@@ -224,7 +224,7 @@ export interface MazPopoverProps {
   ariaDescribedby?: string
   /**
    * Color variant of the popover: `container` (the default) and `surface` are the neutral colors of the theme
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast, surface, container
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, neutral, surface, container
    * @default container
    */
   color?: MazColor | MazNeutralColor
@@ -1035,6 +1035,10 @@ defineExpose({
 
   &.--contrast {
     @apply maz:border-contrast-600 maz:bg-contrast maz:text-contrast-foreground;
+  }
+
+  &.--neutral {
+    @apply maz:border maz:border-divider maz:bg-neutral maz:text-neutral-foreground;
   }
 }
 

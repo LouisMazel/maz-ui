@@ -193,12 +193,12 @@ ${table(['Variable', 'Default'], tokens.containerVariables
 - **Section**: \`<section class="flex flex-col gap-4">\` with an \`<h2 class="text-title-2">\`; space the sections with \`gap-8\`/\`gap-12\` on their parent rather than margins.
 - **Form row** (field + button): \`<div class="flex items-end gap-2"><MazInput block class="flex-1" /><MazBtn class="shrink-0">Add</MazBtn></div>\`: without \`shrink-0\` the block input squeezes the button.
 - **Empty state**: \`<div class="flex flex-col items-center gap-3 py-12 text-center">\` with an icon (\`size-10 text-muted\`), a \`text-title-3\`, a \`text-body-sm text-muted\` explanation and one primary \`MazBtn\`.
-- **Actions bar** (dialog, form footer): \`<div class="flex flex-wrap justify-end gap-2">\` with the cancel action first (\`MazBtn color="contrast" outlined\` or a \`MazLink\`), the primary action last.
+- **Actions bar** (dialog, form footer): \`<div class="flex flex-wrap justify-end gap-2">\` with the cancel action first (\`MazBtn color="neutral"\` or a \`MazLink\`), the primary action last.
 - **Cards grid**: \`<div class="grid gap-4 tab-m:grid-cols-2 lap-m:grid-cols-3">\` of \`MazCard\`, or \`@container\` + \`@tab-m:grid-cols-2\` when the grid is not full width.
 
 ### Action hierarchy
 
-- One solid \`color="primary"\` \`MazBtn\` per view or group of actions: the main action. The other actions are \`outlined\`, \`pastel\` or \`color="contrast" outlined\`.
+- One solid \`color="primary"\` \`MazBtn\` per view or group of actions: the main action. The other actions are \`color="neutral"\` (the grey push button), \`outlined\` or \`pastel\`.
 - Cancel, back and "learn more" are low emphasis: a \`MazLink\` or an outlined \`MazBtn\`, placed before the primary action.
 - Destructive actions use \`color="destructive"\` and a confirmation (\`useDialog\`, \`MazDialogConfirm\`).
 - Neighbouring buttons share the same \`size\`.

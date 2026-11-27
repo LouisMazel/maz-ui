@@ -32,7 +32,7 @@ export interface MazBtnDropdownProps {
   size?: MazBtnProps['size']
   /**
    * Color of both parts
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface' | 'container'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral' | 'transparent' | 'surface' | 'container'`
    * @default 'primary'
    */
   color?: MazBtnProps['color']

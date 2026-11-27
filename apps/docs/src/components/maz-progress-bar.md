@@ -74,6 +74,7 @@ With `max`, `value` is on its scale: 3 of 5 steps.
 <MazProgressBar :value="65" color="warning" label="warning" />
 <MazProgressBar :value="65" color="destructive" label="destructive" />
 <MazProgressBar :value="65" color="contrast" label="contrast" />
+<MazProgressBar :value="65" color="neutral" label="neutral" />
 ```
 
   </template>
@@ -188,7 +189,7 @@ const updates: MazProgressBarSegment[] = [
   import { ref } from 'vue'
 
   const progress = ref(40)
-  const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast']
+  const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral']
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
   const updates = [
     { value: 12, color: 'success', label: 'patch' },

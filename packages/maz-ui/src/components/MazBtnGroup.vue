@@ -36,7 +36,7 @@ export interface MazButtonGroupProps {
   size?: MazSize
   /**
    * The color of all buttons (only applies to props-based buttons)
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast, transparent, surface, container
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, neutral, transparent, surface, container
    * @default 'primary'
    */
   color?: MazColor | MazNeutralColor

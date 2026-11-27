@@ -22,5 +22,6 @@ export function useToast() {
     info: toast.info.bind(toast),
     warning: toast.warning.bind(toast),
     accent: toast.accent.bind(toast),
+    neutral: toast.neutral.bind(toast),
   }
 }

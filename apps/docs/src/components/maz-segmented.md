@@ -119,7 +119,7 @@ Without `color`, the selected segment is a neutral raised surface, like the nati
   </template>
 </ComponentDemo>
 
-Available colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive` and `contrast`.
+Available colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` and `neutral` (the grey of the theme, with a border so it stays visible).
 
 ## Sizes
 
@@ -398,7 +398,7 @@ const themeOptions = [
   { icon: MazComputerDesktop, label: 'Auto', value: 'auto' },
 ]
 
-const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast']
+const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral']
 const status = ref('active')
 const statusOptions = [
   { label: 'Active', value: 'active' },

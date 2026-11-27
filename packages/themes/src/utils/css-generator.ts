@@ -157,12 +157,26 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   return lines.join('\n')
 }
 
+/**
+ * `neutral` (grey of the neutral buttons, badges, chips...) and its text, for a preset that does not set them: a grey
+ * mixed from the page and the text, a bit darker than the page in light mode and lighter than the cards in dark mode.
+ */
+export function withNeutralColors(colors: { light: ThemeColors, dark: ThemeColors }, prefix: string): { light: ThemeColors, dark: ThemeColors } {
+  const fill = (mode: ThemeColors, share: number): ThemeColors => ({
+    ...mode,
+    'neutral': mode.neutral ?? `color-mix(in oklch, var(--${prefix}-surface), var(--${prefix}-foreground) ${share}%)`,
+    'neutral-foreground': mode['neutral-foreground'] ?? `var(--${prefix}-foreground)`,
+  })
+  return { light: fill(colors.light, 5), dark: fill(colors.dark, 14) }
+}
+
 function appendColorVariables(
   lines: string[],
-  colors: { light: ThemeColors, dark: ThemeColors },
+  presetColors: { light: ThemeColors, dark: ThemeColors },
   mode: ThemeMode,
   prefix: string,
 ): void {
+  const colors = withNeutralColors(presetColors, prefix)
   for (const [key, lightValue] of Object.entries(colors.light) as Array<[keyof ThemeColors, string]>) {
     if (!lightValue)
       continue

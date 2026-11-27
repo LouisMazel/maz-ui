@@ -216,6 +216,10 @@ watch(
     @apply maz:bg-contrast maz:text-contrast-foreground;
   }
 
+  &.--neutral {
+    @apply maz:border-b maz:border-divider maz:bg-neutral maz:text-neutral-foreground;
+  }
+
   &.--transparent {
     @apply maz:border-b maz:border-divider maz:text-foreground;
   }

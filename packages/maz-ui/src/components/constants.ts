@@ -7,6 +7,7 @@ export const colors = [
   'warning',
   'destructive',
   'contrast',
+  'neutral',
   'transparent',
 ] as const
 

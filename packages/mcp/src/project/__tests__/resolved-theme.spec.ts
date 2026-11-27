@@ -108,6 +108,7 @@ describe('given themeWarnings', () => {
         surface: grey,
         foreground: grey,
         contrast: grey,
+        neutral: grey,
         divider: grey,
         muted: grey,
         overlay: grey,

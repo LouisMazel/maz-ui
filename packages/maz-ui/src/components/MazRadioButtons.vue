@@ -121,6 +121,13 @@ const selectedStyle = computed<{ item: CSSProperties, selector: CSSProperties }>
     }
   }
 
+  if (color === 'neutral') {
+    return {
+      item: { color: 'var(--maz-neutral-foreground)', backgroundColor: 'var(--maz-neutral)', borderColor: 'var(--maz-divider)' },
+      selector: { backgroundColor: 'var(--maz-neutral-foreground)', color: 'var(--maz-neutral)' },
+    }
+  }
+
   const c = getColor(color)
 
   return {

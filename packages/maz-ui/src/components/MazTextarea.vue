@@ -448,6 +448,10 @@ const stateLabelColor = computed(() => [
     @apply maz:border-contrast;
   }
 
+  &.--neutral:focus-within {
+    border-color: var(--maz-neutral-foreground);
+  }
+
   &.--autogrow textarea {
     @apply maz:resize-none;
 
