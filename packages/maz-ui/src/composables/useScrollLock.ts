@@ -40,7 +40,9 @@ function lockElement(element: HTMLElement) {
 
   // The scrollbar disappears: the padding keeps the content in place
   if (scrollbarWidth > 0) {
-    element.style.paddingInlineEnd = `${scrollbarWidth}px`
+    const currentPadding = Number.parseFloat(getComputedStyle(element).paddingInlineEnd) || 0
+
+    element.style.paddingInlineEnd = `${currentPadding + scrollbarWidth}px`
     element.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
   }
 }

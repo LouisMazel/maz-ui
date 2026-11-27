@@ -5,7 +5,7 @@ import type { Finding, Framework } from './types.ts'
 import { execFileSync } from 'node:child_process'
 import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { dirname, join, resolve } from 'node:path'
+import { dirname, join, relative, resolve } from 'node:path'
 import { createContext } from '../context.ts'
 import { dependsOnPackages, isIgnoredPath, REVIEWABLE_EXTENSIONS, reviewFiles } from './files.ts'
 import { formatFindings } from './index.ts'
@@ -85,8 +85,8 @@ async function reviewByProject(files: string[], { knowledge, knowledgeFor, cwd, 
   return reviews.flatMap(review => review.reviews)
 }
 
-function isReviewable(file: string): boolean {
-  return REVIEWABLE_EXTENSIONS.includes(file.split('.').pop() ?? '') && !isIgnoredPath(file) && dependsOnPackages(dirname(file), HOOK_PACKAGES)
+function isReviewable(file: string, directory: string): boolean {
+  return REVIEWABLE_EXTENSIONS.includes(file.split('.').pop() ?? '') && !isIgnoredPath(relative(directory, file)) && dependsOnPackages(dirname(file), HOOK_PACKAGES)
 }
 
 /** Files created or modified in the git repository of a directory (staged, unstaged and untracked), deleted ones excluded */
@@ -141,9 +141,18 @@ class ReportedFindings {
     this.file = sessionId && /^[\w-]+$/.test(sessionId)
       ? join(tmpdir(), 'maz-ui-mcp-hooks', `${sessionId}.json`)
       : undefined
-    this.keys = new Set(this.file && existsSync(this.file)
-      ? JSON.parse(readFileSync(this.file, 'utf8')) as string[]
-      : [])
+    this.keys = new Set(this.read())
+  }
+
+  private read(): string[] {
+    try {
+      return this.file && existsSync(this.file)
+        ? JSON.parse(readFileSync(this.file, 'utf8')) as string[]
+        : []
+    }
+    catch {
+      return []
+    }
   }
 
   static key(file: string, finding: Finding): string {
@@ -183,7 +192,7 @@ export async function reviewEdits({ files: edited, final = false, sessionId }: R
   const directory = realpathSync(options.cwd)
   const files = (edited ?? (final
     ? changedFiles(directory)
-    : [])).map(file => resolve(directory, file)).filter(path => existsSync(path) && isReviewable(path)).map(path => realpathSync(path)).slice(0, MAX_STOP_FILES)
+    : [])).map(file => resolve(directory, file)).filter(path => existsSync(path) && isReviewable(path, directory)).map(path => realpathSync(path)).slice(0, MAX_STOP_FILES)
 
   if (files.length === 0)
     return undefined

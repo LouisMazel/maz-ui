@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { IntersectionTarget } from './useIntersectionObserver.ts'
-import { nextTick, readonly, ref, shallowRef } from 'vue'
+import { getCurrentScope, nextTick, onScopeDispose, readonly, ref, shallowRef } from 'vue'
 import { useIntersectionObserver } from './useIntersectionObserver.ts'
 
 export interface UseInfiniteScrollOptions {
@@ -37,8 +37,9 @@ export function useInfiniteScroll(
   const isLoading = ref(false)
   const isFinished = ref(false)
   const error = shallowRef<unknown>()
+  let stopped = false
 
-  const { isIntersecting, stop } = useIntersectionObserver(sentinel, (entries) => {
+  const { isIntersecting, stop: stopObserver } = useIntersectionObserver(sentinel, (entries) => {
     if (error.value === undefined && entries.some(entry => entry.isIntersecting))
       load()
   }, {
@@ -78,9 +79,20 @@ export function useInfiniteScroll(
       await nextTick()
       await new Promise(resolve => requestAnimationFrame(resolve))
 
-      if (!isIntersecting.value)
+      if (stopped || !isIntersecting.value)
         return
     }
+  }
+
+  function stop() {
+    stopped = true
+    stopObserver()
+  }
+
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      stopped = true
+    })
   }
 
   /** Starts again from the first page: after a new search or filter */

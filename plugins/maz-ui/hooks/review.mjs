@@ -8,7 +8,7 @@
  */
 import { execFileSync, spawnSync } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
-import { dirname, join, resolve } from 'node:path'
+import { dirname, join, relative, resolve } from 'node:path'
 import process from 'node:process'
 
 const REVIEWABLE = /\.(?:vue|[cm]?[jt]sx?|css|scss|pcss|postcss)$/
@@ -34,8 +34,8 @@ function findUp(start, relativePath) {
   }
 }
 
-function isReviewable(file) {
-  return REVIEWABLE.test(file) && !IGNORED.test(file)
+function isReviewable(file, cwd) {
+  return REVIEWABLE.test(file) && !IGNORED.test(`/${relative(cwd, file)}`)
 }
 
 /** Files created or modified in the git repository of the session (staged, unstaged and untracked) */
@@ -87,7 +87,7 @@ if (isStop && stopHookActive)
 const files = isStop
   ? changedFiles(cwd)
   : editedFiles(toolInput).map(file => resolve(cwd, file))
-const mazUi = files.filter(isReviewable).map(file => findUp(dirname(file), MAZ_UI)).find(Boolean)
+const mazUi = files.filter(file => isReviewable(file, cwd)).map(file => findUp(dirname(file), MAZ_UI)).find(Boolean)
 
 if (!mazUi)
   process.exit(0)
