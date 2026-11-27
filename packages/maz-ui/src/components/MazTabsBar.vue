@@ -2,6 +2,7 @@
 import type { MazBadgeProps } from './MazBadge.vue'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazIndicatorProps } from './MazIndicator.vue'
+import type { MazTabsOrientation, MazTabsProvide } from './MazTabs.vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 
 /**
@@ -41,6 +42,13 @@ export interface MazTabsBarProps<Item extends MazTabsBarItem = MazTabsBarItem> {
    * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
    */
   color?: MazColor
+  /**
+   * Direction of the bar. `vertical` stacks the tabs in a column (arrows up and down move between tabs),
+   * for a side navigation of sections. Inherited from MazTabs when not set
+   * @values `'horizontal' | 'vertical'`
+   * @default 'horizontal'
+   */
+  orientation?: MazTabsOrientation
   /**
    * Force the standalone mode: the tabs bar ignores any surrounding `MazTabs`
    * (selection, size, rounded-size and color are no longer inherited) and is
@@ -129,7 +137,6 @@ export type MazTabsBarItemValue<Item>
 
 <script lang="ts" setup generic="Item extends MazTabsBarItem">
 import type { ComponentPublicInstance, StyleValue } from 'vue'
-import type { MazTabsProvide } from './MazTabs.vue'
 import { sleep } from '@maz-ui/utils/helpers/sleep'
 import {
   computed,
@@ -149,6 +156,7 @@ const {
   items,
   modelValue,
   color,
+  orientation,
   standalone = false,
   persistent = false,
   queryParam = 'tab',
@@ -205,6 +213,9 @@ const resolvedRoundedSize = computed<MazRoundedSize>(() => {
 })
 
 const resolvedColor = computed<MazColor | undefined>(() => color ?? tabsContext.value?.color?.value)
+
+const resolvedOrientation = computed<MazTabsOrientation>(() => orientation ?? tabsContext.value?.orientation?.value ?? 'horizontal')
+const isVertical = computed(() => resolvedOrientation.value === 'vertical')
 
 const ROUNDED_CLASS: Record<MazRoundedSize, string> = {
   none: '',
@@ -362,8 +373,12 @@ function getNextEnabledIndex(fromIndex: number, step: 1 | -1) {
 
 function onTabKeydown(event: KeyboardEvent, index: number) {
   const isRtl = !!tabsBarRef.value && globalThis.getComputedStyle(tabsBarRef.value).direction === 'rtl'
-  const forwardKey = isRtl ? 'ArrowLeft' : 'ArrowRight'
-  const backwardKey = isRtl ? 'ArrowRight' : 'ArrowLeft'
+  const forwardKey = isVertical.value
+    ? 'ArrowDown'
+    : isRtl ? 'ArrowLeft' : 'ArrowRight'
+  const backwardKey = isVertical.value
+    ? 'ArrowUp'
+    : isRtl ? 'ArrowRight' : 'ArrowLeft'
 
   let targetIndex: number | undefined
 
@@ -405,6 +420,30 @@ function addElementToItemRefs({
 const tabsIndicatorState = ref<StyleValue>()
 const tabsBarHasScrollAnimation = ref(false)
 
+function scrollToTab(tabsBar: HTMLElement, activeTab: HTMLElement) {
+  const scrollOffset = 50
+  const behavior = tabsBarHasScrollAnimation.value ? 'smooth' : 'instant'
+
+  if (isVertical.value) {
+    if (
+      activeTab.offsetTop - scrollOffset < tabsBar.scrollTop
+      || activeTab.offsetTop + activeTab.offsetHeight > tabsBar.scrollTop + tabsBar.clientHeight
+    ) {
+      tabsBar.scrollTo({ top: activeTab.offsetTop - scrollOffset, behavior })
+    }
+    return
+  }
+
+  if (
+    activeTab.offsetLeft - scrollOffset < tabsBar.scrollLeft
+    || activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
+  ) {
+    const tabsBarPaddingOffset = Number(globalThis.getComputedStyle(tabsBar).paddingLeft.slice(0, -2))
+
+    tabsBar.scrollTo({ left: activeTab.offsetLeft - tabsBarPaddingOffset - scrollOffset, behavior })
+  }
+}
+
 async function setIndicatorAndScroll() {
   if (!autoScroll) {
     return
@@ -419,20 +458,7 @@ async function setIndicatorAndScroll() {
     return
   }
 
-  const scrollOffset = 50
-
-  if (
-    activeTab.offsetLeft - scrollOffset < tabsBar.scrollLeft
-    || activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
-  ) {
-    const tabBarPaddingLeft = globalThis.getComputedStyle(tabsBar).paddingLeft
-    const tabsBarPaddingOffset = Number(tabBarPaddingLeft.slice(0, -2))
-
-    tabsBar.scrollTo({
-      left: activeTab.offsetLeft - tabsBarPaddingOffset - scrollOffset,
-      behavior: tabsBarHasScrollAnimation.value ? 'smooth' : 'instant',
-    })
-  }
+  scrollToTab(tabsBar, activeTab)
 
   if (typeof currentTab.value !== 'number') {
     return
@@ -443,7 +469,9 @@ async function setIndicatorAndScroll() {
   const translateXValue = activeTab?.offsetLeft ?? 0
 
   tabsIndicatorState.value = {
-    transform: `translateX(${translateXValue}px)`,
+    transform: isVertical.value
+      ? `translate(${translateXValue}px, ${activeTab?.offsetTop ?? 0}px)`
+      : `translateX(${translateXValue}px)`,
     width: `${indicatorWidth}px`,
     height: `${indicatorHeight}px`,
   }
@@ -480,7 +508,7 @@ onMounted(() => {
 })
 
 watch(
-  () => [currentTab.value, normalizedItems.value],
+  () => [currentTab.value, normalizedItems.value, isVertical.value],
   () => {
     setIndicatorAndScroll()
   },
@@ -508,10 +536,13 @@ onMounted(() => {
   <div
     ref="tabsBarRef"
     role="tablist"
-    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:scrollbar-themed maz:gap-1 maz:overflow-x-auto maz:bg-container maz:p-2 maz:align-top"
+    :aria-orientation="resolvedOrientation"
+    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:scrollbar-themed maz:gap-1 maz:bg-container maz:p-2 maz:align-top"
     :class="[
       ROUNDED_CLASS[resolvedRoundedSize],
       {
+        '--vertical maz:flex-none maz:flex-col maz:overflow-y-auto': isVertical,
+        'maz:overflow-x-auto': !isVertical,
         '--block': block,
         '--elevation': elevation,
         '--bordered': bordered,
@@ -525,6 +556,7 @@ onMounted(() => {
       aria-hidden="true"
       class="m-tabs-bar__indicator maz:absolute maz:left-0 maz:text-center"
       :class="[
+        { 'maz:top-0': isVertical },
         ROUNDED_CLASS[resolvedRoundedSize],
         {
           'maz:transition-all maz:duration-300 maz:ease-in-out': tabsBarHasScrollAnimation,
@@ -546,6 +578,7 @@ onMounted(() => {
         :class="{
           '--is-active': isActiveTab(index),
           '--disabled': item.disabled,
+          'maz:w-full maz:justify-start!': isVertical,
         }"
         class="m-tabs-bar__item maz:relative maz:z-1 maz:flex-none maz:type-label"
         :style="getTabStyle(index, item.disabled)"
@@ -570,7 +603,7 @@ onMounted(() => {
             v-bind="item.badge"
             :size="item.badge.size ?? item.size ?? resolvedSize ?? 'xs'"
             class="m-tabs-bar__item__badge"
-            :class="{ '--dot': item.badge.content === true }"
+            :class="{ '--dot': item.badge.content === true, 'maz:ms-auto': isVertical }"
             :style="item.badge.content === true ? DOT_BADGE_STYLE : undefined"
           >
             <!--
