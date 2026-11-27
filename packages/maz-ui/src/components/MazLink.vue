@@ -7,6 +7,7 @@ import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnS
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables/index.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { useExternalLinks } from '../utils/externalLinks.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 
 export interface MazLinkProps {
@@ -81,7 +82,7 @@ export interface MazLinkProps {
    */
   underlineHover?: boolean
   /**
-   * Add an external icon to the link if target is '_blank'
+   * Add an external icon to the link if target is '_blank' (or if the link leaves the app, see the `openExternal` option of the plugin)
    * @default true
    */
   autoExternal?: boolean
@@ -146,6 +147,13 @@ const component = computed<Component | string>(() => {
 
 const isButton = computed(() => component.value === 'button')
 
+const { isExternal, onLinkClick } = useExternalLinks()
+
+function onClick(event: MouseEvent) {
+  if (!isButton.value)
+    onLinkClick(event, href, target)
+}
+
 const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
   primary: 'maz:not-disabled:text-primary maz:not-disabled:hover:text-primary-700 maz:not-disabled:dark:hover:text-primary-300',
   secondary: 'maz:not-disabled:text-secondary maz:not-disabled:hover:text-secondary-700 maz:not-disabled:dark:hover:text-secondary-300',
@@ -190,6 +198,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
     :disabled="isButton ? disabled : undefined"
     :style="styleProp"
     v-bind="$attrs"
+    @click="onClick"
   >
     <!--
       @slot start-icon - The icon to display on the inline-start edge of the text (left in LTR, right in RTL)
@@ -211,7 +220,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
     <!--
       @slot external-icon - Replace the default external icon
     -->
-    <slot v-if="autoExternal && target === '_blank'" name="external-icon">
+    <slot v-if="autoExternal && isExternal(href, target)" name="external-icon">
       <MazArrowTopRightOnSquare />
     </slot>
   </component>

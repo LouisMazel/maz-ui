@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import MazUiProvider from '@components/MazUiProvider.vue'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, inject, ref } from 'vue'
+import { EXTERNAL_LINKS_INJECTION_KEY, useExternalLinks } from '@/utils/externalLinks.ts'
 
 const { mockSetupTheme, mockCreateMazUiTranslations, mockSetLocale } = vi.hoisted(() => ({
   mockSetupTheme: vi.fn(),
@@ -456,6 +457,67 @@ describe('given MazUiProvider component', () => {
       expect(parsed.colorMode).toBe('auto')
       expect(parsed.strategy).toBe('runtime')
       expect(parsed.isDark).toBe(false)
+    })
+  })
+
+  describe('when rendered with openExternal', () => {
+    it('then its subtree opens external links through it and the default rule applies', () => {
+      const openExternal = vi.fn()
+      let api!: ReturnType<typeof useExternalLinks>
+      let injected: unknown
+      const Child = defineComponent({
+        setup() {
+          api = useExternalLinks()
+          injected = inject(EXTERNAL_LINKS_INJECTION_KEY)
+          return () => h('div')
+        },
+      })
+
+      mount(MazUiProvider, {
+        props: { theme: { preset: mockPreset }, translations: defaultTranslations, openExternal },
+        slots: { default: () => h(Child) },
+      })
+      const event = new MouseEvent('click', { cancelable: true })
+      api.onLinkClick(event, 'https://example.com')
+
+      expect(injected).toBeDefined()
+      expect(openExternal).toHaveBeenCalledWith('https://example.com', event)
+    })
+
+    it('then a custom isExternalLink wins', () => {
+      let api!: ReturnType<typeof useExternalLinks>
+      const Child = defineComponent({
+        setup() {
+          api = useExternalLinks()
+          return () => h('div')
+        },
+      })
+
+      mount(MazUiProvider, {
+        props: { theme: { preset: mockPreset }, translations: defaultTranslations, openExternal: vi.fn(), isExternalLink: () => false },
+        slots: { default: () => h(Child) },
+      })
+
+      expect(api.isExternal('https://example.com')).toBe(false)
+    })
+  })
+
+  describe('when rendered without openExternal', () => {
+    it('then nothing is provided', () => {
+      let injected: unknown = 'unset'
+      const Child = defineComponent({
+        setup() {
+          injected = inject(EXTERNAL_LINKS_INJECTION_KEY, undefined)
+          return () => h('div')
+        },
+      })
+
+      mount(MazUiProvider, {
+        props: { theme: { preset: mockPreset }, translations: defaultTranslations },
+        slots: { default: () => h(Child) },
+      })
+
+      expect(injected).toBeUndefined()
     })
   })
 })
