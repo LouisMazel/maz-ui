@@ -285,6 +285,19 @@ function reportUnknownProp(name: string, offset: number, component: ComponentApi
   }, offset)
 }
 
+/** A prop kept for compatibility: its JSDoc gives the alternative */
+function reportDeprecatedProp(prop: PropApi, offset: number, component: ComponentApi, context: ReviewContext): void {
+  if (prop.deprecated === undefined)
+    return
+
+  context.report({
+    rule: 'deprecated-prop',
+    severity: 'warning',
+    message: `\`${toKebab(prop.name)}\` of ${component.name} is deprecated and will be removed in a major version.`,
+    suggestion: prop.deprecated,
+  }, offset)
+}
+
 function checkModel(directive: DirectiveNode, component: ComponentApi, context: ReviewContext): void {
   const arg = directiveArg(directive) ?? 'modelValue'
   const prop = findProp(component, arg, context)
@@ -473,9 +486,14 @@ function checkStaticAttribute(attribute: AttributeNode, component: ComponentApi,
 
   const definition = findProp(component, attribute.name, context)
 
-  if (!definition)
+  if (!definition) {
     reportUnknownProp(attribute.name, attribute.loc.start.offset, component, context)
-  else if (attribute.value)
+    return
+  }
+
+  reportDeprecatedProp(definition, attribute.loc.start.offset, component, context)
+
+  if (attribute.value)
     checkPropValue(definition, attribute.value.content, valueOffset(attribute, source), component, context)
 }
 
@@ -491,6 +509,8 @@ function checkBoundProp(directive: DirectiveNode, component: ComponentApi, conte
     reportUnknownProp(name, directive.loc.start.offset, component, context)
     return
   }
+
+  reportDeprecatedProp(definition, directive.loc.start.offset, component, context)
 
   const expression = directiveExpression(directive)
   const literal = expression?.content.trim()

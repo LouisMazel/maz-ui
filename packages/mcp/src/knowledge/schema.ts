@@ -54,6 +54,7 @@ export const propApiSchema = z.object({
   values: z.array(z.string()).optional(),
   strictValues: z.boolean(),
   model: z.string().optional(),
+  deprecated: z.string().optional(),
 })
 
 export const componentApiSchema = z.object({
@@ -68,6 +69,7 @@ export const componentApiSchema = z.object({
     name: z.string(),
     description: z.string().optional(),
     payload: z.string().optional(),
+    deprecated: z.string().optional(),
   })),
   slots: z.array(z.object({
     name: z.string(),

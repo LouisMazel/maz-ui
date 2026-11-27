@@ -1627,3 +1627,45 @@ describe('given the prefer-markdown rule', () => {
     })
   })
 })
+
+function withDeprecatedProp(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: {
+      ...loaded.fragment,
+      components: loaded.fragment.components.map(component => component.name === 'MazBtn'
+        ? {
+            ...component,
+            props: component.props.map(prop => prop.name === 'outlined'
+              ? { ...prop, deprecated: 'Use `variant="outline"` instead' }
+              : prop),
+          }
+        : component),
+    },
+  })))
+}
+
+describe('given the deprecated-prop rule', () => {
+  function reviewDeprecated(markup: string): Finding[] {
+    return reviewCode(template(markup), { knowledge: withDeprecatedProp(), filename: 'Test.vue' })
+  }
+
+  describe('when a deprecated prop is set', () => {
+    it.each([
+      '<MazBtn outlined>Save</MazBtn>',
+      '<MazBtn :outlined="true">Save</MazBtn>',
+    ])('then %s is reported with the alternative', (markup) => {
+      const finding = reviewDeprecated(markup).find(entry => entry.rule === 'deprecated-prop')
+
+      expect(finding?.severity).toBe('warning')
+      expect(finding?.message).toContain('`outlined` of MazBtn is deprecated')
+      expect(finding?.suggestion).toBe('Use `variant="outline"` instead')
+    })
+  })
+
+  describe('when only current props are set', () => {
+    it('then nothing is reported', () => {
+      expect(reviewDeprecated('<MazBtn color="primary">Save</MazBtn>').map(entry => entry.rule)).not.toContain('deprecated-prop')
+    })
+  })
+})
