@@ -115,6 +115,22 @@ describe('given readProjectTheme', () => {
     })
   })
 
+  describe('when the project wires its presets in a script and a component', () => {
+    it('then it reads which presets are passed to the theme', () => {
+      const directory = createTempDir()
+
+      writeProject(directory)
+      writeFile(directory, 'apps/web/src/main.ts', 'import { brandPreset } from \'../config/brand-preset\'\napp.use(MazUi, { theme: { preset: brandPreset } })')
+      writeFile(directory, 'apps/web/src/Switch.vue', '<script setup lang="ts">\nconst { updateTheme } = useTheme()\nupdateTheme(\'ocean\')\n</script>\n<template><div /></template>')
+
+      const { usage, presets } = readProjectTheme(directory)
+
+      expect(usage?.used.toSorted()).toEqual(['brandPreset', 'ocean'])
+      expect(usage).toMatchObject({ dynamic: false, wired: true })
+      expect(presets).toHaveLength(1)
+    })
+  })
+
   describe('when the directory has no package.json', () => {
     it('then it is not scanned', () => {
       const directory = createTempDir()
@@ -133,6 +149,26 @@ describe('given readProjectTheme', () => {
       writeFile(directory, 'big.css', `@theme { --color-big: red; }\n${'.a { color: red; }\n'.repeat(20_000)}`)
 
       expect(readProjectTheme(directory).stylesheets).toEqual([])
+    })
+  })
+})
+
+describe('given renderProjectTheme with the usage of the presets', () => {
+  describe('when a preset is not passed to the theme', () => {
+    it('then its heading says so', () => {
+      const tailwind = getKnowledge().tailwind!
+      const theme: ProjectTheme = {
+        stylesheets: [],
+        presets: [
+          { file: 'a.ts', exportName: 'used', overrides: { colors: { light: { primary: '#fff' } } } },
+          { file: 'b.ts', exportName: 'forgotten', overrides: { colors: { light: { primary: '#fff' } } } },
+        ],
+        usage: { used: ['used'], inlineFiles: [], dynamic: false, wired: true },
+      }
+      const output = renderProjectTheme(theme, tailwind)!
+
+      expect(output).toContain('(`used`)')
+      expect(output).toContain('(`forgotten`, not passed to the theme)')
     })
   })
 })

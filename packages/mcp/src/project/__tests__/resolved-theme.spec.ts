@@ -204,4 +204,81 @@ describe('given renderEffectiveColors', () => {
       expect(output).toContain('The base `brandBase` is not a bundled preset')
     })
   })
+
+  describe('when the project passes only some of its presets to the theme', () => {
+    const presets = [
+      projectPreset({ base: 'ocean', exportName: 'wired', overrides: { name: 'wired' } }),
+      projectPreset({ file: 'b.ts', exportName: 'forgotten', overrides: { name: 'forgotten' } }),
+    ]
+
+    it('then only the used one is rendered, and the other is listed as left out', () => {
+      const output = renderEffectiveColors(presets, { usage: { used: ['wired'], inlineFiles: [], dynamic: false, wired: true } })
+
+      expect(output).toContain('### Effective colors of `wired`')
+      expect(output).not.toContain('### Effective colors of `forgotten`')
+      expect(output).toContain('Defined but not passed to the theme, so left out: `forgotten` (`b.ts`)')
+      expect(output).not.toContain('chosen at runtime')
+    })
+
+    it('then a runtime choice lists every candidate and says so', () => {
+      const output = renderEffectiveColors(presets, { usage: { used: ['wired', 'forgotten', 'macos'], inlineFiles: [], dynamic: true, wired: true } })
+
+      expect(output).toContain('### Effective colors of `wired`')
+      expect(output).toContain('### Effective colors of `forgotten`')
+      expect(output).toContain('### Effective colors of the `macos` preset')
+      expect(output).toContain('The preset is chosen at runtime')
+    })
+
+    it('then a bundled preset used by the app replaces the presets that are only defined', () => {
+      const output = renderEffectiveColors(presets, { usage: { used: ['nova'], inlineFiles: [], dynamic: false, wired: true } })
+
+      expect(output).toContain('### Effective colors of the `nova` preset')
+      expect(output).toContain('Defined but not passed to the theme, so left out: `wired` (`src/preset.ts`), `forgotten` (`b.ts`)')
+    })
+
+    it('then every preset is rendered with a note when the passed one is unknown', () => {
+      const output = renderEffectiveColors(presets, { usage: { used: ['mystery'], inlineFiles: [], dynamic: false, wired: true } })
+
+      expect(output).toContain('### Effective colors of `wired`')
+      expect(output).toContain('The preset passed to the theme (`mystery`) is not a `definePreset` of the project')
+    })
+
+    it('then every preset is rendered when nothing is wired', () => {
+      const output = renderEffectiveColors(presets, { usage: { used: [], inlineFiles: [], dynamic: false, wired: false } })
+
+      expect(output).toContain('### Effective colors of `forgotten`')
+      expect(output).not.toContain('left out')
+    })
+  })
+
+  describe('when the project has no preset but uses a bundled one', () => {
+    it('then it renders the bundled preset', () => {
+      const output = renderEffectiveColors([], { usage: { used: ['folio'], inlineFiles: [], dynamic: false, wired: true } })
+
+      expect(output).toContain('### Effective colors of the `folio` preset')
+      expect(output).not.toContain('No `definePreset` in the project')
+    })
+  })
+
+  describe('when some overrides cannot be resolved', () => {
+    it('then they are listed with the fallback to the base values', () => {
+      const output = renderEffectiveColors([
+        projectPreset({
+          exportName: 'brand',
+          overrides: {
+            colors: {
+              light: { primary: '<expr: NUIT>', a: '<expr: x>', b: '<expr: x>', c: '<expr: x>', d: '<expr: x>', e: '<expr: x>', f: '<expr: x>' },
+            },
+            list: ['<expr: item>', 1],
+            empty: null,
+            flag: true,
+          },
+        }),
+      ])
+
+      expect(output).toContain('**Not resolved**: `colors.light.primary` = NUIT')
+      expect(output).toContain('and 2 more')
+      expect(output).toContain('the base preset values are used for them')
+    })
+  })
 })

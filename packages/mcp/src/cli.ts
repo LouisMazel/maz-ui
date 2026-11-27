@@ -330,10 +330,13 @@ async function runColors(values: { colors?: string, steps?: string }, [preset]: 
     return 1
   }
 
-  console.log(renderEffectiveColors(preset
-    ? []
-    : readProjectTheme(cwd).presets, {
+  const theme = preset
+    ? undefined
+    : readProjectTheme(cwd)
+
+  console.log(renderEffectiveColors(theme?.presets ?? [], {
     preset: preset as keyof typeof BUNDLED_PRESETS | undefined,
+    usage: theme?.usage,
     colors: list(values.colors),
     steps: list(values.steps) as ColorScaleStep[] | undefined,
   }))
