@@ -2,8 +2,10 @@
 import type { StyleValue } from 'vue'
 import type { MazLinkProps } from './MazLink.vue'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, nextTick, onMounted, ref, useSlots } from 'vue'
+import { computed, nextTick, onMounted, ref, useSlots, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useMutationObserver } from '../composables/useMutationObserver.ts'
+import { useResizeObserver } from '../composables/useResizeObserver.ts'
 import MazLink from './MazLink.vue'
 
 export interface MazReadMoreProps {
@@ -143,6 +145,14 @@ function checkIfTruncated() {
     shouldShowButton.value = textContent.length > maxChars
   }
 }
+
+const MUTATION_OPTIONS = { childList: true, subtree: true, characterData: true }
+
+useResizeObserver(contentRef, checkIfTruncated)
+useMutationObserver(contentRef, checkIfTruncated, MUTATION_OPTIONS)
+useMutationObserver(hiddenSlotRef, checkIfTruncated, MUTATION_OPTIONS)
+
+watch(() => [text, maxLines, maxChars], () => nextTick(checkIfTruncated))
 
 onMounted(() => {
   nextTick(() => {
