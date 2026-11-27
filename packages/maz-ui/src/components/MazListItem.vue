@@ -4,6 +4,7 @@ import type { MazListSize } from './MazList.vue'
 import { MazChevronRight } from '@maz-ui/icons/lazy/MazChevronRight'
 import { computed, defineAsyncComponent, inject, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useExternalLinks } from '../utils/externalLinks.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 import { mazListKey } from './MazList.vue'
@@ -67,7 +68,7 @@ export interface MazListItemProps {
    */
   size?: MazListSize
   /**
-   * Class of the expanded content of a collapsible row (padding, background...)
+   * Class of the expanded content of a collapsible row, or of the content zone of a non-collapsible row (padding, background...)
    */
   contentClass?: HTMLAttributes['class']
   /**
@@ -118,7 +119,7 @@ defineSlots<{
   end: () => unknown
   /** Interactive trailing content (buttons, switches, menus), outside of the clickable area */
   actions: () => unknown
-  /** Expanded content of a collapsible row */
+  /** Expanded content of a collapsible row; on a non-collapsible row, a content zone always visible under the row, outside of the clickable area (a form, a description, a preview) */
   default: (props: { open: boolean }) => unknown
 }>()
 
@@ -160,7 +161,12 @@ const linkAttrs = computed(() => {
       }
 })
 
+const { onLinkClick } = useExternalLinks()
+
 function onClick(event: MouseEvent) {
+  if (!disabled && isLink.value && !to)
+    onLinkClick(event, href, target)
+
   if (disabled) {
     event.preventDefault()
     return
@@ -257,5 +263,9 @@ const hasText = computed(() => !!title || !!subtitle || hasSlotContent(slots.tit
         <slot :open="openModel" />
       </div>
     </MazExpandAnimation>
+
+    <div v-else-if="hasSlotContent($slots.default)" class="m-list-item__content" :class="contentClass ?? 'maz:px-3 maz:pb-3'">
+      <slot :open="false" />
+    </div>
   </div>
 </template>
