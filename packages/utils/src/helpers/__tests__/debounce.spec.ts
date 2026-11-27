@@ -57,4 +57,71 @@ describe('given debounce function', () => {
       expect(mockFn).toHaveBeenNthCalledWith(2, 2)
     })
   })
+
+  describe('when cancel is called before the delay', () => {
+    it('then the pending call is dropped', () => {
+      const mockFn = vi.fn()
+      const debouncedFn = debounce(mockFn, 100)
+
+      debouncedFn('a')
+      debouncedFn.cancel()
+      vi.advanceTimersByTime(100)
+
+      expect(mockFn).not.toHaveBeenCalled()
+    })
+
+    it('then a later call still runs', () => {
+      const mockFn = vi.fn()
+      const debouncedFn = debounce(mockFn, 100)
+
+      debouncedFn('a')
+      debouncedFn.cancel()
+      debouncedFn('b')
+      vi.advanceTimersByTime(100)
+
+      expect(mockFn).toHaveBeenCalledExactlyOnceWith('b')
+    })
+  })
+
+  describe('when flush is called with a pending call', () => {
+    it('then the last call runs immediately and only once', () => {
+      const mockFn = vi.fn()
+      const debouncedFn = debounce(mockFn, 100)
+
+      debouncedFn(1)
+      debouncedFn(2)
+      debouncedFn.flush()
+      vi.advanceTimersByTime(100)
+
+      expect(mockFn).toHaveBeenCalledExactlyOnceWith(2)
+    })
+  })
+
+  describe('when flush is called without a pending call', () => {
+    it('then nothing runs', () => {
+      const mockFn = vi.fn()
+      const debouncedFn = debounce(mockFn, 100)
+
+      debouncedFn.flush()
+
+      expect(mockFn).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('when the debounced function is a method', () => {
+    it('then this is kept', () => {
+      const target = {
+        value: 3,
+        read: debounce(function (this: { value: number }, spy: (value: number) => void) {
+          spy(this.value)
+        }, 10),
+      }
+      const spy = vi.fn()
+
+      target.read(spy)
+      vi.advanceTimersByTime(10)
+
+      expect(spy).toHaveBeenCalledWith(3)
+    })
+  })
 })
