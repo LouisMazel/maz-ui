@@ -1,4 +1,4 @@
-import type { RoundedScaleKey, ThemeColors, ThemeComponentBg, ThemeFoundation, ThemeMode, ThemePreset } from '../types.ts'
+import type { RoundedScaleKey, ThemeColors, ThemeComponentBg, ThemeFocusRing, ThemeFoundation, ThemeMode, ThemePreset, ThemeShadowValue } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults.ts'
 import { normalizeColor } from './color-parser.ts'
@@ -137,13 +137,14 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   lines.push(`    color-scheme: ${colorScheme};`)
 
   appendFoundation(lines, preset.foundation, prefix)
-  appendScales(lines, preset.scales, prefix)
+  appendScales(lines, preset.scales, prefix, mode)
   appendComponents(lines, preset, prefix, mode)
   appendTypography(lines, preset.typography, prefix)
   appendColorVariables(lines, preset.colors, mode, prefix)
 
   lines.push('  }')
 
+  appendDarkShadows(lines, preset.scales, options, prefix)
   appendPerceptualColorScale(lines, preset.scales, prefix)
   appendSystemColors(lines, preset.systemColors, prefix)
 
@@ -187,7 +188,11 @@ function appendFoundation(lines: string[], foundation: Partial<ThemeFoundation> 
   }
 }
 
-function appendScales(lines: string[], scales: ThemePreset['scales'] | undefined, prefix: string): void {
+function isPerModeShadow(value: ThemeShadowValue | undefined): value is { light: string, dark: string } {
+  return typeof value === 'object' && value !== null
+}
+
+function appendScales(lines: string[], scales: ThemePreset['scales'] | undefined, prefix: string, mode: ThemeMode): void {
   if (!scales)
     return
   for (const key of ROUNDED_KEYS) {
@@ -200,9 +205,45 @@ function appendScales(lines: string[], scales: ThemePreset['scales'] | undefined
     }
   }
   for (const [key, value] of Object.entries(scales.shadow ?? {})) {
-    if (value)
-      lines.push(`    --${prefix}-shadow-style-${key}: ${value};`)
+    const css = isPerModeShadow(value)
+      ? (mode === 'dark' ? value.dark : value.light)
+      : value
+    if (css)
+      lines.push(`    --${prefix}-shadow-style-${key}: ${css};`)
   }
+}
+
+/**
+ * The dark shadows of a preset with a shadow per mode: `.dark` (class strategy) or `prefers-color-scheme` (media
+ * strategy), emitted after the light values of `:root`. `mode: 'dark'` already emitted them in `:root`.
+ */
+function appendDarkShadows(lines: string[], scales: ThemePreset['scales'] | undefined, options: CSSOptions, prefix: string): void {
+  if (options.mode !== 'both')
+    return
+
+  const declarations = Object.entries(scales?.shadow ?? {})
+    .filter((entry): entry is [string, { light: string, dark: string }] => isPerModeShadow(entry[1]))
+    .map(([key, value]) => `--${prefix}-shadow-style-${key}: ${value.dark};`)
+
+  if (declarations.length === 0)
+    return
+
+  if (options.darkSelectorStrategy === 'class') {
+    lines.push(`  .${options.darkClass} { ${declarations.join(' ')} }`)
+  }
+  else {
+    lines.push(`  @media (prefers-color-scheme: dark) { :root { ${declarations.join(' ')} } }`)
+  }
+}
+
+function appendFocusRing(lines: string[], focusRing: ThemeFocusRing | undefined, prefix: string, emitBg: (bg: ThemeComponentBg | undefined, cssKey: string) => void): void {
+  if (!focusRing)
+    return
+  emitBg(focusRing.color, 'focus-ring-color')
+  if (focusRing.width)
+    lines.push(`    --${prefix}-focus-ring-width: ${focusRing.width};`)
+  if (focusRing.offset)
+    lines.push(`    --${prefix}-focus-ring-offset: ${focusRing.offset};`)
 }
 
 /**
@@ -302,6 +343,7 @@ function appendComponents(lines: string[], preset: ThemePreset, prefix: string, 
       lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg[mode]!)};`)
     }
   }
+  appendFocusRing(lines, components.focusRing, prefix, emitBg)
   emitBg(components.container?.bg, 'container-bg')
   emitBg(components.input?.bg, 'input-bg')
   emitBg(components.glass?.bg, 'glass-bg')

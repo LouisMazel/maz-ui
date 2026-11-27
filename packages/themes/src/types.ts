@@ -39,6 +39,13 @@ export interface ThemeColors {
   'muted': CSSColor
   'divider': CSSColor
   'shadow': CSSColor
+  /**
+   * Neutral grey of the push buttons of the native platforms (`MazBtn color="neutral"`). Optional: without it,
+   * `neutral` falls back to the `container` background.
+   */
+  'neutral'?: CSSColor
+  /** Text on `neutral`. Falls back to `foreground`. */
+  'neutral-foreground'?: CSSColor
 }
 
 export interface ThemeFoundation {
@@ -124,6 +131,12 @@ export type RoundedScaleKey = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
  */
 export type ColorScaleMode = 'relative' | 'perceptual'
 
+/**
+ * A box-shadow, or one per color mode (`{ light, dark }`): on a dark background a black shadow is barely visible,
+ * a preset can use a stronger shadow or a glow there.
+ */
+export type ThemeShadowValue = string | { light: string, dark: string }
+
 export interface ThemeScales {
   /**
    * Border-radius scale. Maps to Tailwind utilities `rounded-{key}` and is
@@ -142,7 +155,7 @@ export interface ThemeScales {
    * is the maz-ui specific elevated-surface shadow used by MazCard,
    * MazContainer, MazPopover, etc.
    */
-  shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', string>
+  shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', ThemeShadowValue>
   /**
    * Derivation of the 50..950 steps of the brand colors.
    * @default 'relative'
@@ -161,6 +174,19 @@ export interface ThemeComponentBg {
 }
 
 /**
+ * Focus ring of the interactive components, distinct from `primary`. Every key is optional: without it, each
+ * component keeps its own ring (2px, offset 2px, in its color).
+ */
+export interface ThemeFocusRing {
+  /** Color of the ring, per color mode. Emitted as `--maz-focus-ring-color`. */
+  color?: ThemeComponentBg
+  /** Thickness of the ring. Emitted as `--maz-focus-ring-width`. */
+  width?: SizeUnit
+  /** Gap between the control and the ring. Emitted as `--maz-focus-ring-offset`. */
+  offset?: SizeUnit
+}
+
+/**
  * Per-component theme overrides. Every entry is optional; omit a key and the
  * component falls back to its existing surface tokens (= zero behaviour change).
  */
@@ -171,6 +197,10 @@ export interface ThemeComponents {
      */
     'font-weight'?: string
   }
+  /**
+   * Focus ring of the interactive components (`MazBtn`, `MazSwitch`, `MazSidebarMenuButton`...).
+   */
+  focusRing?: ThemeFocusRing
   /**
    * Background of "container" surfaces (Card, Container, Dialog, Popover,
    * Dropdown menu panel, Drawer, BottomSheet, …).
