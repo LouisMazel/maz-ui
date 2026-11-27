@@ -163,9 +163,24 @@ const cases: AxeCase[] = [
     props: { modelValue: 1, totalPages: 5 },
   },
   {
+    name: 'MazDrawnIcon',
+    component: components.MazDrawnIcon,
+    props: { name: 'check-circle', label: 'Done' },
+  },
+  {
+    name: 'MazMorphIcon',
+    component: components.MazMorphIcon,
+    props: { name: 'menu-close' },
+  },
+  {
     name: 'MazAnimatedCounter',
     component: components.MazAnimatedCounter,
     props: { count: 100 },
+  },
+  {
+    name: 'MazRollingText',
+    component: components.MazRollingText,
+    props: { value: 1234 },
   },
   {
     name: 'MazWindowMockup',

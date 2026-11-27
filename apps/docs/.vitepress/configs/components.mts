@@ -185,7 +185,13 @@ export const components = {
         { text: 'AnimatedCounter', link: '/components/maz-animated-counter' },
         { text: 'AnimatedElement', link: '/components/maz-animated-element' },
         { text: 'AnimatedText', link: '/components/maz-animated-text' },
+        { text: 'DrawnIcon', link: '/components/maz-drawn-icon' },
         { text: 'ExpandAnimation', link: '/components/maz-expand-animation' },
+        { text: 'MorphIcon', link: '/components/maz-morph-icon' },
+        {
+          text: withNewBadge('RollingText'),
+          link: '/components/maz-rolling-text',
+        },
         {
           text: withNewBadge('Ticker'),
           link: '/components/maz-ticker',
