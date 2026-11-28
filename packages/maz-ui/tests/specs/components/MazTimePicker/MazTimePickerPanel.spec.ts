@@ -15,6 +15,18 @@ describe('given a MazTimePickerPanel', () => {
     Element.prototype.scrollTo = vi.fn() as never
   })
 
+  describe('when disabledHours is set', () => {
+    it('then these hours are disabled in the hour wheel', () => {
+      const wrapper = mountPanel({ modelValue: '14:30', disabledHours: [0, 1, 23] })
+
+      const disabled = wheels(wrapper)[0]!.props('items')
+        .filter((item: { disabled?: boolean }) => item.disabled)
+        .map((item: { key: number }) => item.key)
+
+      expect(disabled).toEqual([0, 1, 23])
+    })
+  })
+
   describe('when the variant is wheel in 24 hours', () => {
     it('then it renders the hours and the minutes', () => {
       const wrapper = mountPanel({ modelValue: '14:30' })

@@ -56,6 +56,11 @@ export interface MazTimePickerProps {
    */
   disabledTimes?: string[]
   /**
+   * Hours (0-23) that cannot be chosen, whatever the minutes
+   * @example [0, 1, 2, 22, 23]
+   */
+  disabledHours?: number[]
+  /**
    * Shows the picker in the page, without field nor popover
    * @default false
    */
@@ -123,6 +128,7 @@ const {
   min,
   max,
   disabledTimes,
+  disabledHours,
   inline = false,
   locale: localeProp,
   label,
@@ -172,6 +178,7 @@ function onSelect(value: string, close: () => void) {
     :min
     :max
     :disabled-times
+    :disabled-hours
     :color
     :disabled
     :name
@@ -232,6 +239,7 @@ function onSelect(value: string, close: () => void) {
         :min
         :max
         :disabled-times
+        :disabled-hours
         :color
         :disabled
         :name

@@ -113,6 +113,10 @@ For irregular times, give the exact list in `slots`: `:slots="['09:00', '09:45',
   const slot = ref<string | null>(null)
 </script>
 
+## Used in MazDatePicker
+
+[MazDatePicker](./maz-date-picker.md) uses the wheels of this component for its time (`time` and `only-time` props). `disabled-hours` disables whole hours (0-23), whatever the minutes.
+
 ## Accessibility and motion
 
 - Each wheel is a `listbox` of `option`s (hours, minutes, AM/PM): the arrows, Page up, Page down, Home and End change the value, Enter confirms.

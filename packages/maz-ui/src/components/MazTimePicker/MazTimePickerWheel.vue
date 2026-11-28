@@ -195,7 +195,7 @@ watch(() => [modelValue, items.length], async () => {
 
 <style scoped>
 .m-time-wheel {
-  --m-time-wheel-item: 2.25rem;
+  --m-time-wheel-item: calc(2.25rem * var(--maz-density-ratio, 1));
 
   position: relative;
   border-radius: 0.5rem;

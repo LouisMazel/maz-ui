@@ -17,6 +17,7 @@ const {
   min = '00:00',
   max = '23:59',
   disabledTimes = [],
+  disabledHours = [],
   color = 'primary',
   disabled = false,
   name,
@@ -30,6 +31,7 @@ const {
   min?: string
   max?: string
   disabledTimes?: string[]
+  disabledHours?: number[]
   color?: MazColor
   disabled?: boolean
   name?: string
@@ -52,6 +54,7 @@ function isAllowed(hours: number, minutes: number) {
   const upper = toMinutes(max)
 
   return !disabledSet.value.has(toTime(hours, minutes))
+    && !disabledHours.includes(hours)
     && (Number.isNaN(lower) || total >= lower)
     && (Number.isNaN(upper) || total <= upper)
 }
@@ -214,7 +217,7 @@ const labels = computed(() => ({
   position: absolute;
   inset-inline: 0;
   inset-block-start: 50%;
-  block-size: 2.25rem;
+  block-size: calc(2.25rem * var(--maz-density-ratio, 1));
   translate: 0 -50%;
   border-radius: 0.5rem;
   background-color: color-mix(in oklab, var(--m-time-color) 14%, transparent);
@@ -250,7 +253,7 @@ const labels = computed(() => ({
   display: flex;
   align-items: center;
   justify-content: center;
-  min-block-size: 2.25rem;
+  min-block-size: calc(2.25rem * var(--maz-density-ratio, 1));
   padding-inline: 0.5rem;
   border: 1px solid var(--maz-divider, color-mix(in oklab, var(--maz-foreground) 18%, transparent));
   border-radius: 0.5rem;
