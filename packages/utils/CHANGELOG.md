@@ -1,5 +1,39 @@
 # Change Log
 
+## v5.9.0-beta.1 (2026-11-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.9.0-beta.0...v5.9.0-beta.1)
+
+### 🚀 Features
+
+- **utils:** Add the diffLines, formatDuration, shortcut and isApple helpers ([bbf38c0b9](https://github.com/LouisMazel/maz-ui/commit/bbf38c0b9))
+
+  - `diffLines(oldText, newText)` compares two texts line by line, with `foldDiff` to fold the unchanged lines and `diffStats` to count the changes.
+  - `formatDuration(seconds)` gives a localized duration such as `3 min 05 s` (`inputUnit`, `style`, `precision`).
+  - `parseShortcut`, `matchesShortcut` and `formatShortcut` handle platform aware shortcuts (`mod+k` is Cmd on macOS and Ctrl elsewhere, labelled `⌘K` or `Ctrl+K`), `isApple()` detects macOS, iOS and iPadOS.
+
+- **utils:** Cancel a pending debounce or throttle ([f47fcf807](https://github.com/LouisMazel/maz-ui/commit/f47fcf807))
+
+  `debounce` now returns `cancel()` and `flush()`, `throttle` returns `cancel()` and `debounceCallback` returns a function that cancels it: call them when the component is unmounted.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.9.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
+
+### 🚀 Features
+
+- **utils:** Add isProduction, the production mode without crashing when there is no bundler ([e05fa4ad4](https://github.com/LouisMazel/maz-ui/commit/e05fa4ad4))
+
+  `isProduction()` reads the `process.env.NODE_ENV` replaced by the bundler of the app, and returns `false` when `process` does not exist (a CDN with an import map).
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.1 (2026-11-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)
