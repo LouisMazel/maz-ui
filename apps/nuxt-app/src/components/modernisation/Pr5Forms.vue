@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { MazHeart } from '@maz-ui/icons/static/MazHeart'
+import MazDatePicker from 'maz-ui/components/MazDatePicker'
 import MazInlineEdit from 'maz-ui/components/MazInlineEdit'
 import MazKbd from 'maz-ui/components/MazKbd'
 import MazRating from 'maz-ui/components/MazRating'
@@ -16,6 +17,10 @@ const wheel24 = ref<string | null>('18:45')
 const slotTime = ref<string | null>(null)
 const inlineWheel = ref<string | null>('14:15')
 const inlineSlots = ref<string | null>('10:00')
+
+const dateTime24 = ref<string | undefined>('2026-03-12 14:30')
+const dateTime12 = ref<string | undefined>('2026-03-12 02:30 pm')
+const onlyTimeValue = ref<string | undefined>('09:15')
 
 const title = ref('Rapport trimestriel')
 const name = ref('Alice Martin')
@@ -91,6 +96,17 @@ const labels = ['Bof', 'Moyen', 'Correct', 'Bien', 'Parfait']
       <div class="flex flex-wrap items-start gap-10">
         <MazTimePicker v-model="inlineWheel" inline format="24h" />
         <MazTimePicker v-model="inlineSlots" inline variant="slots" min="08:00" max="12:00" :step="30" format="24h" class="max-w-md" />
+      </div>
+    </ModernisationDemo>
+
+    <ModernisationDemo title="MazDatePicker avec l'heure" hint="Le calendrier et les roues de MazTimePicker dans le même sélecteur. Mêmes props qu'avant : time, only-time, minute-interval, disabled-hours, min-date et max-date.">
+      <div class="flex flex-wrap items-start gap-6">
+        <MazDatePicker v-model="dateTime24" label="Date et heure (24 h)" time format="YYYY-MM-DD HH:mm" locale="fr" :minute-interval="15" />
+        <MazDatePicker v-model="dateTime12" label="Date et heure (12 h)" time format="YYYY-MM-DD hh:mm a" locale="fr" />
+        <MazDatePicker v-model="onlyTimeValue" label="Heure seule" only-time format="HH:mm" locale="fr" :disabled-hours="[0, 1, 2, 3, 4, 5, 22, 23]" />
+        <p class="text-sm text-muted">
+          {{ dateTime24 ?? 'aucune' }} / {{ dateTime12 ?? 'aucune' }} / {{ onlyTimeValue ?? 'aucune' }}
+        </p>
       </div>
     </ModernisationDemo>
 
