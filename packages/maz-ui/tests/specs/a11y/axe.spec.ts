@@ -494,6 +494,18 @@ const cases: AxeCase[] = [
     auditBody: true,
   },
   {
+    name: 'MazLightbox',
+    component: components.MazLightbox,
+    props: {
+      modelValue: true,
+      images: [
+        { src: 'https://example.com/1.jpg', alt: 'First' },
+        { src: 'https://example.com/2.jpg', alt: 'Second' },
+      ],
+    },
+    auditBody: true,
+  },
+  {
     name: 'MazGallery',
     component: components.MazGallery,
     props: {

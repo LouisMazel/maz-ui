@@ -170,6 +170,7 @@ export const components = {
         { text: 'Avatar', link: '/components/maz-avatar' },
         { text: 'Gallery', link: '/components/maz-gallery' },
         { text: 'LazyImg', link: '/components/maz-lazy-img' },
+        { text: withNewBadge('Lightbox'), link: '/components/maz-lightbox' },
         { text: 'Carousel', link: '/components/maz-carousel' },
         { text: 'Icon', link: '/components/maz-icon' },
         {

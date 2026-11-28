@@ -144,3 +144,17 @@ describe('given MazGallery component', () => {
     })
   })
 })
+
+describe('given MazGallery with a too high displayed-count', () => {
+  describe('when it is mounted', () => {
+    it('then it warns about the maximum', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      const wrapper = mount(MazGallery, { props: { images: [{ src: 'https://example.com/1.jpg' }], displayedCount: 6 } })
+
+      expect(warn).toHaveBeenCalledWith('[MazUI](m-gallery) The maximum of "displayed-count" is 5')
+      wrapper.unmount()
+      warn.mockRestore()
+    })
+  })
+})
