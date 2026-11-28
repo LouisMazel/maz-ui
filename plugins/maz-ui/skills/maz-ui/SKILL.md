@@ -112,6 +112,11 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - Animations on scroll: `aos: true` in the MazUi plugin with `import 'maz-ui/aos.css'` (Nuxt: `mazUi: { aos: true }`), then `useAos`. The directives are off by default with Nuxt (`mazUi.directives.vTooltip`, or import the directive).
 - Forms: `useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType).
 
+### Motion
+
+- Reuse the motion of maz-ui instead of hand-written animations: `MazRollingText` (a number or a text that changes), `MazDrawnIcon` (a check that draws itself), `MazMorphIcon` (a two-state icon), `useOriginTransition` (a panel that opens from its button), `useSlidingIndicator` (an active pill), `<TransitionGroup name="maz-list">`, the `press`, `focus-ring` and `border-draw` utilities.
+- Durations and easings from the theme (`var(--maz-motion-normal)`, `var(--maz-easing-out)`, `duration-(--duration-normal)`), only `transform` and `opacity`, `useReducedMotion().shouldReduceMotion` in JS animations.
+
 ### Icons
 
 Use `@maz-ui/icons`, never inline SVG nor another icon library. Pick the format by usage:
@@ -136,7 +141,7 @@ The maz-ui theme is exposed to Tailwind (`@import 'maz-ui/tailwindcss/theme.css'
 - Radius `rounded-*`, shadows `shadow-sm` to `shadow-xl` and `shadow-elevation`, spacing scale (`p-4`, `gap-2`), utilities `flex-center`, `disabled-state`.
 - Layout: `MazPageSection` (or the `padded-container` class) on each full-width band of a page (header, sections, footer) instead of `container mx-auto px-4`; breakpoints `mob-*`, `tab-*`, `lap-*` (`tab-m:grid-cols-2`), and the same names as container queries under an `@container` parent (`@tab-m:grid-cols-2`).
 - Text: the type scale (`text-display`, `text-title-1` to `text-title-4`, `text-body-lg`, `text-body`, `text-body-sm`, `text-label`, `text-caption`, `text-overline`, `text-code`; `type-<level>` keeps the font size of the element) instead of ad hoc sizes (`text-2xl font-semibold`, `text-xs text-muted`, `text-[13px]`); `rich-text` on raw HTML (Markdown, CMS).
-- One solid primary `MazBtn` per group of actions; the others `outlined`, `pastel` or a `MazLink`.
+- One solid primary `MazBtn` per group of actions; the others `variant="outline"`, `variant="soft"` or a `MazLink`.
 - **No `maz:` prefix** in this project: it is internal to the maz-ui library.
 - In custom CSS, use the variables: `var(--maz-primary)`, `var(--maz-rounded-md)`, `calc(var(--maz-space) * 4)`.
 
