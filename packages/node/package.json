@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/node",
   "type": "module",
-  "version": "5.7.0",
+  "version": "5.8.0-beta.1",
   "description": "Node utilities for Maz-UI library",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -76,8 +76,7 @@
   "dependencies": {
     "colorette": "catalog:",
     "consola": "catalog:",
-    "figlet": "catalog:",
-    "jsonc-parser": "^3.3.1"
+    "figlet": "catalog:"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
@@ -86,6 +85,7 @@
     "@vitest/coverage-v8": "catalog:",
     "cross-env": "catalog:",
     "eslint": "catalog:",
+    "jsonc-parser": "^3.3.1",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "unbuild": "catalog:",
