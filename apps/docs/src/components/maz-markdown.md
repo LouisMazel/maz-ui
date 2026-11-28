@@ -131,6 +131,8 @@ Fenced code blocks are rendered with [`MazCodeHighlight`](./maz-code-highlight.m
 
 Absolute links (`http://`, `https://`, `//`) open in a new tab with `rel="noopener noreferrer"`. Disable it with `:external-links="false"`.
 
+In a desktop app (Tauri, Electron), the relative and `#anchor` links would be followed inside the WebView. Set `:follow-internal-links="false"` to prevent it: `link-click` is still emitted, so the app can route itself. Absolute links are not concerned: use the `openExternal` option of the external links of the MazUi plugin for them. It can be set for the whole app with `defaults.MazMarkdown.followInternalLinks`.
+
 Every click on a link emits `link-click` with the event and the `href`, before the browser follows it. Call `event.preventDefault()` to handle the link yourself: an in-app router, the system browser of a desktop app.
 
 ```vue

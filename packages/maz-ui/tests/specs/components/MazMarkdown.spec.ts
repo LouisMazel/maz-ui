@@ -247,6 +247,41 @@ describe('given MazMarkdown component', () => {
       expect(href).toBe('/guide')
     })
 
+    it('then internal links are followed by default', async () => {
+      const wrapper = await mountMarkdown({ content: '[a](/guide) [b](#top)', highlight: false })
+
+      for (const link of wrapper.findAll('a')) {
+        const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+        link.element.dispatchEvent(event)
+
+        expect(event.defaultPrevented).toBe(false)
+      }
+    })
+
+    it('then relative and anchor links are prevented and still emitted when followInternalLinks is disabled', async () => {
+      const wrapper = await mountMarkdown({ content: '[a](/guide) [b](#top) [c](page.md)', highlight: false, followInternalLinks: false })
+
+      for (const link of wrapper.findAll('a')) {
+        const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+        link.element.dispatchEvent(event)
+
+        expect(event.defaultPrevented).toBe(true)
+      }
+
+      expect(wrapper.emitted('link-click')).toHaveLength(3)
+    })
+
+    it('then absolute links are not prevented when followInternalLinks is disabled', async () => {
+      const wrapper = await mountMarkdown({ content: '[a](https://maz-ui.com) [b](mailto:a@b.co) [c](//cdn.test)', highlight: false, followInternalLinks: false })
+
+      for (const link of wrapper.findAll('a')) {
+        const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+        link.element.dispatchEvent(event)
+
+        expect(event.defaultPrevented).toBe(false)
+      }
+    })
+
     it('then a click outside a link emits nothing', async () => {
       const wrapper = await mountMarkdown({ content: 'plain text', highlight: false })
 

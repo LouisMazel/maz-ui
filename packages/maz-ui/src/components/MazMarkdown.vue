@@ -48,6 +48,14 @@ export interface MazMarkdownProps {
    */
   externalLinks?: boolean
   /**
+   * Let the browser follow the internal links (relative and `#anchor` links). Set it to `false` in a desktop app (Tauri,
+   * Electron) so that they are never followed inside the WebView: the navigation is prevented and `link-click` is still
+   * emitted for the app to route itself.
+   * Can be set for the whole app with `defaults.MazMarkdown.followInternalLinks` of the MazUi plugin.
+   * @default true
+   */
+  followInternalLinks?: boolean
+  /**
    * Add an `id` to the titles (slug of their text, `-1`, `-2`... for duplicates) so that `#anchor` links reach them.
    * @default false
    */
@@ -100,18 +108,20 @@ defineSlots<{
   empty?: () => unknown
 }>()
 
-const { size, color, sanitize, highlight, externalLinks } = useGlobalConfig<{
+const { size, color, sanitize, highlight, externalLinks, followInternalLinks } = useGlobalConfig<{
   size: MazSize
   color: MazMarkdownColor
   sanitize: boolean
   highlight: boolean
   externalLinks: boolean
+  followInternalLinks: boolean
 }>('MazMarkdown', {
   size: 'md',
   color: 'foreground',
   sanitize: true,
   highlight: true,
   externalLinks: true,
+  followInternalLinks: true,
 })
 
 const MazCodeHighlight = defineAsyncComponent(() => import('./MazCodeHighlight.vue'))
@@ -196,6 +206,8 @@ function render(): void | Promise<void> {
   return pendingRender
 }
 
+const ABSOLUTE_LINK_REGEX = /^(?:[a-z][a-z\d+.-]*:|\/\/)/i
+
 const { onLinkClick: openExternalLink } = useExternalLinks()
 
 function onLinkClick(event: MouseEvent) {
@@ -204,7 +216,11 @@ function onLinkClick(event: MouseEvent) {
 
   if (link && href && rootRef.value?.contains(link)) {
     emits('link-click', event, href)
-    openExternalLink(event, href, link.getAttribute('target') ?? undefined)
+    const target = link.getAttribute('target') ?? undefined
+    openExternalLink(event, href, target)
+
+    if (!followInternalLinks.value && !event.defaultPrevented && target !== '_blank' && !ABSOLUTE_LINK_REGEX.test(href))
+      event.preventDefault()
   }
 }
 
