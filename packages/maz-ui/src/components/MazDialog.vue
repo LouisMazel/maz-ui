@@ -31,11 +31,16 @@ const {
   maxWidth = 'var(--maz-dialog-max-width, 38rem)',
   minWidth = 'var(--maz-dialog-min-width, 32rem)',
   scrollable,
+  headerDivider,
+  contentPadding = true,
   closeOnEscape = true,
+  align = 'center',
+  animated = true,
+  origin,
   ...backdropProps
 } = defineProps<DialogProps & MazBackdropProps>()
 
-defineEmits<{
+const emit = defineEmits<{
   /** emitted when modal is open */
   'open': [value: void]
   /** emitted when modal is close */
@@ -67,6 +72,22 @@ export interface DialogProps {
   scrollable?: boolean
   /** Persistent dialog (not closable by clicking outside and remove close button) */
   persistent?: boolean
+  /** Add a divider under the header (always present with `scrollable`) */
+  headerDivider?: boolean
+  /**
+   * Add horizontal and bottom padding around the content of the dialog, set `false` for full-bleed content (list, image, table)
+   * @default true
+   */
+  contentPadding?: boolean
+}
+
+export interface MazDialogTriggerSlotProps {
+  /** Open the dialog */
+  open: () => void
+  /** Close the dialog */
+  close: () => void
+  /** `true` while the dialog is open */
+  isOpen: boolean
 }
 
 export interface MazDialogProps extends DialogProps, MazBackdropProps {}
@@ -75,13 +96,47 @@ const attrs = useAttrs()
 
 const backdrop = ref<ComponentPublicInstance<typeof MazBackdrop>>()
 
+const isOpen = ref(!!modelValue)
+
+watch(() => modelValue, (value) => {
+  isOpen.value = !!value
+})
+
+function open() {
+  if (isOpen.value)
+    return
+
+  isOpen.value = true
+  emit('update:model-value', true)
+}
+
+function close() {
+  return backdrop.value?.close?.()
+}
+
+function onUpdateModelValue(value: boolean) {
+  isOpen.value = value
+  emit('update:model-value', value)
+}
+
 defineExpose({
   /**
    * Close the dialog
    * @description This is used to close the dialog
    */
-  close: () => backdrop.value?.close?.(),
+  close,
+  /**
+   * Open the dialog
+   * @description This is used to open the dialog without `v-model`
+   */
+  open,
 })
+
+const triggerWrapper = ref<HTMLElement>()
+
+const growOrigin = computed(() => origin ?? triggerWrapper.value?.firstElementChild ?? undefined)
+
+const isBottomAligned = computed(() => align === 'end' || align === 'none')
 
 const wrapperAttrs = computed<{
   class?: ClassValue
@@ -116,11 +171,33 @@ if (scrollable) {
 </script>
 
 <template>
+  <div
+    v-if="slots.trigger"
+    ref="triggerWrapper"
+    class="m-dialog-trigger maz:contents"
+  >
+    <!--
+      @slot Element that opens the dialog: the dialog grows out of it and goes back into it
+        @binding {Function} open open the dialog
+        @binding {Function} close close the dialog
+        @binding {boolean} isOpen true while the dialog is open
+    -->
+    <slot
+      name="trigger"
+      :open
+      :close
+      :is-open="isOpen"
+    />
+  </div>
   <MazBackdrop
     v-bind="backdropProps"
     ref="backdrop"
-    v-slot="{ close }"
-    :model-value="modelValue"
+    v-slot="{ close: closeDialog }"
+    :model-value="isOpen"
+    :align
+    :animated
+    :origin="growOrigin"
+    grow-from-origin
     transition-name="modal-anim"
     :close-on-escape="closeOnEscape"
     content-padding
@@ -129,24 +206,34 @@ if (scrollable) {
     variant="dialog"
     @close="$emit('close', $event)"
     @open="$emit('open', $event)"
-    @update:model-value="$emit('update:model-value', $event)"
+    @update:model-value="onUpdateModelValue"
   >
     <div
-      class="m-dialog maz:flex maz:max-w-full maz:min-w-full maz:origin-center maz:touch-none maz:flex-col maz:rounded-md maz:bg-container maz:text-foreground maz:tab-s:my-8 maz:dark:border maz:dark:border-divider"
+      class="m-dialog maz:flex maz:max-w-full maz:min-w-full maz:origin-center maz:flex-col maz:rounded-xl maz:bg-container maz:text-foreground maz:shadow-elevation maz:tab-s:my-8 maz:dark:border maz:dark:border-divider"
       role="dialog"
       aria-modal="true"
       :aria-labelledby="backdropProps.ariaLabelledby ?? (hasTitle ? titleId : undefined)"
       :aria-describedby="backdropProps.ariaDescribedby ?? descriptionId"
       :style="[{ '--max-width': maxWidth, '--min-width': minWidth }]"
-      :class="{ '--scrollable': scrollable, 'maz:my-0 maz:max-h-[95vh]': scrollable }"
+      :class="{
+        '--scrollable': scrollable,
+        'maz:my-0 maz:max-h-[calc(100dvh-2rem)] maz:tab-s:max-h-[95dvh]': scrollable,
+        '--align-bottom maz:rounded-b-none maz:tab-s:rounded-b-xl': isBottomAligned,
+      }"
       v-bind="wrapperAttrs"
     >
       <!--
         @slot Header slot
           @binding {Function} close close function
       -->
-      <slot name="header" :close>
-        <div class="m-dialog-header maz:flex maz:items-baseline maz:ps-6 maz:pe-2 maz:pt-2 maz:pb-4" :class="[hasSlotContent(slots.title) || title ? '--has-title' : '', hasSlotContent(slots.title) || title ? 'maz:justify-between' : 'maz:justify-end']">
+      <slot name="header" :close="closeDialog">
+        <div
+          class="m-dialog-header maz:flex maz:items-center maz:py-3 maz:ps-6 maz:pe-3"
+          :class="[
+            hasSlotContent(slots.title) || title ? '--has-title maz:justify-between' : 'maz:justify-end',
+            { '--divider maz:border-b maz:border-divider': headerDivider && !scrollable },
+          ]"
+        >
           <h2
             v-if="hasSlotContent(slots.title) || title"
             :id="titleId"
@@ -166,18 +253,21 @@ if (scrollable) {
             size="sm"
             :icon="MazXMark"
             :aria-label="t('aria.close')"
-            @click="close"
+            @click="closeDialog"
           />
         </div>
       </slot>
       <div
         :id="descriptionId"
         ref="dialogContent"
-        class="m-dialog-content maz:flex-1 maz:px-6"
+        class="m-dialog-content maz:flex-1"
         :class="{
           '--bottom-padding': !hasFooter,
-          'maz:pb-4': !hasFooter,
-          'maz:scrollbar-themed maz:overflow-auto maz:border-t maz:border-divider maz:py-4': scrollable,
+          'maz:px-6': contentPadding,
+          'maz:pb-4': contentPadding && !hasFooter,
+          'maz:scrollbar-themed maz:overflow-auto maz:overscroll-contain maz:border-t maz:border-divider': scrollable,
+          'maz:py-4': scrollable && contentPadding,
+          'maz:pt-4': contentPadding && headerDivider && !scrollable,
           'maz:border-b': scrollable && hasFooter,
         }"
       >
@@ -185,14 +275,14 @@ if (scrollable) {
             @slot Default content
               @binding {Function} close close function
           -->
-        <slot :close />
+        <slot :close="closeDialog" />
       </div>
       <div v-if="hasFooter" class="m-dialog-footer maz:flex maz:items-center maz:justify-end maz:px-6 maz:py-4">
         <!--
             @slot Footer slot
               @binding {Function} close close function
           -->
-        <slot name="footer" :close />
+        <slot name="footer" :close="closeDialog" />
       </div>
     </div>
   </MazBackdrop>

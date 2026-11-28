@@ -1,18 +1,14 @@
 ---
 title: useDialog
-description: Open a confirmation or information dialog from your script and await the answer of the user (confirm or cancel), with customizable buttons - through the dialog plugin, instead of window.confirm.
+description: Open a confirmation or information dialog from your script and await the answer of the user (confirm or cancel), with customizable buttons, without plugin to install, instead of window.confirm.
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-::: warning
-You must install [dialog plugin](./../plugins/dialog.md#install) before use it
-:::
-
 ::: tip
-More info about [dialog plugin](./../plugins/dialog.md) in its documentation
+No plugin to install. Global options, custom buttons, rich content and all the options: [dialog documentation](./../plugins/dialog.md)
 :::
 
 ## Usage
@@ -76,6 +72,34 @@ const dialog = useDialog()
 const confirmed = await dialog.confirm({
   title: 'Delete user',
   message: 'This action cannot be undone.',
+})
+```
+
+## Grow from the click
+
+Pass the click event (or an element, a selector, a `{ x, y }` point) as `origin`: the dialog grows from there and goes back into it. Without `origin`, it grows from the element you last pressed.
+
+```ts
+async function remove(event: MouseEvent) {
+  const confirmed = await dialog.confirm({
+    title: 'Delete user',
+    message: 'This action cannot be undone.',
+    origin: event,
+  })
+}
+```
+
+`animated: false` gives a plain fade.
+
+## Reinforced confirmation
+
+Set `confirmation` to ask the user to type a text before the accept button is enabled.
+
+```ts
+const confirmed = await dialog.confirm({
+  title: 'Delete the project',
+  message: 'This action cannot be undone.',
+  confirmation: 'my-project',
 })
 ```
 

@@ -206,6 +206,32 @@ MazBackdrop comes with built-in animations, but you can customize them with the 
   </template>
 </ComponentDemo>
 
+## Grow from an origin
+
+With `grow-from-origin`, the content grows out of the element that opened the backdrop and goes back into it (this is what [MazDialog](./maz-dialog.md) does). Set `origin` (an element, a selector, a pointer event or a `{ x, y }` point) to choose where it grows from, or let the last pressed element be used. `:animated="false"` gives a plain fade. The `transition-name` animation is then replaced by this one for the content.
+
+```vue
+<MazBackdrop v-model="isOpen" grow-from-origin :origin="buttonElement">
+  ...
+</MazBackdrop>
+```
+
+## Motion
+
+- The backdrop fades on `--maz-motion-normal` (`--maz-easing-out` in, `--maz-easing-in` out, 0.7 times as long).
+- The built-in drawer and bottom sheet animations slide on `--maz-motion-slow`, with the same curves.
+- Reduced motion stops these transitions. The speed follows the `--maz-motion-*` tokens of your theme.
+
+## Cancel the close
+
+`before-close` is called before every close (Escape, click outside, `close()`). Return `false`, or a promise of `false`, to keep the backdrop open. Any other result closes it, a thrown error or a rejected promise keeps it open. The `@before-close` event only notifies and cannot cancel.
+
+```vue
+<MazBackdrop v-model="isOpen" :before-close="() => !hasChanges">
+  ...
+</MazBackdrop>
+```
+
 ## Accessibility features
 
 MazBackdrop automatically handles:
