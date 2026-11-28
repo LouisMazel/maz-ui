@@ -65,7 +65,8 @@ describe('given MazAlert motion', () => {
 
     it('then the alert folds away with the Web Animations API then is hidden', async () => {
       const finished = Promise.resolve()
-      const animate = vi.fn(() => ({ finished, cancel: vi.fn() }))
+      const cancel = vi.fn()
+      const animate = vi.fn(() => ({ finished, cancel }))
       const wrapper = mount(MazAlert, { props: { open: true }, attachTo: document.body })
       wrapper.element.animate = animate as unknown as typeof wrapper.element.animate
 
@@ -74,6 +75,7 @@ describe('given MazAlert motion', () => {
       await wrapper.vm.$nextTick()
 
       expect(animate).toHaveBeenCalledTimes(1)
+      expect(cancel).toHaveBeenCalledTimes(1)
       expect(wrapper.attributes('style')).toContain('display: none')
 
       wrapper.unmount()

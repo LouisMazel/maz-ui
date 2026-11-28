@@ -122,6 +122,7 @@ const rendered = ref(open.value)
 let foldAnimation: Animation | undefined
 
 function finishFold() {
+  foldAnimation?.cancel()
   foldAnimation = undefined
   rendered.value = open.value
   alertRef.value?.style.removeProperty('overflow')
