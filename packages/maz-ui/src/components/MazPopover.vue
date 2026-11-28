@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import type { Middleware, VirtualElement } from '@floating-ui/vue'
 import type { HTMLAttributes } from 'vue'
-import type { MazColor, MazNeutralColor } from './types.ts'
 
+import type { MazColor, MazNeutralColor } from './types.ts'
 import { autoPlacement, autoUpdate, flip, offset as floatingOffset, hide, shift, useFloating } from '@floating-ui/vue'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import {
@@ -21,6 +22,7 @@ import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { getFocusableElements, trapTabKey } from '../utils/focusable.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { addOverlayLayer, isInUpperOverlayLayer, isTopOverlayLayer, removeOverlayLayer } from '../utils/overlayLayers.ts'
+import { formatOrigin, getOriginFromRects, getSideFromPlacement } from '../utils/popoverOrigin.ts'
 import { getColor } from './types.ts'
 
 defineOptions({
@@ -170,7 +172,7 @@ export interface MazPopoverProps {
    * CSS transition name for animations
    * @default 'scale-pop'
    * @values 'scale-pop' | 'scale-fade' | string
-   * @description 'scale-pop' | 'scale-fade' for default transitions. 'scale-pop' is a pop effect, 'scale-fade' is a fade effect.
+   * @description 'scale-pop' | 'scale-fade' are the default animation: the panel fades in and grows from its trigger (see the `--maz-popover-transform-origin` CSS variable of the panel).
    */
   transition?: 'scale-pop' | 'scale-fade' | string
   /**
@@ -249,11 +251,12 @@ export interface MazPopoverProps {
    * CSS selector or element reference to use for positioning calculations
    * @description When provided, the popover will position relative to this element instead of the trigger
    * Useful for components with labels where you want to position relative to the actual input
-   * @type {string | HTMLElement}
+   * A point `{ x, y }` (viewport coordinates) positions the popover at this point (context menu)
+   * @type {string | HTMLElement | { x: number, y: number }}
    * @default undefined
-   * @example "input" or "#my-input" or HTMLElement
+   * @example "input" or "#my-input" or HTMLElement or { x: 120, y: 80 }
    */
-  positionReference?: string | HTMLElement
+  positionReference?: string | HTMLElement | { x: number, y: number }
 }
 
 const triggerId = useInstanceUniqId({
@@ -266,8 +269,21 @@ const attrs = useAttrs()
 const triggerRef = useTemplateRef<HTMLElement>('trigger')
 const panelRef = useTemplateRef<HTMLElement>('panel')
 
+const originMiddleware: Middleware = {
+  name: 'mazOrigin',
+  fn: ({ x, y, rects, placement }) => ({
+    data: {
+      origin: formatOrigin(getOriginFromRects(
+        rects.reference,
+        { ...rects.floating, x, y },
+        getSideFromPlacement(placement),
+      )),
+    },
+  }),
+}
+
 const middleware = computed(() => {
-  const middleware = [
+  const middleware: Middleware[] = [
     floatingOffset(offset),
     hide(),
     shift({ padding: 5 }),
@@ -287,6 +303,9 @@ const middleware = computed(() => {
         : undefined,
     }))
   }
+
+  middleware.push(originMiddleware)
+
   return middleware
 })
 
@@ -326,9 +345,17 @@ const positionRef = computed(() => {
       : null
   }
 
+  if (!('getBoundingClientRect' in positionReference)) {
+    const { x, y } = positionReference
+
+    return {
+      getBoundingClientRect: () => ({ x, y, width: 0, height: 0, top: y, left: x, right: x, bottom: y }),
+    } satisfies VirtualElement
+  }
+
   return positionReference
 })
-const reference = computed(() => positionRef.value || triggerRef.value)
+const reference = computed<HTMLElement | VirtualElement | null>(() => positionRef.value || triggerRef.value || null)
 
 const { floatingStyles, placement, update, middlewareData } = useFloating(
   reference,
@@ -342,6 +369,13 @@ const { floatingStyles, placement, update, middlewareData } = useFloating(
 )
 
 const computedPosition = computed(() => placement.value ?? floatingPosition.value)
+
+const panelSide = computed(() => getSideFromPlacement(computedPosition.value))
+const panelOrigin = computed<string | undefined>(() => middlewareData.value.mazOrigin?.origin)
+
+function onBeforeLeave(element: Element) {
+  (element as HTMLElement).dataset.state = 'closed'
+}
 
 const isOpen = defineModel<boolean>({ default: false })
 
@@ -616,10 +650,18 @@ function open() {
   }
 }
 
-function close() {
+/**
+ * @param immediate close now, without the delay of the hover trigger
+ */
+function close(immediate = false) {
   clearOpenTimeout()
 
-  if (delay > 0 && effectiveTrigger.value === 'hover') {
+  // Strict: a slot can bind `close` to an event, whose object is not a request to skip the delay
+  if (immediate === true) {
+    clearCloseTimeout()
+    setOpen(false)
+  }
+  else if (delay > 0 && effectiveTrigger.value === 'hover') {
     closeTimeout = setTimeout(() => {
       setOpen(false)
     }, delay)
@@ -927,7 +969,7 @@ defineExpose({
   </div>
 
   <Teleport v-if="isMounted" :to="teleportTo">
-    <Transition :name="transitionName" appear @after-leave="onTransitionAfterLeave">
+    <Transition :name="transitionName" appear @before-leave="onBeforeLeave" @after-leave="onTransitionAfterLeave">
       <div
         v-if="isPanelRendered"
         :id="panelId"
@@ -938,6 +980,8 @@ defineExpose({
         :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
         :aria-modal="role === 'dialog' && trapFocus ? 'true' : undefined"
         :tabindex="role === 'dialog' ? '-1' : undefined"
+        data-state="open"
+        :data-side="panelSide"
         class="m-popover-panel maz:fixed maz:z-default-backdrop maz:rounded-md maz:shadow-elevation maz:outline-hidden maz:drop-shadow-md"
         :aria-live="announceChanges ? 'polite' : undefined"
         :class="panelClasses"
@@ -945,8 +989,9 @@ defineExpose({
           panelStyle,
           panelStyles,
           {
-            transformOrigin: getTransformOrigin(computedPosition),
-            visibility: isPanelHidden ? 'hidden' : 'visible',
+            '--maz-popover-transform-origin': panelOrigin,
+            'transformOrigin': `var(--maz-popover-transform-origin, ${getTransformOrigin(computedPosition)})`,
+            'visibility': isPanelHidden ? 'hidden' : 'visible',
           },
         ]"
         v-bind="panelEvents"
@@ -1024,123 +1069,23 @@ defineExpose({
 .maz-scale-fade-enter-active,
 .maz-scale-pop-enter-active {
   transition:
-    opacity 150ms ease-out,
-    transform 150ms ease-out;
+    opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    transform calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 }
 
 .maz-scale-fade-leave-active,
 .maz-scale-pop-leave-active {
   transition:
-    opacity 150ms ease-in,
-    transform 150ms ease-in;
+    opacity calc(var(--maz-motion-fast, 150ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+    transform calc(var(--maz-motion-fast, 150ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
 }
 
-.maz-scale-pop-leave-active {
-  transition:
-    opacity 150ms ease-in,
-    transform 150ms ease-in;
-}
+.maz-scale-fade-enter-from,
+.maz-scale-fade-leave-to,
+.maz-scale-pop-enter-from,
+.maz-scale-pop-leave-to {
+  @apply maz:opacity-0;
 
-/* Bottom positions - expand from top */
-.m-popover-panel.--position-bottom,
-.m-popover-panel.--position-bottom-start,
-.m-popover-panel.--position-bottom-end {
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scaleY(0.5);
-    transform-origin: top center;
-  }
-
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2) translateY(-4px);
-    transform-origin: top center;
-  }
-}
-
-/* Top positions - expand from bottom */
-.m-popover-panel.--position-top,
-.m-popover-panel.--position-top-start,
-.m-popover-panel.--position-top-end {
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scaleY(0.5);
-    transform-origin: bottom center;
-  }
-
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2) translateY(4px);
-    transform-origin: bottom center;
-  }
-}
-
-/* Right positions - expand from left */
-.m-popover-panel.--position-right,
-.m-popover-panel.--position-right-start,
-.m-popover-panel.--position-right-end {
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scaleX(0.5);
-    transform-origin: left center;
-  }
-
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2) translateX(-4px);
-    transform-origin: left center;
-  }
-}
-
-/* Left positions - expand from right */
-.m-popover-panel.--position-left,
-.m-popover-panel.--position-left-start,
-.m-popover-panel.--position-left-end {
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scaleX(0.5);
-    transform-origin: right center;
-  }
-
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2) translateX(4px);
-    transform-origin: right center;
-  }
-}
-
-/* Default fallback - only applies when no specific position class is present */
-.m-popover-panel:not([class*='--position-']) {
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2);
-    transform-origin: center;
-  }
-
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.5) translateY(-4px);
-    transform-origin: center;
-  }
+  transform: scale(0.96);
 }
 </style>

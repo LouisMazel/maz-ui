@@ -1346,6 +1346,42 @@ function onToggle(isOpen) {
   </template>
 </ComponentDemo>
 
+## Motion
+
+The panel fades in and grows from its trigger: it starts at `scale(0.96)` and its transform origin is the center of the trigger, projected on the edge of the panel that faces it. The enter takes `--maz-motion-fast`, the exit about 70% of it. Reduced motion, and the `motion` option of `MazUi`, turn it off.
+
+The panel exposes what you need to style it:
+
+- `--maz-popover-transform-origin`: the origin of the growth, for your own transition.
+- `data-state`: `open` or `closed` (while it leaves).
+- `data-side`: `top`, `bottom`, `left` or `right`, the side of the trigger where the panel is.
+
+`positionReference` also takes a point `{ x, y }` (viewport coordinates): the panel opens from this point.
+
+```css
+.my-popover-enter-active,
+.my-popover-leave-active {
+  transition:
+    transform var(--maz-motion-normal) var(--maz-easing-spring),
+    opacity var(--maz-motion-normal);
+  transform-origin: var(--maz-popover-transform-origin);
+}
+
+.my-popover-enter-from,
+.my-popover-leave-to {
+  opacity: 0;
+  transform: scale(0.8) rotate(-4deg);
+}
+```
+
+```html
+<MazPopover transition="my-popover">
+  ...
+</MazPopover>
+```
+
+`scale-pop` and `scale-fade` (the `transition` prop) are the same default animation.
+
 ## Position values
 
 - `auto` - Automatically choose best position
