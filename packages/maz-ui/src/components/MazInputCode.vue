@@ -434,17 +434,10 @@ const borderColorState = computed(() => {
       color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
       background-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
         var(--maz-easing-out, ease-out),
-      border-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
-      outline-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
-    outline: var(--maz-focus-ring-width, 2px) solid transparent;
-    outline-offset: var(--maz-focus-ring-offset, 2px);
+      border-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 
     &:focus-within {
       border-color: var(--input-border-color);
-    }
-
-    &:has(:focus-visible) {
-      outline-color: var(--maz-focus-ring-color, var(--maz-primary));
     }
 
     input {
