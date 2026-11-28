@@ -79,7 +79,7 @@ export interface MazSelectProps<Value extends MazInputValue, Option extends MazS
    * The value of the select
    * @type {Value | Value[]}
    */
-  modelValue?: Multiple extends true ? Value[] : Value
+  modelValue?: (Multiple extends true ? Value[] : Value) | Value
   /**
    * The options of the select
    * @type {Option[]}
