@@ -27,13 +27,8 @@ Définir les variants (`color` x `size` x `variant`) via une config type-safe (`
 
 ## Priorité moyenne - Composants devenus standards
 
-- **Command palette (⌘K)** : les briques existent (`useStringMatching`, recherche de `MazSelect`).
 - **Combobox / Autocomplete** en saisie libre (distinct de `MazSelect`).
-- **ContextMenu** (clic droit), **Menubar**, **NavigationMenu** (on n'a que `MazDropdown`).
-- **Breadcrumb**.
-- **MazTooltip** en composant avec slots (en complément de la directive `vTooltip`).
-- **Rating** et **ColorPicker**.
-- **Resizable / Splitter**, **ScrollArea** cross-browser, **Tree / TreeView**.
+- **Menubar** : barre de menus d'app (Fichier, Édition...), `MazNavigationMenu` couvre le menu de site.
 
 ## Priorité basse - Stratégique
 
@@ -118,3 +113,19 @@ En v6 :
 - [ ] Nuxt : retirer l'option `plugins`, `applyLegacyPlugins`, les plugins runtime `toast`, `dialog` et `wait`, et `$mazToast`, `$mazDialog`, `$mazWait`, `$mazAos` de `NuxtApp`.
 - [ ] Migration dans `@maz-ui/upgrade` : `app.use(ToastPlugin, options)` vers l'option `toast` de `MazUi` (idem dialog), `app.use(WaitPlugin)` supprimé, `mazUi.plugins` vers `mazUi.toast` / `mazUi.dialog` / `mazUi.aos`, `$mazToast` vers `useToast()`.
 - [ ] Note dans le guide de migration.
+
+### AOS remplacé par `vReveal`
+
+`vReveal` (directive), `MazReveal`, `useReveal` et l'attribut `data-maz-reveal` remplacent l'AOS (`AosPlugin`, `useAos`, `data-maz-aos`, `maz-ui/aos.css`). L'AOS continue de marcher à l'identique en 5.x ; le code à retirer est marqué `Removed in v6 (plans/ROADMAP.md)`.
+
+En 5.x (non cassant) :
+
+- [x] `AosPlugin`, `AosHandler`, `useAos`, l'option `aos` de `MazUi` et du module Nuxt dépréciés (JSDoc), retirés de la doc (la page `/plugins/aos` montre `vReveal`), règle de review `prefer-reveal`.
+- [x] Classes de transition globales inutilisées par la lib (`maz-scale`, `maz-scale-loading`, `maz-slide`, `maz-slideinvert`, `maz-tags-invert`, `maz-expand`) dépréciées dans `css/animation.css`, retirées de la doc.
+
+En v6 :
+
+- [ ] Supprimer `plugins/aos.ts`, `plugins/aos/` (SCSS), `composables/useAos.ts`, l'export `maz-ui/aos.css` (et `ViteCompileStyles.compileScss`), l'option `aos` de `MazUi` et du module Nuxt, `$mazAos`.
+- [ ] Supprimer les classes de transition globales dépréciées de `css/animation.css`.
+- [ ] Renommer le keyframe `animate` de `MazCircularProgressBar` s'il ne l'est pas déjà.
+- [ ] Migration dans `@maz-ui/upgrade` : `data-maz-aos` vers `data-maz-reveal` (tableau de la page `vReveal`), `useAos` supprimé.

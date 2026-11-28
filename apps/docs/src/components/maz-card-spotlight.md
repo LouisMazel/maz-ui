@@ -135,6 +135,22 @@ const { setColorMode } = useTheme()
   </template>
 </ComponentDemo>
 
+## Elevation and border draw
+
+`elevation` takes `0` to `3` (`true` keeps the default shadow). `border-draw` draws the border from the point where the pointer enters.
+
+```html
+<MazCardSpotlight :elevation="2" border-draw>
+  Content
+</MazCardSpotlight>
+```
+
+## Motion
+
+- The halo follows the pointer over the card, with a mouse, a pen or a finger that presses the card, and fades out when it leaves.
+- The listener is on the card itself, not on the window.
+- Reduced motion turns the halo off.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-card-spotlight.doc.md-->
 
 <script lang="ts" setup>

@@ -24,6 +24,10 @@ export default {
     openSidebar: 'Ouvrir la barre latérale',
     closeSidebar: 'Fermer la barre latérale',
     resizeSheet: 'Redimensionner la feuille',
+    before: 'Avant',
+    after: 'Après',
+    resize: 'Redimensionner',
+    moreItems: '{count} de plus',
   },
   selectCountry: {
     searchPlaceholder: 'Rechercher un pays',
@@ -183,6 +187,9 @@ export default {
     copyUrlToClipboard: 'Copier l\'URL dans le presse-papiers',
     urlCopiedToClipboard: 'URL copiée dans le presse-papiers',
   },
+  btn: {
+    holdDescription: 'Maintiens appuyé pour confirmer',
+  },
   btnClipboard: {
     copy: 'Copier',
     copied: 'Copié',
@@ -230,5 +237,72 @@ export default {
     previous: 'Image précédente',
     next: 'Image suivante',
     loading: 'Chargement...',
+  },
+  tour: {
+    label: 'Visite guidée',
+    next: 'Suivant',
+    previous: 'Précédent',
+    skip: 'Passer',
+    done: 'Terminé',
+    stepOf: 'Étape {step} sur {total}',
+  },
+  breadcrumb: {
+    label: 'Fil d\'Ariane',
+    showHidden: 'Afficher les pages masquées',
+  },
+  navigationMenu: {
+    label: 'Navigation principale',
+  },
+  emptyState: {
+    noResults: 'Aucun résultat',
+    noResultsFor: 'Rien ne correspond à « {query} »',
+  },
+  sparkline: {
+    up: 'en hausse',
+    down: 'en baisse',
+    flat: 'stable',
+    label: 'Tendance {trend} : minimum {min}, maximum {max}, dernier {last}',
+  },
+  statCard: {
+    chart: '{label} : tendance',
+  },
+  tree: {
+    added: 'Ajouté',
+    modified: 'Modifié',
+    deleted: 'Supprimé',
+  },
+  rating: {
+    label: 'Note',
+    value: '{value} sur {max}',
+  },
+  timePicker: {
+    label: 'Heure',
+    hours: 'Heures',
+    minutes: 'Minutes',
+    period: 'AM ou PM',
+    slots: 'Horaires disponibles',
+  },
+  inlineEdit: {
+    edit: 'Modifier',
+  },
+  kbd: {
+    command: 'Commande',
+    control: 'Contrôle',
+    option: 'Option',
+    shift: 'Maj',
+  },
+  commandPalette: {
+    label: 'Palette de commandes',
+    placeholder: 'Rechercher une commande',
+    noResults: 'Aucun résultat',
+    results: '{count} résultats',
+  },
+  contextMenu: {
+    label: 'Menu contextuel',
+  },
+  themeToggle: {
+    toDark: 'Passer en mode sombre',
+    toSystem: 'Utiliser le thème du système',
+    toLight: 'Passer en mode clair',
   },
 } satisfies MazUiTranslationsNestedSchema

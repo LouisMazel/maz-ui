@@ -24,6 +24,10 @@ export default {
     openSidebar: 'サイドバーを開く',
     closeSidebar: 'サイドバーを閉じる',
     resizeSheet: 'シートのサイズを変更',
+    before: '前',
+    after: '後',
+    resize: 'サイズを変更',
+    moreItems: '他 {count} 件',
   },
   selectCountry: {
     searchPlaceholder: '国を検索',
@@ -183,6 +187,9 @@ export default {
     copyUrlToClipboard: 'URLをクリップボードにコピー',
     urlCopiedToClipboard: 'URLがクリップボードにコピーされました',
   },
+  btn: {
+    holdDescription: '長押しして確定',
+  },
   btnClipboard: {
     copy: 'コピー',
     copied: 'コピーしました',
@@ -230,5 +237,72 @@ export default {
     previous: '前の画像',
     next: '次の画像',
     loading: '読み込み中...',
+  },
+  tour: {
+    label: 'ガイドツアー',
+    next: '次へ',
+    previous: '前へ',
+    skip: 'スキップ',
+    done: '完了',
+    stepOf: 'ステップ {step} / {total}',
+  },
+  breadcrumb: {
+    label: 'パンくずリスト',
+    showHidden: '非表示のページを表示',
+  },
+  navigationMenu: {
+    label: 'メインナビゲーション',
+  },
+  emptyState: {
+    noResults: '結果がありません',
+    noResultsFor: '「{query}」に一致するものはありません',
+  },
+  sparkline: {
+    up: '上昇',
+    down: '下降',
+    flat: '横ばい',
+    label: '傾向 {trend}：最小 {min}、最大 {max}、最新 {last}',
+  },
+  statCard: {
+    chart: '{label}：傾向',
+  },
+  tree: {
+    added: '追加',
+    modified: '変更',
+    deleted: '削除',
+  },
+  rating: {
+    label: '評価',
+    value: '{max} 中 {value}',
+  },
+  timePicker: {
+    label: '時刻',
+    hours: '時',
+    minutes: '分',
+    period: '午前または午後',
+    slots: '利用可能な時間',
+  },
+  inlineEdit: {
+    edit: '編集',
+  },
+  kbd: {
+    command: 'コマンド',
+    control: 'コントロール',
+    option: 'オプション',
+    shift: 'シフト',
+  },
+  commandPalette: {
+    label: 'コマンドパレット',
+    placeholder: 'コマンドを検索',
+    noResults: '結果がありません',
+    results: '{count} 件の結果',
+  },
+  contextMenu: {
+    label: 'コンテキストメニュー',
+  },
+  themeToggle: {
+    toDark: 'ダークモードに切り替え',
+    toSystem: 'システムのテーマを使用',
+    toLight: 'ライトモードに切り替え',
   },
 } satisfies MazUiTranslationsNestedSchema

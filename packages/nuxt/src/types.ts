@@ -207,8 +207,10 @@ export interface MazUiNuxtOptions {
 
   /**
    * Animations on scroll: installs the AOS plugin and auto-imports `useAos`
+   * @deprecated Use the `vReveal` directive (`directives: { vReveal: true }`), `MazReveal` or `useReveal` instead
    * @default false
    */
+  // Removed in v6 (plans/ROADMAP.md): the AOS is replaced by vReveal
   aos?:
     | boolean
     | (Omit<AosOptions, 'router'> & {
@@ -546,6 +548,48 @@ export interface MazUiNuxtOptions {
      * @default false
      */
     vTooltip?: boolean | VTooltipOptions
+
+    /**
+     * Install v-reveal directive globally
+     * @description Reveals the elements when they enter the viewport (fade, slide, curtain, lines...), the replacement of the AOS
+     * @default false
+     */
+    vReveal?: boolean
+
+    /**
+     * Install v-press directive globally
+     * @description Gives a tactile press feedback (a small scale down) to any clickable element
+     * @default false
+     */
+    vPress?: boolean
+
+    /**
+     * Install v-ripple directive globally
+     * @description Draws a ripple from the pointer on click, or a glow that follows it
+     * @default false
+     */
+    vRipple?: boolean
+
+    /**
+     * Install v-magnetic directive globally
+     * @description Pulls the element toward the pointer when it comes close
+     * @default false
+     */
+    vMagnetic?: boolean
+
+    /**
+     * Install v-tilt directive globally
+     * @description Tilts the element in 3D with the pointer, with an optional glare and a floating mode
+     * @default false
+     */
+    vTilt?: boolean
+
+    /**
+     * Install v-draw directive globally
+     * @description Draws the strokes of an SVG (or a border) when it enters the viewport or on hover
+     * @default false
+     */
+    vDraw?: boolean
   }
 
   /**

@@ -79,7 +79,7 @@ const { project, number, reversed = false } = defineProps<{
   .made-with-shot__link {
     transform: rotateY(var(--made-with-tilt, -8deg)) rotateX(3deg);
     transform-origin: var(--made-with-origin, right center);
-    transition: transform 700ms var(--home-ease);
+    transition: transform calc(var(--maz-motion-slower, 450ms) * 1.5 * var(--maz-motion-scale, 1)) var(--home-ease);
   }
 
   .made-with-shot:hover .made-with-shot__link {

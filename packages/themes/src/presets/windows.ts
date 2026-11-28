@@ -57,13 +57,25 @@ export const windows: ThemePreset = {
       '3xl': '16px',
     },
     shadow: {
-      sm: '0 1px 2px rgb(0 0 0 / 0.14)',
-      md: '0 2px 4px rgb(0 0 0 / 0.14)',
-      lg: '0 8px 16px rgb(0 0 0 / 0.14)',
-      xl: '0 32px 64px rgb(0 0 0 / 0.19), 0 2px 21px rgb(0 0 0 / 0.15)',
-      elevation: {
+      'sm': '0 1px 2px rgb(0 0 0 / 0.14)',
+      'md': '0 2px 4px rgb(0 0 0 / 0.14)',
+      'lg': '0 8px 16px rgb(0 0 0 / 0.14)',
+      'xl': '0 32px 64px rgb(0 0 0 / 0.19), 0 2px 21px rgb(0 0 0 / 0.15)',
+      'elevation': {
         light: '0 8px 16px rgb(0 0 0 / 0.14), 0 0 0 1px rgb(0 0 0 / 0.06)',
         dark: '0 8px 16px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.08)',
+      },
+      'elevation-1': {
+        light: '0 2px 4px rgb(0 0 0 / 0.14), 0 0 0 1px rgb(0 0 0 / 0.05)',
+        dark: '0 2px 4px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.12)',
+      },
+      'elevation-2': {
+        light: '0 8px 16px rgb(0 0 0 / 0.18), 0 0 0 1px rgb(0 0 0 / 0.07)',
+        dark: '0 8px 16px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.2)',
+      },
+      'elevation-3': {
+        light: '0 24px 48px rgb(0 0 0 / 0.24), 0 2px 14px rgb(0 0 0 / 0.14), 0 0 0 1px rgb(0 0 0 / 0.09)',
+        dark: '0 24px 48px rgb(0 0 0 / 0.75), 0 2px 14px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.3)',
       },
     },
   },

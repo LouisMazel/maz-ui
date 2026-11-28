@@ -36,6 +36,9 @@ exports[`given the perceptual color scale > when the preset uses scales.color = 
     --maz-shadow-style-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --maz-shadow-style-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --maz-shadow-style-elevation: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+    --maz-shadow-style-elevation-1: 0 2px 6px -1px rgb(0 0 0 / 0.1), 0 1px 3px -1px rgb(0 0 0 / 0.08);
+    --maz-shadow-style-elevation-2: 0 8px 20px -4px rgb(0 0 0 / 0.14), 0 3px 8px -2px rgb(0 0 0 / 0.08);
+    --maz-shadow-style-elevation-3: 0 20px 40px -8px rgb(0 0 0 / 0.22), 0 8px 16px -4px rgb(0 0 0 / 0.12);
     --maz-btn-font-weight: 500;
     --maz-dialog-max-width: 38rem;
     --maz-dialog-min-width: 32rem;
@@ -116,7 +119,7 @@ exports[`given the perceptual color scale > when the preset uses scales.color = 
     --maz-muted: light-dark(oklch(0.5624 0 0), oklch(0.6324 0 0));
     --maz-shadow: light-dark(oklch(0.2103 0.0059 285.88), oklch(0.2741 0.0055 286.03));
   }
-  .dark { --maz-shadow-style-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4); --maz-shadow-style-md: 0 4px 6px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.4); --maz-shadow-style-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.04); --maz-shadow-style-xl: 0 20px 25px -5px rgb(0 0 0 / 0.55), 0 8px 10px -6px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.05); --maz-shadow-style-elevation: 0 4px 12px -2px rgb(0 0 0 / 0.45), 0 2px 4px -1px rgb(0 0 0 / 0.35), 0 0 0 1px rgb(255 255 255 / 0.04); }
+  .dark { --maz-shadow-style-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4); --maz-shadow-style-md: 0 4px 6px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.4); --maz-shadow-style-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.04); --maz-shadow-style-xl: 0 20px 25px -5px rgb(0 0 0 / 0.55), 0 8px 10px -6px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.05); --maz-shadow-style-elevation: 0 4px 12px -2px rgb(0 0 0 / 0.45), 0 2px 4px -1px rgb(0 0 0 / 0.35), 0 0 0 1px rgb(255 255 255 / 0.04); --maz-shadow-style-elevation-1: 0 2px 6px -1px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.1); --maz-shadow-style-elevation-2: 0 8px 20px -4px rgb(0 0 0 / 0.6), 0 3px 8px -2px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.16); --maz-shadow-style-elevation-3: 0 20px 44px -8px rgb(0 0 0 / 0.75), 0 8px 18px -4px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.24); }
   :root:root {
     --maz-color-primary-50: oklch(from var(--maz-primary) calc(l + (max(0.985, l) - l) * 0.95) min(c * 0.35, 0.03) h);
     --color-primary-50: oklch(from var(--maz-primary) calc(l + (max(0.985, l) - l) * 0.95) min(c * 0.35, 0.03) h);

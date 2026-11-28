@@ -165,4 +165,50 @@ Obviously, the "counter animation" will not work in this case.
   </template>
 </ComponentDemo>
 
+## Rolling digits and check
+
+By default the number counts up when the circle comes into view. With `roll`, the digits roll instead each time `percentage` changes. With `check`, a check replaces the number once the circle is full.
+
+<ComponentDemo>
+  <div class="maz:flex maz:items-center maz:gap-6">
+    <MazCircularProgressBar :percentage="circularValue" roll check suffix="%" size="6em" />
+    <div class="maz:flex maz:gap-2">
+      <MazBtn size="sm" @click="circularValue = Math.max(0, circularValue - 25)">-25</MazBtn>
+      <MazBtn size="sm" @click="circularValue = Math.min(100, circularValue + 25)">+25</MazBtn>
+    </div>
+  </div>
+
+<template #code>
+
+```html
+<MazCircularProgressBar :percentage="percentage" roll check suffix="%" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Indeterminate
+
+When the progress is unknown, `indeterminate` turns an arc around the circle.
+
+<ComponentDemo>
+  <MazCircularProgressBar :percentage="0" indeterminate size="5em" />
+
+<template #code>
+
+```html
+<MazCircularProgressBar :percentage="0" indeterminate />
+```
+
+  </template>
+</ComponentDemo>
+
+With reduced motion, the arc and the digits stay still.
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+
+  const circularValue = ref(50)
+</script>
+
 <!--@include: ./../../.vitepress/generated-docs/maz-circular-progress-bar.doc.md-->

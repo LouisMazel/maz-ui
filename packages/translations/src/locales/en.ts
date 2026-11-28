@@ -27,6 +27,10 @@ export default {
     openSidebar: 'Open sidebar',
     closeSidebar: 'Close sidebar',
     resizeSheet: 'Resize the sheet',
+    before: 'Before',
+    after: 'After',
+    resize: 'Resize',
+    moreItems: '{count} more',
   },
   /**
    * This is the translation for the input phone number component.
@@ -348,6 +352,12 @@ export default {
     urlCopiedToClipboard: 'URL copied to clipboard',
   },
   /**
+   * Button texts: the description read by screen readers on a button to hold
+   */
+  btn: {
+    holdDescription: 'Press and hold to confirm',
+  },
+  /**
    * This is the translation for the btn clipboard component.
    * The keys are:
    * - copy: Label/tooltip of the button (default state).
@@ -417,5 +427,114 @@ export default {
     previous: 'Previous image',
     next: 'Next image',
     loading: 'Loading...',
+  },
+  /**
+   * Guided tour (MazTour): label of the dialog, buttons and step counter.
+   */
+  tour: {
+    label: 'Guided tour',
+    next: 'Next',
+    previous: 'Previous',
+    skip: 'Skip',
+    done: 'Done',
+    stepOf: 'Step {step} of {total}',
+  },
+  /**
+   * Breadcrumb (MazBreadcrumb): label of the navigation and of the button that shows the collapsed pages.
+   */
+  breadcrumb: {
+    label: 'Breadcrumb',
+    showHidden: 'Show the hidden pages',
+  },
+  /**
+   * Navigation menu (MazNavigationMenu): label of the navigation.
+   */
+  navigationMenu: {
+    label: 'Main navigation',
+  },
+  /**
+   * Empty state (MazEmptyState): default title, and the one with a search query.
+   */
+  emptyState: {
+    noResults: 'No results',
+    noResultsFor: 'Nothing matches "{query}"',
+  },
+  /**
+   * Sparkline (MazSparkline): the trend words and the text read by screen readers.
+   */
+  sparkline: {
+    up: 'rising',
+    down: 'falling',
+    flat: 'steady',
+    label: 'Trend {trend}: minimum {min}, maximum {max}, last {last}',
+  },
+  /**
+   * Stat card (MazStatCard): label of its chart.
+   */
+  statCard: {
+    chart: '{label}: trend',
+  },
+  /**
+   * Tree (MazTree): the status of a node.
+   */
+  tree: {
+    added: 'Added',
+    modified: 'Modified',
+    deleted: 'Deleted',
+  },
+  /**
+   * Rating (MazRating): label of the group and the value read by screen readers.
+   */
+  rating: {
+    label: 'Rating',
+    value: '{value} out of {max}',
+  },
+  /**
+   * Time picker (MazTimePicker): label of the field and of its columns.
+   */
+  timePicker: {
+    label: 'Time',
+    hours: 'Hours',
+    minutes: 'Minutes',
+    period: 'AM or PM',
+    slots: 'Available times',
+  },
+  /**
+   * Inline edit (MazInlineEdit): label of the button that starts the edition.
+   */
+  inlineEdit: {
+    edit: 'Edit',
+  },
+  /**
+   * Keyboard keys (MazKbd): names of the modifier keys read by screen readers.
+   */
+  kbd: {
+    command: 'Command',
+    control: 'Control',
+    option: 'Option',
+    shift: 'Shift',
+  },
+  /**
+   * Command palette (MazCommandPalette): label, placeholder, empty text and count of results.
+   */
+  commandPalette: {
+    label: 'Command palette',
+    placeholder: 'Search a command',
+    noResults: 'No results',
+    results: '{count} results',
+  },
+  /**
+   * Context menu (MazContextMenu): label of the menu.
+   */
+  contextMenu: {
+    label: 'Context menu',
+  },
+  /**
+   * Theme toggle (MazThemeToggle): label of the button, by the mode it switches to.
+   */
+  themeToggle: {
+    toDark: 'Switch to dark mode',
+    toSystem: 'Use the system theme',
+    toLight: 'Switch to light mode',
   },
 }

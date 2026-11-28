@@ -188,6 +188,7 @@ export interface ThemeScales {
    * MazContainer, MazPopover, etc.
    */
   shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', ThemeShadowValue>
+    & Partial<Record<'elevation-1' | 'elevation-2' | 'elevation-3', ThemeShadowValue>>
   /**
    * Derivation of the 50..950 steps of the brand colors.
    * @default 'relative'

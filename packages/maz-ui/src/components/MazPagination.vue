@@ -5,10 +5,14 @@ import { MazEllipsisHorizontal } from '@maz-ui/icons/lazy/MazEllipsisHorizontal'
 import { MazChevronDoubleLeft } from '@maz-ui/icons/raw/MazChevronDoubleLeft'
 import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useRovingFocus } from '../composables/useRovingFocus.ts'
+import { useSlidingIndicator } from '../composables/useSlidingIndicator.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 import MazBtn from './MazBtn.vue'
 import MazIcon from './MazIcon.vue'
+import MazRollingText from './MazRollingText.vue'
 
 const {
   modelValue = 1,
@@ -17,6 +21,8 @@ const {
   activeColor = 'contrast',
   totalPages,
   loading,
+  animated = true,
+  fixedSlots = true,
 } = defineProps<MazPaginationProps>()
 
 const emits = defineEmits<
@@ -73,6 +79,17 @@ export interface MazPaginationProps {
    * @default false
    */
   loading?: boolean
+  /**
+   * Always renders the same number of buttons (the pages around the current one, the first and the last, and the ellipses),
+   * so the pagination does not change its width when the current page moves. `false` gives back the variable number of buttons
+   * @default true
+   */
+  fixedSlots?: boolean
+  /**
+   * The current page slides from a button to another and the numbers that change roll
+   * @default true
+   */
+  animated?: boolean
 }
 
 const { t } = useTranslations()
@@ -149,13 +166,157 @@ const lastDivider = computed(() =>
     : [],
 )
 
-const pages = computed(() => [
-  ...firstOne.value,
-  ...firstDivider.value,
-  ...range.value,
-  ...lastDivider.value,
-  ...lastOne.value,
-])
+type PaginationItem = (typeof allPages.value)[number] | { divider: boolean }
+
+/** Same number of items wherever the current page is: the first and the last page, two ellipses and `2 * pageRange + 1` pages around */
+const fixedItems = computed<PaginationItem[]>(() => {
+  const slots = pageRange * 2 + 5
+
+  if (totalPages <= slots)
+    return allPages.value
+
+  const edge = pageRange * 2 + 3
+
+  if (modelValue <= pageRange + 3)
+    return [...allPages.value.slice(0, edge), { divider: true }, allPages.value.at(-1)!]
+
+  if (modelValue >= totalPages - pageRange - 2)
+    return [allPages.value[0], { divider: true }, ...allPages.value.slice(-edge)]
+
+  return [
+    allPages.value[0],
+    { divider: true },
+    ...allPages.value.slice(modelValue - pageRange - 1, modelValue + pageRange),
+    { divider: true },
+    allPages.value.at(-1)!,
+  ]
+})
+
+const pages = computed<PaginationItem[]>(() => fixedSlots
+  ? fixedItems.value
+  : [
+      ...firstOne.value,
+      ...firstDivider.value,
+      ...range.value,
+      ...lastDivider.value,
+      ...lastOne.value,
+    ])
+
+/** Index of each button among all the buttons of the navigation (first, previous, the pages, next, last) */
+const pagesWithButtonIndex = computed(() => {
+  let buttonIndex = 1
+
+  return pages.value.map((page) => {
+    if ('number' in page)
+      buttonIndex++
+
+    return { page, buttonIndex }
+  })
+})
+
+const nextButtonIndex = computed(() => pagesWithButtonIndex.value.reduce((count, { page }) => count + ('number' in page
+  ? 1
+  : 0), 2))
+
+const activeButtonIndex = computed(() => {
+  const active = pagesWithButtonIndex.value.find(({ page }) => 'number' in page && page.isActive)
+
+  return active?.buttonIndex ?? 0
+})
+
+function isButtonDisabled(index: number) {
+  if (index <= 1)
+    return modelValue === 1
+  if (index >= nextButtonIndex.value)
+    return modelValue === totalPages
+
+  return false
+}
+
+const navRef = ref<HTMLElement>()
+const focusedIndex = ref<number>()
+
+const { onKeydown, currentIndex } = useRovingFocus({
+  container: navRef,
+  selector: 'button',
+  loop: false,
+  currentIndex: computed({
+    get: () => focusedIndex.value ?? activeButtonIndex.value,
+    set: (index: number) => {
+      focusedIndex.value = index
+    },
+  }),
+})
+
+/** Roving tabindex: only the current page (or the button focused with the arrows) is in the tab sequence */
+function getTabIndex(index: number) {
+  const current = currentIndex.value
+  const focusable = isButtonDisabled(current)
+    ? Array.from({ length: nextButtonIndex.value + 2 }, (_, i) => i).find(i => !isButtonDisabled(i)) ?? 0
+    : current
+
+  return index === focusable
+    ? 0
+    : -1
+}
+
+function onFocusout(event: FocusEvent) {
+  if (!navRef.value?.contains(event.relatedTarget as Node | null))
+    focusedIndex.value = undefined
+}
+
+const { variant: globalVariant, roundedSize: globalRoundedSize } = useGlobalConfig<{ variant?: string, roundedSize: keyof typeof ROUNDED_SIZE_CLASS }>('MazBtn', { variant: undefined, roundedSize: 'md' })
+
+/** The sliding pill replaces the background of the active page when it is solid */
+const hasPill = computed(() => {
+  const variant = buttonsPropsMerged.value.variant ?? globalVariant?.value
+
+  return !buttonsPropsMerged.value.pastel
+    && (variant === undefined || variant === 'solid' || variant === 'outline')
+})
+
+const activeButton = shallowRef<HTMLElement>()
+
+function setActiveButton(element: unknown, isActive: boolean) {
+  if (!isActive || !element)
+    return
+
+  activeButton.value = (element as { $el?: HTMLElement }).$el ?? element as HTMLElement
+}
+
+const { style: pillStyle } = useSlidingIndicator({
+  container: navRef,
+  active: () => hasPill.value
+    ? activeButton.value
+    : undefined,
+  orientation: 'vertical',
+  animated,
+})
+
+const hasPillBorder = computed(() => ['surface', 'container', 'neutral'].includes(activeColor))
+
+const pillBackground = computed(() => {
+  if (activeColor === 'container')
+    return 'var(--maz-container-bg, var(--maz-surface))'
+
+  return `var(--maz-${activeColor})`
+})
+
+const pillRounded = computed(() => buttonsPropsMerged.value.fab
+  ? 'maz:rounded-full'
+  : ROUNDED_SIZE_CLASS[buttonsPropsMerged.value.roundedSize ?? globalRoundedSize.value])
+
+const CONTROL_HEIGHT_FALLBACK: Record<MazSize, string> = { xl: '4rem', lg: '3.5rem', md: '3rem', sm: '2.5rem', xs: '2rem', mini: '1.5rem' }
+
+/** The ellipsis takes the size of a round button, so the width of the pagination does not depend on the number of ellipses */
+const ellipsisStyle = computed(() => {
+  if (!buttonsPropsMerged.value.fab)
+    return undefined
+
+  const height = `var(--maz-control-height-${size.value}, ${CONTROL_HEIGHT_FALLBACK[size.value]})`
+
+  return { width: height, height }
+})
 
 function setPageNumber(page: number) {
   if (page === modelValue)
@@ -166,7 +327,22 @@ function setPageNumber(page: number) {
 </script>
 
 <template>
-  <nav class="m-pagination m-reset-css" role="navigation" :aria-label="t('pagination.navAriaLabel')">
+  <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
+  <nav
+    ref="navRef"
+    class="m-pagination m-reset-css maz:relative maz:isolate"
+    role="navigation"
+    :aria-label="t('pagination.navAriaLabel')"
+    @keydown="onKeydown"
+    @focusout="onFocusout"
+  >
+    <div
+      v-if="hasPill"
+      aria-hidden="true"
+      class="m-pagination__pill maz:pointer-events-none maz:absolute maz:inset-s-0 maz:top-0 maz:z-1"
+      :class="[pillRounded, { 'maz:border maz:border-divider': hasPillBorder, 'maz:opacity-0!': loading }]"
+      :style="[pillStyle, { backgroundColor: pillBackground }]"
+    />
     <ul class="maz:m-0! maz:inline-flex maz:list-none! maz:items-center maz:gap-2 maz:-space-x-px maz:p-0! maz:align-top maz:text-base">
       <li class="maz:m-0">
         <MazBtn
@@ -174,6 +350,7 @@ function setPageNumber(page: number) {
           :disabled="modelValue === 1"
           aria-label="First Page, Page 1"
           :size="size"
+          :tabindex="getTabIndex(0)"
           @click="setPageNumber(1)"
         >
           <span class="maz:sr-only">
@@ -195,6 +372,7 @@ function setPageNumber(page: number) {
           :disabled="modelValue === 1"
           :aria-label="`Previous Page, Page ${previousPage}`"
           :size="size"
+          :tabindex="getTabIndex(1)"
           @click="setPageNumber(previousPage)"
         >
           <span class="maz:sr-only">
@@ -211,9 +389,9 @@ function setPageNumber(page: number) {
       </li>
 
       <li
-        v-for="(page, i) in pages"
+        v-for="({ page, buttonIndex }, i) in pagesWithButtonIndex"
         :id="'number' in page ? `button-${i}-${page.number}` : `ellipsis-${i}`"
-        :key="'number' in page ? `button-${i}-${page.number}` : `ellipsis-${i}`"
+        :key="'number' in page ? `button-${i}` : `ellipsis-${i}`"
         class="maz:m-0"
       >
         <template v-if="'number' in page">
@@ -224,7 +402,9 @@ function setPageNumber(page: number) {
               color: page.isActive ? activeColor : buttonsPropsMerged.color,
               outlined: page.isActive ? false : buttonsPropsMerged.outlined,
             }"
+            :ref="(button) => setActiveButton(button, page.isActive)"
             :size="size"
+            :tabindex="getTabIndex(buttonIndex)"
             :aria-label="`Page ${page.number}`"
             :aria-current="page.isActive ? 'page' : undefined"
             :loading="page.loading"
@@ -240,12 +420,12 @@ function setPageNumber(page: number) {
                 {{ t('pagination.screenReader.page', { page: page.number }) }}
               </slot>
             </span>
-            {{ page.number }}
+            <MazRollingText class="maz:relative maz:z-2" :value="page.number" :animated="animated" />
           </MazBtn>
         </template>
 
         <template v-else-if="page.divider">
-          <div v-bind="buttonsPropsMerged" class="flex-center flex p-2">
+          <div class="m-pagination__ellipsis maz:flex maz:flex-center maz:p-2" :style="ellipsisStyle" aria-hidden="true">
             <MazEllipsisHorizontal />
           </div>
         </template>
@@ -257,6 +437,7 @@ function setPageNumber(page: number) {
           :disabled="modelValue === totalPages"
           :aria-label="`Next Page, Page ${nextPage}`"
           :size="size"
+          :tabindex="getTabIndex(nextButtonIndex)"
           @click="setPageNumber(nextPage)"
         >
           <span class="maz:sr-only">
@@ -278,6 +459,7 @@ function setPageNumber(page: number) {
           :disabled="modelValue === totalPages"
           :aria-label="`Next Page, Page ${totalPages}`"
           :size="size"
+          :tabindex="getTabIndex(nextButtonIndex + 1)"
           @click="setPageNumber(totalPages)"
         >
           <span class="maz:sr-only">

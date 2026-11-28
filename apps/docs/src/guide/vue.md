@@ -64,8 +64,6 @@ app.use(MazUi, {
   toast: { position: 'top-right' },
   // Global options of useDialog()
   dialog: { acceptText: 'Yes' },
-  // Animations on scroll (disabled by default), with `import 'maz-ui/aos.css'`
-  aos: true,
   // Motion of the components: 'auto' (default), 'reduced' or 'full'
   motion: 'auto',
   // Density of the controls: 'default' (current heights) or 'compact'
@@ -235,13 +233,12 @@ More information in the [theme documentation](/ecosystem/themes).
 
 More information in the [translations documentation](/ecosystem/translations).
 
-## Toast, dialog, wait and aos
+## Toast, dialog and wait
 
 No plugin to install for the toasts, the dialogs and the loading states: use their composable. Their global options go in the [MazUi plugin](#install-plugin).
 - [toast](./../plugins/toast.md) with `useToast()` (display notifications)
 - [dialog](./../plugins/dialog.md) with `useDialog()` (display modales without any implementation in template)
 - [wait](./../plugins/wait.md) with `useWait()` (display loading states, works anywhere, even outside of a component)
-- [aos](./../plugins/aos.md) (animations on scroll), enabled with the `aos` option of the MazUi plugin
 
 ## Directives
 
@@ -251,6 +248,7 @@ More information about installation and usage in:
 - [lazy-img](./../directives/lazy-img.md) (lazy load images)
 - [zoom-img](./../directives/zoom-img.md) (zoom images on click)
 - [fullscreen-img](./../directives/fullscreen-img.md) (display images fullscreen on click with an animate effect)
+- [reveal](./../directives/reveal.md) (reveal elements when they enter the screen)
 
 ## Smart Loading with resolvers
 

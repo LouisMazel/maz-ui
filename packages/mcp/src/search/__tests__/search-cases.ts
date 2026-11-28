@@ -284,7 +284,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'time picker',
-    expected: ['components/maz-date-picker'],
+    expected: ['components/maz-time-picker', 'components/maz-date-picker'],
     rank: 1,
   },
   {
@@ -459,7 +459,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'context menu',
-    expected: ['components/maz-dropdown'],
+    expected: ['components/maz-context-menu', 'components/maz-dropdown'],
     rank: 1,
   },
   {
@@ -544,7 +544,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'reveal on scroll',
-    expected: ['components/maz-animated-element', 'plugins/aos', 'composables/use-aos'],
+    expected: ['directives/reveal', 'components/maz-reveal'],
     rank: 1,
   },
   {
@@ -788,7 +788,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'dark mode toggle',
-    expected: ['ecosystem/themes'],
+    expected: ['components/maz-theme-toggle', 'ecosystem/themes'],
     rank: 1,
   },
   {
@@ -1048,7 +1048,7 @@ export const HELD_OUT_CASES: SearchCase[] = [
   },
   {
     query: 'switch between light and dark',
-    expected: ['ecosystem/themes'],
+    expected: ['ecosystem/themes', 'components/maz-theme-toggle'],
     rank: 3,
   },
   {
@@ -1088,7 +1088,7 @@ export const HELD_OUT_CASES: SearchCase[] = [
   },
   {
     query: 'show only part of a long text',
-    expected: ['components/maz-read-more'],
+    expected: ['components/maz-read-more', 'components/maz-middle-truncate'],
     rank: 3,
   },
   {

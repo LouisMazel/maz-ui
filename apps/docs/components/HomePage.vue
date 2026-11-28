@@ -14,6 +14,11 @@ const HomeAtelier = defineAsyncComponent({
   hydrate: hydrateOnVisible({ rootMargin: '300px' }),
 })
 
+const HomeMotion = defineAsyncComponent({
+  loader: () => import('./home/HomeMotion.vue'),
+  hydrate: hydrateOnVisible({ rootMargin: '300px' }),
+})
+
 const HomeFoundations = defineAsyncComponent({
   loader: () => import('./home/HomeFoundations.vue'),
   hydrate: hydrateOnVisible({ rootMargin: '300px' }),
@@ -46,6 +51,7 @@ const HomeInventory = defineAsyncComponent({
     <HomeCover :data />
     <HomeV5 :data />
     <HomeAtelier :data />
+    <HomeMotion :data />
     <HomeFoundations :data />
     <HomeEcosystem :data />
     <HomeCommunity :data />

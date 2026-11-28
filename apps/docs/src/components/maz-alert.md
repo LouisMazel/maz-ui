@@ -388,12 +388,51 @@ You can use either title, content, or both.
 </ComponentDemo>
 
 <script lang="ts" setup>
+  import { ref } from 'vue'
   const colors = ['info', 'success', 'warning', 'destructive', 'primary', 'secondary', 'accent', 'contrast', 'neutral']
   const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
 
   function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
+
+  const alertOpen = ref(true)
 </script>
+
+## Dismissible
+
+Add `dismissible` to get a close button. The alert folds away smoothly and `v-model:open` becomes `false`. Set it back to `true` to show the alert again.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-3">
+    <MazAlert v-model:open="alertOpen" dismissible color="success" title="Saved" content="Your changes are saved." />
+    <MazBtn v-if="!alertOpen" size="sm" class="maz:self-start" @click="alertOpen = true">Show the alert</MazBtn>
+  </div>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazAlert from 'maz-ui/components/MazAlert'
+import { ref } from 'vue'
+
+const open = ref(true)
+</script>
+
+<template>
+  <MazAlert v-model:open="open" dismissible color="success" title="Saved" content="Your changes are saved." />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The icon of the color draws itself when the alert appears.
+- A dismissed alert folds away: its height and its opacity go to zero, then the alert is hidden.
+- Use `:animated="false"` to skip both.
+
+With reduced motion, the icon is drawn at once and the alert fades out.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-alert.doc.md-->

@@ -14,13 +14,13 @@ async function getWrapper(props: Record<string, unknown> = {}) {
   const promise = showDialogAndWaitChoice('confirmation-dialog')
   promise.catch(() => {})
   await flushPromises()
-  await vi.waitFor(() => expect(findField() ?? findButton('Delete') ?? findButton('Remove')).toBeTruthy())
+  await vi.waitFor(() => expect(props.confirmation ? findField() : (findButton('Delete') ?? findButton('Remove'))).toBeTruthy(), { timeout: 5000 })
 
   return { wrapper, promise }
 }
 
 function findButton(text: string) {
-  return [...document.body.querySelectorAll('button')].find(button => button.textContent?.trim() === text)
+  return [...document.body.querySelectorAll('.m-dialog button')].find(button => button.textContent?.trim() === text) as HTMLButtonElement | undefined
 }
 
 function findField() {

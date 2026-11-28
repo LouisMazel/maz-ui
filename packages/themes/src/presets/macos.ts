@@ -62,13 +62,25 @@ export const macos: ThemePreset = {
       '3xl': '26px',
     },
     shadow: {
-      sm: '0 0.5px 1px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.06)',
-      md: '0 1px 3px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.08)',
-      lg: '0 6px 16px rgb(0 0 0 / 0.16), 0 0 0 0.5px rgb(0 0 0 / 0.1)',
-      xl: '0 12px 32px rgb(0 0 0 / 0.22), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
-      elevation: {
+      'sm': '0 0.5px 1px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.06)',
+      'md': '0 1px 3px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.08)',
+      'lg': '0 6px 16px rgb(0 0 0 / 0.16), 0 0 0 0.5px rgb(0 0 0 / 0.1)',
+      'xl': '0 12px 32px rgb(0 0 0 / 0.22), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
+      'elevation': {
         light: '0 10px 30px rgb(0 0 0 / 0.2), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
         dark: '0 10px 30px rgb(0 0 0 / 0.5), 0 0 0 0.5px rgb(255 255 255 / 0.12)',
+      },
+      'elevation-1': {
+        light: '0 2px 6px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.08)',
+        dark: '0 2px 6px rgb(0 0 0 / 0.6), 0 0 0 0.5px rgb(255 255 255 / 0.16)',
+      },
+      'elevation-2': {
+        light: '0 8px 20px rgb(0 0 0 / 0.18), 0 0 0 0.5px rgb(0 0 0 / 0.1)',
+        dark: '0 8px 20px rgb(0 0 0 / 0.7), 0 0 0 0.5px rgb(255 255 255 / 0.26)',
+      },
+      'elevation-3': {
+        light: '0 18px 44px rgb(0 0 0 / 0.28), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
+        dark: '0 18px 44px rgb(0 0 0 / 0.75), 0 0 0 0.5px rgb(255 255 255 / 0.36)',
       },
     },
   },

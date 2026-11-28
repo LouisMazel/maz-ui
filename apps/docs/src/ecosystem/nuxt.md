@@ -174,9 +174,6 @@ export default defineNuxtConfig({
     toast: { position: 'top-right' },
     dialog: { acceptText: 'Yes' },
 
-    // Animations on scroll (not enabled by default)
-    aos: { router: true },
-
     // Composables (enabled by default)
     composables: {
       useFormValidator: true,
@@ -195,6 +192,7 @@ export default defineNuxtConfig({
       vClickOutside: true,
       vFullscreenImg: true,
       vIntersect: true,
+      vReveal: true,
       vZoomImg: true,
     },
 
@@ -242,7 +240,7 @@ const css = {
 }
 ```
 
-`css.purge` adds [`@maz-ui/vite-plugin`](./vite-plugin.md) at build time, with the entries of `aos` and of the enabled `directives` of the module. On a Nuxt app of 2 pages (MazBtn, MazCard, MazBadge, LazyMazAccordion, MazInput, MazCheckbox, useToast and vTooltip, `nuxi generate`), the CSS files go from 122.3 kB (21.0 kB gzip) to 78.6 kB (14.8 kB gzip), which is -36%. The gain depends on your app. To keep components the purge cannot find (names built at runtime, dependencies), pass the options of the plugin:
+`css.purge` adds [`@maz-ui/vite-plugin`](./vite-plugin.md) at build time, with the entries of the enabled `directives` of the module. On a Nuxt app of 2 pages (MazBtn, MazCard, MazBadge, LazyMazAccordion, MazInput, MazCheckbox, useToast and vTooltip, `nuxi generate`), the CSS files go from 122.3 kB (21.0 kB gzip) to 78.6 kB (14.8 kB gzip), which is -36%. The gain depends on your app. To keep components the purge cannot find (names built at runtime, dependencies), pass the options of the plugin:
 
 ```ts
 css: {
@@ -550,28 +548,6 @@ export default defineNuxtConfig({
 })
 ```
 
-### Animations on scroll
-
-Disabled by default. `aos` installs the [aos plugin](./../plugins/aos.md), injects its CSS and auto-imports `useAos`:
-
-```ts
-export default defineNuxtConfig({
-  mazUi: {
-    // `true` for the default options
-    aos: {
-      // Runs the animations again after each navigation
-      router: true,
-      // Inject maz-ui/aos.css (default: true)
-      injectCss: true,
-      animation: {
-        duration: 1000,
-        once: false,
-      },
-    },
-  },
-})
-```
-
 ### Directives
 
 Powerful Vue directives for enhanced functionality:
@@ -587,6 +563,7 @@ const directives = {
   vTooltip: { position: 'top' }, // Flexible tooltips
   vClickOutside: true, // Detect outside clicks
   vIntersect: true, // Run a function when an element enters or leaves the viewport
+  vReveal: true, // Reveal an element when it enters the screen
 }
 ```
 

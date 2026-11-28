@@ -1,5 +1,3 @@
-@import 'maz-ui/aos.css';
-
 @import 'tailwindcss' prefix(maz);
 @import 'maz-ui/tailwindcss/theme.css';
 @import 'maz-ui/tailwindcss/utilities.css';

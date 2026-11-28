@@ -54,7 +54,22 @@ useHead({
       <ModernisationPr3Selects />
       <ModernisationPr3DatePicker />
       <ModernisationPr3Density />
-      <!-- PR 3 sections -->
+
+      <ModernisationPullRequest :number="4" title="Le reste et le design" description="Navigation, retours visuels, affichage, révélations au scroll avec vReveal, et la cohérence du design : focus, arrondis, élévation." />
+
+      <ModernisationPr4Navigation />
+      <ModernisationPr4Feedback />
+      <ModernisationPr4Display />
+      <ModernisationPr4Reveal />
+
+      <ModernisationPullRequest :number="5" title="Nouveaux composants" description="Palette de commandes, menu contextuel, visite guidée, notes, arborescence, panneaux redimensionnables, effets et directives de mouvement, et la homepage de la doc." />
+
+      <ModernisationPr5Commands />
+      <ModernisationPr5Navigation />
+      <ModernisationPr5Forms />
+      <ModernisationPr5Data />
+      <ModernisationPr5Layout />
+      <ModernisationPr5Effects />
     </main>
   </div>
 </template>

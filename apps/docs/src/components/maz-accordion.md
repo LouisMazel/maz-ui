@@ -96,4 +96,43 @@ The content of every panel is rendered even closed. Add `lazy` to render a panel
 </template>
 ```
 
+## Without the spotlight
+
+Each item sits in a `MazCardSpotlight` (a halo follows the pointer). Set `:spotlight="false"` for plain bordered cards.
+
+<div class="vp-raw">
+<MazAccordion class="maz:w-full" :spotlight="false">
+  <template #title-1>
+    Plain card 1
+  </template>
+  <template #content-1>
+    Content 1
+  </template>
+  <template #title-2>
+    Plain card 2
+  </template>
+  <template #content-2>
+    Content 2
+  </template>
+</MazAccordion>
+</div>
+
+```html
+<MazAccordion :spotlight="false">
+  <template #title-1>
+    Title
+  </template>
+  <template #content-1>
+    Content
+  </template>
+</MazAccordion>
+```
+
+## Motion
+
+- The plus becomes a minus when an item opens.
+- The answer rises while the item opens, and leaves faster when it closes.
+- The header has the focus ring of the theme on keyboard focus.
+- Reduced motion removes the transitions.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-accordion.doc.md-->

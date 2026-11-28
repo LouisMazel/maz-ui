@@ -4,7 +4,9 @@ import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { MazChevronRight } from '@maz-ui/icons/raw/MazChevronRight'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, defineAsyncComponent, ref, useSlots } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
+import { useResizeObserver } from '../composables/useResizeObserver.ts'
 import MazIcon from './MazIcon.vue'
 
 const {
@@ -12,9 +14,13 @@ const {
   hideScrollbar = false,
   translations,
   title,
+  counter = false,
+  progress = false,
+  dragScroll = false,
 } = defineProps<MazCarouselProps>()
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazRollingText = defineAsyncComponent(() => import('./MazRollingText.vue'))
 
 export interface MazCarouselProps {
   /**
@@ -38,6 +44,21 @@ export interface MazCarouselProps {
    * The title of the carousel
    */
   title?: string
+  /**
+   * Show the current page and the page count in the header (`2 / 5`), the current page rolls
+   * @default false
+   */
+  counter?: boolean
+  /**
+   * Show a compact progress pill under the items (a thumb that slides along a short track), the native scrollbar is hidden
+   * @default false
+   */
+  progress?: boolean
+  /**
+   * Scroll the items by dragging them with the mouse, with a little inertia on release (touch screens already scroll)
+   * @default false
+   */
+  dragScroll?: boolean
 }
 
 const slots = useSlots()
@@ -54,22 +75,55 @@ const messages = computed<MazUiTranslationsNestedSchema['carousel']>(() => ({
   },
 }))
 
+const { shouldReduceMotion } = useReducedMotion()
+
+const thumbSize = ref(100)
+const thumbOffset = ref(0)
+const pageCount = ref(1)
+const currentPage = ref(1)
+const isDragging = ref(false)
+
 function hasHeader() {
-  return !hideScrollButtons || slots.title || title
+  return !hideScrollButtons || slots.title || title || counter
 }
 
 function hasTitle() {
   return !!slots.title || !!title
 }
 
+function getDirection(items: Element) {
+  return getComputedStyle(items).direction === 'rtl'
+    ? -1
+    : 1
+}
+
 function next() {
   const items = MazCarouselItems.value
-  items?.scrollTo(items.scrollLeft + items.clientWidth, 0)
+  items?.scrollTo(items.scrollLeft + items.clientWidth * getDirection(items), 0)
 }
 
 function previous() {
   const items = MazCarouselItems.value
-  items?.scrollTo(items.scrollLeft - items.clientWidth, 0)
+  items?.scrollTo(items.scrollLeft - items.clientWidth * getDirection(items), 0)
+}
+
+function updateMetrics(target: Element) {
+  const position = Math.abs(target.scrollLeft)
+
+  const maxScroll = target.scrollWidth - target.clientWidth
+
+  thumbSize.value = target.scrollWidth > 0
+    ? Math.min(100, Math.max(15, (target.clientWidth / target.scrollWidth) * 100))
+    : 100
+  thumbOffset.value = maxScroll > 0
+    ? Math.min(1, position / maxScroll) * (100 / thumbSize.value - 1) * 100
+    : 0
+  pageCount.value = target.clientWidth > 0
+    ? Math.max(1, Math.ceil(target.scrollWidth / target.clientWidth))
+    : 1
+  currentPage.value = target.clientWidth > 0
+    ? Math.min(pageCount.value, Math.round(position / target.clientWidth) + 1)
+    : 1
 }
 
 function setScrollState(event: Event) {
@@ -78,11 +132,157 @@ function setScrollState(event: Event) {
   if (!target)
     return
 
-  isScrolled.value = target.scrollLeft >= 20
+  const position = target.scrollLeft * getDirection(target)
+
+  isScrolled.value = position >= 20
 
   const itemsScrollWidth = target.scrollWidth - target.clientWidth
-  isScrolledMax.value = target.scrollLeft >= itemsScrollWidth - 20
+  isScrolledMax.value = position >= itemsScrollWidth - 20
+
+  updateMetrics(target)
 }
+
+useResizeObserver(MazCarouselItems, () => {
+  if (MazCarouselItems.value)
+    updateMetrics(MazCarouselItems.value)
+})
+
+const DRAG_THRESHOLD = 4
+const INERTIA_TIME_CONSTANT = 325
+
+let dragStartX = 0
+let dragStartScroll = 0
+let lastX = 0
+let lastTime = 0
+let velocity = 0
+let hasMoved = false
+let inertiaFrame: number | undefined
+
+function stopInertia() {
+  if (inertiaFrame !== undefined) {
+    cancelAnimationFrame(inertiaFrame)
+    inertiaFrame = undefined
+  }
+}
+
+function onDragStart(event: PointerEvent) {
+  const items = MazCarouselItems.value
+
+  if (!dragScroll || !items || event.pointerType !== 'mouse' || event.button !== 0)
+    return
+
+  stopInertia()
+  dragStartX = event.clientX
+  dragStartScroll = items.scrollLeft
+  lastX = event.clientX
+  lastTime = event.timeStamp
+  velocity = 0
+  hasMoved = false
+  isDragging.value = true
+}
+
+function onDragMove(event: PointerEvent) {
+  const items = MazCarouselItems.value
+
+  if (!isDragging.value || !items)
+    return
+
+  const distance = event.clientX - dragStartX
+
+  if (!hasMoved && Math.abs(distance) < DRAG_THRESHOLD)
+    return
+
+  if (!hasMoved) {
+    hasMoved = true
+    items.setPointerCapture?.(event.pointerId)
+  }
+
+  const elapsed = event.timeStamp - lastTime
+
+  if (elapsed > 0)
+    velocity = (event.clientX - lastX) / elapsed
+
+  lastX = event.clientX
+  lastTime = event.timeStamp
+  items.scrollLeft = dragStartScroll - distance
+}
+
+function runInertia(items: HTMLElement) {
+  let previousTime: number | undefined
+
+  const step = (time: number) => {
+    const elapsed = previousTime === undefined
+      ? 16
+      : time - previousTime
+
+    previousTime = time
+    velocity *= Math.exp(-elapsed / INERTIA_TIME_CONSTANT)
+    const before = items.scrollLeft
+
+    items.scrollLeft -= velocity * elapsed
+
+    if (Math.abs(velocity) < 0.02 || items.scrollLeft === before) {
+      inertiaFrame = undefined
+      isDragging.value = false
+      return
+    }
+
+    inertiaFrame = requestAnimationFrame(step)
+  }
+
+  inertiaFrame = requestAnimationFrame(step)
+}
+
+function onDragEnd() {
+  const items = MazCarouselItems.value
+
+  if (!isDragging.value || !items)
+    return
+
+  if (hasMoved && !shouldReduceMotion.value && Math.abs(velocity) > 0.05) {
+    runInertia(items)
+    return
+  }
+
+  isDragging.value = false
+}
+
+function onClickCapture(event: MouseEvent) {
+  if (hasMoved) {
+    event.stopPropagation()
+    event.preventDefault()
+    hasMoved = false
+  }
+}
+
+function onNativeDragStart(event: Event) {
+  if (dragScroll)
+    event.preventDefault()
+}
+
+const POINTER_LISTENERS = [
+  ['pointerdown', onDragStart],
+  ['pointermove', onDragMove],
+  ['pointerup', onDragEnd],
+  ['pointercancel', onDragEnd],
+  ['dragstart', onNativeDragStart],
+] as const
+
+onMounted(() => {
+  for (const [name, listener] of POINTER_LISTENERS)
+    MazCarouselItems.value?.addEventListener(name, listener as EventListener)
+
+  MazCarouselItems.value?.addEventListener('click', onClickCapture, true)
+})
+
+onBeforeUnmount(() => {
+  stopInertia()
+
+  for (const [name, listener] of POINTER_LISTENERS)
+    MazCarouselItems.value?.removeEventListener(name, listener as EventListener)
+
+  MazCarouselItems.value?.removeEventListener('click', onClickCapture, true)
+})
 </script>
 
 <template>
@@ -90,6 +290,9 @@ function setScrollState(event: Event) {
     class="m-carousel m-reset-css maz:relative maz:flex maz:flex-col"
     :class="{
       '--hide-scrollbar': hideScrollbar,
+      '--indicator': progress || counter,
+      '--drag-scroll': dragScroll,
+      '--dragging': isDragging,
     }"
   >
     <div v-if="hasHeader()" class="m-carousel__header maz:flex maz:items-center" :class="[hasTitle() ? '--has-title' : '', hasTitle() ? 'maz:justify-between' : 'maz:justify-end']">
@@ -100,8 +303,14 @@ function setScrollState(event: Event) {
           </h4>
         </slot>
       </div>
-      <div v-if="!hideScrollButtons" class="m-carousel__header__actions maz:flex maz:flex-1 maz:justify-end maz:space-x-2">
+      <div v-if="!hideScrollButtons || counter" class="m-carousel__header__actions maz:flex maz:flex-1 maz:items-center maz:justify-end maz:space-x-2">
+        <span v-if="counter && pageCount > 1" dir="ltr" class="m-carousel__counter maz:inline-flex maz:items-center maz:gap-1 maz:text-sm maz:text-muted maz:tabular-nums" aria-hidden="true">
+          <MazRollingText :value="currentPage" />
+          <span>/</span>
+          <span>{{ pageCount }}</span>
+        </span>
         <MazBtn
+          v-if="!hideScrollButtons"
           color="transparent"
           class="m-carousel__btn"
           :class="{ '--muted': !isScrolled }"
@@ -114,6 +323,7 @@ function setScrollState(event: Event) {
           </slot>
         </MazBtn>
         <MazBtn
+          v-if="!hideScrollButtons"
           color="transparent"
           class="m-carousel__btn"
           :class="{ '--muted': isScrolledMax }"
@@ -132,6 +342,12 @@ function setScrollState(event: Event) {
       <slot />
       <div class="m-carousel__items__spacer" />
     </div>
+    <div v-if="progress" class="m-carousel__progress maz:relative maz:mx-auto maz:h-1 maz:w-16 maz:overflow-hidden maz:rounded-full maz:bg-foreground/10" aria-hidden="true">
+      <div
+        class="m-carousel__progress-bar maz:absolute maz:inset-y-0 maz:inset-s-0 maz:rounded-full maz:bg-primary"
+        :style="{ '--m-carousel-thumb-size': `${thumbSize}%`, '--m-carousel-thumb-x': `${thumbOffset}%` }"
+      />
+    </div>
   </div>
 </template>
 
@@ -144,6 +360,37 @@ function setScrollState(event: Event) {
   &.--hide-scrollbar:active .m-carousel__items,
   &.--hide-scrollbar:focus .m-carousel__items {
     @apply maz:overflow-x-auto;
+  }
+}
+
+.m-carousel.--drag-scroll .m-carousel__items {
+  cursor: grab;
+}
+
+.m-carousel.--dragging .m-carousel__items {
+  scroll-behavior: auto;
+  user-select: none;
+}
+
+.m-carousel.--dragging.--drag-scroll .m-carousel__items {
+  cursor: grabbing;
+}
+
+.m-carousel__progress-bar {
+  inline-size: var(--m-carousel-thumb-size, 100%);
+  transform: translateX(var(--m-carousel-thumb-x, 0%));
+  transition: transform calc(var(--maz-motion-fast) * var(--maz-motion-scale)) var(--maz-easing-out);
+}
+
+[dir='rtl'] .m-carousel__progress-bar {
+  transform: translateX(calc(var(--m-carousel-thumb-x, 0%) * -1));
+}
+
+.m-carousel.--indicator .m-carousel__items {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 

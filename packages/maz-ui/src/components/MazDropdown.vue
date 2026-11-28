@@ -7,11 +7,12 @@ import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazNeutralColor, MazSize } from './types.ts'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { isClient } from '@maz-ui/utils/helpers/isClient'
-import { computed, defineAsyncComponent, onBeforeUnmount, useTemplateRef, watch } from 'vue'
+import { computed, defineAsyncComponent, shallowRef, useTemplateRef } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { useRovingFocus } from '../composables/useRovingFocus.ts'
+import { useSlidingIndicator } from '../composables/useSlidingIndicator.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { createLazyTooltipDirective } from '../utils/lazyTooltip.ts'
 import MazPopover from './MazPopover.vue'
@@ -162,6 +163,13 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
    * @default 'scale-pop'
    */
   transition?: MazPopoverProps['transition']
+
+  /**
+   * A highlight slides between the items under the pointer (never with the keyboard)
+   * @type {boolean}
+   * @default true
+   */
+  animated?: boolean
 }
 
 defineOptions({
@@ -187,6 +195,7 @@ const {
   transition = 'scale-pop',
   preferPosition = 'bottom-start',
   dropdownIcon,
+  animated = true,
 } = defineProps<MazDropdownProps>()
 
 const emits = defineEmits<{
@@ -266,67 +275,77 @@ function closeDropdown() {
     setDropdown(false)
 }
 
-/**
- * The keys are handled only when the focus is on the trigger or in the menu: elsewhere in the page,
- * the arrows still scroll and Enter still submits
- */
-function isFocusInDropdown() {
-  const active = document.activeElement
+const menuRef = useTemplateRef<HTMLElement>('menuRef')
 
-  return !!active && (
-    !!document.getElementById(instanceId.value)?.contains(active)
-    || !!document.getElementById(`${instanceId.value}-menu`)?.contains(active)
+/** The highlight follows the pointer from an item to another, the keyboard uses the focus style of the items */
+const hoveredItem = shallowRef<HTMLElement>()
+
+function getMenuItems() {
+  return Array.from(document.querySelectorAll<HTMLElement>(`#${instanceId.value}-menu .menuitem`)).filter(
+    el => el.getAttribute('tabindex') !== '-1',
   )
 }
 
-function keydownHandler(event: KeyboardEvent) {
-  if (!isFocusInDropdown())
-    return
+const { onKeydown: onRovingKeydown } = useRovingFocus({
+  container: menuRef,
+  items: getMenuItems,
+  orientation: 'vertical',
+  typeahead: true,
+})
 
-  if (['ArrowDown', 'ArrowUp'].includes(event.key)) {
-    arrowHandler(event)
-  }
-  else if (event.key === 'Enter') {
-    const item = document.activeElement as HTMLElement | null
+/**
+ * The keys are handled only by the trigger and the menu: elsewhere in the page,
+ * the arrows still scroll and Enter still submits
+ */
+function onMenuKeydown(event: KeyboardEvent) {
+  if (event.key === 'Enter') {
+    const menu = event.currentTarget as HTMLElement | null
+    const item = event.target as HTMLElement | null
 
-    const menu = document.getElementById(`${instanceId.value}-menu`)
-
-    if (!item || !menu?.contains(item) || item === menu)
+    if (!item || item === menu || !menu?.contains(item))
       return
 
     event.preventDefault()
     item.click()
 
     closeDropdown()
+    return
   }
+
+  hoveredItem.value = undefined
+  onRovingKeydown(event)
 }
 
-function arrowHandler(event: KeyboardEvent) {
+function onTriggerKeydown(event: KeyboardEvent) {
+  if (!isOpen.value || !['ArrowDown', 'ArrowUp'].includes(event.key))
+    return
+
   event.preventDefault()
-  const code = event.key
-
-  const currentElement = document.activeElement as HTMLElement
-  const itemsElements = Array.from(document.querySelectorAll<HTMLElement>(`#${instanceId.value}-menu .menuitem`)).filter(
-    el => el.getAttribute('tabindex') !== '-1',
-  )
-
-  const count = itemsElements.length
-  if (!count)
-    return
-
-  const currentIndex = itemsElements.indexOf(currentElement)
-
-  if (currentIndex === -1) {
-    itemsElements[0]?.focus()
-    return
-  }
-
-  const nextIndex = code === 'ArrowDown'
-    ? (currentIndex + 1) % count
-    : (currentIndex - 1 + count) % count
-
-  itemsElements[nextIndex]?.focus()
+  getMenuItems()[0]?.focus()
 }
+
+function onMenuPointerOver(event: PointerEvent) {
+  if (event.pointerType === 'touch')
+    return
+
+  const target = event.target as HTMLElement
+
+  if (!target.closest('.menuitem'))
+    return
+
+  const item = target.closest<HTMLElement>('.menuitem--hoverable:not(:disabled, [aria-disabled="true"])')
+
+  hoveredItem.value = item && menuRef.value?.contains(item)
+    ? item
+    : undefined
+}
+
+const { style: highlightStyle } = useSlidingIndicator({
+  container: menuRef,
+  active: hoveredItem,
+  orientation: 'vertical',
+  animated,
+})
 
 const mazPopoverElement = useTemplateRef('mazPopoverRef')
 
@@ -344,26 +363,6 @@ function onBlurTrigger(event: FocusEvent) {
 
   setDropdown(false)
 }
-
-watch(
-  isOpen,
-  (value) => {
-    if (!isClient())
-      return
-
-    if (value) {
-      document.addEventListener('keydown', keydownHandler)
-    }
-    else {
-      document.removeEventListener('keydown', keydownHandler)
-    }
-  },
-)
-
-onBeforeUnmount(() => {
-  if (isClient())
-    document.removeEventListener('keydown', keydownHandler)
-})
 </script>
 
 <template>
@@ -403,10 +402,12 @@ onBeforeUnmount(() => {
     @update:model-value="setDropdown"
   >
     <template #trigger="{ toggle, close, open }">
+      <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
       <div
         :id="instanceId"
         tabindex="-1"
-        class="m-dropdown__wrapper maz:relative maz:size-full maz:rounded-md maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400"
+        class="m-dropdown__wrapper maz:relative maz:size-full maz:rounded-md maz:outline-hidden maz:focus:bg-foreground/5"
+        @keydown="onTriggerKeydown"
       >
         <span :id="`${instanceId}-labelspan`" class="maz:sr-only">
           <!--
@@ -463,14 +464,25 @@ onBeforeUnmount(() => {
     </template>
 
     <template #default="{ open, close, toggle }">
+      <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
       <div
         :id="`${instanceId}-menu`"
+        ref="menuRef"
         role="none"
-        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:scrollbar-themed maz:flex-col maz:gap-(--maz-menu-gap,0.25rem) maz:overflow-auto maz:p-(--maz-menu-padding,0.5rem)"
+        class="m-dropdown__menu maz:relative maz:flex maz:min-h-max maz:min-w-max maz:scrollbar-themed maz:flex-col maz:gap-(--maz-menu-gap,0.25rem) maz:overflow-auto maz:p-(--maz-menu-padding,0.5rem)"
         tabindex="-1"
         :class="menuPanelClass"
         :style="menuPanelStyle"
+        @keydown="onMenuKeydown"
+        @pointerover="onMenuPointerOver"
+        @pointerleave="hoveredItem = undefined"
       >
+        <span
+          v-if="hoveredItem"
+          aria-hidden="true"
+          class="m-dropdown__highlight maz:pointer-events-none maz:absolute maz:inset-s-0 maz:top-0 maz:rounded-md maz:bg-foreground/6"
+          :style="highlightStyle"
+        />
         <!--
           @slot Dropdown menu panel content
           @binding {MazDropdownMenuItem[]} items - Array of menu items passed via the items prop
@@ -506,7 +518,7 @@ onBeforeUnmount(() => {
                 :target="isLinkItem(item) ? item.target ?? '_self' : undefined"
                 :to="isLinkItem(item) ? item.to : undefined"
                 :href="isLinkItem(item) ? item.href : undefined"
-                class="menuitem"
+                class="menuitem maz:relative"
                 :class="[{ 'menuitem--hoverable': hasLinkOrAction(item) }, item.class, isLinkItem(item) ? 'menuitem__link' : 'menuitem__button', `menuitem--${item.color}`]"
                 :justify="item.justify ?? 'start'"
                 :color="item.color ?? 'transparent'"
@@ -549,7 +561,7 @@ onBeforeUnmount(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-dropdown__icon {
-  @apply maz:transition-transform maz:duration-200 maz:ease-in-out;
+  @apply maz:transition-transform maz:duration-(--duration-normal) maz:ease-spring;
 
   &.--open {
     @apply maz:rotate-180;
@@ -557,8 +569,19 @@ onBeforeUnmount(() => {
 }
 
 .m-dropdown__menu {
+  --maz-focus-ring-offset: -2px;
+
   .menuitem {
     @apply maz:text-start maz:whitespace-nowrap;
+
+    /* The highlight that slides under the pointer replaces the hover background of the rows */
+    &.menuitem--hoverable.--transparent:not(:disabled):hover {
+      background-color: transparent;
+    }
+
+    &.menuitem--hoverable.--transparent:not(:disabled):focus-visible {
+      background-color: color-mix(in oklab, var(--maz-foreground) 6%, transparent);
+    }
 
     &:not(.menuitem--hoverable) {
       @apply maz:cursor-default;

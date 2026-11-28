@@ -47,6 +47,8 @@ export interface MazUiOptions extends MazUiExternalLinksOptions {
    * Animations on scroll (`useAos()`): `true` with the default options, or its options.
    * Also import `maz-ui/aos.css`.
    * @default false
+   * @deprecated Use `vReveal` (`<p v-reveal="'slide-up'">`), it needs no option nor CSS file
+   * Removed in v6 (plans/ROADMAP.md)
    */
   aos?: boolean | AosOptions
   /**

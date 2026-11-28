@@ -1,24 +1,9 @@
 import MazAnimatedText from '@components/MazAnimatedText.vue'
-import { IntersectionObserverMock } from '@tests/vitest-global.setup.ts'
-import { mount } from '@vue/test-utils'
-import { createSSRApp, h, nextTick } from 'vue'
+import { enableAutoUnmount, mount } from '@vue/test-utils'
+import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 
-async function intersect(element: Element, isIntersecting: boolean) {
-  await nextTick()
-  const callback = vi.mocked(IntersectionObserver).mock.calls.at(-1)![0]
-
-  callback(
-    [
-      { target: element, isIntersecting } as IntersectionObserverEntry,
-    ],
-    IntersectionObserverMock as unknown as IntersectionObserver,
-  )
-}
-
-function mockRect(top: number, bottom: number) {
-  return vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ top, bottom } as DOMRect)
-}
+enableAutoUnmount(afterEach)
 
 describe('given a MazAnimatedText with a neutral gradient', () => {
   describe('when a gradient color is neutral', () => {
@@ -33,12 +18,6 @@ describe('given a MazAnimatedText with a neutral gradient', () => {
 })
 
 describe('given a MazAnimatedText', () => {
-  beforeEach(() => {
-    vi.mocked(IntersectionObserver).mockClear()
-    vi.mocked(IntersectionObserverMock.observe).mockClear()
-    vi.mocked(IntersectionObserverMock.unobserve).mockClear()
-  })
-
   afterEach(() => {
     vi.restoreAllMocks()
   })
@@ -67,7 +46,7 @@ describe('given a MazAnimatedText', () => {
   })
 
   describe('when it is mounted with a direction and timings', () => {
-    it('then each word gets the animation class and a staggered delay', () => {
+    it('then the root reveals the words in a cascade with the direction, the delay and the duration', () => {
       const wrapper = mount(MazAnimatedText, {
         props: {
           text: 'one two',
@@ -79,14 +58,16 @@ describe('given a MazAnimatedText', () => {
         },
       })
 
-      const words = wrapper.findAll('.m-animated-text__word-inner')
-      const lastWord = wrapper.find('.m-animated-text__last-word')
+      const root = wrapper.find('.m-animated-text__root')
+      const items = wrapper.findAll<HTMLElement>('[data-maz-reveal-item]')
 
-      expect(words[0].classes()).toContain('maz-animate-slide-down-blur')
-      expect(words[0].attributes('style')).toContain('animation-duration: 1000ms')
-      expect(words[0].attributes('style')).toContain('animation-delay: 100ms')
-      expect(words[1].attributes('style')).toContain('animation-delay: 150ms')
-      expect(lastWord.attributes('style')).toContain('animation-delay: 200ms')
+      expect(root.attributes('data-maz-reveal')).toBe('slide-down')
+      expect(root.attributes('data-maz-reveal-blur')).toBeDefined()
+      expect(root.attributes('style')).toContain('--maz-reveal-delay: 100ms')
+      expect(root.attributes('style')).toContain('--maz-reveal-stagger: 50ms')
+      expect(root.attributes('style')).toContain('--maz-reveal-duration: 1000ms')
+      expect(items).toHaveLength(3)
+      expect(items.map(item => item.element.style.getPropertyValue('--maz-i'))).toEqual(['0', '1', '2'])
     })
   })
 
@@ -108,77 +89,11 @@ describe('given a MazAnimatedText', () => {
     })
   })
 
-  describe('when it is mounted inside the viewport', () => {
-    it('then the animation plays without waiting for the observer', () => {
-      mockRect(10, 100)
-      const wrapper = mount(MazAnimatedText, {
-        props: { text: 'Hello world' },
-      })
+  describe('when it is mounted', () => {
+    it('then the words are hidden until the text is visible', () => {
+      const wrapper = mount(MazAnimatedText, { props: { text: 'Hello world' } })
 
-      expect(wrapper.classes()).not.toContain('m-animated-text--pending')
-    })
-  })
-
-  describe('when it is mounted below the viewport and enters it', () => {
-    it('then the animation waits for the intersection and the text is no longer observed', async () => {
-      mockRect(2000, 2100)
-      const wrapper = mount(MazAnimatedText, {
-        props: { text: 'Hello world' },
-      })
-      await wrapper.vm.$nextTick()
-
-      expect(wrapper.classes()).toContain('m-animated-text--pending')
-
-      await intersect(wrapper.find('.m-animated-text__root').element, true)
-      await wrapper.vm.$nextTick()
-
-      expect(wrapper.classes()).not.toContain('m-animated-text--pending')
-      expect(IntersectionObserverMock.disconnect).toHaveBeenCalled()
-    })
-  })
-
-  describe('when it leaves the viewport without once', () => {
-    it('then the animation is reset to replay on the next intersection', async () => {
-      mockRect(10, 100)
-      const wrapper = mount(MazAnimatedText, {
-        props: { text: 'Hello world', once: false },
-      })
-      const root = wrapper.find('.m-animated-text__root').element
-
-      await intersect(root, false)
-      await wrapper.vm.$nextTick()
-
-      expect(wrapper.classes()).toContain('m-animated-text--pending')
-      expect(IntersectionObserverMock.disconnect).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('when it leaves the viewport with once', () => {
-    it('then the animation is kept', async () => {
-      mockRect(10, 100)
-      const wrapper = mount(MazAnimatedText, {
-        props: { text: 'Hello world', once: true },
-      })
-
-      await intersect(wrapper.find('.m-animated-text__root').element, false)
-      await wrapper.vm.$nextTick()
-
-      expect(wrapper.classes()).not.toContain('m-animated-text--pending')
-    })
-  })
-
-  describe('when the user prefers reduced motion', () => {
-    it('then no observer is created', () => {
-      Object.defineProperty(globalThis, 'matchMedia', {
-        configurable: true,
-        value: vi.fn().mockReturnValue({ matches: true }),
-      })
-      mount(MazAnimatedText, {
-        props: { text: 'Hello world' },
-      })
-
-      expect(IntersectionObserver).not.toHaveBeenCalled()
-      Reflect.deleteProperty(globalThis, 'matchMedia')
+      expect(wrapper.find('.m-animated-text__root').attributes('data-maz-reveal-state')).toBe('hidden')
     })
   })
 })

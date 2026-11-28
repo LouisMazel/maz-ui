@@ -1,10 +1,13 @@
 <script lang="ts" setup generic="_T">
 import type { MazIconLike } from '../composables/useMazIconProps.ts'
+import type { MazElevation } from '../utils/elevation.ts'
 import type { MazIconProps } from './MazIcon.vue'
 import type { MazRoundedSize } from './types.ts'
-import { defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { setBorderDrawFrom } from '../utils/borderDraw.ts'
+import { getElevationClass } from '../utils/elevation.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
@@ -14,10 +17,12 @@ export interface MazContainerProps {
    */
   title?: string
   /**
-   * Add elevation to the component
+   * Elevation of the component (shadow of the theme, deeper in dark mode): `0` none, `1` small, `2` medium, `3` large.
+   * `true` keeps the historical shadow.
+   * @type {boolean | 0 | 1 | 2 | 3}
    * @default false
    */
-  elevation?: boolean
+  elevation?: MazElevation
   /**
    * Add padding to the content
    * @default true
@@ -72,6 +77,12 @@ export interface MazContainerProps {
    * @default undefined
    */
   contentClass?: string
+  /**
+   * The border draws itself around the container from the point where the pointer enters (and on keyboard focus).
+   * Set its color with `--maz-border-draw-color`
+   * @default false
+   */
+  borderDraw?: boolean
 }
 
 const {
@@ -80,10 +91,11 @@ const {
   startIcon,
   endIcon,
   iconSize = 'md',
+  borderDraw = false,
 } = defineProps<MazContainerProps>()
 
 const { elevation, padding, bordered, roundedSize, transparent, overflowHidden } = useGlobalConfig<{
-  elevation: boolean
+  elevation: MazElevation
   padding: boolean
   bordered: boolean
   roundedSize: MazRoundedSize
@@ -104,6 +116,13 @@ const { iconProps: startIconProps } = useMazIconProps(() => startIcon, () => ({ 
 const { iconProps: endIconProps } = useMazIconProps(() => endIcon, () => ({ size: iconSize }))
 
 const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
+
+const elevationClass = computed(() => getElevationClass(elevation.value))
+
+function onPointerEnter(event: PointerEvent) {
+  if (borderDraw)
+    setBorderDrawFrom(event)
+}
 </script>
 
 <template>
@@ -111,15 +130,17 @@ const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
     class="m-container m-reset-css maz:relative maz:inline-flex maz:flex-col"
     :class="[
       ROUNDED_CLASS[roundedSize],
+      elevationClass,
       roundedSize && `--rounded-${roundedSize}`,
       {
         'maz:overflow-hidden': overflowHidden,
         'maz:w-full': block,
         'maz:bg-container': !transparent,
-        'maz:shadow-elevation maz:drop-shadow-md': elevation,
+        'maz:border-draw': borderDraw,
         'maz:border maz:border-divider': bordered,
       },
     ]"
+    @pointerenter="onPointerEnter"
   >
     <!-- @slot Replace the header -->
     <slot name="header">
