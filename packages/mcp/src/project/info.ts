@@ -160,11 +160,9 @@ function renderPlugins(app: AppInfo): string {
     : '`app.use(MazUi, { toast, dialog })`'
   const lines = [
     `- Toast, dialog and wait: \`useToast\`, \`useDialog\` and \`useWait\` need no plugin, their global options go in ${options}.`,
-    `- Animations on scroll: ${app.aos
-      ? 'enabled (`useAos`).'
-      : `disabled, enable them with ${nuxt
-        ? '`mazUi: { aos: true }`'
-        : '`app.use(MazUi, { aos: true })` and `import \'maz-ui/aos.css\'`'} before using \`useAos\`.`}`,
+    `- Animations on scroll: use \`v-reveal\` (\`maz-ui/directives/vReveal\`${nuxt ? ', `mazUi: { directives: { vReveal: true } }`' : ''}).${app.aos
+      ? ' The AOS plugin (`useAos`) is enabled: it is deprecated and removed in v6, migrate to `v-reveal`.'
+      : ''}`,
   ]
 
   if (deprecated.length > 0) {

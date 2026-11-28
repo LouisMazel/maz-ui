@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const { stretch = false } = defineProps<{ stretch?: boolean }>()
 
-const tabs = ['Overview', 'Activity', 'Settings', 'Billing']
+const tabs = ['Aperçu', 'Activité', 'Réglages', 'Facturation']
 const selected = ref(0)
 const container = useTemplateRef<HTMLElement>('container')
 const tabElements = useTemplateRef<HTMLElement[]>('tabElements')

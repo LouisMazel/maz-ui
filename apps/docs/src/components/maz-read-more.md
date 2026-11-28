@@ -291,6 +291,24 @@ import MazReadMore from 'maz-ui/components/MazReadMore'
 </template>
 </ComponentDemo>
 
+## Motion
+
+The height animates when the text opens and closes. Add `fade` to fade the bottom of the collapsed text.
+
+<ComponentDemo>
+  <MazReadMore :text="longText" fade />
+
+<template #code>
+
+```html
+<MazReadMore :text="longText" fade />
+```
+
+</template>
+</ComponentDemo>
+
+Set `:animated="false"` for an instant change. Reduced motion does too.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-read-more.doc.md-->
 
 <script lang="ts" setup>

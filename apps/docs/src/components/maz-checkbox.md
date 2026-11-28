@@ -229,4 +229,11 @@ function toggleAll(checked: boolean) {
   const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 
+## Motion
+
+- The check draws itself and the ink grows from the center of the box when it is checked. Unchecking shrinks the ink a little faster.
+- The indeterminate state draws a dash instead of the check.
+- The halo is only for the pointer (hover and `error`, `warning`, `success`). The keyboard focus has its own 2 px ring, which follows the focus ring tokens of your theme.
+- The speed follows the `--maz-motion-*` tokens. With reduced motion the check is shown without being drawn.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-checkbox.doc.md-->

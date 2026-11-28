@@ -18,7 +18,7 @@ const scaleTouched = ref(false)
 
 function readTokens() {
   const style = getComputedStyle(document.documentElement)
-  values.value = Object.fromEntries(tokens.map(token => [token, style.getPropertyValue(token).trim() || 'not defined']))
+  values.value = Object.fromEntries(tokens.map(token => [token, style.getPropertyValue(token).trim() || 'non défini']))
 }
 
 onMounted(readTokens)
@@ -47,10 +47,10 @@ function boxStyle(duration: string, easing: string) {
 <template>
   <ModernisationSection
     id="motion-tokens"
-    title="1. Motion tokens"
-    description="Durations and easings come from the theme and can be overridden on any element with CSS variables."
+    title="1. Tokens d'animation"
+    description="Les durées et les courbes viennent du thème et peuvent être surchargées sur n'importe quel élément avec des variables CSS."
   >
-    <ModernisationDemo title="Computed values" hint="Read from the root element, they follow the preset and the reduced motion toggle.">
+    <ModernisationDemo title="Valeurs calculées" hint="Lues sur l'élément racine, elles suivent le preset et l'option d'animations réduites.">
       <div class="overflow-x-auto">
         <!-- maz-ui-review-ignore prefer-maz-component -- compact table of tokens -->
         <table class="w-full text-left text-body-sm">
@@ -60,7 +60,7 @@ function boxStyle(duration: string, easing: string) {
                 Token
               </th>
               <th class="py-2 font-medium">
-                Value
+                Valeur
               </th>
             </tr>
           </thead>
@@ -79,16 +79,16 @@ function boxStyle(duration: string, easing: string) {
     </ModernisationDemo>
 
     <ModernisationDemo
-      title="Play the easings and the durations"
-      hint="Each box moves with its own token. The slider sets a local --maz-motion-scale on this container (0 = no movement)."
+      title="Jouer les courbes et les durées"
+      hint="Chaque boîte bouge avec son propre token. Le slider définit un --maz-motion-scale local sur ce conteneur (0 = aucun mouvement)."
     >
       <div class="flex flex-col gap-6" :style="containerStyle">
         <div class="flex flex-wrap items-center gap-6">
           <MazBtn size="sm" @click="playing = !playing">
-            Play
+            Jouer
           </MazBtn>
           <div class="flex w-72 max-w-full items-center gap-3">
-            <span class="text-caption whitespace-nowrap">Local scale: {{ scale }}</span>
+            <span class="text-caption whitespace-nowrap">Échelle locale : {{ scale }}</span>
             <MazSlider v-model="scale" :min="0" :max="3" :step="0.1" />
           </div>
         </div>
@@ -96,7 +96,7 @@ function boxStyle(duration: string, easing: string) {
         <div class="grid gap-6 lg:grid-cols-2">
           <div class="flex flex-col gap-3">
             <p class="text-label">
-              Easings (duration: slower)
+              Courbes (durée : slower)
             </p>
             <div v-for="easing in easings" :key="easing" class="flex items-center gap-3">
               <span class="w-20 shrink-0 text-code text-muted">{{ easing }}</span>
@@ -107,7 +107,7 @@ function boxStyle(duration: string, easing: string) {
           </div>
           <div class="flex flex-col gap-3">
             <p class="text-label">
-              Durations (easing: out)
+              Durées (courbe : out)
             </p>
             <div v-for="duration in durations" :key="duration" class="flex items-center gap-3">
               <span class="w-20 shrink-0 text-code text-muted">{{ duration }}</span>

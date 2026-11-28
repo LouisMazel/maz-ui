@@ -2,7 +2,9 @@
 import type { Hsva, Rgba } from './color.ts'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { MazEyeDropper } from '@maz-ui/icons/lazy/MazEyeDropper'
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useReducedMotion } from '../../composables/useReducedMotion.ts'
+import { readMotionDuration, readMotionEasing } from '../../utils/motionTokens.ts'
 import { formatColor, getLuminance, hsvToRgb, resolveCssColor } from './color.ts'
 
 export interface MazColorPickerPanelLabels {
@@ -38,6 +40,82 @@ const KEY_STEP = 0.01
 const KEY_STEP_LARGE = 0.1
 
 const areaRef = ref<HTMLDivElement>()
+const thumbRef = ref<HTMLSpanElement>()
+
+const { shouldReduceMotion } = useReducedMotion()
+
+const GLIDE_WINDOW = 150
+
+const glide = ref<{ h: number, a: number }>()
+let glideFrom: { hsva: Hsva, time: number } | undefined
+let glideFrame: number | undefined
+
+function cancelGlide() {
+  glideFrom = undefined
+  glide.value = undefined
+
+  if (glideFrame !== undefined) {
+    cancelAnimationFrame(glideFrame)
+    glideFrame = undefined
+  }
+}
+
+function prepareGlide() {
+  glideFrom = { hsva: { ...hsva.value }, time: Date.now() }
+}
+
+function glideThumb(from: Hsva, to: Hsva) {
+  const rect = areaRef.value?.getBoundingClientRect()
+
+  if (!thumbRef.value || typeof thumbRef.value.animate !== 'function' || !rect?.width || !rect.height)
+    return
+
+  thumbRef.value.animate(
+    [
+      { transform: `translate(${(from.s - to.s) * rect.width}px, ${(to.v - from.v) * rect.height}px)` },
+      { transform: 'translate(0, 0)' },
+    ],
+    {
+      duration: readMotionDuration('--maz-motion-slow', 300),
+      easing: readMotionEasing('--maz-easing-spring', 'cubic-bezier(0.22, 1, 0.36, 1)'),
+    },
+  )
+}
+
+function glideSliders(from: Hsva, to: Hsva) {
+  const duration = readMotionDuration('--maz-motion-slow', 300)
+  const start = performance.now()
+
+  const step = (now: number) => {
+    const progress = duration > 0
+      ? Math.min(1, (now - start) / duration)
+      : 1
+    const eased = 1 - (1 - progress) ** 3
+
+    glide.value = { h: from.h + (to.h - from.h) * eased, a: from.a + (to.a - from.a) * eased }
+    glideFrame = progress < 1
+      ? requestAnimationFrame(step)
+      : undefined
+
+    if (progress >= 1)
+      glide.value = undefined
+  }
+
+  glideFrame = requestAnimationFrame(step)
+}
+
+watch(hsva, (to) => {
+  const from = glideFrom
+  glideFrom = undefined
+
+  if (!from || Date.now() - from.time > GLIDE_WINDOW || shouldReduceMotion.value)
+    return
+
+  glideThumb(from.hsva, to)
+  glideSliders(from.hsva, to)
+}, { flush: 'post' })
+
+onBeforeUnmount(cancelGlide)
 
 const rgb = computed(() => hsvToRgb(hsva.value))
 const opaque = computed(() => formatColor({ ...rgb.value, a: 1 }, 'rgb'))
@@ -62,6 +140,7 @@ onMounted(() => {
 function update(partial: Partial<Hsva>) {
   if (disabled)
     return
+  cancelGlide()
   hsva.value = {
     ...hsva.value,
     ...partial,
@@ -129,8 +208,10 @@ async function pickFromScreen() {
     const dropper = new (globalThis as unknown as { EyeDropper: new () => { open: () => Promise<{ sRGBHex: string }> } }).EyeDropper()
     const { sRGBHex } = await dropper.open()
     const picked = resolveCssColor(sRGBHex)
-    if (picked)
+    if (picked) {
+      prepareGlide()
       emits('pick', { ...picked, a: hsva.value.a })
+    }
   }
   catch {}
 }
@@ -144,8 +225,10 @@ function isSelected(swatch?: Rgba) {
 }
 
 function selectSwatch(swatch?: Rgba) {
-  if (swatch && !disabled)
+  if (swatch && !disabled) {
+    prepareGlide()
     emits('pick', swatch)
+  }
 }
 </script>
 
@@ -169,6 +252,7 @@ function selectSwatch(swatch?: Rgba) {
       @keydown="onAreaKeydown"
     >
       <span
+        ref="thumbRef"
         class="m-color-picker-panel__area-thumb maz:pointer-events-none maz:absolute maz:size-4 maz:-translate-1/2 maz:rounded-full maz:border-2"
         :class="isLight ? 'maz:border-foreground' : 'maz:border-white'"
         :style="{ left: `${hsva.s * 100}%`, top: `${(1 - hsva.v) * 100}%`, backgroundColor: opaque }"
@@ -197,7 +281,7 @@ function selectSwatch(swatch?: Rgba) {
           min="0"
           max="360"
           step="1"
-          :value="Math.round(hsva.h)"
+          :value="Math.round(glide?.h ?? hsva.h)"
           :aria-label="labels.hue"
           :aria-valuetext="`${Math.round(hsva.h)}°`"
           :disabled
@@ -211,7 +295,7 @@ function selectSwatch(swatch?: Rgba) {
           min="0"
           max="100"
           step="1"
-          :value="Math.round(hsva.a * 100)"
+          :value="Math.round((glide?.a ?? hsva.a) * 100)"
           :aria-label="labels.alpha"
           :aria-valuetext="`${Math.round(hsva.a * 100)}%`"
           :style="{ '--m-color-picker-opaque': opaque }"

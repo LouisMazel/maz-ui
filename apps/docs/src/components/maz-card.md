@@ -292,6 +292,7 @@ To access the link, simply click the card.
 - `href` is the link or `to` if you use router-link or nuxt-link
 - `href-target` is the behavior of the link on click
 - You can use `:scale="false"` to remove the scale animation on hover
+- On hover (with a mouse), the image moves closer and an element with the `m-card__arrow` class slides toward the end of the line
 
 <div class="vp-raw">
 <MazCard
@@ -342,21 +343,41 @@ To access the link, simply click the card.
 
 ## Elevation
 
-<div class="vp-raw">
-<MazCard elevation :bordered="false" class="vp-raw">
-  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-</MazCard>
+`elevation` sets the shadow of the card, from `0` (none) to `3` (large). `true` keeps the default shadow. The shadows come from the theme and are deeper in dark mode, so a card needs no extra border there.
+
+<div class="vp-raw maz:grid maz:gap-4 maz:grid-cols-1 maz:tab-l:grid-cols-3">
+  <MazCard :elevation="1" :bordered="false" class="vp-raw">
+    Level 1
+  </MazCard>
+  <MazCard :elevation="2" :bordered="false" class="vp-raw">
+    Level 2
+  </MazCard>
+  <MazCard :elevation="3" :bordered="false" class="vp-raw">
+    Level 3
+  </MazCard>
 </div>
 
-::: details View code
-
 ```html
-<MazCard elevation :bordered="false">
-  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+<MazCard :elevation="2" :bordered="false">
+  Level 2
 </MazCard>
 ```
 
-:::
+## Border draw
+
+Add `border-draw`: the border draws itself around the card from the point where the pointer enters, and on keyboard focus. Change its color with the `--maz-border-draw-color` CSS variable.
+
+<div class="vp-raw">
+<MazCard border-draw class="vp-raw">
+  Enter the card from any side
+</MazCard>
+</div>
+
+```html
+<MazCard border-draw>
+  Enter the card from any side
+</MazCard>
+```
 
 ## Gallery images
 
@@ -466,5 +487,11 @@ type MazGalleryImage =
     }
   | string
 ```
+
+## Motion
+
+- A linked card grows a little on hover, its image comes closer and `m-card__arrow` slides. Only with a mouse: nothing moves on touch screens.
+- `border-draw` draws the border from where the pointer enters.
+- Turn the scale off with `:scale="false"`. Reduced motion removes every transition.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-card.doc.md-->

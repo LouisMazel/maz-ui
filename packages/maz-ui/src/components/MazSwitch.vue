@@ -135,7 +135,7 @@ function onFocus(event: FocusEvent) {
       :checked="modelValue"
       :aria-label="$attrs['aria-label'] as string ?? label"
       :disabled="disabled"
-      class="m-switch__input maz:absolute"
+      class="m-switch__input maz:absolute maz:outline-hidden"
       @change="emit"
       @blur="onBlur"
       @focus="onFocus"
@@ -175,7 +175,7 @@ function onFocus(event: FocusEvent) {
 }
 
 .m-switch__input:focus-visible + .m-switch__toggle::before {
-  outline: var(--maz-focus-ring-width, var(--maz-border-width)) solid var(--maz-focus-ring-color, var(--switch-color));
+  outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
   outline-offset: var(--maz-focus-ring-offset, 2px);
 }
 
@@ -185,7 +185,8 @@ function onFocus(event: FocusEvent) {
 
 .m-switch__input:checked + .m-switch__toggle {
   &::after {
-    transform: translateX(var(--switch-height));
+    translate: var(--m-switch-travel) 0;
+    transform-origin: 100% 50%;
     background-color: var(--switch-foreground);
   }
 
@@ -196,12 +197,28 @@ function onFocus(event: FocusEvent) {
 }
 
 :where([dir='rtl']) .m-switch__input:checked + .m-switch__toggle::after {
-  transform: translateX(calc(var(--switch-height) * -1));
+  translate: calc(var(--m-switch-travel) * -1) 0;
+  transform-origin: 0% 50%;
+}
+
+:where([dir='rtl']) .m-switch__input:not(:checked) + .m-switch__toggle::after {
+  transform-origin: 100% 50%;
+}
+
+/* The capsule thumb stretches a little toward the other side while pressed, then settles into place */
+.m-switch:not(.--is-disabled):active .m-switch__toggle::after,
+.m-switch__input:not(:disabled):active + .m-switch__toggle::after {
+  scale: 1.12 1;
 }
 
 .m-switch__toggle {
   inline-size: calc(var(--switch-height) * 2);
   block-size: var(--switch-height);
+
+  /* A pill thumb wider than tall, like the iOS and macOS switches: it travels the width of the track minus its own */
+  --m-switch-thumb-block: calc(var(--switch-height) - 0.25rem);
+  --m-switch-thumb-inline: calc(var(--m-switch-thumb-block) * 1.4);
+  --m-switch-travel: calc(var(--switch-height) * 2 - 0.25rem - var(--m-switch-thumb-inline));
 
   /* No light-dark() here: the build rewrites it into variables that only exist with a color-scheme rule */
   --m-switch-track: color-mix(in srgb, var(--maz-foreground) 16%, transparent);
@@ -214,7 +231,10 @@ function onFocus(event: FocusEvent) {
 
   &::before {
     content: '';
-    transition: all 200ms ease-in-out;
+    transition:
+      background-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+      border-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+      box-shadow calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 
     @apply maz:absolute maz:inset-0 maz:rounded-full;
     @apply maz:border maz:border-solid;
@@ -231,11 +251,18 @@ function onFocus(event: FocusEvent) {
 
     inset-block-start: 0.125rem;
     inset-inline-start: 0.125rem;
-    inline-size: calc(var(--switch-height) - 0.25rem);
-    block-size: calc(var(--switch-height) - 0.25rem);
+    inline-size: var(--m-switch-thumb-inline);
+    block-size: var(--m-switch-thumb-block);
     background-color: var(--m-switch-thumb);
     box-shadow: 0 1px 3px 0 hsl(0deg 0% 0% / 25%);
-    transition: all 200ms ease-in-out;
+    translate: 0 0;
+    transform-origin: 0% 50%;
+    transition:
+      translate calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1))
+        var(--maz-easing-spring, cubic-bezier(0.22, 1, 0.36, 1)),
+      scale calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+        var(--maz-easing-spring, cubic-bezier(0.22, 1, 0.36, 1)),
+      background-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
   }
 }
 

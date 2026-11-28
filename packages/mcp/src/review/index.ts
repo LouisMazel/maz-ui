@@ -3,6 +3,7 @@ import type { Finding, ReviewContext, ReviewOptions, RuleId, Severity } from './
 
 import { NodeTypes, parse } from '@vue/compiler-dom'
 import { mazIconNames } from './icons.ts'
+import { checkReveal } from './reveal.ts'
 import { localComponents, rawIcons, reviewScript } from './script.ts'
 import { reviewStyle } from './style.ts'
 import { reviewTemplate } from './template.ts'
@@ -272,6 +273,9 @@ export function reviewCode(code: string, options: ReviewOptions): Finding[] {
 
   try {
     reviewByKind(code, options.filename, context)
+
+    if (detectKind(code, options.filename) !== 'style')
+      checkReveal(code, context)
   }
   catch (error) {
     if (!isSyntaxError(error))

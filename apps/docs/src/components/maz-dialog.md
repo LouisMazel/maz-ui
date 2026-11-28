@@ -15,7 +15,60 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 
 ## Basic usage
 
+Put the button in the `trigger` slot. It gets `open`, `close` and `isOpen`, and the dialog grows out of this button and goes back into it.
+
 <ComponentDemo expanded>
+  <MazDialog title="Dialog Title">
+    <template #trigger="{ open }">
+      <MazBtn @click="open">Open Dialog</MazBtn>
+    </template>
+
+    <p>
+      Your content
+    </p>
+    <template #footer="{ close }">
+      <MazBtn @click="close">
+        Confirm
+      </MazBtn>
+    </template>
+  </MazDialog>
+
+<template #code>
+
+```vue
+<script setup>
+import MazDialog from 'maz-ui/components/MazDialog'
+</script>
+
+<template>
+  <MazDialog title="Dialog Title">
+    <template #trigger="{ open }">
+      <MazBtn @click="open">
+        Open Dialog
+      </MazBtn>
+    </template>
+
+    <p>
+      Your content
+    </p>
+
+    <template #footer="{ close }">
+      <MazBtn @click="close">
+        Confirm
+      </MazBtn>
+    </template>
+  </MazDialog>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Control it with v-model
+
+Use `v-model` to open the dialog from your script (a route, a request, an event).
+
+<ComponentDemo>
   <MazBtn @click="isOpen = true">Open Dialog</MazBtn>
 
   <MazDialog v-model="isOpen" title="Dialog Title">
@@ -48,18 +101,60 @@ const isOpen = ref(false)
     <p>
       Your content
     </p>
-
-    <template #footer="{ close }">
-      <MazBtn @click="close">
-        Confirm
-      </MazBtn>
-    </template>
   </MazDialog>
 </template>
 ```
 
   </template>
 </ComponentDemo>
+
+## Where it grows from
+
+With `v-model`, the dialog grows from the element you last pressed. Pass `origin` to choose: an element, a CSS selector, the click event or a `{ x, y }` point (viewport coordinates). Without any origin, it fades in and scales slightly.
+
+<ComponentDemo>
+  <MazBtn @click="openFromEvent">Grow from the click point</MazBtn>
+
+  <MazDialog v-model="originOpened" :origin="originEvent" title="From the click">
+    <p>
+      The dialog grows from where you clicked and goes back there.
+    </p>
+  </MazDialog>
+
+<template #code>
+
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const origin = ref()
+
+function openFrom(event) {
+  origin.value = event
+  isOpen.value = true
+}
+</script>
+
+<template>
+  <MazBtn @click="openFrom">
+    Grow from the click point
+  </MazBtn>
+
+  <MazDialog v-model="isOpen" :origin="origin" title="From the click">
+    <p>The dialog grows from where you clicked.</p>
+  </MazDialog>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+From a script, give the same option to [useDialog](./../composables/use-dialog.md): `dialog.confirm({ origin: event })`.
+
+## On mobile
+
+On a phone, the dialog is centered with a margin on each side, and it never gets taller than the visible screen. A `scrollable` dialog scrolls its content, with the header and the footer in place. Use `align="end"` to stick it to the bottom of the screen. For a real bottom sheet (drag to close), use [MazBottomSheet](./maz-bottom-sheet.md).
 
 ## Scrollable
 
@@ -214,6 +309,12 @@ function askBeforeClose() {
 `@before-close` is only an event: it cannot cancel the close. Use the `before-close` prop. For a confirmation, `useDialog().confirm()` returns a `Promise<boolean>`: `before-close` can return it directly.
 :::
 
+## Motion
+
+- The dialog grows from its origin (`--maz-motion-normal`) and goes back into it a bit faster. The backdrop fades at the same time.
+- `:animated="false"` gives a plain fade. Reduced motion does the same, whatever the prop.
+- The speed follows the `--maz-motion-*` tokens of your theme.
+
 ## Accessibility
 
 - The dialog is a modal `dialog` (`aria-modal`), labelled by its title and described by its content (override them with the `aria-labelledby` / `aria-describedby` props).
@@ -225,10 +326,17 @@ function askBeforeClose() {
 <script setup>
   import { ref } from 'vue'
   const isOpen = ref(false)
+  const originOpened = ref(false)
+  const originEvent = ref()
   const scollableOpened = ref(false)
   const widthOpened = ref(false)
   const dividerOpened = ref(false)
   const guardedOpened = ref(false)
+
+  function openFromEvent(event) {
+    originEvent.value = event
+    originOpened.value = true
+  }
 
   function askBeforeClose() {
     return globalThis.confirm('Discard the changes?')

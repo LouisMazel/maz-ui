@@ -36,16 +36,16 @@ const morphState = reactive<Record<string, boolean>>({})
 <template>
   <ModernisationSection
     id="new-components"
-    title="4. New components"
-    description="MazRollingText, MazDrawnIcon and MazMorphIcon. Reduced motion turns the movement into an instant change."
+    title="4. Nouveaux composants"
+    description="MazRollingText, MazDrawnIcon et MazMorphIcon. Avec les animations réduites, le mouvement devient un changement instantané."
   >
-    <ModernisationDemo title="MazRollingText: counter" hint="Only the digits that change roll. The direction follows the value.">
+    <ModernisationDemo title="MazRollingText : compteur" hint="Seuls les chiffres qui changent défilent. La direction suit la valeur.">
       <div class="flex flex-wrap items-center gap-4">
-        <MazBtn size="sm" color="neutral" aria-label="Decrease" @click="count--">
+        <MazBtn size="sm" color="neutral" aria-label="Diminuer" @click="count--">
           -
         </MazBtn>
         <MazRollingText :value="count" class="text-title-1" :direction="direction" />
-        <MazBtn size="sm" color="neutral" aria-label="Increase" @click="count++">
+        <MazBtn size="sm" color="neutral" aria-label="Augmenter" @click="count++">
           +
         </MazBtn>
         <MazBtn size="sm" color="secondary" @click="count += 100">
@@ -53,41 +53,41 @@ const morphState = reactive<Record<string, boolean>>({})
         </MazBtn>
         <MazSegmented
           v-model="direction"
-          :options="[{ label: 'auto', value: 'auto' }, { label: 'up', value: 'up' }, { label: 'down', value: 'down' }]"
+          :options="[{ label: 'auto', value: 'auto' }, { label: 'haut', value: 'up' }, { label: 'bas', value: 'down' }]"
           size="sm"
-          aria-label="Direction of the roll"
+          aria-label="Direction du défilement"
         />
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazRollingText: price" hint="Intl.NumberFormat with a currency, monthly or yearly.">
+    <ModernisationDemo title="MazRollingText : prix" hint="Intl.NumberFormat avec une devise, mensuel ou annuel.">
       <div class="flex flex-wrap items-center gap-4">
-        <MazSwitch v-model="yearly" label="Yearly" />
+        <MazSwitch v-model="yearly" label="Annuel" />
         <MazSegmented
           v-model="currency"
           :options="[{ label: 'USD', value: 'USD' }, { label: 'EUR', value: 'EUR' }, { label: 'JPY', value: 'JPY' }]"
           size="sm"
-          aria-label="Currency"
+          aria-label="Devise"
         />
         <MazRollingText
           :value="price"
-          locale="en-US"
+          locale="fr-FR"
           :format="{ style: 'currency', currency, maximumFractionDigits: 0 }"
           class="text-title-1"
         />
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazRollingText: text" hint="Works with text too: Copy becomes Copied.">
+    <ModernisationDemo title="MazRollingText : texte" hint="Fonctionne aussi avec du texte : Copier devient Copié.">
       <MazBtn size="sm" @click="copy">
-        <MazRollingText :value="copied ? 'Copied' : 'Copy'" />
+        <MazRollingText :value="copied ? 'Copié' : 'Copier'" />
       </MazBtn>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazDrawnIcon" hint="Icons drawn stroke by stroke. Replay draws them again.">
+    <ModernisationDemo title="MazDrawnIcon" hint="Icônes tracées trait par trait. Rejouer les trace à nouveau.">
       <div class="mb-4">
         <MazBtn size="sm" @click="replay">
-          Replay
+          Rejouer
         </MazBtn>
       </div>
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
@@ -98,7 +98,7 @@ const morphState = reactive<Record<string, boolean>>({})
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazMorphIcon" hint="Each button toggles the pair (aria-pressed).">
+    <ModernisationDemo title="MazMorphIcon" hint="Chaque bouton bascule la paire (aria-pressed).">
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         <!-- maz-ui-review-ignore prefer-maz-component -- toggle card around the icon -->
         <button

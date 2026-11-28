@@ -193,4 +193,14 @@ const box = ref<HTMLElement>()
 const chat = ref<HTMLElement>()
 </script>
 
+## Motion
+
+The arrow takes off when the button is clicked, and comes back from the other side. Use `:animated="false"` to keep it still.
+
+```html
+<MazBtnScroll :animated="false" />
+```
+
+With reduced motion, the arrow does not move.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-btn-scroll.doc.md-->

@@ -4,6 +4,7 @@ import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { Component, HTMLAttributes } from 'vue'
 import type { MazColor, MazRoundedSize } from './types.ts'
 import { ROUNDED_SIZE_CLASS } from './constants.ts'
+import { getFieldFocusColor } from './MazField/useFieldState.ts'
 
 export type MazMarkdownEditorMode = 'write' | 'preview' | 'split'
 
@@ -754,6 +755,8 @@ function handleChange(event: Event) {
   emits('change', event)
 }
 
+const fieldState = computed(() => (error ? 'error' : success ? 'success' : warning ? 'warning' : undefined))
+
 const borderStyle = computed(() => {
   if (error)
     return 'maz:border-destructive'
@@ -908,9 +911,9 @@ defineExpose({
         `--${color}`,
         {
           '--is-disabled maz:disabled-cursor maz:border-divider maz:bg-surface-600 maz:text-muted maz:dark:border-divider-400 maz:dark:bg-surface-400': disabled,
-          'maz:border maz:border-solid maz:bg-input': !disabled,
+          'maz:border maz:border-solid maz:field-focus maz:bg-input': !disabled,
         },
-      ]"
+      ]" :style="{ '--m-field-color': getFieldFocusColor(color, fieldState) }"
     >
       <div
         class="m-markdown-editor__header maz:flex maz:items-center maz:justify-between maz:gap-2 maz:border-b maz:bg-container maz:px-2 maz:py-1.5"
@@ -1085,45 +1088,5 @@ defineExpose({
 
 .m-markdown-editor__box.--is-disabled * {
   @apply maz:disabled-cursor maz:text-muted;
-}
-
-.m-markdown-editor__box.--contrast:focus-within {
-  @apply maz:border-contrast;
-}
-
-.m-markdown-editor__box.--neutral:focus-within {
-  border-color: var(--maz-neutral-foreground);
-}
-
-.m-markdown-editor__box.--destructive:focus-within {
-  @apply maz:border-destructive;
-}
-
-.m-markdown-editor__box.--warning:focus-within {
-  @apply maz:border-warning;
-}
-
-.m-markdown-editor__box.--success:focus-within {
-  @apply maz:border-success;
-}
-
-.m-markdown-editor__box.--info:focus-within {
-  @apply maz:border-info;
-}
-
-.m-markdown-editor__box.--accent:focus-within {
-  @apply maz:border-accent;
-}
-
-.m-markdown-editor__box.--secondary:focus-within {
-  @apply maz:border-secondary;
-}
-
-.m-markdown-editor__box.--primary:focus-within {
-  @apply maz:border-primary;
-}
-
-.m-markdown-editor__box {
-  transition: border-color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 }
 </style>

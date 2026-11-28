@@ -9,6 +9,10 @@ description: MazBtn is a standalone component that replaces the standard html bu
 
 <!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
+::: tip Compact density
+The `density: 'compact'` option makes every size about 14% shorter. See [Density](./../ecosystem/themes.md#density).
+:::
+
 ## Basic usage
 
 <ComponentDemo expanded>
@@ -726,7 +730,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 ```
 
 <script setup lang="ts">
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
   import { MazHome } from '@maz-ui/icons/raw/MazHome'
   import { MazCommandLine } from '@maz-ui/icons/raw/MazCommandLine'
@@ -749,6 +753,96 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
+  const holdCount = ref(0)
+  const saveState = ref<'idle' | 'loading' | 'success'>('idle')
+
+  function save() {
+    saveState.value = 'loading'
+    setTimeout(() => { saveState.value = 'success' }, 1200)
+    setTimeout(() => { saveState.value = 'idle' }, 3000)
+  }
 </script>
+
+## Success
+
+After a `loading`, set `success` to confirm. A check draws itself where the loader was. With `success-text`, the label rolls to it and the button keeps the width of the longest label.
+
+<ComponentDemo>
+  <MazBtn
+    text="Save"
+    success-text="Saved"
+    loading-position="start"
+    :loading="saveState === 'loading'"
+    :success="saveState === 'success'"
+    @click="save"
+  />
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBtn from 'maz-ui/components/MazBtn'
+import { ref } from 'vue'
+
+const state = ref<'idle' | 'loading' | 'success'>('idle')
+
+function save() {
+  state.value = 'loading'
+  setTimeout(() => (state.value = 'success'), 1200)
+  setTimeout(() => (state.value = 'idle'), 3000)
+}
+</script>
+
+<template>
+  <MazBtn
+    text="Save"
+    success-text="Saved"
+    loading-position="start"
+    :loading="state === 'loading'"
+    :success="state === 'success'"
+    @click="save"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Hold to confirm
+
+`hold` asks the user to keep the button pressed before the action happens, for a destructive action. The button fills while it is held, and `hold-confirm` is emitted when it is full. Released earlier, the fill drains and nothing happens.
+
+It works with the pointer, and with `Space` or `Enter` for the keyboard. A screen reader reads how to confirm. Change the time with `hold-duration` (in milliseconds, 1000 by default).
+
+<ComponentDemo>
+  <div class="maz:flex maz:items-center maz:gap-4">
+    <MazBtn hold color="destructive" text="Hold to delete" @hold-confirm="holdCount++" />
+    <span class="maz:text-muted">Confirmed {{ holdCount }} times</span>
+  </div>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBtn from 'maz-ui/components/MazBtn'
+
+function remove() {
+  // delete the item
+}
+</script>
+
+<template>
+  <MazBtn hold color="destructive" text="Hold to delete" @hold-confirm="remove" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The button sinks a little while it is pressed.
+- The check draws itself and the label rolls: the width never jumps.
+- With reduced motion, the press and the roll are replaced by a short fade. The hold fill stays: it shows the progress.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-btn.doc.md-->

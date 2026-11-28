@@ -766,6 +766,40 @@ export interface MazTableHeadersEnriched {
 
 ## Props & Events emitted
 
+## Motion
+
+- With `sortable`, the sorted column gets a soft band. `animated-rows` makes the rows slide to their new place when the sort changes.
+- With `scrollable` (or `virtualized`) and a `max-height`, the header stays at the top while the rows scroll.
+- The hover and the stripes follow the theme in light and dark mode.
+
+<div class="vp-raw">
+<MazTable
+  sortable
+  scrollable
+  max-height="12rem"
+  size="sm"
+  :headers="[
+    { label: 'Id', key: 'id', width: '4rem' },
+    { label: 'Name', key: 'name' },
+    { label: 'Score', key: 'score', align: 'center' },
+  ]"
+  :rows="[
+    { id: 1, name: 'John', score: 12 },
+    { id: 2, name: 'Jane', score: 24 },
+    { id: 3, name: 'Alice', score: 8 },
+    { id: 4, name: 'Bob', score: 31 },
+    { id: 5, name: 'Carol', score: 17 },
+    { id: 6, name: 'Dave', score: 5 },
+    { id: 7, name: 'Erin', score: 28 },
+    { id: 8, name: 'Frank', score: 19 },
+  ]"
+/>
+</div>
+
+```html
+<MazTable sortable scrollable max-height="12rem" :headers="headers" :rows="rows" />
+```
+
 <!--@include: ./../../.vitepress/generated-docs/maz-table.doc.md-->
 
 ## MazTableCell

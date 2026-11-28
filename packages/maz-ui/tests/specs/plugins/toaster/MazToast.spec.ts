@@ -281,7 +281,7 @@ describe('given MazToast component', () => {
   })
 
   describe('when the timer progresses', () => {
-    it('then progressBarWidth tracks timer.remainingTime', async () => {
+    it('then the progress line scales with timer.remainingTime', async () => {
       wrapper = mount(MazToast, {
         props: {
           message: 'Test message',
@@ -298,7 +298,7 @@ describe('given MazToast component', () => {
 
       const progressBarInner = wrapper.find<HTMLDivElement>('.m-toast__progress-bar-inner')
       expect(progressBarInner.exists()).toBe(true)
-      expect(progressBarInner.element.style.width).toMatch(/^\d+(\.\d+)?%$/)
+      expect(progressBarInner.element.style.transform).toMatch(/^scaleX\(\d(\.\d+)?\)$/)
     })
   })
 

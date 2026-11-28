@@ -40,6 +40,10 @@ const images: MazGalleryImage[] = [
 </template>
 ```
 
+## Full screen
+
+A click on an image opens [MazLightbox](./maz-lightbox.md) with all the images of the gallery: arrows, swipe, counter and zoom. Set `:zoom="false"` to turn it off.
+
 ## Set height by CSS
 
 <div class="vp-raw">

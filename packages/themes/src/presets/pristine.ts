@@ -38,11 +38,23 @@ export const pristine: ThemePreset = {
   scales: {
     rounded: { md: '0.625rem' },
     shadow: {
-      sm: '0 1px 2px 0 rgb(0 0 0 / 0.04)',
-      md: '0 2px 6px -1px rgb(0 0 0 / 0.06), 0 1px 3px -1px rgb(0 0 0 / 0.04)',
-      lg: '0 8px 16px -4px rgb(0 0 0 / 0.08), 0 3px 6px -2px rgb(0 0 0 / 0.04)',
-      xl: '0 16px 28px -8px rgb(0 0 0 / 0.1), 0 6px 12px -4px rgb(0 0 0 / 0.06)',
-      elevation: '0 4px 12px -2px rgb(0 0 0 / 0.06), 0 2px 4px -1px rgb(0 0 0 / 0.04)',
+      'sm': '0 1px 2px 0 rgb(0 0 0 / 0.04)',
+      'md': '0 2px 6px -1px rgb(0 0 0 / 0.06), 0 1px 3px -1px rgb(0 0 0 / 0.04)',
+      'lg': '0 8px 16px -4px rgb(0 0 0 / 0.08), 0 3px 6px -2px rgb(0 0 0 / 0.04)',
+      'xl': '0 16px 28px -8px rgb(0 0 0 / 0.1), 0 6px 12px -4px rgb(0 0 0 / 0.06)',
+      'elevation': '0 4px 12px -2px rgb(0 0 0 / 0.06), 0 2px 4px -1px rgb(0 0 0 / 0.04)',
+      'elevation-1': {
+        light: '0 2px 5px -1px rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.05)',
+        dark: '0 2px 5px -1px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.1)',
+      },
+      'elevation-2': {
+        light: '0 8px 18px -4px rgb(0 0 0 / 0.1), 0 3px 6px -2px rgb(0 0 0 / 0.06)',
+        dark: '0 8px 18px -4px rgb(0 0 0 / 0.6), 0 3px 6px -2px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.16)',
+      },
+      'elevation-3': {
+        light: '0 18px 36px -8px rgb(0 0 0 / 0.16), 0 8px 14px -4px rgb(0 0 0 / 0.08)',
+        dark: '0 18px 40px -8px rgb(0 0 0 / 0.75), 0 8px 16px -4px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.24)',
+      },
     },
   },
   typography: typographyWith({

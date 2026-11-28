@@ -1,6 +1,7 @@
 import type { Ref } from 'vue'
 import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import { onBeforeUnmount, onMounted, watch } from 'vue'
+import { useMotionPreference } from './useMotionPreference'
 
 export interface CanvasScene {
   ctx: CanvasRenderingContext2D
@@ -31,7 +32,7 @@ export function useCanvasScene(canvas: Ref<HTMLCanvasElement | undefined>, { set
   let visible = false
   let resizeObserver: ResizeObserver | undefined
   let intersectionObserver: IntersectionObserver | undefined
-  const reducedMotion = typeof window !== 'undefined' && globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reducedMotion = useMotionPreference()
 
   function readColors(element: HTMLElement): CanvasScene['colors'] {
     const probe = document.createElement('span')
@@ -57,7 +58,7 @@ export function useCanvasScene(canvas: Ref<HTMLCanvasElement | undefined>, { set
     scene.width = width
     scene.height = height
     setup(scene)
-    if (reducedMotion)
+    if (reducedMotion.value)
       frame(scene, 0)
   }
 
@@ -71,7 +72,7 @@ export function useCanvasScene(canvas: Ref<HTMLCanvasElement | undefined>, { set
   }
 
   function start() {
-    if (reducedMotion || raf)
+    if (reducedMotion.value || raf)
       return
     last = 0
     raf = requestAnimationFrame(loop)
@@ -133,9 +134,20 @@ export function useCanvasScene(canvas: Ref<HTMLCanvasElement | undefined>, { set
       if (!scene || !canvas.value)
         return
       scene.colors = readColors(canvas.value)
-      if (reducedMotion)
+      if (reducedMotion.value)
         frame(scene, 0)
     })
+  })
+
+  watch(reducedMotion, (reduced) => {
+    if (reduced) {
+      stop()
+      if (scene)
+        frame(scene, 0)
+    }
+    else if (visible) {
+      start()
+    }
   })
 
   onBeforeUnmount(() => {

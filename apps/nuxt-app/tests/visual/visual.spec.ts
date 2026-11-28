@@ -78,7 +78,7 @@ test('overlay select open', async ({ page }) => {
 test('overlay dropdown open', async ({ page }) => {
   const block = page.locator('[data-visual="dropdown"]')
   await block.getByText('Actions').click()
-  await expect(page.getByText('Archive', { exact: true })).toBeVisible()
+  await expect(page.getByText('Archiver', { exact: true })).toBeVisible()
   await expect(block).toHaveScreenshot('dropdown-open.png')
 })
 

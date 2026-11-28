@@ -21,6 +21,7 @@ import { MazPaintBrush } from '@maz-ui/icons/raw/MazPaintBrush'
 import { MazRocketLaunch } from '@maz-ui/icons/raw/MazRocketLaunch'
 import { MazSparkles } from '@maz-ui/icons/raw/MazSparkles'
 import { MazSun } from '@maz-ui/icons/raw/MazSun'
+import { vReveal } from 'maz-ui/directives/vReveal'
 import { computed, defineAsyncComponent } from 'vue'
 import { PACKAGES } from './content'
 import HomeChapter from './HomeChapter.vue'
@@ -56,7 +57,7 @@ const ICONS = [
 </script>
 
 <template>
-  <HomeChapter id="ecosystem" number="05" label="Ecosystem" :swatch>
+  <HomeChapter id="ecosystem" number="06" label="Ecosystem" :swatch>
     <template #backdrop>
       <ClientOnly>
         <HeroMagnetic />
@@ -85,7 +86,7 @@ const ICONS = [
 
     <ul class="maz:m-0 maz:grid maz:list-none maz:gap-4 maz:p-0 maz:tab-m:grid-cols-2 maz:lap-m:grid-cols-3">
       <li v-for="(pkg, index) in PACKAGES" :key="pkg.name" class="maz:min-w-0">
-        <MazAnimatedElement :delay="index * 80" :duration="700" class="maz:h-full">
+        <div v-reveal="{ effect: 'slide-up', delay: index * 80, duration: 700 }" class="maz:h-full">
           <MazCardSpotlight :color="index % 2 ? 'accent' : 'primary'" class="maz:size-full" content-class="maz:flex maz:h-full maz:flex-col maz:gap-3">
             <MazLink :href="pkg.link" color="inherit" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }" class="maz:self-start maz:font-mono maz:text-[1.0625rem] maz:font-semibold">
               {{ pkg.name }}
@@ -96,7 +97,7 @@ const ICONS = [
             </p>
             <MazWindowMockup v-if="pkg.snippet" variant="terminal" :title="pkg.name" :code="data.snippets[pkg.snippet].code" :language="data.snippets[pkg.snippet].lang" class="maz:mt-auto" />
           </MazCardSpotlight>
-        </MazAnimatedElement>
+        </div>
       </li>
     </ul>
   </HomeChapter>

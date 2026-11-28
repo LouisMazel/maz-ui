@@ -285,6 +285,32 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
   </template>
 </ComponentDemo>
 
+## Grouped delay
+
+With a `delay`, a tooltip that opens less than 300 ms after another one closed (or while another one is open) shows without waiting. Moving across a row of buttons feels instant after the first tooltip.
+
+<ComponentDemo>
+  <div class="maz:flex maz:gap-3 maz:flex-wrap">
+    <MazBtn v-tooltip="{ text: 'Edit', delay: 600 }" size="sm" color="neutral">Edit</MazBtn>
+    <MazBtn v-tooltip="{ text: 'Copy', delay: 600 }" size="sm" color="neutral">Copy</MazBtn>
+    <MazBtn v-tooltip="{ text: 'Delete', delay: 600 }" size="sm" color="neutral">Delete</MazBtn>
+  </div>
+
+<template #code>
+
+```html
+<MazBtn v-tooltip="{ text: 'Edit', delay: 600 }">Edit</MazBtn>
+<MazBtn v-tooltip="{ text: 'Copy', delay: 600 }">Copy</MazBtn>
+<MazBtn v-tooltip="{ text: 'Delete', delay: 600 }">Delete</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+The tooltip fades in and grows from the element it describes (see [MazPopover](./../components/maz-popover.md#motion)). It closes on <kbd>Escape</kbd>, and a dialog around it stays open. Reduced motion turns the movement off, and so does the `motion` option of `MazUi`.
+
 ## Trigger
 
 You can change the trigger mode of the tooltip by passing a `trigger` option.
@@ -486,8 +512,8 @@ interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
    */
   closeOnClickOutside?: boolean
   /**
-   * Close on escape
-   * @default false
+   * Close on escape (without closing the dialog around the tooltip)
+   * @default true
    */
   closeOnEscape?: boolean
 

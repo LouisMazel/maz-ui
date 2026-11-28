@@ -158,6 +158,17 @@ The sizes have the heights of `MazInput`: aligned in a form, a `MazInputTags` an
   </template>
 </ComponentDemo>
 
+## Label above the field
+
+Set `topLabel: true` in the [global defaults](../guide/global-defaults.md) to show the `label` above the field instead of floating inside it. A `top-label` set on an instance still wins.
+
+## Motion
+
+- A new tag grows in, a removed one shrinks while the others glide to their place.
+- Typing a tag that already exists is ignored, and its twin shakes to show where it is.
+
+Set `:animated="false"` to turn them off. Reduced motion is respected.
+
 The other attributes (`name`, `autocomplete`, `@focus`...) are passed to the `<input>`.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-input-tags.doc.md-->

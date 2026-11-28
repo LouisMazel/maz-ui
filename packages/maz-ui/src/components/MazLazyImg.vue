@@ -24,6 +24,7 @@ const {
   class: classProp,
   src,
   observerOnce = true,
+  placeholder,
 } = defineProps<MazLazyImgProps>()
 
 const emits = defineEmits<{
@@ -53,6 +54,12 @@ export interface MazLazyImgProps {
   alt?: string
   /** Remove the loader */
   hideLoader?: boolean
+  /**
+   * Effect while the image loads: `blur` shows a soft tinted block instead of the spinner, then the image fades in and goes from blurred to sharp.
+   * Without it, the spinner is displayed
+   * @values `'blur'`
+   */
+  placeholder?: 'blur'
   /** Remove the observer once the image is loaded */
   observerOnce?: boolean
   /** Remove the observer once the image is loaded */
@@ -116,7 +123,8 @@ defineExpose({
     class="m-lazy-img-component m-reset-css maz:relative maz:inline-flex maz:flex-center maz:align-top"
     :class="[
       {
-        '--use-loader': !hideLoader,
+        '--use-loader': !hideLoader && placeholder !== 'blur',
+        '--blur': placeholder === 'blur',
         '--height-full': imageHeightFull,
         '--block': block,
         'maz:w-full': block,
@@ -139,7 +147,7 @@ defineExpose({
       :alt
       :class="imgClass"
     >
-    <div v-if="!hideLoader" class="m-lazy-img-component-loader maz:absolute maz:inset-0 maz:hidden maz:flex-center">
+    <div v-if="!hideLoader && placeholder !== 'blur'" class="m-lazy-img-component-loader maz:absolute maz:inset-0 maz:hidden maz:flex-center">
       <MazSpinner size="2em" />
     </div>
     <slot />
@@ -169,6 +177,30 @@ defineExpose({
   &.m-lazy-loading {
     & .m-lazy-img-component-loader {
       @apply maz:flex;
+    }
+  }
+
+  &.--blur {
+    overflow: hidden;
+    background-color: color-mix(in srgb, var(--maz-foreground) 8%, transparent);
+    transition: background-color calc(var(--maz-motion-slow, 320ms) * var(--maz-motion-scale, 1))
+      var(--maz-easing-out, ease-out);
+
+    & img {
+      transition:
+        filter calc(var(--maz-motion-slower, 450ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+        opacity calc(var(--maz-motion-slow, 320ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+        scale calc(var(--maz-motion-slower, 450ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+    }
+
+    &:not(.m-lazy-loaded, .m-lazy-error) img {
+      filter: blur(var(--maz-lazy-img-blur, 1rem));
+      opacity: 0;
+      scale: 1.05;
+    }
+
+    &.m-lazy-loaded {
+      background-color: transparent;
     }
   }
 }

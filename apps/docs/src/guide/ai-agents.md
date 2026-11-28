@@ -342,6 +342,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | `root-import`, `internal-import` | error | Runtime imports from `maz-ui` (types only) or from `src`/`dist` |
 | `nuxt-auto-import` | info | Imports that `@maz-ui/nuxt` already auto-imports (a component used in the script, `h(MazIcon)`, keeps its import) |
 | `deprecated-api` | warning | `app.use(ToastPlugin)`, `DialogPlugin`, `WaitPlugin`, `$mazToast`... and `mazUi.plugins` in `nuxt.config`: the composables work without them (removed in v6) |
+| `prefer-reveal` | warning | `data-maz-aos`, `useAos`, `AosPlugin`, the `aos` option and `maz-ui/aos.css`: `v-reveal` replaces them, with the equivalent effect |
 | `parse-error` | error | A file the parser cannot read (an unclosed tag): it is not reviewed |
 | `invalid-ignore` | error | A `maz-ui-review-ignore` comment without a reason, or on a rule that cannot be ignored |
 

@@ -169,6 +169,7 @@ const {
   locale: componentLocale,
   color = 'primary',
   label,
+  topLabel,
   hint,
   translations,
   search = true,
@@ -365,6 +366,7 @@ const flagUrl = computed(() => {
       :color
       :placeholder
       :label
+      :top-label
       :size
       :multiple="false"
       :list-position
@@ -408,7 +410,7 @@ const flagUrl = computed(() => {
       <template #no-results>
         <slot name="no-results" />
       </template>
-      <template #default="{ option, isSelected }">
+      <template #default="{ option, isSelected, segments }">
         <div
           class="m-select-country__select__item maz:flex maz:w-full maz:items-center maz:gap-2 maz:truncate maz:text-sm"
           :class="{
@@ -450,7 +452,13 @@ const flagUrl = computed(() => {
               </span>
             </slot>
             <slot name="country-list-name" :option="option" :is-selected="isSelected">
-              <span>
+              <span v-if="segments">
+                <template v-for="(segment, segmentIndex) in segments" :key="segmentIndex">
+                  <mark v-if="segment.match" class="m-select-country__mark">{{ segment.text }}</mark>
+                  <template v-else>{{ segment.text }}</template>
+                </template>
+              </span>
+              <span v-else>
                 {{ option.name }}
               </span>
             </slot>
@@ -466,6 +474,14 @@ const flagUrl = computed(() => {
 
 .m-select-country__select:deep(.m-input-label) {
   @apply maz:p-0!;
+}
+
+.m-select-country__mark {
+  @apply maz:bg-transparent maz:font-semibold maz:text-inherit;
+
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .m-select-country__country-flag {

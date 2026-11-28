@@ -16,7 +16,8 @@ function mountDropdown() {
 
 function press(key: string) {
   const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true })
-  document.dispatchEvent(event)
+  const target = document.activeElement ?? document
+  target.dispatchEvent(event)
   return event
 }
 

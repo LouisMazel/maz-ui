@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const toolbar = useTemplateRef<HTMLElement>('toolbar')
-const toolbarItems = ['Bold', 'Italic', 'Underline', 'Strike', 'Code', 'Link']
+const toolbarItems = ['Gras', 'Italique', 'Souligné', 'Barré', 'Code', 'Lien']
 const { onKeydown, currentIndex } = useRovingFocus({ container: toolbar, selector: 'button', typeahead: true })
 
 const panelOpen = ref(false)
@@ -32,9 +32,9 @@ function onZoneClick(event: MouseEvent) {
 }
 
 const cards = [
-  { id: 1, title: 'Aurora', text: 'Northern lights over a frozen lake.' },
-  { id: 2, title: 'Canyon', text: 'Red rock walls, a thin river at the bottom.' },
-  { id: 3, title: 'Harbor', text: 'Fishing boats waiting for the tide.' },
+  { id: 1, title: 'Aurore', text: 'Aurore boréale sur un lac gelé.' },
+  { id: 2, title: 'Canyon', text: 'Parois de roche rouge, une rivière étroite au fond.' },
+  { id: 3, title: 'Port', text: 'Des bateaux de pêche qui attendent la marée.' },
 ]
 const selectedCard = ref<number>()
 const cardOpen = ref(false)
@@ -60,28 +60,28 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onEscape))
 <template>
   <ModernisationSection
     id="new-composables"
-    title="5. New composables"
-    description="useSlidingIndicator, useRovingFocus and useOriginTransition, the bricks behind the new motion."
+    title="5. Nouveaux composables"
+    description="useSlidingIndicator, useRovingFocus et useOriginTransition, les briques derrière les nouvelles animations."
   >
-    <ModernisationDemo title="useSlidingIndicator" hint="The pill follows the active tab. With stretch, it stretches toward the target then shrinks. No animation on the first placement.">
+    <ModernisationDemo title="useSlidingIndicator" hint="La pastille suit l'onglet actif. Avec stretch, elle s'étire vers la cible puis se rétracte. Pas d'animation au premier placement.">
       <div class="flex flex-col items-start gap-4">
         <div>
           <p class="mb-2 text-caption">
-            stretch off
+            stretch désactivé
           </p>
           <ModernisationSlidingTabs />
         </div>
         <div>
           <p class="mb-2 text-caption">
-            stretch on
+            stretch activé
           </p>
           <ModernisationSlidingTabs stretch />
         </div>
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="useRovingFocus" hint="Tab enters the toolbar once. Arrows follow the direction (flip it to RTL), Home and End jump to the ends, typing a letter jumps to the matching item.">
-      <div ref="toolbar" role="toolbar" aria-label="Formatting" class="inline-flex flex-wrap gap-2" @keydown="onKeydown">
+    <ModernisationDemo title="useRovingFocus" hint="Tab entre une seule fois dans la barre d'outils. Les flèches suivent la direction (passe en RTL), Début et Fin sautent aux extrémités, taper une lettre saute à l'élément correspondant.">
+      <div ref="toolbar" role="toolbar" aria-label="Mise en forme" class="inline-flex flex-wrap gap-2" @keydown="onKeydown">
         <!-- maz-ui-review-ignore prefer-maz-component -- demo of useRovingFocus on native buttons -->
         <button
           v-for="(item, index) in toolbarItems"
@@ -95,36 +95,36 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onEscape))
         </button>
       </div>
       <p class="mt-3 text-caption">
-        Current item: {{ toolbarItems[currentIndex] }}
+        Élément courant : {{ toolbarItems[currentIndex] }}
       </p>
     </ModernisationDemo>
 
-    <ModernisationDemo title="useOriginTransition: from a button" hint="The panel grows out of the button and goes back into it. Reduced motion gives a short fade.">
+    <ModernisationDemo title="useOriginTransition : depuis un bouton" hint="Le panneau sort du bouton et y retourne. Avec les animations réduites, un court fondu.">
       <div class="flex min-h-48 flex-col items-start gap-4">
         <MazBtn @click="togglePanel">
-          {{ panelOpen ? 'Close' : 'Open the panel' }}
+          {{ panelOpen ? 'Fermer' : 'Ouvrir le panneau' }}
         </MazBtn>
         <Transition :css="false" @enter="panelTransition.enter" @leave="panelTransition.leave">
           <div v-if="panelOpen" class="w-72 max-w-full rounded-xl border border-divider bg-surface p-4 shadow-lg">
             <p class="text-label">
-              A panel
+              Un panneau
             </p>
             <p class="text-body-sm text-muted">
-              It grew from the button.
+              Il est sorti du bouton.
             </p>
           </div>
         </Transition>
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="useOriginTransition: from a point" hint="Click anywhere in the zone: the panel grows from the pointer. Click the panel to close it.">
+    <ModernisationDemo title="useOriginTransition : depuis un point" hint="Clique n'importe où dans la zone : le panneau grandit depuis le pointeur. Clique sur le panneau pour le fermer.">
       <div
         ref="zone"
         class="relative h-64 cursor-pointer overflow-hidden rounded-xl border border-dashed border-divider"
         @click.self="onZoneClick"
       >
         <p class="pointer-events-none p-4 text-muted">
-          Click anywhere
+          Clique n'importe où
         </p>
         <Transition :css="false" @enter="pointTransition.enter" @leave="pointTransition.leave">
           <button
@@ -134,14 +134,14 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onEscape))
             :style="{ left: `${pointPosition.left}px`, top: `${pointPosition.top}px` }"
             @click="pointOpen = false"
           >
-            <span class="block text-label">Here</span>
-            <span class="text-caption">Click to close</span>
+            <span class="block text-label">Ici</span>
+            <span class="text-caption">Clique pour fermer</span>
           </button>
         </Transition>
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="useOriginTransition: a card expands from itself" hint="Open a card: it grows from its own position and goes back to it. Escape or the button closes it.">
+    <ModernisationDemo title="useOriginTransition : une carte s'agrandit depuis elle-même" hint="Ouvre une carte : elle grandit depuis sa position et y retourne. Échap ou le bouton la ferme.">
       <div class="grid gap-4 sm:grid-cols-3">
         <button
           v-for="card in cards"
@@ -168,7 +168,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onEscape))
               {{ currentCard.text }}
             </p>
             <MazBtn size="sm" @click="cardOpen = false">
-              Close
+              Fermer
             </MazBtn>
           </div>
         </Transition>

@@ -71,7 +71,7 @@ function open(event: MouseEvent) {
 
 Without an origin, the element under the last `pointerdown` is used (a button, a link... when the pointerdown is less than one second old). This works when a dialog is opened by code after a click. [useDialog](./use-dialog) and MazDialog will pass their trigger.
 
-The element goes back to its origin on leave if this one is still in the page and visible. Otherwise it fades and scales to `0.97`.
+The element is opaque early on enter, so its growth from the origin is seen. On leave it takes the same time, eases in and out, and stays opaque until it reaches its origin. It goes back to its origin on leave if this one is still in the page and visible. Otherwise it fades and scales to `0.97`.
 
 ## Reduced motion
 
@@ -98,7 +98,7 @@ function useOriginTransition(options?: {
 | Option | Default | Description |
 |--------|---------|-------------|
 | `origin` | last pointerdown | Where the element grows from |
-| `duration` | `--maz-motion-normal` x `--maz-motion-scale` | Duration of the enter, in ms |
+| `duration` | `--maz-motion-slow` from an origin, `--maz-motion-normal` otherwise, x `--maz-motion-scale` | Duration of the enter, in ms |
 | `easing` | `--maz-easing-out` (enter), `--maz-easing-in` (leave) | CSS easing |
 | `leaveRatio` | `0.7` | Duration of the leave relative to the enter |
 | `fallback` | `'fade-scale'` | What to do without a usable origin: `'fade'`, or `'none'` to skip the animation |

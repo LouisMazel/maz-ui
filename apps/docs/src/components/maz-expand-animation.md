@@ -109,4 +109,8 @@ The content is always rendered, even closed. Add `lazy` to render it at the firs
   const visible2 = ref(false)
 </script>
 
+## Motion
+
+The height opens with `--maz-motion-slow` and the `--maz-easing-in-out` easing of the theme, and closes about 30% faster. Pass `duration` or `timing-function` to change them for one block. Reduced motion removes the transition.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-expand-animation.doc.md-->

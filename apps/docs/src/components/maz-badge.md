@@ -321,6 +321,78 @@ function removeTag(tag: string) {
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
   const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
+
+  const badgeCount = ref(9)
+  const tags = ref(['Vue', 'Nuxt', 'Vite', 'Tailwind'])
 </script>
+
+## Counter
+
+With `animated`, a number as the content rolls when it changes. Only the digits that change move.
+
+<ComponentDemo>
+  <div class="maz:flex maz:items-center maz:gap-4">
+    <MazBtn size="sm" @click="badgeCount--">-</MazBtn>
+    <MazBadge animated>{{ badgeCount }}</MazBadge>
+    <MazBtn size="sm" @click="badgeCount++">+</MazBtn>
+  </div>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBadge from 'maz-ui/components/MazBadge'
+import { ref } from 'vue'
+
+const count = ref(9)
+</script>
+
+<template>
+  <MazBadge animated>{{ count }}</MazBadge>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+A screen reader reads the number once. Without `animated`, the number is a plain text.
+
+## Removable badges in a list
+
+Put the badges in a `TransitionGroup` named `maz-list`: a removed badge shrinks away and the others glide to their new place.
+
+<ComponentDemo>
+  <TransitionGroup name="maz-list" tag="div" class="maz:relative maz:flex maz:flex-wrap maz:gap-2">
+    <MazBadge v-for="tag in tags" :key="tag" removable @remove="tags = tags.filter(item => item !== tag)">{{ tag }}</MazBadge>
+  </TransitionGroup>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBadge from 'maz-ui/components/MazBadge'
+import { ref } from 'vue'
+
+const tags = ref(['Vue', 'Nuxt', 'Vite', 'Tailwind'])
+</script>
+
+<template>
+  <TransitionGroup name="maz-list" tag="div" class="relative flex flex-wrap gap-2">
+    <MazBadge
+      v-for="tag in tags"
+      :key="tag"
+      removable
+      @remove="tags = tags.filter(item => item !== tag)"
+    >
+      {{ tag }}
+    </MazBadge>
+  </TransitionGroup>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+With reduced motion, the badges change without moving.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-badge.doc.md-->

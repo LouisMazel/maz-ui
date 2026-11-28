@@ -183,6 +183,50 @@ const updates: MazProgressBarSegment[] = [
 <MazProgressBar role="meter" :value="72" label="Disk usage" value-text="72 GB of 100 GB" color="warning" />
 ```
 
+## Percentage and check
+
+`show-value` displays the percentage after the bar, its digits roll when the value changes. With `check`, a check draws itself once the bar is full.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-3">
+    <MazProgressBar :value="progress" show-value check label="Upload" />
+    <div class="maz:flex maz:gap-2">
+      <MazBtn size="sm" @click="progress = Math.max(0, progress - 20)">-20</MazBtn>
+      <MazBtn size="sm" @click="progress = Math.min(100, progress + 20)">+20</MazBtn>
+    </div>
+  </div>
+
+<template #code>
+
+```html
+<MazProgressBar :value="progress" show-value check label="Upload" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Indeterminate
+
+When the progress is unknown, `indeterminate` slides a segment along the bar.
+
+<ComponentDemo>
+  <MazProgressBar indeterminate label="Loading" />
+
+<template #code>
+
+```html
+<MazProgressBar indeterminate label="Loading" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The parts grow smoothly when the value changes.
+- The percentage rolls and the check draws itself. Use `:animated="false"` to skip them.
+- With reduced motion, the segment of the indeterminate bar stays still.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-progress-bar.doc.md-->
 
 <script lang="ts" setup>

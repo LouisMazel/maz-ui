@@ -12,6 +12,8 @@ export interface MazSidebarContext {
   mode: ComputedRef<'push' | 'overlay'>
   variant: ComputedRef<'sidebar' | 'floating'>
   tooltipMode: ComputedRef<MazSidebarTooltipMode>
+  /** The pill, the labels and the width of the sidebar move; `false` makes them instant */
+  animated?: ComputedRef<boolean>
   toggle: () => void
   setOpen: (value: boolean) => void
 }
@@ -79,6 +81,11 @@ export interface MazSidebarProps {
    * @default 'maz-sidebar-open'
    */
   persistKey?: string
+  /**
+   * The width of the sidebar, the pill under the active item and the labels move when the sidebar opens or the page changes
+   * @default true
+   */
+  animated?: boolean
 }
 </script>
 
@@ -109,6 +116,7 @@ const {
   tooltipMode = 'closed',
   persist = true,
   persistKey = 'maz-sidebar-open',
+  animated = true,
 } = defineProps<MazSidebarProps>()
 
 const emit = defineEmits<{
@@ -222,6 +230,7 @@ provide(mazSidebarKey, {
   mode: computed(() => mode),
   variant: computed(() => variant),
   tooltipMode: computed(() => tooltipMode),
+  animated: computed(() => animated),
   toggle,
   setOpen,
 })
@@ -269,8 +278,9 @@ defineExpose({ toggle, setOpen })
   <aside
     v-if="mode === 'push'"
     :id="uniqueId"
-    class="m-sidebar --push m-reset-css maz:relative maz:flex maz:h-full maz:shrink-0 maz:flex-col maz:overflow-hidden maz:transition-[width,padding,border-width] maz:duration-250 maz:ease-in-out maz:motion-reduce:transition-none"
+    class="m-sidebar --push m-reset-css maz:relative maz:flex maz:h-full maz:shrink-0 maz:flex-col maz:overflow-hidden maz:motion-reduce:transition-none"
     :class="[
+      animated && 'maz:transition-[width,padding,border-width] maz:duration-(--duration-slow) maz:ease-in-out',
       `--${variant}`,
       variant === 'floating' ? ['maz:[--maz-sidebar-inset:1.5rem]', !isOffcanvasCollapsed && 'maz:p-2'] : 'maz:bg-container',
       `--side-${side}`,

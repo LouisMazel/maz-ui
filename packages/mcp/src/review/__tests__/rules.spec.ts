@@ -25,6 +25,26 @@ function withLegacyPlugins(): Knowledge {
   })))
 }
 
+function withoutReveal(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: {
+      ...loaded.fragment,
+      docs: loaded.fragment.docs.filter(doc => doc.id !== 'directives/reveal'),
+    },
+  })))
+}
+
+function withReveal(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: {
+      ...loaded.fragment,
+      docs: [...loaded.fragment.docs, { ...loaded.fragment.docs[0]!, id: 'directives/reveal', symbols: ['vReveal'] }],
+    },
+  })))
+}
+
 function review(code: string, filename = 'Test.vue', framework?: Framework): Finding[] {
   return reviewCode(code, {
     knowledge: getKnowledge(),
@@ -313,14 +333,14 @@ describe('given the unknown-event rule', () => {
     })
 
     it('then it explains that DOM events still work when the component declares none', () => {
-      expect(review(template('<MazBtn @qwxzvqwxzv="go">x</MazBtn>'))[0].suggestion).toContain('none (DOM events like @click still work)')
+      expect(review(template('<MazCarousel @qwxzvqwxzv="go">x</MazCarousel>'))[0].suggestion).toContain('none (DOM events like @click still work)')
     })
   })
 
   describe('when update:x targets a missing prop', () => {
     it('then it is an error', () => {
       expect(rulesOf(template('<MazDialog @update:qwxzv="go" />'))).toEqual(['unknown-event'])
-      expect(review(template('<MazBtn @update:qwxzv="go">x</MazBtn>'))[0].suggestion).toBe('Events: none.')
+      expect(review(template('<MazCarousel @update:qwxzv="go">x</MazCarousel>'))[0].suggestion).toBe('Events: none.')
     })
   })
 
@@ -1721,6 +1741,93 @@ describe('given the motion rules', () => {
   describe('when the classes use the theme durations', () => {
     it('then nothing is reported', () => {
       expect(rulesOf(template('<div class="transition-colors duration-(--duration-fast)" />'))).toEqual([])
+    })
+  })
+})
+
+describe('given the prefer-reveal rule', () => {
+  const reviewReveal = (code: string, filename = 'Test.vue', internalSource = false) => reviewCode(code, {
+    knowledge: withReveal(),
+    filename,
+    internalSource,
+  }).filter(finding => finding.rule === 'prefer-reveal')
+
+  describe.each([
+    ['fade-up', 'slide-up'],
+    ['fade-down-left', 'slide-down'],
+    ['slide-right', 'slide-start'],
+    ['fade-left', 'slide-end'],
+    ['zoom-in-up', 'scale'],
+    ['scale-in', 'scale'],
+    ['zoom-out', 'fade'],
+    ['flip-left', 'curtain-start'],
+    ['rotate-right', 'curtain-end'],
+    ['flip-up', 'curtain-up'],
+    ['flip-down', 'curtain-down'],
+  ])('when a template uses data-maz-aos="%s"', (aos, effect) => {
+    it(`then vReveal ${effect} is proposed`, () => {
+      const findings = reviewReveal(`<template>\n  <p data-maz-aos="${aos}" data-maz-aos-delay="200">Hello</p>\n</template>`)
+
+      expect(findings).toHaveLength(1)
+      expect(findings[0]?.line).toBe(2)
+      expect(findings[0]?.severity).toBe('warning')
+      expect(findings[0]?.suggestion).toContain(`v-reveal="'${effect}'"`)
+      expect(findings[0]?.suggestion).toContain(`data-maz-reveal="${effect}"`)
+    })
+  })
+
+  describe('when the script uses useAos, AosPlugin or the aos option', () => {
+    it('then each one is reported with its replacement', () => {
+      const code = 'import { useAos } from \'maz-ui/composables/useAos\'\nimport \'maz-ui/aos.css\'\napp.use(AosPlugin)\napp.use(MazUi, { theme, aos: { router } })\nconst aos = useAos()'
+      const findings = reviewReveal(code, 'main.ts')
+
+      expect(findings.map(finding => finding.message)).toEqual(expect.arrayContaining([
+        '`useAos` is the deprecated AOS plugin (removed in v6).',
+        '`AosPlugin` is deprecated (removed in v6).',
+        'The `aos` option is deprecated (removed in v6).',
+        '`maz-ui/aos.css` is the deprecated AOS plugin (removed in v6).',
+      ]))
+      expect(findings.find(finding => finding.message.startsWith('`useAos`'))?.suggestion).toContain('useReveal()')
+    })
+
+    it('then the option set to true is reported', () => {
+      expect(reviewReveal('export default defineNuxtConfig({ mazUi: { aos: true } })', 'nuxt.config.ts')).toHaveLength(1)
+    })
+
+    it('then the aos option of another library is not reported', () => {
+      expect(reviewReveal('export default defineConfig({ animations: { aos: { once: true } } })', 'app.config.ts')).toHaveLength(0)
+    })
+  })
+
+  describe('when the installed maz-ui has no vReveal', () => {
+    it('then nothing is proposed', () => {
+      expect(reviewCode('<template><p data-maz-aos="fade-up">Hello</p></template>', { knowledge: withoutReveal(), filename: 'Test.vue' }).map(finding => finding.rule)).not.toContain('prefer-reveal')
+    })
+  })
+
+  describe('when the code is the maz-ui repository', () => {
+    it('then nothing is reported', () => {
+      expect(reviewReveal('export function useAos() {}', 'useAos.ts', true)).toEqual([])
+    })
+  })
+
+  describe('when a style mentions aos', () => {
+    it('then nothing is reported', () => {
+      expect(reviewReveal('.a { color: red; } /* useAos */', 'a.css')).toEqual([])
+    })
+  })
+
+  describe('when the code uses vReveal', () => {
+    it('then nothing is reported', () => {
+      expect(reviewReveal('<template><p v-reveal="\'slide-up\'" data-maz-reveal="fade">Hello</p></template>')).toEqual([])
+    })
+  })
+
+  describe('when the aos npm package is imported', () => {
+    it('then vReveal is proposed', () => {
+      const findings = review('import AOS from \'aos\'', 'main.ts').filter(finding => finding.rule === 'prefer-ecosystem')
+
+      expect(findings[0]?.suggestion).toContain('vReveal')
     })
   })
 })

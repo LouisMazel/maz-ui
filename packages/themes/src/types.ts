@@ -51,6 +51,13 @@ export interface ThemeColors {
 export interface ThemeFoundation {
   'base-font-size'?: SizeUnit
   'border-width': SizeUnit
+  /**
+   * Border width of a boxed field (input, select, textarea, date picker, code, tags, markdown editor, dropzone...) with the focus.
+   * The width above `border-width` is drawn inside the box, so the layout does not move.
+   * Emitted as `--maz-focus-border-width`.
+   * @default '2px'
+   */
+  'focus-border-width'?: SizeUnit
   /** Body / sans font stack. */
   'font-family'?: string
   /**
@@ -181,6 +188,7 @@ export interface ThemeScales {
    * MazContainer, MazPopover, etc.
    */
   shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', ThemeShadowValue>
+    & Partial<Record<'elevation-1' | 'elevation-2' | 'elevation-3', ThemeShadowValue>>
   /**
    * Derivation of the 50..950 steps of the brand colors.
    * @default 'relative'

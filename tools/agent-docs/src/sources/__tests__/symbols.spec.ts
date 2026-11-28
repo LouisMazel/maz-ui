@@ -173,11 +173,11 @@ describe('given resolvePageSymbols', () => {
     })
   })
 
-  describe('when the page documents a plugin', () => {
-    it('then returns the exported plugin', () => {
+  describe('when the page documents the deprecated AOS plugin', () => {
+    it('then returns its composable', () => {
       expect(resolvePageSymbols(page('plugins/aos', 'plugin', 'maz-ui'), paths)).toEqual({
-        symbols: ['AosPlugin'],
-        imports: ['import { AosPlugin } from \'maz-ui/plugins/aos\''],
+        symbols: ['useAos'],
+        imports: ['import { useAos } from \'maz-ui/composables/useAos\''],
       })
     })
   })

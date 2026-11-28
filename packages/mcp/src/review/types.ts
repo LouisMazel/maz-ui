@@ -7,6 +7,10 @@ export const SEVERITY_ORDER: Record<Severity, number> = { error: 0, warning: 1, 
 export type RuleId
   = | 'unknown-component'
     | 'unknown-prop'
+    | 'deprecated-prop'
+    | 'hardcoded-motion'
+    | 'transition-all'
+    | 'layout-transition'
     | 'invalid-prop-value'
     | 'boolean-prop-string'
     | 'unknown-model'
@@ -48,6 +52,7 @@ export type RuleId
     | 'parse-error'
     | 'invalid-ignore'
     | 'deprecated-api'
+    | 'prefer-reveal'
 
 export interface Finding {
   rule: RuleId

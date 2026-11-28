@@ -3,11 +3,12 @@ import type { CSSProperties } from 'vue'
 import type { MazColor, MazColorOrFree, MazFillVariant, MazNeutralColor, MazSize } from './types.ts'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed } from 'vue'
+import { computed, Text, useSlots } from 'vue'
 import { useGlobalConfig, useInstanceFillVariant } from '../composables/useGlobalConfig.ts'
 import { isFreeColor, resolveColorForeground } from '../utils/freeColor.ts'
 import { ROUNDED_SIZE_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
+import MazRollingText from './MazRollingText.vue'
 import { getColor } from './types.ts'
 
 export type MazBadgeColor = MazColor | MazNeutralColor
@@ -68,6 +69,11 @@ export interface MazBadgeProps {
    * Accessible label of the remove button (translated "Remove" by default)
    */
   removeLabel?: string
+  /**
+   * A number as the content rolls when it changes (the digits are then rendered by `MazRollingText`)
+   * @default false
+   */
+  animated?: boolean
 }
 
 const {
@@ -77,6 +83,7 @@ const {
   pastel = false,
   removable = false,
   removeLabel,
+  animated = false,
 } = defineProps<MazBadgeProps>()
 
 const emits = defineEmits<{
@@ -88,6 +95,20 @@ const emits = defineEmits<{
 }>()
 
 const { t } = useTranslations()
+
+const slots = useSlots()
+const NUMBER_PATTERN = /^-?\d+(?:\.\d+)?$/
+
+function getRollingValue() {
+  if (!animated)
+    return undefined
+
+  const nodes = slots.default?.()
+  const node = nodes?.length === 1 ? nodes[0] : undefined
+  const content = node?.type === Text && typeof node.children === 'string' ? node.children.trim() : undefined
+
+  return content !== undefined && NUMBER_PATTERN.test(content) ? Number(content) : undefined
+}
 
 const { size, roundedSize, variant: configVariant } = useGlobalConfig<{ size: MazBadgeSize, roundedSize: MazBadgeRoundedSize, variant: MazFillVariant | undefined }>('MazBadge', { size: 'md', roundedSize: 'md', variant: undefined })
 const variant = useInstanceFillVariant(configVariant)
@@ -157,8 +178,9 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
     ]"
     :style="badgeStyle"
   >
+    <MazRollingText v-if="getRollingValue() !== undefined" :value="getRollingValue()!" />
     <!-- @slot Badge content -->
-    <slot />
+    <slot v-else />
 
     <button
       v-if="removable"
@@ -293,8 +315,8 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
     background-color: transparent;
     opacity: 0.75;
     transition:
-      opacity 150ms ease-in-out,
-      background-color 150ms ease-in-out;
+      opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+      background-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 
     &:hover {
       opacity: 1;
@@ -303,7 +325,7 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
 
     &:focus-visible {
       opacity: 1;
-      outline: 2px solid currentcolor;
+      outline: var(--maz-focus-ring-width, 2px) solid currentcolor;
       outline-offset: 1px;
     }
   }

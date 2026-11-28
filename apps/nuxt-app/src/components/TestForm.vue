@@ -5,22 +5,22 @@ import type { MazDatePickerPartialRangeValue, MazInput, MazRadioButtons, MazText
 import { array, boolean, literal, maxValue, minLength, minValue, nonEmpty, number as numberAction, object, pipe, string } from 'valibot'
 
 const schema = ref({
-  name: pipe(string('Name is required'), nonEmpty('Name is required')),
-  age: pipe(numberAction('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-  agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
-  country: pipe(string('Country is required'), nonEmpty('Country is required')),
-  code: pipe(string('Code is required'), nonEmpty('Code is required'), minLength(4, 'Code must be 4 characters')),
-  number: pipe(numberAction('Number is required'), minValue(1, 'Number min 1')),
-  price: pipe(numberAction('Price is required'), minValue(2, 'Price min 2')),
-  tags: pipe(array(string(), 'Tags is required'), nonEmpty('Tags is required')),
-  phone: pipe(string('Phone is required'), nonEmpty('Phone is required')),
-  radio: pipe(string('Radio is required'), nonEmpty('Radio is required')),
-  radioButtons: pipe(string('RadioButtons is required'), nonEmpty('RadioButtons is required')),
-  switch: pipe(boolean('Switch is required'), literal(true, 'Switch is required')),
-  textarea: pipe(string('Textarea is required'), nonEmpty('Textarea is required')),
+  name: pipe(string('Le nom est requis'), nonEmpty('Le nom est requis')),
+  age: pipe(numberAction('L\'âge est requis'), minValue(18, 'L\'âge doit être supérieur à 18'), maxValue(100, 'L\'âge doit être inférieur à 100')),
+  agree: pipe(boolean('Tu dois accepter les conditions générales'), literal(true, 'Tu dois accepter les conditions générales')),
+  country: pipe(string('Le pays est requis'), nonEmpty('Le pays est requis')),
+  code: pipe(string('Le code est requis'), nonEmpty('Le code est requis'), minLength(4, 'Le code doit faire 4 caractères')),
+  number: pipe(numberAction('Le nombre est requis'), minValue(1, 'Nombre minimum : 1')),
+  price: pipe(numberAction('Le prix est requis'), minValue(2, 'Prix minimum : 2')),
+  tags: pipe(array(string(), 'Les tags sont requis'), nonEmpty('Les tags sont requis')),
+  phone: pipe(string('Le téléphone est requis'), nonEmpty('Le téléphone est requis')),
+  radio: pipe(string('Le radio est requis'), nonEmpty('Le radio est requis')),
+  radioButtons: pipe(string('Le choix est requis'), nonEmpty('Le choix est requis')),
+  switch: pipe(boolean('Le switch est requis'), literal(true, 'Le switch est requis')),
+  textarea: pipe(string('Le message est requis'), nonEmpty('Le message est requis')),
   date: object({
-    start: pipe(string('Start date is required'), nonEmpty('Start date is required')),
-    end: pipe(string('End date is required'), nonEmpty('End date is required')),
+    start: pipe(string('La date de début est requise'), nonEmpty('La date de début est requise')),
+    end: pipe(string('La date de fin est requise'), nonEmpty('La date de fin est requise')),
   }),
 })
 
@@ -91,9 +91,9 @@ const onSubmit = handleSubmit((formData) => {
       id="name"
       ref="nameRef"
       v-model="name"
-      top-label="Enter your name"
+      top-label="Saisis ton nom"
       :assistive-text="nameErrorMessage"
-      label="John Doe"
+      label="Jean Dupont"
       :error="!!nameErrorMessage"
       :success="fieldsStates?.name.valid"
       :class="{ 'has-error-form': !!nameErrorMessage }"
@@ -103,7 +103,7 @@ const onSubmit = handleSubmit((formData) => {
       ref="ageRef"
       v-model="age"
       type="number"
-      label="Enter your age"
+      label="Saisis ton âge"
       :hint="ageErrorMessage"
       :error="!!ageErrorMessage"
       :success="isValidAge"
@@ -113,8 +113,8 @@ const onSubmit = handleSubmit((formData) => {
       id="country"
       ref="countryRef"
       v-model="country"
-      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
-      label="Select your nationality"
+      :options="[{ label: 'France', value: 'FR' }, { label: 'États-Unis', value: 'US' }]"
+      label="Choisis ta nationalité"
       :hint="countryErrorMessage"
       :error="!!countryErrorMessage"
       :success="isValidCountry"
@@ -132,7 +132,7 @@ const onSubmit = handleSubmit((formData) => {
       id="number"
       ref="numberRef"
       v-model="number"
-      label="Enter a number"
+      label="Saisis un nombre"
 
       :error="!!numberError"
       :text-center="true"
@@ -143,7 +143,7 @@ const onSubmit = handleSubmit((formData) => {
       id="price"
       ref="priceRef"
       v-model="price"
-      label="Enter a price"
+      label="Saisis un prix"
       :error="!!priceError"
       :hint="priceError"
       :success="isValidPrice"
@@ -153,7 +153,7 @@ const onSubmit = handleSubmit((formData) => {
       ref="tagsRef"
       v-model="tags"
       :error="!!tagsError"
-      label="Enter tags"
+      label="Saisis des tags"
       :hint="tagsError"
       :success="isValidTags"
     />
@@ -162,7 +162,7 @@ const onSubmit = handleSubmit((formData) => {
       ref="phoneRef"
       v-model="phone"
       :error="!!phoneError"
-      placeholder="Enter your phone number"
+      placeholder="Saisis ton numéro de téléphone"
       :hint="phoneError"
       :success="isValidPhone"
     />
@@ -211,7 +211,7 @@ const onSubmit = handleSubmit((formData) => {
       id="textarea"
       ref="textareaRef"
       v-model="textarea"
-      label="Enter your message"
+      label="Saisis ton message"
       :hint="textareaError"
       :error="!!textareaError"
       :success="isValidTextarea"
@@ -221,7 +221,7 @@ const onSubmit = handleSubmit((formData) => {
       ref="agreeRef"
       v-model="agree"
       :class="{ 'has-error-form': !!agreeErrorMessage }"
-      label="I agree to the terms and conditions"
+      label="J'accepte les conditions générales"
       :hint="agreeErrorMessage"
       :error="!!agreeErrorMessage"
       :success="isValidAgree"
@@ -243,7 +243,7 @@ const onSubmit = handleSubmit((formData) => {
       type="submit"
       :loading="isSubmitting"
     >
-      Submit
+      Envoyer
     </MazBtn>
   </form>
 </template>

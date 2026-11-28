@@ -5,7 +5,6 @@ export const composables = {
   text: 'Composables',
   collapsed: true,
   items: [
-    { text: 'useAos', link: '/composables/use-aos' },
     { text: 'useBreakpoints', link: '/composables/use-breakpoints' },
     {
       text: withNewBadge('useClipboard'),

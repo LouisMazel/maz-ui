@@ -3,7 +3,7 @@ import type { CSSProperties, HTMLAttributes } from 'vue'
 
 import type { MazIconLike } from '../composables/index.ts'
 import type { MazColor, MazColorOrFree, MazSize } from './types.ts'
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useId, useSlots, watch } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, shallowRef, useId, useSlots, watch } from 'vue'
 import { useMazIconProps } from '../composables/index.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { resolveColor, resolveColorForeground, shiftColorLightness } from '../utils/freeColor.ts'
@@ -103,7 +103,7 @@ export interface MazTimelineProps {
    */
   clickable?: boolean
   /**
-   * Enable animations (pulse on active, state transitions, connector progress)
+   * Enable animations (pulse on active, state transitions, the rail fills on scroll, the steps rise when they are first seen)
    * @default true
    */
   animated?: boolean
@@ -189,12 +189,59 @@ function onMediaChange(event: MediaQueryListEvent) {
   isVertical.value = !event.matches
 }
 
+const timelineElement = ref<HTMLElement>()
+const unseenSteps = shallowRef(new Set<number>())
+let revealObserver: IntersectionObserver | undefined
+
+function revealStep(index: number) {
+  if (!unseenSteps.value.has(index))
+    return
+
+  const next = new Set(unseenSteps.value)
+  next.delete(index)
+  unseenSteps.value = next
+}
+
+function setupReveal() {
+  const items = timelineElement.value?.querySelectorAll<HTMLElement>('.m-timeline-item')
+
+  if (!animated || !items || typeof IntersectionObserver === 'undefined')
+    return
+
+  const below = new Map<Element, number>()
+
+  items.forEach((item, index) => {
+    if (item.getBoundingClientRect().top > globalThis.innerHeight)
+      below.set(item, index)
+  })
+
+  if (below.size === 0)
+    return
+
+  unseenSteps.value = new Set(below.values())
+
+  revealObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting)
+        continue
+
+      revealStep(below.get(entry.target) ?? -1)
+      revealObserver?.unobserve(entry.target)
+    }
+  }, { rootMargin: '0px 0px -10% 0px' })
+
+  for (const item of below.keys())
+    revealObserver.observe(item)
+}
+
 onMounted(() => {
   setupMediaQuery()
+  setupReveal()
 })
 
 onBeforeUnmount(() => {
   cleanupMediaQuery()
+  revealObserver?.disconnect()
 })
 
 watch(
@@ -398,6 +445,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
 <template>
   <div
+    ref="timelineElement"
     class="m-timeline m-reset-css maz:flex maz:items-stretch"
     role="list"
     :aria-label="$attrs['aria-label'] as string ?? 'Timeline'"
@@ -418,6 +466,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
       class="m-timeline-item"
       :class="{
         '--last': index === steps.length - 1,
+        '--unseen': unseenSteps.has(index),
       }"
     >
       <div
@@ -588,16 +637,18 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
     }
 
     .m-timeline-connector-fill {
-      @apply maz:h-full maz:w-0;
+      @apply maz:h-full maz:w-full maz:origin-left maz:scale-x-0;
     }
 
     .m-timeline-connector.--completed .m-timeline-connector-fill {
-      @apply maz:w-full;
+      @apply maz:scale-x-100;
     }
   }
 
   /* --- Vertical layout --- */
   &.--vertical {
+    --m-timeline-rail-from: 1 0;
+
     .m-timeline-item {
       @apply maz:flex maz:flex-col;
     }
@@ -728,11 +779,24 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   /* --- Animations --- */
   &.--animated {
     .m-timeline-indicator {
-      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
+      transition-property: background-color, color, border-color, box-shadow;
+      transition-duration: calc(var(--maz-motion-normal) * var(--maz-motion-scale));
+      transition-timing-function: var(--maz-easing-out);
     }
 
     .m-timeline-connector-fill {
-      @apply maz:transition-all maz:duration-500 maz:ease-in-out;
+      transition: scale calc(var(--maz-motion-slower) * var(--maz-motion-scale)) var(--maz-easing-in-out);
+    }
+
+    .m-timeline-item {
+      transition:
+        opacity calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out),
+        transform calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out);
+
+      &.--unseen {
+        opacity: 0;
+        transform: translateY(0.75rem);
+      }
     }
 
     .m-timeline-step.--active .m-timeline-indicator {
@@ -790,6 +854,45 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   }
 }
 
+/* --- The rail fills while its step scrolls into view (browsers without scroll-driven animations keep the transition above) --- */
+@supports (animation-timeline: view()) {
+  .m-timeline.--animated {
+    &.--vertical .m-timeline-connector,
+    &.--horizontal .m-timeline-item {
+      view-timeline: --m-timeline-rail block;
+    }
+
+    .m-timeline-connector-track {
+      transform-origin: left top;
+      animation: m-timeline-rail-fill linear both;
+      animation-timeline: --m-timeline-rail;
+      animation-range: entry 0% cover 40%;
+    }
+
+    &.--vertical .m-timeline-connector-track {
+      transform-origin: center top;
+    }
+  }
+
+  [dir='rtl'] .m-timeline.--animated.--horizontal .m-timeline-connector-track {
+    transform-origin: right top;
+  }
+}
+
+@keyframes m-timeline-rail-fill {
+  from {
+    scale: var(--m-timeline-rail-from, 0 1);
+  }
+
+  to {
+    scale: 1 1;
+  }
+}
+
+[dir='rtl'] .m-timeline.--horizontal .m-timeline-connector-fill {
+  transform-origin: right;
+}
+
 /* --- Pulse animation --- */
 @keyframes m-timeline-pulse {
   0%,
@@ -805,6 +908,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 /* --- Reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
   .m-timeline.--animated .m-timeline-indicator,
+  .m-timeline.--animated .m-timeline-connector-track,
   .m-timeline.--animated .m-timeline-connector-fill {
     @apply maz:transition-none!;
 

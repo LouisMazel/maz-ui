@@ -6,6 +6,7 @@ import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs/esm/index.js'
 import { computed, ref, watch } from 'vue'
+import MazRollingText from '../MazRollingText.vue'
 
 const {
   modelValue,
@@ -33,7 +34,7 @@ const refDate = computed(() =>
     : modelValue?.start,
 )
 
-const transitionName = ref<'maz-slidevnext' | 'maz-slidevprev'>('maz-slidevnext')
+const rollDirection = ref<'up' | 'down'>('up')
 
 const year = computed(() => {
   if (modelValue && typeof modelValue === 'object') {
@@ -62,10 +63,6 @@ const year = computed(() => {
 
   return '-'
 })
-
-const yearArray = computed(() => (hasDate
-  ? [year.value]
-  : undefined))
 
 const dateString = computed(() => {
   if (
@@ -115,10 +112,6 @@ const dateString = computed(() => {
   return '-'
 })
 
-const dateStringArray = computed(() => (hasDate
-  ? [dateString.value]
-  : undefined))
-
 const timeValue = computed(() => {
   return refDate.value
     ? formatDate(refDate.value, locale, {
@@ -128,10 +121,6 @@ const timeValue = computed(() => {
       })
     : undefined
 })
-
-const timeArray = computed(() => (hasTime
-  ? [timeValue.value]
-  : undefined))
 
 watch(
   () => modelValue,
@@ -143,11 +132,11 @@ watch(
       ? oldModelValue.start
       : oldModelValue
 
-    transitionName.value
+    rollDirection.value
       = dayjs(currentValue).isAfter(oldValue, 'date')
         || dayjs(currentValue).isSame(oldValue, 'date')
-        ? 'maz-slidevnext'
-        : 'maz-slidevprev'
+        ? 'up'
+        : 'down'
   },
 )
 </script>
@@ -155,27 +144,23 @@ watch(
 <template>
   <div class="m-date-picker-header maz:z-1 maz:flex maz:justify-between maz:space-y-1 maz:p-2 maz:font-normal" :class="[`--${color}`]">
     <div v-if="hasDate" class="m-date-picker-header__date">
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__year-transition maz:flex maz:h-5 maz:items-center maz:overflow-hidden maz:leading-3">
-        <span v-for="(y, yi) in yearArray" :key="`${y}-${yi}`" class="m-date-picker-header__year-text maz:text-sm">
-          {{ y }}
+      <div class="m-date-picker-header__year-transition maz:flex maz:h-5 maz:items-center maz:overflow-hidden maz:leading-3">
+        <span class="m-date-picker-header__year-text maz:text-sm maz:opacity-70">
+          <MazRollingText :value="year" :direction="rollDirection" />
         </span>
-      </TransitionGroup>
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__date-transition maz:flex maz:h-6 maz:items-center maz:overflow-hidden maz:leading-4">
-        <span
-          v-for="(d, di) in dateStringArray"
-          :key="`${d}-${di}`"
-          class="m-date-picker-header__date-text"
-        >
-          {{ d }}
+      </div>
+      <div class="m-date-picker-header__date-transition maz:flex maz:h-6 maz:items-center maz:overflow-hidden maz:leading-4">
+        <span class="m-date-picker-header__date-text">
+          <MazRollingText :value="dateString ?? ''" :direction="rollDirection" />
         </span>
-      </TransitionGroup>
+      </div>
     </div>
-    <div v-if="timeArray" class="m-date-picker-header__time maz:flex maz:items-end maz:justify-center" :class="{ '--has-date': hasDate, 'maz:w-full': !hasDate }">
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__time-transition maz:flex maz:h-6 maz:items-center maz:justify-end maz:overflow-hidden maz:leading-4">
-        <span v-for="(t, ti) in timeArray" :key="`${t}-${ti}`" class="m-date-picker-header__time-text">
-          {{ t }}
+    <div v-if="hasTime" class="m-date-picker-header__time maz:flex maz:items-end maz:justify-center" :class="{ '--has-date': hasDate, 'maz:w-full': !hasDate }">
+      <div class="m-date-picker-header__time-transition maz:flex maz:h-6 maz:items-center maz:justify-end maz:overflow-hidden maz:leading-4">
+        <span class="m-date-picker-header__time-text">
+          <MazRollingText :value="timeValue ?? ''" :direction="rollDirection" />
         </span>
-      </TransitionGroup>
+      </div>
     </div>
   </div>
 </template>

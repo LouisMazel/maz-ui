@@ -525,4 +525,14 @@ MazTimeline provides scoped slots for full customization.
   const roundedSizes = ['full', 'lg', 'md', 'sm', 'none']
 </script>
 
+## Motion
+
+With `animated` (the default):
+
+- The rail fills while its step scrolls into view (in browsers with scroll-driven animations, elsewhere it fills when the step is completed).
+- The steps that start below the fold rise the first time they are seen. The ones already visible are never hidden, so nothing waits for the JavaScript.
+- The active step pulses.
+
+Set `:animated="false"` to remove all of it. Reduced motion does too.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-timeline.doc.md-->

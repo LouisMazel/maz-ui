@@ -10,31 +10,31 @@
           :to="{ name: 'index' }"
           color="transparent"
         >
-          Home
+          Accueil
         </MazBtn>
         <MazBtn
           :to="{ name: 'components' }"
           color="transparent"
         >
-          Components
+          Composants
         </MazBtn>
         <MazBtn
           :to="{ name: 'test-page' }"
           color="transparent"
         >
-          Test page
+          Page de test
         </MazBtn>
         <MazBtn
           :to="{ name: 'icons' }"
           color="transparent"
         >
-          Icons
+          Icônes
         </MazBtn>
         <MazBtn
           :to="{ name: 'icons-lazy' }"
           color="transparent"
         >
-          Icons Lazy
+          Icônes lazy
         </MazBtn>
         <LangSwitcher />
         <ThemeSwitcher />

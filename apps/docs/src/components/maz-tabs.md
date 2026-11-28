@@ -184,6 +184,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
   import { ref } from 'vue'
 
   const currentTab = ref(2)
+  const stretchTab = ref(1)
 
   const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
@@ -404,6 +405,42 @@ const items = ['First', 'Second', 'Third']
   <MazTabsBar v-model="selected" :items="items" />
   <!-- selected === 1 | 2 | 3 -->
 </template>
+```
+
+## Motion
+
+- The indicator slides to the selected tab. Set `stretch` on `MazTabsBar` to make it stretch toward the new tab on its way, like a drop of ink. `:animated="false"` removes the slide.
+- The content of `MazTabsContentItem` comes from the side of its tab, with a short offset and a fade (in the reading direction, so it follows RTL). Going back reverses the sides.
+- The first placement is never animated. The speed follows the `--maz-motion-*` tokens and reduced motion removes the slides.
+
+<div class="vp-raw">
+  <MazTabs v-model="stretchTab">
+    <MazTabsBar :items="['Overview', 'Activity', 'Settings']" stretch />
+
+    <MazTabsContent>
+      <MazTabsContentItem :tab="1" class="maz:py-4">
+        Overview
+      </MazTabsContentItem>
+      <MazTabsContentItem :tab="2" class="maz:py-4">
+        Activity
+      </MazTabsContentItem>
+      <MazTabsContentItem :tab="3" class="maz:py-4">
+        Settings
+      </MazTabsContentItem>
+    </MazTabsContent>
+  </MazTabs>
+</div>
+
+```html
+<MazTabs v-model="tab">
+  <MazTabsBar :items="['Overview', 'Activity', 'Settings']" stretch />
+
+  <MazTabsContent>
+    <MazTabsContentItem :tab="1">Overview</MazTabsContentItem>
+    <MazTabsContentItem :tab="2">Activity</MazTabsContentItem>
+    <MazTabsContentItem :tab="3">Settings</MazTabsContentItem>
+  </MazTabsContent>
+</MazTabs>
 ```
 
 ## Types

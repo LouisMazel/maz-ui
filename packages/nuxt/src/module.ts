@@ -66,7 +66,8 @@ const NOT_AUTO_IMPORTED_COMPOSABLES = new Set([
 
 const mazUiComposables = Object.fromEntries(
   mazUiExports.composables
-    .filter(name => !NOT_AUTO_IMPORTED_COMPOSABLES.has(name))
+    // Only the composables: `useOriginTransition` also exports helpers (`getLastPointerTarget`...)
+    .filter(name => name.startsWith('use') && !NOT_AUTO_IMPORTED_COMPOSABLES.has(name))
     .map(name => [name, true]),
 ) as Omit<Record<MazUiComposables, true>, 'useAos' | 'useMazIconProps'>
 
@@ -104,6 +105,7 @@ const defaults = {
   dialog: {},
   aos: false,
   motion: 'auto',
+  density: 'default',
   plugins: {
     aos: false,
     dialog: false,
@@ -121,6 +123,12 @@ const defaults = {
     vFullscreenImg: false,
     vIntersect: false,
     vTooltip: false,
+    vReveal: false,
+    vPress: false,
+    vRipple: false,
+    vMagnetic: false,
+    vTilt: false,
+    vDraw: false,
   },
   agents: {
     rules: false,
@@ -583,6 +591,30 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.directives.vTooltip) {
       addPlugin(resolve(_dirname, './runtime/plugins/v-tooltip'))
+    }
+
+    if (moduleOptions.directives.vReveal) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-reveal'))
+    }
+
+    if (moduleOptions.directives.vPress) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-press'))
+    }
+
+    if (moduleOptions.directives.vRipple) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-ripple'))
+    }
+
+    if (moduleOptions.directives.vMagnetic) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-magnetic'))
+    }
+
+    if (moduleOptions.directives.vTilt) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-tilt'))
+    }
+
+    if (moduleOptions.directives.vDraw) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-draw'))
     }
 
     // Composables

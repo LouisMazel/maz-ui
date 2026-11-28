@@ -430,15 +430,15 @@ Après tri dans [modernisation-composants.md](./modernisation-composants.md), ch
 
 La homepage (`apps/docs/components/HomePage.vue` et `home/`) est la vitrine : elle montre les nouveautés les plus importantes, en démos réelles des composants, pas en vidéos.
 
-- [ ] Section dédiée (dans `HomeAtelier` ou une nouvelle section « Mouvement ») avec des démos qu'on manipule :
+- [x] Section dédiée (dans `HomeAtelier` ou une nouvelle section « Mouvement ») avec des démos qu'on manipule (`HomeMotion.vue`, section 04) :
   - un bouton qui ouvre un dialog depuis lui-même ;
   - une pile de toasts (promise, swipe) ;
   - un prix mensuel/annuel qui roule (Segmented + MazRollingText) ;
   - checkbox, switch et coche dessinée ; tabs et pagination avec la pill ;
   - une lightbox depuis une vignette ;
   - `vReveal` sur les sections de la page elle-même.
-- [ ] Interrupteur « reduced motion » et LTR/RTL sur la démo, pour montrer que tout suit.
-- [ ] Les animations faites à la main sur la homepage passent sur les nouvelles briques, qui y font leurs preuves :
+- [x] Interrupteur « reduced motion » et LTR/RTL sur la démo, pour montrer que tout suit.
+- [x] Les animations faites à la main sur la homepage passent sur les nouvelles briques, qui y font leurs preuves :
 
   | Aujourd'hui (fait main) | Remplacé par |
   |---|---|
@@ -451,8 +451,8 @@ La homepage (`apps/docs/components/HomePage.vue` et `home/`) est la vitrine : el
   | `home-twinkle` et durées de `--home-ease` | tokens de mouvement |
 
   Les scènes canvas (`HeroConstellation`, `HeroMagnetic`, `useCanvasScene`) restent propres à la doc : ce sont des fonds de site, hors du périmètre de la lib. Elles gagnent la pause hors de l'écran et le reduced motion si ce n'est pas déjà le cas partout.
-- [ ] Les sections existantes passent de `MazAnimatedElement` et de l'AOS à `vReveal`.
-- [ ] Contraintes : la page garde son découpage actuel (`hydrateOnVisible`, imports dynamiques), le hero (`hero/`, canvas) ne bloque pas le LCP et se met en pause hors de l'écran, Lighthouse mobile mesuré avant et après (aucun recul de LCP, CLS, INP).
+- [x] Les sections existantes passent de `MazAnimatedElement` et de l'AOS à `vReveal`.
+- [x] Contraintes : la page garde son découpage actuel (`hydrateOnVisible`, imports dynamiques), le hero (`hero/`, canvas) ne bloque pas le LCP et se met en pause hors de l'écran, Lighthouse mobile mesuré avant et après (aucun recul de LCP, CLS, INP).
 - [ ] Mise à jour au fil des PRs : chaque grosse nouveauté y gagne sa démo.
 
 ## Découpage en PRs
@@ -464,10 +464,12 @@ Tout ce qui est transverse (tokens, primitives, focus ring, helper d'arrondis, �
 1. **Fondations** : bugs relevés ; tests de régression visuelle ; page vitrine (nuxt-app) ; tokens de mouvement, reduced motion, option `motion` ; primitives (`useSlidingIndicator`, `useRovingFocus`, classes FLIP, `maz-press`, tracé dessiné, `maz-border-draw`, `maz-focus-ring`, `MazRollingText`, `MazMorphIcon`, `useOriginTransition`) ; helper d'arrondis, niveaux d'élévation et ombres par mode des presets ; `variant` et alias (avec `@deprecated`) ; module commun Backdrop/Popover (Échap empilé, focus trap) ; masquage des `@deprecated` dans les tableaux d'API.
 2. **Overlays** : Popover et toute sa famille depuis l'origine, Dialog depuis l'origine et centré sur mobile, toasts empilés, Drawer/BottomSheet façon Vaul, tooltip groupé, lightbox (refonte de vFullscreenImg) et MazGallery.
 3. **Formulaires** : structure commune des champs, option `density` (tokens, option, application aux contrôles : une option sans effet n'a pas de sens entre deux releases) et option du label, tous les champs animés (Checkbox, Radio, RadioButtons `cards`, Switch, Slider, InputTags, InputCode, InputNumber, InputSecret `strength`, Input/Textarea, Select, Autocomplete), MazDatePicker.
-4. **Tout le reste** : navigation et choix (TabsBar, Segmented `multiple`, BtnGroup, Pagination, Stepper, Sidebar, Dropdown), feedback (Btn, BtnClipboard, Alert, Badge, Progress, Spinner, LoadingBar, Skeleton, LazyImg), affichage (Card, Container, CardSpotlight, Avatar, Accordion, Table, Carousel, Timeline, ReadMore, Dropzone, Ticker), `vReveal` et dépréciation de l'AOS (avec le nettoyage de `animation.css` : keyframes en double de MazAnimatedText et MazAnimatedElement, `animate` de MazCircularProgressBar, classes globales inutilisées), homepage de la doc.
-5. **Nouveaux composants** retenus dans le catalogue (une PR, ou deux lots si elle devient trop grosse), avec la bascule des composants qui les utilisent.
+4. **Tout le reste** : navigation et choix (TabsBar, Segmented `multiple`, BtnGroup, Pagination, Stepper, Sidebar, Dropdown), feedback (Btn, BtnClipboard, Alert, Badge, Progress, Spinner, LoadingBar, Skeleton, LazyImg), affichage (Card, Container, CardSpotlight, Avatar, Accordion, Table, Carousel, Timeline, ReadMore, Dropzone, Ticker), `vReveal` et dépréciation de l'AOS (avec le nettoyage de `animation.css` : keyframes en double de MazAnimatedText et MazAnimatedElement, `animate` de MazCircularProgressBar, classes globales inutilisées).
+5. **Nouveaux composants** retenus dans le catalogue (en lots si elle devient trop grosse), avec la bascule des composants qui les utilisent, puis en dernier la **homepage de la doc** : elle montre les nouveaux composants et les animations de toute la modernisation.
 
 Docs, agent docs, review, plugins et page vitrine sont dans chaque PR, jamais dans une PR à part.
+
+Après la PR 5 : surveiller la CI et corriger les échecs dans la PR 5 seulement : c'est la dernière de la pile, elle corrige tout le monde.
 
 ## Décisions
 

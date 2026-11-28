@@ -101,6 +101,12 @@ export interface ToastOptions {
    */
   icon?: boolean | MazIconValue
   /**
+   * Pile the toasts of a position like a deck, they spread into a list on hover or focus.
+   * `false` keeps the list (one list when a single toast of the position asks for it)
+   * @default true
+   */
+  stacked?: boolean
+  /**
    * The action will be displayed as a button in the toast
    * @default undefined
    */
@@ -110,4 +116,19 @@ export interface ToastOptions {
    * @default undefined
    */
   buttons?: ToastButton[]
+}
+
+export interface ToastPromiseOptions<T = unknown> extends Omit<ToastOptions, 'type' | 'icon'> {
+  /**
+   * Message displayed while the promise is pending
+   */
+  loading: string
+  /**
+   * Message displayed when the promise resolves, or a function of its value
+   */
+  success: string | ((data: T) => string)
+  /**
+   * Message displayed when the promise rejects, or a function of its error
+   */
+  error: string | ((error: unknown) => string)
 }

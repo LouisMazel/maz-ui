@@ -4,29 +4,29 @@
 const toast = useToast()
 
 function showToast() {
-  toast.message(`Hello, <strong>world</strong>!`, {
+  toast.message(`Bonjour <strong>le monde</strong> !`, {
     position: 'top-right',
     html: true,
     maxToasts: 2,
     queue: true,
   })
-  toast.info('Hello, world!', {
+  toast.info('Bonjour le monde !', {
     position: 'bottom-right',
   })
-  toast.warning('Hello, world!', {
+  toast.warning('Bonjour le monde !', {
     position: 'bottom-left',
   })
-  toast.error('Hello, world!', {
+  toast.error('Bonjour le monde !', {
     position: 'bottom',
   })
-  toast.success('Hello, world!', {
+  toast.success('Bonjour le monde !', {
     position: 'top-left',
   })
-  toast.message('Hello, world!', {
+  toast.message('Bonjour le monde !', {
     position: 'top',
     buttons: [
       {
-        text: 'Click me',
+        text: 'Clique ici',
         color: 'warning',
       },
     ],
@@ -42,7 +42,7 @@ function showToast() {
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
       <MazBtn @click="showToast">
-        Show toast
+        Afficher les toasts
       </MazBtn>
 
       <!-- End Developping Area -->

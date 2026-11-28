@@ -68,10 +68,10 @@ describe('fullscreenImgHandler', () => {
     })
   })
 
-  it('should add mouse event listeners to the element', () => {
+  it('should add the click and keyboard listeners to the element', () => {
     const addEventListenerSpy = vi.spyOn(el, 'addEventListener')
     handler.create(el, binding)
-    expect(addEventListenerSpy).toHaveBeenCalledTimes(3)
+    expect(addEventListenerSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should build options object with src and alt attributes from value object', () => {
@@ -105,52 +105,23 @@ describe('fullscreenImgHandler', () => {
     expect(el.classList.contains('m-fullscreen-img-instance')).toBeFalsy()
   })
 
-  it('should apply scale on hover', () => {
+  it('should apply scale on hover through classes', () => {
     binding.value = { src: 'https://example.com/image.jpg', scaleOnHover: true }
     handler.create(el, binding)
-    expect(el.style.transitionProperty).toBe('all')
-    expect(el.style.transitionDuration).toBe('200ms')
-    expect(el.style.transitionTimingFunction).toBe('ease-in-out')
+    expect(el.classList.contains('maz:hover:scale-[1.04]')).toBe(true)
   })
 
-  it('should apply blur on hover', () => {
+  it('should apply blur on hover through classes', () => {
     binding.value = { src: 'https://example.com/image.jpg', blurOnHover: true }
     handler.create(el, binding)
-    expect(el.style.transitionProperty).toBe('all')
-    expect(el.style.transitionDuration).toBe('200ms')
-    expect(el.style.transitionTimingFunction).toBe('ease-in-out')
+    expect(el.classList.contains('maz:hover:blur-[0.1875rem]')).toBe(true)
   })
 
-  it('should handle mouseenter with scaleOnHover', () => {
-    binding.value = { src: 'https://example.com/image.jpg', scaleOnHover: true }
+  it('should remove the hover classes on remove', () => {
+    binding.value = { src: 'https://example.com/image.jpg', scaleOnHover: true, blurOnHover: true }
     handler.create(el, binding)
-    el.dispatchEvent(new Event('mouseenter'))
-    expect(el.style.zIndex).toBe('1')
-    expect(el.style.transform).toBe('scale(1.04)')
-  })
-
-  it('should handle mouseenter with blurOnHover', () => {
-    binding.value = { src: 'https://example.com/image.jpg', blurOnHover: true }
-    handler.create(el, binding)
-    el.dispatchEvent(new Event('mouseenter'))
-    expect(el.style.filter).toBe('blur(3px)')
-  })
-
-  it('should handle mouseleave with scaleOnHover', () => {
-    binding.value = { src: 'https://example.com/image.jpg', scaleOnHover: true }
-    handler.create(el, binding)
-    el.dispatchEvent(new Event('mouseenter'))
-    el.dispatchEvent(new Event('mouseleave'))
-    expect(el.style.transform).toBe('')
-    expect(el.style.zIndex).toBe('')
-  })
-
-  it('should handle mouseleave with blurOnHover', () => {
-    binding.value = { src: 'https://example.com/image.jpg', blurOnHover: true }
-    handler.create(el, binding)
-    el.dispatchEvent(new Event('mouseenter'))
-    el.dispatchEvent(new Event('mouseleave'))
-    expect(el.style.filter).toBe('')
+    handler.remove(el)
+    expect(el.className).toBe('')
   })
 
   it('should throw error when no src is available', () => {
@@ -177,7 +148,7 @@ describe('fullscreenImgHandler', () => {
     const removeEventListenerSpy = vi.spyOn(el, 'removeEventListener')
     handler.create(el, binding)
     handler.remove(el)
-    expect(removeEventListenerSpy).toHaveBeenCalledTimes(3)
+    expect(removeEventListenerSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should get allInstances', () => {

@@ -75,6 +75,34 @@ const confirmed = await dialog.confirm({
 })
 ```
 
+## Grow from the click
+
+Pass the click event (or an element, a selector, a `{ x, y }` point) as `origin`: the dialog grows from there and goes back into it. Without `origin`, it grows from the element you last pressed.
+
+```ts
+async function remove(event: MouseEvent) {
+  const confirmed = await dialog.confirm({
+    title: 'Delete user',
+    message: 'This action cannot be undone.',
+    origin: event,
+  })
+}
+```
+
+`animated: false` gives a plain fade.
+
+## Reinforced confirmation
+
+Set `confirmation` to ask the user to type a text before the accept button is enabled.
+
+```ts
+const confirmed = await dialog.confirm({
+  title: 'Delete the project',
+  message: 'This action cannot be undone.',
+  confirmation: 'my-project',
+})
+```
+
 <script lang="ts" setup>
   import { useDialog } from 'maz-ui/composables/useDialog'
   import { useToast } from 'maz-ui/composables/useToast'
