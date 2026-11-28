@@ -485,7 +485,7 @@ defineExpose({
   >
     <div ref="list" class="maz:relative maz:inline-block" @pointerleave="onListLeave">
       <span
-        class="m-navigation-menu__pill maz:pointer-events-none maz:absolute maz:start-0 maz:top-0"
+        class="m-navigation-menu__pill maz:pointer-events-none maz:absolute maz:inset-s-0 maz:top-0"
         aria-hidden="true"
         :style="pillStyle"
       >
@@ -508,7 +508,7 @@ defineExpose({
             v-if="item.hasPanel"
             :id="triggerId(item.id)"
             type="button"
-            class="m-navigation-menu__trigger maz:focus-ring maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:rounded-lg maz:px-3 maz:py-2 maz:text-body-sm maz:font-medium maz:text-foreground maz:disabled:disabled-state"
+            class="m-navigation-menu__trigger maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:rounded-lg maz:px-3 maz:py-2 maz:text-body-sm maz:font-medium maz:text-foreground maz:focus-ring maz:disabled:disabled-state"
             :disabled="item.disabled"
             :aria-expanded="activeId === item.id"
             :aria-controls="panelId"
@@ -535,7 +535,7 @@ defineExpose({
             :href="item.href"
             :disabled="item.disabled"
             color="inherit"
-            class="m-navigation-menu__link maz:focus-ring maz:rounded-lg maz:px-3 maz:py-2 maz:text-body-sm maz:font-medium maz:text-foreground"
+            class="m-navigation-menu__link maz:rounded-lg maz:px-3 maz:py-2 maz:text-body-sm maz:font-medium maz:text-foreground maz:focus-ring"
             @keydown="onTriggerKeydown($event, index)"
           >
             <slot name="item" :item="item" :open="false">
@@ -567,7 +567,7 @@ defineExpose({
             v-if="renderedItem"
             :key="renderedItem.id"
             :data-content="renderedItem.id"
-            class="m-navigation-menu__content maz:absolute maz:top-0 maz:start-0 maz:w-max maz:max-w-[min(40rem,calc(100vw-2rem))]"
+            class="m-navigation-menu__content maz:absolute maz:inset-s-0 maz:top-0 maz:w-max maz:max-w-[min(40rem,calc(100vw-2rem))]"
           >
             <!--
               @slot content - Content of the panel of an item (also `content-<value>` for one item)
@@ -587,7 +587,7 @@ defineExpose({
                   :to="link.to"
                   :href="link.href"
                   color="inherit"
-                  class="maz:focus-ring maz:flex! maz:items-start maz:gap-3 maz:rounded-lg maz:p-3 maz:no-underline maz:hover:bg-foreground/5"
+                  class="maz:flex! maz:items-start maz:gap-3 maz:rounded-lg maz:p-3 maz:no-underline maz:focus-ring maz:hover:bg-foreground/5"
                   @click="close"
                 >
                   <MazIcon v-if="link.icon" :icon="link.icon" class="maz:mt-0.5 maz:size-5 maz:shrink-0 maz:text-primary" />

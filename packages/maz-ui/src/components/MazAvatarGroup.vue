@@ -125,8 +125,8 @@ function getName(avatar: MazAvatarProps) {
       <slot name="more" :count :hidden>
         <component
           :is="moreClickable ? 'button' : 'span'"
-          class="m-avatar-group__more maz:flex maz:items-center maz:justify-center maz:font-semibold"
-          :class="[roundedClass, { 'maz:focus-ring maz:cursor-interactive maz:border-0': moreClickable }]"
+          class="m-avatar-group__more maz:flex maz:flex-center maz:font-semibold"
+          :class="[roundedClass, { 'maz:cursor-interactive maz:border-0 maz:focus-ring': moreClickable }]"
           :type="moreClickable ? 'button' : undefined"
           @click="moreClickable ? $emit('more-click', $event) : undefined"
         >

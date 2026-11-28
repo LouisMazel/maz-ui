@@ -212,7 +212,7 @@ function isLink(item: MazBreadcrumbItem, index: number) {
               :start-icon="item.icon"
               color="muted"
               underline-hover
-              class="maz:focus-ring maz:rounded-sm"
+              class="maz:rounded-sm maz:focus-ring"
             >
               {{ item.label }}
             </MazLink>

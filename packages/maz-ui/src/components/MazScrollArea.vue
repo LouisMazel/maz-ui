@@ -114,7 +114,7 @@ defineExpose({
         'm-scroll-area--bottom': edges.bottom,
         'm-scroll-area--start': edges.start,
         'm-scroll-area--end': edges.end,
-        'maz:overflow-y-auto maz:overflow-x-hidden': orientation === 'vertical',
+        'maz:overflow-x-hidden maz:overflow-y-auto': orientation === 'vertical',
         'maz:overflow-x-auto maz:overflow-y-hidden': orientation === 'horizontal',
         'maz:overflow-auto': orientation === 'both',
       },

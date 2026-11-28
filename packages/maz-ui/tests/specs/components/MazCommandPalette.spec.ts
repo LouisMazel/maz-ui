@@ -474,7 +474,7 @@ describe('given a MazCommandPalette', () => {
   })
 
   describe('when the exposed methods are used', () => {
-    it('then open, close and focus work', async () => {
+    it('then open, close and focus work', () => {
       const wrapper = mountPalette({ open: false })
       const vm = wrapper.vm as unknown as { open: () => void, close: () => void, focus: () => void }
 

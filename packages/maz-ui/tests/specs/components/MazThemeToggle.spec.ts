@@ -5,9 +5,11 @@ import { renderToString } from 'vue/server-renderer'
 
 const colorMode = ref<'light' | 'dark' | 'auto'>('light')
 const isDark = ref(false)
-const setColorMode = vi.fn(async (mode: 'light' | 'dark' | 'auto') => {
+const setColorMode = vi.fn((mode: 'light' | 'dark' | 'auto') => {
   colorMode.value = mode
   isDark.value = mode === 'dark'
+
+  return Promise.resolve()
 })
 
 vi.mock('@maz-ui/translations/composables/useTranslations', () => ({

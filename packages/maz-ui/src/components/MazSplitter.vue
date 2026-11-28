@@ -299,7 +299,7 @@ function getPanelStyle(index: number) {
   <div
     ref="root"
     class="m-splitter m-reset-css maz:flex maz:size-full maz:min-h-0 maz:min-w-0"
-    :class="[isVertical ? 'maz:flex-col m-splitter--vertical' : 'maz:flex-row m-splitter--horizontal', { 'm-splitter--dragging': draggingIndex !== undefined }]"
+    :class="[isVertical ? 'm-splitter--vertical maz:flex-col' : 'm-splitter--horizontal maz:flex-row', { 'm-splitter--dragging': draggingIndex !== undefined }]"
   >
     <template v-for="(panel, index) in panels" :key="panel.id">
       <div
