@@ -344,7 +344,7 @@ function iconProps(icon: MazIconLike) {
   <div
     :id="instanceId"
     ref="rootRef"
-    class="m-segmented m-reset-css maz:relative maz:isolate maz:max-w-full maz:items-center maz:bg-foreground/6 maz:p-0.5 maz:dark:bg-[oklch(from_var(--maz-surface)_calc(l*0.8)_c_h)]"
+    class="m-segmented m-reset-css maz:relative maz:isolate maz:max-w-full maz:items-center maz:bg-foreground/6 maz:p-0.5"
     :class="[
       block ? 'maz:flex maz:w-full' : 'maz:inline-flex',
       ROUNDED_CLASS[roundedSize],
