@@ -11,6 +11,7 @@ import { registerPrompts } from './prompts.ts'
 import { findIconsTool } from './tools/find-icons.ts'
 import { getComponentApiTool } from './tools/get-component-api.ts'
 import { getDocTool } from './tools/get-doc.ts'
+import { getProjectInfoTool } from './tools/get-project-info.ts'
 import { getSetupGuideTool } from './tools/get-setup-guide.ts'
 import { getThemeTokensTool } from './tools/get-theme-tokens.ts'
 import { listDocsTool } from './tools/list-docs.ts'
@@ -28,6 +29,7 @@ export const TOOLS: ToolDefinition[] = [
   getDocTool,
   listDocsTool,
   getSetupGuideTool,
+  getProjectInfoTool,
   reviewCodeToolDefinition,
 ]
 
