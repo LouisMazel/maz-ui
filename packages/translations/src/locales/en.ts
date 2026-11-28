@@ -216,6 +216,14 @@ export default {
     duplicateKey: 'This key is already used',
   },
   /**
+   * This is the translation for the input component.
+   * The keys are:
+   * - clear: The translation for the clear button.
+   */
+  input: {
+    clear: 'Clear',
+  },
+  /**
    * This is the translation for the input secret component.
    * The keys are:
    * - saved: The translation for the badge of a saved value.
@@ -223,6 +231,19 @@ export default {
    * - clear: The translation for the clear button.
    * - cancel: The translation for the cancel button.
    * - savedDescription: The translation for the description of a saved value.
+   * - strengthLabel: The translation for the accessible name of the strength meter.
+   * - strengthVeryWeak: The translation for the very weak verdict.
+   * - strengthWeak: The translation for the weak verdict.
+   * - strengthFair: The translation for the fair verdict.
+   * - strengthGood: The translation for the good verdict.
+   * - strengthStrong: The translation for the strong verdict.
+   * - ruleLength: The translation for the minimum length rule, with the `{minLength}` parameter.
+   * - ruleLowercase: The translation for the lowercase letter rule.
+   * - ruleUppercase: The translation for the uppercase letter rule.
+   * - ruleNumber: The translation for the number rule.
+   * - ruleSymbol: The translation for the symbol rule.
+   * - ruleMet: The translation for the screen reader text of a rule that is met.
+   * - ruleNotMet: The translation for the screen reader text of a rule that is not met.
    */
   inputSecret: {
     saved: 'Saved',
@@ -230,6 +251,19 @@ export default {
     clear: 'Clear',
     cancel: 'Cancel',
     savedDescription: 'The value is saved and hidden',
+    strengthLabel: 'Password strength',
+    strengthVeryWeak: 'Very weak',
+    strengthWeak: 'Weak',
+    strengthFair: 'Fair',
+    strengthGood: 'Good',
+    strengthStrong: 'Strong',
+    ruleLength: 'At least {minLength} characters',
+    ruleLowercase: 'A lowercase letter',
+    ruleUppercase: 'An uppercase letter',
+    ruleNumber: 'A number',
+    ruleSymbol: 'A symbol',
+    ruleMet: 'Rule met',
+    ruleNotMet: 'Rule not met',
   },
   /**
    * This is the translation for the read more component.
