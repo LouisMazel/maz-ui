@@ -117,3 +117,55 @@ describe('given MazProgressBar component', () => {
     })
   })
 })
+
+describe('given MazProgressBar with free colors', () => {
+  describe('when the bar color is a hex', () => {
+    it('then the part uses it as is', () => {
+      const wrapper = mount(MazProgressBar, { props: { value: 50, color: '#e11d48' } })
+
+      expect(parts(wrapper)[0]).toContain('background-color: rgb(225, 29, 72)')
+    })
+  })
+
+  describe('when segments mix theme and free colors', () => {
+    it('then each segment resolves its own color and the others fall back to the bar color', () => {
+      const wrapper = mount(MazProgressBar, {
+        props: {
+          color: 'var(--brand)',
+          segments: [
+            { value: 1, color: 'success' },
+            { value: 1, color: '#e11d48' },
+            { value: 1 },
+          ],
+        },
+      })
+      const styles = parts(wrapper)
+
+      expect(styles[0]).toContain('background-color: var(--maz-success)')
+      expect(styles[1]).toContain('background-color: rgb(225, 29, 72)')
+      expect(styles[2]).toContain('background-color: var(--brand)')
+    })
+  })
+})
+
+describe('given MazProgressBar with the neutral color', () => {
+  describe('when the bar color is neutral', () => {
+    it('then the fill uses the neutral foreground', () => {
+      const wrapper = mount(MazProgressBar, { props: { value: 50, color: 'neutral' } })
+
+      expect(parts(wrapper)[0]).toContain('background-color: var(--maz-neutral-foreground)')
+    })
+  })
+
+  describe('when a segment is neutral', () => {
+    it('then it uses the neutral foreground and the others keep their color', () => {
+      const wrapper = mount(MazProgressBar, {
+        props: { segments: [{ value: 1, color: 'neutral' }, { value: 1, color: 'info' }] },
+      })
+      const styles = parts(wrapper)
+
+      expect(styles[0]).toContain('background-color: var(--maz-neutral-foreground)')
+      expect(styles[1]).toContain('background-color: var(--maz-info)')
+    })
+  })
+})

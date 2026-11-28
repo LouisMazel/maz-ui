@@ -8,6 +8,21 @@ export type MazNeutralColor = (typeof neutralColors)[number]
 
 export type MazSize = (typeof sizes)[number]
 
+/**
+ * A free CSS color: a hex (`#e11d48`), a color function (`oklch(...)`, `rgb(...)`, `hsl(...)`, `color-mix(...)`...) or a
+ * variable (`var(--brand)`). Named colors (`red`) are not accepted: the theme color names would be ambiguous.
+ */
+export type MazFreeColor
+  = | `#${string}`
+    | `var(--${string})`
+    | `${'rgb' | 'rgba' | 'hsl' | 'hsla' | 'hwb' | 'lab' | 'lch' | 'oklab' | 'oklch' | 'color' | 'color-mix' | 'light-dark'}(${string})`
+
+/** A color of the theme (autocompleted) or a free CSS color, for the components that carry data (categories, series, people) */
+export type MazColorOrFree<T extends string = MazColor> = T | MazFreeColor
+
+/** Fill style of a colored component: `solid` the full color, `soft` a tint, `outline` a border, `ghost` no background until hovered */
+export type MazFillVariant = 'solid' | 'soft' | 'outline' | 'ghost'
+
 export type MazRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
 /**
@@ -27,7 +42,7 @@ export type MazSizeUnit = `${number}${'rem' | 'px' | 'em' | 'vw' | 'vh' | 'vmin'
  * @param color The color to convert.
  * @returns The class name.
  */
-export function getColor(color: MazColor | MazNeutralColor | 'muted' | 'inherit') {
+export function getColor(color: MazColor | MazNeutralColor | 'neutral' | 'muted' | 'inherit') {
   return color
 }
 
