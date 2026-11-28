@@ -94,3 +94,22 @@ describe('mazTabsBar.vue', () => {
     expect(wrapper.vm.currentTab).toBe(3)
   })
 })
+
+describe('given MazTabsBar with the neutral color', () => {
+  it('then the indicator uses the neutral foreground and the active tab the neutral color', () => {
+    const wrapper = mount(MazTabsBar, {
+      props: { items: [{ label: 'Tab 1' }, { label: 'Tab 2' }], color: 'neutral' },
+      global: {
+        provide: {
+          'maz-tabs': {
+            currentTab: ref(1),
+            updateCurrentTab: vi.fn(),
+          },
+        },
+      },
+    })
+
+    expect(wrapper.find('.m-tabs-bar__indicator').attributes('style')).toContain('background-color: var(--maz-neutral-foreground)')
+    expect(wrapper.html()).toContain('color: var(--maz-neutral)')
+  })
+})

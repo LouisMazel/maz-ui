@@ -87,6 +87,23 @@ function mergeComponents(base?: ThemeComponents, overrides?: ThemeComponents): T
       ...overrides?.dialog,
     },
     ...mergeGlass(base?.glass, overrides?.glass),
+    ...mergeFocusRing(base, overrides),
+  }
+}
+
+function mergeFocusRing(base?: ThemeComponents, overrides?: ThemeComponents): Pick<ThemeComponents, 'focusRing'> {
+  if (!base?.focusRing && !overrides?.focusRing)
+    return {}
+
+  return {
+    focusRing: {
+      ...base?.focusRing,
+      ...overrides?.focusRing,
+      color: {
+        ...base?.focusRing?.color,
+        ...overrides?.focusRing?.color,
+      },
+    },
   }
 }
 

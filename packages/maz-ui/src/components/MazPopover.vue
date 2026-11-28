@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import type { Middleware, VirtualElement } from '@floating-ui/vue'
 import type { HTMLAttributes } from 'vue'
-import type { MazColor, MazNeutralColor } from './types.ts'
 
+import type { MazColor, MazNeutralColor } from './types.ts'
 import { autoPlacement, autoUpdate, flip, offset as floatingOffset, hide, shift, useFloating } from '@floating-ui/vue'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import {
@@ -17,9 +18,12 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { getFocusableElements, trapTabKey } from '../utils/focusable.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
-import { addPopoverLayer, isInUpperPopoverLayer, isTopPopoverLayer, removePopoverLayer } from '../utils/popoverLayers.ts'
+import { addOverlayLayer, isInUpperOverlayLayer, isTopOverlayLayer, removeOverlayLayer } from '../utils/overlayLayers.ts'
+import { formatOrigin, getOriginFromRects, getSideFromPlacement } from '../utils/popoverOrigin.ts'
 import { getColor } from './types.ts'
 
 defineOptions({
@@ -87,6 +91,8 @@ export type MazPopoverPreferPosition = 'top' | 'right' | 'bottom' | 'left' | 'to
 export type MazPopoverFallbackPosition = 'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'
 export type MazPopoverTrigger = 'click' | 'hover' | 'manual' | 'adaptive'
 export type MazPopoverRole = 'dialog' | 'tooltip' | 'menu'
+
+export type MazPopoverCollisionPadding = number | Partial<Record<'top' | 'right' | 'bottom' | 'left', number>>
 
 export interface MazPopoverProps {
   /**
@@ -156,6 +162,12 @@ export interface MazPopoverProps {
    */
   offset?: number
   /**
+   * Space kept free at the edges of the viewport, in pixels: the panel stays out of it, and it is hidden when
+   * its trigger goes under it. `{ top: 64 }` for a sticky header of 64px. Also a global default (`defaults.MazPopover`)
+   * @default 5
+   */
+  collisionPadding?: MazPopoverCollisionPadding
+  /**
    * Delay before showing/hiding in milliseconds
    * @default 0
    */
@@ -169,7 +181,7 @@ export interface MazPopoverProps {
    * CSS transition name for animations
    * @default 'scale-pop'
    * @values 'scale-pop' | 'scale-fade' | string
-   * @description 'scale-pop' | 'scale-fade' for default transitions. 'scale-pop' is a pop effect, 'scale-fade' is a fade effect.
+   * @description `scale-pop` (default): the panel springs out of its trigger and is sucked back into it. `scale-fade`: a sober fade and a slight growth from the trigger. Both start from the `--maz-popover-transform-origin` CSS variable of the panel.
    */
   transition?: 'scale-pop' | 'scale-fade' | string
   /**
@@ -224,7 +236,7 @@ export interface MazPopoverProps {
   ariaDescribedby?: string
   /**
    * Color variant of the popover: `container` (the default) and `surface` are the neutral colors of the theme
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast, surface, container
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, neutral, surface, container
    * @default container
    */
   color?: MazColor | MazNeutralColor
@@ -248,11 +260,12 @@ export interface MazPopoverProps {
    * CSS selector or element reference to use for positioning calculations
    * @description When provided, the popover will position relative to this element instead of the trigger
    * Useful for components with labels where you want to position relative to the actual input
-   * @type {string | HTMLElement}
+   * A point `{ x, y }` (viewport coordinates) positions the popover at this point (context menu)
+   * @type {string | HTMLElement | { x: number, y: number }}
    * @default undefined
-   * @example "input" or "#my-input" or HTMLElement
+   * @example "input" or "#my-input" or HTMLElement or { x: 120, y: 80 }
    */
-  positionReference?: string | HTMLElement
+  positionReference?: string | HTMLElement | { x: number, y: number }
 }
 
 const triggerId = useInstanceUniqId({
@@ -265,11 +278,40 @@ const attrs = useAttrs()
 const triggerRef = useTemplateRef<HTMLElement>('trigger')
 const panelRef = useTemplateRef<HTMLElement>('panel')
 
+const originMiddleware: Middleware = {
+  name: 'mazOrigin',
+  fn: ({ x, y, rects, placement }) => ({
+    data: {
+      origin: formatOrigin(getOriginFromRects(
+        rects.reference,
+        { ...rects.floating, x, y },
+        getSideFromPlacement(placement),
+      )),
+    },
+  }),
+}
+
+const { collisionPadding } = useGlobalConfig<{ collisionPadding: MazPopoverCollisionPadding }>('MazPopover', { collisionPadding: 5 })
+
+const isReferenceStuck = ref(false)
+
+function hasStuckAncestor(element: Element | null) {
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    const position = getComputedStyle(current).position
+
+    if (position === 'sticky' || position === 'fixed')
+      return true
+  }
+
+  return false
+}
+
 const middleware = computed(() => {
-  const middleware = [
+  const padding = collisionPadding.value
+  const middleware: Middleware[] = [
     floatingOffset(offset),
-    hide(),
-    shift({ padding: 5 }),
+    hide({ padding: isReferenceStuck.value ? 0 : padding }),
+    shift({ padding }),
   ]
 
   const shouldUseAutoPlacement = position === 'auto' && !preferPosition && !fallbackPosition
@@ -277,15 +319,20 @@ const middleware = computed(() => {
   if (shouldUseAutoPlacement) {
     middleware.push(autoPlacement({
       allowedPlacements: ['top', 'bottom', 'left', 'right'],
+      padding,
     }))
   }
   else {
     middleware.push(flip({
+      padding,
       fallbackPlacements: fallbackPosition
         ? [fallbackPosition]
         : undefined,
     }))
   }
+
+  middleware.push(originMiddleware)
+
   return middleware
 })
 
@@ -325,9 +372,17 @@ const positionRef = computed(() => {
       : null
   }
 
+  if (!('getBoundingClientRect' in positionReference)) {
+    const { x, y } = positionReference
+
+    return {
+      getBoundingClientRect: () => ({ x, y, width: 0, height: 0, top: y, left: x, right: x, bottom: y }),
+    } satisfies VirtualElement
+  }
+
   return positionReference
 })
-const reference = computed(() => positionRef.value || triggerRef.value)
+const reference = computed<HTMLElement | VirtualElement | null>(() => positionRef.value || triggerRef.value || null)
 
 const { floatingStyles, placement, update, middlewareData } = useFloating(
   reference,
@@ -342,7 +397,20 @@ const { floatingStyles, placement, update, middlewareData } = useFloating(
 
 const computedPosition = computed(() => placement.value ?? floatingPosition.value)
 
+const panelSide = computed(() => getSideFromPlacement(computedPosition.value))
+const panelOrigin = computed<string | undefined>(() => middlewareData.value.mazOrigin?.origin)
+
+function onBeforeLeave(element: Element) {
+  (element as HTMLElement).dataset.state = 'closed'
+}
+
 const isOpen = defineModel<boolean>({ default: false })
+
+/** A trigger inside a sticky or fixed element is always in the reserved area of `collisionPadding`: it must not hide the panel */
+watch([() => isOpen.value, reference], ([open, element]) => {
+  if (open)
+    isReferenceStuck.value = isClient() && element instanceof Element && hasStuckAncestor(element)
+}, { flush: 'sync' })
 
 /**
  * The panel is only rendered in the browser: its position needs the DOM, and a teleported content
@@ -488,11 +556,17 @@ function syncTriggerAria() {
 const isWrapperTrigger = computed(() => !triggerTarget.value)
 
 /**
- * The panel is hidden when its reference leaves the viewport (`hide` middleware), except while
- * the focus is inside it: on Android, the virtual keyboard opened to type in a field of the panel
- * (a select search) covers the reference, hiding the panel would make it lose the focus.
+ * The panel is hidden when its reference leaves the viewport or goes under the `collisionPadding` (`hide`
+ * middleware), except while a field of the panel has the focus: on Android, the virtual keyboard opened to type
+ * in it (a select search) covers the reference, hiding the panel would make it lose the focus.
  */
 const isPanelFocused = ref(false)
+
+const TYPING_FIELD = 'input:not([type="checkbox"], [type="radio"], [type="button"], [type="submit"]), textarea, select, [contenteditable]:not([contenteditable="false"])'
+
+function onPanelFocusin(event: FocusEvent) {
+  isPanelFocused.value = event.target instanceof Element && event.target.matches(TYPING_FIELD)
+}
 
 function onPanelFocusout(event: FocusEvent) {
   const nextFocused = event.relatedTarget as Node | null
@@ -585,10 +659,10 @@ const layer = {
 }
 
 function removeDocumentListeners() {
-  removePopoverLayer(layer)
+  removeOverlayLayer(layer)
 
   if (isClient()) {
-    document.removeEventListener('keydown', onKeydown)
+    document.removeEventListener('keydown', onKeydown, role === 'tooltip')
     document.removeEventListener('pointerdown', onDocumentPointerDown, true)
   }
 }
@@ -615,10 +689,18 @@ function open() {
   }
 }
 
-function close() {
+/**
+ * @param immediate close now, without the delay of the hover trigger
+ */
+function close(immediate = false) {
   clearOpenTimeout()
 
-  if (delay > 0 && effectiveTrigger.value === 'hover') {
+  // Strict: a slot can bind `close` to an event, whose object is not a request to skip the delay
+  if (immediate === true) {
+    clearCloseTimeout()
+    setOpen(false)
+  }
+  else if (delay > 0 && effectiveTrigger.value === 'hover') {
     closeTimeout = setTimeout(() => {
       setOpen(false)
     }, delay)
@@ -658,7 +740,7 @@ function setOpen(value: boolean) {
     emits('toggle', value)
 
     if (role !== 'tooltip')
-      addPopoverLayer(layer)
+      addOverlayLayer(layer)
 
     nextTick(() => {
       if (!appliedOpenState)
@@ -671,7 +753,8 @@ function setOpen(value: boolean) {
       // pour couvrir souris + tactile sur tous les elements. Ajoute APRES l'ouverture
       // pour ne pas capter l'interaction qui vient d'ouvrir.
       if (isClient()) {
-        document.addEventListener('keydown', onKeydown)
+        // A tooltip handles Escape first (capture), the overlay around it then sees `defaultPrevented`
+        document.addEventListener('keydown', onKeydown, role === 'tooltip')
         document.addEventListener('pointerdown', onDocumentPointerDown, true)
       }
     })
@@ -733,8 +816,6 @@ function getTransformOrigin(position: Omit<MazPopoverPosition, 'auto'>): string 
   }
 }
 
-const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
-
 function setupFocusTrap() {
   if (role === 'tooltip' || effectiveTrigger.value === 'hover' || !trapFocus || !isClient())
     return
@@ -742,9 +823,9 @@ function setupFocusTrap() {
   initialFocusElement = document.activeElement as HTMLElement
 
   nextTick(() => {
-    const focusableElements = panelRef.value?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+    const focusableElements = getFocusableElements(panelRef.value)
 
-    if (focusableElements && focusableElements.length > 0) {
+    if (focusableElements.length > 0) {
       focusableElements[0].focus({ preventScroll: true })
     }
     else {
@@ -764,10 +845,10 @@ function restoreFocus() {
 
 function onKeydown(event: KeyboardEvent) {
   // A popover opened from this panel handles the keys first
-  if (!isOpen.value || (role !== 'tooltip' && !isTopPopoverLayer(layer)))
+  if (!isOpen.value || (role !== 'tooltip' && !isTopOverlayLayer(layer)))
     return
 
-  if (event.key === 'Escape' && closeOnEscape && !persistent) {
+  if (event.key === 'Escape' && closeOnEscape && !persistent && !event.defaultPrevented) {
     event.preventDefault()
     close()
   }
@@ -778,30 +859,10 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function handleTrapFocus(event: KeyboardEvent) {
-  if (!panelRef.value || !isClient())
+  if (!isClient())
     return
 
-  const focusableElements = panelRef.value.querySelectorAll(FOCUSABLE_SELECTOR)
-
-  if (focusableElements.length === 0)
-    return
-
-  const firstElement = focusableElements[0] as HTMLElement
-
-  const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
-
-  if (event.shiftKey) {
-    if (document.activeElement === firstElement) {
-      event.preventDefault()
-      lastElement.focus()
-    }
-  }
-  else {
-    if (document.activeElement === lastElement) {
-      event.preventDefault()
-      firstElement.focus()
-    }
-  }
+  trapTabKey(event, panelRef.value)
 }
 
 function onDocumentPointerDown(event: PointerEvent) {
@@ -813,7 +874,7 @@ function onDocumentPointerDown(event: PointerEvent) {
     return
 
   // Inside the panel, the trigger or a popover opened from the panel: not outside
-  if (layer.contains(target) || isInUpperPopoverLayer(layer, target))
+  if (layer.contains(target) || isInUpperOverlayLayer(layer, target))
     return
 
   close()
@@ -948,7 +1009,7 @@ defineExpose({
   </div>
 
   <Teleport v-if="isMounted" :to="teleportTo">
-    <Transition :name="transitionName" appear @after-leave="onTransitionAfterLeave">
+    <Transition :name="transitionName" appear @before-leave="onBeforeLeave" @after-leave="onTransitionAfterLeave">
       <div
         v-if="isPanelRendered"
         :id="panelId"
@@ -959,6 +1020,8 @@ defineExpose({
         :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
         :aria-modal="role === 'dialog' && trapFocus ? 'true' : undefined"
         :tabindex="role === 'dialog' ? '-1' : undefined"
+        data-state="open"
+        :data-side="panelSide"
         class="m-popover-panel maz:fixed maz:z-default-backdrop maz:rounded-md maz:shadow-elevation maz:outline-hidden maz:drop-shadow-md"
         :aria-live="announceChanges ? 'polite' : undefined"
         :class="panelClasses"
@@ -966,12 +1029,13 @@ defineExpose({
           panelStyle,
           panelStyles,
           {
-            transformOrigin: getTransformOrigin(computedPosition),
-            visibility: isPanelHidden ? 'hidden' : 'visible',
+            '--maz-popover-transform-origin': panelOrigin,
+            'transformOrigin': `var(--maz-popover-transform-origin, ${getTransformOrigin(computedPosition)})`,
+            'visibility': isPanelHidden ? 'hidden' : 'visible',
           },
         ]"
         v-bind="panelEvents"
-        @focusin="isPanelFocused = true"
+        @focusin="onPanelFocusin"
         @focusout="onPanelFocusout"
       >
         <!--
@@ -1036,128 +1100,79 @@ defineExpose({
   &.--contrast {
     @apply maz:border-contrast-600 maz:bg-contrast maz:text-contrast-foreground;
   }
+
+  &.--neutral {
+    @apply maz:border maz:border-divider maz:bg-neutral maz:text-neutral-foreground;
+  }
 }
 
-.maz-scale-fade-enter-active,
+/*
+ * `scale-fade`, the sober one (menus, selects, pickers): from a slightly smaller scale and a few pixels toward
+ * the trigger, the origin being `--maz-popover-transform-origin`
+ */
+.maz-scale-fade-enter-active {
+  transition:
+    opacity calc(var(--maz-motion-normal, 200ms) * 0.6 * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+}
+
+.maz-scale-fade-leave-active {
+  transition:
+    opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+    transform calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
+}
+
+.maz-scale-fade-enter-from,
+.maz-scale-fade-leave-to {
+  --m-popover-shift-x: 0px;
+  --m-popover-shift-y: 0px;
+
+  @apply maz:opacity-0;
+
+  transform: translate(var(--m-popover-shift-x), var(--m-popover-shift-y)) scale(0.9);
+
+  &[data-side='top'] {
+    --m-popover-shift-y: 6px;
+  }
+
+  &[data-side='bottom'] {
+    --m-popover-shift-y: -6px;
+  }
+
+  &[data-side='left'] {
+    --m-popover-shift-x: 6px;
+  }
+
+  &[data-side='right'] {
+    --m-popover-shift-x: -6px;
+  }
+}
+
+/*
+ * `scale-pop`, the default (tooltips, popovers): springs out of its trigger and is sucked back into it on close
+ */
 .maz-scale-pop-enter-active {
   transition:
-    opacity 150ms ease-out,
-    transform 150ms ease-out;
-}
-
-.maz-scale-fade-leave-active,
-.maz-scale-pop-leave-active {
-  transition:
-    opacity 150ms ease-in,
-    transform 150ms ease-in;
+    opacity calc(var(--maz-motion-normal, 200ms) * 0.5 * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    transform calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1))
+      var(--maz-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1));
 }
 
 .maz-scale-pop-leave-active {
   transition:
-    opacity 150ms ease-in,
-    transform 150ms ease-in;
+    opacity calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
 }
 
-/* Bottom positions - expand from top */
-.m-popover-panel.--position-bottom,
-.m-popover-panel.--position-bottom-start,
-.m-popover-panel.--position-bottom-end {
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
+.maz-scale-pop-enter-from {
+  @apply maz:opacity-0;
 
-    transform: scaleY(0.5);
-    transform-origin: top center;
-  }
-
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2) translateY(-4px);
-    transform-origin: top center;
-  }
+  transform: scale(0.4);
 }
 
-/* Top positions - expand from bottom */
-.m-popover-panel.--position-top,
-.m-popover-panel.--position-top-start,
-.m-popover-panel.--position-top-end {
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
+.maz-scale-pop-leave-to {
+  @apply maz:opacity-0;
 
-    transform: scaleY(0.5);
-    transform-origin: bottom center;
-  }
-
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2) translateY(4px);
-    transform-origin: bottom center;
-  }
-}
-
-/* Right positions - expand from left */
-.m-popover-panel.--position-right,
-.m-popover-panel.--position-right-start,
-.m-popover-panel.--position-right-end {
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scaleX(0.5);
-    transform-origin: left center;
-  }
-
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2) translateX(-4px);
-    transform-origin: left center;
-  }
-}
-
-/* Left positions - expand from right */
-.m-popover-panel.--position-left,
-.m-popover-panel.--position-left-start,
-.m-popover-panel.--position-left-end {
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scaleX(0.5);
-    transform-origin: right center;
-  }
-
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2) translateX(4px);
-    transform-origin: right center;
-  }
-}
-
-/* Default fallback - only applies when no specific position class is present */
-.m-popover-panel:not([class*='--position-']) {
-  &.maz-scale-pop-enter-from,
-  &.maz-scale-pop-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.2);
-    transform-origin: center;
-  }
-
-  &.maz-scale-fade-enter-from,
-  &.maz-scale-fade-leave-to {
-    @apply maz:opacity-0;
-
-    transform: scale(0.5) translateY(-4px);
-    transform-origin: center;
-  }
+  transform: scale(0.15);
 }
 </style>

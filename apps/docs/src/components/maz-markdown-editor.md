@@ -9,27 +9,11 @@ description: MazMarkdownEditor is a GitHub-style markdown editor with Write/Prev
 
 <!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
-## Installation requirement
+## Preview
 
-The preview relies on [`marked`](https://marked.js.org) for parsing and [`dompurify`](https://github.com/cure53/DOMPurify) for sanitization. Both are loaded lazily (only when the preview is rendered), so install them in your project:
+The preview is a [`MazMarkdown`](./maz-markdown.md), parsed with `marked` and sanitized with `dompurify` (both installed with `maz-ui`, loaded only when the preview is shown). To only display markdown, without editing, use `MazMarkdown` directly. You can also provide your own renderer with the [`renderFunction`](#custom-renderer) prop.
 
-::: code-group
-
-```bash [pnpm]
-pnpm add marked dompurify
-```
-
-```bash [npm]
-npm install marked dompurify
-```
-
-```bash [yarn]
-yarn add marked dompurify
-```
-
-:::
-
-If they are not installed, the preview falls back to a safe, escaped plain-text block. You can also provide your own renderer with the [`renderFunction`](#custom-renderer) prop to avoid these dependencies entirely.
+Set `highlight` to render the fenced code blocks of the preview with [`MazCodeHighlight`](./maz-code-highlight.md) (needs the optional `shiki` package).
 
 ## Basic usage
 

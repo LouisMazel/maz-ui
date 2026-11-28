@@ -60,7 +60,7 @@ Without `items` (or with an empty array), the chevron is hidden and the componen
 
 ## Colors and styles
 
-`color`, `outlined` and `pastel` apply to both parts.
+`color` and `variant` (`solid`, `soft`, `outline` or `ghost`) apply to both parts.
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-3">
@@ -69,11 +69,14 @@ Without `items` (or with an empty array), the chevron is hidden and the componen
     </MazBtnDropdown>
   </div>
   <div class="maz:mt-3 maz:flex maz:flex-wrap maz:items-center maz:gap-3">
-    <MazBtnDropdown :items="items" outlined menu-label="Other save options">
-      Outlined
+    <MazBtnDropdown :items="items" variant="outline" menu-label="Other save options">
+      Outline
     </MazBtnDropdown>
-    <MazBtnDropdown :items="items" pastel menu-label="Other save options">
-      Pastel
+    <MazBtnDropdown :items="items" variant="soft" menu-label="Other save options">
+      Soft
+    </MazBtnDropdown>
+    <MazBtnDropdown :items="items" variant="ghost" menu-label="Other save options">
+      Ghost
     </MazBtnDropdown>
     <MazBtnDropdown :items="items" color="contrast" rounded-size="full" menu-label="Other save options">
       Rounded full
@@ -88,12 +91,16 @@ Without `items` (or with an empty array), the chevron is hidden and the componen
     Save
   </MazBtnDropdown>
 
-  <MazBtnDropdown :items="items" outlined menu-label="Other save options">
-    Outlined
+  <MazBtnDropdown :items="items" variant="outline" menu-label="Other save options">
+    Outline
   </MazBtnDropdown>
 
-  <MazBtnDropdown :items="items" pastel menu-label="Other save options">
-    Pastel
+  <MazBtnDropdown :items="items" variant="soft" menu-label="Other save options">
+    Soft
+  </MazBtnDropdown>
+
+  <MazBtnDropdown :items="items" variant="ghost" menu-label="Other save options">
+    Ghost
   </MazBtnDropdown>
 
   <!-- Only the outer corners are rounded -->
@@ -371,7 +378,7 @@ const shortcutItems = [
   { label: 'Save and publish', shortcut: '⌘ ⇧ S', onClick: () => { lastAction.value = 'Save and publish' } },
 ]
 
-const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast']
+const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral']
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 

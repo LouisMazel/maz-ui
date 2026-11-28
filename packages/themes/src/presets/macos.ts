@@ -1,9 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SPACE,
-} from './_defaults.ts'
+import { DEFAULT_DISABLED_OPACITY, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SPACE } from './_defaults.ts'
 
 /**
  * macOS preset: the look of a native Mac app (macOS 26).
@@ -11,18 +7,22 @@ import {
  * Identity:
  * - System font at 13px, the body size of macOS: the whole `rem` scale
  *   (spacing included) tightens with it.
- * - `primary` follows the accent color chosen by the user in System
- *   Settings, `foreground`, `muted` and `divider` the system label and
- *   separator colors (`systemColors`, WebKit only). Everywhere else the
- *   Apple values below are the fallback.
- * - `secondary` is the system purple, `accent` the system pink and `info`
- *   the system teal (pink and teal darkened on light for their white text):
- *   four strong colors that never look alike.
+ * - Colors measured on macOS 26 (`NSColor`, Aqua and Dark Aqua): neutral
+ *   grays, `primary` is the default accent (#007aff in both modes), the
+ *   system purple, pink and teal for `secondary`, `accent` and `info`.
+ * - `foreground` and `divider` are the translucent system label and
+ *   separator colors (`systemColors`, Safari and WebKit views only), the
+ *   values below are the same colors flattened on the window. WebKit always
+ *   returns #007aff for the accent of the user (fingerprinting), so the
+ *   accent is not a system color: an app that reads it natively overrides
+ *   `primary`.
  * - White text on the accent colors and on red, like macOS: these pairs reach the 3:1
- *   of WCAG for controls and large text, not the 4.5:1 of body text. Green and
- *   yellow keep a dark text in dark mode, the body text stays AA.
- * - Grouped content on a light gray window (`surface`) inside white blocks
- *   (`container`), translucent `glass` for sidebars, toolbars and menus.
+ *   of WCAG for controls and large text, not the 4.5:1 of body text. Pink,
+ *   teal, green and orange are darkened on light for their white text, green,
+ *   teal and orange keep a dark text in dark mode. `muted` stays darker than
+ *   the secondary label of macOS (3.9:1) to keep the AA contrast.
+ * - Content blocks (`container`) on the window (`surface`), translucent
+ *   `glass` for sidebars, toolbars and menus.
  * - Controls keep the arrow cursor, like native controls.
  */
 const FONT_FAMILY = `-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', system-ui, 'Helvetica Neue', sans-serif`
@@ -40,6 +40,7 @@ export const macos: ThemePreset = {
     'motion-fast': '120ms',
     'motion-normal': '200ms',
     'motion-slow': '300ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.25, 0.1, 0.25, 1)',
     'easing-in': 'cubic-bezier(0.42, 0, 1, 1)',
     'easing-in-out': 'cubic-bezier(0.42, 0, 0.58, 1)',
@@ -50,63 +51,80 @@ export const macos: ThemePreset = {
   },
   scales: {
     color: 'perceptual',
+    // Measured on macOS 26: push buttons ~6pt, grouped blocks ~12pt, windows ~26pt.
     rounded: {
       'xs': '4px',
       'sm': '5px',
       'md': '7px',
-      'lg': '10px',
+      'lg': '12px',
       'xl': '12px',
       '2xl': '16px',
-      '3xl': '22px',
+      '3xl': '26px',
     },
     shadow: {
-      sm: '0 0.5px 1px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.06)',
-      md: '0 1px 3px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.08)',
-      lg: '0 6px 16px rgb(0 0 0 / 0.16), 0 0 0 0.5px rgb(0 0 0 / 0.1)',
-      xl: '0 12px 32px rgb(0 0 0 / 0.22), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
-      elevation: '0 10px 30px rgb(0 0 0 / 0.2), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
+      'sm': '0 0.5px 1px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.06)',
+      'md': '0 1px 3px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.08)',
+      'lg': '0 6px 16px rgb(0 0 0 / 0.16), 0 0 0 0.5px rgb(0 0 0 / 0.1)',
+      'xl': '0 12px 32px rgb(0 0 0 / 0.22), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
+      'elevation': {
+        light: '0 10px 30px rgb(0 0 0 / 0.2), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
+        dark: '0 10px 30px rgb(0 0 0 / 0.5), 0 0 0 0.5px rgb(255 255 255 / 0.12)',
+      },
+      'elevation-1': {
+        light: '0 2px 6px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.08)',
+        dark: '0 2px 6px rgb(0 0 0 / 0.6), 0 0 0 0.5px rgb(255 255 255 / 0.16)',
+      },
+      'elevation-2': {
+        light: '0 8px 20px rgb(0 0 0 / 0.18), 0 0 0 0.5px rgb(0 0 0 / 0.1)',
+        dark: '0 8px 20px rgb(0 0 0 / 0.7), 0 0 0 0.5px rgb(255 255 255 / 0.26)',
+      },
+      'elevation-3': {
+        light: '0 18px 44px rgb(0 0 0 / 0.28), 0 0 0 0.5px rgb(0 0 0 / 0.12)',
+        dark: '0 18px 44px rgb(0 0 0 / 0.75), 0 0 0 0.5px rgb(255 255 255 / 0.36)',
+      },
     },
   },
-  // macOS text styles (points = px): Large Title 26, Title 1 22, Title 2 17,
-  // Headline 13 bold, Body 13, Callout 12, Subheadline 11. SF tracks itself
-  // by optical size, so no letter spacing.
+  // macOS text styles (points = px): Large Title 26/32, Title 1 22/26, Title 2
+  // 17/22, Title 3 15/20 (all regular), Headline 13/16 bold, Body 13/16,
+  // Callout 12/15, Subheadline 11/14. SF tracks itself by optical size, so no
+  // letter spacing.
   typography: {
     'display': {
-      size: '34px',
-      weight: '700',
-      leading: '1.2',
-      tracking: '0',
-    },
-    'title-1': {
       size: '26px',
-      weight: '700',
+      weight: '400',
       leading: '1.23',
       tracking: '0',
     },
-    'title-2': {
+    'title-1': {
       size: '22px',
-      weight: '700',
-      leading: '1.27',
+      weight: '400',
+      leading: '1.18',
+      tracking: '0',
+    },
+    'title-2': {
+      size: '17px',
+      weight: '400',
+      leading: '1.29',
       tracking: '0',
     },
     'title-3': {
-      size: '17px',
-      weight: '600',
-      leading: '1.3',
+      size: '15px',
+      weight: '400',
+      leading: '1.33',
       tracking: '0',
     },
     'title-4': {
       size: '13px',
-      weight: '600',
+      weight: '700',
       leading: '1.23',
       tracking: '0',
     },
     'body-lg': { size: '15px', leading: '1.33', tracking: '0' },
-    'body': { size: '13px', leading: '1.38', tracking: '0' },
-    'body-sm': { size: '12px', leading: '1.33', tracking: '0' },
+    'body': { size: '13px', leading: '1.23', tracking: '0' },
+    'body-sm': { size: '12px', leading: '1.25', tracking: '0' },
     'label': {
       size: '13px',
-      weight: '500',
+      weight: '400',
       leading: '1.23',
       tracking: '0',
     },
@@ -120,9 +138,9 @@ export const macos: ThemePreset = {
     'code': { size: '0.92em' },
   },
   components: {
-    btn: { 'font-weight': '500' },
+    btn: { 'font-weight': '400' },
     container: {
-      bg: { light: '#ffffff', dark: '#262628' },
+      bg: { light: '#ffffff', dark: '#282828' },
     },
     input: {
       'bg': { light: '#ffffff', dark: 'rgb(255 255 255 / 0.08)' },
@@ -137,59 +155,61 @@ export const macos: ThemePreset = {
     dialog: { 'max-width': '28rem', 'min-width': '20rem' },
   },
   systemColors: {
-    primary: '-apple-system-control-accent',
     foreground: '-apple-system-label',
-    muted: '-apple-system-secondary-label',
     divider: '-apple-system-separator',
   },
   colors: {
     light: {
-      'surface': '#f6f6f7',
-      'foreground': '#1d1d1f',
+      'surface': '#f4f5f5',
+      'foreground': '#272727',
       'primary': '#007aff',
       'primary-foreground': '#ffffff',
-      'secondary': '#af52de',
+      'secondary': '#cb30e0',
       'secondary-foreground': '#ffffff',
       'accent': '#d30f45',
       'accent-foreground': '#ffffff',
-      'info': '#00809d',
+      'info': '#00838c',
       'info-foreground': '#ffffff',
       'success': '#1e7f34',
       'success-foreground': '#ffffff',
-      'warning': '#a35c00',
+      'warning': '#b26119',
       'warning-foreground': '#ffffff',
-      'destructive': '#ff3b30',
+      'destructive': '#ff383c',
       'destructive-foreground': '#ffffff',
-      'contrast': '#1d1d1f',
+      'contrast': '#272727',
       'contrast-foreground': '#ffffff',
-      'muted': '#6e6e73',
-      'divider': '#e0e0e2',
+      'muted': '#707070',
+      'divider': '#e6e6e6',
       'overlay': 'rgb(0 0 0 / 0.2)',
       'shadow': '#000000',
+      'neutral': '#ffffff',
+      'neutral-foreground': '#272727',
     },
     dark: {
-      'surface': '#1c1c1e',
-      'foreground': '#f5f5f7',
-      'primary': '#0a84ff',
+      'surface': '#1e1e1e',
+      'foreground': '#dddddd',
+      'primary': '#007aff',
       'primary-foreground': '#ffffff',
-      'secondary': '#bf5af2',
+      'secondary': '#db34f2',
       'secondary-foreground': '#ffffff',
       'accent': '#ff375f',
       'accent-foreground': '#ffffff',
-      'info': '#40c8e0',
+      'info': '#00d2e0',
       'info-foreground': '#000000',
-      'success': '#32d74b',
+      'success': '#30d158',
       'success-foreground': '#000000',
-      'warning': '#ff9f0a',
+      'warning': '#ff9230',
       'warning-foreground': '#000000',
-      'destructive': '#ff453a',
+      'destructive': '#ff4245',
       'destructive-foreground': '#ffffff',
-      'contrast': '#f5f5f7',
-      'contrast-foreground': '#1d1d1f',
-      'muted': '#98989d',
-      'divider': '#38383a',
+      'contrast': '#dddddd',
+      'contrast-foreground': '#1e1e1e',
+      'muted': '#9a9a9a',
+      'divider': '#343434',
       'overlay': 'rgb(0 0 0 / 0.4)',
       'shadow': '#000000',
+      'neutral': '#505050',
+      'neutral-foreground': '#dddddd',
     },
   },
 }

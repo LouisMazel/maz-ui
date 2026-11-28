@@ -815,3 +815,125 @@ describe('given MazTimeline component', () => {
     })
   })
 })
+
+describe('given MazTimeline step colors', () => {
+  describe('when a step has a free color and an active state', () => {
+    const wrapper = mountTimeline({
+      steps: [
+        { title: 'Deploy', color: '#e11d48', state: 'active' },
+        { title: 'Review', color: 'var(--review)', state: 'completed' },
+        { title: 'Later', color: '#e11d48' },
+        { title: 'Plain', state: 'error' },
+      ],
+    })
+    const steps = wrapper.findAll('.m-timeline-step')
+
+    it('then the active step takes the color', () => {
+      expect(steps[0]!.attributes('style')).toContain('--m-timeline-bg: #e11d48')
+      expect(steps[0]!.attributes('style')).toContain('--m-timeline-fg: oklch(from #e11d48')
+    })
+
+    it('then the completed step takes the color instead of the success color', () => {
+      expect(steps[1]!.attributes('style')).toContain('--m-timeline-state-bg: var(--review)')
+    })
+
+    it('then a pending step stays muted', () => {
+      expect(steps[2]!.attributes('style')).toBeUndefined()
+    })
+
+    it('then a step without color keeps its state color', () => {
+      expect(steps[3]!.attributes('style')).toContain('--m-timeline-state-bg: var(--maz-destructive)')
+    })
+  })
+
+  describe('when a step has a theme color', () => {
+    it('then it resolves the variables of the theme', () => {
+      const wrapper = mountTimeline({ steps: [{ title: 'A', color: 'info', state: 'completed' }] })
+
+      expect(wrapper.find('.m-timeline-step').attributes('style')).toContain('--m-timeline-state-bg: var(--maz-info)')
+    })
+  })
+})
+
+describe('given MazTimeline subtitle-lines', () => {
+  describe('when the prop is set', () => {
+    it('then the subtitle is clamped to that number of lines', () => {
+      const wrapper = mountTimeline({ subtitleLines: 2 })
+      const style = wrapper.find('.m-timeline-subtitle').attributes('style')
+
+      expect(style).toContain('line-clamp: 2')
+      expect(style).toContain('overflow: hidden')
+    })
+
+    it('then a subtitle slot is clamped too', () => {
+      const wrapper = mount(MazTimeline, {
+        props: { steps: [{ title: 'A' }], subtitleLines: 1 },
+        slots: { subtitle: 'Long text' },
+      })
+
+      expect(wrapper.find('.m-timeline-subtitle').attributes('style')).toContain('line-clamp: 1')
+    })
+  })
+
+  describe('when the prop is not set', () => {
+    it('then the subtitle has no inline style', () => {
+      const wrapper = mountTimeline()
+
+      expect(wrapper.find('.m-timeline-subtitle').attributes('style')).toBeUndefined()
+    })
+  })
+})
+
+describe('given MazTimeline icons in the small size', () => {
+  describe('when an error step has an icon', () => {
+    const wrapper = mountTimeline({
+      size: 'sm',
+      steps: [{ title: 'Failed', state: 'error', icon: '<svg viewBox="0 0 24 24"></svg>' }],
+    })
+
+    it('then the icon has no fixed size class that overflows the indicator', async () => {
+      await vi.dynamicImportSettled()
+
+      const icon = wrapper.find('.m-timeline-step-icon')
+
+      expect(icon.exists()).toBe(true)
+      expect(icon.classes().join(' ')).not.toMatch(/m-icon--|maz:text-/)
+    })
+  })
+})
+
+describe('given MazTimeline with the neutral color', () => {
+  describe('when the timeline color is neutral', () => {
+    it('then the indicator is neutral with a divider border and the accents use the neutral foreground', () => {
+      const wrapper = mountTimeline({ color: 'neutral' })
+      const style = wrapper.attributes('style')
+
+      expect(style).toContain('--m-timeline-bg: var(--maz-neutral)')
+      expect(style).toContain('--m-timeline-fg: var(--maz-neutral-foreground)')
+      expect(style).toContain('--m-timeline-border: var(--maz-divider)')
+      expect(style).toContain('--m-timeline-accent: var(--maz-neutral-foreground)')
+      expect(style).toContain('--m-timeline-color: var(--maz-neutral-foreground)')
+    })
+  })
+
+  describe('when a step is neutral', () => {
+    it('then it sets the neutral variables with the state border', () => {
+      const wrapper = mountTimeline({ steps: [{ title: 'A', color: 'neutral', state: 'completed' }] })
+      const style = wrapper.find('.m-timeline-step').attributes('style')
+
+      expect(style).toContain('--m-timeline-state-bg: var(--maz-neutral)')
+      expect(style).toContain('--m-timeline-state-fg: var(--maz-neutral-foreground)')
+      expect(style).toContain('--m-timeline-state-border: var(--maz-divider)')
+    })
+  })
+
+  describe('when a step has another color in a neutral timeline', () => {
+    it('then it resets the accent and the border', () => {
+      const wrapper = mountTimeline({ color: 'neutral', steps: [{ title: 'A', color: 'info', state: 'active' }] })
+      const style = wrapper.find('.m-timeline-step').attributes('style')
+
+      expect(style).toContain('--m-timeline-accent: var(--maz-info)')
+      expect(style).toContain('--m-timeline-border: transparent')
+    })
+  })
+})

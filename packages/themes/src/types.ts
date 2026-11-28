@@ -39,11 +39,25 @@ export interface ThemeColors {
   'muted': CSSColor
   'divider': CSSColor
   'shadow': CSSColor
+  /**
+   * Neutral grey of the components (`color="neutral"`: the push button of the native platforms, badges, chips...).
+   * Every built-in preset sets it; without it, a grey mixed from `surface` and `foreground` is used.
+   */
+  'neutral'?: CSSColor
+  /** Text on `neutral`. Falls back to `foreground`. */
+  'neutral-foreground'?: CSSColor
 }
 
 export interface ThemeFoundation {
   'base-font-size'?: SizeUnit
   'border-width': SizeUnit
+  /**
+   * Border width of a boxed field (input, select, textarea, date picker, code, tags, markdown editor, dropzone...) with the focus.
+   * The width above `border-width` is drawn inside the box, so the layout does not move.
+   * Emitted as `--maz-focus-border-width`.
+   * @default '2px'
+   */
+  'focus-border-width'?: SizeUnit
   /** Body / sans font stack. */
   'font-family'?: string
   /**
@@ -67,9 +81,34 @@ export interface ThemeFoundation {
   'motion-fast'?: Duration
   'motion-normal'?: Duration
   'motion-slow'?: Duration
+  /**
+   * Shortest duration: press, hover, toggle. Bridged into Tailwind's `--duration-instant`.
+   * @default '80ms'
+   */
+  'motion-instant'?: Duration
+  /**
+   * Longest duration: large layout transitions and reveals. Bridged into Tailwind's `--duration-slower`.
+   * @default '450ms'
+   */
+  'motion-slower'?: Duration
+  /**
+   * Multiplier of every duration of the components: `0.5` twice faster, `0` no motion.
+   * Lowered under `prefers-reduced-motion: reduce`.
+   * @default '1'
+   */
+  'motion-scale'?: string
   'easing-out'?: string
   'easing-in'?: string
   'easing-in-out'?: string
+  /**
+   * Spring without bounce (a `linear()` easing, see `springEasing`): sliding indicators, sheets.
+   * Bridged into Tailwind's `--ease-spring`.
+   */
+  'easing-spring'?: string
+  /**
+   * Spring with a small bounce: check marks, press feedback, badges. Bridged into Tailwind's `--ease-bounce`.
+   */
+  'easing-bounce'?: string
   /**
    * Opacity applied to disabled interactive elements (buttons, inputs, etc.).
    * @default '0.5'
@@ -124,6 +163,12 @@ export type RoundedScaleKey = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
  */
 export type ColorScaleMode = 'relative' | 'perceptual'
 
+/**
+ * A box-shadow, or one per color mode (`{ light, dark }`): on a dark background a black shadow is barely visible,
+ * a preset can use a stronger shadow or a glow there.
+ */
+export type ThemeShadowValue = string | { light: string, dark: string }
+
 export interface ThemeScales {
   /**
    * Border-radius scale. Maps to Tailwind utilities `rounded-{key}` and is
@@ -142,7 +187,8 @@ export interface ThemeScales {
    * is the maz-ui specific elevated-surface shadow used by MazCard,
    * MazContainer, MazPopover, etc.
    */
-  shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', string>
+  shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', ThemeShadowValue>
+    & Partial<Record<'elevation-1' | 'elevation-2' | 'elevation-3', ThemeShadowValue>>
   /**
    * Derivation of the 50..950 steps of the brand colors.
    * @default 'relative'
@@ -161,6 +207,19 @@ export interface ThemeComponentBg {
 }
 
 /**
+ * Focus ring of the interactive components, distinct from `primary`. Every key is optional: without it, each
+ * component keeps its own ring (2px, offset 2px, in its color).
+ */
+export interface ThemeFocusRing {
+  /** Color of the ring, per color mode. Emitted as `--maz-focus-ring-color`. */
+  color?: ThemeComponentBg
+  /** Thickness of the ring. Emitted as `--maz-focus-ring-width`. */
+  width?: SizeUnit
+  /** Gap between the control and the ring. Emitted as `--maz-focus-ring-offset`. */
+  offset?: SizeUnit
+}
+
+/**
  * Per-component theme overrides. Every entry is optional; omit a key and the
  * component falls back to its existing surface tokens (= zero behaviour change).
  */
@@ -171,6 +230,10 @@ export interface ThemeComponents {
      */
     'font-weight'?: string
   }
+  /**
+   * Focus ring of the interactive components (`MazBtn`, `MazSwitch`, `MazSidebarMenuButton`...).
+   */
+  focusRing?: ThemeFocusRing
   /**
    * Background of "container" surfaces (Card, Container, Dialog, Popover,
    * Dropdown menu panel, Drawer, BottomSheet, …).

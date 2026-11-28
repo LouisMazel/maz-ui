@@ -1,12 +1,11 @@
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types.ts'
-import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
-import { computed, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
-import MazIcon from './MazIcon.vue'
+import MazDrawnIcon from './MazDrawnIcon.vue'
 
 export type MazCheckboxValue = string | number | boolean
 
@@ -31,6 +30,12 @@ export interface MazCheckboxProps<T = boolean | (string | number)[]> {
   label?: string
   /** If the checkbox is disabled */
   disabled?: boolean
+  /**
+   * Mixed state (a dash instead of the check, `aria-checked="mixed"`), for a "select all" checkbox
+   * whose children are partly selected. It does not change the model: set it from the children
+   * @default false
+   */
+  indeterminate?: boolean
   /** Whether there is an error with the input. */
   error?: boolean
   /** Whether the input is successful. */
@@ -53,6 +58,7 @@ const {
   value,
   name = 'm-checkbox',
   disabled,
+  indeterminate = false,
   error,
   success,
   warning,
@@ -89,6 +95,15 @@ const instanceId = useInstanceUniqId({
 })
 
 const isFocused = ref(false)
+const inputRef = ref<HTMLInputElement>()
+
+function syncIndeterminate() {
+  if (inputRef.value)
+    inputRef.value.indeterminate = indeterminate
+}
+
+onMounted(syncIndeterminate)
+watch(() => indeterminate, syncIndeterminate, { flush: 'post' })
 
 const isChecked = computed(() => {
   if (typeof value !== 'boolean' && Array.isArray(modelValue)) {
@@ -154,11 +169,19 @@ const checkIconColor = computed(() => {
     return 'var(--maz-surface)'
   }
 
+  if (color === 'neutral') {
+    return 'var(--maz-neutral)'
+  }
+
   return `var(--maz-${color}-foreground)`
 })
 const checkboxSelectedColor = computed(() => {
   if (color === 'contrast') {
     return 'var(--maz-contrast)'
+  }
+
+  if (color === 'neutral') {
+    return 'var(--maz-neutral-foreground)'
   }
 
   return `var(--maz-${color})`
@@ -174,7 +197,7 @@ const checkboxBoxShadow = computed(() => {
     return `var(--maz-success)`
   }
 
-  return ['transparent', 'contrast'].includes(color)
+  return ['transparent', 'contrast', 'neutral'].includes(color)
     ? `var(--maz-muted)`
     : `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`
 })
@@ -203,6 +226,7 @@ function emitValue(value: boolean | string | number) {
 
   emits('update:model-value', newValue as T)
   emits('change', newValue as T)
+  nextTick(syncIndeterminate)
 }
 
 function onBlur(event: FocusEvent) {
@@ -220,15 +244,17 @@ function onFocus(event: FocusEvent) {
     :for="instanceId"
     class="m-checkbox m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
     :class="[
-      { '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-interactive': !disabled },
+      { '--indeterminate': indeterminate, '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-interactive': !disabled },
       classProp,
     ]"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
   >
     <input
       :id="instanceId"
+      ref="inputRef"
       :checked="isChecked"
       v-bind="$attrs"
+      :aria-checked="indeterminate ? 'mixed' : undefined"
       :disabled
       :name
       type="checkbox"
@@ -237,7 +263,14 @@ function onFocus(event: FocusEvent) {
       @focus="onFocus"
     >
     <span :style="{ width: checkboxSize, height: checkboxSize }">
-      <MazIcon :icon="MazCheck" class="check-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="[isChecked ? 'maz:scale-100' : 'maz:scale-0', checkIconSize]" :style="{ color: checkIconColor }" />
+      <MazDrawnIcon
+        :name="indeterminate ? 'minus' : 'check'"
+        :drawn="isChecked || indeterminate"
+        :stroke-width="2.5"
+        class="check-icon maz:relative"
+        :class="[isChecked || indeterminate ? 'maz:scale-100' : 'maz:scale-0', checkIconSize]"
+        :style="{ color: checkIconColor }"
+      />
     </span>
     <div v-if="label || hasSlotContent($slots.default) || hint" class="m-checkbox__text maz:flex maz:flex-col maz:gap-0">
       <slot :value>
@@ -264,28 +297,57 @@ function onFocus(event: FocusEvent) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-checkbox {
-  .check-icon :deep(path) {
-    stroke-width: 2.5;
-  }
+  --m-checkbox-fast: calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1));
+  --m-checkbox-normal: calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1));
 
   > span {
-    @apply maz:relative maz:flex maz:rounded-sm maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
+    @apply maz:relative maz:flex maz:rounded-sm maz:border maz:border-divider maz:dark:border-divider-400 maz:flex-center;
+
+    transition:
+      border-color var(--m-checkbox-fast) var(--maz-easing-out, ease-out),
+      box-shadow var(--m-checkbox-fast) var(--maz-easing-out, ease-out);
+
+    /* The ink grows from the center when checked and shrinks faster when unchecked */
+    &::before {
+      position: absolute;
+      inset: calc(var(--maz-border-width, 1px) * -1);
+      border-radius: inherit;
+      background-color: var(--checkbox-selected-color);
+      content: '';
+      scale: 0;
+      transition: scale calc(var(--m-checkbox-normal) * 0.7) var(--maz-easing-in, ease-in);
+    }
   }
 
   input {
-    @apply maz:sr-only;
+    @apply maz:sr-only maz:outline-hidden;
 
     &:not(:checked) ~ span {
       @apply maz:bg-input;
     }
 
-    &:checked ~ span {
+    &:checked ~ span,
+    &[aria-checked='mixed'] ~ span {
       border-color: var(--checkbox-selected-color);
-      background-color: var(--checkbox-selected-color);
+
+      &::before {
+        scale: 1;
+        transition-duration: var(--m-checkbox-normal);
+        transition-timing-function: var(--maz-easing-out, ease-out);
+      }
     }
 
     &:disabled ~ span {
       @apply maz:bg-surface-600 maz:dark:bg-surface-300;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    &:focus-visible ~ span {
+      outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
+      outline-offset: var(--maz-focus-ring-offset, 2px);
     }
   }
 
@@ -294,7 +356,8 @@ function onFocus(event: FocusEvent) {
       @apply maz:text-muted!;
     }
 
-    input:checked ~ span {
+    input:checked ~ span,
+    input[aria-checked='mixed'] ~ span {
       @apply maz:border-divider;
 
       .check-icon {
@@ -305,7 +368,6 @@ function onFocus(event: FocusEvent) {
 
   &:not(:has(input:disabled)) {
     &:hover > span,
-    &:focus-within > span,
     &.--error > span,
     &.--warning > span,
     &.--success > span {

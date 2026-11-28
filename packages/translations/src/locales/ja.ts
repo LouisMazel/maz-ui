@@ -17,11 +17,17 @@ export default {
     nextYears: '次の年',
     selectAll: 'すべての行を選択',
     selectRow: '行を選択',
+    rowDetails: '行の詳細',
     removeFile: 'ファイルを削除',
     remove: '削除',
     sidebar: 'サイドバー',
     openSidebar: 'サイドバーを開く',
     closeSidebar: 'サイドバーを閉じる',
+    resizeSheet: 'シートのサイズを変更',
+    before: '前',
+    after: '後',
+    resize: 'サイズを変更',
+    moreItems: '他 {count} 件',
   },
   selectCountry: {
     searchPlaceholder: '国を検索',
@@ -73,6 +79,7 @@ export default {
     loading: '読み込み中...',
     error: 'エラーが発生しました。もう一度お試しください',
     results: '結果: {count}',
+    freeEntry: '"{query}" を使用',
   },
   table: {
     noResults: '結果なし',
@@ -112,6 +119,35 @@ export default {
       placeholder: '検索',
     },
   },
+  inputKeyValue: {
+    key: 'キー',
+    value: '値',
+    add: '追加',
+    duplicateKey: 'このキーはすでに使われています',
+  },
+  input: {
+    clear: 'クリア',
+  },
+  inputSecret: {
+    saved: '保存済み',
+    replace: '置き換える',
+    clear: 'クリア',
+    cancel: 'キャンセル',
+    savedDescription: '値は保存され、非表示です',
+    strengthLabel: 'パスワードの強度',
+    strengthVeryWeak: '非常に弱い',
+    strengthWeak: '弱い',
+    strengthFair: '普通',
+    strengthGood: '良い',
+    strengthStrong: '強い',
+    ruleLength: '{minLength}文字以上',
+    ruleLowercase: '小文字を含む',
+    ruleUppercase: '大文字を含む',
+    ruleNumber: '数字を含む',
+    ruleSymbol: '記号を含む',
+    ruleMet: '条件を満たしています',
+    ruleNotMet: '条件を満たしていません',
+  },
   readMore: {
     expand: 'もっと読む',
     collapse: '閉じる',
@@ -130,6 +166,12 @@ export default {
     copyToClipboard: 'クリップボードにコピー',
     copiedToClipboard: 'クリップボードにコピーされました',
     scrollToBottom: '一番下へスクロール',
+    diff: {
+      additions: '追加された行: {count}',
+      deletions: '削除された行: {count}',
+      identical: '差分はありません',
+      expand: '変更のない行を表示 ({count})',
+    },
   },
   colorPicker: {
     openPicker: 'カラーピッカーを開く',
@@ -144,6 +186,17 @@ export default {
   windowMockup: {
     copyUrlToClipboard: 'URLをクリップボードにコピー',
     urlCopiedToClipboard: 'URLがクリップボードにコピーされました',
+  },
+  btn: {
+    holdDescription: '長押しして確定',
+  },
+  btnClipboard: {
+    copy: 'コピー',
+    copied: 'コピーしました',
+  },
+  btnScroll: {
+    top: 'トップへ戻る',
+    bottom: '一番下へ',
   },
   markdownEditor: {
     write: '編集',
@@ -170,5 +223,88 @@ export default {
       h2: '見出し2',
       h3: '見出し3',
     },
+  },
+  dialogConfirm: {
+    accept: '確認',
+    cancel: 'キャンセル',
+    confirmationLabel: '確認するには「{text}」と入力してください',
+  },
+  /**
+   * Image viewer (lightbox) labels: label, open (thumbnail), close, previous, next, loading.
+   */
+  lightbox: {
+    label: '画像ビューア',
+    open: '画像を拡大',
+    close: '閉じる',
+    previous: '前の画像',
+    next: '次の画像',
+    loading: '読み込み中...',
+  },
+  tour: {
+    label: 'ガイドツアー',
+    next: '次へ',
+    previous: '前へ',
+    skip: 'スキップ',
+    done: '完了',
+    stepOf: 'ステップ {step} / {total}',
+  },
+  breadcrumb: {
+    label: 'パンくずリスト',
+    showHidden: '非表示のページを表示',
+  },
+  navigationMenu: {
+    label: 'メインナビゲーション',
+  },
+  emptyState: {
+    noResults: '結果がありません',
+    noResultsFor: '「{query}」に一致するものはありません',
+  },
+  sparkline: {
+    up: '上昇',
+    down: '下降',
+    flat: '横ばい',
+    label: '傾向 {trend}：最小 {min}、最大 {max}、最新 {last}',
+  },
+  statCard: {
+    chart: '{label}：傾向',
+  },
+  tree: {
+    added: '追加',
+    modified: '変更',
+    deleted: '削除',
+  },
+  rating: {
+    label: '評価',
+    value: '{max} 中 {value}',
+  },
+  timePicker: {
+    label: '時刻',
+    hours: '時',
+    minutes: '分',
+    period: '午前または午後',
+    slots: '利用可能な時間',
+  },
+  inlineEdit: {
+    edit: '編集',
+  },
+  kbd: {
+    command: 'コマンド',
+    control: 'コントロール',
+    option: 'オプション',
+    shift: 'シフト',
+  },
+  commandPalette: {
+    label: 'コマンドパレット',
+    placeholder: 'コマンドを検索',
+    noResults: '結果がありません',
+    results: '{count} 件の結果',
+  },
+  contextMenu: {
+    label: 'コンテキストメニュー',
+  },
+  themeToggle: {
+    toDark: 'ダークモードに切り替え',
+    toSystem: 'システムのテーマを使用',
+    toLight: 'ライトモードに切り替え',
   },
 } satisfies MazUiTranslationsNestedSchema

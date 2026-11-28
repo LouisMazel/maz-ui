@@ -1,17 +1,39 @@
+import { existsSync } from 'node:fs'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import mazUiModule from '@maz-ui/nuxt'
 import { VitePreNestedCss } from '@maz-ui/vite-config'
 import svgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 
-const enableLocalMonorepoDev = false
-const isDev = enableLocalMonorepoDev && process.env.NODE_ENV !== 'production'
+// In dev, the app reads the sources of the packages (HMR, no rebuild). `false` (or `MAZ_UI_DIST=1 pnpm dev`)
+// reads their dist instead: run `pnpm build:packages` first, then restart the dev server
+const USE_PACKAGE_SOURCES = true
 
-// eslint-disable-next-line no-console
-console.log({ isDev, enableLocalMonorepoDev })
+const isDev = process.env.NODE_ENV !== 'production' && USE_PACKAGE_SOURCES && process.env.MAZ_UI_DIST !== '1'
+
+const mazUiSources = fileURLToPath(new URL('../../packages/maz-ui/src/components/', import.meta.url))
 
 export default defineNuxtConfig({
-  modules: [mazUiModule],
+  modules: [
+    mazUiModule,
+    // After the module of maz-ui, which registers the components: they are resolved by Node (dist), in dev they
+    // use their sources too
+    (_options, nuxt) => {
+      if (!isDev)
+        return
+
+      nuxt.hook('components:extend', (components) => {
+        for (const component of components) {
+          const name = /maz-ui\/(?:dist\/)?components\/(Maz\w+)(?:\.js|\.mjs)?$/.exec(component.filePath)?.[1]
+          const source = name && `${mazUiSources}${name}.vue`
+
+          if (source && existsSync(source))
+            component.filePath = source
+        }
+      })
+    },
+  ],
 
   devtools: { enabled: true },
 
@@ -38,6 +60,14 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-07-22',
 
+  // The sources of maz-ui keep their doc comments in the templates while the server renders the dist, which has none:
+  // the comments make the client hydration fail in dev
+  vue: {
+    compilerOptions: {
+      comments: false,
+    },
+  },
+
   vite: {
     plugins: [
       VitePreNestedCss(),
@@ -63,9 +93,23 @@ export default defineNuxtConfig({
             'default',
           ],
     },
+    // The server renders the same sources as the client, or the hydration would not match
+    $server: isDev
+      ? {
+          resolve: {
+            conditions: ['monorepo:dev', 'import', 'module', 'node', 'default'],
+            externalConditions: ['monorepo:dev', 'import', 'module', 'node', 'default'],
+          },
+          ssr: { noExternal: ['maz-ui', /^@maz-ui\//] },
+        }
+      : undefined,
   },
 
   mazUi: {
+    // The panels stay under the sticky toolbar of the modernisation page
+    defaults: {
+      MazPopover: { collisionPadding: { top: 88 } },
+    },
     css: { injectCss: !isDev },
     icons: { prefix: 'app' },
     theme: {
@@ -83,12 +127,7 @@ export default defineNuxtConfig({
       preloadFallback: true,
       fallbackLocale: 'en',
     },
-    plugins: {
-      aos: true,
-      dialog: true,
-      toast: true,
-      wait: true,
-    },
+    aos: true,
     directives: {
       vTooltip: true,
     },

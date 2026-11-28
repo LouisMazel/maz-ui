@@ -80,6 +80,7 @@ describe('given MazPopover component', () => {
         'warning',
         'destructive',
         'contrast',
+        'neutral',
         'surface',
         'container',
       ] as NonNullable<MazPopoverProps['color']>[],

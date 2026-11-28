@@ -6,6 +6,7 @@ import { parseArgs } from 'node:util'
 import { generateKnowledge } from './generate.ts'
 import { PACKAGE_DEFINITIONS } from './packages.ts'
 import { getSourcePaths } from './paths.ts'
+import { renderPluginFiles } from './render/plugin.ts'
 import { AGENT_DOCS_SCHEMA_VERSION } from './types.ts'
 import { findOutdatedFiles, writeOutput } from './write.ts'
 
@@ -25,7 +26,7 @@ Options:
   --out <dir>       With a single --package: write the fragment in <dir> instead
   --bundle <dir>    Write the fragment of every package in <dir>/<short>/ plus <dir>/index.json (@maz-ui/mcp)
   --site <dir>      Write the flat pages plus llms.txt and llms-full.txt (maz-ui.com)
-  --skill <dir>     Write the Claude Code plugin skill
+  --skill <dir>     Write the skill and the .mcp.json of the plugin (Claude Code and Codex)
   --vitepress <dir>  Write the API tables of the component pages (apps/docs/.vitepress/generated-docs)
   --check           With --skill: fail when the committed files are outdated instead of writing them
   --strict          Fail on generation warnings
@@ -58,10 +59,12 @@ function writeBundle(directory: string, fragments: GeneratedFragment[]): void {
   ], { clean: true })
 }
 
-function syncSkill(directory: string, files: OutputFile[], check: boolean): void {
+function syncSkill(directory: string, skill: OutputFile[], check: boolean): void {
+  const files = [...skill, ...renderPluginFiles(directory)]
+
   if (!check) {
     writeOutput(directory, files)
-    logger.success(`[agent-docs] plugin skill written to ${directory}`)
+    logger.success(`[agent-docs] plugin files written to ${directory}`)
     return
   }
 
@@ -70,7 +73,7 @@ function syncSkill(directory: string, files: OutputFile[], check: boolean): void
   if (outdated.length > 0)
     throw new Error(`Outdated plugin files in ${directory}: ${outdated.join(', ')}. Run \`pnpm -F agent-docs generate:plugin\`.`)
 
-  logger.success('[agent-docs] plugin skill is up to date')
+  logger.success('[agent-docs] plugin files are up to date')
 }
 
 interface FragmentTargets {

@@ -38,6 +38,16 @@ export const NOISE_CASES: NoiseCase[] = [
 
 export const SEARCH_CASES: SearchCase[] = [
   {
+    query: 'shared loading state between components',
+    expected: ['composables/use-wait', 'plugins/wait'],
+    rank: 1,
+  },
+  {
+    query: 'remove accents case insensitive compare',
+    expected: ['ecosystem/utils/normalize-string'],
+    rank: 1,
+  },
+  {
     query: 'MazBtn',
     expected: ['components/maz-btn'],
     rank: 1,
@@ -135,6 +145,16 @@ export const SEARCH_CASES: SearchCase[] = [
   {
     query: 'status chip',
     expected: ['components/maz-badge'],
+    rank: 3,
+  },
+  {
+    query: 'environment variables editor',
+    expected: ['components/maz-input-key-value'],
+    rank: 3,
+  },
+  {
+    query: 'api key input',
+    expected: ['components/maz-input-secret'],
     rank: 3,
   },
   {
@@ -264,7 +284,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'time picker',
-    expected: ['components/maz-date-picker'],
+    expected: ['components/maz-time-picker', 'components/maz-date-picker'],
     rank: 1,
   },
   {
@@ -343,6 +363,51 @@ export const SEARCH_CASES: SearchCase[] = [
     rank: 1,
   },
   {
+    query: 'infinite scroll',
+    expected: ['composables/use-infinite-scroll'],
+    rank: 1,
+  },
+  {
+    query: 'load more when reaching the end of the list',
+    expected: ['composables/use-infinite-scroll'],
+    rank: 3,
+  },
+  {
+    query: 'back to top button',
+    expected: ['components/maz-btn-scroll'],
+    rank: 1,
+  },
+  {
+    query: 'scroll position',
+    expected: ['composables/use-scroll'],
+    rank: 1,
+  },
+  {
+    query: 'hide header on scroll down',
+    expected: ['composables/use-scroll'],
+    rank: 3,
+  },
+  {
+    query: 'detect when an element is visible',
+    expected: ['composables/use-intersection-observer', 'directives/intersect'],
+    rank: 3,
+  },
+  {
+    query: 'width of an element when it is resized',
+    expected: ['composables/use-resize-observer'],
+    rank: 3,
+  },
+  {
+    query: 'lock body scroll',
+    expected: ['composables/use-scroll-lock'],
+    rank: 1,
+  },
+  {
+    query: 'copy button for an id',
+    expected: ['components/maz-btn-clipboard'],
+    rank: 1,
+  },
+  {
     query: 'lazy load image',
     expected: ['components/maz-lazy-img', 'directives/lazy-img'],
     rank: 1,
@@ -394,7 +459,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'context menu',
-    expected: ['components/maz-dropdown'],
+    expected: ['components/maz-context-menu', 'components/maz-dropdown'],
     rank: 1,
   },
   {
@@ -443,6 +508,26 @@ export const SEARCH_CASES: SearchCase[] = [
     rank: 1,
   },
   {
+    query: 'compare two texts',
+    expected: ['components/maz-code-highlight'],
+    rank: 1,
+  },
+  {
+    query: 'terminal output',
+    expected: ['components/maz-log-stream'],
+    rank: 1,
+  },
+  {
+    query: 'render markdown',
+    expected: ['components/maz-markdown'],
+    rank: 1,
+  },
+  {
+    query: 'display release notes markdown',
+    expected: ['components/maz-markdown'],
+    rank: 3,
+  },
+  {
     query: 'read more truncate text',
     expected: ['components/maz-read-more'],
     rank: 1,
@@ -459,7 +544,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'reveal on scroll',
-    expected: ['components/maz-animated-element', 'plugins/aos', 'composables/use-aos'],
+    expected: ['directives/reveal', 'components/maz-reveal'],
     rank: 1,
   },
   {
@@ -703,7 +788,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'dark mode toggle',
-    expected: ['ecosystem/themes'],
+    expected: ['components/maz-theme-toggle', 'ecosystem/themes'],
     rank: 1,
   },
   {
@@ -963,7 +1048,7 @@ export const HELD_OUT_CASES: SearchCase[] = [
   },
   {
     query: 'switch between light and dark',
-    expected: ['ecosystem/themes'],
+    expected: ['ecosystem/themes', 'components/maz-theme-toggle'],
     rank: 3,
   },
   {
@@ -1003,7 +1088,7 @@ export const HELD_OUT_CASES: SearchCase[] = [
   },
   {
     query: 'show only part of a long text',
-    expected: ['components/maz-read-more'],
+    expected: ['components/maz-read-more', 'components/maz-middle-truncate'],
     rank: 3,
   },
   {

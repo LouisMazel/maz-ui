@@ -48,7 +48,7 @@ describe('given useWindowSize composable - extended', () => {
       expect(fakeWindow.addEventListener).toHaveBeenCalledWith('resize', expect.any(Function), { passive: true })
 
       app.unmount()
-      expect(fakeWindow.removeEventListener).toHaveBeenCalledWith('resize', expect.any(Function))
+      expect(fakeWindow.removeEventListener).toHaveBeenCalledWith('resize', expect.any(Function), { passive: true })
     })
   })
 

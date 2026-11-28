@@ -31,7 +31,7 @@ type MazUiComposables = keyof typeof import('maz-ui/composables')
 
 type Composables = Omit<
   Record<MazUiComposables | 'useTheme' | 'useTranslations', true>,
-  'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'
+  'useAos' | 'useMazIconProps'
 >
 
 declare module 'nuxt/schema' {
@@ -58,20 +58,18 @@ const pluginComposables: Record<'useTheme' | 'useTranslations', true> = {
   useTranslations: true,
 }
 
-/** Auto-imported through their plugin (`mazUi.plugins`), or internal to the components */
+/** Auto-imported with the `aos` option, or internal to the components */
 const NOT_AUTO_IMPORTED_COMPOSABLES = new Set([
   'useAos',
-  'useDialog',
-  'useToast',
-  'useWait',
   'useMazIconProps',
 ])
 
 const mazUiComposables = Object.fromEntries(
   mazUiExports.composables
-    .filter(name => !NOT_AUTO_IMPORTED_COMPOSABLES.has(name))
+    // Only the composables: `useOriginTransition` also exports helpers (`getLastPointerTarget`...)
+    .filter(name => name.startsWith('use') && !NOT_AUTO_IMPORTED_COMPOSABLES.has(name))
     .map(name => [name, true]),
-) as Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'>
+) as Omit<Record<MazUiComposables, true>, 'useAos' | 'useMazIconProps'>
 
 const defaults = {
   general: {
@@ -103,6 +101,11 @@ const defaults = {
   components: {
     autoImport: true,
   },
+  toast: {},
+  dialog: {},
+  aos: false,
+  motion: 'auto',
+  density: 'default',
   plugins: {
     aos: false,
     dialog: false,
@@ -118,12 +121,20 @@ const defaults = {
     vLazyImg: false,
     vClickOutside: false,
     vFullscreenImg: false,
+    vIntersect: false,
     vTooltip: false,
+    vReveal: false,
+    vPress: false,
+    vRipple: false,
+    vMagnetic: false,
+    vTilt: false,
+    vDraw: false,
   },
   agents: {
     rules: false,
     mcp: false,
   },
+  openExternal: '',
 } satisfies Required<MazUiNuxtOptions>
 
 function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult, options: { rules: boolean, mcp: boolean, requestedTargets?: AgentTarget[] }): string {
@@ -145,6 +156,38 @@ function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult
 
 /** Version of the maz-ui that Node.js resolves from a file, `undefined` when it does not resolve */
 const ICON_TYPES_TEMPLATE = 'types/maz-icons.d.ts'
+
+const FLAGS_TEMPLATE = 'maz-ui-flags.mjs'
+
+const OPEN_EXTERNAL_TEMPLATE = 'maz-ui-open-external.mjs'
+
+type LegacyPlugin = keyof NonNullable<MazUiNuxtOptions['plugins']>
+
+/**
+ * The deprecated `plugins` option: its options go to `toast`, `dialog` and `aos`
+ * @returns the plugins it enables
+ */
+// Removed in v6 (plans/ROADMAP.md): deprecated plugins option
+function applyLegacyPlugins(options: Pick<MazUiNuxtOptions, 'toast' | 'dialog' | 'aos'> & Required<Pick<MazUiNuxtOptions, 'plugins'>>): LegacyPlugin[] {
+  const plugins = options.plugins
+  const enabled = (Object.keys(plugins) as LegacyPlugin[]).filter(name => plugins[name])
+
+  if (enabled.length === 0)
+    return []
+
+  useLogger('maz-ui').warn(`\`mazUi.plugins\` is deprecated and will be removed in v6: useToast, useDialog and useWait are always auto-imported. Remove \`plugins\` and give the options to \`mazUi.toast\`, \`mazUi.dialog\` and \`mazUi.aos\`. https://maz-ui.com/ecosystem/nuxt#toast-dialog-and-wait`)
+
+  if (typeof plugins.toast === 'object')
+    options.toast = defu(options.toast, plugins.toast)
+
+  if (typeof plugins.dialog === 'object')
+    options.dialog = defu(options.dialog, plugins.dialog)
+
+  if (plugins.aos && !options.aos)
+    options.aos = plugins.aos
+
+  return enabled
+}
 
 function resolveIconDir(dir: IconDir, rootDir: string): IconDir {
   return typeof dir === 'string'
@@ -233,7 +276,7 @@ function checkMazUiVersion(rootDir: string | undefined) {
   const moduleVersion = resolveMazUiVersion(import.meta.url)
 
   if (appVersion && moduleVersion && appVersion !== moduleVersion) {
-    useLogger('maz-ui').warn(`The app installs maz-ui ${appVersion} and @maz-ui/nuxt uses maz-ui ${moduleVersion}: two copies of maz-ui are loaded, and the options of the module (\`mazUi.general\`, \`mazUi.plugins\`...) may not apply to the components. Install the same version of maz-ui and @maz-ui/nuxt.`)
+    useLogger('maz-ui').warn(`The app installs maz-ui ${appVersion} and @maz-ui/nuxt uses maz-ui ${moduleVersion}: two copies of maz-ui are loaded, and the options of the module (\`mazUi.general\`, \`mazUi.toast\`...) may not apply to the components. Install the same version of maz-ui and @maz-ui/nuxt.`)
   }
 }
 
@@ -278,8 +321,12 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
 }
 
 /** The entries of maz-ui the plugins and directives enabled in the options install */
-function getModuleEntries(options: { plugins: NonNullable<MazUiNuxtOptions['plugins']>, directives: NonNullable<MazUiNuxtOptions['directives']> }): string[] {
-  const plugins = Object.entries(options.plugins).filter(([, enabled]) => enabled).map(([name]) => `plugins/${name}`)
+function getModuleEntries(options: { legacyPlugins: LegacyPlugin[], aos: MazUiNuxtOptions['aos'], directives: NonNullable<MazUiNuxtOptions['directives']> }): string[] {
+  const names = new Set<string>(options.legacyPlugins)
+  if (options.aos)
+    names.add('aos')
+
+  const plugins = [...names].map(name => `plugins/${name}`)
   const directives = Object.entries(options.directives).filter(([, enabled]) => enabled).map(([name]) => `directives/${name}`)
 
   return [
@@ -338,6 +385,8 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     const { presets: themePresets, ...themeOptions }: NonNullable<MazUiNuxtOptions['theme']> = moduleOptions.theme ?? {}
     moduleOptions.theme = themeOptions as typeof moduleOptions.theme
 
+    const legacyPlugins = applyLegacyPlugins(moduleOptions)
+
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
 
     addTemplate({
@@ -372,7 +421,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         ...purgeOptions,
         // The plugins and directives of the module are installed from node_modules, where the purge does not look
         entries: [
-          ...getModuleEntries(moduleOptions),
+          ...getModuleEntries({ legacyPlugins, aos: moduleOptions.aos, directives: moduleOptions.directives }),
           ...(purgeOptions.entries ?? []),
         ],
       }))
@@ -439,11 +488,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // Plugins
 
-    addPlugin(resolve(_dirname, './runtime/plugins/theme'))
-    addPlugin(resolve(_dirname, './runtime/plugins/translations'))
-    addPlugin(resolve(_dirname, './runtime/plugins/maz-link-component'))
-
-    // Flags: a URL template is a plain default, the local flags need their loader (only imported by this plugin)
+    // Flags: a URL template is a plain default, the local flags need their loader (only imported with `'local'`)
 
     const flags = moduleOptions.flags
 
@@ -454,12 +499,24 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       }
     }
 
-    if (flags === 'local') {
-      addPlugin(resolve(_dirname, './runtime/plugins/local-flags'))
-    }
-    else if (Object.keys(moduleOptions.defaults).length > 0) {
-      addPlugin(resolve(_dirname, './runtime/plugins/defaults'))
-    }
+    addTemplate({
+      filename: FLAGS_TEMPLATE,
+      getContents: () => flags === 'local'
+        ? `export { loadCountryFlag as default } from ${JSON.stringify(resolve(_dirname, './runtime/utils/local-flags'))}\n`
+        : 'export default undefined\n',
+    })
+
+    addTemplate({
+      filename: OPEN_EXTERNAL_TEMPLATE,
+      getContents: async () => moduleOptions.openExternal
+        ? `export { default } from ${JSON.stringify(await resolvePath(moduleOptions.openExternal))}\n`
+        : 'export default undefined\n',
+    })
+
+    // The MazUi plugin: theme, translations, defaults, toast, dialog and aos
+
+    addPlugin(resolve(_dirname, './runtime/plugins/maz-ui'))
+    addPlugin(resolve(_dirname, './runtime/plugins/maz-link-component'))
 
     // Components
 
@@ -479,23 +536,21 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
-    // Plugins
-
     const autoImportPrefix = moduleOptions.general.autoImportPrefix
 
-    if (moduleOptions.plugins.aos) {
-      addPlugin(resolve(_dirname, './runtime/plugins/aos'))
+    // Animations on scroll
 
+    if (moduleOptions.aos) {
       addImports({
         name: 'useAos',
-        from: resolve(_dirname, './runtime/composables/useAos'),
+        from: 'maz-ui/composables/useAos',
         as: `use${capitalize(autoImportPrefix)}Aos`,
       })
 
       const injectAosCSS
-        = typeof moduleOptions.plugins.aos === 'object'
-          && typeof moduleOptions.plugins.aos.injectCss === 'boolean'
-          ? moduleOptions.plugins.aos.injectCss
+        = typeof moduleOptions.aos === 'object'
+          && typeof moduleOptions.aos.injectCss === 'boolean'
+          ? moduleOptions.aos.injectCss
           : true
 
       if (injectAosCSS) {
@@ -503,31 +558,13 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       }
     }
 
-    if (moduleOptions.plugins.toast) {
-      addPlugin(resolve(_dirname, './runtime/plugins/toast'))
-      addImports({
-        name: 'useToast',
-        from: resolve(_dirname, './runtime/composables/useToast'),
-        as: `use${capitalize(autoImportPrefix)}Toast`,
-      })
-    }
+    // maz-ui-review-ignore deprecated-api -- names of the legacy plugins kept until v6
+    // Removed in v6 (plans/ROADMAP.md): `$mazToast`, `$mazDialog` and `$mazWait` of the deprecated plugins option
 
-    if (moduleOptions.plugins.dialog) {
-      addPlugin(resolve(_dirname, './runtime/plugins/dialog'))
-      addImports({
-        name: 'useDialog',
-        from: resolve(_dirname, './runtime/composables/useDialog'),
-        as: `use${capitalize(autoImportPrefix)}Dialog`,
-      })
-    }
-
-    if (moduleOptions.plugins.wait) {
-      addPlugin(resolve(_dirname, './runtime/plugins/wait'))
-      addImports({
-        name: 'useWait',
-        from: resolve(_dirname, './runtime/composables/useWait'),
-        as: `use${capitalize(autoImportPrefix)}Wait`,
-      })
+    for (const plugin of ['toast', 'dialog', 'wait'] as const) {
+      if (legacyPlugins.includes(plugin)) {
+        addPlugin(resolve(_dirname, `./runtime/plugins/${plugin}`))
+      }
     }
 
     // Directives
@@ -548,13 +585,41 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addPlugin(resolve(_dirname, './runtime/plugins/v-fullscreen-img'))
     }
 
+    if (moduleOptions.directives.vIntersect) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-intersect'))
+    }
+
     if (moduleOptions.directives.vTooltip) {
       addPlugin(resolve(_dirname, './runtime/plugins/v-tooltip'))
     }
 
+    if (moduleOptions.directives.vReveal) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-reveal'))
+    }
+
+    if (moduleOptions.directives.vPress) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-press'))
+    }
+
+    if (moduleOptions.directives.vRipple) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-ripple'))
+    }
+
+    if (moduleOptions.directives.vMagnetic) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-magnetic'))
+    }
+
+    if (moduleOptions.directives.vTilt) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-tilt'))
+    }
+
+    if (moduleOptions.directives.vDraw) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-draw'))
+    }
+
     // Composables
 
-    const allowedMazUiComposables = Object.keys(moduleOptions.composables).filter(composable => mazUiComposables[composable as keyof typeof mazUiComposables])
+    const allowedMazUiComposables = Object.keys(moduleOptions.composables).filter(composable => moduleOptions.composables[composable as keyof typeof mazUiComposables] && mazUiComposables[composable as keyof typeof mazUiComposables])
 
     for (const composable of allowedMazUiComposables) {
       addMazUiComposableImport({

@@ -100,6 +100,19 @@ describe('MazLink component', () => {
     expect(wrapper.classes()).toContain('maz:not-disabled:dark:hover:text-primary-300')
   })
 
+  it('uses the foreground of the neutral color for the text', () => {
+    const wrapper = shallowMount(MazLink, {
+      props: { color: 'neutral' },
+      slots: { default: 'Link' },
+      global: {
+        stubs: { RouterLink: true },
+      },
+    })
+
+    expect(wrapper.classes()).toContain('--neutral')
+    expect(wrapper.classes()).toContain('maz:not-disabled:text-neutral-foreground')
+  })
+
   it('applies underline-hover modifier when underline is false', () => {
     const hoverWrapper = shallowMount(MazLink, {
       props: { underline: false, underlineHover: true },

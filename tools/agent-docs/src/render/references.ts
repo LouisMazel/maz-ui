@@ -193,12 +193,12 @@ ${table(['Variable', 'Default'], tokens.containerVariables
 - **Section**: \`<section class="flex flex-col gap-4">\` with an \`<h2 class="text-title-2">\`; space the sections with \`gap-8\`/\`gap-12\` on their parent rather than margins.
 - **Form row** (field + button): \`<div class="flex items-end gap-2"><MazInput block class="flex-1" /><MazBtn class="shrink-0">Add</MazBtn></div>\`: without \`shrink-0\` the block input squeezes the button.
 - **Empty state**: \`<div class="flex flex-col items-center gap-3 py-12 text-center">\` with an icon (\`size-10 text-muted\`), a \`text-title-3\`, a \`text-body-sm text-muted\` explanation and one primary \`MazBtn\`.
-- **Actions bar** (dialog, form footer): \`<div class="flex flex-wrap justify-end gap-2">\` with the cancel action first (\`MazBtn color="contrast" outlined\` or a \`MazLink\`), the primary action last.
+- **Actions bar** (dialog, form footer): \`<div class="flex flex-wrap justify-end gap-2">\` with the cancel action first (\`MazBtn color="neutral"\` or a \`MazLink\`), the primary action last.
 - **Cards grid**: \`<div class="grid gap-4 tab-m:grid-cols-2 lap-m:grid-cols-3">\` of \`MazCard\`, or \`@container\` + \`@tab-m:grid-cols-2\` when the grid is not full width.
 
 ### Action hierarchy
 
-- One solid \`color="primary"\` \`MazBtn\` per view or group of actions: the main action. The other actions are \`outlined\`, \`pastel\` or \`color="contrast" outlined\`.
+- One solid \`color="primary"\` \`MazBtn\` per view or group of actions: the main action. The other actions are \`color="neutral"\` (the grey push button), \`outlined\` or \`pastel\`.
 - Cancel, back and "learn more" are low emphasis: a \`MazLink\` or an outlined \`MazBtn\`, placed before the primary action.
 - Destructive actions use \`color="destructive"\` and a confirmation (\`useDialog\`, \`MazDialogConfirm\`).
 - Neighbouring buttons share the same \`size\`.
@@ -244,7 +244,7 @@ ${typeStyles.length > 0
 
 ${table(['Utility', 'Use for'], richText.map(utility => [`\`${utility.name}\``, utility.description ?? '-']))}
 
-\`rich-text\` styles the HTML you do not write yourself (Markdown, CMS content, the output of a rich text editor) from the theme: headings, paragraphs, links, lists, blockquotes, inline code, \`kbd\`, \`pre\`, tables, \`hr\`, images and figures, in light and dark mode without \`dark:\` variant. It applies the type scale semantically: \`h1\` to \`h4\` follow \`title-1\` to \`title-4\`, \`h5\`/\`h6\` and \`th\`/\`dt\` \`label\`, the text \`body\`, \`blockquote\` the \`body-lg\` size, tables \`body-sm\`, \`code\`/\`kbd\`/\`pre\` \`code\`, \`figcaption\` \`caption\`. \`rich-text-sm\` and \`rich-text-lg\` set \`--maz-rich-text-scale\` (0.875 / 1.125), which multiplies every size. Put \`not-rich-text\` on a block to opt it out (an embedded component), \`max-w-none\` to remove the \`70ch\` reading width. \`MazCodeHighlight\` blocks keep their own style. Variables: \`--maz-rich-text-size\`, \`--maz-rich-text-scale\`, \`--maz-rich-text-max-width\`. Full guide: \`guide/typography.md\`.
+\`rich-text\` styles the HTML you do not write yourself (Markdown, CMS content, the output of a rich text editor) from the theme: headings, paragraphs, links, lists, blockquotes, inline code, \`kbd\`, \`pre\`, tables, \`hr\`, images and figures, in light and dark mode without \`dark:\` variant. It applies the type scale semantically: \`h1\` to \`h4\` follow \`title-1\` to \`title-4\`, \`h5\`/\`h6\` and \`th\`/\`dt\` \`label\`, the text \`body\`, \`blockquote\` the \`body-lg\` size, tables \`body-sm\`, \`code\`/\`kbd\`/\`pre\` \`code\`, \`figcaption\` \`caption\`. \`rich-text-xs\`, \`rich-text-sm\` and \`rich-text-lg\` set \`--maz-rich-text-scale\` (0.8125 / 0.875 / 1.125), which multiplies every size. Put \`not-rich-text\` on a block to opt it out (an embedded component), \`max-w-none\` to remove the \`70ch\` reading width. \`MazCodeHighlight\` blocks keep their own style. Variables: \`--maz-rich-text-size\`, \`--maz-rich-text-scale\`, \`--maz-rich-text-max-width\`. Full guide: \`guide/typography.md\`.
 
 \`\`\`html
 <article class="rich-text rich-text-lg" v-html="html" />

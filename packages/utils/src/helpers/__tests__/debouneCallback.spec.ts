@@ -30,4 +30,30 @@ describe('debounceCallback.ts', () => {
 
     expect(fakeCallback2).not.toHaveBeenCalled()
   })
+
+  it('then it returns a function that cancels the pending callback', () => {
+    vi.useFakeTimers()
+
+    const callback = vi.fn()
+    const cancel = debounceCallback(callback, 1000)
+
+    cancel()
+    vi.advanceTimersByTime(1000)
+
+    expect(callback).not.toHaveBeenCalled()
+  })
+
+  it('then it keeps the latest callback when a stale cancel is called', () => {
+    vi.useFakeTimers()
+
+    const first = vi.fn()
+    const second = vi.fn()
+    const cancelFirst = debounceCallback(first, 1000)
+    debounceCallback(second, 1000)
+
+    cancelFirst()
+    vi.advanceTimersByTime(1000)
+
+    expect(second).toHaveBeenCalledTimes(1)
+  })
 })

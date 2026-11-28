@@ -263,7 +263,7 @@ This is consistent with native CSS (`margin-inline-start`, `padding-inline-end`,
 | `MazContainer` | `left-icon` / `right-icon` props, `#icon-left` / `#icon-right` slots | `start-icon` / `end-icon` props, `#icon-start` / `#icon-end` slots |
 | `MazSelect` | `#left-icon` / `#right-icon` slots | `#start-icon` / `#end-icon` slots |
 | `MazCard` | `footer-align: 'left' \| 'right'` | `footer-align: 'start' \| 'end'` |
-| `MazDrawer` | `variant: 'left' \| 'right' \| 'top' \| 'bottom'` | `variant: 'start' \| 'end' \| 'top' \| 'bottom'` (`top` / `bottom` unchanged — physical) |
+| `MazDrawer` | `variant: 'left' \| 'right' \| 'top' \| 'bottom'` | `side: 'start' \| 'end' \| 'top' \| 'bottom'` (`top` / `bottom` unchanged — physical) |
 
 `top` and `bottom` are intentionally kept (block-axis edges that don't flip in RTL).
 
@@ -292,7 +292,7 @@ If you target maz-ui's internal selectors from your own CSS, also rename:
 <MazInput :start-icon="MazSearch" />
 <MazContainer title="Settings" start-icon="/cog-6-tooth.svg" />
 <MazCard footer-align="end" />
-<MazDrawer variant="end" />
+<MazDrawer side="end" />
 ```
 
 ::: warning Icon names

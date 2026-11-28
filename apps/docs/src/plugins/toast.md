@@ -7,41 +7,44 @@ description: A powerful toast notification system for Vue.js that displays user-
 
 {{ $frontmatter.description }}
 
-::: tip
-This plugin has a composable for easier use, after installing it you can use [useToast](./../composables/use-toast.md)
-:::
+Use the [useToast](./../composables/use-toast.md) composable in your components: no plugin to install.
 
-## Installation
+## Global options
+
+The options of every toast, a toast can override them. All options are listed in the [Type](#type) section.
 
 ::: code-group
 
 ```ts [Vue]
-import { ToastPlugin } from 'maz-ui/plugins/toast'
-import { createApp } from 'vue'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
 
-const app = createApp(App)
-
-const toastOptions: ToastOptions = {
-  position: 'bottom-right',
-  timeout: 10_000,
-  persistent: false,
-}
-
-app.use(ToastPlugin, toastOptions)
-app.mount('#app')
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  toast: {
+    position: 'bottom-right',
+    timeout: 10_000,
+    persistent: false,
+  },
+})
 ```
 
 ```ts [Nuxt]
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],
   mazUi: {
-    composables: {
-      useToast: true,
+    toast: {
+      position: 'bottom-right',
+      timeout: 10_000,
+      persistent: false,
     },
   },
 })
 ```
 
+:::
+
+::: tip Outside of a component
+`useToast()` works in the `setup` of a component. In a store, a router guard or `app.runWithContext()`, install the [MazUi plugin](./../guide/vue.md#install-plugin): it gives the app to the toasts.
 :::
 
 ## Basic usage
@@ -222,6 +225,77 @@ The `icon` option replaces the icon of the type, in the formats of [MazIcon](../
   </template>
 </ComponentDemo>
 
+## Stack
+
+The toasts of a position pile up like a deck: the newest in front, the others slightly behind (3 at most are visible, the rest wait). The stack spreads into a list on hover, on keyboard focus and on tap. The timers are paused while it is spread.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
+    <MazBtn color="contrast" @click="showBurst">
+      Show 5 toasts
+    </MazBtn>
+    <MazBtn color="neutral" @click="showBurst({ stacked: false })">
+      Show 5 toasts in a list
+    </MazBtn>
+  </div>
+
+  <template #code>
+
+  ```ts
+  for (let index = 1; index <= 5; index++) {
+    toast.message(`Toast ${index}`)
+  }
+
+  // the list, without the deck
+  toast.message('In a list', { stacked: false })
+  ```
+
+  </template>
+</ComponentDemo>
+
+`stacked` is `true` by default, in the global options and per toast. As soon as one toast of a position has `stacked: false`, the toasts of this position are shown as a list.
+
+## Swipe to dismiss
+
+Drag a toast towards the closest edge of the screen to close it (up or down for `top` and `bottom`). A fast flick is enough. A short drag springs back. The direction follows the position and the text direction (RTL).
+
+## Promise
+
+`toast.promise` shows a loading toast, then a success or an error toast when the promise settles. The check or the cross draws itself and the text fades to the new one. It returns the promise.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
+    <MazBtn color="success" @click="runPromise(true)">
+      Resolve
+    </MazBtn>
+    <MazBtn color="destructive" @click="runPromise(false)">
+      Reject
+    </MazBtn>
+  </div>
+
+  <template #code>
+
+  ```ts
+  const user = await toast.promise(saveUser(form), {
+    loading: 'Saving...',
+    success: user => `${user.name} saved`,
+    error: error => `Failed: ${error.message}`,
+  })
+  ```
+
+  </template>
+</ComponentDemo>
+
+`success` and `error` are strings or functions of the value or of the error. The other options (`position`, `timeout`, `button`...) apply to the toast. `timeout` starts when the promise settles.
+
+## Motion
+
+- A toast enters from the edge of its position and leaves faster (about 0.7 times the entrance), with the `--maz-motion-*` and `--maz-easing-*` tokens.
+- When a toast arrives or leaves, the others glide to their new place.
+- The line at the bottom shows the time left. It stops on hover, on focus and when the tab is hidden.
+- With reduced motion, the toasts appear and disappear without moving.
+- Errors and warnings are announced at once (`role="alert"`), the others politely (`role="status"`). The stack spreads when a toast has the focus.
+
 ## Close toast programmatically
 
 You can close a toast programmatically by using the `close` method returned by the `toast` function
@@ -264,7 +338,7 @@ interface ToastOptions {
   persistent?: boolean
   /**
    * Icon of the toast, in the formats of MazIcon: a name, a component, a URL or a raw SVG.
-   * `true` displays the icon of the type (none for `contrast` and `accent`), `false` hides it
+   * `true` displays the icon of the type (none for `contrast`, `accent` and `neutral`), `false` hides it
    * @default true
    */
   icon?: boolean | MazIconValue
@@ -312,6 +386,11 @@ interface ToastOptions {
    * @default false
    */
   html?: boolean
+  /**
+   * Pile the toasts of a position like a deck, spread on hover or focus
+   * @default true
+   */
+  stacked?: boolean
 }
 ```
 
@@ -321,6 +400,21 @@ interface ToastOptions {
   import { sleep } from '@maz-ui/utils'
 
   const toast = useToast()
+
+  function showBurst (options = {}) {
+    for (let index = 1; index <= 5; index++) {
+      toast.message(`Toast ${index}`, options)
+    }
+  }
+
+  function runPromise (shouldResolve) {
+    const task = new Promise((resolve, reject) => {
+      setTimeout(() => (shouldResolve ? resolve() : reject(new Error('Network'))), 2000)
+    })
+
+    toast.promise(task, { loading: 'Saving...', success: 'Saved', error: 'Failed to save' })
+    task.catch(() => {})
+  }
 
   function showToastAutoCLose () {
     const toastMessage = toast.message('Toast message closed by code')

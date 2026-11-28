@@ -41,7 +41,7 @@ const periodOptions = [
   </template>
 </ComponentDemo>
 
-An option is `{ label?, value, icon?, ariaLabel?, title?, disabled? }`. The `value` can be a string, a number or a boolean, and `v-model` has the same type. The `change` event is emitted with the new value when the user selects a segment.
+An option is `{ label?, value, icon?, ariaLabel?, title?, tooltip?, badge?, disabled? }`. The `value` can be a string, a number or a boolean, and `v-model` has the same type. The `change` event is emitted with the new value when the user selects a segment.
 
 ## Icons
 
@@ -119,7 +119,7 @@ Without `color`, the selected segment is a neutral raised surface, like the nati
   </template>
 </ComponentDemo>
 
-Available colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive` and `contrast`.
+Available colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` and `neutral` (the grey of the theme, with a border so it stays visible).
 
 ## Sizes
 
@@ -230,9 +230,51 @@ const planOptions = [
   </template>
 </ComponentDemo>
 
+## Tooltip and badge
+
+`tooltip` shows a [tooltip](./../directives/tooltip.md) on a segment (a text, or the options of `v-tooltip`): useful for an icon-only segment, with a shortcut for example. The tooltip code is only loaded when a segment has one. `badge` adds a [badge](./maz-badge.md) after the label: a number or a text for a counter, `true` for a dot, `false` to hide it. It accepts every prop of `MazBadge`. Use the `badge-content` slot to customize its content.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
+    <MazSegmented v-model="mailbox" :options="mailboxOptions" aria-label="Mailbox" />
+    <MazSegmented v-model="view" :options="tooltipViewOptions" aria-label="Display mode (tooltips)" />
+  </div>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import { MazListBullet } from '@maz-ui/icons/static/MazListBullet'
+import { MazSquares2x2 } from '@maz-ui/icons/static/MazSquares2x2'
+import MazSegmented from 'maz-ui/components/MazSegmented'
+import { ref } from 'vue'
+
+const mailbox = ref('inbox')
+const mailboxOptions = [
+  { label: 'Inbox', value: 'inbox', badge: { content: 12, color: 'primary' } },
+  { label: 'Mentions', value: 'mentions', badge: { content: true, color: 'destructive' } },
+  { label: 'Archive', value: 'archive' },
+]
+
+const view = ref('list')
+const tooltipViewOptions = [
+  { icon: MazListBullet, value: 'list', ariaLabel: 'List view', tooltip: 'List view (L)' },
+  { icon: MazSquares2x2, value: 'grid', ariaLabel: 'Grid view', tooltip: { text: 'Grid view (G)', position: 'bottom' } },
+]
+</script>
+
+<template>
+  <MazSegmented v-model="mailbox" :options="mailboxOptions" aria-label="Mailbox" />
+  <MazSegmented v-model="view" :options="tooltipViewOptions" aria-label="Display mode" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Custom segment content
 
-The `item` slot replaces the content of a segment. It receives the `option` and `selected`, so you can show a count, a badge or a different icon for the selected state. Keep it non-interactive: the segment is already a button.
+The `item` slot replaces the content of a segment. It receives the `option` (with its extra fields, typed from your `options`), `selected` and `index`, so you can show a different icon for the selected state or any field of your data. Keep it non-interactive: the segment is already a button.
 
 <ComponentDemo>
   <MazSegmented v-model="inbox" :options="inboxOptions" aria-label="Inbox filter">
@@ -287,6 +329,25 @@ const counts = { all: 128, unread: 12, mentions: 3 }
   </template>
 </ComponentDemo>
 
+Extra fields of your options are typed in the slot: `MazSegmented` infers the type of `options`, so `option.owner` below is a `string`.
+
+```vue
+<script lang="ts" setup>
+const options = [
+  { label: 'Inbox', value: 'inbox', owner: 'Ana' },
+  { label: 'Sent', value: 'sent', owner: 'Ben' },
+]
+</script>
+
+<template>
+  <MazSegmented v-model="box" :options="options" aria-label="Mailbox">
+    <template #item="{ option }">
+      {{ option.label }} ({{ option.owner }})
+    </template>
+  </MazSegmented>
+</template>
+```
+
 ## Global defaults
 
 `size` and `roundedSize` can be set once for every `MazSegmented` through the [global defaults](./../guide/global-defaults.md), and a prop on an instance still wins.
@@ -337,7 +398,7 @@ const themeOptions = [
   { icon: MazComputerDesktop, label: 'Auto', value: 'auto' },
 ]
 
-const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast']
+const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral']
 const status = ref('active')
 const statusOptions = [
   { label: 'Active', value: 'active' },
@@ -370,6 +431,63 @@ const inboxOptions = [
   { label: 'Mentions', value: 'mentions' },
 ]
 const counts = { all: 128, unread: 12, mentions: 3 }
+
+const mailbox = ref('inbox')
+const mailboxOptions = [
+  { label: 'Inbox', value: 'inbox', badge: { content: 12, color: 'primary' } },
+  { label: 'Mentions', value: 'mentions', badge: { content: true, color: 'destructive' } },
+  { label: 'Archive', value: 'archive' },
+]
+
+const tooltipViewOptions = [
+  { icon: MazListBullet, value: 'list', ariaLabel: 'List view', tooltip: 'List view (L)' },
+  { icon: MazSquares2x2, value: 'grid', ariaLabel: 'Grid view', tooltip: { text: 'Grid view (G)', position: 'bottom' } },
+]
 </script>
+
+## Multiple (toggle group)
+
+Add `multiple` to let several segments be on at once: bold, italic and underline, or the days of the week. `v-model` is an array of values (in the order of the options), the root is a `group` and each segment is a toggle button with `aria-pressed`. Each selected segment gets its own pill.
+
+<ComponentDemo>
+  <MazSegmented v-model="textStyles" multiple :options="textStyleOptions" aria-label="Text style" />
+  <p class="maz:mt-3 maz:text-sm maz:text-muted">Selected: {{ textStyles }}</p>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazSegmented from 'maz-ui/components/MazSegmented'
+import { ref } from 'vue'
+
+const textStyles = ref(['bold'])
+
+const textStyleOptions = [
+  { label: 'Bold', value: 'bold' },
+  { label: 'Italic', value: 'italic' },
+  { label: 'Underline', value: 'underline' },
+]
+  const textStyles = ref(['bold'])
+  const textStyleOptions = [
+    { label: 'Bold', value: 'bold' },
+    { label: 'Italic', value: 'italic' },
+    { label: 'Underline', value: 'underline' },
+  ]
+</script>
+
+<template>
+  <MazSegmented v-model="textStyles" multiple :options="textStyleOptions" aria-label="Text style" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The pill slides to the selected segment. Set `stretch` to make it stretch toward the new segment on its way, like a drop of ink. `:animated="false"` removes the slide.
+- With `multiple` there is no sliding pill: each selected segment fills in place.
+- The first placement is never animated. The speed follows the `--maz-motion-*` tokens and reduced motion removes the slide.
+- The arrows (all four), <kbd>Home</kbd> and <kbd>End</kbd> move between the segments, in RTL too. The segments show a 2 px ring on keyboard focus only.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-segmented.doc.md-->

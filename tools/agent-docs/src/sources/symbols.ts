@@ -74,6 +74,13 @@ export function parseExportedNames(source: string, { runtimeOnly = false } = {})
   return unique(names)
 }
 
+/** The JSDoc right above the declaration of `name` has a `@deprecated` tag */
+export function isDeprecatedExport(source: string, name: string): boolean {
+  const declaration = new RegExp(`/\\*\\*((?:(?!\\*/)[\\s\\S])*)\\*/\\s*(?://[^\\n]*\\n\\s*)*export (?:const|function|class) ${name}\\b`).exec(source)
+
+  return !!declaration && /@deprecated\b/.test(declaration[1])
+}
+
 function readExports(file: string, runtimeOnly = true): string[] {
   return existsSync(file)
     ? parseExportedNames(readFileSync(file, 'utf8'), { runtimeOnly })
@@ -132,6 +139,27 @@ function genericImports(page: SourcePage): PageSymbols {
   return { symbols, imports }
 }
 
+function pluginSymbols(page: SourcePage, paths: SourcePaths): PageSymbols {
+  const file = join(paths.libPlugins, `${page.slug}.ts`)
+  const plugin = readExports(file).find(name => name.endsWith('Plugin'))
+  const composable = `use${kebabToPascal(page.slug)}`
+
+  // A deprecated plugin is replaced by its composable, that works without it
+  if (plugin && isDeprecatedExport(readFileSync(file, 'utf8'), plugin) && existsSync(join(paths.libComposables, `${composable}.ts`))) {
+    return {
+      symbols: [composable],
+      imports: [`import { ${composable} } from 'maz-ui/composables/${composable}'`],
+    }
+  }
+
+  return plugin
+    ? {
+        symbols: [plugin],
+        imports: [`import { ${plugin} } from 'maz-ui/plugins/${page.slug}'`],
+      }
+    : genericImports(page)
+}
+
 export function resolvePageSymbols(page: SourcePage, paths: SourcePaths): PageSymbols {
   const curated = ECOSYSTEM_SYMBOLS[page.id]
 
@@ -160,17 +188,8 @@ export function resolvePageSymbols(page: SourcePage, paths: SourcePaths): PageSy
           }
         : genericImports(page)
     }
-    case 'plugin': {
-      const exports = readExports(join(paths.libPlugins, `${page.slug}.ts`))
-      const plugin = exports.find(name => name.endsWith('Plugin'))
-
-      return plugin
-        ? {
-            symbols: [plugin],
-            imports: [`import { ${plugin} } from 'maz-ui/plugins/${page.slug}'`],
-          }
-        : genericImports(page)
-    }
+    case 'plugin':
+      return pluginSymbols(page, paths)
     case 'util': {
       if (page.id.startsWith('ecosystem/utils/types/')) {
         const name = kebabToPascal(page.slug)

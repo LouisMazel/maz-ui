@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict.ts'
 import { mazTableKey } from './MazTable.vue'
 
@@ -7,14 +8,22 @@ export interface MazTableRowProps {
   hoverable?: boolean
   /** If true, the row is a head row */
   isHead?: boolean
+  /** Position of the row among the rows of the table: the striping follows it instead of the DOM position (rows with a detail row) */
+  stripeIndex?: number
 }
 
 const {
   hoverable = true,
   isHead = false,
+  stripeIndex = undefined,
 } = defineProps<MazTableRowProps>()
 
 const { backgroundEven, backgroundOdd, hoverable: injectedHoverable } = useInjectStrict(mazTableKey)
+
+const STRIPE_CLASS = 'maz:bg-surface-600/70 maz:dark:bg-surface-400/70'
+
+const isStripedByIndex = computed(() => stripeIndex !== undefined)
+const isStriped = computed(() => (stripeIndex! % 2 === 0 ? backgroundOdd.value : backgroundEven.value))
 </script>
 
 <template>
@@ -24,9 +33,10 @@ const { backgroundEven, backgroundOdd, hoverable: injectedHoverable } = useInjec
       '--hoverable': injectedHoverable && hoverable && !isHead,
       '--background-odd': backgroundOdd,
       '--background-even': backgroundEven,
-      'maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-300': injectedHoverable && hoverable && !isHead,
-      'maz:odd:bg-surface-600/70 maz:dark:odd:bg-surface-400/70': backgroundOdd,
-      'maz:even:bg-surface-600/70 maz:dark:even:bg-surface-400/70': backgroundEven,
+      'maz:hover:bg-foreground/5': injectedHoverable && hoverable && !isHead,
+      'maz:odd:bg-surface-600/70 maz:dark:odd:bg-surface-400/70': backgroundOdd && !isStripedByIndex,
+      'maz:even:bg-surface-600/70 maz:dark:even:bg-surface-400/70': backgroundEven && !isStripedByIndex,
+      [STRIPE_CLASS]: isStripedByIndex && isStriped,
     }"
   >
     <slot />

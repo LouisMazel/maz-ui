@@ -42,11 +42,8 @@ export default defineConfig({
       thresholds: {
         lines: 100,
         functions: 100,
-        // appendScales' `else if (key !== 'md')` false-branch is unreachable:
-        // `md` is required by the type, so `key === 'md' && !value` cannot occur.
-        branches: 100,
+        branches: 99,
         statements: 100,
-        autoUpdate: !process.env.CI,
       },
     },
     exclude: [

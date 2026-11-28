@@ -284,7 +284,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
 
 ## Selector icon with options equal-size
 
-This option will display a select icon on the left of the label
+This option will display a select icon on the left of the label. With `equal-size`, the tiles share the width and a long label is truncated instead of widening its tile (a custom slot keeps the control: add `min-w-0` and `truncate` to your content).
 
 <ComponentDemo>
   <MazRadioButtons
@@ -359,7 +359,7 @@ This option will display a select icon on the left of the label
 
 ## Colors
 
-The `color` prop accepts the brand colors and the neutral colors `surface` and `container` (`MazNeutralColor`). With a neutral color, the selected option gets the neutral background and a foreground border, and the selector bubble uses the foreground color. Use `container` for white options on a grey page with presets like macOS.
+The `color` prop accepts the brand colors and the neutral colors `surface` and `container` (`MazNeutralColor`), and `neutral` (the grey of the theme, selected option with a border and a graphite bubble). With a neutral color, the selected option gets the neutral background and a foreground border, and the selector bubble uses the foreground color. Use `container` for white options on a grey page with presets like macOS.
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-4">
@@ -403,6 +403,55 @@ export type ButtonsRadioOption = {
 The root element is a `radiogroup` of native radio inputs: pass an `aria-label` (or `aria-labelledby`) to name it. The `hint` describes the group (`aria-describedby`) and `error` sets `aria-invalid`. The arrows move between the options natively.
 
 When no `name` is provided, each instance gets a unique one, so two groups of the same page never share their radios.
+
+## Cards
+
+Set `variant="cards"` to pick one offer or one delivery method: each option is a card with its `label`, an optional `description` and an optional `price`. The native radios stay, so the keyboard and the form submission do not change. The border of the selected card draws itself with the `color`, and the `extra` slot adds content under the description.
+
+<ComponentDemo>
+  <MazRadioButtons
+    v-model="delivery"
+    :options="deliveryOptions"
+    variant="cards"
+    orientation="col"
+    aria-label="Delivery method"
+  />
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazRadioButtons from 'maz-ui/components/MazRadioButtons'
+import { ref } from 'vue'
+
+const delivery = ref('standard')
+
+const deliveryOptions = [
+  { label: 'Standard', value: 'standard', description: 'Delivered in 5 days', price: 'Free' },
+  { label: 'Express', value: 'express', description: 'Delivered in 24 hours', price: '$9' },
+  { label: 'Pickup point', value: 'pickup', description: 'Ready tomorrow near you', price: '$3' },
+]
+</script>
+
+<template>
+  <MazRadioButtons
+    v-model="delivery"
+    :options="deliveryOptions"
+    variant="cards"
+    orientation="col"
+    aria-label="Delivery method"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- With the default variant, a frame slides to the selected option and stretches on the way. `:animated="false"` removes it.
+- The check of the `selector` draws itself.
+- The speed follows the `--maz-motion-*` tokens and reduced motion removes the slide. It works in RTL and in a column.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-radio-buttons.doc.md-->
 
@@ -488,5 +537,11 @@ When no `name` is provided, each instance gets a unique one, so two groups of th
     { label: 'Option A', value: 'a' },
     { label: 'Option B', value: 'b' },
     { label: 'Option C', value: 'c' },
+  ]
+  const delivery = ref('standard')
+  const deliveryOptions = [
+    { label: 'Standard', value: 'standard', description: 'Delivered in 5 days', price: 'Free' },
+    { label: 'Express', value: 'express', description: 'Delivered in 24 hours', price: '$9' },
+    { label: 'Pickup point', value: 'pickup', description: 'Ready tomorrow near you', price: '$3' },
   ]
 </script>

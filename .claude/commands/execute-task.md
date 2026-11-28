@@ -226,7 +226,7 @@ pnpm lint:fix:all
 cd packages/maz-ui && CI=1 pnpm vitest run --coverage && cd -
 ```
 
-- Les thresholds (statements / branches / functions / lines) sont définis dans `packages/maz-ui/vitest.config.ts`. `CI=1` désactive `autoUpdate` → un drop fait échouer.
+- Les thresholds (statements / branches / functions / lines) sont dans le `vitest.config.ts` de chaque package, en chiffres ronds fixés à la main (pas d'`autoUpdate`) → un drop fait échouer.
 - Si un drift réel force à baisser un threshold → update `vitest.config.ts` manuellement et commit-le dans la PR (et flag-le dans le body de PR).
 - Per-file 100% ne suffit pas : c'est le ratio global qui compte.
 

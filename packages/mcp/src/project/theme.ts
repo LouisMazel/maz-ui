@@ -1,5 +1,6 @@
 import type { TailwindTokens } from '../knowledge/schema.ts'
 import type { ThemeTopic } from '../tools/get-theme-tokens.ts'
+import type { PresetUsage } from './preset-usage.ts'
 import type { PresetValue, ProjectPreset } from './preset.ts'
 import type { ProjectStylesheet, ProjectToken } from './stylesheet.ts'
 
@@ -7,12 +8,15 @@ import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { globSync } from 'tinyglobby'
-import { readPresets } from './preset.ts'
+import { emptyPresetUsage, isPresetUsed, mergePresetUsage } from './preset-usage.ts'
+import { readPresets, readPresetUsage } from './preset.ts'
 import { isTailwindStylesheet, readStylesheet } from './stylesheet.ts'
 
 export interface ProjectTheme {
   stylesheets: ProjectStylesheet[]
   presets: ProjectPreset[]
+  /** The presets the project passes to the theme (absent when the project was not read) */
+  usage?: PresetUsage
 }
 
 const IGNORED = [
@@ -34,6 +38,7 @@ const PATTERNS = [
   '*.cts',
   '*.js',
   '*.mjs',
+  '*.vue',
 ]
 const IGNORED_PATH = /(?:^|\/)(?:node_modules|dist|build|coverage|public|fixtures|__tests__|\.[^/]+)\/|\.min\.css$|\.d\.ts$|\.(?:spec|test)\.\w+$/
 
@@ -80,7 +85,8 @@ export function readProjectTheme(rootDir: string): ProjectTheme {
     return { stylesheets: [], presets: [] }
 
   const files = projectFiles(rootDir).sort()
-  const theme: ProjectTheme = { stylesheets: [], presets: [] }
+  const usage = emptyPresetUsage()
+  const theme: ProjectTheme = { stylesheets: [], presets: [], usage }
 
   for (const file of files) {
     const source = readSmallFile(join(rootDir, file))
@@ -92,8 +98,15 @@ export function readProjectTheme(rootDir: string): ProjectTheme {
       if (isTailwindStylesheet(source))
         theme.stylesheets.push(readStylesheet(file, source))
     }
-    else if (source.includes('definePreset(')) {
-      theme.presets.push(...readPresets(file, source))
+    else if (file.endsWith('.vue')) {
+      for (const script of source.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g))
+        mergePresetUsage(usage, readPresetUsage(file, script[1]))
+    }
+    else {
+      if (source.includes('definePreset('))
+        theme.presets.push(...readPresets(file, source))
+
+      mergePresetUsage(usage, readPresetUsage(file, source))
     }
   }
 
@@ -256,11 +269,15 @@ function presetTypography(preset: ProjectPreset): string[] {
     : []
 }
 
-function renderPreset(preset: ProjectPreset, wanted: (topic: ThemeTopic) => boolean, filtered: boolean): string | undefined {
+function renderPreset(preset: ProjectPreset, wanted: (topic: ThemeTopic) => boolean, filtered: boolean, usage?: PresetUsage): string | undefined {
   const name = typeof preset.overrides.name === 'string'
     ? ` \`${preset.overrides.name}\``
     : ''
-  const origin = [preset.exportName && `\`${preset.exportName}\``, preset.base && `base \`${preset.base}\``].filter(Boolean).join(', ')
+  const origin = [
+    preset.exportName && `\`${preset.exportName}\``,
+    preset.base && `base \`${preset.base}\``,
+    usage?.wired && !isPresetUsed(preset, usage) && 'not passed to the theme',
+  ].filter(Boolean).join(', ')
   const tables = [
     wanted('colors')
       ? presetColors(preset)
@@ -434,7 +451,7 @@ export function renderProjectTheme(theme: ProjectTheme, tailwind: TailwindTokens
   return [
     '## Your project theme',
     HOW_IT_WORKS,
-    ...theme.presets.map(preset => renderPreset(preset, wanted, !!topics?.length)),
+    ...theme.presets.map(preset => renderPreset(preset, wanted, !!topics?.length, theme.usage)),
     ...theme.stylesheets.map(stylesheet => renderStylesheetSection(stylesheet, mazUi, topics, animated)),
   ].filter(Boolean).join('\n\n')
 }

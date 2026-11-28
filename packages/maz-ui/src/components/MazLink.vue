@@ -7,6 +7,7 @@ import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnS
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables/index.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { useExternalLinks } from '../utils/externalLinks.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 
 export interface MazLinkProps {
@@ -45,6 +46,7 @@ export interface MazLinkProps {
   to?: RouteLocationRaw
   /**
    * The color of the link
+   * @values 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral' | 'transparent' | 'surface' | 'container' | 'muted' | 'inherit'
    * @default 'primary'
    * When 'none', the link will not have any color, so it will inherit the color of the parent
    */
@@ -81,7 +83,7 @@ export interface MazLinkProps {
    */
   underlineHover?: boolean
   /**
-   * Add an external icon to the link if target is '_blank'
+   * Add an external icon to the link if target is '_blank' (or if the link leaves the app, see the `openExternal` option of the plugin)
    * @default true
    */
   autoExternal?: boolean
@@ -146,6 +148,13 @@ const component = computed<Component | string>(() => {
 
 const isButton = computed(() => component.value === 'button')
 
+const { isExternal, onLinkClick } = useExternalLinks()
+
+function onClick(event: MouseEvent) {
+  if (!isButton.value)
+    onLinkClick(event, href, target)
+}
+
 const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
   primary: 'maz:not-disabled:text-primary maz:not-disabled:hover:text-primary-700 maz:not-disabled:dark:hover:text-primary-300',
   secondary: 'maz:not-disabled:text-secondary maz:not-disabled:hover:text-secondary-700 maz:not-disabled:dark:hover:text-secondary-300',
@@ -155,6 +164,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
   success: 'maz:not-disabled:text-success maz:not-disabled:hover:text-success-700 maz:not-disabled:dark:hover:text-success-300',
   accent: 'maz:not-disabled:text-accent maz:not-disabled:hover:text-accent-700 maz:not-disabled:dark:hover:text-accent-300',
   contrast: 'maz:not-disabled:text-foreground maz:not-disabled:hover:text-foreground-900 maz:not-disabled:dark:hover:text-foreground-100',
+  neutral: 'maz:not-disabled:text-neutral-foreground maz:not-disabled:hover:text-neutral-foreground/70',
   muted: 'maz:not-disabled:text-muted maz:not-disabled:hover:text-muted-700 maz:not-disabled:dark:hover:text-muted-300',
   surface: 'maz:not-disabled:text-surface maz:not-disabled:hover:text-surface-700',
   container: 'maz:not-disabled:text-container maz:not-disabled:hover:text-container/80',
@@ -190,6 +200,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
     :disabled="isButton ? disabled : undefined"
     :style="styleProp"
     v-bind="$attrs"
+    @click="onClick"
   >
     <!--
       @slot start-icon - The icon to display on the inline-start edge of the text (left in LTR, right in RTL)
@@ -211,7 +222,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
     <!--
       @slot external-icon - Replace the default external icon
     -->
-    <slot v-if="autoExternal && target === '_blank'" name="external-icon">
+    <slot v-if="autoExternal && isExternal(href, target)" name="external-icon">
       <MazArrowTopRightOnSquare />
     </slot>
   </component>

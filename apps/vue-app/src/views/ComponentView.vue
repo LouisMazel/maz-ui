@@ -203,7 +203,7 @@ const checklistItems = [
         Outlined
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mb-4">
-        <MazBtn v-for="c in colors" :key="c" :color="c" outlined>
+        <MazBtn v-for="c in colors" :key="c" :color="c" variant="outline">
           {{ c }}
         </MazBtn>
       </div>
@@ -212,7 +212,7 @@ const checklistItems = [
         Pastel
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mb-4">
-        <MazBtn v-for="c in colors" :key="c" :color="c" pastel>
+        <MazBtn v-for="c in colors" :key="c" :color="c" variant="soft">
           {{ c }}
         </MazBtn>
       </div>
@@ -259,8 +259,8 @@ const checklistItems = [
       <div class="maz:flex maz:flex-col maz:gap-3 maz:mb-4">
         <MazBtnGroup :items="btnGroupItems" />
         <MazBtnGroup :items="btnGroupItems" orientation="col" />
-        <MazBtnGroup :items="btnGroupItems" outlined />
-        <MazBtnGroup :items="btnGroupItems" pastel />
+        <MazBtnGroup :items="btnGroupItems" variant="outline" />
+        <MazBtnGroup :items="btnGroupItems" variant="soft" />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
         Colors
@@ -285,10 +285,10 @@ const checklistItems = [
         <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options">
           Save
         </MazBtnDropdown>
-        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" outlined>
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" variant="outline">
           Save
         </MazBtnDropdown>
-        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" pastel color="secondary">
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" variant="soft" color="secondary">
           Save
         </MazBtnDropdown>
         <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" trigger="hover">
@@ -821,13 +821,13 @@ const checklistItems = [
         </MazBadge>
       </div>
       <div class="maz:flex maz:flex-wrap maz:gap-3 maz:mb-4">
-        <MazBadge v-for="c in colors" :key="c" :color="c" pastel>
-          {{ c }} pastel
+        <MazBadge v-for="c in colors" :key="c" :color="c" variant="soft">
+          {{ c }} soft
         </MazBadge>
       </div>
       <div class="maz:flex maz:flex-wrap maz:gap-3 maz:mb-4">
-        <MazBadge v-for="c in colors" :key="c" :color="c" outlined>
-          {{ c }} outlined
+        <MazBadge v-for="c in colors" :key="c" :color="c" variant="outline">
+          {{ c }} outline
         </MazBadge>
       </div>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-3">
@@ -872,7 +872,7 @@ const checklistItems = [
       </h2>
 
       <MazTabs v-model="tabValue">
-        <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features', badge: { content: 3, color: 'primary', pastel: true, roundedSize: 'full' } }, { label: 'Pricing', indicator: { color: 'destructive', label: 'New prices' } }]" />
+        <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features', badge: { content: 3, color: 'primary', variant: 'soft', roundedSize: 'full' } }, { label: 'Pricing', indicator: { color: 'destructive', label: 'New prices' } }]" />
 
         <MazTabsContent>
           <MazTabsContentItem :tab="1" class="maz-py-4">
@@ -963,7 +963,7 @@ const checklistItems = [
               <MazInput label="Full name" placeholder="John Doe" />
               <MazInput label="Company" placeholder="Acme Inc." />
               <div class="maz:flex maz:gap-2">
-                <MazBtn outlined @click="previousStep">
+                <MazBtn variant="outline" @click="previousStep">
                   Back
                 </MazBtn>
                 <MazBtn @click="nextStep">
@@ -976,7 +976,7 @@ const checklistItems = [
             <div class="maz:flex maz:flex-col maz:gap-4">
               <p>Please review your information before confirming your account.</p>
               <div class="maz:flex maz:gap-2">
-                <MazBtn outlined @click="previousStep">
+                <MazBtn variant="outline" @click="previousStep">
                   Back
                 </MazBtn>
                 <MazBtn color="success">
@@ -1080,7 +1080,7 @@ const checklistItems = [
       <MazDialog v-model="dialogOpen" title="Dialog Title">
         <p>This is a dialog with some content. Dialogs are great for confirmations, forms, and detailed views.</p>
         <template #footer>
-          <MazBtn outlined @click="dialogOpen = false">
+          <MazBtn variant="outline" @click="dialogOpen = false">
             Cancel
           </MazBtn>
           <MazBtn @click="dialogOpen = false">
@@ -1144,7 +1144,7 @@ const checklistItems = [
         </MazPopover>
         <MazPopover trigger="hover" position="bottom">
           <template #trigger>
-            <MazBtn outlined>
+            <MazBtn variant="outline">
               Hover (bottom)
             </MazBtn>
           </template>

@@ -15,4 +15,4 @@
   }
 }
 
-@source inline("flex-center z-default-backdrop padded-container-no-p padded-container cap-f disabled-cursor disabled-opacity disabled-state text-display text-title-1 text-title-2 text-title-3 text-title-4 text-body-lg text-body text-body-sm text-label text-caption text-overline text-code type-display type-title-1 type-title-2 type-title-3 type-title-4 type-body-lg type-body type-body-sm type-label type-caption type-overline type-code rich-text scrollbar-themed rich-text-sm rich-text-lg cursor-interactive glass");
+@source inline("flex-center z-default-backdrop padded-container-no-p padded-container cap-f disabled-cursor disabled-opacity disabled-state text-display text-title-1 text-title-2 text-title-3 text-title-4 text-body-lg text-body text-body-sm text-label text-caption text-overline text-code type-display type-title-1 type-title-2 type-title-3 type-title-4 type-body-lg type-body type-body-sm type-label type-caption type-overline type-code rich-text scrollbar-themed rich-text-xs rich-text-sm rich-text-lg cursor-interactive glass focus-ring focus-within-ring press border-draw field-transition field-focus field-focused");

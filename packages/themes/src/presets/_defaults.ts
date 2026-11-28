@@ -10,6 +10,9 @@ import type { RoundedScaleKey, ThemeComponentBg, ThemeComponents, ThemeFoundatio
  */
 export const DEFAULT_SPACE: NonNullable<ThemeFoundation['space']> = '0.25rem'
 
+/** Border width of a boxed field with the focus (WCAG 2.4.13). */
+export const DEFAULT_FOCUS_BORDER_WIDTH: NonNullable<ThemeFoundation['focus-border-width']> = '2px'
+
 /**
  * Multipliers used to derive the rounded scale from `md` when a key is not
  * explicitly set. Anchored on `md = 1` (implicit). Picked to match the
@@ -24,13 +27,53 @@ export const DEFAULT_ROUNDED_RATIOS: Record<Exclude<RoundedScaleKey, 'md'>, numb
   '3xl': 4,
 }
 
-export const DEFAULT_SHADOW: ThemeScales['shadow'] = {
+/**
+ * The light shadows of the first presets, without color mode (a preset with one mode only)
+ */
+export const DEFAULT_LIGHT_SHADOW = {
   sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
   md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
   lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
   xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
   elevation: '0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06)',
+} satisfies ThemeScales['shadow']
+
+/**
+ * On a dark background a black shadow at 5-10% is invisible: the dark shadows are deeper, and the large
+ * ones get a hairline light edge that detaches the surface. The light ones are unchanged.
+ */
+export const DEFAULT_SHADOW: ThemeScales['shadow'] = {
+  'sm': { light: DEFAULT_LIGHT_SHADOW.sm, dark: '0 1px 2px 0 rgb(0 0 0 / 0.4)' },
+  'md': { light: DEFAULT_LIGHT_SHADOW.md, dark: '0 4px 6px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.4)' },
+  'lg': { light: DEFAULT_LIGHT_SHADOW.lg, dark: '0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.04)' },
+  'xl': { light: DEFAULT_LIGHT_SHADOW.xl, dark: '0 20px 25px -5px rgb(0 0 0 / 0.55), 0 8px 10px -6px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.05)' },
+  'elevation': { light: DEFAULT_LIGHT_SHADOW.elevation, dark: '0 4px 12px -2px rgb(0 0 0 / 0.45), 0 2px 4px -1px rgb(0 0 0 / 0.35), 0 0 0 1px rgb(255 255 255 / 0.04)' },
+  'elevation-1': {
+    light: '0 2px 6px -1px rgb(0 0 0 / 0.1), 0 1px 3px -1px rgb(0 0 0 / 0.08)',
+    dark: '0 2px 6px -1px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.1)',
+  },
+  'elevation-2': {
+    light: '0 8px 20px -4px rgb(0 0 0 / 0.14), 0 3px 8px -2px rgb(0 0 0 / 0.08)',
+    dark: '0 8px 20px -4px rgb(0 0 0 / 0.6), 0 3px 8px -2px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.16)',
+  },
+  'elevation-3': {
+    light: '0 20px 40px -8px rgb(0 0 0 / 0.22), 0 8px 16px -4px rgb(0 0 0 / 0.12)',
+    dark: '0 20px 44px -8px rgb(0 0 0 / 0.75), 0 8px 18px -4px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.24)',
+  },
 }
+
+/**
+ * Motion tokens added after the first presets: shared by every preset, which keeps its own
+ * `motion-fast/normal/slow` and `easing-out/in/in-out`. The springs are `springEasing()` and
+ * `springEasing({ stiffness: 260, damping: 20 })`, written out to cost nothing at runtime.
+ */
+export const DEFAULT_MOTION = {
+  'motion-instant': '80ms',
+  'motion-slower': '450ms',
+  'motion-scale': '1',
+  'easing-spring': 'linear(0, 0.062, 0.184, 0.318, 0.451, 0.568, 0.665, 0.744, 0.807, 0.854, 0.891, 0.919, 0.941, 0.957, 0.968, 0.977, 0.983, 0.988, 0.991, 0.994, 0.995, 0.997, 0.998, 0.998, 0.999, 0.999, 0.999, 1, 1, 1, 1, 1, 1)',
+  'easing-bounce': 'linear(0, 0.066, 0.211, 0.388, 0.566, 0.726, 0.857, 0.955, 1.021, 1.06, 1.079, 1.081, 1.074, 1.061, 1.047, 1.032, 1.019, 1.009, 1.002, 0.997, 0.995, 0.993, 0.993, 0.994, 0.995, 0.996, 0.998, 0.999, 0.999, 1, 1, 1, 1)',
+} satisfies Partial<ThemeFoundation>
 
 export const DEFAULT_DISABLED_OPACITY = '0.5'
 export const DEFAULT_DISABLED_CURSOR = 'not-allowed'

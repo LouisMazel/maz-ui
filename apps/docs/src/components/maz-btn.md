@@ -9,6 +9,10 @@ description: MazBtn is a standalone component that replaces the standard html bu
 
 <!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
+::: tip Compact density
+The `density: 'compact'` option makes every size about 14% shorter. See [Density](./../ecosystem/themes.md#density).
+:::
+
 ## Basic usage
 
 <ComponentDemo expanded>
@@ -57,6 +61,10 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 ## Colors
 
+::: tip Neutral color
+`color="neutral"` is the grey push button: the measured grey of the native buttons on the `macos`, `windows` and `linux` presets, a soft grey on the others. Use it for the secondary actions next to the main one. See [Neutral color](./../ecosystem/themes.md#neutral-color).
+:::
+
 ::: tip Surface vs container
 `surface` is the background of the page and `container` the background of cards, panels and fields. With presets like macOS the surface is light grey and the container is white in light mode: use `container` for a white button on a grey page. Both are neutral colors (`MazNeutralColor`): text uses the foreground color, hover and active states tint the background with the foreground, and `container` has a divider border by default. Outlined neutral buttons are transparent with a divider border, and pastel neutral buttons fall back to the solid rendering.
 :::
@@ -76,6 +84,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 <MazBtn color="warning">warning</MazBtn>
 <MazBtn color="destructive">destructive</MazBtn>
 <MazBtn color="contrast">contrast</MazBtn>
+<MazBtn color="neutral">neutral</MazBtn>
 <MazBtn color="accent">accent</MazBtn>
 <MazBtn color="surface">surface</MazBtn>
 <MazBtn color="container">container</MazBtn>
@@ -85,29 +94,97 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
   </template>
 </ComponentDemo>
 
-## Outlined
+## Variants
 
-Transform the button into an outlined button with the attribute `outlined`
+Choose the fill style with `variant`: `solid` (default), `soft`, `outline` or `ghost`. The color keeps its meaning in every variant.
+
+### Solid
+
+The default: the full color. See [Colors](#colors).
+
+### Soft
+
+A tinted background.
+
+::: info
+Better in light mode
+:::
 
 <ComponentDemo>
-<div class="flex items-start gap-05 flex-wrap">
-  <MazBtn v-for="color of colors" :color="color" outlined>{{ color }}</MazBtn>
-</div>
+  <div class="flex items-start gap-05 rounded maz:p-3 flex-wrap">
+    <MazBtn v-for="color of colors" :color="color" variant="soft">{{ color }}</MazBtn>
+  </div>
 
 <template #code>
 
 ```html
-<MazBtn outlined>primary</MazBtn>
-<MazBtn color="secondary" outlined>secondary</MazBtn>
-<MazBtn color="info" outlined>info</MazBtn>
-<MazBtn color="success" outlined>success</MazBtn>
-<MazBtn color="warning" outlined>warning</MazBtn>
-<MazBtn color="destructive" outlined>destructive</MazBtn>
-<MazBtn color="contrast" outlined>contrast</MazBtn>
-<MazBtn color="accent" outlined>accent</MazBtn>
-<MazBtn color="surface" outlined>surface</MazBtn>
-<MazBtn color="container" outlined>container</MazBtn>
-<MazBtn color="transparent" outlined>transparent</MazBtn>
+<MazBtn variant="soft">primary</MazBtn>
+<MazBtn color="secondary" variant="soft">secondary</MazBtn>
+<MazBtn color="info" variant="soft">info</MazBtn>
+<MazBtn color="success" variant="soft">success</MazBtn>
+<MazBtn color="warning" variant="soft">warning</MazBtn>
+<MazBtn color="destructive" variant="soft">destructive</MazBtn>
+<MazBtn color="contrast" variant="soft">contrast</MazBtn>
+<MazBtn color="accent" variant="soft">accent</MazBtn>
+<MazBtn color="surface" variant="soft">surface</MazBtn>
+<MazBtn color="container" variant="soft">container</MazBtn>
+<MazBtn color="transparent" variant="soft">transparent</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
+### Outline
+
+A border and a transparent background.
+
+<ComponentDemo>
+  <div class="flex items-start gap-05 rounded maz:p-3 flex-wrap">
+    <MazBtn v-for="color of colors" :color="color" variant="outline">{{ color }}</MazBtn>
+  </div>
+
+<template #code>
+
+```html
+<MazBtn variant="outline">primary</MazBtn>
+<MazBtn color="secondary" variant="outline">secondary</MazBtn>
+<MazBtn color="info" variant="outline">info</MazBtn>
+<MazBtn color="success" variant="outline">success</MazBtn>
+<MazBtn color="warning" variant="outline">warning</MazBtn>
+<MazBtn color="destructive" variant="outline">destructive</MazBtn>
+<MazBtn color="contrast" variant="outline">contrast</MazBtn>
+<MazBtn color="accent" variant="outline">accent</MazBtn>
+<MazBtn color="surface" variant="outline">surface</MazBtn>
+<MazBtn color="container" variant="outline">container</MazBtn>
+<MazBtn color="transparent" variant="outline">transparent</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
+### Ghost
+
+No background and no border until the button is hovered.
+
+<ComponentDemo>
+  <div class="flex items-start gap-05 rounded maz:p-3 flex-wrap">
+    <MazBtn v-for="color of colors" :color="color" variant="ghost">{{ color }}</MazBtn>
+  </div>
+
+<template #code>
+
+```html
+<MazBtn variant="ghost">primary</MazBtn>
+<MazBtn color="secondary" variant="ghost">secondary</MazBtn>
+<MazBtn color="info" variant="ghost">info</MazBtn>
+<MazBtn color="success" variant="ghost">success</MazBtn>
+<MazBtn color="warning" variant="ghost">warning</MazBtn>
+<MazBtn color="destructive" variant="ghost">destructive</MazBtn>
+<MazBtn color="contrast" variant="ghost">contrast</MazBtn>
+<MazBtn color="accent" variant="ghost">accent</MazBtn>
+<MazBtn color="surface" variant="ghost">surface</MazBtn>
+<MazBtn color="container" variant="ghost">container</MazBtn>
+<MazBtn color="transparent" variant="ghost">transparent</MazBtn>
 ```
 
   </template>
@@ -145,6 +222,7 @@ const colors = [
   'warning',
   'destructive',
   'contrast',
+  'neutral',
   'accent',
   'transparent',
   'surface',
@@ -167,34 +245,17 @@ const colors = [
   </template>
 </ComponentDemo>
 
-## Pastel
+### Loader at the start
 
-The pastel state is available with the attribute `pastel`
-
-::: info
-Better in light mode
-:::
+By default the loader covers the button and hides its label. With `loading-position="start"` it replaces the start icon and the label stays visible, handy for a "Saving..." button.
 
 <ComponentDemo>
-
-  <div class="flex items-start gap-05 rounded maz:p-3 flex-wrap">
-    <MazBtn v-for="color of colors" :color="color" pastel>{{ color }}</MazBtn>
-  </div>
+  <MazBtn loading loading-position="start" start-icon="user">Saving</MazBtn>
 
 <template #code>
 
 ```html
-<MazBtn pastel>primary</MazBtn>
-<MazBtn color="secondary" pastel>secondary</MazBtn>
-<MazBtn color="info" pastel>info</MazBtn>
-<MazBtn color="success" pastel>success</MazBtn>
-<MazBtn color="warning" pastel>warning</MazBtn>
-<MazBtn color="destructive" pastel>destructive</MazBtn>
-<MazBtn color="contrast" pastel>contrast</MazBtn>
-<MazBtn color="accent" pastel>accent</MazBtn>
-<MazBtn color="surface" pastel>surface</MazBtn>
-<MazBtn color="container" pastel>container</MazBtn>
-<MazBtn color="transparent" pastel>transparent</MazBtn>
+<MazBtn loading loading-position="start">Saving</MazBtn>
 ```
 
   </template>
@@ -354,6 +415,27 @@ const current = ref('Overview')
     </MazBtn>
   </div>
 </template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Text color
+
+`text-color` sets the text color from the theme. The text colors are plain utilities, so a class of your own overrides them (`class="text-warning"`), whatever the variant.
+
+<ComponentDemo>
+  <div class="maz:flex maz:gap-2">
+    <MazBtn color="transparent" text-color="success">Success</MazBtn>
+    <MazBtn color="transparent" text-color="destructive">Destructive</MazBtn>
+    <MazBtn color="transparent" text-color="success" class="maz:text-warning">Overridden</MazBtn>
+  </div>
+
+<template #code>
+
+```html
+<MazBtn color="transparent" text-color="success">Success</MazBtn>
+<MazBtn color="transparent" text-color="success" class="text-warning">Overridden</MazBtn>
 ```
 
   </template>
@@ -648,7 +730,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 ```
 
 <script setup lang="ts">
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
   import { MazHome } from '@maz-ui/icons/raw/MazHome'
   import { MazCommandLine } from '@maz-ui/icons/raw/MazCommandLine'
@@ -663,6 +745,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
     'warning',
     'destructive',
     'contrast',
+    'neutral',
     'surface',
     'container',
     'transparent',
@@ -670,6 +753,96 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
+  const holdCount = ref(0)
+  const saveState = ref<'idle' | 'loading' | 'success'>('idle')
+
+  function save() {
+    saveState.value = 'loading'
+    setTimeout(() => { saveState.value = 'success' }, 1200)
+    setTimeout(() => { saveState.value = 'idle' }, 3000)
+  }
 </script>
+
+## Success
+
+After a `loading`, set `success` to confirm. A check draws itself where the loader was. With `success-text`, the label rolls to it and the button keeps the width of the longest label.
+
+<ComponentDemo>
+  <MazBtn
+    text="Save"
+    success-text="Saved"
+    loading-position="start"
+    :loading="saveState === 'loading'"
+    :success="saveState === 'success'"
+    @click="save"
+  />
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBtn from 'maz-ui/components/MazBtn'
+import { ref } from 'vue'
+
+const state = ref<'idle' | 'loading' | 'success'>('idle')
+
+function save() {
+  state.value = 'loading'
+  setTimeout(() => (state.value = 'success'), 1200)
+  setTimeout(() => (state.value = 'idle'), 3000)
+}
+</script>
+
+<template>
+  <MazBtn
+    text="Save"
+    success-text="Saved"
+    loading-position="start"
+    :loading="state === 'loading'"
+    :success="state === 'success'"
+    @click="save"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Hold to confirm
+
+`hold` asks the user to keep the button pressed before the action happens, for a destructive action. The button fills while it is held, and `hold-confirm` is emitted when it is full. Released earlier, the fill drains and nothing happens.
+
+It works with the pointer, and with `Space` or `Enter` for the keyboard. A screen reader reads how to confirm. Change the time with `hold-duration` (in milliseconds, 1000 by default).
+
+<ComponentDemo>
+  <div class="maz:flex maz:items-center maz:gap-4">
+    <MazBtn hold color="destructive" text="Hold to delete" @hold-confirm="holdCount++" />
+    <span class="maz:text-muted">Confirmed {{ holdCount }} times</span>
+  </div>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBtn from 'maz-ui/components/MazBtn'
+
+function remove() {
+  // delete the item
+}
+</script>
+
+<template>
+  <MazBtn hold color="destructive" text="Hold to delete" @hold-confirm="remove" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The button sinks a little while it is pressed.
+- The check draws itself and the label rolls: the width never jumps.
+- With reduced motion, the press and the roll are replaced by a short fade. The hold fill stays: it shows the progress.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-btn.doc.md-->

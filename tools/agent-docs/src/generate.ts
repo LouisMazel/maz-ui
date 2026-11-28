@@ -1,6 +1,7 @@
 import type { CleanMarkdownContext } from './markdown/clean.ts'
 import type { PackageDefinition } from './packages.ts'
 import type { SourcePaths } from './paths.ts'
+import type { CatalogLookup } from './render/catalog.ts'
 import type { NuxtAutoImports } from './sources/nuxt.ts'
 import type { SourcePage } from './sources/pages.ts'
 import type { AgentDocsFragment, ComponentApi, DocEntry, OutputFile, TailwindManifest } from './types.ts'
@@ -8,12 +9,14 @@ import type { AgentDocsFragment, ComponentApi, DocEntry, OutputFile, TailwindMan
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join, posix, resolve } from 'node:path'
 import { COMPONENT_DESCRIPTIONS, DOC_ALIASES, ECOSYSTEM_SYMBOLS, RELATED_DOCS } from './aliases.ts'
+import { CATALOG_OMITTED, ECOSYSTEM_CATALOG } from './catalog.ts'
 import { cleanMarkdown, extractHeadings, normalizeDashes, stripLeadingTitle } from './markdown/clean.ts'
 import { stringifyFrontmatter } from './markdown/frontmatter.ts'
 import { findPackageDefinition, PACKAGE_DEFINITIONS } from './packages.ts'
 import { getSourcePaths } from './paths.ts'
-import { loadAgentContent, renderAgentsMdSection, renderClaudeRule, renderRulesDoc, renderSkill } from './render/agents.ts'
+import { CATALOG_FILE, loadAgentContent, renderAgentsMdSection, renderClaudeRule, renderRulesDoc, renderSessionContext, renderSkill, SESSION_CONTEXT_LIMIT } from './render/agents.ts'
 import { renderComponentApi } from './render/api.ts'
+import { catalogProblems, renderCatalog } from './render/catalog.ts'
 import { CATEGORY_ORDER, renderBundleIndex, renderFragmentIndex, renderLlmsFullTxt, renderLlmsTxt } from './render/index.ts'
 import { renderIconsReference, renderTailwindReference } from './render/references.ts'
 import { renderVitepressApis } from './render/vitepress.ts'
@@ -117,7 +120,7 @@ function nuxtNote(symbols: string[], category: DocEntry['category'], autoImports
     const plugin = autoImports.pluginComposables[symbols[0]]
 
     if (plugin)
-      return `auto-imported by \`@maz-ui/nuxt\` when \`mazUi.plugins.${plugin}\` is enabled`
+      return `auto-imported by \`@maz-ui/nuxt\` when \`mazUi.${plugin}\` is enabled`
   }
 
   return undefined
@@ -188,6 +191,8 @@ interface GenerationContext {
   /** Sub-component name to parent component name, filled while reading the pages */
   parentOf: Map<string, string>
   fileOf: (id: string) => string
+  /** Catalog of the ecosystem by need, included by the rules */
+  catalog: string
 }
 
 async function createGenerationContext(paths: SourcePaths, withComponents: boolean): Promise<GenerationContext> {
@@ -227,6 +232,7 @@ async function createGenerationContext(paths: SourcePaths, withComponents: boole
     fileOf: id => (indexPages.has(id)
       ? `${id}/index.md`
       : `${id}.md`),
+    catalog: '',
   }
 }
 
@@ -242,6 +248,9 @@ function createCleanContext(context: GenerationContext, page: SourcePage, title:
   return {
     frontmatter: { title, description },
     resolveInclude: (includePath) => {
+      if (includePath.endsWith(CATALOG_FILE))
+        return context.catalog
+
       const generated = /([\w-]+)\.doc\.md$/.exec(includePath)
 
       if (generated) {
@@ -484,6 +493,28 @@ export function descriptionProblems(entry: DocEntry): string[] {
   return problems
 }
 
+/** Symbols of a doc for the catalog, read from its sources: the catalog of maz-ui lists the tools of the other packages */
+function catalogLookup(context: GenerationContext): CatalogLookup {
+  const pages = new Map(context.pages.map(page => [page.id, page]))
+
+  return (id) => {
+    const page = pages.get(id)
+
+    if (page && page.category !== 'component')
+      return resolvePageSymbols(page, context.paths)
+
+    if (!id.startsWith('components/') || !context.knownIds.has(id))
+      return undefined
+
+    const name = kebabToPascal(id.slice('components/'.length))
+
+    return { symbols: [name], imports: [`import ${name} from 'maz-ui/components/${name}'`] }
+  }
+}
+
+/** Composables, directives, plugins and helpers: each one is in the catalog of the rules */
+const CATALOG_CATEGORIES = new Set(['composable', 'directive', 'plugin', 'util'])
+
 function validate(context: GenerationContext, drafts: PageDraft[]): void {
   for (const { entry } of drafts) {
     if (entry.category !== 'guide' && entry.category !== 'reference')
@@ -534,7 +565,17 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths(), o
   const iconIds = built.has('@maz-ui/icons')
     ? collectIconIds(paths.iconNames)
     : undefined
-  const agentContent = loadAgentContent(paths.content)
+  const lookup = catalogLookup(context)
+  const catalog = renderCatalog(ECOSYSTEM_CATALOG, lookup)
+
+  context.catalog = catalog
+  const agentContent = loadAgentContent(paths.content, catalog, renderCatalog(ECOSYSTEM_CATALOG, lookup, { compact: true }))
+  const sessionContext = renderSessionContext(agentContent)
+
+  if (sessionContext.length > SESSION_CONTEXT_LIMIT)
+    context.warnings.push(`agents/session-context.md has ${sessionContext.length} characters: the Claude Code hooks inject 10,000 with their header, keep it under ${SESSION_CONTEXT_LIMIT}, shorten rules-core.md or the needs of catalog.ts`)
+
+  context.warnings.push(...catalogProblems(ECOSYSTEM_CATALOG, lookup, context.pages.filter(page => CATALOG_CATEGORIES.has(page.category)).map(page => page.id), CATALOG_OMITTED))
   const pageDrafts = context.pages.filter(page => built.has(page.package)).map(page => pageDraft(context, page))
 
   for (const api of components) {
@@ -574,6 +615,10 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths(), o
     {
       path: 'agents/agents-md.md',
       content: renderAgentsMdSection(agentContent),
+    },
+    {
+      path: 'agents/session-context.md',
+      content: sessionContext,
     },
   ]
 
@@ -650,7 +695,10 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths(), o
       },
     ],
     vitepress: withVitepress
-      ? renderVitepressApis(components)
+      ? [
+          ...renderVitepressApis(components),
+          { path: CATALOG_FILE, content: `${catalog}\n` },
+        ]
       : [],
     warnings: context.warnings,
   }

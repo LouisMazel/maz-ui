@@ -7,6 +7,8 @@ description: Reactive width and height of the browser window, updated on resize 
 
 {{ $frontmatter.description }}
 
+Built on [useWindow](./use-window): the resize listener is added on the window and removed when the component is unmounted.
+
 ## Basic usage
 
 ```ts

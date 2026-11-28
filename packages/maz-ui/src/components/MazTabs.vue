@@ -4,6 +4,8 @@ import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { computed, provide, ref, toRef } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 
+export type MazTabsOrientation = 'horizontal' | 'vertical'
+
 export interface MazTabsProps {
   /** The the selected tab number */
   modelValue?: number
@@ -19,12 +21,18 @@ export interface MazTabsProps {
   roundedSize?: MazRoundedSize
   /**
    * Color of the active tab indicator, forwarded to MazTabsBar
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
+  /**
+   * Direction of the tabs. `vertical` puts the bar on the side of the content, a column of sections like a settings page (arrows up and down move between tabs)
+   * @values `'horizontal' | 'vertical'`
+   * @default 'horizontal'
+   */
+  orientation?: MazTabsOrientation
 }
 
-const { modelValue, size, roundedSize, color } = defineProps<MazTabsProps>()
+const { modelValue, size, roundedSize, color, orientation = 'horizontal' } = defineProps<MazTabsProps>()
 
 const emits = defineEmits<{
   /**
@@ -56,6 +64,7 @@ export interface MazTabsProvide {
   size: Ref<MazSize | undefined>
   roundedSize: Ref<MazRoundedSize | undefined>
   color: Ref<MazColor | undefined>
+  orientation: Ref<MazTabsOrientation>
   /**
    * Prefix of the ids linking each tab to its panel (`aria-controls` / `aria-labelledby`)
    */
@@ -71,11 +80,15 @@ provide<MazTabsProvide>('maz-tabs', {
   size: toRef(() => size),
   roundedSize: toRef(() => roundedSize),
   color: toRef(() => color),
+  orientation: toRef(() => orientation),
 })
 </script>
 
 <template>
-  <div class="m-tabs m-reset-css">
+  <div
+    class="m-tabs m-reset-css"
+    :class="{ '--vertical maz:flex maz:items-start maz:gap-4': orientation === 'vertical' }"
+  >
     <slot />
   </div>
 </template>

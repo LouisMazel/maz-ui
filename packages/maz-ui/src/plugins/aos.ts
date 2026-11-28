@@ -69,6 +69,10 @@ const DEFAULT_OPTIONS: ClassOptions = {
   },
 }
 
+/**
+ * @deprecated Use `vReveal`, `MazReveal` or `useReveal` instead: `<p v-reveal="'slide-up'">`
+ * Removed in v6 (plans/ROADMAP.md)
+ */
 export class AosHandler {
   public options: ClassOptions
 
@@ -200,6 +204,10 @@ export class AosHandler {
 
 let instance: AosHandler
 
+/**
+ * @deprecated Use `vReveal` (`maz-ui/directives/vReveal`) instead: `<p v-reveal="'slide-up'">`, no plugin and no CSS file to import
+ * Removed in v6 (plans/ROADMAP.md)
+ */
 export const AosPlugin: Plugin<[AosOptions?]> = {
   install: (app, options) => {
     instance = new AosHandler(options)

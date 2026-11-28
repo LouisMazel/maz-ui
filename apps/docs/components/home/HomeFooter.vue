@@ -64,7 +64,7 @@ function scrollToTop() {
               target="_blank"
               rel="noopener"
               color="surface"
-              outlined
+              variant="outline"
               fab
               size="sm"
               :icon="social.icon"

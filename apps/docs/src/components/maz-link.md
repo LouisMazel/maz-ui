@@ -43,6 +43,7 @@ import MazLink from 'maz-ui/components/MazLink'
     <MazLink color="destructive"> View product detail (destructive) </MazLink>
     <MazLink color="accent"> View product detail (accent) </MazLink>
     <MazLink color="contrast"> View product detail (contrast) </MazLink>
+    <MazLink color="neutral"> View product detail (neutral) </MazLink>
     <MazLink color="surface"> View product detail (surface) </MazLink>
     <MazLink color="container"> View product detail (container) </MazLink>
     <MazLink color="muted"> View product detail (muted) </MazLink>
@@ -59,6 +60,7 @@ import MazLink from 'maz-ui/components/MazLink'
 <MazLink color="destructive"> View product detail (destructive) </MazLink>
 <MazLink color="accent"> View product detail (accent) </MazLink>
 <MazLink color="contrast"> View product detail (contrast) </MazLink>
+<MazLink color="neutral"> View product detail (neutral) </MazLink>
 <MazLink color="surface"> View product detail (surface) </MazLink>
 <MazLink color="muted"> View product detail (muted) </MazLink>
 ```
@@ -144,6 +146,8 @@ When you use the `autoExternal` prop, the component will have an external icon i
 
   </template>
 </ComponentDemo>
+
+In a Tauri or Electron app, the `openExternal` option of the MazUi plugin opens these links in the system browser, and the icon then follows its rule (absolute URL of another origin). See [Desktop apps](/guide/desktop-apps).
 
 ## As button
 

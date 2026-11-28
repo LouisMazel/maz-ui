@@ -234,7 +234,7 @@ export interface MazDatePickerProps {
   /**
    * The color theme of the component
    * @type {MazColor}
-   * @values primary, secondary, success, destructive, warning, info, accent, contrast
+   * @values primary, secondary, success, destructive, warning, info, accent, contrast, neutral
    * @default 'primary'
    */
   color?: MazColor

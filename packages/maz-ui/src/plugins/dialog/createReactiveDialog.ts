@@ -50,3 +50,18 @@ export function createReactiveDialog({ props: allProps, content, contentProps }:
     },
   })
 }
+
+export function mergeButtonProps<T extends object>(
+  globalProps: MaybeRefOrGetter<T | undefined>,
+  callProps: MaybeRefOrGetter<T | undefined>,
+): MaybeRefOrGetter<T | undefined> {
+  if (globalProps === undefined)
+    return callProps
+  if (callProps === undefined)
+    return globalProps
+
+  if (isReactiveSource(globalProps) || isReactiveSource(callProps))
+    return () => ({ ...toValue(globalProps), ...toValue(callProps) }) as T
+
+  return { ...(globalProps as T), ...(callProps as T) }
+}

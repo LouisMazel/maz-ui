@@ -130,6 +130,8 @@ const brandSwatches = ['#3b82f6', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#
   </template>
 </ComponentDemo>
 
+When a preset is selected, the handle of the color area and the sliders glide to the new color. Reduced motion makes them jump.
+
 ## Eye dropper
 
 In the browsers that support the [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API), a button lets the user pick a color anywhere on the screen. It is hidden in the other browsers. Set `:eye-dropper="false"` to remove it.

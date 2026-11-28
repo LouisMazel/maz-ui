@@ -59,6 +59,7 @@ export interface MazListProps {
 import { computed, provide, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 const {
   title,
@@ -72,7 +73,7 @@ const {
 } = defineProps<MazListProps>()
 
 defineSlots<{
-  /** The items of the list (`MazListItem`) */
+  /** The items of the list (`MazListItem`, `MazListSeparator` to group them under a title) */
   'default': () => unknown
   /** Replace the title above the block */
   'header': () => unknown
@@ -87,19 +88,15 @@ const slots = useSlots()
 const titleId = useInstanceUniqId({ componentName: 'MazList' })
 
 const hasHeader = computed(() => !!title || hasSlotContent(slots.header) || hasSlotContent(slots['header-end']))
+const hasItems = computed(() => hasSlotContent(slots.default))
+const hasTitle = computed(() => !!title || hasSlotContent(slots.header))
 const hasFooter = computed(() => !!footer || hasSlotContent(slots.footer))
 
 provide(mazListKey, {
   size: computed(() => size),
 })
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-sm',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-} as const
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, sm: 'maz:rounded-sm' }
 </script>
 
 <template>
@@ -108,19 +105,20 @@ const ROUNDED_CLASS = {
       v-if="hasHeader"
       class="m-list__header maz:flex maz:min-h-6 maz:items-end maz:justify-between maz:gap-3 maz:px-1"
     >
-      <div :id="titleId" class="m-list__title maz:min-w-0 maz:truncate maz:text-label maz:text-foreground">
+      <div v-if="hasTitle" :id="titleId" class="m-list__title maz:min-w-0 maz:truncate maz:text-label maz:text-foreground">
         <!-- @slot header - Replace the title above the block -->
         <slot name="header">
           {{ title }}
         </slot>
       </div>
-      <div v-if="hasSlotContent($slots['header-end'])" class="m-list__header-end maz:flex maz:flex-none maz:items-center maz:gap-2 maz:text-caption">
+      <div v-if="hasSlotContent($slots['header-end'])" class="m-list__header-end maz:ms-auto maz:flex maz:flex-none maz:items-center maz:gap-2 maz:text-caption">
         <!-- @slot header-end - Content at the end of the title row: a link, a count, an action -->
         <slot name="header-end" />
       </div>
     </div>
 
     <div
+      v-if="hasItems"
       class="m-list__items maz:flex maz:flex-col"
       :class="[
         bordered && ['--bordered maz:bg-container', ROUNDED_CLASS[roundedSize]],
@@ -130,8 +128,8 @@ const ROUNDED_CLASS = {
         { '--divider': divider },
       ]"
       role="list"
-      :aria-labelledby="hasHeader ? titleId : undefined"
-      :aria-label="hasHeader ? undefined : ariaLabel"
+      :aria-labelledby="hasTitle ? titleId : undefined"
+      :aria-label="hasTitle ? undefined : ariaLabel"
     >
       <!-- @slot default - The items of the list (`MazListItem`) -->
       <slot />
@@ -159,7 +157,8 @@ const ROUNDED_CLASS = {
     box-shadow: inset 0 0 0 var(--m-list-hairline) var(--maz-divider);
   }
 
-  &.--divider > :deep(.m-list-item + .m-list-item) {
+  &.--divider > :deep(.m-list-item + .m-list-item),
+  & > :deep(.m-list-separator:not(:first-child)) {
     border-block-start: var(--m-list-hairline) solid var(--maz-divider);
   }
 }

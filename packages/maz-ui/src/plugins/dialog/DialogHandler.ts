@@ -1,9 +1,10 @@
 import type { App, Component, MaybeRefOrGetter } from 'vue'
 import type { MazDialogConfirmProps } from '../../components/MazDialogConfirm.vue'
+import { isClient } from '@maz-ui/utils/helpers/isClient'
 import MazDialogConfirm from '../../components/MazDialogConfirm.vue'
 import { useMazDialogConfirm } from '../../components/MazDialogConfirm/useMazDialogConfirm.ts'
 import { useMountComponent } from '../../composables/useMountComponent.ts'
-import { createReactiveDialog, isReactiveSource } from './createReactiveDialog.ts'
+import { createReactiveDialog, isReactiveSource, mergeButtonProps } from './createReactiveDialog.ts'
 
 type DialogButtonProps = MazDialogConfirmProps['acceptProps']
 
@@ -73,10 +74,22 @@ export class DialogHandler {
   }
 
   private mount(options: DialogOptions, onDispose?: () => void) {
+    // A dialog is never rendered on the server: `confirm()` resolves `false`
+    if (!isClient()) {
+      onDispose?.()
+
+      return {
+        destroy: () => {},
+        close: () => {},
+      }
+    }
+
     const props: RequiredDialogOptions = {
       ...DEFAULT_OPTIONS,
       ...this.globalOptions,
       ...options,
+      acceptProps: mergeButtonProps(this.globalOptions.acceptProps, options.acceptProps),
+      rejectProps: mergeButtonProps(this.globalOptions.rejectProps, options.rejectProps),
     }
 
     const { removeDialogFromState } = useMazDialogConfirm()

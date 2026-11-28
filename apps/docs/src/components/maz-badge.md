@@ -37,7 +37,7 @@ description: MazBadge is a standalone component to show short text in colored co
 
 <br />
 
-<div class="vp-raw flex space-between gap-05 items-center flex-wrap">
+<div class="vp-raw flex gap-05 items-center flex-wrap">
   <MazBadge v-for="color in colors" :key="color" :color="color">
     {{ color }}
   </MazBadge>
@@ -55,6 +55,7 @@ description: MazBadge is a standalone component to show short text in colored co
     'warning',
     'destructive',
     'contrast',
+    'neutral',
     'accent',
     'surface',
     'container',
@@ -69,12 +70,16 @@ description: MazBadge is a standalone component to show short text in colored co
 </template>
 ```
 
-### Outlined
+### Outline
+
+Choose the fill style with `variant`: `solid` (default), `soft`, `outline` or `ghost`.
+
+A border and a transparent background.
 
 <br />
 
-<div class="vp-raw flex space-between gap-05 items-center flex-wrap">
-  <MazBadge v-for="color in colors" :key="color" :color="color" outlined>
+<div class="vp-raw flex gap-05 items-center flex-wrap">
+  <MazBadge v-for="color in colors" :key="color" :color="color" variant="outline">
     {{ color }}
   </MazBadge>
 </div>
@@ -91,6 +96,7 @@ const colors = [
   'warning',
   'destructive',
   'contrast',
+  'neutral',
   'accent',
   'surface',
   'container',
@@ -99,18 +105,20 @@ const colors = [
 </script>
 
 <template>
-  <MazBadge v-for="color in color" :key="color" :color="color" outlined>
+  <MazBadge v-for="color in color" :key="color" :color="color" variant="outline">
     {{ color }}
   </MazBadge>
 </template>
 ```
 
-### Pastel
+### Soft
+
+A tinted background.
 
 <br />
 
-<div class="vp-raw flex space-between gap-05 items-center flex-wrap">
-  <MazBadge v-for="color in colors" :key="color" :color="color" pastel>
+<div class="vp-raw flex gap-05 items-center flex-wrap">
+  <MazBadge v-for="color in colors" :key="color" :color="color" variant="soft">
     {{ color }}
   </MazBadge>
 </div>
@@ -127,6 +135,7 @@ const colors = [
     'warning',
     'destructive',
     'contrast',
+    'neutral',
     'accent',
     'surface',
     'container',
@@ -135,11 +144,76 @@ const colors = [
 </script>
 
 <template>
-  <MazBadge v-for="color in color" :key="color" :color="color" pastel>
+  <MazBadge v-for="color in color" :key="color" :color="color" variant="soft">
     {{ color }}
   </MazBadge>
 </template>
 ```
+
+### Ghost
+
+No background and no border.
+
+<br />
+
+<div class="vp-raw flex gap-05 items-center flex-wrap">
+  <MazBadge v-for="color in colors" :key="color" :color="color" variant="ghost">
+    {{ color }}
+  </MazBadge>
+</div>
+
+```vue
+<script lang="ts" setup>
+  import MazBadge from 'maz-ui/components/MazBadge'
+
+  const colors = [
+    'primary',
+    'secondary',
+    'info',
+    'success',
+    'warning',
+    'destructive',
+    'contrast',
+    'neutral',
+    'accent',
+    'surface',
+    'container',
+    'transparent',
+  ]
+</script>
+
+<template>
+  <MazBadge v-for="color in color" :key="color" :color="color" variant="ghost">
+    {{ color }}
+  </MazBadge>
+</template>
+```
+
+### Free color
+
+For a category or a tag, `color` also takes any CSS color: a hex, `oklch()`, `rgb()` or a variable. The text, the border and the `soft` tint are derived from it. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-2">
+    <MazBadge color="#e11d48">Bug</MazBadge>
+    <MazBadge color="oklch(0.7 0.15 150)" variant="soft">Feature</MazBadge>
+    <MazBadge color="#8b5cf6" variant="outline">Docs</MazBadge>
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazBadge color="#e11d48">Bug</MazBadge>
+  <MazBadge color="oklch(0.7 0.15 150)" variant="soft">Feature</MazBadge>
+  <MazBadge color="var(--label-docs)" variant="outline">Docs</MazBadge>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+`surface` and `container` badges get a light foreground tint and a divider border, so they stay visible on a page or a card of the same color. In dark mode, `contrast` is softened to avoid a full white pill, and its `soft` text uses the `contrast` color. `neutral` is the soft grey of the theme (the push button grey of the native presets) with a divider border: `soft` renders it like solid, and `outline` keeps the foreground text.
 
 ### Size
 
@@ -147,7 +221,7 @@ The `size` prop accepts one of the standardized `MazSize` values (`'mini' | 'xs'
 
 <br />
 
-<div class="vp-raw flex space-between gap-05 items-center flex-wrap">
+<div class="vp-raw flex gap-05 items-center flex-wrap">
   <MazBadge v-for="size in sizes" :key="size" :size="size">
     {{ size }}
   </MazBadge>
@@ -171,7 +245,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 <br />
 
-<div class="vp-raw flex space-between gap-05 items-center flex-wrap">
+<div class="vp-raw flex gap-05 items-center flex-wrap">
   <MazBadge v-for="size in roundedSize" :key="size" :rounded-size="size">
     {{ size }}
   </MazBadge>
@@ -193,14 +267,14 @@ const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
 
 ### Removable
 
-Add `removable` to show a remove button at the end of the badge: it emits `remove` with the click event and has an accessible label ("Remove", translated), which you can change with `remove-label`. The button uses the color of the badge text and a visible focus ring, so it works with every color and with `outlined` and `pastel`.
+Add `removable` to show a remove button at the end of the badge: it emits `remove` with the click event and has an accessible label ("Remove", translated), which you can change with `remove-label`. The button uses the color of the badge text and a visible focus ring, so it works with every color and every `variant`.
 
 <div class="vp-raw flex gap-05 items-center flex-wrap">
   <MazBadge v-for="color in colors" :key="color" :color="color" removable @remove="removed = color">
     {{ color }}
   </MazBadge>
-  <MazBadge color="info" pastel removable>pastel</MazBadge>
-  <MazBadge color="info" outlined removable>outlined</MazBadge>
+  <MazBadge color="info" variant="soft" removable>soft</MazBadge>
+  <MazBadge color="info" variant="outline" removable>outline</MazBadge>
 </div>
 
 Last removed: {{ removed }}
@@ -237,6 +311,7 @@ function removeTag(tag: string) {
     'warning',
     'destructive',
     'contrast',
+    'neutral',
     'accent',
     'surface',
     'container',
@@ -246,6 +321,78 @@ function removeTag(tag: string) {
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
   const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
+
+  const badgeCount = ref(9)
+  const tags = ref(['Vue', 'Nuxt', 'Vite', 'Tailwind'])
 </script>
+
+## Counter
+
+With `animated`, a number as the content rolls when it changes. Only the digits that change move.
+
+<ComponentDemo>
+  <div class="maz:flex maz:items-center maz:gap-4">
+    <MazBtn size="sm" @click="badgeCount--">-</MazBtn>
+    <MazBadge animated>{{ badgeCount }}</MazBadge>
+    <MazBtn size="sm" @click="badgeCount++">+</MazBtn>
+  </div>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBadge from 'maz-ui/components/MazBadge'
+import { ref } from 'vue'
+
+const count = ref(9)
+</script>
+
+<template>
+  <MazBadge animated>{{ count }}</MazBadge>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+A screen reader reads the number once. Without `animated`, the number is a plain text.
+
+## Removable badges in a list
+
+Put the badges in a `TransitionGroup` named `maz-list`: a removed badge shrinks away and the others glide to their new place.
+
+<ComponentDemo>
+  <TransitionGroup name="maz-list" tag="div" class="maz:relative maz:flex maz:flex-wrap maz:gap-2">
+    <MazBadge v-for="tag in tags" :key="tag" removable @remove="tags = tags.filter(item => item !== tag)">{{ tag }}</MazBadge>
+  </TransitionGroup>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazBadge from 'maz-ui/components/MazBadge'
+import { ref } from 'vue'
+
+const tags = ref(['Vue', 'Nuxt', 'Vite', 'Tailwind'])
+</script>
+
+<template>
+  <TransitionGroup name="maz-list" tag="div" class="relative flex flex-wrap gap-2">
+    <MazBadge
+      v-for="tag in tags"
+      :key="tag"
+      removable
+      @remove="tags = tags.filter(item => item !== tag)"
+    >
+      {{ tag }}
+    </MazBadge>
+  </TransitionGroup>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+With reduced motion, the badges change without moving.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-badge.doc.md-->

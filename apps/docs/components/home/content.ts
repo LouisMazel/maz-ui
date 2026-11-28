@@ -204,6 +204,12 @@ export const NEW_MODULES: HomeModule[] = [
     link: '/components/maz-card-spotlight',
   },
   {
+    name: 'MazMarkdown',
+    kind: 'Component',
+    description: 'Read-only markdown rendering, sanitized and themed.',
+    link: '/components/maz-markdown',
+  },
+  {
     name: 'MazMarkdownEditor',
     kind: 'Component',
     description: 'GitHub-style editor with write, preview and split tabs.',

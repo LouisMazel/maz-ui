@@ -5,6 +5,7 @@ import type { MazUiIconsOptions, MazUiPurgeCssOptions } from '@maz-ui/vite-plugi
 import type { MazUiDefaultsOptions } from 'maz-ui/composables/useGlobalConfig'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
+import type { MazUiOptions } from 'maz-ui/plugins/maz-ui'
 
 /**
  * Messages of each locale: the path of a file that exports them by default (loaded when the locale
@@ -107,7 +108,7 @@ export interface MazUiNuxtOptions {
   /**
    * Source of the country flags of `MazSelectCountry` and `MazInputPhoneNumber`
    * @description
-   * - `'cdn'`: images of the flagcdn.com CDN
+   * - `'cdn'`: images of the flagcdn CDN
    * - `'local'`: square flags of `@maz-ui/icons`, one chunk per flag, loaded only when visible, without any request to a third party (works offline)
    * - a URL template of your own files, with `{code}` (lowercase) or `{CODE}` (uppercase): `'/flags/{code}.svg'`
    *
@@ -116,6 +117,16 @@ export interface MazUiNuxtOptions {
    * @default 'cdn'
    */
   flags?: 'cdn' | 'local' | (string & {})
+
+  /**
+   * Path of a file whose default export opens a link outside of the app, for a Tauri or Electron WebView
+   * @description `(href: string, event: MouseEvent) => void`. Called instead of the navigation (prevented) by every
+   * component with an `href` (`MazLink`, `MazBtn`, `MazCard`, `MazAvatar`, `MazListItem`, `MazSidebarMenuButton`, `MazMarkdown`),
+   * for the absolute `http(s)` URLs of another origin and the `target="_blank"` links. The external icon of `MazLink` follows the same rule.
+   * A path is needed because a function cannot go through the module options. Nothing is added to the build when it is not set.
+   * @example '~/utils/open-external'
+   */
+  openExternal?: string
 
   /**
    * Icons by name: `<MazIcon icon="x-mark" />`, `<MazBtn start-icon="moon">`, with the SVG of the project
@@ -164,47 +175,80 @@ export interface MazUiNuxtOptions {
   }
 
   /**
-   * Plugins configuration
+   * Global options of the toasts of `useToast()`
+   * @default {}
+   * @example { position: 'top-right', timeout: 5000 }
    */
+  toast?: ToastOptions
+
+  /**
+   * Global options of the dialogs of `useDialog()`
+   * @default {}
+   * @example { acceptText: 'Yes', rejectText: 'No' }
+   */
+  dialog?: DialogOptions
+
+  /**
+   * Motion of the components: `'auto'` follows `prefers-reduced-motion`, `'reduced'` and `'full'` force it.
+   * `{ scope: 'page' }` also stops the animations of the whole page under reduced motion.
+   * @default 'auto'
+   * @example 'reduced'
+   */
+  motion?: MazUiOptions['motion']
+
+  /**
+   * Density of the controls: `'default'` keeps the heights of maz-ui 5, `'compact'` makes them about 14% shorter
+   * (a `md` control goes from 42px to 36px) with tighter paddings. Rendered as a class of `<html>` by the server.
+   * @default 'default'
+   * @example 'compact'
+   */
+  // Removed in v6 (plans/ROADMAP.md): `compact` becomes the default density
+  density?: MazUiOptions['density']
+
+  /**
+   * Animations on scroll: installs the AOS plugin and auto-imports `useAos`
+   * @deprecated Use the `vReveal` directive (`directives: { vReveal: true }`), `MazReveal` or `useReveal` instead
+   * @default false
+   */
+  // Removed in v6 (plans/ROADMAP.md): the AOS is replaced by vReveal
+  aos?:
+    | boolean
+    | (Omit<AosOptions, 'router'> & {
+      /**
+       * Auto inject AOS CSS file
+       * @default true
+       */
+      injectCss?: boolean
+      /**
+       * Re-run animations on page change (for SPA navigation)
+       * @default false
+       */
+      router?: boolean
+    })
+
+  /**
+   * Plugins configuration
+   * @deprecated `useToast`, `useDialog` and `useWait` are always auto-imported: use the `toast`, `dialog` and `aos` options. Removed in v6.
+   */
+  // Removed in v6 (plans/ROADMAP.md): deprecated plugins option
   plugins?: {
     /**
-     * Enable auto-import of useAos composable and install AOS plugin
-     * @description Animation On Scroll functionality with advanced configuration options
-     * @default false
+     * @deprecated use the `aos` option
      */
-    aos?:
-      | boolean
-      | (Omit<AosOptions, 'router'> & {
-        /**
-         * Auto inject AOS CSS file
-         * @default true
-         */
-        injectCss?: boolean
-        /**
-         * Re-run animations on page change (for SPA navigation)
-         * @default false
-         */
-        router?: boolean
-      })
+    aos?: MazUiNuxtOptions['aos']
 
     /**
-     * Enable auto-import of useDialog composable and install Dialog plugin
-     * @description Modal dialogs functionality
-     * @default false
+     * @deprecated `useDialog` is always auto-imported, its options go in the `dialog` option
      */
     dialog?: boolean | DialogOptions
 
     /**
-     * Enable auto-import of useToast composable and install Toast plugin
-     * @description Toast notifications functionality
-     * @default false
+     * @deprecated `useToast` is always auto-imported, its options go in the `toast` option
      */
     toast?: boolean | ToastOptions
 
     /**
-     * Enable auto-import of useWait composable and install Wait plugin
-     * @description Loading state management functionality
-     * @default false
+     * @deprecated `useWait` is always auto-imported
      */
     wait?: boolean
   }
@@ -213,6 +257,27 @@ export interface MazUiNuxtOptions {
    * Composables configuration
    */
   composables?: {
+    /**
+     * Enable auto-import of useToast composable
+     * @description Toast notifications, with the options of `toast`
+     * @default true
+     */
+    useToast?: boolean
+
+    /**
+     * Enable auto-import of useDialog composable
+     * @description Dialogs and confirmations, with the options of `dialog`
+     * @default true
+     */
+    useDialog?: boolean
+
+    /**
+     * Enable auto-import of useWait composable
+     * @description Loading states shared by the whole app
+     * @default true
+     */
+    useWait?: boolean
+
     /**
      * Enable auto-import of useTranslations composable
      * @description Provides translations functionality from `@maz-ui/translations` package
@@ -249,6 +314,48 @@ export interface MazUiNuxtOptions {
     useRelativeTime?: boolean
 
     /**
+     * Enable auto-import of useEventListener composable
+     * @description Event listener on a window, a document or an element, removed on unmount
+     * @default true
+     */
+    useEventListener?: boolean
+
+    /**
+     * Enable auto-import of useWindow composable
+     * @description The window and its listeners, SSR safe
+     * @default true
+     */
+    useWindow?: boolean
+
+    /**
+     * Enable auto-import of useWindowFocus composable
+     * @description Reactive focus of the window
+     * @default true
+     */
+    useWindowFocus?: boolean
+
+    /**
+     * Enable auto-import of useMediaQuery composable
+     * @description Reactive CSS media query
+     * @default true
+     */
+    useMediaQuery?: boolean
+
+    /**
+     * Enable auto-import of useReducedMotion composable
+     * @description Reactive `prefers-reduced-motion` preference
+     * @default true
+     */
+    useReducedMotion?: boolean
+
+    /**
+     * Enable auto-import of useShortcut composable
+     * @description Platform aware keyboard shortcut (Cmd on macOS, Ctrl elsewhere) and its label
+     * @default true
+     */
+    useShortcut?: boolean
+
+    /**
      * Enable auto-import of useWindowSize composable
      * @description Reactive window dimensions tracking
      * @default true
@@ -282,6 +389,13 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     useFuzzySearch?: boolean
+
+    /**
+     * Enable auto-import of useClipboard composable
+     * @description Copy a text to the clipboard with a `copied` state
+     * @default true
+     */
+    useClipboard?: boolean
 
     /**
      * Enable auto-import of useTimer composable
@@ -352,6 +466,41 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     usePullToRefresh?: boolean
+
+    /**
+     * Enable auto-import of useIntersectionObserver composable
+     * @description Know when elements enter or leave the viewport
+     * @default true
+     */
+    useIntersectionObserver?: boolean
+
+    /**
+     * Enable auto-import of useScroll composable
+     * @description Scroll position, direction and edges of the page or of an element
+     * @default true
+     */
+    useScroll?: boolean
+
+    /**
+     * Enable auto-import of useInfiniteScroll composable
+     * @description Load the next page of a list when its end gets close
+     * @default true
+     */
+    useInfiniteScroll?: boolean
+
+    /**
+     * Enable auto-import of useScrollLock composable
+     * @description Lock the scroll of the page or of an element (menu, overlay)
+     * @default true
+     */
+    useScrollLock?: boolean
+
+    /**
+     * Enable auto-import of useResizeObserver composable
+     * @description Know when the size of elements changes
+     * @default true
+     */
+    useResizeObserver?: boolean
   }
 
   /**
@@ -387,11 +536,60 @@ export interface MazUiNuxtOptions {
     vFullscreenImg?: boolean | VFullscreenImgOptions
 
     /**
+     * Install v-intersect directive globally
+     * @description Call a function when an element enters or leaves the viewport
+     * @default false
+     */
+    vIntersect?: boolean
+
+    /**
      * Install v-tooltip directive globally
      * @description Tooltip functionality for any element
      * @default false
      */
     vTooltip?: boolean | VTooltipOptions
+
+    /**
+     * Install v-reveal directive globally
+     * @description Reveals the elements when they enter the viewport (fade, slide, curtain, lines...), the replacement of the AOS
+     * @default false
+     */
+    vReveal?: boolean
+
+    /**
+     * Install v-press directive globally
+     * @description Gives a tactile press feedback (a small scale down) to any clickable element
+     * @default false
+     */
+    vPress?: boolean
+
+    /**
+     * Install v-ripple directive globally
+     * @description Draws a ripple from the pointer on click, or a glow that follows it
+     * @default false
+     */
+    vRipple?: boolean
+
+    /**
+     * Install v-magnetic directive globally
+     * @description Pulls the element toward the pointer when it comes close
+     * @default false
+     */
+    vMagnetic?: boolean
+
+    /**
+     * Install v-tilt directive globally
+     * @description Tilts the element in 3D with the pointer, with an optional glare and a floating mode
+     * @default false
+     */
+    vTilt?: boolean
+
+    /**
+     * Install v-draw directive globally
+     * @description Draws the strokes of an SVG (or a border) when it enters the viewport or on hover
+     * @default false
+     */
+    vDraw?: boolean
   }
 
   /**

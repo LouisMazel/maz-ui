@@ -63,7 +63,7 @@ describe('given detectAgentTargets', () => {
     ],
     [
       '.codex/config.toml',
-      ['agents-md'],
+      ['agents-md', 'codex'],
     ],
     [
       '.clinerules',
@@ -194,6 +194,7 @@ describe('given AGENT_TARGETS', () => {
         'vscode',
         'gemini',
         'opencode',
+        'codex',
         'junie',
         'windsurf',
         'warp',

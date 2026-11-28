@@ -55,6 +55,51 @@ app.use(MazUi, {
 })
 ```
 
+The MazUi plugin also takes the global options of the toasts and dialogs, and enables the animations on scroll:
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  // Global options of useToast()
+  toast: { position: 'top-right' },
+  // Global options of useDialog()
+  dialog: { acceptText: 'Yes' },
+  // Motion of the components: 'auto' (default), 'reduced' or 'full'
+  motion: 'auto',
+  // Density of the controls: 'default' (current heights) or 'compact'
+  density: 'default',
+  // Open the external links outside of the WebView (Tauri, Electron), see the desktop apps guide
+  openExternal: href => openUrl(href),
+})
+```
+
+See [Desktop apps](./desktop-apps.md) for `openExternal` and `isExternalLink`.
+
+### Motion
+
+By default, the components follow the `prefers-reduced-motion` preference of the user: under reduced motion, they stop their animations. The animations of your app are not touched.
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  // 'auto' follows the preference, 'reduced' and 'full' force it
+  motion: 'reduced',
+})
+```
+
+To also stop the animations of the whole page under reduced motion, use `motion: { scope: 'page' }`. In your own code, `shouldReduceMotion` of [useReducedMotion](./../composables/use-media-query.md#usereducedmotion) follows the same option.
+
+### Density
+
+The `density` option makes the controls (buttons, fields, segmented, menus...) about 14% shorter, a `md` control goes from 42px to 36px. It is `'default'` unless you set it. See [Density](./../ecosystem/themes.md#density) for what changes and how to compact only a block.
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  density: 'compact',
+})
+```
+
 ::: tip Why provide preset and messages?
 - **`preset`** -- Providing the theme preset synchronously avoids FOUC (Flash of Unstyled Content). Without it, components render without their CSS variables until the theme loads.
 - **`messages`** -- By default, Maz-UI does not bundle any translations. If you don't provide messages for the current locale, components will briefly show raw translation keys instead of actual text until the async loading completes.
@@ -188,13 +233,12 @@ More information in the [theme documentation](/ecosystem/themes).
 
 More information in the [translations documentation](/ecosystem/translations).
 
-## Plugins
+## Toast, dialog and wait
 
-More information about installation and usage in:
-- [aos](./../plugins/aos.md) (animations on scroll)
-- [dialog](./../plugins/dialog.md) (display modales without any implementation in template)
-- [toast](./../plugins/toast.md) (display notifications)
-- [wait](./../plugins/wait.md) (display loading states)
+No plugin to install for the toasts, the dialogs and the loading states: use their composable. Their global options go in the [MazUi plugin](#install-plugin).
+- [toast](./../plugins/toast.md) with `useToast()` (display notifications)
+- [dialog](./../plugins/dialog.md) with `useDialog()` (display modales without any implementation in template)
+- [wait](./../plugins/wait.md) with `useWait()` (display loading states, works anywhere, even outside of a component)
 
 ## Directives
 
@@ -204,6 +248,7 @@ More information about installation and usage in:
 - [lazy-img](./../directives/lazy-img.md) (lazy load images)
 - [zoom-img](./../directives/zoom-img.md) (zoom images on click)
 - [fullscreen-img](./../directives/fullscreen-img.md) (display images fullscreen on click with an animate effect)
+- [reveal](./../directives/reveal.md) (reveal elements when they enter the screen)
 
 ## Smart Loading with resolvers
 

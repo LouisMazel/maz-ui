@@ -416,6 +416,10 @@ describe('given attributeProps', () => {
     it('then an unknown attribute has an unknown type', () => {
       expect(attributeProps('const { foo } = useAttrs()', [])[0].type).toBe('unknown')
     })
+
+    it('then the attributes read from the useAttrs variable are documented too', () => {
+      expect(attributeProps('const attrs = useAttrs()\nconst { href, to } = attrs', []).map(prop => prop.name)).toEqual(['href', 'to'])
+    })
   })
 
   describe('when the component does not read attributes', () => {
@@ -469,6 +473,44 @@ describe('given attrsTarget', () => {
       expect(attrsTarget('<template><input v-bind="$attrs"></template>')).toBeUndefined()
       expect(attrsTarget('<template><MazBtn v-bind="attrs" /></template>')).toBeUndefined()
       expect(attrsTarget('<script setup>\nimport Other from \'./Other.vue\'\n</script>\n<template><Other v-bind="$attrs" /></template>')).toBeUndefined()
+    })
+  })
+})
+
+describe('given toPropApi with a deprecated tag', () => {
+  describe('when the tag has a text', () => {
+    it('then the prop keeps the text as its deprecation', () => {
+      const result = toPropApi(prop({
+        name: 'outlined',
+        type: 'boolean | undefined',
+        tags: [{ name: 'deprecated', text: 'Use `variant="outline"` instead' }],
+      }), new Set())
+
+      expect(result.deprecated).toBe('Use `variant="outline"` instead')
+    })
+  })
+
+  describe('when the tag has no text', () => {
+    it('then the deprecation is a generic one', () => {
+      const result = toPropApi(prop({ name: 'pastel', type: 'boolean', tags: [{ name: 'deprecated' }] }), new Set())
+
+      expect(result.deprecated).toBe('Deprecated')
+    })
+  })
+
+  describe('when there is no deprecated tag', () => {
+    it('then the prop has no deprecation', () => {
+      expect(toPropApi(prop({ name: 'size', type: 'string' }), new Set())).not.toHaveProperty('deprecated')
+    })
+  })
+})
+
+describe('given toEventApi with a deprecated tag', () => {
+  describe('when the event is deprecated', () => {
+    it('then it keeps the text as its deprecation', () => {
+      const result = toEventApi({ name: 'old', type: '[]', signature: '', schema: [], description: '', tags: [{ name: 'deprecated', text: 'Use `new`' }] } as any)
+
+      expect(result.deprecated).toBe('Use `new`')
     })
   })
 })

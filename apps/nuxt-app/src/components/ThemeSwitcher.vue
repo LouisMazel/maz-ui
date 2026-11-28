@@ -10,7 +10,7 @@ const { colorMode, updateTheme, presetName, isDark } = useTheme()
     prefer-position="bottom-end"
   >
     <span class="maz:cap-f">
-      {{ colorMode }} ({{ isDark ? 'dark' : 'light' }})
+      {{ colorMode }} ({{ isDark ? 'sombre' : 'clair' }})
     </span>
 
     <template #dropdown>
@@ -19,13 +19,13 @@ const { colorMode, updateTheme, presetName, isDark } = useTheme()
           v-model="colorMode"
           :options="[
             { label: 'Auto', value: 'auto' },
-            { label: 'Dark', value: 'dark' },
-            { label: 'Light', value: 'light' },
+            { label: 'Sombre', value: 'dark' },
+            { label: 'Clair', value: 'light' },
           ]"
         />
 
         <p>
-          Theme
+          Thème
         </p>
 
         <MazRadioButtons

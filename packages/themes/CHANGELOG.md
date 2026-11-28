@@ -1,5 +1,58 @@
 # Change Log
 
+## v5.9.0-beta.1 (2026-11-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.9.0-beta.0...v5.9.0-beta.1)
+
+### 🚀 Features
+
+- **themes:** Add a focus ring, shadows per color mode and a neutral color ([ab58049f6](https://github.com/LouisMazel/maz-ui/commit/ab58049f6))
+
+  - `components.focusRing` sets the color (per mode), width and offset of the focus ring, as `--maz-focus-ring-*` variables.
+  - Each entry of `scales.shadow` accepts `{ light, dark }`.
+  - The optional `neutral` and `neutral-foreground` colors give the grey push button of the `macos`, `windows` and `linux` presets (`MazBtn color="neutral"`).
+
+- **themes:** Give every preset a neutral color, in light and dark mode ([1341b54a7](https://github.com/LouisMazel/maz-ui/commit/1341b54a7))
+
+  Every built-in preset sets `neutral` and `neutral-foreground`: the measured grey of the push buttons on `macos`, `windows` and `linux`, a grey a bit darker than the page (light) or lighter than the cards (dark) on the others. A custom preset without them gets a grey mixed from `surface` and `foreground`, so `--maz-neutral` always exists.
+
+  `resolvePreset` reads `color-mix()` and gives the `neutral` scale.
+
+- **themes:** Add the instant, slower, scale, spring and bounce motion tokens ([145660876](https://github.com/LouisMazel/maz-ui/commit/145660876))
+
+  Every preset gets `motion-instant` (press, hover), `motion-slower` (large transitions), `motion-scale` (multiplies every duration) and two springs, `easing-spring` (no bounce) and `easing-bounce` (a small bounce), bridged to Tailwind as `duration-(--duration-instant)`, `ease-spring` and `ease-bounce`. The presets keep their own fast, normal and slow durations.
+
+  Build your own springs with `springEasing({ stiffness, damping })` of `@maz-ui/themes/utils`, which returns a CSS `linear()` easing. The `easing-in-out` of the `maz-ui` preset is now a real in-out curve.
+
+- **themes:** Make the shadows of the presets visible in dark mode ([73c35d648](https://github.com/LouisMazel/maz-ui/commit/73c35d648))
+
+  The shadows of the `maz-ui`, `ocean`, `nova`, `obsidian` and `folio` presets were black at 5 to 10% in dark mode too, invisible on a dark background. In dark mode they are now deeper, and the large ones get a hairline light edge. The light shadows do not change.
+
+- **themes:** Add the focus-border-width token, 2px by default ([6ec9ca8a5](https://github.com/LouisMazel/maz-ui/commit/6ec9ca8a5))
+- **themes:** Add three elevation levels to every preset, readable in dark mode ([803aace54](https://github.com/LouisMazel/maz-ui/commit/803aace54))
+
+### 🩹 Fixes
+
+- **themes:** Align the macos, windows and linux presets with the official platform values ([6c3224995](https://github.com/LouisMazel/maz-ui/commit/6c3224995))
+
+  - macos: neutral grays and colors measured on macOS 26 (window #1e1e1e, label and separator flattened), #007aff accent in both modes, the macOS 26 purple, red, teal, green and orange, regular weight titles on the macOS text style scale, larger lg and 3xl radii. `primary` is no longer a system color: browsers and WebKit views always return a fixed blue for the user accent, override `primary` to follow it. `muted` stays AA and no longer follows the system secondary label.
+  - linux: colors of libadwaita 1.8 (the computed standalone steps of the accent and status colors), 11pt body (14.67px), 9px controls and 12px cards.
+  - windows: Fluent 2 purple, magenta and teal, muted and divider of WinUI in dark mode.
+
+### 🧪 Tests
+
+- **themes:** Lower the branches coverage threshold to 99 and drop autoUpdate ([7ca11611e](https://github.com/LouisMazel/maz-ui/commit/7ca11611e))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.9.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
+
+No relevant changes since last release
+
 ## v5.8.1 (2026-11-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)

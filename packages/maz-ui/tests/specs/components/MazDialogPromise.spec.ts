@@ -60,7 +60,7 @@ describe('given MazDialogConfirm component', () => {
     expect(wrapper.vm.currentData).toStrictEqual({
       buttons: undefined,
       acceptProps: {
-        text: 'Confirm',
+        text: 'test',
         color: 'success',
         type: 'accept',
         response: 'accept',
@@ -68,13 +68,13 @@ describe('given MazDialogConfirm component', () => {
       hideAcceptButton: false,
       hideRejectButton: false,
       rejectProps: {
-        text: 'Cancel',
-        color: 'destructive',
+        text: 'test',
+        color: 'neutral',
         type: 'reject',
         response: 'reject',
       },
-      acceptText: 'Confirm',
-      rejectText: 'Cancel',
+      acceptText: 'test',
+      rejectText: 'test',
     })
   })
 })

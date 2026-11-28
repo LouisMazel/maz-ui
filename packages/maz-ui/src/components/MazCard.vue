@@ -1,10 +1,14 @@
 <script lang="ts" setup>
 import type { Component, HTMLAttributes } from 'vue'
 import type { RouterLinkProps } from 'vue-router'
+import type { MazElevation } from '../utils/elevation.ts'
 import type { MazGalleryProps } from './MazGallery.vue'
 import { MazChevronDown } from '@maz-ui/icons/lazy/MazChevronDown'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { setBorderDrawFrom } from '../utils/borderDraw.ts'
+import { getElevationClass } from '../utils/elevation.ts'
+import { useExternalLinks } from '../utils/externalLinks.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 import MazIcon from './MazIcon.vue'
@@ -20,6 +24,7 @@ const {
   title = undefined,
   collapsible = false,
   collapseOpen = false,
+  borderDraw = false,
 } = defineProps<MazCardProps>()
 
 defineEmits<{
@@ -31,7 +36,7 @@ defineEmits<{
 }>()
 
 const { elevation, radius, padding, scale, bordered, overflowHidden } = useGlobalConfig<{
-  elevation: boolean
+  elevation: MazElevation
   radius: boolean
   padding: boolean
   scale: boolean
@@ -47,6 +52,8 @@ const { elevation, radius, padding, scale, bordered, overflowHidden } = useGloba
 })
 
 const isLinked = computed(() => !!href || !!to)
+
+const { onLinkClick } = useExternalLinks()
 
 const DEFAULT_GALLERY_OPTIONS: MazGalleryProps = {
   displayedCount: 3,
@@ -78,8 +85,13 @@ export interface MazCardProps {
   gallery?: MazGalleryProps
   /** scale animation on hover (only linked cards) */
   scale?: boolean
-  /** Set elevation to card (box-shadow) */
-  elevation?: boolean
+  /**
+   * Elevation of the card (shadow of the theme, deeper in dark mode): `0` none, `1` small, `2` medium, `3` large.
+   * `true` keeps the historical shadow.
+   * @type {boolean | 0 | 1 | 2 | 3}
+   * @default false
+   */
+  elevation?: MazElevation
   /** Set radius to card */
   radius?: boolean
   /** Set border to card (in dark mode, the card is always bordered) */
@@ -101,6 +113,12 @@ export interface MazCardProps {
   title?: string
   /** The card will be displayed in full width */
   block?: boolean
+  /**
+   * The border draws itself around the card from the point where the pointer enters (and on keyboard focus).
+   * Set its color with `--maz-border-draw-color`
+   * @default false
+   */
+  borderDraw?: boolean
 }
 
 const slots = useSlots()
@@ -156,6 +174,22 @@ const footerAlignClass = computed(() =>
     : 'maz:text-start',
 )
 
+const elevationClass = computed(() => getElevationClass(elevation.value))
+
+const GALLERY_RADIUS_CLASS = {
+  'column': 'maz:rounded-t-[inherit]',
+  'column-reverse': 'maz:rounded-b-[inherit]',
+  'row': 'maz:rounded-s-[inherit]',
+  'row-reverse': 'maz:rounded-e-[inherit]',
+} as const
+
+const galleryRadiusClass = computed(() => radius.value ? GALLERY_RADIUS_CLASS[orientation] : undefined)
+
+function onPointerEnter(event: PointerEvent) {
+  if (borderDraw)
+    setBorderDrawFrom(event)
+}
+
 function toggleCollapse() {
   if (collapsible)
     collapseOpenModel.value = !collapseOpenModel.value
@@ -164,26 +198,29 @@ function toggleCollapse() {
 
 <template>
   <div
-    class="m-card m-reset-css maz:relative maz:inline-flex maz:max-h-full maz:flex-col maz:bg-container maz:dark:border maz:dark:border-divider"
+    class="m-card m-reset-css maz:relative maz:inline-flex maz:max-h-full maz:flex-col maz:bg-container"
     :class="[
+      elevationClass,
       {
+        'maz:dark:border maz:dark:border-divider': !elevationClass,
+        'maz:border-draw': borderDraw,
         'm-card--linked': isLinked,
         'm-card--no-scale': !scale,
-        'maz:shadow-elevation maz:drop-shadow-md': elevation,
         '--block maz:w-full': block,
         'maz:overflow-hidden': overflowHidden || !collapseOpenModel,
         'maz:rounded-md': radius,
         'maz:border': bordered,
       },
     ]"
+    @pointerenter="onPointerEnter"
   >
     <component
       :is="collapsible ? 'button' : 'div'"
       v-if="hasSlotContent(slots.title) || title || collapsible"
-      class="m-card__header maz:flex maz:items-center maz:border-b maz:border-solid maz:px-4 maz:py-3 maz:text-title-3 maz:text-foreground maz:transition-colors maz:duration-200"
+      class="m-card__header maz:flex maz:items-center maz:border-b maz:border-solid maz:px-4 maz:py-3 maz:text-title-3 maz:text-foreground maz:transition-colors maz:duration-(--duration-fast) maz:ease-out"
       :class="[
         collapseOpenModel ? 'maz:rounded-t-md maz:border-divider' : 'maz:border-transparent',
-        { '--is-collapsible maz:cursor-interactive maz:hover:bg-surface-600': collapsible },
+        { '--is-collapsible maz:cursor-interactive maz:hover:bg-foreground/5': collapsible },
         { 'maz:justify-end': !hasSlotContent(slots.title) && !title && collapsible },
         { 'maz:justify-between': hasSlotContent(slots.title) || title },
       ]"
@@ -204,21 +241,26 @@ function toggleCollapse() {
         <MazIcon
           :icon="MazChevronDown"
           :class="{ '--is-open': collapseOpenModel }"
-          class="m-card__collapse-icon maz:rotate-0 maz:text-xl maz:transition-transform maz:duration-200"
+          class="m-card__collapse-icon maz:rotate-0 maz:text-xl maz:transition-transform maz:duration-(--duration-normal) maz:ease-out"
         />
       </div>
     </component>
     <component
       v-bind="wrapperData"
       :is="wrapperData.is"
-      class="m-card__wrapper maz:flex maz:flex-1"
+      class="m-card__wrapper maz:flex maz:flex-1 maz:rounded-[inherit]"
       :class="[
         `m-card__wrapper--${orientation}`,
         orientation === 'row' ? 'maz:flex-row' : orientation === 'row-reverse' ? 'maz:flex-row-reverse' : orientation === 'column' ? 'maz:flex-col' : 'maz:flex-col-reverse',
         { 'm-card__link maz:cursor-pointer maz:no-underline': isLinked },
       ]"
+      @click="!to && onLinkClick($event, href, hrefTarget)"
     >
-      <div v-if="galleryOptions.images" class="m-card__gallery__wrapper maz:relative maz:flex maz:overflow-hidden">
+      <div
+        v-if="galleryOptions.images"
+        class="m-card__gallery__wrapper maz:relative maz:isolate maz:flex maz:transform-gpu maz:overflow-hidden"
+        :class="galleryRadiusClass"
+      >
         <MazGallery
           v-bind="{
             ...galleryOptions,
@@ -299,13 +341,32 @@ function toggleCollapse() {
 }
 
 .m-card--linked {
-  transition: all 300ms ease-in-out;
-  transform: scale(1);
+  transition: transform calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out);
+}
 
-  &:hover:not(.m-card--no-scale) {
+.m-card__gallery,
+:deep(.m-card__arrow) {
+  transition: transform calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out);
+}
+
+@media (hover: hover) {
+  .m-card--linked:hover:not(.m-card--no-scale) {
     @apply maz:z-1;
 
     transform: scale(1.02);
+  }
+
+  .m-card--linked:hover .m-card__gallery {
+    transform: scale(1.05);
+  }
+
+  .m-card--linked:hover :deep(.m-card__arrow) {
+    transform: translateX(0.25rem);
+  }
+
+  [dir='rtl'] .m-card--linked:hover :deep(.m-card__arrow),
+  .m-card--linked:dir(rtl):hover :deep(.m-card__arrow) {
+    transform: translateX(-0.25rem);
   }
 }
 

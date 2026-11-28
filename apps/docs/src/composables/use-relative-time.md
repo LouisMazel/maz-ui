@@ -1,6 +1,6 @@
 ---
 title: useRelativeTime
-description: The useRelativeTime composable returns a reactive, localized relative time (`3 minutes ago`, `in 2 days`) that refreshes itself at the right moment, with a single timer. It is built on the formatRelativeTime helper and the native Intl API, so every locale is supported.
+description: The useRelativeTime composable returns a reactive, localized relative time (3 minutes ago, in 2 days) that refreshes itself at the right moment, with a single timer. It is built on the formatRelativeTime helper and the native Intl API, so every locale is supported.
 ---
 
 # {{ $frontmatter.title }}

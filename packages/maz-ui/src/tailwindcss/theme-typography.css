@@ -20,12 +20,16 @@
   --font-mono: var(--maz-font-mono-stack);
   --font-display: var(--maz-font-display-stack);
   --default-border-width: var(--maz-border-width);
-  --duration-fast: var(--maz-motion-fast, 100ms);
-  --duration-normal: var(--maz-motion-normal, 200ms);
-  --duration-slow: var(--maz-motion-slow, 300ms);
+  --duration-instant: calc(var(--maz-motion-instant, 80ms) * var(--maz-motion-scale, 1));
+  --duration-fast: calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1));
+  --duration-normal: calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1));
+  --duration-slow: calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1));
+  --duration-slower: calc(var(--maz-motion-slower, 450ms) * var(--maz-motion-scale, 1));
   --default-transition-duration: var(--duration-normal);
   --ease-out: var(--maz-easing-out, cubic-bezier(0.4, 0, 0.2, 1));
   --ease-in: var(--maz-easing-in, cubic-bezier(0.4, 0, 1, 1));
-  --ease-in-out: var(--maz-easing-in-out, cubic-bezier(0.4, 0, 0.2, 1));
+  --ease-in-out: var(--maz-easing-in-out, cubic-bezier(0.65, 0, 0.35, 1));
+  --ease-spring: var(--maz-easing-spring, cubic-bezier(0.22, 1, 0.36, 1));
+  --ease-bounce: var(--maz-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1));
   --default-transition-timing-function: var(--ease-out);
 }

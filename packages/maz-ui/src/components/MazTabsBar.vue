@@ -2,7 +2,9 @@
 import type { MazBadgeProps } from './MazBadge.vue'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazIndicatorProps } from './MazIndicator.vue'
+import type { MazTabsOrientation, MazTabsProvide } from './MazTabs.vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 /**
  * Props of MazBtn that an item is not allowed to forward, because they are
@@ -38,9 +40,16 @@ export interface MazTabsBarProps<Item extends MazTabsBarItem = MazTabsBarItem> {
   /**
    * Color of the active tab indicator. When omitted, the default neutral
    * indicator is used.
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
+  /**
+   * Direction of the bar. `vertical` stacks the tabs in a column (arrows up and down move between tabs),
+   * for a side navigation of sections. Inherited from MazTabs when not set
+   * @values `'horizontal' | 'vertical'`
+   * @default 'horizontal'
+   */
+  orientation?: MazTabsOrientation
   /**
    * Force the standalone mode: the tabs bar ignores any surrounding `MazTabs`
    * (selection, size, rounded-size and color are no longer inherited) and is
@@ -79,6 +88,16 @@ export interface MazTabsBarProps<Item extends MazTabsBarItem = MazTabsBarItem> {
    * @default true
    */
   bordered?: boolean
+  /**
+   * The indicator slides to the selected tab
+   * @default true
+   */
+  animated?: boolean
+  /**
+   * The indicator stretches toward the new tab on its way (a drop of ink)
+   * @default false
+   */
+  stretch?: boolean
 }
 
 export type MazTabsBarObjectItem<Value extends string | number = string | number>
@@ -124,12 +143,43 @@ export type MazTabsBarItem<Value extends string | number = string | number>
  * 1-based index (number).
  */
 export type MazTabsBarItemValue<Item>
-  = Item extends { value: infer V extends string | number } ? V : number
+  = Item extends { value: infer V extends string | number }
+    ? V
+    : Item extends { value?: infer V extends string | number }
+      ? string | number extends V
+        ? number
+        : V
+      : number
+
+/**
+ * Type of the `value` of an item given to the `item` slot: the literal value of
+ * the item when provided, `undefined` for a string item or an item without value.
+ */
+export type MazTabsBarSlotItemValue<Item>
+  = Item extends string
+    ? undefined
+    : Item extends { value: infer V extends string | number }
+      ? V
+      : Item extends { value?: infer V extends string | number }
+        ? V | undefined
+        : undefined
+
+export interface MazTabsBarSlotItem<Item = MazTabsBarItem> {
+  label: string
+  value: MazTabsBarSlotItemValue<Item>
+  disabled: boolean
+  size: MazSize | undefined
+  roundedSize: MazRoundedSize | undefined
+  color: NonNullable<MazBtnProps['color']>
+  badge: MazTabsBarObjectItem['badge']
+  indicator: MazIndicatorProps | undefined
+  overflowHidden: boolean | undefined
+  btnProps: Record<string, unknown>
+}
 </script>
 
 <script lang="ts" setup generic="Item extends MazTabsBarItem">
 import type { ComponentPublicInstance, StyleValue } from 'vue'
-import type { MazTabsProvide } from './MazTabs.vue'
 import { sleep } from '@maz-ui/utils/helpers/sleep'
 import {
   computed,
@@ -143,12 +193,15 @@ import {
 } from 'vue'
 import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useRovingFocus } from '../composables/useRovingFocus.ts'
+import { useSlidingIndicator } from '../composables/useSlidingIndicator.ts'
 import MazBtn from './MazBtn.vue'
 
 const {
   items,
   modelValue,
   color,
+  orientation,
   standalone = false,
   persistent = false,
   queryParam = 'tab',
@@ -156,6 +209,8 @@ const {
   block = false,
   elevation = false,
   bordered = true,
+  animated = true,
+  stretch = false,
 } = defineProps<MazTabsBarProps<Item>>()
 
 const emits = defineEmits<{
@@ -164,6 +219,12 @@ const emits = defineEmits<{
    * @property {MazTabsBarItemValue} value item value when provided, otherwise the 1-based index
    */
   'update:model-value': [value: MazTabsBarItemValue<Item>]
+}>()
+
+defineSlots<{
+  'item'?: (props: { item: MazTabsBarSlotItem<Item>, active: boolean, index: number }) => unknown
+  'badge-content'?: (props: { content: string | number | boolean }) => unknown
+  'indicator'?: (props: { text: string, index: number }) => unknown
 }>()
 
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
@@ -206,14 +267,10 @@ const resolvedRoundedSize = computed<MazRoundedSize>(() => {
 
 const resolvedColor = computed<MazColor | undefined>(() => color ?? tabsContext.value?.color?.value)
 
-const ROUNDED_CLASS: Record<MazRoundedSize, string> = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const resolvedOrientation = computed<MazTabsOrientation>(() => orientation ?? tabsContext.value?.orientation?.value ?? 'horizontal')
+const isVertical = computed(() => resolvedOrientation.value === 'vertical')
+
+const ROUNDED_CLASS: Record<MazRoundedSize, string> = ROUNDED_SIZE_CLASS
 
 /** A badge with `content: true` is a dot: no text, so no padding nor line box */
 const DOT_BADGE_STYLE = {
@@ -237,11 +294,11 @@ function resolveIndicator(indicator: MazTabsBarObjectItem['indicator']): MazIndi
 }
 
 const normalizedItems = computed(() =>
-  items.map((item) => {
+  items.map((item): MazTabsBarSlotItem<Item> => {
     if (typeof item === 'string') {
       return {
         label: item,
-        value: undefined as string | number | undefined,
+        value: undefined as MazTabsBarSlotItemValue<Item>,
         disabled: false,
         size: undefined as MazSize | undefined,
         roundedSize: undefined as MazRoundedSize | undefined,
@@ -258,7 +315,7 @@ const normalizedItems = computed(() =>
 
     return {
       label,
-      value,
+      value: value as MazTabsBarSlotItemValue<Item>,
       disabled: disabled ?? false,
       size,
       roundedSize,
@@ -282,7 +339,7 @@ const currentTab = computed<number>(() => {
   }
 
   const indexByValue = normalizedItems.value.findIndex(
-    item => item.value !== undefined && item.value === modelValue,
+    item => item.value !== undefined && (item.value as unknown) === modelValue,
   )
   if (indexByValue !== -1) {
     return indexByValue + 1
@@ -347,43 +404,28 @@ function getTabIndex(index: number) {
     : -1
 }
 
-function getNextEnabledIndex(fromIndex: number, step: 1 | -1) {
-  const count = normalizedItems.value.length
+const { onKeydown: onRovingKeydown } = useRovingFocus({
+  container: tabsBarRef,
+  items: () => itemRefs.value.slice(0, normalizedItems.value.length),
+  orientation: 'both',
+  activateOnFocus: true,
+  onActivate: index => selectTab(index),
+  currentIndex: computed({
+    get: () => currentTab.value - 1,
+    set: () => {},
+  }),
+})
 
-  for (let offset = 1; offset <= count; offset++) {
-    const index = (fromIndex + step * offset + count) % count
-
-    if (!normalizedItems.value[index].disabled)
-      return index
-  }
-
-  return fromIndex
-}
+const CROSS_KEYS = {
+  horizontal: ['ArrowUp', 'ArrowDown'],
+  vertical: ['ArrowLeft', 'ArrowRight'],
+} as const
 
 function onTabKeydown(event: KeyboardEvent, index: number) {
-  const isRtl = !!tabsBarRef.value && globalThis.getComputedStyle(tabsBarRef.value).direction === 'rtl'
-  const forwardKey = isRtl ? 'ArrowLeft' : 'ArrowRight'
-  const backwardKey = isRtl ? 'ArrowRight' : 'ArrowLeft'
-
-  let targetIndex: number | undefined
-
-  if (event.key === forwardKey)
-    targetIndex = getNextEnabledIndex(index, 1)
-  else if (event.key === backwardKey)
-    targetIndex = getNextEnabledIndex(index, -1)
-  else if (event.key === 'Home')
-    targetIndex = getNextEnabledIndex(-1, 1)
-  else if (event.key === 'End')
-    targetIndex = getNextEnabledIndex(normalizedItems.value.length, -1)
-
-  if (targetIndex === undefined || normalizedItems.value[targetIndex]?.disabled)
+  if ((CROSS_KEYS[resolvedOrientation.value] as readonly string[]).includes(event.key))
     return
 
-  event.preventDefault()
-  itemRefs.value[targetIndex]?.focus()
-
-  if (targetIndex !== index)
-    selectTab(targetIndex)
+  onRovingKeydown(event, index)
 }
 
 function isActiveTab(index: number) {
@@ -402,14 +444,56 @@ function addElementToItemRefs({
     : mazBtn
 }
 
-const tabsIndicatorState = ref<StyleValue>()
 const tabsBarHasScrollAnimation = ref(false)
 
-async function setIndicatorAndScroll() {
-  if (!autoScroll) {
+function scrollToTab(tabsBar: HTMLElement, activeTab: HTMLElement) {
+  const scrollOffset = 50
+  const behavior = tabsBarHasScrollAnimation.value ? 'smooth' : 'instant'
+
+  if (isVertical.value) {
+    if (
+      activeTab.offsetTop - scrollOffset < tabsBar.scrollTop
+      || activeTab.offsetTop + activeTab.offsetHeight > tabsBar.scrollTop + tabsBar.clientHeight
+    ) {
+      tabsBar.scrollTo({ top: activeTab.offsetTop - scrollOffset, behavior })
+    }
     return
   }
 
+  if (
+    activeTab.offsetLeft - scrollOffset < tabsBar.scrollLeft
+    || activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
+  ) {
+    const tabsBarPaddingOffset = Number(globalThis.getComputedStyle(tabsBar).paddingLeft.slice(0, -2))
+
+    tabsBar.scrollTo({ left: activeTab.offsetLeft - tabsBarPaddingOffset - scrollOffset, behavior })
+  }
+}
+
+function useIndicator(orientation: 'horizontal' | 'vertical') {
+  return useSlidingIndicator({
+    container: tabsBarRef,
+    active: () => {
+      const tabs = normalizedItems.value
+
+      return (orientation === 'vertical') === isVertical.value && tabs.length > 0
+        ? itemRefs.value[currentTab.value - 1]
+        : undefined
+    },
+    orientation,
+    stretch: () => stretch,
+    animated: () => animated,
+  })
+}
+
+const horizontalIndicator = useIndicator('horizontal')
+const verticalIndicator = useIndicator('vertical')
+
+const indicatorStyle = computed(() => isVertical.value
+  ? verticalIndicator.style.value
+  : horizontalIndicator.style.value)
+
+async function setIndicatorAndScroll() {
   await sleep(150)
 
   const tabsBar = tabsBarRef.value
@@ -419,34 +503,11 @@ async function setIndicatorAndScroll() {
     return
   }
 
-  const scrollOffset = 50
+  if (autoScroll)
+    scrollToTab(tabsBar, activeTab)
 
-  if (
-    activeTab.offsetLeft - scrollOffset < tabsBar.scrollLeft
-    || activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
-  ) {
-    const tabBarPaddingLeft = globalThis.getComputedStyle(tabsBar).paddingLeft
-    const tabsBarPaddingOffset = Number(tabBarPaddingLeft.slice(0, -2))
-
-    tabsBar.scrollTo({
-      left: activeTab.offsetLeft - tabsBarPaddingOffset - scrollOffset,
-      behavior: tabsBarHasScrollAnimation.value ? 'smooth' : 'instant',
-    })
-  }
-
-  if (typeof currentTab.value !== 'number') {
-    return
-  }
-
-  const indicatorWidth = activeTab?.offsetWidth ?? 0
-  const indicatorHeight = activeTab?.offsetHeight ?? 0
-  const translateXValue = activeTab?.offsetLeft ?? 0
-
-  tabsIndicatorState.value = {
-    transform: `translateX(${translateXValue}px)`,
-    width: `${indicatorWidth}px`,
-    height: `${indicatorHeight}px`,
-  }
+  horizontalIndicator.update()
+  verticalIndicator.update()
 
   tabsBarHasScrollAnimation.value = true
 }
@@ -457,9 +518,10 @@ function getTabStyle(index: number, disabled: boolean): StyleValue {
   }
 
   if (currentTab.value === index + 1) {
-    return resolvedColor.value
-      ? `color: var(--maz-${resolvedColor.value}-foreground)`
-      : 'color: var(--maz-foreground)'
+    if (!resolvedColor.value)
+      return 'color: var(--maz-foreground)'
+    const token = resolvedColor.value === 'neutral' ? 'neutral' : `${resolvedColor.value}-foreground`
+    return `color: var(--maz-${token})`
   }
 
   return 'color: var(--maz-muted)'
@@ -480,7 +542,7 @@ onMounted(() => {
 })
 
 watch(
-  () => [currentTab.value, normalizedItems.value],
+  () => [currentTab.value, normalizedItems.value, isVertical.value],
   () => {
     setIndicatorAndScroll()
   },
@@ -508,10 +570,13 @@ onMounted(() => {
   <div
     ref="tabsBarRef"
     role="tablist"
-    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:scrollbar-themed maz:gap-1 maz:overflow-x-auto maz:bg-container maz:p-2 maz:align-top"
+    :aria-orientation="resolvedOrientation"
+    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:scrollbar-themed maz:gap-(--maz-menu-gap,0.25rem) maz:bg-container maz:p-(--maz-menu-padding,0.5rem) maz:align-top"
     :class="[
       ROUNDED_CLASS[resolvedRoundedSize],
       {
+        '--vertical maz:flex-none maz:flex-col maz:overflow-y-auto': isVertical,
+        'maz:overflow-x-auto': !isVertical,
         '--block': block,
         '--elevation': elevation,
         '--bordered': bordered,
@@ -523,15 +588,13 @@ onMounted(() => {
   >
     <div
       aria-hidden="true"
-      class="m-tabs-bar__indicator maz:absolute maz:left-0 maz:text-center"
+      class="m-tabs-bar__indicator maz:pointer-events-none maz:absolute maz:inset-s-0 maz:text-center"
       :class="[
+        { 'maz:top-0': isVertical },
         ROUNDED_CLASS[resolvedRoundedSize],
-        {
-          'maz:transition-all maz:duration-300 maz:ease-in-out': tabsBarHasScrollAnimation,
-          'maz:bg-surface-600 maz:dark:bg-surface-400': !resolvedColor,
-        },
+        { 'maz:bg-surface-600 maz:dark:bg-surface-400': !resolvedColor },
       ]"
-      :style="[tabsIndicatorState, resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor})` } : {}]"
+      :style="[indicatorStyle, resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor === 'neutral' ? 'neutral-foreground' : resolvedColor})` } : {}]"
     />
     <template v-for="(item, index) in normalizedItems" :key="index">
       <MazBtn
@@ -546,6 +609,7 @@ onMounted(() => {
         :class="{
           '--is-active': isActiveTab(index),
           '--disabled': item.disabled,
+          'maz:w-full maz:justify-start!': isVertical,
         }"
         class="m-tabs-bar__item maz:relative maz:z-1 maz:flex-none maz:type-label"
         :style="getTabStyle(index, item.disabled)"
@@ -570,7 +634,7 @@ onMounted(() => {
             v-bind="item.badge"
             :size="item.badge.size ?? item.size ?? resolvedSize ?? 'xs'"
             class="m-tabs-bar__item__badge"
-            :class="{ '--dot': item.badge.content === true }"
+            :class="{ '--dot': item.badge.content === true, 'maz:ms-auto': isVertical }"
             :style="item.badge.content === true ? DOT_BADGE_STYLE : undefined"
           >
             <!--

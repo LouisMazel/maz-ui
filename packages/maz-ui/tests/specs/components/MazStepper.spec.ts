@@ -82,3 +82,15 @@ describe('components/MazStepper.vue', () => {
     ])
   })
 })
+
+describe('given MazStepper with the neutral color', () => {
+  it('then the step badge is neutral with a divider border', () => {
+    const neutral = shallowMount(MazStepper, { props: { modelValue: 1, color: 'neutral', steps: [{}] } })
+    const primary = shallowMount(MazStepper, { props: { modelValue: 1, steps: [{}] } })
+
+    expect(neutral.attributes('style')).toContain('--round-step-bg-color: var(--maz-neutral)')
+    expect(neutral.attributes('style')).toContain('--round-step-text-color: var(--maz-neutral-foreground)')
+    expect(neutral.attributes('style')).toContain('--round-step-border-color: var(--maz-divider)')
+    expect(primary.attributes('style')).toContain('--round-step-border-color: transparent')
+  })
+})

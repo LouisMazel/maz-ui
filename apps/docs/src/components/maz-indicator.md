@@ -97,7 +97,7 @@ A counter at `0` is hidden, like an empty notification count. Set `show-zero` to
 
 ## Colors
 
-Available colors: `primary` (default), `secondary`, `accent`, `info`, `success`, `warning`, `destructive` and `contrast`.
+Available colors: `primary` (default), `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` and `neutral` (drawn with the foreground color of the theme, a light grey dot would disappear).
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
@@ -112,6 +112,30 @@ Available colors: `primary` (default), `secondary`, `accent`, `info`, `success`,
   <MazIndicator color="primary" />
   <MazIndicator color="success" />
   <MazIndicator color="destructive" :content="8" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Free color
+
+For a business status (online, away, priority), `color` also takes any CSS color. The text of a counter is black or white, chosen from the lightness of the color. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
+    <MazIndicator color="#22c55e" />
+    <MazIndicator color="oklch(0.7 0.17 55)" :content="3" />
+    <MazIndicator color="#8b5cf6" content="P1" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazIndicator color="#22c55e" />
+  <MazIndicator color="oklch(0.7 0.17 55)" :content="3" />
+  <MazIndicator color="var(--priority-high)" content="P1" />
 </template>
 ```
 
@@ -469,24 +493,24 @@ The `content` slot replaces the text of a counter. It receives `{ text }`, the t
 
 ## In a badge
 
-A dot before the text of a pastel [MazBadge](./maz-badge.md) is a compact status.
+A dot before the text of a soft [MazBadge](./maz-badge.md) is a compact status.
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
-    <MazBadge color="success" pastel class="maz:gap-2"><MazIndicator color="success" /> Online</MazBadge>
-    <MazBadge color="warning" pastel class="maz:gap-2"><MazIndicator color="warning" /> Away</MazBadge>
-    <MazBadge color="destructive" pastel class="maz:gap-2"><MazIndicator color="destructive" pulse /> Live</MazBadge>
+    <MazBadge color="success" variant="soft" class="maz:gap-2"><MazIndicator color="success" /> Online</MazBadge>
+    <MazBadge color="warning" variant="soft" class="maz:gap-2"><MazIndicator color="warning" /> Away</MazBadge>
+    <MazBadge color="destructive" variant="soft" class="maz:gap-2"><MazIndicator color="destructive" pulse /> Live</MazBadge>
   </div>
 
   <template #code>
 
 ```vue
 <template>
-  <MazBadge color="success" pastel class="gap-2">
+  <MazBadge color="success" variant="soft" class="gap-2">
     <MazIndicator color="success" /> Online
   </MazBadge>
 
-  <MazBadge color="destructive" pastel class="gap-2">
+  <MazBadge color="destructive" variant="soft" class="gap-2">
     <MazIndicator color="destructive" pulse /> Live
   </MazBadge>
 </template>
@@ -558,7 +582,7 @@ import { MazBell } from '@maz-ui/icons/static/MazBell'
 import { MazEnvelope } from '@maz-ui/icons/static/MazEnvelope'
 import { ref } from 'vue'
 
-const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast']
+const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral']
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 const positions = ['top-start', 'top-end', 'bottom-start', 'bottom-end']
 

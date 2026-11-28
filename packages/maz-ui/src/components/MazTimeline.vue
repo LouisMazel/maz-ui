@@ -2,10 +2,12 @@
 import type { CSSProperties, HTMLAttributes } from 'vue'
 
 import type { MazIconLike } from '../composables/index.ts'
-import type { MazColor, MazSize } from './types.ts'
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useId, useSlots, watch } from 'vue'
+import type { MazColor, MazColorOrFree, MazSize } from './types.ts'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, shallowRef, useId, useSlots, watch } from 'vue'
 import { useMazIconProps } from '../composables/index.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { resolveColor, resolveColorForeground, shiftColorLightness } from '../utils/freeColor.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 export type MazTimelineColor = Exclude<MazColor, 'transparent'>
 export type MazTimelineDirection = 'horizontal' | 'vertical' | 'auto'
@@ -33,6 +35,12 @@ export interface MazTimelineItem {
    * @default 'pending'
    */
   state?: MazTimelineStepState
+  /**
+   * Color of the step beyond its state (a type of event): a theme color or a free CSS color
+   * (`#e11d48`, `oklch(...)`, `var(--brand)`). It replaces the color of the state; a `pending` step stays muted
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
+   */
+  color?: MazColorOrFree<MazTimelineColor>
   /**
    * Whether the step is disabled (not clickable, visually muted)
    * @default false
@@ -68,7 +76,7 @@ export interface MazTimelineProps {
   /**
    * Color theme for active and completed steps
    * @type {MazTimelineColor}
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    * @default 'primary'
    */
   color?: MazTimelineColor
@@ -95,7 +103,7 @@ export interface MazTimelineProps {
    */
   clickable?: boolean
   /**
-   * Enable animations (pulse on active, state transitions, connector progress)
+   * Enable animations (pulse on active, state transitions, the rail fills on scroll, the steps rise when they are first seen)
    * @default true
    */
   animated?: boolean
@@ -106,6 +114,10 @@ export interface MazTimelineProps {
    * @default 'md'
    */
   roundedSize?: MazTimelineRoundedSize
+  /**
+   * Maximum number of lines of the subtitle of each step, the rest is cut with an ellipsis (the `subtitle` slot included)
+   */
+  subtitleLines?: number
 }
 
 const {
@@ -117,6 +129,7 @@ const {
   autoValidateSteps = true,
   clickable = false,
   animated = true,
+  subtitleLines = undefined,
   steps,
 } = defineProps<MazTimelineProps>()
 
@@ -149,7 +162,7 @@ const isVertical = ref(false)
 let mediaQuery: MediaQueryList | undefined
 
 function getStepIconProps(icon?: MazIconLike) {
-  return useMazIconProps(() => icon, () => ({ size: 'md' })).iconProps.value
+  return useMazIconProps(() => icon).iconProps.value
 }
 
 function cleanupMediaQuery() {
@@ -176,12 +189,59 @@ function onMediaChange(event: MediaQueryListEvent) {
   isVertical.value = !event.matches
 }
 
+const timelineElement = ref<HTMLElement>()
+const unseenSteps = shallowRef(new Set<number>())
+let revealObserver: IntersectionObserver | undefined
+
+function revealStep(index: number) {
+  if (!unseenSteps.value.has(index))
+    return
+
+  const next = new Set(unseenSteps.value)
+  next.delete(index)
+  unseenSteps.value = next
+}
+
+function setupReveal() {
+  const items = timelineElement.value?.querySelectorAll<HTMLElement>('.m-timeline-item')
+
+  if (!animated || !items || typeof IntersectionObserver === 'undefined')
+    return
+
+  const below = new Map<Element, number>()
+
+  items.forEach((item, index) => {
+    if (item.getBoundingClientRect().top > globalThis.innerHeight)
+      below.set(item, index)
+  })
+
+  if (below.size === 0)
+    return
+
+  unseenSteps.value = new Set(below.values())
+
+  revealObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting)
+        continue
+
+      revealStep(below.get(entry.target) ?? -1)
+      revealObserver?.unobserve(entry.target)
+    }
+  }, { rootMargin: '0px 0px -10% 0px' })
+
+  for (const item of below.keys())
+    revealObserver.observe(item)
+}
+
 onMounted(() => {
   setupMediaQuery()
+  setupReveal()
 })
 
 onBeforeUnmount(() => {
   cleanupMediaQuery()
+  revealObserver?.disconnect()
 })
 
 watch(
@@ -222,10 +282,20 @@ function isConnectorActive(index: number): boolean {
   return isStepActive(steps[index]!, index)
 }
 
-const colorStyles = computed<CSSProperties>(() => ({
-  '--m-timeline-bg': `var(--maz-${color})`,
-  '--m-timeline-fg': `var(--maz-${color}-foreground)`,
-}))
+const NEUTRAL_STYLE = {
+  '--m-timeline-bg': 'var(--maz-neutral)',
+  '--m-timeline-fg': 'var(--maz-neutral-foreground)',
+  '--m-timeline-border': 'var(--maz-divider)',
+  '--m-timeline-accent': 'var(--maz-neutral-foreground)',
+  '--m-timeline-color': 'var(--maz-neutral-foreground)',
+} as const satisfies CSSProperties
+
+const colorStyles = computed<CSSProperties>(() => color === 'neutral'
+  ? NEUTRAL_STYLE
+  : {
+      '--m-timeline-bg': `var(--maz-${color})`,
+      '--m-timeline-fg': `var(--maz-${color}-foreground)`,
+    })
 
 const stateColorMap: Record<MazTimelineStepState, string> = {
   completed: 'success',
@@ -245,6 +315,38 @@ function getStateStyle(state: MazTimelineStepState): CSSProperties | undefined {
     '--m-timeline-state-fg': `var(--maz-${mappedColor}-foreground)`,
   }
 }
+
+function getStepStyle(step: MazTimelineItem, state: MazTimelineStepState): CSSProperties | undefined {
+  if (!step.color || state === 'pending') {
+    return getStateStyle(state)
+  }
+  if (step.color === 'neutral') {
+    return {
+      ...NEUTRAL_STYLE,
+      '--m-timeline-state-bg': 'var(--maz-neutral)',
+      '--m-timeline-state-fg': 'var(--maz-neutral-foreground)',
+      '--m-timeline-state-border': 'var(--maz-divider)',
+    }
+  }
+  return {
+    '--m-timeline-bg': resolveColor(step.color),
+    '--m-timeline-fg': resolveColorForeground(step.color),
+    '--m-timeline-accent': resolveColor(step.color),
+    '--m-timeline-border': 'transparent',
+    '--m-timeline-state-bg': resolveColor(step.color),
+    '--m-timeline-state-fg': resolveColorForeground(step.color),
+    '--m-timeline-color': shiftColorLightness(step.color, -0.1),
+  }
+}
+
+const subtitleStyle = computed<CSSProperties | undefined>(() => subtitleLines
+  ? {
+      display: '-webkit-box',
+      WebkitBoxOrient: 'vertical',
+      WebkitLineClamp: subtitleLines,
+      overflow: 'hidden',
+    }
+  : undefined)
 
 function getStepAriaLabel(step: MazTimelineItem, index: number): string {
   const state = getStepState(step, index)
@@ -320,16 +422,7 @@ function findNextEnabledStep(fromIndex: number, direction: 1 | -1): number | und
 
 const hasCheckIcon = computed(() => autoValidateSteps)
 
-const ROUNDED_CLASS = {
-  'none': 'maz:rounded-none',
-  'sm': 'maz:rounded-xs',
-  'md': 'maz:rounded-md',
-  'lg': 'maz:rounded-lg',
-  'xl': 'maz:rounded-xl',
-  '2xl': 'maz:rounded-2xl',
-  '3xl': 'maz:rounded-3xl',
-  'full': 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, none: 'maz:rounded-none' }
 
 const TITLE_SIZE_CLASS: Record<MazSize, string> = {
   mini: 'maz:text-[0.625rem]',
@@ -352,6 +445,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
 <template>
   <div
+    ref="timelineElement"
     class="m-timeline m-reset-css maz:flex maz:items-stretch"
     role="list"
     :aria-label="$attrs['aria-label'] as string ?? 'Timeline'"
@@ -372,6 +466,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
       class="m-timeline-item"
       :class="{
         '--last': index === steps.length - 1,
+        '--unseen': unseenSteps.has(index),
       }"
     >
       <div
@@ -387,7 +482,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
             '--disabled': step.disabled,
           },
         ]"
-        :style="getStateStyle(getStepState(step, index))"
+        :style="getStepStyle(step, getStepState(step, index))"
         v-on="clickable ? { click: () => onStepClick(step, index), keydown: (e: KeyboardEvent) => onStepKeydown(e, step, index) } : {}"
       >
         <div class="m-timeline-indicator maz:flex maz:shrink-0 maz:flex-center" :class="ROUNDED_CLASS[roundedSize]" aria-hidden="true">
@@ -457,7 +552,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
                 {{ step.title }}
               </slot>
             </p>
-            <p v-if="step.subtitle || slots.subtitle" class="m-timeline-subtitle" :class="SUBTITLE_SIZE_CLASS[size]">
+            <p v-if="step.subtitle || slots.subtitle" class="m-timeline-subtitle" :class="SUBTITLE_SIZE_CLASS[size]" :style="subtitleStyle">
               <!--
                 @slot subtitle - Custom subtitle content
                 @binding {MazTimelineItem} step - The step data
@@ -542,16 +637,18 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
     }
 
     .m-timeline-connector-fill {
-      @apply maz:h-full maz:w-0;
+      @apply maz:h-full maz:w-full maz:origin-left maz:scale-x-0;
     }
 
     .m-timeline-connector.--completed .m-timeline-connector-fill {
-      @apply maz:w-full;
+      @apply maz:scale-x-100;
     }
   }
 
   /* --- Vertical layout --- */
   &.--vertical {
+    --m-timeline-rail-from: 1 0;
+
     .m-timeline-item {
       @apply maz:flex maz:flex-col;
     }
@@ -593,20 +690,26 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   .m-timeline-step {
     &.--active .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-bg) maz:text-(--m-timeline-fg);
-      @apply maz:dark:border maz:dark:border-solid maz:dark:border-(--m-timeline-bg) maz:dark:bg-(--m-timeline-bg)/20 maz:dark:text-(--m-timeline-bg);
+
+      border: 1px solid var(--m-timeline-border, transparent);
     }
 
     &.--completed .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
-      @apply maz:dark:border maz:dark:border-solid maz:dark:border-(--m-timeline-state-bg) maz:dark:bg-(--m-timeline-state-bg)/20 maz:dark:text-(--m-timeline-state-bg);
+
+      border: 1px solid var(--m-timeline-state-border, transparent);
     }
 
     &.--error .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
+
+      border: 1px solid var(--m-timeline-state-border, transparent);
     }
 
     &.--warning .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
+
+      border: 1px solid var(--m-timeline-state-border, transparent);
     }
 
     &.--disabled {
@@ -620,7 +723,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   }
 
   .m-timeline-connector-fill {
-    @apply maz:bg-(--m-timeline-bg);
+    background-color: var(--m-timeline-accent, var(--m-timeline-bg));
   }
 
   .m-timeline-connector.--completed .m-timeline-connector-fill {
@@ -649,8 +752,9 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
   /* --- Step icon --- */
   .m-timeline-step-icon {
-    inline-size: var(--m-timeline-icon-size);
-    block-size: var(--m-timeline-icon-size);
+    font-size: var(--m-timeline-icon-size);
+    inline-size: 1em;
+    block-size: 1em;
   }
 
   /* --- Check icon --- */
@@ -675,11 +779,24 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   /* --- Animations --- */
   &.--animated {
     .m-timeline-indicator {
-      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
+      transition-property: background-color, color, border-color, box-shadow;
+      transition-duration: calc(var(--maz-motion-normal) * var(--maz-motion-scale));
+      transition-timing-function: var(--maz-easing-out);
     }
 
     .m-timeline-connector-fill {
-      @apply maz:transition-all maz:duration-500 maz:ease-in-out;
+      transition: scale calc(var(--maz-motion-slower) * var(--maz-motion-scale)) var(--maz-easing-in-out);
+    }
+
+    .m-timeline-item {
+      transition:
+        opacity calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out),
+        transform calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out);
+
+      &.--unseen {
+        opacity: 0;
+        transform: translateY(0.75rem);
+      }
     }
 
     .m-timeline-step.--active .m-timeline-indicator {
@@ -737,21 +854,61 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   }
 }
 
+/* --- The rail fills while its step scrolls into view (browsers without scroll-driven animations keep the transition above) --- */
+@supports (animation-timeline: view()) {
+  .m-timeline.--animated {
+    &.--vertical .m-timeline-connector,
+    &.--horizontal .m-timeline-item {
+      view-timeline: --m-timeline-rail block;
+    }
+
+    .m-timeline-connector-track {
+      transform-origin: left top;
+      animation: m-timeline-rail-fill linear both;
+      animation-timeline: --m-timeline-rail;
+      animation-range: entry 0% cover 40%;
+    }
+
+    &.--vertical .m-timeline-connector-track {
+      transform-origin: center top;
+    }
+  }
+
+  [dir='rtl'] .m-timeline.--animated.--horizontal .m-timeline-connector-track {
+    transform-origin: right top;
+  }
+}
+
+@keyframes m-timeline-rail-fill {
+  from {
+    scale: var(--m-timeline-rail-from, 0 1);
+  }
+
+  to {
+    scale: 1 1;
+  }
+}
+
+[dir='rtl'] .m-timeline.--horizontal .m-timeline-connector-fill {
+  transform-origin: right;
+}
+
 /* --- Pulse animation --- */
 @keyframes m-timeline-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--m-timeline-bg) 90%, transparent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--m-timeline-accent, var(--m-timeline-bg)) 90%, transparent);
   }
 
   50% {
-    box-shadow: 0 0 0 6px color-mix(in srgb, var(--m-timeline-bg) 0%, transparent);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--m-timeline-accent, var(--m-timeline-bg)) 0%, transparent);
   }
 }
 
 /* --- Reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
   .m-timeline.--animated .m-timeline-indicator,
+  .m-timeline.--animated .m-timeline-connector-track,
   .m-timeline.--animated .m-timeline-connector-fill {
     @apply maz:transition-none!;
 

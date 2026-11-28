@@ -60,6 +60,28 @@ const code = ref()
 <script lang="ts" setup>
   import { ref } from 'vue'
   const code = ref('123')
+  const shakeCode = ref('')
+  const shakeError = ref(false)
 </script>
+
+## Motion
+
+- Each character rises into place when it is typed, pasted or autofilled.
+- When the code is complete, the cells fill one after the other.
+- When `error` becomes `true`, the cells shake.
+
+Set `:animated="false"` to turn them off. Reduced motion is respected.
+
+<ComponentDemo>
+  <MazInputCode v-model="shakeCode" :error="shakeError" hint="Type 4 digits" @completed="shakeError = shakeCode !== '1234'" />
+
+<template #code>
+
+```html
+<MazInputCode v-model="code" :error="hasError" @completed="hasError = code !== '1234'" />
+```
+
+  </template>
+</ComponentDemo>
 
 <!--@include: ./../../.vitepress/generated-docs/maz-input-code.doc.md-->

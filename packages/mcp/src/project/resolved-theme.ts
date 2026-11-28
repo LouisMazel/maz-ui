@@ -1,12 +1,14 @@
 import type { ThemePreset, ThemePresetOverrides } from '@maz-ui/themes'
 import type { ColorScaleStep, ResolvedColor, ResolvedPreset, ResolvedThemeColors, ScaledColor } from '@maz-ui/themes/utils/resolve-preset'
+import type { PresetUsage } from './preset-usage.ts'
 import type { PresetValue, ProjectPreset } from './preset.ts'
 
-import { folio, mazUi, nova, obsidian, ocean, pristine } from '@maz-ui/themes/presets'
+import { folio, linux, macos, mazUi, nova, obsidian, ocean, pristine, windows } from '@maz-ui/themes/presets'
 import { parseColorAsOklch } from '@maz-ui/themes/utils/color-conversions'
 import { BRAND_COLOR_ROLES } from '@maz-ui/themes/utils/css-generator'
 import { mergePresets } from '@maz-ui/themes/utils/preset-merger'
 import { COLOR_SCALE_STEPS, getColorDistance, getContrastRatio, resolvePreset, SCALED_COLORS } from '@maz-ui/themes/utils/resolve-preset'
+import { isPresetUsed } from './preset-usage.ts'
 
 export const BUNDLED_PRESETS = {
   'mazUi': mazUi,
@@ -16,6 +18,9 @@ export const BUNDLED_PRESETS = {
   obsidian,
   nova,
   folio,
+  macos,
+  windows,
+  linux,
 } as const satisfies Record<string, ThemePreset>
 
 export type BundledPresetName = keyof typeof BUNDLED_PRESETS
@@ -37,7 +42,7 @@ const HUE_SHIFT = 20
 const LIGHTNESS_SHIFT = 0.25
 const SHIFT_DISTANCE = 0.08
 const COLORED = 0.04
-const FOREGROUND_COLORS = new Set<string>([...BRAND_COLOR_ROLES, 'contrast'])
+const FOREGROUND_COLORS = new Set<string>([...BRAND_COLOR_ROLES, 'contrast', 'neutral'])
 
 function bundledPreset(base: string | undefined): ThemePreset | undefined {
   return base && Object.hasOwn(BUNDLED_PRESETS, base)
@@ -331,22 +336,89 @@ export function renderResolvedTheme(preset: ThemePreset, title: string, { colors
 export interface EffectiveColorsOptions extends ResolvedThemeOptions {
   /** A bundled preset instead of the presets of the project */
   preset?: BundledPresetName
+  /** The presets the project passes to the theme: they are preferred to the ones that are only defined */
+  usage?: PresetUsage
 }
 
-/** The effective colors of a bundled preset, or of the `definePreset` presets of the project (`mazUi` when there is none) */
-export function renderEffectiveColors(presets: ProjectPreset[], { preset, ...options }: EffectiveColorsOptions = {}): string {
+function list(names: string[]): string {
+  return names.map(name => `\`${name}\``).join(', ')
+}
+
+function projectPresetLabel(preset: ProjectPreset): string {
+  return `\`${preset.exportName ?? preset.overrides.name ?? 'default'}\` (\`${preset.file}\`)`
+}
+
+const MAX_UNRESOLVED = 6
+
+function unresolvedPaths(value: PresetValue, path = ''): string[] {
+  if (typeof value === 'string')
+    return value.startsWith('<expr: ') ? [`\`${path}\` = ${value.slice(7, -1).length > 40 ? `${value.slice(7, 44)}...` : value.slice(7, -1)}`] : []
+
+  if (value === null || typeof value !== 'object')
+    return []
+
+  const entries = Array.isArray(value)
+    ? value.map((child, index) => [String(index), child] as const)
+    : Object.entries(value)
+
+  return entries.flatMap(([key, child]) => unresolvedPaths(child, path ? `${path}.${key}` : key))
+}
+
+function renderProjectPreset(project: ProjectPreset, options: ResolvedThemeOptions): string {
+  const { preset: value, knownBase } = projectPresetValue(project)
+  const unresolved = unresolvedPaths(project.overrides)
+  const notes = [
+    knownBase
+      ? ''
+      : `The base \`${project.base}\` is not a bundled preset: the overrides are applied on \`mazUi\`.`,
+    unresolved.length > 0
+      ? `**Not resolved**: ${unresolved.slice(0, MAX_UNRESOLVED).join(', ')}${unresolved.length > MAX_UNRESOLVED ? `, and ${unresolved.length - MAX_UNRESOLVED} more` : ''} (values computed or imported from another file): the base preset values are used for them, so the contrasts below may not match the app. Read these values in their file.`
+      : '',
+  ].filter(Boolean)
+
+  return [renderResolvedTheme(value, `\`${value.name}\` (\`${project.file}\`)`, options), ...notes].join('\n\n')
+}
+
+function renderUsedPresets(presets: ProjectPreset[], usage: PresetUsage, options: ResolvedThemeOptions): string {
+  const used = presets.filter(preset => isPresetUsed(preset, usage))
+  const unused = presets.filter(preset => !used.includes(preset))
+  const bundled = usage.used.filter(name => Object.hasOwn(BUNDLED_PRESETS, name))
+  const total = used.length + bundled.length
+
+  if (total === 0) {
+    const names = usage.used.length > 0
+      ? ` (${list(usage.used)})`
+      : ''
+
+    return `${presets.map(preset => renderProjectPreset(preset, options)).join('\n\n')}\n\nThe preset passed to the theme${names} is not a \`definePreset\` of the project nor a bundled preset: these are every \`definePreset\` found, check which one the app uses.`
+  }
+
+  const notes: string[] = []
+
+  if (usage.dynamic || total > 1) {
+    notes.push(`The preset is chosen at runtime (${list([...used.map(preset => preset.exportName ?? String(preset.overrides.name)), ...bundled])}): the colors of each candidate are listed, the active one depends on the code (platform, user choice...). Contrasts and steps to check apply to each of them.`)
+  }
+
+  if (unused.length > 0)
+    notes.push(`Defined but not passed to the theme, so left out: ${unused.map(preset => projectPresetLabel(preset)).join(', ')}.`)
+
+  return [
+    ...used.map(preset => renderProjectPreset(preset, options)),
+    ...bundled.map(name => renderResolvedTheme(BUNDLED_PRESETS[name as BundledPresetName], `the \`${name}\` preset`, options)),
+    ...notes,
+  ].join('\n\n')
+}
+
+/** The effective colors of a bundled preset, or of the presets the project uses (`mazUi` when it has none) */
+export function renderEffectiveColors(presets: ProjectPreset[], { preset, usage, ...options }: EffectiveColorsOptions = {}): string {
   if (preset)
     return renderResolvedTheme(BUNDLED_PRESETS[preset], `the \`${preset}\` preset`, options)
 
-  if (presets.length === 0)
+  if (presets.length === 0 && !usage?.used.some(name => Object.hasOwn(BUNDLED_PRESETS, name)))
     return `${renderResolvedTheme(mazUi, 'the `mazUi` preset', options)}\n\nNo \`definePreset\` in the project: these are the colors of the default preset. Pass \`preset\` for another bundled preset (${Object.keys(BUNDLED_PRESETS).map(name => `\`${name}\``).join(', ')}).`
 
-  return presets.map((project) => {
-    const { preset: value, knownBase } = projectPresetValue(project)
-    const note = knownBase
-      ? ''
-      : `\n\nThe base \`${project.base}\` is not a bundled preset: the overrides are applied on \`mazUi\`.`
+  if (usage?.wired)
+    return renderUsedPresets(presets, usage, options)
 
-    return `${renderResolvedTheme(value, `\`${value.name}\` (\`${project.file}\`)`, options)}${note}`
-  }).join('\n\n')
+  return presets.map(project => renderProjectPreset(project, options)).join('\n\n')
 }

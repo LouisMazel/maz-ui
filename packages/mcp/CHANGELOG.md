@@ -1,5 +1,107 @@
 # Changelog
 
+## v5.9.0-beta.1 (2026-11-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.9.0-beta.0...v5.9.0-beta.1)
+
+### 🚀 Features
+
+- **mcp:** Flag the hand-written versions of the new components and composables ([d970f25cb](https://github.com/LouisMazel/maz-ui/commit/d970f25cb))
+
+  The review now suggests `useEventListener`, `useMediaQuery`, `useReducedMotion`, `useShortcut`, `formatDuration` and `isApple` instead of listeners, media queries, shortcuts and durations by hand, `MazMarkdown` instead of a markdown preview or `marked` in `v-html`, `MazCodeHighlight` with `diff` instead of a diff library, `MazInputSecret`, the `before-close` prop, the `openExternal` option, a vertical `MazTabsBar`, and free colors only where they are accepted. `find_icons` finds `MazPin` for "pin".
+
+- **mcp:** Know the neutral color in the theme tokens, the review and the search ([ffff47b79](https://github.com/LouisMazel/maz-ui/commit/ffff47b79))
+- **mcp:** Warn about the deprecated props in the review ([2fdbde5aa](https://github.com/LouisMazel/maz-ui/commit/2fdbde5aa))
+
+  `review_code` reports a prop marked `@deprecated` in maz-ui with the alternative given by its JSDoc.
+
+- **mcp:** Review the durations, the transition of every property and the transitions of the layout ([498987168](https://github.com/LouisMazel/maz-ui/commit/498987168))
+
+  - `hardcoded-motion`: `duration-300` or `transition: opacity 300ms`, with the motion tokens of the theme to use instead
+  - `transition-all`: `transition-all` or `transition: all`
+  - `layout-transition`: a transition of `width`, `height`, `top`, `margin`...: animate `transform` and `opacity`
+
+- **mcp:** Know the variant prop in the review of the action hierarchy ([da75ededf](https://github.com/LouisMazel/maz-ui/commit/da75ededf))
+- **mcp:** Propose vReveal instead of the AOS in the review ([b5070e7cf](https://github.com/LouisMazel/maz-ui/commit/b5070e7cf))
+
+  The new `prefer-reveal` rule finds `data-maz-aos`, `useAos` and the `aos` option, and gives the equivalent effect of vReveal, when the installed maz-ui has it.
+
+### 🩹 Fixes
+
+- **mcp:** Keep the review hook working outside ignored folders and with a corrupted session file ([ce13d679e](https://github.com/LouisMazel/maz-ui/commit/ce13d679e))
+- **mcp:** Read the presets the project really uses in get_theme_tokens ([66695f9c7](https://github.com/LouisMazel/maz-ui/commit/66695f9c7))
+
+  - The constants used in a `definePreset` are resolved, instead of falling back to the colors of the base preset.
+  - Only the presets passed to the theme are read; a preset chosen at runtime (per platform) lists each candidate, and a preset that is defined but not wired is flagged.
+
+### 🧪 Tests
+
+- **mcp:** Update threesholds ([e1abb1a8c](https://github.com/LouisMazel/maz-ui/commit/e1abb1a8c))
+- **mcp:** Expect the neutral color in the theme warnings and the color values ([7e1b3a5f5](https://github.com/LouisMazel/maz-ui/commit/7e1b3a5f5))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.9.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
+
+### 🚀 Features
+
+- **mcp:** Flag more hand-written code that maz-ui already provides ([239f55188](https://github.com/LouisMazel/maz-ui/commit/239f55188))
+
+  - Clipboard, countdowns, idle detection, case conversion, `charAt(0).toUpperCase()`, flags, iOS and PWA detection, reading time: the review points to the maz-ui helper or composable
+  - More packages with a maz-ui equivalent: clipboard, slugify, change-case, deep equal, countdown, lazy load, click outside, pull to refresh, autosize, currency input
+  - `prefer-dialog-confirm`: a `MazDialog` with a cancel and a confirm button, use `useDialog().confirm()` or `MazDialogConfirm`
+  - `table-part-outside-table`: `MazTableRow`, `MazTableCell` or `MazTableTitle` outside of a `MazTable`
+
+- **mcp:** Give the agents the setup of the project and lighter component APIs ([4ae91d923](https://github.com/LouisMazel/maz-ui/commit/4ae91d923))
+
+  - `get_project_info`: the apps that use maz-ui, their versions, the plugins installed, auto-imported components, icons by name, theme presets, and the components and tools the code already uses
+  - `get_component_api` lists the sections of the examples of each component (to read with `get_doc`), and `compact: true` keeps the names and types only
+  - `search_docs` tells which plugin a composable needs once in the app (`useWait` and `WaitPlugin`)
+
+- **mcp:** Review the files of a task at its end and add the doctor command ([9e0a140de](https://github.com/LouisMazel/maz-ui/commit/9e0a140de))
+
+  - `review --hook` also runs on the `Stop` and `SubagentStop` hooks of Claude Code: the files changed in git are reviewed at the end of a task, also the ones written through Bash
+  - In a monorepo, each file is reviewed against the maz-ui of its app
+  - `init` adds the review hooks to `.claude/settings.json` (`--no-hooks` to skip them), none when the maz-ui Claude Code plugin is enabled
+  - `npx @maz-ui/mcp doctor` checks how Claude Code gets maz-ui in the project: the MCP servers of each scope, the duplicates, the versions, with the fix of each problem
+
+- **mcp:** Resolve the paths of review_code from the apps of a monorepo too ([696f51f48](https://github.com/LouisMazel/maz-ui/commit/696f51f48))
+
+  A path relative to an app that uses maz-ui (src/Card.vue from apps/desktop) is found, and the error lists these apps when nothing matches.
+
+- **mcp:** Review the hand-made loading states, scroll listeners, observers and scroll locks ([a9ceb216c](https://github.com/LouisMazel/maz-ui/commit/a9ceb216c))
+
+  A loading ref shared by a module points to useWait and its WaitPlugin. A scroll listener points to useScroll, useInfiniteScroll or MazBtnScroll, an IntersectionObserver to useIntersectionObserver or v-intersect, body.style.overflow to useScrollLock, a copy button to MazBtnClipboard. They are warnings.
+
+- **mcp:** Suggest useResizeObserver for a hand-made ResizeObserver ([6599f83c7](https://github.com/LouisMazel/maz-ui/commit/6599f83c7))
+- **mcp:** Refuse the review ignores without a reason or on the errors of a code that does not work ([3dbc31e63](https://github.com/LouisMazel/maz-ui/commit/3dbc31e63))
+
+  A `maz-ui-review-ignore` comment needs its reason after `--`, else it is not applied and reported as an `invalid-ignore` error. The unknown components, props, values, models, events and slots, the missing required props, the raw icons used as tags, the root and internal imports, the missing `@reference` and the parse errors can no longer be ignored.
+
+- **mcp:** Report the deprecated plugins of the toast, dialog and wait composables ([d12cde795](https://github.com/LouisMazel/maz-ui/commit/d12cde795))
+
+  `get_project_info` gives the setup of the toasts, dialogs and animations on scroll, and the deprecated plugins still installed. The new `deprecated-api` rule of the review reports `app.use(ToastPlugin)`, `DialogPlugin`, `WaitPlugin`, `$mazToast`... and `mazUi.plugins` in `nuxt.config`.
+
+- **mcp:** OpenCode plugin, and Codex in init and in the review hook ([f4d2d88cb](https://github.com/LouisMazel/maz-ui/commit/f4d2d88cb))
+
+  - @maz-ui/mcp is the maz-ui plugin of OpenCode ("plugin": ["@maz-ui/mcp"] in opencode.json): it starts the MCP server, adds the maz-ui and maz-ui-upgrade skills, the maz-ui-editor subagent and the rules of the installed maz-ui, reviews each edited file and, at the end of a task, the files changed in git.
+  - init: new codex target (MCP server in .codex/config.toml), and with the opencode target, the OpenCode plugin is added for the review (--no-hooks to leave it out).
+  - review --hook also reviews the files of the apply_patch of Codex.
+
+### 🩹 Fixes
+
+- **mcp:** Allow the maz: prefix in the maz-ui repository ([c60285d8b](https://github.com/LouisMazel/maz-ui/commit/c60285d8b))
+
+  The review no longer reports the `maz:` prefix in the code of the maz-ui repository (the library, and the projects of its monorepo that use it from the workspace), where it is the prefix of the library. Projects that install maz-ui keep the `internal-prefix` error.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.1 (2026-11-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)

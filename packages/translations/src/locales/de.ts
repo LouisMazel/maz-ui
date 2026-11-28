@@ -17,11 +17,17 @@ export default {
     nextYears: 'Nächste Jahre',
     selectAll: 'Alle Zeilen auswählen',
     selectRow: 'Zeile auswählen',
+    rowDetails: 'Zeilendetails',
     removeFile: 'Datei entfernen',
     remove: 'Entfernen',
     sidebar: 'Seitenleiste',
     openSidebar: 'Seitenleiste öffnen',
     closeSidebar: 'Seitenleiste schließen',
+    resizeSheet: 'Größe des Sheets ändern',
+    before: 'Vorher',
+    after: 'Nachher',
+    resize: 'Größe ändern',
+    moreItems: '{count} weitere',
   },
   selectCountry: {
     searchPlaceholder: 'Land suchen',
@@ -73,6 +79,7 @@ export default {
     loading: 'Wird geladen...',
     error: 'Ein Fehler ist aufgetreten, bitte erneut versuchen',
     results: 'Ergebnisse: {count}',
+    freeEntry: '"{query}" verwenden',
   },
   table: {
     noResults: 'Keine Ergebnisse',
@@ -112,6 +119,35 @@ export default {
       placeholder: 'Suchen',
     },
   },
+  inputKeyValue: {
+    key: 'Schlüssel',
+    value: 'Wert',
+    add: 'Hinzufügen',
+    duplicateKey: 'Dieser Schlüssel wird bereits verwendet',
+  },
+  input: {
+    clear: 'Löschen',
+  },
+  inputSecret: {
+    saved: 'Gespeichert',
+    replace: 'Ersetzen',
+    clear: 'Löschen',
+    cancel: 'Abbrechen',
+    savedDescription: 'Der Wert ist gespeichert und verborgen',
+    strengthLabel: 'Passwortstärke',
+    strengthVeryWeak: 'Sehr schwach',
+    strengthWeak: 'Schwach',
+    strengthFair: 'Mittel',
+    strengthGood: 'Gut',
+    strengthStrong: 'Stark',
+    ruleLength: 'Mindestens {minLength} Zeichen',
+    ruleLowercase: 'Ein Kleinbuchstabe',
+    ruleUppercase: 'Ein Großbuchstabe',
+    ruleNumber: 'Eine Zahl',
+    ruleSymbol: 'Ein Sonderzeichen',
+    ruleMet: 'Regel erfüllt',
+    ruleNotMet: 'Regel nicht erfüllt',
+  },
   readMore: {
     expand: 'Mehr lesen',
     collapse: 'Weniger lesen',
@@ -130,6 +166,12 @@ export default {
     copyToClipboard: 'In Zwischenablage kopieren',
     copiedToClipboard: 'In Zwischenablage kopiert',
     scrollToBottom: 'Nach unten scrollen',
+    diff: {
+      additions: 'Hinzugefügte Zeilen: {count}',
+      deletions: 'Entfernte Zeilen: {count}',
+      identical: 'Keine Unterschiede',
+      expand: 'Unveränderte Zeilen anzeigen ({count})',
+    },
   },
   colorPicker: {
     openPicker: 'Farbwähler öffnen',
@@ -144,6 +186,17 @@ export default {
   windowMockup: {
     copyUrlToClipboard: 'URL in Zwischenablage kopieren',
     urlCopiedToClipboard: 'URL in Zwischenablage kopiert',
+  },
+  btn: {
+    holdDescription: 'Gedrückt halten zum Bestätigen',
+  },
+  btnClipboard: {
+    copy: 'Kopieren',
+    copied: 'Kopiert',
+  },
+  btnScroll: {
+    top: 'Nach oben',
+    bottom: 'Nach unten',
   },
   markdownEditor: {
     write: 'Schreiben',
@@ -170,5 +223,88 @@ export default {
       h2: 'Überschrift 2',
       h3: 'Überschrift 3',
     },
+  },
+  dialogConfirm: {
+    accept: 'Bestätigen',
+    cancel: 'Abbrechen',
+    confirmationLabel: 'Zur Bestätigung „{text}“ eingeben',
+  },
+  /**
+   * Image viewer (lightbox) labels: label, open (thumbnail), close, previous, next, loading.
+   */
+  lightbox: {
+    label: 'Bildbetrachter',
+    open: 'Bild vergrößern',
+    close: 'Schließen',
+    previous: 'Vorheriges Bild',
+    next: 'Nächstes Bild',
+    loading: 'Wird geladen...',
+  },
+  tour: {
+    label: 'Geführte Tour',
+    next: 'Weiter',
+    previous: 'Zurück',
+    skip: 'Überspringen',
+    done: 'Fertig',
+    stepOf: 'Schritt {step} von {total}',
+  },
+  breadcrumb: {
+    label: 'Brotkrümelnavigation',
+    showHidden: 'Ausgeblendete Seiten anzeigen',
+  },
+  navigationMenu: {
+    label: 'Hauptnavigation',
+  },
+  emptyState: {
+    noResults: 'Keine Ergebnisse',
+    noResultsFor: 'Nichts entspricht „{query}“',
+  },
+  sparkline: {
+    up: 'steigend',
+    down: 'fallend',
+    flat: 'stabil',
+    label: 'Trend {trend}: Minimum {min}, Maximum {max}, zuletzt {last}',
+  },
+  statCard: {
+    chart: '{label}: Trend',
+  },
+  tree: {
+    added: 'Hinzugefügt',
+    modified: 'Geändert',
+    deleted: 'Gelöscht',
+  },
+  rating: {
+    label: 'Bewertung',
+    value: '{value} von {max}',
+  },
+  timePicker: {
+    label: 'Uhrzeit',
+    hours: 'Stunden',
+    minutes: 'Minuten',
+    period: 'AM oder PM',
+    slots: 'Verfügbare Zeiten',
+  },
+  inlineEdit: {
+    edit: 'Bearbeiten',
+  },
+  kbd: {
+    command: 'Befehl',
+    control: 'Steuerung',
+    option: 'Wahl',
+    shift: 'Umschalt',
+  },
+  commandPalette: {
+    label: 'Befehlspalette',
+    placeholder: 'Befehl suchen',
+    noResults: 'Keine Ergebnisse',
+    results: '{count} Ergebnisse',
+  },
+  contextMenu: {
+    label: 'Kontextmenü',
+  },
+  themeToggle: {
+    toDark: 'Zum dunklen Modus wechseln',
+    toSystem: 'Systemdesign verwenden',
+    toLight: 'Zum hellen Modus wechseln',
   },
 } satisfies MazUiTranslationsNestedSchema

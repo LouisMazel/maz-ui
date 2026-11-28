@@ -1,5 +1,36 @@
 # Change Log
 
+## v5.9.0-beta.1 (2026-11-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.9.0-beta.0...v5.9.0-beta.1)
+
+### 🚀 Features
+
+- **translations:** Add the texts of the new components and options ([641537077](https://github.com/LouisMazel/maz-ui/commit/641537077))
+
+  Texts of `MazInputKeyValue`, `MazInputSecret`, the diff of `MazCodeHighlight`, the free entry of `MazInputAutocomplete` and the expandable rows of `MazTable`, in every locale.
+
+- **translations:** Add the texts of the reinforced confirmation, the resizable sheet and the lightbox ([e397d1ee5](https://github.com/LouisMazel/maz-ui/commit/e397d1ee5))
+- **translations:** Add the texts of the password strength and of the clear button of the fields ([472b9ea4e](https://github.com/LouisMazel/maz-ui/commit/472b9ea4e))
+- **translations:** Add the description of the buttons to hold ([7f2d274a1](https://github.com/LouisMazel/maz-ui/commit/7f2d274a1))
+- **translations:** Add the texts of the new components ([e11873992](https://github.com/LouisMazel/maz-ui/commit/e11873992))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.9.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
+
+### 🚀 Features
+
+- **translations:** Add the texts of MazBtnClipboard and MazBtnScroll ([9a03b9949](https://github.com/LouisMazel/maz-ui/commit/9a03b9949))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.8.1 (2026-11-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)

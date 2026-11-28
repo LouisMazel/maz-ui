@@ -70,7 +70,7 @@ const chartOptions = computed(() => ({
 </script>
 
 <template>
-  <HomeChapter id="inventory" number="07" label="Inventory" :swatch>
+  <HomeChapter id="inventory" number="08" label="Inventory" :swatch>
     <header>
       <p class="home-eyebrow">
         Everything in the box
@@ -89,7 +89,7 @@ const chartOptions = computed(() => ({
           <MazLink :href="category.link" color="contrast" :underline-hover="false" class="maz:group maz:flex maz:py-3.5">
             <span class="maz:font-semibold maz:group-hover:text-primary">{{ category.name }}</span>
             <span class="maz:mx-2 maz:flex-1 maz:border-b maz:border-dotted maz:border-divider" aria-hidden="true" />
-            <MazBadge color="surface" size="sm" rounded-size="full" outlined>
+            <MazBadge color="surface" size="sm" rounded-size="full" variant="outline">
               {{ category.count }}
             </MazBadge>
           </MazLink>
@@ -159,7 +159,7 @@ const chartOptions = computed(() => ({
         <MazBtn href="/guide/getting-started" size="lg" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">
           Get started
         </MazBtn>
-        <MazBtn href="/ecosystem/themes" size="lg" color="surface" outlined>
+        <MazBtn href="/ecosystem/themes" size="lg" color="surface" variant="outline">
           Build your theme
         </MazBtn>
       </div>

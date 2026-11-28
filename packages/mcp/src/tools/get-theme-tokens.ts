@@ -60,7 +60,7 @@ export async function getThemeTokens(context: ServerContext, { topics, project =
       ? readProjectTheme(context.cwd)
       : { stylesheets: [], presets: [] }
     const effectiveColors = wantsColors
-      ? renderEffectiveColors(theme.presets, { preset, colors, steps })
+      ? renderEffectiveColors(theme.presets, { preset, colors, steps, usage: theme.usage })
       : undefined
 
     projectTheme = [project && renderProjectTheme(theme, tailwind, topics), effectiveColors].filter(Boolean).join('\n\n') || undefined
@@ -85,7 +85,7 @@ export async function getThemeTokens(context: ServerContext, { topics, project =
 export const getThemeTokensTool = defineTool({
   name: 'get_theme_tokens',
   title: 'maz-ui Tailwind theme tokens',
-  description: 'The Tailwind theme of the project: its own tokens, preset, variants and utilities (read from its Tailwind entry and `definePreset`), then every Tailwind CSS class and CSS variable of the maz-ui theme (installed version): theme colors (bg-primary, text-muted, border-divider, bg-surface... with -foreground and 50-950 scales), the effective colors of the preset (hex of every color and 50-950 step, light and dark, contrast ratios, steps that look the same or change between modes), radius, shadows (shadow-elevation), spacing, breakpoints (mob-*, tab-*, lap-*) and container queries (@tab-m:...), layout (padded-container page gutter, layout patterns, action hierarchy), type scale (text-display, text-title-1..4, text-body, text-label, text-caption...), rich-text for raw HTML, fonts, durations, z-index, custom utilities (flex-center, disabled-state), dark variant and CSS variables. Use it before styling: never the default Tailwind palette, hard-coded colors or the internal `maz:` prefix.',
+  description: 'The Tailwind theme of the project: its own tokens, preset, variants and utilities (read from its Tailwind entry and `definePreset`), then every Tailwind CSS class and CSS variable of the maz-ui theme (installed version): theme colors (bg-primary, text-muted, border-divider, bg-surface... with -foreground and 50-950 scales), the effective colors of the presets the app uses (constants of `definePreset` resolved; hex of every color and 50-950 step, light and dark, contrast ratios, steps that look the same or change between modes; every candidate listed when the preset is chosen at runtime), radius, shadows (shadow-elevation), spacing, breakpoints (mob-*, tab-*, lap-*) and container queries (@tab-m:...), layout (padded-container page gutter, layout patterns, action hierarchy), type scale (text-display, text-title-1..4, text-body, text-label, text-caption...), rich-text for raw HTML, fonts, durations, z-index, custom utilities (flex-center, disabled-state), dark variant and CSS variables. Use it before styling: never the default Tailwind palette, hard-coded colors or the internal `maz:` prefix.',
   inputSchema: {
     topics: z.array(z.enum(Object.keys(THEME_TOPICS) as [ThemeTopic, ...ThemeTopic[]])).optional().describe('Only these topics (default: everything)'),
     project: z.boolean().optional().describe('Include the theme of the project: preset, `@theme` tokens, variants, utilities (default: true)'),

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { observeIntersection } from '../utils/reveal.ts'
+import MazRollingText from './MazRollingText.vue'
 
 export interface MazAnimatedCounterProps {
   /**
@@ -29,6 +31,11 @@ export interface MazAnimatedCounterProps {
    * @default true
    */
   once?: boolean
+  /**
+   * Roll the digits like an odometer instead of counting up (`duration` is not used)
+   * @default false
+   */
+  roll?: boolean
 }
 
 const {
@@ -38,13 +45,13 @@ const {
   suffix,
   delay = 100,
   once = true,
+  roll = false,
 } = defineProps<MazAnimatedCounterProps>()
 
 const currentCount = ref(0)
 
 const elementRef = ref<HTMLElement | null>(null)
 
-let observer: IntersectionObserver | null = null
 let timeoutId: ReturnType<typeof setTimeout> | undefined
 let frameId: number | undefined
 let hasPlayed = false
@@ -67,6 +74,13 @@ function animate(start: number, end: number) {
 
   currentCount.value = start
 
+  if (roll) {
+    timeoutId = setTimeout(() => {
+      currentCount.value = end
+    }, delay)
+    return
+  }
+
   timeoutId = setTimeout(() => {
     const startTime = performance.now()
 
@@ -84,12 +98,13 @@ function animate(start: number, end: number) {
   }, delay)
 }
 
-onMounted(() => {
-  if (!elementRef.value) {
-    return
-  }
+let stopObserving: (() => void) | undefined
 
-  observer = new IntersectionObserver(([entry]) => {
+onMounted(() => {
+  if (!elementRef.value)
+    return
+
+  stopObserving = observeIntersection(elementRef.value, (entry) => {
     if (!entry.isIntersecting) {
       return
     }
@@ -97,16 +112,13 @@ onMounted(() => {
     hasPlayed = true
     animate(0, count)
 
-    if (once) {
-      observer?.unobserve(entry.target)
-    }
+    if (once)
+      stopObserving?.()
   })
-
-  observer.observe(elementRef.value)
 })
 
 onBeforeUnmount(() => {
-  observer?.disconnect()
+  stopObserving?.()
   cancelAnimation()
 })
 
@@ -127,7 +139,7 @@ watch(
     </span>
 
     <!-- Keep these on one line to avoid spacing issues (space between elements) -->
-    <span class="m-animated-counter__value" aria-hidden="true"><slot name="prefix">{{ prefix }}</slot>{{ currentCount }}<slot name="suffix">{{ suffix }}</slot></span>
+    <span class="m-animated-counter__value" aria-hidden="true"><slot name="prefix">{{ prefix }}</slot><MazRollingText v-if="roll" :value="currentCount" /><template v-else>{{ currentCount }}</template><slot name="suffix">{{ suffix }}</slot></span>
     <span class="m-animated-counter__value maz:invisible" aria-hidden="true"><slot name="prefix">{{ prefix }}</slot>{{ count }}<slot name="suffix">{{ suffix }}</slot></span>
   </span>
 </template>

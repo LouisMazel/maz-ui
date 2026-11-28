@@ -1,24 +1,28 @@
 <script lang="ts" setup>
-import { MazChevronUpDown } from '@maz-ui/icons/raw/MazChevronUpDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
+import { computed } from 'vue'
 import { useSidebar } from '../composables/useSidebar.ts'
-import MazIcon from './MazIcon.vue'
+import MazMorphIcon from './MazMorphIcon.vue'
 
 const sidebar = useSidebar()
 const { t } = useTranslations()
+
+const isRail = computed(() => sidebar.state.value === 'collapsed' && sidebar.collapsible.value !== 'offcanvas' && sidebar.mode.value === 'push')
+const isFloating = computed(() => sidebar.variant.value === 'floating')
 </script>
 
 <template>
   <button
     type="button"
-    class="m-sidebar-trigger m-reset-css maz:inline-flex maz:cursor-interactive maz:flex-center maz:rounded-md maz:bg-transparent maz:p-2 maz:text-foreground maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:bg-surface-600 maz:focus-visible:outline-2 maz:focus-visible:outline-offset-1 maz:focus-visible:outline-primary maz:motion-reduce:transition-none maz:dark:hover:bg-surface-800/20"
+    class="m-sidebar-trigger m-reset-css maz:cursor-interactive maz:flex-center maz:rounded-md maz:bg-transparent maz:text-foreground maz:focus-ring maz:transition-colors maz:duration-(--duration-fast) maz:ease-in-out maz:hover:bg-foreground/5 maz:motion-reduce:transition-none"
+    :class="isRail ? 'maz:mx-auto maz:flex maz:p-0.5' : ['maz:inline-flex', isFloating ? 'maz:p-1' : 'maz:p-2']"
     :aria-expanded="sidebar.open.value"
     :aria-controls="sidebar.id.value"
     :aria-label="sidebar.open.value ? t('aria.closeSidebar') : t('aria.openSidebar')"
     @click="sidebar.toggle()"
   >
     <slot>
-      <MazIcon :icon="MazChevronUpDown" size="1.5rem" class="maz:rotate-90" aria-hidden="true" />
+      <MazMorphIcon name="menu-close" :active="sidebar.open.value" :size="isFloating ? '1.125rem' : '1.5rem'" />
     </slot>
   </button>
 </template>

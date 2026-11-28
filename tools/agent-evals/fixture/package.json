@@ -1,0 +1,27 @@
+{
+  "name": "eval-app",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@maz-ui/icons": "^5.0.0",
+    "@maz-ui/themes": "^5.0.0",
+    "@maz-ui/translations": "^5.0.0",
+    "@maz-ui/utils": "^5.0.0",
+    "maz-ui": "^5.0.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@maz-ui/mcp": "^5.0.0",
+    "@maz-ui/vite-plugin": "^5.0.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^6.0.0",
+    "vite": "^8.0.0"
+  }
+}

@@ -37,6 +37,7 @@ const VOID_ELEMENTS = new Set([
   'wbr',
 ])
 const MAX_INCLUDE_DEPTH = 5
+const RAW_TEXT_ELEMENTS = new Set(['script', 'style'])
 
 const CONTAINER_LABELS: Record<string, string> = {
   tip: 'Tip',
@@ -141,6 +142,8 @@ interface HtmlScanState {
   tagName: string
   quote: string
   lastSignificant: string
+  /** Name of the element whose content is raw text (`script`, `style`) until its closing tag */
+  rawText: string
 }
 
 /** Handles a character inside a tag (`<Tag attr="...">`) */
@@ -155,10 +158,15 @@ function scanTagChar(char: string, state: HtmlScanState): void {
   else if (char === '>') {
     const selfClosing = state.lastSignificant === '/' || VOID_ELEMENTS.has(state.tagName.toLowerCase())
 
-    if (state.closingTag)
+    if (state.closingTag) {
       state.depth--
-    else if (!selfClosing)
+    }
+    else if (!selfClosing) {
       state.depth++
+
+      if (RAW_TEXT_ELEMENTS.has(state.tagName.toLowerCase()))
+        state.rawText = state.tagName.toLowerCase()
+    }
 
     state.inTag = false
     state.started = true
@@ -195,7 +203,16 @@ function scanHtmlLine(line: string, state: HtmlScanState): void {
   let index = 0
 
   while (index < line.length) {
-    if (state.inComment) {
+    if (state.rawText) {
+      const end = line.toLowerCase().indexOf(`</${state.rawText}`, index)
+
+      if (end === -1)
+        return
+
+      state.rawText = ''
+      index = end
+    }
+    else if (state.inComment) {
       const end = line.indexOf('-->', index)
 
       if (end === -1)
@@ -228,6 +245,7 @@ function consumeHtmlBlock(lines: string[], start: number, keptFences: string[]):
     tagName: '',
     quote: '',
     lastSignificant: '',
+    rawText: '',
   }
   let inFence = false
   let fenceMarker = ''

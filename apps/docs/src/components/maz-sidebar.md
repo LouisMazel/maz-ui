@@ -15,7 +15,7 @@ description: MazSidebar is a composable sidebar system for dashboard, admin, and
 
 ::: warning Deferred features (v1.1)
 The following features are planned for a future release and are **not yet available**:
-- `localStorage` state persistence
+- Cookie state persistence (SSR-ready)
 - `Cmd/Ctrl+B` keyboard shortcut
 - Automatic mobile drawer under a breakpoint
 :::
@@ -40,7 +40,7 @@ The following features are planned for a future release and are **not yet availa
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex">
-    <MazSidebar v-model:open="basicOpen" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="basicOpen" class="maz:h-full">
       <MazSidebarHeader>
         <div class="maz:p-4 maz:font-bold">My App</div>
       </MazSidebarHeader>
@@ -98,7 +98,7 @@ const isOpen = ref(true)
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex">
-    <MazSidebar v-model:open="groupsOpen" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="groupsOpen" class="maz:h-full">
       <MazSidebarContent>
         <MazSidebarGroup label="Navigation">
           <MazSidebarMenu>
@@ -160,7 +160,7 @@ const isOpen = ref(true)
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex">
-    <MazSidebar v-model:open="submenusOpen" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="submenusOpen" class="maz:h-full">
       <MazSidebarContent>
         <MazSidebarMenu>
           <MazSidebarMenuItem>
@@ -249,7 +249,7 @@ When no `tooltip` prop is provided on a button, the `v-tooltip` directive is not
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex">
-    <MazSidebar v-model:open="iconModeOpen" collapsible="icon" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="iconModeOpen" collapsible="icon" class="maz:h-full">
       <MazSidebarContent>
         <MazSidebarMenu>
           <MazSidebarMenuItem>
@@ -309,7 +309,7 @@ This is a **purely visual** state. The `v-model:open` value is not updated and t
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[22rem] maz:flex">
-    <MazSidebar collapsible="hover" class="maz:h-full">
+    <MazSidebar :persist="false" collapsible="hover" class="maz:h-full">
       <MazSidebarContent>
         <MazSidebarMenu>
           <MazSidebarMenuItem>
@@ -348,7 +348,7 @@ This is a **purely visual** state. The `v-model:open` value is not updated and t
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[20rem] maz:flex">
-    <MazSidebar v-model:open="offcanvasOpen" collapsible="offcanvas" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="offcanvasOpen" collapsible="offcanvas" class="maz:h-full">
       <MazSidebarContent>
         <MazSidebarMenu>
           <MazSidebarMenuItem>
@@ -387,7 +387,7 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
     <MazBtn class="maz:absolute maz:top-4 maz:left-4 maz:z-1" @click="overlayOpen = !overlayOpen">
       Toggle overlay sidebar
     </MazBtn>
-    <MazSidebar v-model:open="overlayOpen" mode="overlay">
+    <MazSidebar :persist="false" v-model:open="overlayOpen" mode="overlay">
       <MazSidebarHeader>
         <div class="maz:p-4 maz:font-bold">Overlay Sidebar</div>
       </MazSidebarHeader>
@@ -421,7 +421,7 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[20rem] maz:flex">
     <main class="maz:flex-1 maz:p-4">Main content</main>
-    <MazSidebar v-model:open="sideEndOpen" side="end" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="sideEndOpen" side="end" class="maz:h-full">
       <MazSidebarContent>
         <MazSidebarMenu>
           <MazSidebarMenuItem>
@@ -455,12 +455,12 @@ The blur only shows when something is behind the panel, so give the layout a bac
 <ComponentDemo>
   <div
     class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex"
-    style="background: linear-gradient(135deg, var(--maz-primary-300), var(--maz-accent-300), var(--maz-secondary-300))"
+    style="background: linear-gradient(135deg, var(--maz-color-primary-300), var(--maz-color-accent-300), var(--maz-color-secondary-300))"
   >
-    <MazSidebar v-model:open="floatingOpen" variant="floating" collapsible="icon" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="floatingOpen" variant="floating" collapsible="icon" class="maz:h-full">
       <MazSidebarHeader>
-        <div class="maz:flex maz:items-center maz:gap-2 maz:p-3 maz:font-semibold">
-          <MazIcon :icon="MazSidebarLeft" class="maz:size-5 maz:shrink-0 maz:text-primary" />
+        <div class="maz:flex maz:items-center maz:gap-2 maz:px-1 maz:py-3 maz:font-semibold">
+          <MazIcon :icon="MazSidebarLeft" size="1.125rem" class="maz:shrink-0 maz:text-primary" />
           <span class="maz:truncate">Library</span>
         </div>
       </MazSidebarHeader>
@@ -484,7 +484,7 @@ The blur only shows when something is behind the panel, so give the layout a bac
         <MazSidebarTrigger />
       </MazSidebarFooter>
     </MazSidebar>
-    <main class="maz:flex-1 maz:p-4 maz:font-medium maz:text-primary-foreground">Content behind and next to the panel</main>
+    <main class="maz:flex-1 maz:p-4 maz:font-medium maz:text-foreground">Content behind and next to the panel</main>
   </div>
 
 <template #code>
@@ -538,7 +538,7 @@ The glass material comes from `components.glass` of the preset: native presets s
     <MazSegmented v-model="sidebarState" :options="sidebarStates" aria-label="Sidebar state" size="sm" />
   </div>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[20rem] maz:flex">
-    <MazSidebar v-model:open="stateOpen" :collapsible="stateCollapsible" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="stateOpen" :collapsible="stateCollapsible" class="maz:h-full">
       <MazSidebarContent>
         <MazSidebarMenu>
           <MazSidebarMenuItem>
@@ -595,11 +595,11 @@ When the sidebar is hidden, keep a control to bring it back somewhere else (a bu
 
 ## Badges
 
-`badge` accepts a `string`, a `number`, or a full `MazBadgeProps` object (with an optional `text`) to fine-tune color, size, outlined, etc. When the sidebar is collapsed to its icons, the badge is hidden and leaves a dot of its color on the icon (a [MazIndicator](./maz-indicator.md) attached to it), so the user still sees that something is pending.
+`badge` accepts a `string`, a `number`, or a full `MazBadgeProps` object (with an optional `text`) to fine-tune color, size, variant, etc. When the sidebar is collapsed to its icons, the badge is hidden and leaves a dot of its color on the icon (a [MazIndicator](./maz-indicator.md) attached to it), so the user still sees that something is pending.
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[22rem] maz:flex">
-    <MazSidebar v-model:open="badgesOpen" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="badgesOpen" class="maz:h-full">
       <MazSidebarContent>
         <MazSidebarMenu>
           <MazSidebarMenuItem>
@@ -609,7 +609,7 @@ When the sidebar is hidden, keep a control to bring it back somewhere else (a bu
             <MazSidebarMenuButton label="Errors" :badge="{ text: 3, color: 'destructive' }" />
           </MazSidebarMenuItem>
           <MazSidebarMenuItem>
-            <MazSidebarMenuButton label="Beta" :badge="{ text: 'NEW', color: 'success', outlined: true }" />
+            <MazSidebarMenuButton label="Beta" :badge="{ text: 'NEW', color: 'success', variant: 'outline' }" />
           </MazSidebarMenuItem>
           <MazSidebarMenuItem>
             <MazSidebarMenuButton label="Settings" />
@@ -636,8 +636,46 @@ When the sidebar is hidden, keep a control to bring it back somewhere else (a bu
 />
 <MazSidebarMenuButton
   label="Beta"
-  :badge="{ text: 'NEW', color: 'success', outlined: true }"
+  :badge="{ text: 'NEW', color: 'success', variant: 'outline' }"
 />
+```
+
+  </template>
+</ComponentDemo>
+
+## End icon and end content
+
+`end-icon` displays an icon after the label (an external link arrow, a chevron), and the `end` slot takes any content (a shortcut, a status). It comes after the badge, and the label keeps its truncation when the sidebar is narrow. Both are hidden when the sidebar is collapsed to its icons.
+
+<ComponentDemo>
+  <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[16rem] maz:flex">
+    <MazSidebar :persist="false" v-model:open="endOpen" class="maz:h-full">
+      <MazSidebarContent>
+        <MazSidebarMenu>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton label="Documentation with a very long label to show the truncation" href="https://maz-ui.com" end-icon="arrow-top-right-on-square" />
+          </MazSidebarMenuItem>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton label="Search">
+              <template #end><kbd class="maz:text-xs">Ctrl K</kbd></template>
+            </MazSidebarMenuButton>
+          </MazSidebarMenuItem>
+        </MazSidebarMenu>
+      </MazSidebarContent>
+    </MazSidebar>
+    <main class="maz:flex-1 maz:p-4">
+      <MazBtn @click="endOpen = !endOpen">Toggle sidebar</MazBtn>
+    </main>
+  </div>
+
+<template #code>
+
+```html
+<MazSidebarMenuButton label="Documentation" href="https://maz-ui.com" end-icon="arrow-top-right-on-square" />
+
+<MazSidebarMenuButton label="Search">
+  <template #end><kbd>Ctrl K</kbd></template>
+</MazSidebarMenuButton>
 ```
 
   </template>
@@ -647,7 +685,7 @@ When the sidebar is hidden, keep a control to bring it back somewhere else (a bu
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[22rem] maz:flex">
-    <MazSidebar v-model:open="userMenuOpen" class="maz:h-full">
+    <MazSidebar :persist="false" v-model:open="userMenuOpen" class="maz:h-full">
       <MazSidebarContent>
         <MazSidebarMenu>
           <MazSidebarMenuItem>
@@ -719,6 +757,71 @@ watch(isMobile, (mobile) => {
   </div>
 </template>
 ```
+
+## Motion
+
+- A pill slides from the previous active item to the new one (`:active` on `MazSidebarMenuButton`). It works inside `MazSidebarMenu`, nested sub-menus included. The first placement is not animated.
+- In icon mode, the labels fade and slide out of the way while the sidebar folds.
+- `MazSidebarTrigger` morphs its icon: the menu turns into a cross when the sidebar is open.
+- `:animated="false"` on `MazSidebar` makes the width and the pill instant. Reduced motion does the same.
+- The items show a 2 px ring on keyboard focus only.
+
+<ComponentDemo>
+  <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[20rem] maz:flex">
+    <MazSidebar v-model:open="motionOpen" collapsible="icon" class="maz:h-full" :persist="false">
+      <MazSidebarHeader>
+        <div class="maz:p-2">
+          <MazSidebarTrigger />
+        </div>
+      </MazSidebarHeader>
+      <MazSidebarContent>
+        <MazSidebarMenu>
+          <MazSidebarMenuItem v-for="entry in motionEntries" :key="entry.value">
+            <MazSidebarMenuButton
+              :label="entry.label"
+              :icon="entry.icon"
+              :tooltip="entry.label"
+              :active="motionActive === entry.value"
+              @click="motionActive = entry.value"
+            />
+          </MazSidebarMenuItem>
+        </MazSidebarMenu>
+      </MazSidebarContent>
+    </MazSidebar>
+    <main class="maz:flex-1 maz:p-4">Click an item, then fold the sidebar</main>
+  </div>
+
+  <template #code>
+
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const open = ref(true)
+const active = ref('home')
+</script>
+
+<template>
+  <MazSidebar v-model:open="open" collapsible="icon">
+    <MazSidebarHeader>
+      <MazSidebarTrigger />
+    </MazSidebarHeader>
+    <MazSidebarContent>
+      <MazSidebarMenu>
+        <MazSidebarMenuItem>
+          <MazSidebarMenuButton label="Home" icon="home" :active="active === 'home'" @click="active = 'home'" />
+        </MazSidebarMenuItem>
+        <MazSidebarMenuItem>
+          <MazSidebarMenuButton label="Settings" icon="cog-6-tooth" :active="active === 'settings'" @click="active = 'settings'" />
+        </MazSidebarMenuItem>
+      </MazSidebarMenu>
+    </MazSidebarContent>
+  </MazSidebar>
+</template>
+```
+
+  </template>
+</ComponentDemo>
 
 ## Programmatic control (v-model + composable)
 
@@ -857,6 +960,13 @@ import { MazGitBranch } from '@maz-ui/icons/lazy/MazGitBranch'
 import { MazGitPullRequest } from '@maz-ui/icons/lazy/MazGitPullRequest'
 import { MazSidebarLeft } from '@maz-ui/icons/lazy/MazSidebarLeft'
 
+const motionOpen = ref(true)
+const motionActive = ref('home')
+const motionEntries = [
+  { value: 'home', label: 'Home', icon: MazHome },
+  { value: 'settings', label: 'Settings', icon: MazCog6Tooth },
+  { value: 'branches', label: 'Branches', icon: MazGitBranch },
+]
 const floatingOpen = ref(true)
 const sidebarState = ref('full')
 const sidebarStates = [
@@ -873,6 +983,7 @@ const overlayOpen = ref(false)
 const offcanvasOpen = ref(true)
 const userMenuOpen = ref(true)
 const badgesOpen = ref(true)
+const endOpen = ref(true)
 const sideEndOpen = ref(true)
 const iconModeOpen = ref(true)
 const submenusOpen = ref(true)

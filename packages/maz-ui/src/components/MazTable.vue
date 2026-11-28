@@ -214,6 +214,14 @@ export interface MazTableProps<T extends MazTableRow<T>> {
    */
   selectedKey?: string
   /**
+   * Add a toggle at the start of each row to show a detail under it (`expanded-row` slot).
+   * The detail is rendered at the first opening, then kept. Set a stable `rowKey` so the opened rows
+   * follow their data when the table is sorted or paginated. Ignored with `virtualized` and `animatedRows`
+   * @type {boolean}
+   * @default false
+   */
+  expandable?: boolean
+  /**
    * Table layout
    * @type {string}
    * @values auto, fixed
@@ -223,6 +231,7 @@ export interface MazTableProps<T extends MazTableRow<T>> {
    * Color of the component
    * @type {MazColor}
    * @default primary
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
    */
   color?: MazColor
   /**
@@ -306,6 +315,7 @@ import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { MazArrowUp } from '@maz-ui/icons/lazy/MazArrowUp'
 import { MazChevronDoubleLeft } from '@maz-ui/icons/lazy/MazChevronDoubleLeft'
 import { MazChevronLeft } from '@maz-ui/icons/lazy/MazChevronLeft'
+import { MazChevronRight } from '@maz-ui/icons/lazy/MazChevronRight'
 import { MazMagnifyingGlass } from '@maz-ui/icons/lazy/MazMagnifyingGlass'
 
 import {
@@ -323,6 +333,7 @@ import {
   watch,
 } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 
 const {
@@ -355,6 +366,7 @@ const {
   loading,
   selectable,
   selectedKey,
+  expandable = false,
   tableLayout,
   color = 'primary',
   translations,
@@ -388,7 +400,14 @@ const emits = defineEmits<{
    * @arg {number} pageSize - Current page size
    */
   (event: 'update:page-size', pageSize: number): void
+  /**
+   * Emitted when the detail of a row is opened or closed
+   * @arg {{ row: Row, expanded: boolean }} payload - The row and its new state
+   */
+  (event: 'expand', payload: { row: MazTableRow<T>, expanded: boolean }): void
 }>()
+
+const expandedModel = defineModel<(string | number)[]>('expanded', { default: () => [] })
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazTable', { size: 'md', roundedSize: 'md' })
 
@@ -663,7 +682,7 @@ const hasHeader = computed<boolean>((): boolean => !!(search || title || slots.t
 const hasFooter = computed<boolean>(() => !!pagination)
 
 const totalColumns = computed<number>(
-  () => headersNormalized.value.length + (isSelectable.value ? 1 : 0) + (hasSlotContent(slots.actions)
+  () => headersNormalized.value.length + (isSelectable.value ? 1 : 0) + (isExpandable.value ? 1 : 0) + (hasSlotContent(slots.actions)
     ? 1
     : 0),
 )
@@ -671,6 +690,33 @@ const totalColumns = computed<number>(
 const tableWrapper = useTemplateRef<HTMLElement>('tableWrapper')
 
 const isVirtualized = computed<boolean>(() => virtualized && !animatedRows && !hasSlotContent(slots.default))
+
+const isExpandable = computed<boolean>(() => expandable && !isVirtualized.value && !animatedRows)
+const expandIdPrefix = useInstanceUniqId({ componentName: 'MazTable' })
+const renderedDetails = ref(new Set<string | number>(expandedModel.value))
+
+watch(expandedModel, (keys) => {
+  for (const key of keys)
+    renderedDetails.value.add(key)
+})
+
+function isExpanded(row: T, index: number): boolean {
+  return expandedModel.value.includes(getRowKey(row, index))
+}
+
+function toggleExpanded(row: T, index: number) {
+  const key = getRowKey(row, index)
+  const expanded = !expandedModel.value.includes(key)
+
+  expandedModel.value = expanded
+    ? [...expandedModel.value, key]
+    : expandedModel.value.filter(item => item !== key)
+  emits('expand', { row, expanded })
+}
+
+function getDetailId(row: T, index: number): string {
+  return `${expandIdPrefix.value}-detail-${getRowKey(row, index)}`
+}
 
 // Virtualization is lazy-loaded: the provider (and `@tanstack/vue-virtual`) only
 // enters the bundle when a table is actually virtualized. It renders nothing and
@@ -879,6 +925,9 @@ onBeforeMount(() => {
           -->
           <slot name="thead">
             <MazTableRowComponent is-head>
+              <MazTableTitle v-if="isExpandable" align="left" :class="`--${size}`" class="m-table-expand-column" scope="col">
+                <span class="maz:sr-only">{{ t('aria.rowDetails') }}</span>
+              </MazTableTitle>
               <MazTableTitle
                 v-if="isSelectable"
                 align="left"
@@ -901,7 +950,7 @@ onBeforeMount(() => {
                 :style="{ width: header.width, textAlign: header.align, maxWidth: header.maxWidth, minWidth: header.minWidth }"
                 class="maz:group"
                 :class="[
-                  { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable },
+                  { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable, '--sorted-column': columnIndex === sortedColumnIndex },
                   header.classes,
                   `--${size}`,
                 ]"
@@ -970,58 +1019,88 @@ onBeforeMount(() => {
               <tr v-if="isVirtualized && virtualWindow.paddingTop > 0" aria-hidden="true" class="m-table-virtual-spacer">
                 <td :colspan="totalColumns" :style="{ height: `${virtualWindow.paddingTop}px`, padding: 0, border: 0 }" />
               </tr>
-              <MazTableRowComponent
-                v-for="{ row, index: rowIndex } in visibleRows"
-                :key="getRowKey(row, rowIndex)"
-                :aria-rowindex="isVirtualized ? rowIndex + 1 : undefined"
-                :class="row.classes"
-                @click="row.action && row.action(row)"
-              >
-                <MazTableCell v-if="isSelectable" class="m-table-select-column">
-                  <!--
+              <template v-for="{ row, index: rowIndex } in visibleRows" :key="getRowKey(row, rowIndex)">
+                <MazTableRowComponent
+                  :stripe-index="isExpandable ? rowIndex : undefined"
+                  :aria-rowindex="isVirtualized ? rowIndex + 1 : undefined"
+                  :class="row.classes"
+                  @click="row.action && row.action(row)"
+                >
+                  <MazTableCell v-if="isExpandable" class="m-table-expand-column">
+                    <button
+                      type="button"
+                      class="m-table-expand-button"
+                      :aria-expanded="isExpanded(row, rowIndex)"
+                      :aria-controls="getDetailId(row, rowIndex)"
+                      :aria-label="t('aria.rowDetails')"
+                      @click.stop="toggleExpanded(row, rowIndex)"
+                    >
+                      <MazIcon :icon="MazChevronRight" class="m-table-expand-icon" :class="{ '--open': isExpanded(row, rowIndex) }" aria-hidden="true" />
+                    </button>
+                  </MazTableCell>
+                  <MazTableCell v-if="isSelectable" class="m-table-select-column">
+                    <!--
                     @slot Replace checkbox component
                       @binding {Object} row - Row data
                       @binding {Boolean} selected - If selected or not
                   -->
-                  <slot name="select" :row="row" :selected="row.selected">
-                    <MazCheckbox
-                      size="sm"
-                      :model-value="row.selected"
-                      :aria-label="t('aria.selectRow')"
-                      @update:model-value="selectRow($event, rowIndex)"
-                    />
-                  </slot>
-                </MazTableCell>
-                <MazTableCell
-                  v-for="({ key, align, classes }, dataIndex) in headersNormalized"
-                  :key="dataIndex"
-                  :align="align"
-                  :class="classes"
-                >
-                  <!--
+                    <slot name="select" :row="row" :selected="row.selected">
+                      <MazCheckbox
+                        size="sm"
+                        :model-value="row.selected"
+                        :aria-label="t('aria.selectRow')"
+                        @update:model-value="selectRow($event, rowIndex)"
+                      />
+                    </slot>
+                  </MazTableCell>
+                  <MazTableCell
+                    v-for="({ key, align, classes }, dataIndex) in headersNormalized"
+                    :key="dataIndex"
+                    :align="align"
+                    :class="[classes, { '--sorted-column': dataIndex === sortedColumnIndex }]"
+                  >
+                    <!--
                     @slot Replace all row cells
                       @binding {Object} row - Row data
                       @binding {any} value - Cell value
                   -->
-                  <slot v-if="key" name="cell" :row="row" :value="row[key]">
-                    <!--
+                    <slot v-if="key" name="cell" :row="row" :value="row[key]">
+                      <!--
                       @slot Replace row cells of column
                         @binding {Object} row - Row data
                         @binding {any} value - Cell value
                     -->
-                    <slot :name="`cell-${key}`" :row="row" :value="row[key]">
-                      {{ row[key] }}
+                      <slot :name="`cell-${key}`" :row="row" :value="row[key]">
+                        {{ row[key] }}
+                      </slot>
                     </slot>
-                  </slot>
-                </MazTableCell>
-                <MazTableCell v-if="hasSlotContent(slots.actions)">
-                  <!--
+                  </MazTableCell>
+                  <MazTableCell v-if="hasSlotContent(slots.actions)">
+                    <!--
                     @slot Add actions column
                       @binding {Object} row - Row data
                   -->
-                  <slot name="actions" :row="row" />
-                </MazTableCell>
-              </MazTableRowComponent>
+                    <slot name="actions" :row="row" />
+                  </MazTableCell>
+                </MazTableRowComponent>
+                <MazTableRowComponent
+                  v-if="isExpandable && renderedDetails.has(getRowKey(row, rowIndex))"
+                  v-show="isExpanded(row, rowIndex)"
+                  :id="getDetailId(row, rowIndex)"
+                  :stripe-index="rowIndex"
+                  :hoverable="false"
+                  class="m-table-expanded-row"
+                >
+                  <td :colspan="totalColumns" class="m-table-expanded-cell">
+                    <!--
+                    @slot Detail displayed under a row when it is opened (with `expandable`), rendered at the first opening then kept
+                      @binding {Object} row - Row data
+                      @binding {Number} index - Row index
+                  -->
+                    <slot name="expanded-row" :row="row" :index="rowIndex" />
+                  </td>
+                </MazTableRowComponent>
+              </template>
               <tr v-if="isVirtualized && virtualWindow.paddingBottom > 0" aria-hidden="true" class="m-table-virtual-spacer">
                 <td :colspan="totalColumns" :style="{ height: `${virtualWindow.paddingBottom}px`, padding: 0, border: 0 }" />
               </tr>
@@ -1163,7 +1242,16 @@ onBeforeMount(() => {
         }
 
         &.--sortable {
-          @apply maz:cursor-interactive maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400;
+          @apply maz:cursor-interactive;
+
+          &:hover {
+            background-image: linear-gradient(color-mix(in srgb, var(--maz-foreground) 5%, transparent) 0 0);
+          }
+
+          &:focus-visible {
+            outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
+            outline-offset: calc(var(--maz-focus-ring-width, 2px) * -1);
+          }
         }
 
         &.--xl {
@@ -1198,7 +1286,7 @@ onBeforeMount(() => {
           }
 
           .m-table-sort-icon {
-            @apply maz:text-muted maz:transition-transform maz:duration-300 maz:ease-out;
+            @apply maz:text-muted maz:transition-transform maz:duration-(--duration-normal) maz:ease-out;
 
             &.--sorted {
               @apply maz:block maz:text-foreground;
@@ -1224,7 +1312,27 @@ onBeforeMount(() => {
   }
 }
 
-.m-table-wrapper.--virtualized {
+.m-table-expand-column {
+  @apply maz:w-10;
+}
+
+.m-table-expand-button {
+  @apply maz:flex maz:cursor-interactive maz:items-center maz:justify-center maz:rounded-md maz:border-none maz:bg-transparent maz:p-1 maz:text-muted maz:outline-none maz:hover:bg-foreground/5 maz:focus-visible:outline-2 maz:focus-visible:outline-primary;
+}
+
+.m-table-expand-icon {
+  @apply maz:transition-transform maz:duration-(--duration-fast) maz:ease-out maz:motion-reduce:transition-none;
+
+  &.--open {
+    @apply maz:rotate-90;
+  }
+}
+
+.m-table-expanded-cell {
+  @apply maz:px-3 maz:py-3;
+}
+
+.m-table-wrapper.--scrollable {
   /* With `border-collapse: collapse` the thead bottom border belongs to the
      collapsed grid, not the sticky cells, so it scrolls away. Drop it and redraw
      the divider as an inset shadow on the sticky th, which follows the header
@@ -1374,11 +1482,39 @@ onBeforeMount(() => {
   }
 }
 
+/* Soft band on the sorted column */
+.m-table thead th.--sorted-column {
+  background-image: linear-gradient(color-mix(in srgb, var(--maz-foreground) 4%, transparent) 0 0);
+
+  &.--sortable:hover {
+    background-image: linear-gradient(color-mix(in srgb, var(--maz-foreground) 9%, transparent) 0 0);
+  }
+}
+
+.m-table td.--sorted-column {
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: color-mix(in srgb, var(--maz-foreground) 4%, transparent);
+    content: '';
+    pointer-events: none;
+    transition: opacity calc(var(--maz-motion-normal) * var(--maz-motion-scale)) var(--maz-easing-out);
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
 /* Reordering animation (FLIP) when `animatedRows` is enabled. The class is set by
    TransitionGroup on the child row element, hence `:deep`. Disabled when the user
    prefers reduced motion. */
 :deep(.m-table-row-move) {
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform calc(var(--maz-motion-slower) * var(--maz-motion-scale)) var(--maz-easing-out);
 }
 
 @media (prefers-reduced-motion: reduce) {

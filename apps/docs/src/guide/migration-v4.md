@@ -294,7 +294,7 @@ import { formatCurrency, formatDate } from '@maz-ui/utils'
 ```html
 <!-- CHANGED PROPS -->
 <MazBtn
-  outlined            <!-- ✅ NEW: was 'outline' -->
+  variant="outline"   <!-- ✅ NEW: was 'outline' -->
   justify="space-between"  <!-- 🆕 NEW: Content alignment -->
   :padding="false"         <!-- 🆕 NEW: Padding control -->
   rounded-size="full"      <!-- 🆕 NEW: Border radius size -->
@@ -807,7 +807,7 @@ app.use(MazUi)
 <MazBtn outline>Button</MazBtn>
 
 <!-- ✅ New prop name -->
-<MazBtn outlined>Button</MazBtn>
+<MazBtn variant="outline">Button</MazBtn>
 ```
 
 ## Migration Benefits
@@ -861,7 +861,7 @@ app.use(MazUi)
 ### Components
 
 - <span class="vp-raw"><MazCheckbox> Replace `MazBtn variant="link"` with `MazLink` </MazCheckbox></span>
-- <span class="vp-raw"><MazCheckbox> Update `MazBtn outline` to `outlined` </MazCheckbox></span>
+- <span class="vp-raw"><MazCheckbox> Update `MazBtn outline` to `variant="outline"` </MazCheckbox></span>
 - <span class="vp-raw"><MazCheckbox> Rename `MazPhoneNumberInput` to `MazInputPhoneNumber` </MazCheckbox></span>
 - <span class="vp-raw"><MazCheckbox> Rename `MazPicker` to `MazDatePicker` </MazCheckbox></span>
 - <span class="vp-raw"><MazCheckbox> Replace `MazTransitionExpand` with `MazExpandAnimation` </MazCheckbox></span>

@@ -7,6 +7,10 @@ export const SEVERITY_ORDER: Record<Severity, number> = { error: 0, warning: 1, 
 export type RuleId
   = | 'unknown-component'
     | 'unknown-prop'
+    | 'deprecated-prop'
+    | 'hardcoded-motion'
+    | 'transition-all'
+    | 'layout-transition'
     | 'invalid-prop-value'
     | 'boolean-prop-string'
     | 'unknown-model'
@@ -38,7 +42,17 @@ export type RuleId
     | 'button-navigation'
     | 'input-label'
     | 'native-dialog'
+    | 'table-part-outside-table'
+    | 'prefer-dialog-confirm'
+    | 'before-close-event'
+    | 'btn-important-text'
+    | 'prefer-input-secret'
+    | 'prefer-markdown'
+    | 'prefer-open-external'
     | 'parse-error'
+    | 'invalid-ignore'
+    | 'deprecated-api'
+    | 'prefer-reveal'
 
 export interface Finding {
   rule: RuleId
@@ -67,6 +81,8 @@ export interface ReviewOptions {
   framework?: Framework
   /** The icon names of the project, the ones of maz-ui by default */
   icons?: IconNames
+  /** The code of the maz-ui repository (the library, its docs and demo apps): its internal `maz:` prefix is not reported */
+  internalSource?: boolean
 }
 
 export interface ReviewContext extends ReviewOptions {

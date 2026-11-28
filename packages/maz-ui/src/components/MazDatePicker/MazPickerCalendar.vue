@@ -4,6 +4,7 @@ import type { MazColor } from '../types.ts'
 import type { MazDatePickerShortcut, MazDatePickerValue } from './types.ts'
 import dayjs from 'dayjs/esm/index.js'
 import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { useReducedMotion } from '../../composables/useReducedMotion.ts'
 
 const props = defineProps<{
   modelValue: MazDatePickerValue | undefined
@@ -30,6 +31,8 @@ const MazPickerCalendarSwitcher = defineAsyncComponent(() => import('./MazPicker
 const MazPickerMonthSwitcher = defineAsyncComponent(() => import('./MazPickerMonthSwitcher.vue'))
 const MazPickerShortcuts = defineAsyncComponent(() => import('./MazPickerShortcuts.vue'))
 const MazPickerYearSwitcher = defineAsyncComponent(() => import('./MazPickerYearSwitcher.vue'))
+
+const { shouldReduceMotion } = useReducedMotion()
 
 const hoverredDay = ref<Dayjs>()
 
@@ -117,7 +120,7 @@ watch(() => props.calendarDate, async () => {
         @open-month-switcher="monthSwitcherOpen = true"
         @open-year-switcher="yearSwitcherOpen = true"
       />
-      <Transition name="maz-picker-slide">
+      <Transition name="maz-picker-slide" :css="!shouldReduceMotion">
         <MazPickerMonthSwitcher
           v-if="monthSwitcherOpen"
           v-model:calendar-date="calendarDate"
@@ -127,7 +130,7 @@ watch(() => props.calendarDate, async () => {
           @close="monthSwitcherOpen = false"
         />
       </Transition>
-      <Transition name="maz-picker-slide">
+      <Transition name="maz-picker-slide" :css="!shouldReduceMotion">
         <MazPickerYearSwitcher
           v-if="yearSwitcherOpen"
           v-model:calendar-date="calendarDate"
@@ -179,12 +182,19 @@ watch(() => props.calendarDate, async () => {
 
 .maz-picker-slide-enter-active,
 .maz-picker-slide-leave-active {
-  transition: all 300ms ease-in-out;
-  transform: translateY(0);
+  transition:
+    transform calc(var(--maz-motion-normal, 250ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    opacity calc(var(--maz-motion-normal, 250ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+}
+
+.maz-picker-slide-leave-active {
+  transition-duration: calc(var(--maz-motion-normal, 250ms) * var(--maz-motion-scale, 1) * 0.7);
+  transition-timing-function: var(--maz-easing-in, ease-in);
 }
 
 .maz-picker-slide-enter-from,
 .maz-picker-slide-leave-to {
-  transform: translateY(100%);
+  opacity: 0;
+  transform: translateY(1.5rem);
 }
 </style>

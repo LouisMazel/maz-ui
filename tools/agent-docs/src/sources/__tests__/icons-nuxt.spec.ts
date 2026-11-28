@@ -99,10 +99,10 @@ describe('given collectNuxtAutoImports', () => {
     it('then lists the auto-imported components and composables', () => {
       expect(result.components).toContain('MazBtn')
       expect(result.components).not.toContain('useMazDialogConfirm')
-      expect(result.composables).toEqual(expect.arrayContaining(['useBreakpoints', 'useTheme', 'useTranslations']))
-      expect(result.composables).not.toContain('useToast')
+      expect(result.composables).toEqual(expect.arrayContaining(['useBreakpoints', 'useTheme', 'useTranslations', 'useToast', 'useDialog', 'useWait']))
+      expect(result.composables).not.toContain('useAos')
       expect(result.composables).not.toContain('useMazIconProps')
-      expect(result.pluginComposables.useToast).toBe('toast')
+      expect(result.pluginComposables).toEqual({ useAos: 'aos' })
     })
   })
 

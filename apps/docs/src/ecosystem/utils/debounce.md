@@ -30,13 +30,27 @@ onSearch('hel')
 function debounce<F extends (...args: any[]) => any>(
   fn: F,
   delay: number,
-): (...args: Parameters<F>) => void
+): DebouncedFunction<F>
+
+type DebouncedFunction<F> = ((...args: Parameters<F>) => void) & {
+  cancel: () => void
+  flush: () => void
+}
 ```
 
 | Parameter | Type       | Description                                   |
 | --------- | ---------- | --------------------------------------------- |
 | `fn`      | `Function` | The function to debounce                      |
 | `delay`   | `number`   | Quiet window in milliseconds before `fn` runs |
+
+| Method     | Description                                                          |
+| ---------- | -------------------------------------------------------------------- |
+| `cancel()` | Drop the pending call (on unmount, on route change, on a reset)      |
+| `flush()`  | Run the pending call right now, if any (before leaving, on submit)   |
+
+```ts
+onBeforeUnmount(() => onSearch.cancel())
+```
 
 The returned function shares no state with other debounced wrappers — each call to `debounce()` creates a fresh timer.
 

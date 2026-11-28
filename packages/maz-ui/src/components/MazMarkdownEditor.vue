@@ -3,6 +3,8 @@ import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { Component, HTMLAttributes } from 'vue'
 import type { MazColor, MazRoundedSize } from './types.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
+import { getFieldFocusColor } from './MazField/useFieldState.ts'
 
 export type MazMarkdownEditorMode = 'write' | 'preview' | 'split'
 
@@ -96,6 +98,11 @@ export interface MazMarkdownEditorProps {
    */
   markedOptions?: Record<string, unknown>
   /**
+   * Highlight the fenced code blocks of the preview with MazCodeHighlight (needs `shiki`)
+   * @default false
+   */
+  highlight?: boolean
+  /**
    * Minimum number of visible rows of the editor textarea
    * @default 6
    */
@@ -110,6 +117,7 @@ export interface MazMarkdownEditorProps {
 
 <script lang="ts" setup>
 import type { MazDropdownMenuItem } from './MazDropdown.vue'
+import type { MazMarkdownExposed } from './MazMarkdown.vue'
 import { MazBold } from '@maz-ui/icons/lazy/MazBold'
 import { MazChatBubbleBottomCenterText } from '@maz-ui/icons/lazy/MazChatBubbleBottomCenterText'
 import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
@@ -127,7 +135,7 @@ import { MazStrikethrough } from '@maz-ui/icons/lazy/MazStrikethrough'
 import { MazTableCells } from '@maz-ui/icons/lazy/MazTableCells'
 import { MazViewColumns } from '@maz-ui/icons/lazy/MazViewColumns'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, useTemplateRef } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazBtn from './MazBtn.vue'
@@ -160,6 +168,7 @@ const {
   sanitize = true,
   renderFunction,
   markedOptions,
+  highlight = false,
   rows = 6,
   translations,
 } = defineProps<MazMarkdownEditorProps>()
@@ -222,6 +231,8 @@ const mode = defineModel<MazMarkdownEditorMode>('mode', { default: 'write' })
 
 const { roundedSize } = useGlobalConfig<{ roundedSize: MazRoundedSize }>('MazMarkdownEditor', { roundedSize: 'md' })
 
+const MazMarkdown = defineAsyncComponent(() => import('./MazMarkdown.vue'))
+
 const { t } = useTranslations()
 
 const instanceId = useInstanceUniqId({
@@ -231,8 +242,7 @@ const instanceId = useInstanceUniqId({
 
 const textareaEl = ref<HTMLTextAreaElement>()
 const gutterEl = ref<HTMLElement>()
-const previewHtml = ref('')
-const isRendering = ref(false)
+const markdownEl = useTemplateRef<MazMarkdownExposed>('markdownEl')
 
 /* eslint-disable complexity */
 const labels = computed(() => ({
@@ -271,65 +281,6 @@ const inputValue = computed({
 function updateValue(value?: string) {
   emits('update:model-value', value)
   emits('input', value)
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-}
-
-let renderSeq = 0
-
-async function parseToHtml(source: string): Promise<string> {
-  if (renderFunction)
-    return renderFunction(source)
-
-  const { marked } = await import('marked')
-  return marked.parse(source, { gfm: true, breaks: true, ...markedOptions })
-}
-
-async function sanitizeHtml(html: string, source: string): Promise<string> {
-  if (!sanitize)
-    return html
-
-  try {
-    const { default: DOMPurify } = await import('dompurify')
-    return DOMPurify.sanitize(html)
-  }
-  catch {
-    return `<pre>${escapeHtml(source)}</pre>`
-  }
-}
-
-async function renderPreview() {
-  const seq = ++renderSeq
-  const source = modelValue ?? ''
-
-  if (!source.trim() || typeof globalThis.window === 'undefined') {
-    if (seq === renderSeq)
-      previewHtml.value = ''
-    return
-  }
-
-  isRendering.value = true
-
-  try {
-    const html = await sanitizeHtml(await parseToHtml(source), source)
-    if (seq === renderSeq)
-      previewHtml.value = html
-  }
-  catch {
-    if (seq === renderSeq)
-      previewHtml.value = `<pre>${escapeHtml(source)}</pre>`
-  }
-  finally {
-    if (seq === renderSeq)
-      isRendering.value = false
-  }
 }
 
 function setMode(value: MazMarkdownEditorMode) {
@@ -804,6 +755,8 @@ function handleChange(event: Event) {
   emits('change', event)
 }
 
+const fieldState = computed(() => (error ? 'error' : success ? 'success' : warning ? 'warning' : undefined))
+
 const borderStyle = computed(() => {
   if (error)
     return 'maz:border-destructive'
@@ -820,14 +773,7 @@ const stateLabelColor = computed(() => ({
   'maz:text-warning-600': warning,
 }))
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-xl',
-} as const
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, full: 'maz:rounded-xl' }
 
 const writePanelId = computed(() => `${instanceId.value}-write`)
 const previewPanelId = computed(() => `${instanceId.value}-preview`)
@@ -876,7 +822,7 @@ const tabItems = computed(() => [
       : -1,
     'onKeydown': onTabKeydown,
     'color': 'transparent' as const,
-    'outlined': true,
+    'variant': 'outline' as const,
     'active': mode.value === 'write',
     'startIcon': MazPencil,
     'size': 'xs' as const,
@@ -894,7 +840,7 @@ const tabItems = computed(() => [
       : -1,
     'onKeydown': onTabKeydown,
     'color': 'transparent' as const,
-    'outlined': true,
+    'variant': 'outline' as const,
     'active': mode.value === 'preview',
     'startIcon': MazEye,
     'size': 'xs' as const,
@@ -912,7 +858,7 @@ const tabItems = computed(() => [
       : -1,
     'onKeydown': onTabKeydown,
     'color': 'transparent' as const,
-    'outlined': true,
+    'variant': 'outline' as const,
     'active': mode.value === 'split',
     'startIcon': MazViewColumns,
     'size': 'xs' as const,
@@ -925,25 +871,13 @@ const tabItems = computed(() => [
   },
 ])
 
-watch(
-  [
-    () => modelValue,
-    mode,
-  ],
-  ([, currentMode]) => {
-    if (currentMode !== 'write')
-      renderPreview()
-  },
-  { immediate: true },
-)
-
 defineExpose({
   /** The underlying textarea element */
   textarea: textareaEl,
   /** The current editor mode (write / preview / split) */
   mode,
   /** Programmatically re-render the markdown preview */
-  renderPreview,
+  renderPreview: () => markdownEl.value?.render(),
   /** Focus the editor textarea */
   focus: () => textareaEl.value?.focus(),
 })
@@ -977,9 +911,9 @@ defineExpose({
         `--${color}`,
         {
           '--is-disabled maz:disabled-cursor maz:border-divider maz:bg-surface-600 maz:text-muted maz:dark:border-divider-400 maz:dark:bg-surface-400': disabled,
-          'maz:border maz:border-solid maz:bg-input': !disabled,
+          'maz:border maz:border-solid maz:field-focus maz:bg-input': !disabled,
         },
-      ]"
+      ]" :style="{ '--m-field-color': getFieldFocusColor(color, fieldState) }"
     >
       <div
         class="m-markdown-editor__header maz:flex maz:items-center maz:justify-between maz:gap-2 maz:border-b maz:bg-container maz:px-2 maz:py-1.5"
@@ -1102,8 +1036,18 @@ defineExpose({
           :aria-labelledby="getTabId('preview')"
           :style="{ minHeight: `${rows * 1.5}rem` }"
         >
-          <div v-if="previewHtml" class="m-markdown-editor__preview-content maz:rich-text maz:[--maz-rich-text-max-width:none] maz:rich-text-sm" v-html="previewHtml" />
-          <p v-else-if="!isRendering" class="m-markdown-editor__preview-empty maz:text-muted maz:italic">
+          <MazMarkdown
+            v-if="modelValue?.trim()"
+            ref="markdownEl"
+            class="m-markdown-editor__preview-content"
+            :content="modelValue"
+            size="sm"
+            :sanitize="sanitize"
+            :highlight="highlight"
+            :render-function="renderFunction"
+            :marked-options="markedOptions"
+          />
+          <p v-else class="m-markdown-editor__preview-empty maz:text-muted maz:italic">
             <!--
               @slot empty-preview - Content displayed in the preview pane when there is nothing to render
             -->
@@ -1144,41 +1088,5 @@ defineExpose({
 
 .m-markdown-editor__box.--is-disabled * {
   @apply maz:disabled-cursor maz:text-muted;
-}
-
-.m-markdown-editor__box.--contrast:focus-within {
-  @apply maz:border-contrast;
-}
-
-.m-markdown-editor__box.--destructive:focus-within {
-  @apply maz:border-destructive;
-}
-
-.m-markdown-editor__box.--warning:focus-within {
-  @apply maz:border-warning;
-}
-
-.m-markdown-editor__box.--success:focus-within {
-  @apply maz:border-success;
-}
-
-.m-markdown-editor__box.--info:focus-within {
-  @apply maz:border-info;
-}
-
-.m-markdown-editor__box.--accent:focus-within {
-  @apply maz:border-accent;
-}
-
-.m-markdown-editor__box.--secondary:focus-within {
-  @apply maz:border-secondary;
-}
-
-.m-markdown-editor__box.--primary:focus-within {
-  @apply maz:border-primary;
-}
-
-.m-markdown-editor__box {
-  transition: border-color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 }
 </style>

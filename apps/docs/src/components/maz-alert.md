@@ -31,7 +31,7 @@ description: MazAlert is an accessible component for displaying contextual feedb
 
 ## Variants
 
-MazAlert supports two visual variants: `soft` (default) with transparent background, and `solid` with full color background.
+MazAlert supports three visual variants: `soft` (default) with a tinted background, `solid` with a full color background, and `outline` with a border only.
 
 ### Soft variant (default)
 
@@ -81,6 +81,30 @@ The solid variant uses the full color as background with contrasting text.
   </template>
 </ComponentDemo>
 
+### Outline variant
+
+The outline variant has no background: a colored border and colored text.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazAlert color="info" variant="outline" title="Outline Info" content="A border and no background." />
+    <MazAlert color="success" variant="outline" title="Outline Success" content="Quiet next to a busy layout." />
+    <MazAlert color="destructive" variant="outline" title="Outline Error" content="The color stays readable." />
+  </div>
+
+  <template #code>
+
+```vue
+<template>
+  <MazAlert color="info" variant="outline" title="Outline Info" content="..." />
+  <MazAlert color="success" variant="outline" title="Outline Success" content="..." />
+  <MazAlert color="destructive" variant="outline" title="Outline Error" content="..." />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ### All colors with solid variant
 
 <ComponentDemo>
@@ -124,6 +148,7 @@ MazAlert supports all theme colors to convey different types of messages.
   <MazAlert color="secondary" title="Secondary" content="This is a secondary alert." />
   <MazAlert color="accent" title="Accent" content="This is an accent alert." />
   <MazAlert color="contrast" title="Contrast" content="This is a contrast alert." />
+  <MazAlert color="neutral" title="Neutral" content="This is a neutral alert." />
 </template>
 ```
 
@@ -363,12 +388,51 @@ You can use either title, content, or both.
 </ComponentDemo>
 
 <script lang="ts" setup>
-  const colors = ['info', 'success', 'warning', 'destructive', 'primary', 'secondary', 'accent', 'contrast']
+  import { ref } from 'vue'
+  const colors = ['info', 'success', 'warning', 'destructive', 'primary', 'secondary', 'accent', 'contrast', 'neutral']
   const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
 
   function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
+
+  const alertOpen = ref(true)
 </script>
+
+## Dismissible
+
+Add `dismissible` to get a close button. The alert folds away smoothly and `v-model:open` becomes `false`. Set it back to `true` to show the alert again.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-3">
+    <MazAlert v-model:open="alertOpen" dismissible color="success" title="Saved" content="Your changes are saved." />
+    <MazBtn v-if="!alertOpen" size="sm" class="maz:self-start" @click="alertOpen = true">Show the alert</MazBtn>
+  </div>
+
+<template #code>
+
+```vue
+<script setup lang="ts">
+import MazAlert from 'maz-ui/components/MazAlert'
+import { ref } from 'vue'
+
+const open = ref(true)
+</script>
+
+<template>
+  <MazAlert v-model:open="open" dismissible color="success" title="Saved" content="Your changes are saved." />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The icon of the color draws itself when the alert appears.
+- A dismissed alert folds away: its height and its opacity go to zero, then the alert is hidden.
+- Use `:animated="false"` to skip both.
+
+With reduced motion, the icon is drawn at once and the alert fades out.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-alert.doc.md-->

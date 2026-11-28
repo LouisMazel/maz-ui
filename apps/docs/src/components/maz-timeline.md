@@ -131,6 +131,54 @@ Use the `color` prop to change the theme color.
   <MazTimeline :steps="steps" color="success" />
   <MazTimeline :steps="steps" color="warning" />
   <MazTimeline :steps="steps" color="destructive" />
+  <MazTimeline :steps="steps" color="neutral" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Step colors
+
+The `color` of a step goes beyond its state: it replaces the color of the state (`completed`, `active`, `error`, `warning`), for example one color per type of event. It takes a theme color or any CSS color. A `pending` step stays muted. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <MazTimeline :steps="[{ title: 'Deploy', color: '#8b5cf6', state: 'completed' }, { title: 'Review', color: 'oklch(0.75 0.15 150)', state: 'completed' }, { title: 'Release', color: 'info', state: 'active' }, { title: 'Announce' }]" direction="horizontal" />
+
+<template #code>
+
+```vue
+<script lang="ts" setup>
+import type { MazTimelineItem } from 'maz-ui/components/MazTimeline'
+
+const steps: MazTimelineItem[] = [
+  { title: 'Deploy', color: '#8b5cf6', state: 'completed' },
+  { title: 'Review', color: 'oklch(0.75 0.15 150)', state: 'completed' },
+  { title: 'Release', color: 'info', state: 'active' },
+  { title: 'Announce' },
+]
+</script>
+
+<template>
+  <MazTimeline :steps="steps" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Subtitle lines
+
+`subtitle-lines` cuts the subtitle of each step after that number of lines, with an ellipsis. It also applies to the content of the `subtitle` slot, so you do not need to redefine the slot.
+
+<ComponentDemo>
+  <MazTimeline :steps="[{ title: 'Build', subtitle: 'A long subtitle that goes on and on and does not fit on a single line of the step, so it is cut after one line with an ellipsis, whatever the width of the page or of the card that holds the timeline.' }, { title: 'Test', subtitle: 'Another long subtitle that goes on and on and does not fit on a single line of the step, so it is cut after one line with an ellipsis, whatever the width of the page or of the card that holds it.' }]" :subtitle-lines="1" direction="vertical" />
+
+<template #code>
+
+```vue
+<template>
+  <MazTimeline :steps="steps" :subtitle-lines="1" direction="vertical" />
 </template>
 ```
 
@@ -472,9 +520,19 @@ MazTimeline provides scoped slots for full customization.
     { title: 'QA', subtitle: 'Testing', icon: MazClipboardDocumentCheck },
   ]
 
-  const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive']
+  const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'neutral']
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
   const roundedSizes = ['full', 'lg', 'md', 'sm', 'none']
 </script>
+
+## Motion
+
+With `animated` (the default):
+
+- The rail fills while its step scrolls into view (in browsers with scroll-driven animations, elsewhere it fills when the step is completed).
+- The steps that start below the fold rise the first time they are seen. The ones already visible are never hidden, so nothing waits for the JavaScript.
+- The active step pulses.
+
+Set `:animated="false"` to remove all of it. Reduced motion does too.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-timeline.doc.md-->

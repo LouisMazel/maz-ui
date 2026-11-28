@@ -1,16 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_BTN_FONT_WEIGHT,
-  DEFAULT_CONTAINER_BG,
-  DEFAULT_DISABLED_CURSOR,
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_FONT_MONO,
-  DEFAULT_INPUT_BG,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SHADOW,
-  DEFAULT_SPACE,
-  typographyWith,
-} from './_defaults.ts'
+import { DEFAULT_BTN_FONT_WEIGHT, DEFAULT_CONTAINER_BG, DEFAULT_DISABLED_CURSOR, DEFAULT_DISABLED_OPACITY, DEFAULT_FONT_MONO, DEFAULT_INPUT_BG, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SHADOW, DEFAULT_SPACE, typographyWith } from './_defaults.ts'
 
 /**
  * Ocean preset — calm, fluid, water-inspired.
@@ -41,6 +30,7 @@ export const ocean: ThemePreset = {
     'motion-fast': '120ms',
     'motion-normal': '240ms',
     'motion-slow': '360ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.32, 0.72, 0, 1)',
     'easing-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
     'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
@@ -86,6 +76,8 @@ export const ocean: ThemePreset = {
       'info-foreground': 'oklch(1 0 0)',
       'contrast': 'oklch(0.22 0.025 235)',
       'contrast-foreground': 'oklch(0.985 0.005 215)',
+      'neutral': 'oklch(0.945 0.008 215)',
+      'neutral-foreground': 'oklch(0.22 0.025 235)',
       'muted': 'oklch(0.55 0.03 225)',
       'divider': 'oklch(0.89 0.02 200)',
       'overlay': 'oklch(0.22 0.025 235)',
@@ -110,6 +102,8 @@ export const ocean: ThemePreset = {
       'info-foreground': 'oklch(1 0 0)',
       'contrast': 'oklch(0.945 0.01 200)',
       'contrast-foreground': 'oklch(0.2 0.02 240)',
+      'neutral': 'oklch(0.31 0.02 240)',
+      'neutral-foreground': 'oklch(0.945 0.01 200)',
       'muted': 'oklch(0.68 0.02 230)',
       'divider': 'oklch(0.355 0.025 232)',
       'overlay': 'oklch(0.2 0.02 240)',

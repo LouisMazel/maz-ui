@@ -27,13 +27,8 @@ Définir les variants (`color` x `size` x `variant`) via une config type-safe (`
 
 ## Priorité moyenne - Composants devenus standards
 
-- **Command palette (⌘K)** : les briques existent (`useStringMatching`, recherche de `MazSelect`).
 - **Combobox / Autocomplete** en saisie libre (distinct de `MazSelect`).
-- **ContextMenu** (clic droit), **Menubar**, **NavigationMenu** (on n'a que `MazDropdown`).
-- **Breadcrumb**.
-- **MazTooltip** en composant avec slots (en complément de la directive `vTooltip`).
-- **Rating** et **ColorPicker**.
-- **Resizable / Splitter**, **ScrollArea** cross-browser, **Tree / TreeView**.
+- **Menubar** : barre de menus d'app (Fichier, Édition...), `MazNavigationMenu` couvre le menu de site.
 
 ## Priorité basse - Stratégique
 
@@ -91,3 +86,46 @@ En v6 :
 - [ ] Supprimer `css/padded-container-vars.css` : `--maz-container-padding-value`, `--maz-container-width` et `--maz-container-padding` disparaissent, et les variables surchargeables (`--maz-container-max-width`, `--maz-container-padding-<mobile|tablet|desktop>`) ne sont plus déclarées sur `:root` (lire `var(--maz-container-max-width)` dans un CSS custom demande un fallback).
 - [ ] `tools/agent-docs/src/sources/tokens.ts` lit les valeurs par défaut dans les fallbacks de `tailwindcss/utilities.css`.
 - [ ] À documenter dans le guide de migration.
+
+### Densité : `compact` devient le défaut
+
+En 5.x, `density: 'default' | 'compact'` (`MazUi`, `mazUi.density` côté Nuxt, classe `m-density-compact` sur `<html>` ou sur un bloc) est opt-in : `default` garde les hauteurs de la v5. Le code à retirer est marqué `Removed in v6 (plans/ROADMAP.md)` (`utils/density.ts`, `css/density.css`).
+
+- [ ] Density : `compact` devient le défaut (`density: 'default'` garde les hauteurs actuelles) : changer `DEFAULT_DENSITY`, les valeurs de `:root` dans `css/density.css` (le défaut devient `compact`, `m-density-default` garde l'ancien rendu), le défaut de `mazUi.density` (Nuxt) et les docs.
+- [ ] Note dans le guide de migration : les contrôles font environ 14 % de moins en hauteur (`md` : 42 px vers 36 px) ; pour garder les hauteurs de la v5, passer `density: 'default'` à `MazUi` (ou `mazUi.density` avec Nuxt). Vérifier les mises en page qui dépendent de la hauteur d'un contrôle.
+- [ ] Régénérer les captures de tests visuels.
+
+### Plugins toast, dialog et wait
+
+`useToast`, `useDialog` et `useWait` marchent sans plugin : `useWait` partout (même hors de Vue), `useToast` et `useDialog` dans le `setup` d'un composant, ou dans un contexte d'injection avec le plugin `MazUi` (qui donne l'app et les options globales `toast` et `dialog`). Le code à retirer est marqué `Removed in v6 (plans/ROADMAP.md)` (`git grep "Removed in v6 (plans"`).
+
+En 5.x (non cassant) :
+
+- [x] Les composables créent leur handler (un par app), le plugin dédié reste prioritaire quand il est installé.
+- [x] Options globales dans `MazUi` (`toast`, `dialog`, `aos`, ce dernier désactivé par défaut) et dans le module Nuxt (`mazUi.toast`, `mazUi.dialog`, `mazUi.aos`).
+- [x] `ToastPlugin`, `DialogPlugin`, `WaitPlugin`, `$mazToast`, `$mazDialog`, `$mazWait` et `mazUi.plugins` (Nuxt) dépréciés : JSDoc, avertissement en dev avec le lien de la doc, doc qui ne montre que la nouvelle API.
+
+En v6 :
+
+- [ ] Supprimer `ToastPlugin`, `DialogPlugin`, `WaitPlugin` (et leurs exports dans `plugins/index.ts`), les `globalProperties` `$mazToast`, `$mazDialog`, `$mazWait` et `utils/warnDeprecated.ts`.
+- [ ] Composables : retirer le `inject('mazToast' | 'mazDialog' | 'mazWait')` du plugin déprécié.
+- [ ] Sortir `ToastHandler`, `DialogHandler` et `WaitHandler` de `plugins/` (ils n'y ont plus de plugin), en gardant leurs exports.
+- [ ] Nuxt : retirer l'option `plugins`, `applyLegacyPlugins`, les plugins runtime `toast`, `dialog` et `wait`, et `$mazToast`, `$mazDialog`, `$mazWait`, `$mazAos` de `NuxtApp`.
+- [ ] Migration dans `@maz-ui/upgrade` : `app.use(ToastPlugin, options)` vers l'option `toast` de `MazUi` (idem dialog), `app.use(WaitPlugin)` supprimé, `mazUi.plugins` vers `mazUi.toast` / `mazUi.dialog` / `mazUi.aos`, `$mazToast` vers `useToast()`.
+- [ ] Note dans le guide de migration.
+
+### AOS remplacé par `vReveal`
+
+`vReveal` (directive), `MazReveal`, `useReveal` et l'attribut `data-maz-reveal` remplacent l'AOS (`AosPlugin`, `useAos`, `data-maz-aos`, `maz-ui/aos.css`). L'AOS continue de marcher à l'identique en 5.x ; le code à retirer est marqué `Removed in v6 (plans/ROADMAP.md)`.
+
+En 5.x (non cassant) :
+
+- [x] `AosPlugin`, `AosHandler`, `useAos`, l'option `aos` de `MazUi` et du module Nuxt dépréciés (JSDoc), retirés de la doc (la page `/plugins/aos` montre `vReveal`), règle de review `prefer-reveal`.
+- [x] Classes de transition globales inutilisées par la lib (`maz-scale`, `maz-scale-loading`, `maz-slide`, `maz-slideinvert`, `maz-tags-invert`, `maz-expand`) dépréciées dans `css/animation.css`, retirées de la doc.
+
+En v6 :
+
+- [ ] Supprimer `plugins/aos.ts`, `plugins/aos/` (SCSS), `composables/useAos.ts`, l'export `maz-ui/aos.css` (et `ViteCompileStyles.compileScss`), l'option `aos` de `MazUi` et du module Nuxt, `$mazAos`.
+- [ ] Supprimer les classes de transition globales dépréciées de `css/animation.css`.
+- [ ] Renommer le keyframe `animate` de `MazCircularProgressBar` s'il ne l'est pas déjà.
+- [ ] Migration dans `@maz-ui/upgrade` : `data-maz-aos` vers `data-maz-reveal` (tableau de la page `vReveal`), `useAos` supprimé.

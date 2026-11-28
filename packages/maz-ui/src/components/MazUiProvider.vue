@@ -1,16 +1,18 @@
 <script lang="ts" setup generic="TLocale extends string">
 import type { MazUiThemeOptions, ThemePreset, ThemeState } from '@maz-ui/themes'
 import type { MazUiTranslationsMessages, MazUiTranslationsOptions } from '@maz-ui/translations'
+import type { MazUiExternalLinksOptions } from '../utils/externalLinks.ts'
 import { setupTheme } from '@maz-ui/themes/utils/setup-theme'
 import { createMazUiTranslations } from '@maz-ui/translations/utils/instance'
 import { onUnmounted, provide, ref, watch } from 'vue'
+import { EXTERNAL_LINKS_INJECTION_KEY } from '../utils/externalLinks.ts'
 
 export type MazUiProviderTranslations<T extends string = string> = Omit<MazUiTranslationsOptions, 'messages' | 'locale'> & {
   locale: T
   messages: MazUiTranslationsMessages & Record<T, MazUiTranslationsMessages[string]>
 }
 
-export interface MazUiProviderProps<T extends string = string> {
+export interface MazUiProviderProps<T extends string = string> extends MazUiExternalLinksOptions {
   theme: MazUiThemeOptions & { preset: ThemePreset }
   /**
    * Must include `locale` and at least the messages for that locale in `messages`
@@ -22,7 +24,18 @@ export interface MazUiProviderProps<T extends string = string> {
 const {
   theme,
   translations,
+  openExternal,
+  isExternalLink,
 } = defineProps<MazUiProviderProps<TLocale>>()
+
+if (openExternal || isExternalLink) {
+  provide(EXTERNAL_LINKS_INJECTION_KEY, {
+    openExternal: (href, event) => openExternal?.(href, event),
+    get isExternalLink() {
+      return isExternalLink
+    },
+  })
+}
 
 const i18n = createMazUiTranslations(translations)
 provide('mazTranslations', i18n)

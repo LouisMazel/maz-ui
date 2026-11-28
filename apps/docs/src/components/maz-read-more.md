@@ -71,6 +71,10 @@ import MazReadMore from 'maz-ui/components/MazReadMore'
 </template>
 </ComponentDemo>
 
+## Content changes
+
+The toggle is measured at mount, then again when the text, the slot content or the size of the component changes (window resize, async content, a language switch). Nothing to do on your side.
+
 ## Truncation with max lines
 
 Control the number of visible lines using the `max-lines` prop.
@@ -286,6 +290,24 @@ import MazReadMore from 'maz-ui/components/MazReadMore'
 
 </template>
 </ComponentDemo>
+
+## Motion
+
+The height animates when the text opens and closes. Add `fade` to fade the bottom of the collapsed text.
+
+<ComponentDemo>
+  <MazReadMore :text="longText" fade />
+
+<template #code>
+
+```html
+<MazReadMore :text="longText" fade />
+```
+
+</template>
+</ComponentDemo>
+
+Set `:animated="false"` for an instant change. Reduced motion does too.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-read-more.doc.md-->
 

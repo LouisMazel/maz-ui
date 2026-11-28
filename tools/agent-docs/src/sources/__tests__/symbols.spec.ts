@@ -2,7 +2,7 @@ import type { DocCategory } from '../../types.ts'
 import type { SourcePage } from '../pages.ts'
 
 import { getSourcePaths } from '../../paths.ts'
-import { extractImports, formatImport, parseExportedNames, resolvePageSymbols } from '../symbols.ts'
+import { extractImports, formatImport, isDeprecatedExport, parseExportedNames, resolvePageSymbols } from '../symbols.ts'
 
 const paths = getSourcePaths()
 
@@ -173,11 +173,20 @@ describe('given resolvePageSymbols', () => {
     })
   })
 
-  describe('when the page documents a plugin', () => {
-    it('then returns the exported plugin', () => {
+  describe('when the page documents the deprecated AOS plugin', () => {
+    it('then returns its composable', () => {
+      expect(resolvePageSymbols(page('plugins/aos', 'plugin', 'maz-ui'), paths)).toEqual({
+        symbols: ['useAos'],
+        imports: ['import { useAos } from \'maz-ui/composables/useAos\''],
+      })
+    })
+  })
+
+  describe('when the page documents a deprecated plugin replaced by its composable', () => {
+    it('then returns the composable', () => {
       expect(resolvePageSymbols(page('plugins/toast', 'plugin', 'maz-ui'), paths)).toEqual({
-        symbols: ['ToastPlugin'],
-        imports: ['import { ToastPlugin } from \'maz-ui/plugins/toast\''],
+        symbols: ['useToast'],
+        imports: ['import { useToast } from \'maz-ui/composables/useToast\''],
       })
     })
   })
@@ -274,6 +283,26 @@ describe('given resolvePageSymbols', () => {
           'import { e } from \'@maz-ui/new\'',
         ],
       })
+    })
+  })
+})
+
+describe('given isDeprecatedExport', () => {
+  describe('when the JSDoc of the export has a deprecated tag, followed by a line comment', () => {
+    it('then the export is deprecated', () => {
+      expect(isDeprecatedExport('/**\n * @deprecated use useToast\n */\n// Removed in v6\nexport const ToastPlugin = {}', 'ToastPlugin')).toBe(true)
+    })
+  })
+
+  describe('when only another export is deprecated', () => {
+    it('then the export is not deprecated', () => {
+      expect(isDeprecatedExport('/** @deprecated */\nexport const OldPlugin = {}\n/** The plugin */\nexport const NewPlugin = {}', 'NewPlugin')).toBe(false)
+    })
+  })
+
+  describe('when the export has no JSDoc', () => {
+    it('then the export is not deprecated', () => {
+      expect(isDeprecatedExport('export function AosPlugin() {}', 'AosPlugin')).toBe(false)
     })
   })
 })

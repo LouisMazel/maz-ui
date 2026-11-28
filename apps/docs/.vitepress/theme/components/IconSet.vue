@@ -193,7 +193,7 @@ async function copy(code: string) {
       No icon matches "{{ query }}"
     </p>
 
-    <MazBtn v-if="foundIcons.length > limit" color="contrast" outlined block @click="limit += PAGE_SIZE">
+    <MazBtn v-if="foundIcons.length > limit" color="contrast" variant="outline" block @click="limit += PAGE_SIZE">
       Show more ({{ foundIcons.length - limit }})
     </MazBtn>
 
@@ -206,7 +206,7 @@ async function copy(code: string) {
           <span class="maz:text-sm maz:text-muted">{{ snippet.label }}</span>
           <div class="maz:flex maz:items-center maz:gap-2">
             <code class="maz:min-w-0 maz:flex-1 maz:rounded-md maz:bg-container maz:px-3 maz:py-2 maz:text-sm maz:wrap-break-word maz:whitespace-pre-wrap">{{ snippet.code }}</code>
-            <MazBtn size="sm" color="contrast" outlined icon="clipboard-document" aria-label="Copy" @click="copy(snippet.code)" />
+            <MazBtn size="sm" color="contrast" variant="outline" icon="clipboard-document" aria-label="Copy" @click="copy(snippet.code)" />
           </div>
         </div>
       </div>

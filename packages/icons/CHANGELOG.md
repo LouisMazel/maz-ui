@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.9.0-beta.1 (2026-11-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.9.0-beta.0...v5.9.0-beta.1)
+
+### 🚀 Features
+
+- **icons:** Add the pin icon ([dddf20143](https://github.com/LouisMazel/maz-ui/commit/dddf20143))
+
+  `MazPin`, found by `find_icons` for "pin", "pinned" and "unpin".
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.9.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
+
+No relevant changes since last release
+
 ## v5.8.1 (2026-11-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.0...v5.8.1)

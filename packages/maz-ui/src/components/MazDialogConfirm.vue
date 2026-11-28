@@ -1,19 +1,21 @@
 <script lang="ts">
 export { useMazDialogConfirm } from './MazDialogConfirm/useMazDialogConfirm.ts'
-export type { MazDialogConfirmButton, MazDialogConfirmData } from './MazDialogConfirm/useMazDialogConfirm.ts'
+export type { MazDialogConfirmButton, MazDialogConfirmButtonOptions, MazDialogConfirmData } from './MazDialogConfirm/useMazDialogConfirm.ts'
 </script>
 
 <script lang="ts" setup>
 import type { ComponentPublicInstance, ComputedRef } from 'vue'
-import type { MazBtnProps } from './MazBtn.vue'
 import type { MazDialogProps } from './MazDialog.vue'
 import type {
   MazDialogConfirmButton,
+  MazDialogConfirmButtonAction,
+  MazDialogConfirmButtonOptions,
   MazDialogConfirmButtonPromised,
   MazDialogConfirmData,
   MazDialogConfirmState,
 } from './MazDialogConfirm/useMazDialogConfirm.ts'
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 
 import MazDialog from './MazDialog.vue'
 import { defaultData, useMazDialogConfirm } from './MazDialogConfirm/useMazDialogConfirm.ts'
@@ -35,16 +37,16 @@ export interface MazDialogConfirmInternalProps {
 
   /**
    * Text for the reject button - will be applied only if buttons props is not provided
-   * @default undefined
+   * @default the translation `dialogConfirm.cancel` ('Cancel')
    */
   rejectText?: string
 
   /**
    * Props for the reject button - will be applied only if buttons props is not provided
-   * @default { color: 'destructive', type: 'reject', text: 'Cancel', response: 'reject' }
-   * @type {Omit<MazBtnProps, 'type'> & MazDialogConfirmButton}
+   * @default { color: 'neutral', type: 'reject', response: 'reject' } with the translated `dialogConfirm.cancel` text
+   * @type {MazDialogConfirmButtonOptions}
    */
-  rejectProps?: Omit<MazBtnProps, 'type'> & MazDialogConfirmButton
+  rejectProps?: MazDialogConfirmButtonOptions
 
   /**
    * Hide the reject button (unset: the value of `useMazDialogConfirm().data`, else shown)
@@ -54,16 +56,16 @@ export interface MazDialogConfirmInternalProps {
 
   /**
    * Text for the accept button
-   * @default undefined
+   * @default the translation `dialogConfirm.accept` ('Confirm')
    */
   acceptText?: string
 
   /**
    * Props for the accept button - will be applied only if buttons props is not provided
-   * @default { color: 'success', type: 'accept', text: 'Confirm', response: 'accept' }
-   * @type {Omit<MazBtnProps, 'type'> & MazDialogConfirmButton}
+   * @default { color: 'success', type: 'accept', response: 'accept' } with the translated `dialogConfirm.accept` text
+   * @type {MazDialogConfirmButtonOptions}
    */
-  acceptProps?: Omit<MazBtnProps, 'type'> & MazDialogConfirmButton
+  acceptProps?: MazDialogConfirmButtonOptions
 
   /**
    * Hide the accept button (unset: the value of `useMazDialogConfirm().data`, else shown)
@@ -76,11 +78,18 @@ export interface MazDialogConfirmInternalProps {
    * @default undefined
    */
   buttons?: MazDialogConfirmButton[]
+
+  /**
+   * Reinforced confirmation for destructive actions: the user must type this text in a field
+   * before the accept button is enabled (the reject button is never blocked)
+   * @example 'my-project'
+   */
+  confirmation?: string
 }
 
 export type MazDialogConfirmProps = MazDialogConfirmInternalProps & MazDialogConfirmData & MazDialogProps
 
-const { identifier, message, buttons, title, modelValue, closeOnEscape = true, rejectText, acceptText, rejectProps, acceptProps, hideRejectButton = undefined, hideAcceptButton = undefined, ...dialogProps } = defineProps<MazDialogConfirmProps>()
+const { identifier, message, buttons, title, modelValue, closeOnEscape = true, rejectText, acceptText, rejectProps, acceptProps, hideRejectButton = undefined, hideAcceptButton = undefined, confirmation, animated = true, contentPadding = true, ...dialogProps } = defineProps<MazDialogConfirmProps>()
 
 defineEmits<{
   /**
@@ -96,6 +105,9 @@ defineEmits<{
 }>()
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
+
+const { t } = useTranslations()
 
 const { dialogState, reject, accept, data } = useMazDialogConfirm()
 
@@ -104,26 +116,28 @@ const currentData = computed<MazDialogConfirmData>(() => {
   const baseData = {
     ...defaultData,
     ...data.value,
+    acceptText: data.value.acceptText ?? data.value.acceptProps?.text ?? t('dialogConfirm.accept'),
+    rejectText: data.value.rejectText ?? data.value.rejectProps?.text ?? t('dialogConfirm.cancel'),
     hideAcceptButton: data.value.hideAcceptButton ?? defaultData.hideAcceptButton,
     hideRejectButton: data.value.hideRejectButton ?? defaultData.hideRejectButton,
     acceptProps: {
       ...defaultData.acceptProps,
       ...data.value.acceptProps,
-      text: acceptText ?? data.value.acceptText ?? data.value.acceptProps?.text ?? defaultData.acceptText,
+      text: acceptText ?? data.value.acceptText ?? data.value.acceptProps?.text ?? t('dialogConfirm.accept'),
       type: data.value.acceptProps?.type ?? defaultData.acceptProps.type,
     },
     rejectProps: {
       ...defaultData.rejectProps,
       ...data.value.rejectProps,
-      text: rejectText ?? data.value.rejectText ?? data.value.rejectProps?.text ?? defaultData.rejectText,
+      text: rejectText ?? data.value.rejectText ?? data.value.rejectProps?.text ?? t('dialogConfirm.cancel'),
       type: data.value.rejectProps?.type ?? defaultData.rejectProps.type,
     },
   } satisfies MazDialogConfirmData
 
   return {
     ...baseData,
-    acceptText: acceptText ?? baseData.acceptText,
-    rejectText: rejectText ?? baseData.rejectText,
+    acceptText: acceptText ?? acceptProps?.text ?? baseData.acceptText,
+    rejectText: rejectText ?? rejectProps?.text ?? baseData.rejectText,
     hideAcceptButton: hideAcceptButton ?? baseData.hideAcceptButton,
     hideRejectButton: hideRejectButton ?? baseData.hideRejectButton,
     acceptProps: {
@@ -163,7 +177,54 @@ defineExpose<{
   isActive: computed(() => currentModal.value?.isActive ?? modelValue ?? false),
 })
 
-function isPromiseButton(button: MazDialogConfirmButton | undefined): button is MazDialogConfirmButtonPromised {
+type AnyButton = MazDialogConfirmButton | MazDialogConfirmButtonOptions
+
+const typedConfirmation = ref('')
+
+const isConfirmed = computed(() => !confirmation || typedConfirmation.value.trim() === confirmation)
+
+watch(() => currentModal.value?.isActive ?? modelValue, () => {
+  typedConfirmation.value = ''
+})
+
+function isAcceptButton(button: AnyButton | undefined) {
+  return !isPromiseButton(button) || button.type === 'accept'
+}
+
+function isButtonDisabled(button: AnyButton | undefined) {
+  return !!button?.disabled || (!isConfirmed.value && isAcceptButton(button))
+}
+
+function guardedAccept(reason?: unknown) {
+  if (isConfirmed.value)
+    accept(currentModal.value, reason)
+}
+
+function submitConfirmation() {
+  if (!isConfirmed.value)
+    return
+
+  if (currentButtons.value) {
+    const button = currentButtons.value.find(isAcceptButton)
+
+    if (button)
+      buttonClick(currentModal.value, button)
+
+    return
+  }
+
+  const { acceptProps: button, hideAcceptButton: hidden } = currentData.value
+
+  if (hidden || button?.disabled)
+    return
+
+  if (isPromiseButton(button))
+    accept(currentModal.value, button.response)
+  else
+    (button as MazDialogConfirmButtonAction | undefined)?.onClick?.()
+}
+
+function isPromiseButton(button: AnyButton | undefined): button is MazDialogConfirmButtonPromised {
   if (!button)
     return false
 
@@ -171,6 +232,9 @@ function isPromiseButton(button: MazDialogConfirmButton | undefined): button is 
 }
 
 function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfirmButton) {
+  if (isButtonDisabled(button))
+    return
+
   if (isPromiseButton(button)) {
     return button.type === 'accept'
       ? accept(currentModal, button.response)
@@ -186,6 +250,8 @@ function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfi
     ref="dialog"
     v-bind="{ ...$attrs, ...dialogProps }"
     :close-on-escape="closeOnEscape"
+    :content-padding="contentPadding"
+    :animated
     :model-value="currentModal?.isActive ?? modelValue ?? false"
     @close="$emit('close', $event)"
     @open="$emit('open', $event)"
@@ -211,6 +277,15 @@ function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfi
       >
         {{ message || currentData?.message }}
       </slot>
+      <div v-if="confirmation" class="m-dialog-confirm-confirmation maz:mt-4">
+        <MazInput
+          v-model="typedConfirmation"
+          :label="t('dialogConfirm.confirmationLabel', { text: confirmation })"
+          autocomplete="off"
+          name="confirmation"
+          @keydown.enter.prevent="submitConfirmation"
+        />
+      </div>
     </template>
     <template #footer>
       <!--
@@ -219,7 +294,7 @@ function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfi
           @binding {Function} reject reject function
       -->
       <slot
-        :accept="(reason?: unknown) => accept(currentModal, reason)"
+        :accept="guardedAccept"
         :reject="(reason?: unknown) => reject(currentModal, reason)"
         name="footer-button"
       >
@@ -232,6 +307,7 @@ function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfi
                 ...button,
                 onClick: undefined,
                 type: 'button',
+                disabled: isButtonDisabled(button),
               }"
               @click="buttonClick(currentModal, button)"
             >
@@ -245,7 +321,7 @@ function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfi
               v-bind="{
                 ...currentData.acceptProps,
                 type: 'button',
-                // onClick: undefined,
+                disabled: isButtonDisabled(currentData.acceptProps),
                 text: currentData.acceptText ?? currentData.acceptProps?.text,
               }"
               @click="

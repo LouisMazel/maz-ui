@@ -119,6 +119,25 @@ describe('given MazRadioButtons component', () => {
     })
   })
 
+  describe('when equalSize is set', () => {
+    it('then the default label is truncated inside its tile', () => {
+      const wrapper = mount(MazRadioButtons, { props: { options, equalSize: true } })
+
+      const label = wrapper.find('.m-radio-buttons__label')
+      expect(label.exists()).toBe(true)
+      expect(label.classes()).toContain('maz:truncate')
+      expect(label.classes()).toContain('maz:min-w-0')
+    })
+  })
+
+  describe('when equalSize is not set', () => {
+    it('then the default label is not wrapped', () => {
+      const wrapper = mount(MazRadioButtons, { props: { options } })
+
+      expect(wrapper.find('.m-radio-buttons__label').exists()).toBe(false)
+    })
+  })
+
   describe('when rendered with selector prop', () => {
     it('then it should display checkboxes', () => {
       const wrapper = mount(MazRadioButtons, {

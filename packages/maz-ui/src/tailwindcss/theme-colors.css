@@ -58,6 +58,21 @@
   --color-accent-900: oklch(from var(--maz-accent) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
   --color-accent-950: oklch(from var(--maz-accent) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
 
+  /* neutral: the grey of the neutral buttons, badges and chips (`--maz-neutral`, set by every preset) */
+  --color-neutral: var(--maz-neutral);
+  --color-neutral-foreground: var(--maz-neutral-foreground);
+  --color-neutral-50: oklch(from var(--maz-neutral) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-neutral-100: oklch(from var(--maz-neutral) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-neutral-200: oklch(from var(--maz-neutral) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-neutral-300: oklch(from var(--maz-neutral) clamp(0, calc(l + 0.13), 1) c h);
+  --color-neutral-400: oklch(from var(--maz-neutral) clamp(0, calc(l + 0.06), 1) c h);
+  --color-neutral-500: var(--maz-neutral);
+  --color-neutral-600: oklch(from var(--maz-neutral) clamp(0, calc(l - 0.05), 1) c h);
+  --color-neutral-700: oklch(from var(--maz-neutral) clamp(0, calc(l - 0.1), 1) c h);
+  --color-neutral-800: oklch(from var(--maz-neutral) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-neutral-900: oklch(from var(--maz-neutral) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-neutral-950: oklch(from var(--maz-neutral) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
   /* destructive */
   --color-destructive: var(--maz-destructive);
   --color-destructive-foreground: var(--maz-destructive-foreground);

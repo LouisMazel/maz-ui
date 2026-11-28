@@ -1,18 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_BTN_FONT_WEIGHT,
-  DEFAULT_CONTAINER_BG,
-  DEFAULT_DIALOG_MAX_WIDTH,
-  DEFAULT_DIALOG_MIN_WIDTH,
-  DEFAULT_DISABLED_CURSOR,
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_FONT_MONO,
-  DEFAULT_INPUT_BG,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SHADOW,
-  DEFAULT_SPACE,
-  DEFAULT_TYPOGRAPHY,
-} from './_defaults.ts'
+import { DEFAULT_BTN_FONT_WEIGHT, DEFAULT_CONTAINER_BG, DEFAULT_DIALOG_MAX_WIDTH, DEFAULT_DIALOG_MIN_WIDTH, DEFAULT_DISABLED_CURSOR, DEFAULT_DISABLED_OPACITY, DEFAULT_FONT_MONO, DEFAULT_INPUT_BG, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SHADOW, DEFAULT_SPACE, DEFAULT_TYPOGRAPHY } from './_defaults.ts'
 
 const FONT_FAMILY = `Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
 
@@ -27,9 +14,10 @@ export const mazUi: ThemePreset = {
     'motion-fast': '100ms',
     'motion-normal': '200ms',
     'motion-slow': '300ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
     'easing-in': 'cubic-bezier(0.4, 0, 1, 1)',
-    'easing-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
+    'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
     'space': DEFAULT_SPACE,
@@ -65,6 +53,8 @@ export const mazUi: ThemePreset = {
       'info-foreground': 'oklch(1 0 0)',
       'contrast': 'oklch(0.2524 0.0212 280.69)',
       'contrast-foreground': 'oklch(0.9619 0 0)',
+      'neutral': 'oklch(0.955 0.004 264)',
+      'neutral-foreground': 'oklch(0.2573 0.0068 248.09)',
       'divider': 'oklch(0.9276 0.0058 264.53)',
       'overlay': 'oklch(0.5103 0 0)',
       'muted': 'oklch(0.5624 0 0)',
@@ -89,6 +79,8 @@ export const mazUi: ThemePreset = {
       'info-foreground': 'oklch(1 0 0)',
       'contrast': 'oklch(1 0 0)',
       'contrast-foreground': 'oklch(0.2573 0.0068 248.09)',
+      'neutral': 'oklch(0.36 0.022 281)',
+      'neutral-foreground': 'oklch(0.8845 0 0)',
       'muted': 'oklch(0.6324 0 0)',
       'divider': 'oklch(0.3399 0.0366 282.73)',
       'overlay': 'oklch(0.2697 0 0)',

@@ -1,17 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_BTN_FONT_WEIGHT,
-  DEFAULT_CONTAINER_BG,
-  DEFAULT_DIALOG_MAX_WIDTH,
-  DEFAULT_DIALOG_MIN_WIDTH,
-  DEFAULT_DISABLED_CURSOR,
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_FONT_MONO,
-  DEFAULT_INPUT_BG,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SPACE,
-  typographyWith,
-} from './_defaults.ts'
+import { DEFAULT_BTN_FONT_WEIGHT, DEFAULT_CONTAINER_BG, DEFAULT_DIALOG_MAX_WIDTH, DEFAULT_DIALOG_MIN_WIDTH, DEFAULT_DISABLED_CURSOR, DEFAULT_DISABLED_OPACITY, DEFAULT_FONT_MONO, DEFAULT_INPUT_BG, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SPACE, typographyWith } from './_defaults.ts'
 
 /**
  * Apple-style preset — sober and monochrome by default.
@@ -39,6 +27,7 @@ export const pristine: ThemePreset = {
     'motion-fast': '120ms',
     'motion-normal': '220ms',
     'motion-slow': '380ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.32, 0.72, 0, 1)',
     'easing-in': 'cubic-bezier(0.5, 0, 0.75, 0)',
     'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
@@ -49,11 +38,23 @@ export const pristine: ThemePreset = {
   scales: {
     rounded: { md: '0.625rem' },
     shadow: {
-      sm: '0 1px 2px 0 rgb(0 0 0 / 0.04)',
-      md: '0 2px 6px -1px rgb(0 0 0 / 0.06), 0 1px 3px -1px rgb(0 0 0 / 0.04)',
-      lg: '0 8px 16px -4px rgb(0 0 0 / 0.08), 0 3px 6px -2px rgb(0 0 0 / 0.04)',
-      xl: '0 16px 28px -8px rgb(0 0 0 / 0.1), 0 6px 12px -4px rgb(0 0 0 / 0.06)',
-      elevation: '0 4px 12px -2px rgb(0 0 0 / 0.06), 0 2px 4px -1px rgb(0 0 0 / 0.04)',
+      'sm': '0 1px 2px 0 rgb(0 0 0 / 0.04)',
+      'md': '0 2px 6px -1px rgb(0 0 0 / 0.06), 0 1px 3px -1px rgb(0 0 0 / 0.04)',
+      'lg': '0 8px 16px -4px rgb(0 0 0 / 0.08), 0 3px 6px -2px rgb(0 0 0 / 0.04)',
+      'xl': '0 16px 28px -8px rgb(0 0 0 / 0.1), 0 6px 12px -4px rgb(0 0 0 / 0.06)',
+      'elevation': '0 4px 12px -2px rgb(0 0 0 / 0.06), 0 2px 4px -1px rgb(0 0 0 / 0.04)',
+      'elevation-1': {
+        light: '0 2px 5px -1px rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.05)',
+        dark: '0 2px 5px -1px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.1)',
+      },
+      'elevation-2': {
+        light: '0 8px 18px -4px rgb(0 0 0 / 0.1), 0 3px 6px -2px rgb(0 0 0 / 0.06)',
+        dark: '0 8px 18px -4px rgb(0 0 0 / 0.6), 0 3px 6px -2px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.16)',
+      },
+      'elevation-3': {
+        light: '0 18px 36px -8px rgb(0 0 0 / 0.16), 0 8px 14px -4px rgb(0 0 0 / 0.08)',
+        dark: '0 18px 40px -8px rgb(0 0 0 / 0.75), 0 8px 16px -4px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.24)',
+      },
     },
   },
   typography: typographyWith({
@@ -87,6 +88,8 @@ export const pristine: ThemePreset = {
       'info-foreground': 'oklch(0.21 0.005 286)',
       'contrast': 'oklch(0.207 0.002 286)',
       'contrast-foreground': 'oklch(1 0 0)',
+      'neutral': 'oklch(0.96 0.002 286)',
+      'neutral-foreground': 'oklch(0.21 0.005 286)',
       'muted': 'oklch(0.56 0.005 286)',
       'divider': 'oklch(0.917 0.005 286)',
       'overlay': 'oklch(0.21 0.005 286)',
@@ -111,6 +114,8 @@ export const pristine: ThemePreset = {
       'info-foreground': 'oklch(0.207 0.002 286)',
       'contrast': 'oklch(0.97 0 0)',
       'contrast-foreground': 'oklch(0.207 0.002 286)',
+      'neutral': 'oklch(0.31 0.004 286)',
+      'neutral-foreground': 'oklch(0.97 0 0)',
       'muted': 'oklch(0.65 0.005 286)',
       'divider': 'oklch(0.31 0.003 286)',
       'overlay': 'oklch(0.16 0.002 286)',

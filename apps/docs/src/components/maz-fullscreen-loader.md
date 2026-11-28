@@ -59,4 +59,8 @@ const showLoader = ref(false)
   const showLoader = ref(false)
 </script>
 
+## Motion
+
+The loader fades in when it is added and fades out when it is removed. With reduced motion, it appears and disappears at once.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-fullscreen-loader.doc.md-->

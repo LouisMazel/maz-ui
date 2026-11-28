@@ -1,9 +1,11 @@
 import { Buffer } from 'node:buffer'
+import { execFileSync } from 'node:child_process'
 import { cpSync, existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { Readable } from 'node:stream'
 import packageJson from '../../package.json' with { type: 'json' }
 import { HELP, main, runCli } from '../cli.ts'
+import { MAX_REVIEWED_FILES } from '../review/files.ts'
 import { startStdioServer } from '../server.ts'
 import { BUNDLE_DIR, cleanTempDirs, createTempDir, writeFakeMazUi, writeFile } from './helpers.ts'
 
@@ -205,10 +207,38 @@ describe('given the maz-ui-mcp CLI', () => {
     })
   })
 
+  describe('when a review stops at the file limit', () => {
+    it('then it warns with the number of files not reviewed and how to review them', async () => {
+      const cwd = createTempDir()
+
+      for (let index = 0; index < MAX_REVIEWED_FILES + 5; index++) writeFile(cwd, `src/f${String(index).padStart(3, '0')}.ts`, '')
+
+      await runCli(['review', 'src', '--cwd', cwd, '--framework', 'vue'])
+
+      expect(logged()).toContain(`${MAX_REVIEWED_FILES} file(s) reviewed`)
+      expect(errored()).toContain('5 more file(s) were NOT reviewed')
+      expect(errored()).toContain('narrower paths')
+    })
+
+    it('then the JSON output gives the number of skipped files', async () => {
+      const cwd = createTempDir()
+
+      for (let index = 0; index < MAX_REVIEWED_FILES + 3; index++) writeFile(cwd, `src/f${String(index).padStart(3, '0')}.ts`, '')
+
+      await runCli(['review', 'src', '--cwd', cwd, '--format', 'json', '--framework', 'vue'])
+
+      const output = JSON.parse(logged()) as { truncated: boolean, skipped: number }
+
+      expect(output.truncated).toBe(true)
+      expect(output.skipped).toBe(3)
+    })
+  })
+
   describe('when review runs as a Claude Code hook', () => {
     it('then a file with findings exits with 2 and explains them on stderr', async () => {
       const cwd = createTempDir()
-      const file = writeFile(cwd, 'A.vue', '<template><button>b</button></template>')
+      writeFile(cwd, 'package.json', JSON.stringify({ dependencies: { 'maz-ui': '^5.0.0' } }))
+      const file = writeFile(cwd, 'src/A.vue', '<template><button>b</button></template>')
       mockStdin(JSON.stringify({
         tool_input: { file_path: file },
         cwd,
@@ -219,8 +249,55 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(errored()).toContain('maz-ui-review-ignore')
     })
 
+    it('then the files of a monorepo app are reviewed with the maz-ui of the app, loaded once', async () => {
+      const cwd = createTempDir()
+      execFileSync('git', ['init', '-q'], { cwd })
+      writeFile(cwd, 'apps/web/package.json', JSON.stringify({ dependencies: { 'maz-ui': '^5.0.0' } }))
+      writeFakeMazUi(join(cwd, 'apps/web'), { version: '5.8.0' })
+      writeFile(cwd, 'apps/web/src/A.vue', '<template><button>a</button></template>')
+      writeFile(cwd, 'apps/web/src/B.vue', '<template><button>b</button></template>')
+      mockStdin(JSON.stringify({ hook_event_name: 'Stop', cwd }))
+
+      expect(await runCli(['review', '--hook', '--cwd', cwd])).toBe(2)
+      expect(errored()).toContain('apps/web/src/A.vue')
+      expect(errored()).toContain('apps/web/src/B.vue')
+    })
+
+    it('then a file outside of any package exits with 0', async () => {
+      const cwd = createTempDir()
+      mockStdin(JSON.stringify({
+        tool_input: { file_path: writeFile(cwd, 'A.vue', '<template><button>b</button></template>') },
+      }))
+
+      expect(await runCli(['review', '--hook', '--cwd', cwd])).toBe(0)
+    })
+
+    it('then a file of a project with an invalid package.json exits with 0', async () => {
+      const cwd = createTempDir()
+      writeFile(cwd, 'package.json', '{ "dependencies": ')
+      mockStdin(JSON.stringify({
+        tool_input: { file_path: writeFile(cwd, 'A.vue', '<template><button>b</button></template>') },
+      }))
+
+      expect(await runCli(['review', '--hook', '--cwd', cwd])).toBe(0)
+    })
+
+    it('then a file of a project without maz-ui exits with 0', async () => {
+      const cwd = createTempDir()
+      writeFile(cwd, 'package.json', JSON.stringify({ dependencies: { vue: '^3.5.0' } }))
+      const file = writeFile(cwd, 'A.vue', '<template><button>b</button></template>')
+      mockStdin(JSON.stringify({
+        tool_input: { file_path: file },
+        cwd,
+      }))
+
+      expect(await runCli(['review', '--hook', '--cwd', cwd])).toBe(0)
+      expect(errored()).toBe('')
+    })
+
     it('then a clean file exits with 0', async () => {
       const cwd = createTempDir()
+      writeFile(cwd, 'package.json', JSON.stringify({ devDependencies: { 'maz-ui': '^5.0.0' } }))
       const file = writeFile(cwd, 'a.ts', 'export const a = 1')
       mockStdin(JSON.stringify({
         tool_input: { file_path: file },
@@ -267,6 +344,65 @@ describe('given the maz-ui-mcp CLI', () => {
   })
 
   describe('when init is used', () => {
+    beforeEach(() => {
+      vi.stubEnv('HOME', createTempDir())
+    })
+
+    afterEach(() => {
+      vi.unstubAllEnvs()
+    })
+
+    it('then it registers the review hook of Claude Code, unless --no-hooks is passed', async () => {
+      const cwd = createTempDir()
+      const args = ['init', '--targets', 'claude', '--docs', BUNDLE_DIR, '--cwd', cwd]
+
+      await runCli([...args, '--no-hooks'])
+
+      expect(existsSync(join(cwd, '.claude/settings.json'))).toBe(false)
+
+      await runCli(args)
+
+      expect(readFileSync(join(cwd, '.claude/settings.json'), 'utf8')).toContain('maz-ui/mcp@')
+      expect(readFileSync(join(cwd, '.claude/settings.json'), 'utf8')).toContain('review --hook')
+
+      await runCli([...args, '--remove'])
+
+      expect(existsSync(join(cwd, '.claude/settings.json'))).toBe(false)
+    })
+
+    it('then it recommends the Claude Code plugin until it is enabled', async () => {
+      const cwd = createTempDir()
+      const args = ['init', '--targets', 'claude', '--docs', BUNDLE_DIR, '--cwd', cwd]
+
+      await runCli(args)
+
+      expect(logged()).toContain('claude plugin install maz-ui --marketplace LouisMazel/maz-ui')
+
+      log.mockClear()
+      writeFile(cwd, '.claude/settings.local.json', JSON.stringify({ enabledPlugins: { 'maz-ui@maz-ui': true } }))
+      await runCli(args)
+
+      expect(logged()).not.toContain('claude plugin install')
+    })
+
+    it('then it registers the MCP server of Codex and recommends its plugin until it is enabled', async () => {
+      const cwd = createTempDir()
+      const codexHome = createTempDir()
+      const args = ['init', '--targets', 'codex', '--docs', BUNDLE_DIR, '--cwd', cwd]
+      vi.stubEnv('CODEX_HOME', codexHome)
+
+      await runCli(args)
+
+      expect(readFileSync(join(cwd, '.codex/config.toml'), 'utf8')).toContain('[mcp_servers.maz-ui]')
+      expect(logged()).toContain('codex plugin marketplace add LouisMazel/maz-ui')
+
+      log.mockClear()
+      writeFile(codexHome, 'config.toml', '[plugins."maz-ui@maz-ui"]\nenabled = true\n')
+      await runCli(args)
+
+      expect(logged()).not.toContain('codex plugin marketplace add')
+    })
+
     it('then it rejects unknown targets', async () => {
       expect(await runCli([
         'init',
@@ -305,7 +441,7 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(logged()).toContain('created')
       expect(readFileSync(join(cwd, '.cursor/mcp.json'), 'utf8')).toContain('@maz-ui/mcp')
       expect(readFileSync(join(cwd, 'AGENTS.md'), 'utf8')).toContain('<!-- BEGIN:maz-ui -->')
-      expect(logged()).toContain('Codex, Cline and Zed read AGENTS.md')
+      expect(logged()).toContain('Cline and Zed read AGENTS.md')
     })
 
     it('then explicit targets, --no-mcp and --remove are applied', async () => {
@@ -337,7 +473,7 @@ describe('given the maz-ui-mcp CLI', () => {
 
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(logged()).toContain('removed')
-      expect(logged()).not.toContain('Codex, Cline and Zed')
+      expect(logged()).not.toContain('Cline and Zed')
     })
 
     it('then --paths scopes the Claude rule with a frontmatter and reports it', async () => {
@@ -395,7 +531,7 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(existsSync(join(cwd, '.mcp.json'))).toBe(true)
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
-      expect(logged()).not.toContain('Codex, Cline and Zed')
+      expect(logged()).not.toContain('Cline and Zed')
     })
 
     it('then a project without maz-ui only gets the MCP server', async () => {
@@ -412,7 +548,7 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
       expect(logged()).toContain('maz-ui is not installed in this project: only the MCP server is registered')
-      expect(logged()).not.toContain('Codex, Cline and Zed')
+      expect(logged()).not.toContain('Cline and Zed')
     })
 
     it('then a project without maz-ui gets the rules of an explicit docs bundle', async () => {
@@ -591,6 +727,73 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(process.exitCode).toBe(1)
       expect(errored()).toContain('--unknown-flag')
       process.argv = argv
+    })
+  })
+
+  describe('when doctor runs in a project without problem', () => {
+    it('then it prints the versions and the servers', async () => {
+      vi.stubEnv('HOME', createTempDir())
+      const cwd = createTempDir()
+      writeFakeMazUi(cwd, { version: '5.8.0' })
+      writeFile(cwd, '.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'pnpm', args: ['exec', 'maz-ui-mcp'] } } }))
+
+      expect(await runCli(['doctor', '--cwd', cwd])).toBe(0)
+      expect(logged()).toContain('maz-ui           5.8.0 (node_modules/maz-ui)')
+      expect(logged()).toContain('@maz-ui/mcp      not installed: the servers download it with npx')
+      expect(logged()).toContain('project  maz-ui: pnpm exec maz-ui-mcp (runs)')
+      expect(logged()).toContain('No problem found.')
+    })
+  })
+
+  describe('when doctor finds duplicates and an old maz-ui', () => {
+    it('then it lists the problems with their fix', async () => {
+      const home = createTempDir()
+      vi.stubEnv('HOME', home)
+      const cwd = createTempDir()
+      writeFakeMazUi(cwd, { version: '4.0.0', withDocs: false })
+      writeFakeMazUi(join(cwd, 'tools'), { version: '5.8.0' })
+      writeFile(cwd, 'node_modules/@maz-ui/mcp/package.json', JSON.stringify({ name: '@maz-ui/mcp', version: '5.8.0' }))
+      writeFile(home, '.claude/settings.json', JSON.stringify({ enabledPlugins: { 'maz-ui@maz-ui': true } }))
+      writeFile(home, '.claude.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'npx', args: ['@maz-ui/mcp'] } } }))
+      writeFile(cwd, '.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'npx', args: ['-y', '@maz-ui/mcp@4.0.0'] } } }))
+      writeFile(cwd, '.claude/settings.local.json', JSON.stringify({ disabledMcpjsonServers: ['maz-ui'] }))
+
+      expect(await runCli(['doctor', '--cwd', cwd])).toBe(1)
+      expect(logged()).toContain('Claude plugin    enabled')
+      expect(logged()).toContain('@maz-ui/mcp      5.8.0 (node_modules/@maz-ui/mcp)')
+      expect(logged()).toContain('project  maz-ui: npx -y @maz-ui/mcp@4.0.0 (disabled for you (disabledMcpjsonServers))')
+      expect(logged()).toContain('user     maz-ui: npx @maz-ui/mcp (runs)')
+      expect(logged()).toContain('2 problems:')
+      expect(logged()).toContain('runs beside the server of the maz-ui plugin')
+      expect(logged()).toContain('fix: claude mcp remove maz-ui -s user')
+      expect(logged()).toContain('maz-ui 4.0.0 ships no docs for the agents')
+    })
+  })
+
+  describe('when doctor finds a server of the same name that wins', () => {
+    it('then it shows the other one as not used', async () => {
+      const home = createTempDir()
+      vi.stubEnv('HOME', home)
+      const cwd = createTempDir()
+      writeFile(home, '.claude.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'npx', args: ['@maz-ui/mcp'] } } }))
+      writeFile(cwd, '.mcp.json', JSON.stringify({ mcpServers: { 'maz-ui': { command: 'pnpm', args: ['exec', 'maz-ui-mcp'] } } }))
+
+      await runCli(['doctor', '--cwd', cwd])
+
+      expect(logged()).toContain('user     maz-ui: npx @maz-ui/mcp (not used: another server of the same name wins)')
+    })
+  })
+
+  describe('when doctor runs where Claude Code has no maz-ui server', () => {
+    it('then it says so', async () => {
+      vi.stubEnv('HOME', createTempDir())
+      const cwd = createTempDir()
+
+      expect(await runCli(['doctor', '--cwd', cwd])).toBe(1)
+      expect(logged()).toContain('not installed: the docs bundled in @maz-ui/mcp are used')
+      expect(logged()).toContain('Claude plugin    not enabled')
+      expect(logged()).toContain('    none')
+      expect(logged()).toContain('1 problem:')
     })
   })
 })
