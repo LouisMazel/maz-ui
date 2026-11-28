@@ -57,7 +57,10 @@ useHead({
 
       <ModernisationPullRequest :number="4" title="Le reste et le design" description="Navigation, retours visuels, affichage, révélations au scroll avec vReveal, et la cohérence du design : focus, arrondis, élévation." />
 
-      <!-- PR 4 sections -->
+      <ModernisationPr4Navigation />
+      <ModernisationPr4Feedback />
+      <ModernisationPr4Display />
+      <ModernisationPr4Reveal />
       <!-- PR 3 sections -->
     </main>
   </div>
