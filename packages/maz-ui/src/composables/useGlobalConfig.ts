@@ -189,7 +189,5 @@ export function useGlobalConfig<T extends Record<string, unknown>>(
  */
 export function useGlobalTopLabel(): ComputedRef<boolean> {
   const config = inject(GLOBAL_CONFIG_INJECTION_KEY, undefined)
-  const resolved = config?.global?.topLabel === true
-
-  return computed(() => resolved)
+  return computed(() => config?.global?.topLabel === true)
 }

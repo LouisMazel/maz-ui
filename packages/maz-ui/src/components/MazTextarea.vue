@@ -226,7 +226,10 @@ const hasLabelOrHint = computed(() => hint || !!slots.label || (!labelOnTop.valu
 
 const messageId = computed(() => `${instanceId.value}-message`)
 
-const describedBy = computed(() => (attrs['aria-describedby'] as string | undefined) ?? (assistiveText ? messageId.value : undefined))
+// A function, not a computed: the attributes are not reactive
+function getDescribedBy() {
+  return (attrs['aria-describedby'] as string | undefined) ?? (assistiveText ? messageId.value : undefined)
+}
 
 const { state, hasState, borderClass: borderStyle, textClass } = useFieldState(() => ({ error, success, warning }))
 
@@ -385,7 +388,7 @@ watch(() => modelValue, () => nextTick(resizeToContent))
         v-bind="$attrs"
         v-model="inputValue"
         :aria-invalid="error || undefined"
-        :aria-describedby="describedBy"
+        :aria-describedby="getDescribedBy()"
         :placeholder="placeholder || ' '"
         :name
         :rows="minRows"

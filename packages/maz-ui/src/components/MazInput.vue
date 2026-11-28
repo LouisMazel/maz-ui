@@ -413,7 +413,10 @@ const floatingText = computed(() => hint || (labelOnTop.value ? undefined : labe
 
 const messageId = computed(() => `${instanceId.value}-message`)
 
-const describedBy = computed(() => (attrs['aria-describedby'] as string | undefined) ?? (assistiveText ? messageId.value : undefined))
+// A function, not a computed: the attributes are not reactive
+function getDescribedBy() {
+  return (attrs['aria-describedby'] as string | undefined) ?? (assistiveText ? messageId.value : undefined)
+}
 
 const slots = useSlots()
 
@@ -457,6 +460,7 @@ function hasEndPart(): boolean {
 }
 
 function clear() {
+  debounceEmitValue.cancel()
   emits('update:model-value', '' as T)
   emits('clear')
   input.value?.focus()
@@ -550,7 +554,7 @@ const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
           ref="input"
           v-model="model"
           :aria-invalid="error || undefined"
-          :aria-describedby="describedBy"
+          :aria-describedby="getDescribedBy()"
           :placeholder="placeholder || ' '"
           :aria-label="label || placeholder"
           :type="inputType"
