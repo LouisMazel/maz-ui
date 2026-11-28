@@ -1,18 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_BTN_FONT_WEIGHT,
-  DEFAULT_CONTAINER_BG,
-  DEFAULT_DIALOG_MAX_WIDTH,
-  DEFAULT_DIALOG_MIN_WIDTH,
-  DEFAULT_DISABLED_CURSOR,
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_FONT_MONO,
-  DEFAULT_INPUT_BG,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SHADOW,
-  DEFAULT_SPACE,
-  typographyWith,
-} from './_defaults.ts'
+import { DEFAULT_BTN_FONT_WEIGHT, DEFAULT_CONTAINER_BG, DEFAULT_DIALOG_MAX_WIDTH, DEFAULT_DIALOG_MIN_WIDTH, DEFAULT_DISABLED_CURSOR, DEFAULT_DISABLED_OPACITY, DEFAULT_FONT_MONO, DEFAULT_INPUT_BG, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SHADOW, DEFAULT_SPACE, typographyWith } from './_defaults.ts'
 
 /**
  * Folio preset - "plasma": electric and modern, made for long reading. It styles maz-ui.com.
@@ -53,6 +40,7 @@ export const folio: ThemePreset = {
     'motion-fast': '120ms',
     'motion-normal': '240ms',
     'motion-slow': '360ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.32, 0.72, 0, 1)',
     'easing-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
     'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
@@ -98,6 +86,8 @@ export const folio: ThemePreset = {
       'info-foreground': WHITE,
       'contrast': INK,
       'contrast-foreground': PAPER,
+      'neutral': 'oklch(0.95 0.006 300)',
+      'neutral-foreground': INK,
       'divider': 'oklch(0.91 0.012 295)',
       'overlay': INK,
       'muted': 'oklch(0.5 0.03 290)',
@@ -122,6 +112,8 @@ export const folio: ThemePreset = {
       'info-foreground': NIGHT,
       'contrast': MOONLIGHT,
       'contrast-foreground': NIGHT,
+      'neutral': 'oklch(0.27 0.025 285)',
+      'neutral-foreground': MOONLIGHT,
       'divider': 'oklch(0.3 0.03 285)',
       'overlay': 'oklch(0.1 0.02 285)',
       'muted': 'oklch(0.74 0.03 290)',

@@ -1,18 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_BTN_FONT_WEIGHT,
-  DEFAULT_CONTAINER_BG,
-  DEFAULT_DIALOG_MAX_WIDTH,
-  DEFAULT_DIALOG_MIN_WIDTH,
-  DEFAULT_DISABLED_CURSOR,
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_FONT_MONO,
-  DEFAULT_INPUT_BG,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SHADOW,
-  DEFAULT_SPACE,
-  typographyWith,
-} from './_defaults.ts'
+import { DEFAULT_BTN_FONT_WEIGHT, DEFAULT_CONTAINER_BG, DEFAULT_DIALOG_MAX_WIDTH, DEFAULT_DIALOG_MIN_WIDTH, DEFAULT_DISABLED_CURSOR, DEFAULT_DISABLED_OPACITY, DEFAULT_FONT_MONO, DEFAULT_INPUT_BG, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SHADOW, DEFAULT_SPACE, typographyWith } from './_defaults.ts'
 
 /**
  * Obsidian preset — dark luxe / cinematic.
@@ -42,6 +29,7 @@ export const obsidian: ThemePreset = {
     'motion-fast': '80ms',
     'motion-normal': '160ms',
     'motion-slow': '240ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
     'easing-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
     'easing-in-out': 'cubic-bezier(0.87, 0, 0.13, 1)',
@@ -85,6 +73,8 @@ export const obsidian: ThemePreset = {
       'info-foreground': 'oklch(1 0 0)',
       'contrast': 'oklch(0.245 0.012 280)',
       'contrast-foreground': 'oklch(1 0 0)',
+      'neutral': 'oklch(0.945 0.006 280)',
+      'neutral-foreground': 'oklch(0.245 0.012 280)',
       'muted': 'oklch(0.55 0.022 280)',
       'divider': 'oklch(0.918 0.01 280)',
       'overlay': 'oklch(0.245 0.012 280)',
@@ -109,6 +99,8 @@ export const obsidian: ThemePreset = {
       'info-foreground': 'oklch(0.2 0.012 280)',
       'contrast': 'oklch(1 0 0)',
       'contrast-foreground': 'oklch(0.2 0.012 280)',
+      'neutral': 'oklch(0.31 0.012 280)',
+      'neutral-foreground': 'oklch(0.965 0.003 280)',
       'muted': 'oklch(0.665 0.018 280)',
       'divider': 'oklch(0.31 0.02 280)',
       'overlay': 'oklch(0.2 0.012 280)',
