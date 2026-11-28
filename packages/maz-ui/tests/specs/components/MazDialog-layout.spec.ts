@@ -36,6 +36,36 @@ describe('given a dialog header', () => {
   })
 })
 
+describe('given a dialog footer', () => {
+  const slots = { footer: '<button>Ok</button>' }
+
+  describe('when rendered', () => {
+    it('then it has no divider by default', () => {
+      expect(getWrapper({}, slots).find('.m-dialog-footer').classes()).not.toContain('--divider')
+    })
+  })
+
+  describe('when footer-divider is set', () => {
+    it('then it adds a divider above the footer', () => {
+      const wrapper = getWrapper({ footerDivider: true }, slots)
+      expect(wrapper.find('.m-dialog-footer').classes()).toContain('--divider')
+      expect(wrapper.find('.m-dialog-footer').classes()).toContain('maz:border-t')
+      expect(wrapper.find('.m-dialog-content').classes()).toContain('maz:pb-4')
+    })
+
+    it('then it does not duplicate the divider of a scrollable dialog', () => {
+      const wrapper = getWrapper({ footerDivider: true, scrollable: true }, slots)
+      expect(wrapper.find('.m-dialog-footer').classes()).not.toContain('--divider')
+      expect(wrapper.find('.m-dialog-content').classes()).toContain('maz:border-b')
+    })
+
+    it('then it keeps the content flush without content-padding', () => {
+      const wrapper = getWrapper({ footerDivider: true, contentPadding: false }, slots)
+      expect(wrapper.find('.m-dialog-content').classes()).not.toContain('maz:pb-4')
+    })
+  })
+})
+
 describe('given a dialog content', () => {
   describe('when content-padding is not set', () => {
     it('then it pads the content', () => {

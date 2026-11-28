@@ -32,6 +32,7 @@ const {
   minWidth = 'var(--maz-dialog-min-width, 32rem)',
   scrollable,
   headerDivider,
+  footerDivider,
   contentPadding = true,
   closeOnEscape = true,
   align = 'center',
@@ -74,6 +75,8 @@ export interface DialogProps {
   persistent?: boolean
   /** Add a divider under the header (always present with `scrollable`) */
   headerDivider?: boolean
+  /** Add a divider above the footer (always present with `scrollable`) */
+  footerDivider?: boolean
   /**
    * Add horizontal and bottom padding around the content of the dialog, set `false` for full-bleed content (list, image, table)
    * @default true
@@ -264,7 +267,7 @@ if (scrollable) {
         :class="{
           '--bottom-padding': !hasFooter,
           'maz:px-6': contentPadding,
-          'maz:pb-4': contentPadding && !hasFooter,
+          'maz:pb-4': contentPadding && (!hasFooter || (footerDivider && !scrollable)),
           'maz:scrollbar-themed maz:overflow-auto maz:overscroll-contain maz:border-t maz:border-divider': scrollable,
           'maz:py-4': scrollable && contentPadding,
           'maz:pt-4': contentPadding && headerDivider && !scrollable,
@@ -277,7 +280,11 @@ if (scrollable) {
           -->
         <slot :close="closeDialog" />
       </div>
-      <div v-if="hasFooter" class="m-dialog-footer maz:flex maz:items-center maz:justify-end maz:px-6 maz:py-4">
+      <div
+        v-if="hasFooter"
+        class="m-dialog-footer maz:flex maz:items-center maz:justify-end maz:px-6 maz:py-4"
+        :class="{ '--divider maz:border-t maz:border-divider': footerDivider && !scrollable }"
+      >
         <!--
             @slot Footer slot
               @binding {Function} close close function

@@ -245,7 +245,7 @@ The default widths are expressed in `rem`, so they scale with the preset's `base
 
 ## Header divider and content padding
 
-The header has the same space on every side. `header-divider` adds a line under it (a `scrollable` dialog always has one). The content is padded by default, set `:content-padding="false"` for full-bleed content (a list, a table, an image).
+The header has the same space on every side. `header-divider` adds a line under it and `footer-divider` a line above the footer (a `scrollable` dialog always has both). The content is padded by default, set `:content-padding="false"` for full-bleed content (a list, a table, an image).
 
 <ComponentDemo>
   <MazBtn @click="dividerOpened = true">Open dialog with divider</MazBtn>
