@@ -27,13 +27,8 @@ Définir les variants (`color` x `size` x `variant`) via une config type-safe (`
 
 ## Priorité moyenne - Composants devenus standards
 
-- **Command palette (⌘K)** : les briques existent (`useStringMatching`, recherche de `MazSelect`).
 - **Combobox / Autocomplete** en saisie libre (distinct de `MazSelect`).
-- **ContextMenu** (clic droit), **Menubar**, **NavigationMenu** (on n'a que `MazDropdown`).
-- **Breadcrumb**.
-- **MazTooltip** en composant avec slots (en complément de la directive `vTooltip`).
-- **Rating** et **ColorPicker**.
-- **Resizable / Splitter**, **ScrollArea** cross-browser, **Tree / TreeView**.
+- **Menubar** : barre de menus d'app (Fichier, Édition...), `MazNavigationMenu` couvre le menu de site.
 
 ## Priorité basse - Stratégique
 

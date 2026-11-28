@@ -183,6 +183,11 @@ describe('nuxt module', () => {
         vIntersect: false,
         vTooltip: false,
         vReveal: false,
+        vPress: false,
+        vRipple: false,
+        vMagnetic: false,
+        vTilt: false,
+        vDraw: false,
       })
     })
 
@@ -1074,6 +1079,51 @@ describe('nuxt module', () => {
         })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('v-reveal'),
+        )
+      })
+
+      it('should add v-press plugin when enabled', () => {
+        callSetup({
+          directives: { vPress: true },
+        })
+        expect(addPlugin).toHaveBeenCalledWith(
+          expect.stringContaining('v-press'),
+        )
+      })
+
+      it('should add v-ripple plugin when enabled', () => {
+        callSetup({
+          directives: { vRipple: true },
+        })
+        expect(addPlugin).toHaveBeenCalledWith(
+          expect.stringContaining('v-ripple'),
+        )
+      })
+
+      it('should add v-magnetic plugin when enabled', () => {
+        callSetup({
+          directives: { vMagnetic: true },
+        })
+        expect(addPlugin).toHaveBeenCalledWith(
+          expect.stringContaining('v-magnetic'),
+        )
+      })
+
+      it('should add v-tilt plugin when enabled', () => {
+        callSetup({
+          directives: { vTilt: true },
+        })
+        expect(addPlugin).toHaveBeenCalledWith(
+          expect.stringContaining('v-tilt'),
+        )
+      })
+
+      it('should add v-draw plugin when enabled', () => {
+        callSetup({
+          directives: { vDraw: true },
+        })
+        expect(addPlugin).toHaveBeenCalledWith(
+          expect.stringContaining('v-draw'),
         )
       })
 

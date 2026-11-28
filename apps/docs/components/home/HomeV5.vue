@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { HomeData } from '../../.vitepress/data/home.data'
 import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
+import { vReveal } from 'maz-ui/directives/vReveal'
 import { computed } from 'vue'
 import { V5_CHANGES } from './content'
 import HomeChapter from './HomeChapter.vue'
@@ -132,7 +133,7 @@ const SCALES = [
       </header>
 
       <figure class="maz:m-0 maz:grid maz:gap-3">
-        <div v-for="scale in SCALES" :key="scale.role" class="home-reveal maz:grid maz:grid-cols-[6.5rem_1fr] maz:items-center maz:gap-4">
+        <div v-for="scale in SCALES" :key="scale.role" v-reveal="{ effect: 'slide-up', mode: 'scroll' }" class="maz:grid maz:grid-cols-[6.5rem_1fr] maz:items-center maz:gap-4">
           <span class="maz:font-mono maz:text-xs maz:text-muted">{{ scale.role }}</span>
           <span class="maz:grid maz:grid-cols-11 maz:gap-0.5" aria-hidden="true">
             <span
@@ -151,7 +152,7 @@ const SCALES = [
 
       <ol class="maz:m-0 maz:grid maz:list-none maz:gap-4 maz:p-0 maz:tab-m:grid-cols-2 maz:lap-s:col-span-full maz:lap-m:grid-cols-3">
         <li v-for="(change, index) in V5_CHANGES" :key="change.title" class="maz:min-w-0">
-          <MazAnimatedElement :delay="index * 80" :duration="700" class="maz:h-full">
+          <div v-reveal="{ effect: 'slide-up', delay: index * 80, duration: 700 }" class="maz:h-full">
             <MazCardSpotlight class="maz:size-full" content-class="maz:flex maz:h-full maz:flex-col maz:gap-3">
               <span class="maz:font-mono maz:text-xs maz:text-primary">{{ String(index + 1).padStart(2, '0') }}</span>
               <h3 class="maz:m-0 maz:font-display maz:text-xl maz:font-semibold maz:tracking-tight">
@@ -165,10 +166,10 @@ const SCALES = [
                 <span dir="rtl" lang="ar"><MazBtn size="sm" color="surface" variant="outline" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">التالي</MazBtn></span>
               </div>
             </MazCardSpotlight>
-          </MazAnimatedElement>
+          </div>
         </li>
         <li class="maz:min-w-0 maz:tab-m:col-span-2">
-          <MazAnimatedElement :delay="V5_CHANGES.length * 80" :duration="700" class="maz:h-full">
+          <div v-reveal="{ effect: 'slide-up', delay: V5_CHANGES.length * 80, duration: 700 }" class="maz:h-full">
             <MazCardSpotlight color="secondary" class="maz:size-full" content-class="maz:flex maz:h-full maz:flex-col maz:gap-3">
               <span class="maz:font-mono maz:text-xs maz:text-secondary">{{ String(V5_CHANGES.length + 1).padStart(2, '0') }}</span>
               <h3 class="maz:m-0 maz:font-display maz:text-xl maz:font-semibold maz:tracking-tight">
@@ -179,7 +180,7 @@ const SCALES = [
               </p>
               <MazWindowMockup variant="terminal" title="Upgrade to v5" :code="data.snippets.upgrade.code" :language="data.snippets.upgrade.lang" class="maz:mt-auto" />
             </MazCardSpotlight>
-          </MazAnimatedElement>
+          </div>
         </li>
       </ol>
     </div>

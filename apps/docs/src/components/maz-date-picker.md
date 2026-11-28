@@ -329,6 +329,8 @@ The model value is not passed through the slot - use your own `v-model` ref (her
 
 ## Time Selection
 
+The time part is the wheel panel of [MazTimePicker](./maz-time-picker.md), shown next to the calendar. Scroll or click a wheel, or focus it and use the arrows, Page up, Page down, Home and End. The 12h format adds an AM/PM wheel. `minute-interval` sets the minutes step, `disabled-hours` disables hours, and `min-date` / `max-date` disable the times out of the bounds on their day. The value keeps the `format` you set.
+
 ### Date + Time (24h format)
 
 <ComponentDemo>

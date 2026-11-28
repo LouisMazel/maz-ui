@@ -124,6 +124,11 @@ const defaults = {
     vIntersect: false,
     vTooltip: false,
     vReveal: false,
+    vPress: false,
+    vRipple: false,
+    vMagnetic: false,
+    vTilt: false,
+    vDraw: false,
   },
   agents: {
     rules: false,
@@ -590,6 +595,26 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.directives.vReveal) {
       addPlugin(resolve(_dirname, './runtime/plugins/v-reveal'))
+    }
+
+    if (moduleOptions.directives.vPress) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-press'))
+    }
+
+    if (moduleOptions.directives.vRipple) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-ripple'))
+    }
+
+    if (moduleOptions.directives.vMagnetic) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-magnetic'))
+    }
+
+    if (moduleOptions.directives.vTilt) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-tilt'))
+    }
+
+    if (moduleOptions.directives.vDraw) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-draw'))
     }
 
     // Composables

@@ -109,7 +109,7 @@ export interface MazUiDefaultsOptions {
 
 export type MazComponentName = Exclude<keyof MazUiDefaultsOptions, 'global'>
 
-export const GLOBAL_CONFIG_INJECTION_KEY: InjectionKey<MazUiDefaultsOptions> = Symbol('mazGlobalConfig')
+export const GLOBAL_CONFIG_INJECTION_KEY: InjectionKey<MazUiDefaultsOptions> = Symbol.for('maz-ui:global-config')
 
 /**
  * Whether the prop `key` (or its kebab-case form) was explicitly passed to the

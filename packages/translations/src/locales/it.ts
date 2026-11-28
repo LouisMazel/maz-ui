@@ -24,6 +24,10 @@ export default {
     openSidebar: 'Apri la barra laterale',
     closeSidebar: 'Chiudi la barra laterale',
     resizeSheet: 'Ridimensiona il foglio',
+    before: 'Prima',
+    after: 'Dopo',
+    resize: 'Ridimensiona',
+    moreItems: 'altri {count}',
   },
   selectCountry: {
     searchPlaceholder: 'Cerca paese',
@@ -233,5 +237,72 @@ export default {
     previous: 'Immagine precedente',
     next: 'Immagine successiva',
     loading: 'Caricamento...',
+  },
+  tour: {
+    label: 'Visita guidata',
+    next: 'Avanti',
+    previous: 'Indietro',
+    skip: 'Salta',
+    done: 'Fatto',
+    stepOf: 'Passo {step} di {total}',
+  },
+  breadcrumb: {
+    label: 'Percorso di navigazione',
+    showHidden: 'Mostra le pagine nascoste',
+  },
+  navigationMenu: {
+    label: 'Navigazione principale',
+  },
+  emptyState: {
+    noResults: 'Nessun risultato',
+    noResultsFor: 'Nessun risultato per "{query}"',
+  },
+  sparkline: {
+    up: 'in aumento',
+    down: 'in calo',
+    flat: 'stabile',
+    label: 'Andamento {trend}: minimo {min}, massimo {max}, ultimo {last}',
+  },
+  statCard: {
+    chart: '{label}: andamento',
+  },
+  tree: {
+    added: 'Aggiunto',
+    modified: 'Modificato',
+    deleted: 'Eliminato',
+  },
+  rating: {
+    label: 'Valutazione',
+    value: '{value} su {max}',
+  },
+  timePicker: {
+    label: 'Ora',
+    hours: 'Ore',
+    minutes: 'Minuti',
+    period: 'AM o PM',
+    slots: 'Orari disponibili',
+  },
+  inlineEdit: {
+    edit: 'Modifica',
+  },
+  kbd: {
+    command: 'Comando',
+    control: 'Controllo',
+    option: 'Opzione',
+    shift: 'Maiusc',
+  },
+  commandPalette: {
+    label: 'Tavolozza dei comandi',
+    placeholder: 'Cerca un comando',
+    noResults: 'Nessun risultato',
+    results: '{count} risultati',
+  },
+  contextMenu: {
+    label: 'Menu contestuale',
+  },
+  themeToggle: {
+    toDark: 'Passa alla modalità scura',
+    toSystem: 'Usa il tema di sistema',
+    toLight: 'Passa alla modalità chiara',
   },
 } satisfies MazUiTranslationsNestedSchema

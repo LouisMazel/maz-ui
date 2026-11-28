@@ -395,6 +395,27 @@ describe('given the reveal system', () => {
       expect(IntersectionObserverMock.disconnect).toHaveBeenCalledTimes(1)
     })
 
+    it('then two handlers of the same element are both called and stopping one keeps the other', () => {
+      const element = create()
+      const [first, second] = [vi.fn(), vi.fn()]
+      const stopFirst = observeIntersection(element, first)
+      const stopSecond = observeIntersection(element, second)
+
+      fire(element)
+
+      expect(first).toHaveBeenCalledTimes(1)
+      expect(second).toHaveBeenCalledTimes(1)
+
+      stopFirst()
+      fire(element)
+
+      expect(first).toHaveBeenCalledTimes(1)
+      expect(second).toHaveBeenCalledTimes(2)
+      expect(IntersectionObserverMock.disconnect).not.toHaveBeenCalled()
+
+      stopSecond()
+    })
+
     it('then each threshold has its own observer', () => {
       const element = create()
       const stops = [observeIntersection(element, vi.fn()), observeIntersection(create(), vi.fn(), { threshold: 0.5 })]

@@ -61,7 +61,15 @@ useHead({
       <ModernisationPr4Feedback />
       <ModernisationPr4Display />
       <ModernisationPr4Reveal />
-      <!-- PR 3 sections -->
+
+      <ModernisationPullRequest :number="5" title="Nouveaux composants" description="Palette de commandes, menu contextuel, visite guidée, notes, arborescence, panneaux redimensionnables, effets et directives de mouvement, et la homepage de la doc." />
+
+      <ModernisationPr5Commands />
+      <ModernisationPr5Navigation />
+      <ModernisationPr5Forms />
+      <ModernisationPr5Data />
+      <ModernisationPr5Layout />
+      <ModernisationPr5Effects />
     </main>
   </div>
 </template>

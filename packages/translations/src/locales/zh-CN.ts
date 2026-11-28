@@ -24,6 +24,10 @@ export default {
     openSidebar: '打开侧边栏',
     closeSidebar: '关闭侧边栏',
     resizeSheet: '调整面板大小',
+    before: '之前',
+    after: '之后',
+    resize: '调整大小',
+    moreItems: '另外 {count} 个',
   },
   selectCountry: {
     searchPlaceholder: '搜索国家',
@@ -233,5 +237,72 @@ export default {
     previous: '上一张图片',
     next: '下一张图片',
     loading: '加载中...',
+  },
+  tour: {
+    label: '导览',
+    next: '下一步',
+    previous: '上一步',
+    skip: '跳过',
+    done: '完成',
+    stepOf: '第 {step} 步，共 {total} 步',
+  },
+  breadcrumb: {
+    label: '面包屑导航',
+    showHidden: '显示隐藏的页面',
+  },
+  navigationMenu: {
+    label: '主导航',
+  },
+  emptyState: {
+    noResults: '没有结果',
+    noResultsFor: '没有与“{query}”匹配的内容',
+  },
+  sparkline: {
+    up: '上升',
+    down: '下降',
+    flat: '平稳',
+    label: '趋势{trend}：最小 {min}，最大 {max}，最新 {last}',
+  },
+  statCard: {
+    chart: '{label}：趋势',
+  },
+  tree: {
+    added: '已添加',
+    modified: '已修改',
+    deleted: '已删除',
+  },
+  rating: {
+    label: '评分',
+    value: '{value} / {max}',
+  },
+  timePicker: {
+    label: '时间',
+    hours: '小时',
+    minutes: '分钟',
+    period: '上午或下午',
+    slots: '可用时间',
+  },
+  inlineEdit: {
+    edit: '编辑',
+  },
+  kbd: {
+    command: '命令',
+    control: '控制',
+    option: '选项',
+    shift: 'Shift',
+  },
+  commandPalette: {
+    label: '命令面板',
+    placeholder: '搜索命令',
+    noResults: '没有结果',
+    results: '{count} 个结果',
+  },
+  contextMenu: {
+    label: '上下文菜单',
+  },
+  themeToggle: {
+    toDark: '切换到深色模式',
+    toSystem: '使用系统主题',
+    toLight: '切换到浅色模式',
   },
 } satisfies MazUiTranslationsNestedSchema

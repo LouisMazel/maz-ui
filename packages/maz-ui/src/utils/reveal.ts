@@ -71,13 +71,13 @@ type Handler = (entry: IntersectionObserverEntry, rank: number) => void
 
 interface Pool {
   observer: IntersectionObserver
-  count: number
+  /** Several directives can observe the same element (`v-reveal` and `v-tilt`): one set of handlers per element */
+  handlers: Map<Element, Set<Handler>>
 }
 
 const pools = new Map<string, Pool>()
-const handlers = new WeakMap<Element, Handler>()
 
-function dispatch(entries: IntersectionObserverEntry[]) {
+function dispatch(pool: Pool, entries: IntersectionObserverEntry[]) {
   const entering = entries
     .filter(entry => entry.isIntersecting)
     // eslint-disable-next-line sonarjs/bitwise-operators
@@ -85,7 +85,9 @@ function dispatch(entries: IntersectionObserverEntry[]) {
 
   for (const entry of entries) {
     const rank = entering.indexOf(entry)
-    handlers.get(entry.target)?.(entry, Math.max(rank, 0))
+
+    for (const handler of pool.handlers.get(entry.target) ?? [])
+      handler(entry, Math.max(rank, 0))
   }
 }
 
@@ -102,18 +104,25 @@ export function observeIntersection(element: Element, handler: Handler, options:
   let pool = pools.get(key)
 
   if (!pool) {
-    pool = {
-      observer: new IntersectionObserver(dispatch, options.threshold === undefined
-        ? { rootMargin: '0px 0px -10% 0px' }
-        : { threshold: [0, options.threshold] }),
-      count: 0,
-    }
-    pools.set(key, pool)
+    const created: Pool = { observer: undefined as unknown as IntersectionObserver, handlers: new Map() }
+    created.observer = new IntersectionObserver(entries => dispatch(created, entries), options.threshold === undefined
+      ? { rootMargin: '0px 0px -10% 0px' }
+      : { threshold: [0, options.threshold] })
+    pools.set(key, created)
+    pool = created
   }
 
   const current = pool
-  current.count++
-  handlers.set(element, handler)
+  let elementHandlers = current.handlers.get(element)
+
+  if (!elementHandlers) {
+    elementHandlers = new Set()
+    current.handlers.set(element, elementHandlers)
+  }
+
+  elementHandlers.add(handler)
+  // Observing again gives the new handler the current visibility of the element
+  current.observer.unobserve(element)
   current.observer.observe(element)
 
   let stopped = false
@@ -122,11 +131,17 @@ export function observeIntersection(element: Element, handler: Handler, options:
     if (stopped)
       return
     stopped = true
-    current.observer.unobserve(element)
-    handlers.delete(element)
-    current.count--
 
-    if (current.count <= 0) {
+    const set = current.handlers.get(element)
+    set?.delete(handler)
+
+    if (set && set.size > 0)
+      return
+
+    current.handlers.delete(element)
+    current.observer.unobserve(element)
+
+    if (current.handlers.size === 0) {
       current.observer.disconnect()
       pools.delete(key)
     }

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { HomeData } from '../../.vitepress/data/home.data'
 import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
+import { vReveal } from 'maz-ui/directives/vReveal'
 import { computed } from 'vue'
 import { FOUNDATIONS } from './content'
 import HomeChapter from './HomeChapter.vue'
@@ -11,7 +12,7 @@ const swatch = computed(() => data.presets.find(preset => preset.name === 'obsid
 </script>
 
 <template>
-  <HomeChapter id="foundations" number="04" label="Foundations" :swatch night>
+  <HomeChapter id="foundations" number="05" label="Foundations" :swatch night>
     <header>
       <p class="home-eyebrow">
         Why it holds up in production
@@ -22,7 +23,7 @@ const swatch = computed(() => data.presets.find(preset => preset.name === 'obsid
     </header>
 
     <ol class="maz:m-0 maz:list-none maz:border-t maz:border-divider maz:p-0">
-      <li v-for="(item, index) in FOUNDATIONS" :key="item.title" class="home-reveal maz:grid maz:gap-6 maz:border-b maz:border-divider maz:py-[clamp(1.75rem,3vw,2.5rem)] maz:tab-l:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] maz:tab-l:items-start maz:tab-l:gap-12">
+      <li v-for="(item, index) in FOUNDATIONS" :key="item.title" v-reveal="{ effect: 'slide-up', mode: 'scroll' }" class="maz:grid maz:gap-6 maz:border-b maz:border-divider maz:py-[clamp(1.75rem,3vw,2.5rem)] maz:tab-l:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] maz:tab-l:items-start maz:tab-l:gap-12">
         <div class="maz:grid maz:grid-cols-[2.5rem_1fr] maz:items-baseline maz:gap-x-4 maz:gap-y-2">
           <span class="maz:font-mono maz:text-xs maz:text-primary">{{ String(index + 1).padStart(2, '0') }}</span>
           <h3 class="maz:m-0 maz:font-display maz:text-[clamp(1.375rem,2.4vw,1.75rem)] maz:font-semibold maz:tracking-tight">
