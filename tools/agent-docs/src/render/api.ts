@@ -43,13 +43,15 @@ export function renderProp(prop: PropApi): string {
 }
 
 function renderEvents(api: ComponentApi, heading: string): string[] {
-  if (api.events.length === 0)
+  const events = api.events.filter(event => event.deprecated === undefined)
+
+  if (events.length === 0)
     return []
 
   return [
     `${heading} Events`,
     '',
-    ...api.events.map(event => `- ${code(`@${event.name}`)}${event.payload
+    ...events.map(event => `- ${code(`@${event.name}`)}${event.payload
       ? ` (payload: ${code(event.payload)})`
       : ''}${event.description
       ? `: ${event.description}`
@@ -103,7 +105,7 @@ function renderExpose(api: ComponentApi, heading: string): string[] {
 export function renderComponentApi(api: ComponentApi, headingLevel = 2): string {
   const heading = '#'.repeat(headingLevel)
   const sub = '#'.repeat(headingLevel + 1)
-  const props = api.props.filter(prop => !HTML_ATTRIBUTE_PROPS.has(prop.name))
+  const props = api.props.filter(prop => !HTML_ATTRIBUTE_PROPS.has(prop.name) && prop.deprecated === undefined)
 
   return [
     `${heading} ${api.name} API`,
