@@ -43,11 +43,23 @@ export const DEFAULT_LIGHT_SHADOW = {
  * ones get a hairline light edge that detaches the surface. The light ones are unchanged.
  */
 export const DEFAULT_SHADOW: ThemeScales['shadow'] = {
-  sm: { light: DEFAULT_LIGHT_SHADOW.sm, dark: '0 1px 2px 0 rgb(0 0 0 / 0.4)' },
-  md: { light: DEFAULT_LIGHT_SHADOW.md, dark: '0 4px 6px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.4)' },
-  lg: { light: DEFAULT_LIGHT_SHADOW.lg, dark: '0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.04)' },
-  xl: { light: DEFAULT_LIGHT_SHADOW.xl, dark: '0 20px 25px -5px rgb(0 0 0 / 0.55), 0 8px 10px -6px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.05)' },
-  elevation: { light: DEFAULT_LIGHT_SHADOW.elevation, dark: '0 4px 12px -2px rgb(0 0 0 / 0.45), 0 2px 4px -1px rgb(0 0 0 / 0.35), 0 0 0 1px rgb(255 255 255 / 0.04)' },
+  'sm': { light: DEFAULT_LIGHT_SHADOW.sm, dark: '0 1px 2px 0 rgb(0 0 0 / 0.4)' },
+  'md': { light: DEFAULT_LIGHT_SHADOW.md, dark: '0 4px 6px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.4)' },
+  'lg': { light: DEFAULT_LIGHT_SHADOW.lg, dark: '0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.04)' },
+  'xl': { light: DEFAULT_LIGHT_SHADOW.xl, dark: '0 20px 25px -5px rgb(0 0 0 / 0.55), 0 8px 10px -6px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.05)' },
+  'elevation': { light: DEFAULT_LIGHT_SHADOW.elevation, dark: '0 4px 12px -2px rgb(0 0 0 / 0.45), 0 2px 4px -1px rgb(0 0 0 / 0.35), 0 0 0 1px rgb(255 255 255 / 0.04)' },
+  'elevation-1': {
+    light: '0 2px 6px -1px rgb(0 0 0 / 0.1), 0 1px 3px -1px rgb(0 0 0 / 0.08)',
+    dark: '0 2px 6px -1px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.1)',
+  },
+  'elevation-2': {
+    light: '0 8px 20px -4px rgb(0 0 0 / 0.14), 0 3px 8px -2px rgb(0 0 0 / 0.08)',
+    dark: '0 8px 20px -4px rgb(0 0 0 / 0.6), 0 3px 8px -2px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.16)',
+  },
+  'elevation-3': {
+    light: '0 20px 40px -8px rgb(0 0 0 / 0.22), 0 8px 16px -4px rgb(0 0 0 / 0.12)',
+    dark: '0 20px 44px -8px rgb(0 0 0 / 0.75), 0 8px 18px -4px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.24)',
+  },
 }
 
 /**

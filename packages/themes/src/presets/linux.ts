@@ -57,13 +57,25 @@ export const linux: ThemePreset = {
       '3xl': '24px',
     },
     shadow: {
-      sm: '0 1px 2px rgb(0 0 6 / 0.07)',
-      md: '0 0 0 1px rgb(0 0 6 / 0.03), 0 1px 3px 1px rgb(0 0 6 / 0.07), 0 2px 6px 2px rgb(0 0 6 / 0.03)',
-      lg: '0 1px 5px 1px rgb(0 0 6 / 0.09), 0 2px 14px 3px rgb(0 0 6 / 0.05)',
-      xl: '0 2px 8px 2px rgb(0 0 6 / 0.13), 0 3px 20px 10px rgb(0 0 6 / 0.09)',
-      elevation: {
+      'sm': '0 1px 2px rgb(0 0 6 / 0.07)',
+      'md': '0 0 0 1px rgb(0 0 6 / 0.03), 0 1px 3px 1px rgb(0 0 6 / 0.07), 0 2px 6px 2px rgb(0 0 6 / 0.03)',
+      'lg': '0 1px 5px 1px rgb(0 0 6 / 0.09), 0 2px 14px 3px rgb(0 0 6 / 0.05)',
+      'xl': '0 2px 8px 2px rgb(0 0 6 / 0.13), 0 3px 20px 10px rgb(0 0 6 / 0.09)',
+      'elevation': {
         light: '0 0 0 1px rgb(0 0 6 / 0.03), 0 1px 3px 1px rgb(0 0 6 / 0.07), 0 2px 6px 2px rgb(0 0 6 / 0.03)',
         dark: '0 0 0 1px rgb(255 255 255 / 0.06), 0 1px 3px 1px rgb(0 0 0 / 0.4), 0 2px 6px 2px rgb(0 0 0 / 0.25)',
+      },
+      'elevation-1': {
+        light: '0 0 0 1px rgb(0 0 6 / 0.05), 0 1px 3px 1px rgb(0 0 6 / 0.1)',
+        dark: '0 0 0 1px rgb(255 255 255 / 0.07), 0 1px 3px 1px rgb(0 0 0 / 0.45)',
+      },
+      'elevation-2': {
+        light: '0 0 0 1px rgb(0 0 6 / 0.06), 0 2px 8px 2px rgb(0 0 6 / 0.14), 0 4px 14px 3px rgb(0 0 6 / 0.06)',
+        dark: '0 0 0 1px rgb(255 255 255 / 0.1), 0 2px 8px 2px rgb(0 0 0 / 0.6), 0 4px 14px 3px rgb(0 0 0 / 0.35)',
+      },
+      'elevation-3': {
+        light: '0 0 0 1px rgb(0 0 6 / 0.08), 0 4px 16px 4px rgb(0 0 6 / 0.2), 0 10px 30px 8px rgb(0 0 6 / 0.1)',
+        dark: '0 0 0 1px rgb(255 255 255 / 0.15), 0 4px 16px 4px rgb(0 0 0 / 0.75), 0 10px 30px 8px rgb(0 0 0 / 0.5)',
       },
     },
   },
