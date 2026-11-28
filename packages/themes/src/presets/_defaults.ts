@@ -10,6 +10,9 @@ import type { RoundedScaleKey, ThemeComponentBg, ThemeComponents, ThemeFoundatio
  */
 export const DEFAULT_SPACE: NonNullable<ThemeFoundation['space']> = '0.25rem'
 
+/** Border width of a boxed field with the focus (WCAG 2.4.13). */
+export const DEFAULT_FOCUS_BORDER_WIDTH: NonNullable<ThemeFoundation['focus-border-width']> = '2px'
+
 /**
  * Multipliers used to derive the rounded scale from `md` when a key is not
  * explicitly set. Anchored on `md = 1` (implicit). Picked to match the

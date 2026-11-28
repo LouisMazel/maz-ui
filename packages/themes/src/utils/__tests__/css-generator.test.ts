@@ -189,6 +189,25 @@ describe('given generateCSS function', () => {
       it('then emits the font-family token', () => {
         expect(css).toContain('--maz-font-family:')
       })
+
+      it('then the focus border width is 2px by default', () => {
+        expect(css).toContain('--maz-focus-border-width: 2px;')
+      })
+    })
+
+    describe('when the preset sets the focus border width', () => {
+      const css = generateCSS(
+        { ...mazUi, foundation: { ...mazUi.foundation, 'focus-border-width': '3px' } },
+        { prefix: 'maz', mode: 'light', darkSelectorStrategy: 'class', darkClass: 'dark' },
+      )
+
+      it('then emits the given width', () => {
+        expect(css).toContain('--maz-focus-border-width: 3px;')
+      })
+
+      it('then the default is not emitted', () => {
+        expect(css).not.toContain('--maz-focus-border-width: 2px;')
+      })
     })
 
     describe('when foundation is undefined', () => {

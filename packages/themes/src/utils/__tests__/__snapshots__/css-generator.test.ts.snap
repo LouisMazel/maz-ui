@@ -23,6 +23,7 @@ exports[`given generateCSS function > when generating with mode=both and darkSel
     --maz-disabled-opacity: 0.5;
     --maz-disabled-cursor: not-allowed;
     --maz-space: 0.25rem;
+    --maz-focus-border-width: 2px;
     --maz-rounded-xs: calc(var(--maz-rounded-md) * 0.25);
     --maz-rounded-sm: calc(var(--maz-rounded-md) * 0.5);
     --maz-rounded-md: 0.7rem;

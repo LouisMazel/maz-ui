@@ -1,6 +1,6 @@
 import type { RoundedScaleKey, ThemeColors, ThemeComponentBg, ThemeFocusRing, ThemeFoundation, ThemeMode, ThemePreset, ThemeShadowValue } from '../types.ts'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults.ts'
+import { DEFAULT_FOCUS_BORDER_WIDTH, DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults.ts'
 import { normalizeColor } from './color-parser.ts'
 
 export interface CSSOptions {
@@ -200,6 +200,8 @@ function appendFoundation(lines: string[], foundation: Partial<ThemeFoundation> 
     if (value)
       lines.push(`    --${prefix}-${key}: ${value};`)
   }
+  if (!foundation['focus-border-width'])
+    lines.push(`    --${prefix}-focus-border-width: ${DEFAULT_FOCUS_BORDER_WIDTH};`)
 }
 
 function isPerModeShadow(value: ThemeShadowValue | undefined): value is { light: string, dark: string } {
