@@ -3,9 +3,10 @@ import type { VTooltipBindingValue } from '../directives/vTooltip.ts'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazDropdownMenuItem, MazDropdownProps } from './MazDropdown.vue'
 import type { MazPopoverPosition } from './MazPopover.vue'
-import type { MazSize } from './types.ts'
+import type { MazFillVariant, MazSize } from './types.ts'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { computed } from 'vue'
+import { useGlobalConfig, useInstanceFillVariant } from '../composables/useGlobalConfig.ts'
 import { vTooltip } from '../directives/vTooltip.ts'
 import MazBtn from './MazBtn.vue'
 import MazDropdown from './MazDropdown.vue'
@@ -32,7 +33,7 @@ export interface MazBtnDropdownProps {
   size?: MazBtnProps['size']
   /**
    * Color of both parts
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface' | 'container'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral' | 'transparent' | 'surface' | 'container'`
    * @default 'primary'
    */
   color?: MazBtnProps['color']
@@ -43,12 +44,20 @@ export interface MazBtnDropdownProps {
    */
   roundedSize?: MazBtnProps['roundedSize']
   /**
+   * Fill style of both parts: `solid` the full color, `soft` a tinted background, `outline` a border, `ghost` no background until hovered
+   * @values `'solid' | 'soft' | 'outline' | 'ghost'`
+   * @default 'solid'
+   */
+  variant?: MazFillVariant
+  /**
    * If true, both parts have a pastel color
+   * @deprecated Use `variant="soft"` instead
    * @default false
    */
   pastel?: boolean
   /**
    * If true, both parts have the "border" style
+   * @deprecated Use `variant="outline"` instead
    * @default false
    */
   outlined?: boolean
@@ -147,10 +156,15 @@ const TOGGLE_PADDING_CLASS: Record<MazSize, string> = {
   mini: 'maz:px-0.5!',
 }
 
-const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: NonNullable<MazBtnProps['roundedSize']> }>('MazBtnDropdown', {
+const { size, roundedSize, variant: configVariant } = useGlobalConfig<{ size: MazSize, roundedSize: NonNullable<MazBtnProps['roundedSize']>, variant: MazFillVariant | undefined }>('MazBtnDropdown', {
   size: 'md',
   roundedSize: 'md',
+  variant: undefined,
 })
+const variant = useInstanceFillVariant(configVariant)
+
+// Removed in v6 (plans/ROADMAP.md): `outlined` and `pastel` are aliases of `variant`
+const variantProps = computed(() => variant.value ? { variant: variant.value } : {})
 </script>
 
 <template>
@@ -164,6 +178,7 @@ const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: NonN
       :size
       :color
       :rounded-size
+      v-bind="variantProps"
       :pastel
       :outlined
       :loading
@@ -194,6 +209,7 @@ const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: NonN
           :size
           :color
           :rounded-size
+          v-bind="variantProps"
           :pastel
           :outlined
           :disabled="disabled || menuDisabled"

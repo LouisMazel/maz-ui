@@ -8,15 +8,19 @@ import { useThemeEditor } from './useThemeEditor'
 const editor = useThemeEditor()
 
 const DURATIONS = [
-  { key: 'motion-fast', label: 'Fast', hint: 'Hovers, small toggles.' },
+  { key: 'motion-instant', label: 'Instant', hint: 'Press, hover, toggle.' },
+  { key: 'motion-fast', label: 'Fast', hint: 'Tooltips, menus, switches.' },
   { key: 'motion-normal', label: 'Normal', hint: 'Default of the transitions.' },
   { key: 'motion-slow', label: 'Slow', hint: 'Panels, dialogs, large moves.' },
+  { key: 'motion-slower', label: 'Slower', hint: 'Reveals, large transitions.' },
 ] as const
 
 const EASINGS = [
   { key: 'easing-out', label: 'Ease out', hint: 'Elements that enter.' },
   { key: 'easing-in', label: 'Ease in', hint: 'Elements that leave.' },
   { key: 'easing-in-out', label: 'Ease in-out', hint: 'Elements that move.' },
+  { key: 'easing-spring', label: 'Spring', hint: 'Sliding indicators, sheets. A `linear()` curve, see springEasing.' },
+  { key: 'easing-bounce', label: 'Bounce', hint: 'Check marks, press feedback.' },
 ] as const
 
 const CURSORS = [
@@ -44,7 +48,7 @@ const played = ref(false)
             Durations and easings of every transition of the components.
           </p>
         </div>
-        <MazBtn size="xs" color="surface" outlined :start-icon="MazPlay" @click="played = !played">
+        <MazBtn size="xs" color="surface" variant="outline" :start-icon="MazPlay" @click="played = !played">
           Play
         </MazBtn>
       </header>
@@ -58,7 +62,7 @@ const played = ref(false)
               :style="{
                 insetInlineStart: played ? 'calc(100% - 0.75rem)' : '0',
                 transitionProperty: 'inset-inline-start',
-                transitionDuration: `var(--maz-${item.key})`,
+                transitionDuration: `calc(var(--maz-${item.key}) * var(--maz-motion-scale, 1))`,
                 transitionTimingFunction: 'var(--maz-easing-in-out)',
               }"
             />
@@ -87,6 +91,17 @@ const played = ref(false)
           debounce
           input-classes="maz:font-mono maz:text-xs"
           @update:model-value="editor.set(['foundation', item.key], $event)"
+        />
+      </EditorField>
+      <EditorField label="Speed" :paths="[['foundation', 'motion-scale']]" :value="editor.get(['foundation', 'motion-scale']) || '1'" hint="Multiplies every duration: 0.5 is twice faster.">
+        <MazSlider
+          :model-value="Number.parseFloat(editor.get(['foundation', 'motion-scale']) || '1')"
+          :min="0.25"
+          :max="2"
+          :step="0.05"
+          :divider="false"
+          aria-label="Motion speed"
+          @update:model-value="editor.set(['foundation', 'motion-scale'], String($event))"
         />
       </EditorField>
     </section>

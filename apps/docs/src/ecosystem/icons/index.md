@@ -90,11 +90,11 @@ Each icon also has four imports. The [icon set](./icon-set.md) gives them for ea
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
-    <MazBtn :start-icon="MazStarRaw" color="warning" pastel>
+    <MazBtn :start-icon="MazStarRaw" color="warning" variant="soft">
       Favorite
     </MazBtn>
     <MazHeart class="maz:size-6 maz:text-destructive" />
-    <MazBtn color="contrast" outlined @click="showSettings = !showSettings">
+    <MazBtn color="contrast" variant="outline" @click="showSettings = !showSettings">
       Settings
     </MazBtn>
     <LazyMazCog6Tooth v-if="showSettings" class="maz:size-6 maz:animate-spin" />
@@ -114,11 +114,11 @@ const showSettings = ref(false)
 </script>
 
 <template>
-  <MazBtn :start-icon="MazStar" color="warning" pastel>
+  <MazBtn :start-icon="MazStar" color="warning" variant="soft">
     Favorite
   </MazBtn>
   <MazHeart class="size-6 text-destructive" />
-  <MazBtn color="contrast" outlined @click="showSettings = !showSettings">
+  <MazBtn color="contrast" variant="outline" @click="showSettings = !showSettings">
     Settings
   </MazBtn>
   <MazCog6Tooth v-if="showSettings" class="size-6 animate-spin" />
