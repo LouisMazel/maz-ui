@@ -16,7 +16,7 @@ const galleryImages = photoIds.slice(0, 7).map(id => ({ src: full(id), thumbnail
 const standaloneImages = photoIds.slice(0, 5).map((id, index) => ({
   src: full(id),
   alt: `Photo ${id}`,
-  caption: index % 2 === 0 ? `Caption of the photo ${index + 1}` : undefined,
+  caption: index % 2 === 0 ? `Légende de la photo ${index + 1}` : undefined,
 }))
 
 const open = ref(false)
@@ -27,9 +27,9 @@ const index = ref(0)
   <ModernisationSection
     id="pr2-lightbox"
     title="PR 2. Lightbox"
-    description="v-fullscreen-img, MazGallery and MazLightbox share one viewer: the image grows from its thumbnail, with swipe, zoom, keyboard and captions."
+    description="v-fullscreen-img, MazGallery et MazLightbox partagent un seul visualiseur : l'image grandit depuis sa miniature, avec balayage, zoom, clavier et légendes."
   >
-    <ModernisationDemo title="v-fullscreen-img: two groups" hint="Each row is its own group (same parent). Open one, use the arrows, Home and End, swipe, click to zoom on a point, drag down to close. The thumbnails are focusable: Enter or Space opens them.">
+    <ModernisationDemo title="v-fullscreen-img : deux groupes" hint="Chaque ligne est son propre groupe (même parent). Ouvre une image, utilise les flèches, Début et Fin, le balayage, clique pour zoomer sur un point, glisse vers le bas pour fermer. Les miniatures sont focalisables : Entrée ou Espace les ouvre.">
       <div class="flex flex-col gap-4">
         <div class="grid grid-cols-4 gap-2">
           <img
@@ -45,7 +45,7 @@ const index = ref(0)
           <img
             v-for="id in photoIds.slice(4)"
             :key="id"
-            v-fullscreen-img="{ src: full(id), alt: `Photo ${id}`, caption: `Second group, photo ${id}`, blurOnHover: true }"
+            v-fullscreen-img="{ src: full(id), alt: `Photo ${id}`, caption: `Second groupe, photo ${id}`, blurOnHover: true }"
             :src="thumb(id)"
             :alt="`Photo ${id}`"
             class="aspect-4/3 w-full rounded-lg object-cover"
@@ -54,41 +54,41 @@ const index = ref(0)
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="Named group across containers" hint="Two images far from each other with group: 'trip' are browsed together (1 / 2).">
+    <ModernisationDemo title="Groupe nommé entre conteneurs" hint="Deux images éloignées avec group: 'trip' se parcourent ensemble (1 / 2).">
       <div class="flex items-center justify-between gap-4">
         <img
-          v-fullscreen-img="{ src: full(1025), group: 'trip', alt: 'Trip, first' }"
+          v-fullscreen-img="{ src: full(1025), group: 'trip', alt: 'Voyage, première' }"
           :src="thumb(1025)"
-          alt="Trip, first"
+          alt="Voyage, première"
           class="h-24 rounded-lg"
         >
         <span class="text-muted">...</span>
         <img
-          v-fullscreen-img="{ src: full(1027), group: 'trip', alt: 'Trip, second' }"
+          v-fullscreen-img="{ src: full(1027), group: 'trip', alt: 'Voyage, seconde' }"
           :src="thumb(1027)"
-          alt="Trip, second"
+          alt="Voyage, seconde"
           class="h-24 rounded-lg"
         >
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazGallery" hint="The gallery images are one group, including the hidden ones behind +2.">
+    <ModernisationDemo title="MazGallery" hint="Les images de la galerie forment un seul groupe, y compris celles cachées derrière +2.">
       <MazGallery :images="galleryImages" :height="260" />
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazLightbox alone, with captions" hint="v-model and v-model:index. The image grows from the button.">
+    <ModernisationDemo title="MazLightbox seule, avec légendes" hint="v-model et v-model:index. L'image grandit depuis le bouton.">
       <div class="flex items-center gap-4">
         <MazBtn @click="open = true">
-          Open the lightbox
+          Ouvrir la lightbox
         </MazBtn>
-        <span class="text-muted">Index: {{ index }}</span>
+        <span class="text-muted">Index : {{ index }}</span>
       </div>
       <MazLightbox v-model="open" v-model:index="index" :images="standaloneImages" />
     </ModernisationDemo>
 
-    <ModernisationDemo title="Right to left" hint="Switch the toolbar to RTL, then open a lightbox: ArrowLeft goes to the next image, the buttons and the swipe follow the direction (the viewer reads the direction of the page).">
+    <ModernisationDemo title="De droite à gauche" hint="Passe la barre d'outils en RTL, puis ouvre une lightbox : ArrowLeft va à l'image suivante, les boutons et le balayage suivent la direction (le visualiseur lit la direction de la page).">
       <MazBtn color="secondary" @click="open = true">
-        Open in the current direction
+        Ouvrir dans la direction actuelle
       </MazBtn>
     </ModernisationDemo>
   </ModernisationSection>

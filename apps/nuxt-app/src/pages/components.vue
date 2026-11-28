@@ -34,7 +34,7 @@ const checkboxValue = ref(true)
 const checkboxOff = ref(false)
 const radioValue = ref('option1')
 const sliderValue = ref(50)
-const inputValue = ref('Hello World')
+const inputValue = ref('Bonjour le monde')
 const textareaValue = ref('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
 const numberValue = ref(42)
 const priceValue = ref(99.99)
@@ -65,81 +65,81 @@ const selectOptions = [
 ]
 
 const radioOptions = [
-  { label: 'Small', value: 'a' },
-  { label: 'Medium', value: 'b' },
-  { label: 'Large', value: 'c' },
+  { label: 'Petit', value: 'a' },
+  { label: 'Moyen', value: 'b' },
+  { label: 'Grand', value: 'c' },
 ]
 
 const btnGroupItems = [
-  { text: 'Left', value: 'left' },
-  { text: 'Center', value: 'center', active: true },
-  { text: 'Right', value: 'right' },
+  { text: 'Gauche', value: 'left' },
+  { text: 'Centre', value: 'center', active: true },
+  { text: 'Droite', value: 'right' },
 ]
 
 const btnDropdownItems = [
   {
-    label: 'Save as draft',
+    label: 'Enregistrer comme brouillon',
     onClick: () => {},
   },
   {
-    label: 'Save and publish',
+    label: 'Enregistrer et publier',
     onClick: () => {},
   },
 ]
 
 const tableHeaders = [
-  { label: 'Name', key: 'name' },
+  { label: 'Nom', key: 'name' },
   { label: 'Email', key: 'email' },
-  { label: 'Role', key: 'role' },
-  { label: 'Status', key: 'status' },
+  { label: 'Rôle', key: 'role' },
+  { label: 'Statut', key: 'status' },
 ]
 const tableRows = [
   {
     name: 'Alice Martin',
     email: 'alice@example.com',
     role: 'Admin',
-    status: 'Active',
+    status: 'Actif',
   },
   {
     name: 'Bob Smith',
     email: 'bob@example.com',
-    role: 'Editor',
-    status: 'Active',
+    role: 'Éditeur',
+    status: 'Actif',
   },
   {
     name: 'Carol White',
     email: 'carol@example.com',
-    role: 'Viewer',
-    status: 'Inactive',
+    role: 'Lecteur',
+    status: 'Inactif',
   },
   {
     name: 'David Lee',
     email: 'david@example.com',
     role: 'Admin',
-    status: 'Active',
+    status: 'Actif',
   },
 ]
 
 const timelineSteps: MazTimelineProps['steps'] = [
-  { title: 'Order placed', subtitle: 'March 15, 2026 at 10:30 AM', state: 'completed' },
-  { title: 'Payment confirmed', subtitle: 'March 15, 2026 at 10:32 AM', state: 'completed' },
-  { title: 'Shipped', subtitle: 'March 16, 2026 at 2:15 PM', state: 'active' },
-  { title: 'Out for delivery', subtitle: 'Expected March 18', state: 'pending' },
-  { title: 'Delivered', subtitle: 'Awaiting delivery', state: 'pending' },
+  { title: 'Commande passée', subtitle: '15 mars 2026 à 10h30', state: 'completed' },
+  { title: 'Paiement confirmé', subtitle: '15 mars 2026 à 10h32', state: 'completed' },
+  { title: 'Expédiée', subtitle: '16 mars 2026 à 14h15', state: 'active' },
+  { title: 'En cours de livraison', subtitle: 'Prévue le 18 mars', state: 'pending' },
+  { title: 'Livrée', subtitle: 'En attente de livraison', state: 'pending' },
 ]
 
 const timelineStepsStates: MazTimelineProps['steps'] = [
-  { title: 'Completed', subtitle: 'All good', state: 'completed' },
-  { title: 'Active', subtitle: 'In progress', state: 'active' },
-  { title: 'Error', subtitle: 'Something went wrong', state: 'error' },
-  { title: 'Warning', subtitle: 'Needs attention', state: 'warning' },
-  { title: 'Pending', subtitle: 'Not started yet', state: 'pending' },
+  { title: 'Terminé', subtitle: 'Tout est bon', state: 'completed' },
+  { title: 'Actif', subtitle: 'En cours', state: 'active' },
+  { title: 'Erreur', subtitle: 'Un problème est survenu', state: 'error' },
+  { title: 'Avertissement', subtitle: 'À vérifier', state: 'warning' },
+  { title: 'En attente', subtitle: 'Pas encore commencé', state: 'pending' },
 ]
 
 const stepperSteps = [
-  { title: 'Account', subtitle: 'Create your account', titleInfo: 'Step 1 of 3' },
-  { title: 'Profile', subtitle: 'Set up your profile', titleInfo: 'Step 2 of 3' },
-  { title: 'Confirm', subtitle: 'Review and confirm', titleInfo: 'Step 3 of 3' },
+  { title: 'Compte', subtitle: 'Crée ton compte', titleInfo: 'Étape 1 sur 3' },
+  { title: 'Profil', subtitle: 'Configure ton profil', titleInfo: 'Étape 2 sur 3' },
+  { title: 'Confirmation', subtitle: 'Vérifie et confirme', titleInfo: 'Étape 3 sur 3' },
 ]
 
 function makePlaceholder(color: string, label: string): string {
@@ -150,23 +150,23 @@ function makePlaceholder(color: string, label: string): string {
 const galleryImages = [
   {
     src: makePlaceholder('#6366f1', 'Image 1'),
-    alt: 'Placeholder 1',
+    alt: 'Image factice 1',
   },
   {
     src: makePlaceholder('#8b5cf6', 'Image 2'),
-    alt: 'Placeholder 2',
+    alt: 'Image factice 2',
   },
   {
     src: makePlaceholder('#0ea5e9', 'Image 3'),
-    alt: 'Placeholder 3',
+    alt: 'Image factice 3',
   },
   {
     src: makePlaceholder('#10b981', 'Image 4'),
-    alt: 'Placeholder 4',
+    alt: 'Image factice 4',
   },
   {
     src: makePlaceholder('#f59e0b', 'Image 5'),
-    alt: 'Placeholder 5',
+    alt: 'Image factice 5',
   },
 ] satisfies MazGalleryImage[]
 
@@ -190,7 +190,7 @@ const checklistItems = [
       </h2>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Colors
+        Couleurs
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mb-4">
         <MazBtn v-for="c in btnColors" :key="c" :color="c">
@@ -199,7 +199,7 @@ const checklistItems = [
       </div>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Sizes
+        Tailles
       </h3>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-2 maz:mb-4">
         <MazBtn v-for="s in sizes" :key="s" :size="s">
@@ -208,7 +208,7 @@ const checklistItems = [
       </div>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Outlined
+        Contour
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mb-4">
         <MazBtn v-for="c in btnColors" :key="c" :color="c" outlined>
@@ -233,7 +233,7 @@ const checklistItems = [
       </div>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Rounded sizes
+        Arrondis
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mb-4">
         <MazBtn v-for="r in roundedSizes" :key="r" :rounded-size="r">
@@ -242,17 +242,17 @@ const checklistItems = [
       </div>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        States
+        États
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mb-4">
         <MazBtn loading>
-          Loading
+          Chargement
         </MazBtn>
         <MazBtn disabled>
-          Disabled
+          Désactivé
         </MazBtn>
         <MazBtn block>
-          Block (full width)
+          Bloc (pleine largeur)
         </MazBtn>
       </div>
     </section>
@@ -268,13 +268,13 @@ const checklistItems = [
         <MazBtnGroup :items="btnGroupItems" pastel />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Colors
+        Couleurs
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-2 maz:mb-4">
         <MazBtnGroup v-for="c in colors" :key="c" :items="btnGroupItems" :color="c" />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Sizes
+        Tailles
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-2 maz:mb-4">
         <MazBtnGroup v-for="s in sizes" :key="s" :items="btnGroupItems" :size="s" />
@@ -286,25 +286,25 @@ const checklistItems = [
         MazBtnDropdown
       </h2>
       <div class="maz:flex maz:flex-wrap maz:gap-3 maz:mb-4">
-        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options">
-          Save
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Autres options d'enregistrement">
+          Enregistrer
         </MazBtnDropdown>
-        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" outlined>
-          Save
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Autres options d'enregistrement" outlined>
+          Enregistrer
         </MazBtnDropdown>
-        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" pastel color="secondary">
-          Save
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Autres options d'enregistrement" pastel color="secondary">
+          Enregistrer
         </MazBtnDropdown>
-        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" trigger="hover">
-          Hover
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Autres options d'enregistrement" trigger="hover">
+          Survol
         </MazBtnDropdown>
-        <MazBtnDropdown :items="btnDropdownItems" menu-label="Other save options" action-disabled>
-          Save
+        <MazBtnDropdown :items="btnDropdownItems" menu-label="Autres options d'enregistrement" action-disabled>
+          Enregistrer
         </MazBtnDropdown>
       </div>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-3 maz:mb-4">
-        <MazBtnDropdown v-for="s in sizes" :key="s" :items="btnDropdownItems" menu-label="Other save options" :size="s">
-          Save
+        <MazBtnDropdown v-for="s in sizes" :key="s" :items="btnDropdownItems" menu-label="Autres options d'enregistrement" :size="s">
+          Enregistrer
         </MazBtnDropdown>
       </div>
     </section>
@@ -314,25 +314,25 @@ const checklistItems = [
         MazInput
       </h2>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4 maz:mb-4">
-        <MazInput v-model="inputValue" label="Default input" />
-        <MazInput v-model="inputValue" label="With placeholder" placeholder="Enter text..." />
-        <MazInput v-model="inputValue" label="Default" top-label="Top label" />
-        <MazInput v-model="inputValue" label="Assistive text" assistive-text="This is a helper message" />
-        <MazInput v-model="inputValue" label="Error state" error assistive-text="This field is required" />
-        <MazInput v-model="inputValue" label="Success state" success />
-        <MazInput v-model="inputValue" label="Warning state" warning />
-        <MazInput v-model="inputValue" label="Disabled" disabled />
-        <MazInput v-model="inputValue" label="Loading" loading />
-        <MazInput v-model="inputValue" label="Block (full width)" block />
+        <MazInput v-model="inputValue" label="Champ par défaut" />
+        <MazInput v-model="inputValue" label="Avec placeholder" placeholder="Saisis du texte..." />
+        <MazInput v-model="inputValue" label="Par défaut" top-label="Libellé du haut" />
+        <MazInput v-model="inputValue" label="Texte d'aide" assistive-text="Ceci est un message d'aide" />
+        <MazInput v-model="inputValue" label="État d'erreur" error assistive-text="Ce champ est obligatoire" />
+        <MazInput v-model="inputValue" label="État de succès" success />
+        <MazInput v-model="inputValue" label="État d'avertissement" warning />
+        <MazInput v-model="inputValue" label="Désactivé" disabled />
+        <MazInput v-model="inputValue" label="Chargement" loading />
+        <MazInput v-model="inputValue" label="Bloc (pleine largeur)" block />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Colors with top-label
+        Couleurs avec top-label
       </h3>
       <div class="maz:grid maz:grid-cols-3 maz:gap-4 maz:mb-4">
         <MazInput v-for="c in colors" :key="c" v-model="inputValue" :top-label="c" :color="c" />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Sizes
+        Tailles
       </h3>
       <div class="maz:grid maz:grid-cols-3 maz:gap-4 maz:mb-4">
         <MazInput v-for="s in sizes" :key="s" v-model="inputValue" :label="s" :size="s" />
@@ -341,7 +341,7 @@ const checklistItems = [
         <MazInput v-for="s in sizes" :key="s" v-model="inputValue" :placeholder="s" :size="s" />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Rounded sizes
+        Arrondis
       </h3>
       <div class="maz:grid maz:grid-cols-3 maz:gap-4 maz:mb-4">
         <MazInput v-for="r in roundedSizes" :key="r" v-model="inputValue" :label="r" :rounded-size="r" />
@@ -353,10 +353,10 @@ const checklistItems = [
         MazTextarea
       </h2>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4">
-        <MazTextarea v-model="textareaValue" label="Default textarea" />
-        <MazTextarea v-model="textareaValue" label="Error" error />
-        <MazTextarea v-model="textareaValue" label="Success" success />
-        <MazTextarea v-model="textareaValue" label="Disabled" disabled />
+        <MazTextarea v-model="textareaValue" label="Zone de texte par défaut" />
+        <MazTextarea v-model="textareaValue" label="Erreur" error />
+        <MazTextarea v-model="textareaValue" label="Succès" success />
+        <MazTextarea v-model="textareaValue" label="Désactivé" disabled />
       </div>
     </section>
 
@@ -365,10 +365,10 @@ const checklistItems = [
         MazInputNumber
       </h2>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4">
-        <MazInputNumber v-model="numberValue" label="Default" />
+        <MazInputNumber v-model="numberValue" label="Par défaut" />
         <MazInputNumber v-model="numberValue" label="Min/Max" :min="0" :max="100" />
-        <MazInputNumber v-model="numberValue" label="Step 5" :step="5" />
-        <MazInputNumber v-model="numberValue" label="Disabled" disabled />
+        <MazInputNumber v-model="numberValue" label="Pas de 5" :step="5" />
+        <MazInputNumber v-model="numberValue" label="Désactivé" disabled />
       </div>
     </section>
 
@@ -377,9 +377,9 @@ const checklistItems = [
         MazInputPrice
       </h2>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4">
-        <MazInputPrice v-model="priceValue" label="Price (EUR)" currency="EUR" locale="fr-FR" />
-        <MazInputPrice v-model="priceValue" label="Price (USD)" currency="USD" locale="en-US" />
-        <MazInputPrice v-model="priceValue" label="Price (GBP)" currency="GBP" locale="en-GB" />
+        <MazInputPrice v-model="priceValue" label="Prix (EUR)" currency="EUR" locale="fr-FR" />
+        <MazInputPrice v-model="priceValue" label="Prix (USD)" currency="USD" locale="en-US" />
+        <MazInputPrice v-model="priceValue" label="Prix (GBP)" currency="GBP" locale="en-GB" />
       </div>
     </section>
 
@@ -388,10 +388,10 @@ const checklistItems = [
         MazInputTags
       </h2>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4">
-        <MazInputTags v-model="tagsValue" label="Tags" />
-        <MazInputTags v-model="tagsValue" label="Error" error />
-        <MazInputTags v-model="tagsValue" label="Success" success />
-        <MazInputTags v-model="tagsValue" label="Disabled" disabled />
+        <MazInputTags v-model="tagsValue" label="Étiquettes" />
+        <MazInputTags v-model="tagsValue" label="Erreur" error />
+        <MazInputTags v-model="tagsValue" label="Succès" success />
+        <MazInputTags v-model="tagsValue" label="Désactivé" disabled />
       </div>
     </section>
 
@@ -410,12 +410,12 @@ const checklistItems = [
         MazInputPhoneNumber
       </h2>
       <div class="maz:flex maz:flex-col maz:gap-4">
-        <MazInputPhoneNumber label="Phone number" />
-        <MazInputPhoneNumber label="Phone number (responsive)" orientation="responsive" />
-        <MazInputPhoneNumber label="Phone number (row)" orientation="row" />
-        <MazInputPhoneNumber label="Phone number (col)" orientation="col" />
-        <MazInputPhoneNumber v-model="phoneValue" label="Phone number" />
-        <MazInputPhoneNumber v-model="phoneValue" label="Error" error />
+        <MazInputPhoneNumber label="Numéro de téléphone" />
+        <MazInputPhoneNumber label="Numéro de téléphone (responsive)" orientation="responsive" />
+        <MazInputPhoneNumber label="Numéro de téléphone (ligne)" orientation="row" />
+        <MazInputPhoneNumber label="Numéro de téléphone (colonne)" orientation="col" />
+        <MazInputPhoneNumber v-model="phoneValue" label="Numéro de téléphone" />
+        <MazInputPhoneNumber v-model="phoneValue" label="Erreur" error />
       </div>
     </section>
 
@@ -424,15 +424,15 @@ const checklistItems = [
         MazSelect
       </h2>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4 maz:mb-4">
-        <MazSelect v-model="selectValue" :options="selectOptions" label="Default" />
-        <MazSelect v-model="selectValue" :options="selectOptions" label="Search" search />
-        <MazSelect v-model="selectValue" :options="selectOptions" label="Error" error />
-        <MazSelect v-model="selectValue" :options="selectOptions" label="Success" success />
-        <MazSelect v-model="selectValue" :options="selectOptions" label="Disabled" disabled />
-        <MazSelect v-model="selectValue" :options="selectOptions" label="Block" block :open="true" />
+        <MazSelect v-model="selectValue" :options="selectOptions" label="Par défaut" />
+        <MazSelect v-model="selectValue" :options="selectOptions" label="Recherche" search />
+        <MazSelect v-model="selectValue" :options="selectOptions" label="Erreur" error />
+        <MazSelect v-model="selectValue" :options="selectOptions" label="Succès" success />
+        <MazSelect v-model="selectValue" :options="selectOptions" label="Désactivé" disabled />
+        <MazSelect v-model="selectValue" :options="selectOptions" label="Bloc" block :open="true" />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Colors
+        Couleurs
       </h3>
       <div class="maz:grid maz:grid-cols-3 maz:gap-4">
         <MazSelect v-for="c in colors" :key="c" v-model="selectValue" :options="selectOptions" :label="c" :color="c" />
@@ -444,8 +444,8 @@ const checklistItems = [
         MazSelectCountry
       </h2>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4">
-        <MazSelectCountry label="Select country" />
-        <MazSelectCountry label="With search" search :open="true" />
+        <MazSelectCountry label="Sélectionne un pays" />
+        <MazSelectCountry label="Avec recherche" search :open="true" />
       </div>
     </section>
 
@@ -453,13 +453,13 @@ const checklistItems = [
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4 maz:mt-20">
         MazDatePicker
       </h2>
-      <MazDatePicker v-model="dateValue" label="Date picker" picker-position="top" />
+      <MazDatePicker v-model="dateValue" label="Sélecteur de date" picker-position="top" />
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2 maz:mt-4">
-        Inline
+        En ligne
       </h3>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4">
-        <MazDatePicker v-model="dateValue" label="Inline" inline />
+        <MazDatePicker v-model="dateValue" label="En ligne" inline />
       </div>
     </section>
 
@@ -469,17 +469,17 @@ const checklistItems = [
       </h2>
       <div class="maz:flex maz:flex-wrap maz:gap-6 maz:mb-4">
         <MazSwitch v-model="switchValue">
-          Active
+          Actif
         </MazSwitch>
         <MazSwitch v-model="switchOff">
-          Inactive
+          Inactif
         </MazSwitch>
         <MazSwitch v-model="switchValue" disabled>
-          Disabled
+          Désactivé
         </MazSwitch>
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Colors
+        Couleurs
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-6 maz:mb-4">
         <MazSwitch v-for="c in colors" :key="c" v-model="switchValue" :color="c">
@@ -494,17 +494,17 @@ const checklistItems = [
       </h2>
       <div class="maz:flex maz:flex-wrap maz:gap-6 maz:mb-4">
         <MazCheckbox v-model="checkboxValue">
-          Checked
+          Coché
         </MazCheckbox>
         <MazCheckbox v-model="checkboxOff">
-          Unchecked
+          Non coché
         </MazCheckbox>
         <MazCheckbox v-model="checkboxValue" disabled>
-          Disabled
+          Désactivé
         </MazCheckbox>
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Colors
+        Couleurs
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-6 maz:mb-4">
         <MazCheckbox v-for="c in colors" :key="c" v-model="checkboxValue" :color="c">
@@ -512,7 +512,7 @@ const checklistItems = [
         </MazCheckbox>
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Sizes
+        Tailles
       </h3>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-6">
         <MazCheckbox v-for="s in sizes" :key="s" v-model="checkboxValue" :size="s">
@@ -537,7 +537,7 @@ const checklistItems = [
         </MazRadio>
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Colors
+        Couleurs
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-6">
         <MazRadio v-for="c in colors" :key="c" v-model="radioValue" :value="`option-${c}`" :name="`radio-${c}`" :color="c">
@@ -558,24 +558,24 @@ const checklistItems = [
         <MazRadioButtons v-model="radioBtnValue" :options="radioOptions" elevation />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Colors
+        Couleurs
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-2 maz:mb-4">
         <MazRadioButtons v-for="c in colors" :key="c" v-model="radioBtnValue" :options="radioOptions" :color="c" />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Sizes
+        Tailles
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-2 maz:mb-4">
         <MazRadioButtons v-for="s in sizes" :key="s" v-model="radioBtnValue" :options="radioOptions" :size="s" />
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        States
+        États
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-2">
-        <MazRadioButtons v-model="radioBtnValue" :options="radioOptions" error hint="Error hint" />
-        <MazRadioButtons v-model="radioBtnValue" :options="radioOptions" success hint="Success hint" />
-        <MazRadioButtons v-model="radioBtnValue" :options="radioOptions" warning hint="Warning hint" />
+        <MazRadioButtons v-model="radioBtnValue" :options="radioOptions" error hint="Indication d'erreur" />
+        <MazRadioButtons v-model="radioBtnValue" :options="radioOptions" success hint="Indication de succès" />
+        <MazRadioButtons v-model="radioBtnValue" :options="radioOptions" warning hint="Indication d'avertissement" />
       </div>
     </section>
 
@@ -607,9 +607,9 @@ const checklistItems = [
       </h2>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4">
         <MazChecklist v-model="checklistValue" :items="checklistItems" title="Technologies" />
-        <MazChecklist v-model="checklistValue" :items="checklistItems" title="With search" search />
-        <MazChecklist v-model="checklistValue" :items="checklistItems" title="Elevation" elevation />
-        <MazChecklist v-model="checklistValue" :items="checklistItems" title="Secondary" color="secondary" />
+        <MazChecklist v-model="checklistValue" :items="checklistItems" title="Avec recherche" search />
+        <MazChecklist v-model="checklistValue" :items="checklistItems" title="Élévation" elevation />
+        <MazChecklist v-model="checklistValue" :items="checklistItems" title="Secondaire" color="secondary" />
       </div>
     </section>
 
@@ -619,59 +619,59 @@ const checklistItems = [
       </h2>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Basic variants
+        Variantes de base
       </h3>
       <div class="maz:grid maz:grid-cols-3 maz:gap-4 maz:mb-6">
         <MazCard>
           <template #content-title>
-            Simple Card
+            Carte simple
           </template>
           <template #content-body>
-            <p>This is a simple card with basic content and default styling.</p>
+            <p>Une carte simple avec un contenu basique et le style par défaut.</p>
           </template>
         </MazCard>
         <MazCard elevation>
           <template #content-title>
-            Elevated Card
+            Carte surélevée
           </template>
           <template #content-body>
-            <p>Card with elevation shadow for depth effect.</p>
+            <p>Carte avec une ombre portée pour donner de la profondeur.</p>
           </template>
         </MazCard>
         <MazCard bordered>
           <template #content-title>
-            Bordered Card
+            Carte avec bordure
           </template>
           <template #content-body>
-            <p>Card with visible border styling.</p>
+            <p>Carte avec une bordure visible.</p>
           </template>
         </MazCard>
       </div>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        With gallery, actions, footer
+        Avec galerie, actions et pied de page
       </h3>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4 maz:mb-6 maz:items-start">
         <MazCard :gallery="{ images: galleryImages, height: 200 }">
           <template #content-title>
-            Gallery Card
+            Carte avec galerie
           </template>
           <template #content-subtitle>
-            With image gallery
+            Avec galerie d'images
           </template>
           <template #content-body>
-            <p>This card features a photo gallery header with multiple images.</p>
+            <p>Cette carte affiche une galerie de photos en en-tête avec plusieurs images.</p>
           </template>
           <template #actions>
             <MazBtn size="sm">
-              View details
+              Voir les détails
             </MazBtn>
             <MazBtn size="sm" color="info">
-              Share
+              Partager
             </MazBtn>
           </template>
           <template #footer>
-            <span class="maz:text-sm maz:text-muted">Published 2 hours ago</span>
+            <span class="maz:text-sm maz:text-muted">Publié il y a 2 heures</span>
           </template>
         </MazCard>
       </div>
@@ -682,13 +682,13 @@ const checklistItems = [
       <div class="maz:flex maz:gap-4 maz:mb-6">
         <MazCard :gallery="{ images: galleryImages, height: 200, width: 250 }" orientation="row">
           <template #content-title>
-            Row Orientation
+            Orientation en ligne
           </template>
           <template #content-subtitle>
-            Horizontal layout
+            Disposition horizontale
           </template>
           <template #content-body>
-            <p>Card with row orientation places the gallery on the side.</p>
+            <p>Une carte en orientation ligne place la galerie sur le côté.</p>
           </template>
           <template #actions>
             <MazBtn size="sm" color="secondary">
@@ -699,43 +699,43 @@ const checklistItems = [
 
         <MazCard :gallery="{ images: galleryImages.slice(0, 2), height: 200, width: 250 }" orientation="row-reverse">
           <template #content-title>
-            Row Reverse
+            Ligne inversée
           </template>
           <template #content-body>
-            <p>Gallery on the right side with row-reverse orientation.</p>
+            <p>Galerie sur le côté droit avec l'orientation row-reverse.</p>
           </template>
         </MazCard>
       </div>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Collapsible & Linked
+        Repliable et avec lien
       </h3>
       <div class="maz:grid maz:grid-cols-2 maz:gap-4 maz:mb-6">
         <MazCard collapsible collapse-open>
           <template #content-title>
-            Collapsible Card
+            Carte repliable
           </template>
           <template #content-body>
-            <p>This card can be collapsed by clicking the header. Try it!</p>
+            <p>Cette carte se replie en cliquant sur l'en-tête. Essaie !</p>
           </template>
         </MazCard>
-        <MazCard :href="mazUiUrl" collapsible href-target="_blank" title="Linked Card">
+        <MazCard :href="mazUiUrl" collapsible href-target="_blank" title="Carte avec lien">
           <template #content-title>
-            Linked Card
+            Carte avec lien
           </template>
           <template #content-body>
-            <p>Click this card to navigate to the Maz UI website.</p>
+            <p>Clique sur cette carte pour aller sur le site de Maz UI.</p>
           </template>
         </MazCard>
       </div>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Footer alignment
+        Alignement du pied de page
       </h3>
       <div class="maz:grid maz:grid-cols-3 maz:gap-4">
         <MazCard footer-align="start">
           <template #content-title>
-            Left footer
+            Pied de page à gauche
           </template>
           <template #footer>
             <MazBtn size="sm">
@@ -745,7 +745,7 @@ const checklistItems = [
         </MazCard>
         <MazCard>
           <template #content-title>
-            Default footer
+            Pied de page par défaut
           </template>
           <template #footer>
             <MazBtn size="sm">
@@ -755,7 +755,7 @@ const checklistItems = [
         </MazCard>
         <MazCard footer-align="end">
           <template #content-title>
-            Right footer
+            Pied de page à droite
           </template>
           <template #footer>
             <MazBtn size="sm">
@@ -776,7 +776,7 @@ const checklistItems = [
             {{ c }}
           </h3>
           <p class="maz:text-sm maz:text-muted">
-            Spotlight card with hover glow effect in {{ c }} color.
+            Carte spotlight avec un effet de halo au survol, en couleur {{ c }}.
           </p>
         </MazCardSpotlight>
       </div>
@@ -816,7 +816,7 @@ const checklistItems = [
       </div>
       <div class="maz:flex maz:flex-wrap maz:gap-3 maz:mb-4">
         <MazBadge v-for="c in colors" :key="c" :color="c" outlined>
-          {{ c }} outlined
+          {{ c }} contour
         </MazBadge>
       </div>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-3">
@@ -836,19 +836,19 @@ const checklistItems = [
         MazAlert
       </h2>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Soft variant (default)
+        Variante douce (par défaut)
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-3 maz:mb-4">
-        <MazAlert v-for="c in colors" :key="c" :color="c" :title="`${c} alert`">
-          This is a {{ c }} alert with the soft variant. It conveys important information.
+        <MazAlert v-for="c in colors" :key="c" :color="c" :title="`Alerte ${c}`">
+          Ceci est une alerte {{ c }} en variante douce. Elle transmet une information importante.
         </MazAlert>
       </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Solid variant
+        Variante pleine
       </h3>
       <div class="maz:flex maz:flex-col maz:gap-3">
-        <MazAlert v-for="c in colors" :key="c" :color="c" variant="solid" :title="`${c} solid`">
-          This is a {{ c }} alert with the solid variant. More prominent styling.
+        <MazAlert v-for="c in colors" :key="c" :color="c" variant="solid" :title="`Alerte ${c} pleine`">
+          Ceci est une alerte {{ c }} en variante pleine. Un style plus marqué.
         </MazAlert>
       </div>
     </section>
@@ -858,26 +858,26 @@ const checklistItems = [
         MazTabs
       </h2>
       <MazTabs v-model="tabValue">
-        <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features', badge: { content: 3, color: 'primary', pastel: true, roundedSize: 'full' } }, { label: 'Pricing', indicator: { color: 'destructive', label: 'New prices' } }]" />
+        <MazTabsBar v-model="tabValue" :items="[{ label: 'Aperçu' }, { label: 'Fonctionnalités', badge: { content: 3, color: 'primary', pastel: true, roundedSize: 'full' } }, { label: 'Tarifs', indicator: { color: 'destructive', label: 'Nouveaux tarifs' } }]" />
 
         <MazTabsContent>
           <MazTabsContentItem :tab="1" class="maz-py-4">
             <h3 class="maz:text-lg maz:font-bold maz:mb-2">
-              Overview
+              Aperçu
             </h3>
-            <p>Welcome to the overview tab. This section provides a general introduction to the product and its key benefits.</p>
+            <p>Bienvenue dans l'onglet aperçu. Cette section présente le produit et ses principaux avantages.</p>
           </MazTabsContentItem>
           <MazTabsContentItem :tab="2" class="maz-py-4">
             <h3 class="maz:text-lg maz:font-bold maz:mb-2">
-              Features
+              Fonctionnalités
             </h3>
-            <p>Discover our powerful features: real-time collaboration, advanced analytics, and seamless integrations.</p>
+            <p>Découvre nos fonctionnalités : collaboration en temps réel, analyses avancées et intégrations fluides.</p>
           </MazTabsContentItem>
           <MazTabsContentItem :tab="3" class="maz-py-4">
             <h3 class="maz:text-lg maz:font-bold maz:mb-2">
-              Pricing
+              Tarifs
             </h3>
-            <p>Flexible plans starting at $9/month. Free tier available for small teams.</p>
+            <p>Des offres flexibles à partir de 9 $/mois. Une offre gratuite est disponible pour les petites équipes.</p>
           </MazTabsContentItem>
         </MazTabsContent>
       </MazTabs>
@@ -889,22 +889,22 @@ const checklistItems = [
       </h2>
       <MazAccordion v-model="accordionValue">
         <template #title-1>
-          What is Maz UI?
+          Qu'est-ce que Maz UI ?
         </template>
         <template #content-1>
-          <p>Maz UI is a comprehensive Vue 3 component library featuring 50+ UI components, composables, directives, and utilities. It's designed for building modern, accessible web applications.</p>
+          <p>Maz UI est une bibliothèque de composants Vue 3 complète avec plus de 50 composants, composables, directives et utilitaires. Elle sert à construire des applications web modernes et accessibles.</p>
         </template>
         <template #title-2>
-          How to install?
+          Comment l'installer ?
         </template>
         <template #content-2>
-          <p>Install via npm or pnpm: <code>pnpm add maz-ui</code>. Maz UI supports both Vue 3 standalone and Nuxt 3 via the @maz-ui/nuxt module.</p>
+          <p>Installe-la avec npm ou pnpm : <code>pnpm add maz-ui</code>. Maz UI fonctionne avec Vue 3 seul et avec Nuxt 3 grâce au module @maz-ui/nuxt.</p>
         </template>
         <template #title-3>
-          Is it customizable?
+          Est-ce personnalisable ?
         </template>
         <template #content-3>
-          <p>Yes! Maz UI supports theming via CSS custom properties, TailwindCSS integration, and a CLI tool for generating custom themes. Every component is tree-shakeable.</p>
+          <p>Oui ! Maz UI gère les thèmes via des propriétés CSS personnalisées, l'intégration de TailwindCSS et un outil CLI pour générer des thèmes sur mesure. Chaque composant est tree-shakeable.</p>
         </template>
       </MazAccordion>
     </section>
@@ -914,11 +914,11 @@ const checklistItems = [
         MazExpandAnimation
       </h2>
       <MazBtn class="maz:mb-4" @click="expandOpen = !expandOpen">
-        Toggle expand
+        Déplier / replier
       </MazBtn>
       <MazExpandAnimation v-model="expandOpen">
         <div class="maz:rounded-md maz:border maz:border-divider maz:p-4">
-          <p>This content is animated when toggled. The expand animation smoothly reveals and hides content with configurable duration and timing.</p>
+          <p>Ce contenu est animé à l'ouverture et à la fermeture. L'animation affiche et masque le contenu en douceur, avec une durée et un timing configurables.</p>
           <p class="maz:mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
@@ -935,35 +935,35 @@ const checklistItems = [
           <template #content-1="{ nextStep }">
             <div class="maz:flex maz:flex-col maz:gap-4">
               <MazInput label="Email" placeholder="you@example.com" />
-              <MazInput label="Password" type="password" placeholder="••••••••" />
+              <MazInput label="Mot de passe" type="password" placeholder="••••••••" />
               <MazBtn @click="nextStep">
-                Next
+                Suivant
               </MazBtn>
             </div>
           </template>
           <template #content-2="{ nextStep, previousStep }">
             <div class="maz:flex maz:flex-col maz:gap-4">
-              <MazInput label="Full name" placeholder="John Doe" />
-              <MazInput label="Company" placeholder="Acme Inc." />
+              <MazInput label="Nom complet" placeholder="Jean Dupont" />
+              <MazInput label="Entreprise" placeholder="Acme Inc." />
               <div class="maz:flex maz:gap-2">
                 <MazBtn outlined @click="previousStep">
-                  Back
+                  Retour
                 </MazBtn>
                 <MazBtn @click="nextStep">
-                  Next
+                  Suivant
                 </MazBtn>
               </div>
             </div>
           </template>
           <template #content-3="{ previousStep }">
             <div class="maz:flex maz:flex-col maz:gap-4">
-              <p>Please review your information before confirming your account.</p>
+              <p>Vérifie tes informations avant de confirmer ton compte.</p>
               <div class="maz:flex maz:gap-2">
                 <MazBtn outlined @click="previousStep">
-                  Back
+                  Retour
                 </MazBtn>
                 <MazBtn color="success">
-                  Confirm
+                  Confirmer
                 </MazBtn>
               </div>
             </div>
@@ -971,44 +971,44 @@ const checklistItems = [
         </MazStepper>
 
         <h3 class="maz:text-lg maz:font-semibold">
-          Stepper with states
+          Stepper avec états
         </h3>
         <MazStepper
           :model-value="2"
           :steps="[
-            { title: 'Completed', subtitle: 'Done', success: true },
-            { title: 'Current', subtitle: 'In progress' },
-            { title: 'Warning', subtitle: 'Needs attention', warning: true },
-            { title: 'Error', subtitle: 'Failed', error: true },
+            { title: 'Terminé', subtitle: 'Fait', success: true },
+            { title: 'Actuel', subtitle: 'En cours' },
+            { title: 'Avertissement', subtitle: 'À vérifier', warning: true },
+            { title: 'Erreur', subtitle: 'Échec', error: true },
           ]"
         >
           <template #content-1>
-            <p>Step 1 content</p>
+            <p>Contenu de l'étape 1</p>
           </template>
           <template #content-2>
-            <p>Step 2 content</p>
+            <p>Contenu de l'étape 2</p>
           </template>
           <template #content-3>
-            <p>Step 3 content</p>
+            <p>Contenu de l'étape 3</p>
           </template>
           <template #content-4>
-            <p>Step 4 content</p>
+            <p>Contenu de l'étape 4</p>
           </template>
         </MazStepper>
 
         <h3 class="maz:text-lg maz:font-semibold">
-          Colors
+          Couleurs
         </h3>
         <div class="maz:flex maz:flex-col maz:gap-4">
           <MazStepper v-for="c in colors.slice(0, 4)" :key="c" :model-value="2" :steps="stepperSteps" :color="c">
             <template #content-1>
-              <p>Content for {{ c }}</p>
+              <p>Contenu pour {{ c }}</p>
             </template>
             <template #content-2>
-              <p>Content for {{ c }}</p>
+              <p>Contenu pour {{ c }}</p>
             </template>
             <template #content-3>
-              <p>Content for {{ c }}</p>
+              <p>Contenu pour {{ c }}</p>
             </template>
           </MazStepper>
         </div>
@@ -1021,12 +1021,12 @@ const checklistItems = [
       </h2>
       <div class="maz:flex maz:flex-col maz:gap-8">
         <h3 class="maz:text-lg maz:font-semibold">
-          Vertical (default)
+          Vertical (par défaut)
         </h3>
         <MazTimeline :steps="timelineSteps" />
 
         <h3 class="maz:text-lg maz:font-semibold">
-          All states
+          Tous les états
         </h3>
         <MazTimeline :steps="timelineStepsStates" />
 
@@ -1036,14 +1036,14 @@ const checklistItems = [
         <MazTimeline :steps="timelineSteps" direction="horizontal" />
 
         <h3 class="maz:text-lg maz:font-semibold">
-          Colors
+          Couleurs
         </h3>
         <div class="maz:flex maz:flex-col maz:gap-4">
           <MazTimeline v-for="c in colors.slice(0, 4)" :key="c" :steps="timelineStepsStates.slice(0, 3)" :color="c" />
         </div>
 
         <h3 class="maz:text-lg maz:font-semibold">
-          Sizes
+          Tailles
         </h3>
         <div class="maz:flex maz:flex-col maz:gap-4">
           <MazTimeline v-for="s in (['sm', 'md', 'lg'] as const)" :key="s" :steps="timelineStepsStates.slice(0, 3)" :size="s" />
@@ -1056,16 +1056,16 @@ const checklistItems = [
         MazDialog
       </h2>
       <MazBtn @click="dialogOpen = true">
-        Open Dialog
+        Ouvrir le dialogue
       </MazBtn>
-      <MazDialog v-model="dialogOpen" title="Dialog Title">
-        <p>This is a dialog with some content. Dialogs are great for confirmations, forms, and detailed views.</p>
+      <MazDialog v-model="dialogOpen" title="Titre du dialogue">
+        <p>Ceci est un dialogue avec du contenu. Les dialogues conviennent bien aux confirmations, aux formulaires et aux vues détaillées.</p>
         <template #footer>
           <MazBtn outlined @click="dialogOpen = false">
-            Cancel
+            Annuler
           </MazBtn>
           <MazBtn @click="dialogOpen = false">
-            Confirm
+            Confirmer
           </MazBtn>
         </template>
       </MazDialog>
@@ -1076,14 +1076,14 @@ const checklistItems = [
         MazBottomSheet
       </h2>
       <MazBtn @click="bottomSheetOpen = true">
-        Open Bottom Sheet
+        Ouvrir la bottom sheet
       </MazBtn>
       <MazBottomSheet v-model="bottomSheetOpen">
         <div class="maz:p-6">
           <h3 class="maz:text-xl maz:font-bold maz:mb-4">
-            Bottom Sheet Content
+            Contenu de la bottom sheet
           </h3>
-          <p>This slides up from the bottom. Perfect for mobile-friendly actions and menus.</p>
+          <p>Ce panneau remonte depuis le bas. Idéal pour les actions et les menus adaptés au mobile.</p>
         </div>
       </MazBottomSheet>
     </section>
@@ -1093,11 +1093,11 @@ const checklistItems = [
         MazDrawer
       </h2>
       <MazBtn @click="drawerOpen = true">
-        Open Drawer
+        Ouvrir le drawer
       </MazBtn>
-      <MazDrawer v-model="drawerOpen" title="Drawer Panel">
+      <MazDrawer v-model="drawerOpen" title="Panneau latéral">
         <div class="maz:p-4">
-          <p>Side panel content. Great for navigation, filters, or detail views.</p>
+          <p>Contenu du panneau latéral. Pratique pour la navigation, les filtres ou les vues détaillées.</p>
         </div>
       </MazDrawer>
     </section>
@@ -1109,59 +1109,59 @@ const checklistItems = [
       <div class="maz:flex maz:flex-wrap maz:gap-4">
         <MazPopover trigger="click" position="top">
           <template #trigger>
-            <MazBtn>Click (top)</MazBtn>
+            <MazBtn>Clic (haut)</MazBtn>
           </template>
           <div class="maz:p-3">
             <p class="maz:font-semibold">
-              Click popover
+              Popover au clic
             </p>
             <p class="maz:text-sm maz:text-muted">
-              Displayed on click, positioned on top.
+              Affiché au clic, positionné en haut.
             </p>
           </div>
         </MazPopover>
         <MazPopover trigger="hover" position="bottom">
           <template #trigger>
             <MazBtn outlined>
-              Hover (bottom)
+              Survol (bas)
             </MazBtn>
           </template>
           <div class="maz:p-3">
             <p class="maz:font-semibold">
-              Hover popover
+              Popover au survol
             </p>
             <p class="maz:text-sm maz:text-muted">
-              Displayed on hover, positioned on bottom.
+              Affiché au survol, positionné en bas.
             </p>
           </div>
         </MazPopover>
         <MazPopover trigger="click" position="left">
           <template #trigger>
             <MazBtn color="secondary">
-              Click (left)
+              Clic (gauche)
             </MazBtn>
           </template>
           <div class="maz:p-3">
             <p class="maz:font-semibold">
-              Left popover
+              Popover à gauche
             </p>
             <p class="maz:text-sm maz:text-muted">
-              Content on the left side.
+              Contenu sur le côté gauche.
             </p>
           </div>
         </MazPopover>
         <MazPopover trigger="click" position="right" persistent>
           <template #trigger>
             <MazBtn color="accent">
-              Persistent (right)
+              Persistant (droite)
             </MazBtn>
           </template>
           <div class="maz:p-3">
             <p class="maz:font-semibold">
-              Persistent popover
+              Popover persistant
             </p>
             <p class="maz:text-sm maz:text-muted">
-              Won't close on outside click.
+              Ne se ferme pas au clic à l'extérieur.
             </p>
           </div>
         </MazPopover>
@@ -1173,11 +1173,11 @@ const checklistItems = [
         MazDropdown
       </h2>
       <div class="maz:flex maz:flex-wrap maz:gap-4">
-        <MazDropdown :items="[{ label: 'Edit', action: () => {} }, { label: 'Delete', action: () => {} }, { label: 'Archive', action: () => {} }]">
+        <MazDropdown :items="[{ label: 'Modifier', action: () => {} }, { label: 'Supprimer', action: () => {} }, { label: 'Archiver', action: () => {} }]">
           Actions
         </MazDropdown>
-        <MazDropdown :items="[{ label: 'Profile' }, { label: 'Settings' }, { label: 'Logout' }]" color="secondary">
-          Account
+        <MazDropdown :items="[{ label: 'Profil' }, { label: 'Réglages' }, { label: 'Déconnexion' }]" color="secondary">
+          Compte
         </MazDropdown>
       </div>
     </section>
@@ -1186,7 +1186,7 @@ const checklistItems = [
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazTable
       </h2>
-      <MazTable sortable search background-even pagination :headers="tableHeaders" :rows="tableRows" title="Team Members" />
+      <MazTable sortable search background-even pagination :headers="tableHeaders" :rows="tableRows" title="Membres de l'équipe" />
     </section>
 
     <section>
@@ -1212,14 +1212,14 @@ const checklistItems = [
       </h2>
       <MazCarousel>
         <template #title>
-          Featured Items
+          Éléments à la une
         </template>
         <MazCard v-for="i in 5" :key="i" :gallery="{ images: [galleryImages.at(i - 1) as MazGalleryImage], height: 150 }" style="min-width: 280px;">
           <template #content-title>
-            Card {{ i }}
+            Carte {{ i }}
           </template>
           <template #content-body>
-            <p>Carousel item {{ i }} description.</p>
+            <p>Description de l'élément {{ i }} du carrousel.</p>
           </template>
         </MazCard>
       </MazCarousel>
@@ -1251,7 +1251,7 @@ const checklistItems = [
         MazFullscreenLoader
       </h2>
       <p class="maz:text-muted">
-        (Activated programmatically - not shown inline)
+        (Activé par programmation - non affiché dans la page)
       </p>
     </section>
 
@@ -1297,10 +1297,10 @@ const checklistItems = [
       </h2>
       <div class="maz:flex maz:flex-wrap maz:gap-4">
         <MazLink href="#">
-          Default link
+          Lien par défaut
         </MazLink>
         <MazLink v-for="c in [...colors, 'inherit' as const]" :key="c" href="#" :color="c">
-          {{ c }} link
+          Lien {{ c }}
         </MazLink>
       </div>
     </section>
@@ -1335,7 +1335,7 @@ const checklistItems = [
         MazReadingProgressBar
       </h2>
       <p class="maz:text-muted">
-        (Tracks page scroll progress - visible at the top of the viewport)
+        (Suit la progression du défilement de la page - visible en haut de l'écran)
       </p>
       <MazReadingProgressBar />
     </section>
@@ -1348,19 +1348,19 @@ const checklistItems = [
         <div class="maz:text-center">
           <MazAnimatedCounter :count="1234" suffix="+" class="maz:text-4xl" />
           <p class="maz:text-sm maz:text-muted">
-            Users
+            Utilisateurs
           </p>
         </div>
         <div class="maz:text-center">
           <MazAnimatedCounter :count="99" suffix="%" prefix="~" class="maz:text-4xl" />
           <p class="maz:text-sm maz:text-muted">
-            Uptime
+            Disponibilité
           </p>
         </div>
         <div class="maz:text-center">
           <MazAnimatedCounter :count="50" suffix="+" class="maz:text-4xl" />
           <p class="maz:text-sm maz:text-muted">
-            Components
+            Composants
           </p>
         </div>
       </div>
@@ -1370,7 +1370,7 @@ const checklistItems = [
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazAnimatedText
       </h2>
-      <MazAnimatedText text="Build beautiful interfaces" last-word="with Maz UI" class="maz:text-3xl maz:font-bold" />
+      <MazAnimatedText text="Crée de belles interfaces" last-word="avec Maz UI" class="maz:text-3xl maz:font-bold" />
     </section>
 
     <section>
@@ -1381,28 +1381,28 @@ const checklistItems = [
         <MazAnimatedElement direction="up" :once="false">
           <MazCard bordered>
             <template #content-title>
-              Up
+              Haut
             </template>
           </MazCard>
         </MazAnimatedElement>
         <MazAnimatedElement direction="down" :once="false">
           <MazCard bordered>
             <template #content-title>
-              Down
+              Bas
             </template>
           </MazCard>
         </MazAnimatedElement>
         <MazAnimatedElement direction="left" :once="false">
           <MazCard bordered>
             <template #content-title>
-              Left
+              Gauche
             </template>
           </MazCard>
         </MazAnimatedElement>
         <MazAnimatedElement direction="right" :once="false">
           <MazCard bordered>
             <template #content-title>
-              Right
+              Droite
             </template>
           </MazCard>
         </MazAnimatedElement>
@@ -1414,10 +1414,10 @@ const checklistItems = [
         MazList
       </h2>
       <div class="maz:grid maz:gap-4 maz:md:grid-cols-2 maz:mb-4">
-        <MazList title="Settings" footer="Changes apply immediately.">
-          <MazListItem title="Wi-Fi" subtitle="Home network" clickable>
+        <MazList title="Réglages" footer="Les modifications s'appliquent immédiatement.">
+          <MazListItem title="Wi-Fi" subtitle="Réseau domestique" clickable>
             <template #end>
-              On
+              Activé
             </template>
           </MazListItem>
           <MazListItem title="Notifications">
@@ -1425,13 +1425,13 @@ const checklistItems = [
               <MazSwitch v-model="listSwitch" aria-label="Notifications" />
             </template>
           </MazListItem>
-          <MazListItem title="Advanced" collapsible>
-            Collapsible content
+          <MazListItem title="Avancé" collapsible>
+            Contenu repliable
           </MazListItem>
         </MazList>
         <MazList size="lg" :bordered="false">
-          <MazListItem title="Inbox" active />
-          <MazListItem title="Drafts" disabled clickable />
+          <MazListItem title="Boîte de réception" active />
+          <MazListItem title="Brouillons" disabled clickable />
         </MazList>
       </div>
     </section>
@@ -1441,10 +1441,10 @@ const checklistItems = [
         MazColorPicker
       </h2>
       <div class="maz:flex maz:flex-col maz:items-start maz:gap-4 maz:mb-4">
-        <MazColorPicker v-model="colorPickerValue" label="Color" />
-        <MazColorPicker v-model="colorPickerValue" format="rgb" :alpha="false" :swatches="['#3b82f6', '#10b981', '#ef4444']" label="RGB with swatches" />
+        <MazColorPicker v-model="colorPickerValue" label="Couleur" />
+        <MazColorPicker v-model="colorPickerValue" format="rgb" :alpha="false" :swatches="['#3b82f6', '#10b981', '#ef4444']" label="RGB avec échantillons" />
         <MazColorPicker v-model="colorPickerValue" inline />
-        <MazColorPicker v-model="colorPickerValue" disabled label="Disabled" />
+        <MazColorPicker v-model="colorPickerValue" disabled label="Désactivé" />
       </div>
     </section>
 
@@ -1453,10 +1453,10 @@ const checklistItems = [
         MazSegmented
       </h2>
       <div class="maz:flex maz:flex-col maz:items-start maz:gap-4 maz:mb-4">
-        <MazSegmented v-model="segmentedValue" :options="radioOptions" aria-label="Segmented" />
-        <MazSegmented v-model="segmentedValue" :options="radioOptions" color="primary" size="sm" aria-label="Segmented primary" />
-        <MazSegmented v-model="segmentedValue" :options="radioOptions" rounded-size="full" block aria-label="Segmented block" />
-        <MazSegmented v-model="segmentedValue" :options="radioOptions" disabled aria-label="Segmented disabled" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" aria-label="Segmenté" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" color="primary" size="sm" aria-label="Segmenté principal" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" rounded-size="full" block aria-label="Segmenté bloc" />
+        <MazSegmented v-model="segmentedValue" :options="radioOptions" disabled aria-label="Segmenté désactivé" />
       </div>
     </section>
 
@@ -1469,7 +1469,7 @@ const checklistItems = [
         <MazIndicator :content="3" color="destructive" />
         <MazIndicator :content="128" color="destructive" />
         <MazIndicator :content="3" color="destructive">
-          <MazBtn>Inbox</MazBtn>
+          <MazBtn>Boîte de réception</MazBtn>
         </MazIndicator>
         <MazIndicator color="success" position="bottom-end" overlap="circular" pulse>
           <MazAvatar caption="Louis Mazel" rounded-size="full" />
@@ -1486,51 +1486,51 @@ const checklistItems = [
         Horizontal
       </h3>
       <MazTicker class="maz:mb-4">
-        <span class="maz:px-4">Item 1</span>
-        <span class="maz:px-4">Item 2</span>
-        <span class="maz:px-4">Item 3</span>
-        <span class="maz:px-4">Item 4</span>
+        <span class="maz:px-4">Élément 1</span>
+        <span class="maz:px-4">Élément 2</span>
+        <span class="maz:px-4">Élément 3</span>
+        <span class="maz:px-4">Élément 4</span>
       </MazTicker>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Reverse
+        Inversé
       </h3>
       <MazTicker reverse class="maz:mb-4">
-        <span class="maz:px-4">Item 1</span>
-        <span class="maz:px-4">Item 2</span>
-        <span class="maz:px-4">Item 3</span>
-        <span class="maz:px-4">Item 4</span>
+        <span class="maz:px-4">Élément 1</span>
+        <span class="maz:px-4">Élément 2</span>
+        <span class="maz:px-4">Élément 3</span>
+        <span class="maz:px-4">Élément 4</span>
       </MazTicker>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Vertical with images
+        Vertical avec images
       </h3>
       <div class="maz:flex maz:gap-4 maz:overflow-hidden" style="height: 300px">
         <MazTicker orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
           <img
             v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i}/400/225`"
-            :alt="`Screenshot ${i}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
+            :alt="`Capture d'écran ${i}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
             style="width: 400px; height: 225px"
           >
         </MazTicker>
         <MazTicker orientation="vertical" :overlay="false" :duration="30" reverse pause-on-hover>
           <img
             v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i + 4}/400/225`"
-            :alt="`Screenshot ${i + 4}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
+            :alt="`Capture d'écran ${i + 4}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
             style="width: 400px; height: 225px"
           >
         </MazTicker>
         <MazTicker class="maz:hidden maz:md:flex" orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
           <img
             v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i + 8}/400/225`"
-            :alt="`Screenshot ${i + 8}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
+            :alt="`Capture d'écran ${i + 8}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
             style="width: 400px; height: 225px"
           >
         </MazTicker>
       </div>
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Inclined with images
+        Incliné avec images
       </h3>
 
       <div class="maz:overflow-hidden maz:rounded-lg maz:bg-gray-100 maz:dark:bg-gray-800" style="height: 400px; perspective: 1500px">
@@ -1540,7 +1540,7 @@ const checklistItems = [
               v-for="i in 4"
               :key="i"
               :src="`https://picsum.photos/seed/maz-3d-${i}/460/258`"
-              :alt="`Screenshot ${i}`"
+              :alt="`Capture d'écran ${i}`"
               width="460"
               height="258"
               loading="lazy"
@@ -1553,7 +1553,7 @@ const checklistItems = [
               v-for="i in 4"
               :key="i"
               :src="`https://picsum.photos/seed/maz-3d-${i + 4}/460/258`"
-              :alt="`Screenshot ${i + 4}`"
+              :alt="`Capture d'écran ${i + 4}`"
               width="460"
               height="258"
               loading="lazy"
@@ -1566,7 +1566,7 @@ const checklistItems = [
               v-for="i in 4"
               :key="i"
               :src="`https://picsum.photos/seed/maz-3d-${i + 8}/460/258`"
-              :alt="`Screenshot ${i + 8}`"
+              :alt="`Capture d'écran ${i + 8}`"
               width="460"
               height="258"
               loading="lazy"
@@ -1579,7 +1579,7 @@ const checklistItems = [
               v-for="i in 4"
               :key="i"
               :src="`https://picsum.photos/seed/maz-3d-${i + 8}/460/258`"
-              :alt="`Screenshot ${i + 8}`"
+              :alt="`Capture d'écran ${i + 8}`"
               width="460"
               height="258"
               loading="lazy"
@@ -1592,7 +1592,7 @@ const checklistItems = [
               v-for="i in 4"
               :key="i"
               :src="`https://picsum.photos/seed/maz-3d-${i + 8}/460/258`"
-              :alt="`Screenshot ${i + 8}`"
+              :alt="`Capture d'écran ${i + 8}`"
               width="460"
               height="258"
               loading="lazy"
@@ -1605,7 +1605,7 @@ const checklistItems = [
               v-for="i in 4"
               :key="i"
               :src="`https://picsum.photos/seed/maz-3d-${i + 8}/460/258`"
-              :alt="`Screenshot ${i + 8}`"
+              :alt="`Capture d'écran ${i + 8}`"
               width="460"
               height="258"
               loading="lazy"
@@ -1622,7 +1622,7 @@ const checklistItems = [
         MazContainer
       </h2>
       <MazContainer>
-        <p>Content inside a MazContainer with max-width constraints.</p>
+        <p>Contenu dans un MazContainer avec une largeur maximale.</p>
       </MazContainer>
     </section>
 
@@ -1631,7 +1631,7 @@ const checklistItems = [
         MazBackdrop
       </h2>
       <p class="maz:text-muted">
-        (Used internally by Dialog, BottomSheet, Drawer)
+        (Utilisé en interne par Dialog, BottomSheet et Drawer)
       </p>
     </section>
 
@@ -1643,9 +1643,9 @@ const checklistItems = [
         <MazChart
           type="bar"
           :data="{
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            labels: ['Janv.', 'Févr.', 'Mars', 'Avr.', 'Mai', 'Juin'],
             datasets: [{
-              label: 'Revenue',
+              label: 'Chiffre d\'affaires',
               data: [12, 19, 3, 5, 2, 3],
               backgroundColor: ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe'],
             }],

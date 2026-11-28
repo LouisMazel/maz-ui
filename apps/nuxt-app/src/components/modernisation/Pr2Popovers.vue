@@ -9,16 +9,16 @@ const date = ref<string>()
 const color = ref<string>('#3b82f6')
 
 const sides = ['top', 'right', 'bottom', 'left'] as const
-const tooltipButtons = ['Edit', 'Copy', 'Share', 'Delete']
+const tooltipButtons = ['Modifier', 'Copier', 'Partager', 'Supprimer']
 </script>
 
 <template>
   <ModernisationSection
     id="pr2-popovers"
-    title="PR 2. Popovers and tooltips"
-    description="Panels grow from their trigger. Tooltips share their delay. Reduced motion turns the movement into an instant change."
+    title="PR 2. Popovers et tooltips"
+    description="Les panneaux grandissent depuis leur déclencheur. Les tooltips partagent leur délai. Avec les animations réduites, le mouvement devient un changement instantané."
   >
-    <ModernisationDemo title="MazPopover: 4 sides" hint="Each panel fades in and grows from the center of its trigger, projected on its edge. The wide trigger shows the origin sitting under its center.">
+    <ModernisationDemo title="MazPopover : 4 côtés" hint="Chaque panneau apparaît en fondu et grandit depuis le centre de son déclencheur, projeté sur son bord. Le déclencheur large montre l'origine placée sous son centre.">
       <div class="flex flex-wrap items-center justify-center gap-4 py-16">
         <MazPopover v-for="side in sides" :key="side" :position="side">
           <template #trigger>
@@ -27,34 +27,34 @@ const tooltipButtons = ['Edit', 'Copy', 'Share', 'Delete']
             </MazBtn>
           </template>
           <div class="p-4">
-            Opens from the {{ side }} side
+            S'ouvre du côté {{ side }}
           </div>
         </MazPopover>
         <MazPopover position="bottom-start">
           <template #trigger>
             <MazBtn color="neutral" class="w-64">
-              Wide trigger, bottom-start
+              Déclencheur large, bottom-start
             </MazBtn>
           </template>
           <div class="p-4 w-32">
-            Small panel
+            Petit panneau
           </div>
         </MazPopover>
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="Dropdown, select, date picker, color picker" hint="They all use MazPopover: same growth from the trigger.">
+    <ModernisationDemo title="Dropdown, select, date picker, color picker" hint="Ils utilisent tous MazPopover : même croissance depuis le déclencheur.">
       <div class="flex flex-wrap items-end gap-4">
-        <MazDropdown :items="[{ label: 'Profile' }, { label: 'Settings' }, { label: 'Log out' }]">
+        <MazDropdown :items="[{ label: 'Profil' }, { label: 'Réglages' }, { label: 'Déconnexion' }]">
           Dropdown
         </MazDropdown>
         <MazSelect v-model="selectValue" :options="selectOptions" label="Select" class="w-48" />
         <MazDatePicker v-model="date" label="Date" class="w-48" />
-        <MazColorPicker v-model="color" label="Color" />
+        <MazColorPicker v-model="color" label="Couleur" />
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="vTooltip: grouped delay" hint="Each tooltip waits 800 ms. After the first one, moving to the next button shows its tooltip at once.">
+    <ModernisationDemo title="vTooltip : délai groupé" hint="Chaque tooltip attend 800 ms. Après le premier, passer au bouton suivant affiche son tooltip tout de suite.">
       <div class="flex gap-2">
         <MazBtn
           v-for="name in tooltipButtons"
@@ -68,15 +68,15 @@ const tooltipButtons = ['Edit', 'Copy', 'Share', 'Delete']
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="Custom transition with --maz-popover-transform-origin" hint="This transition rotates and bounces from the origin exposed on the panel.">
+    <ModernisationDemo title="Transition personnalisée avec --maz-popover-transform-origin" hint="Cette transition tourne et rebondit depuis l'origine exposée sur le panneau.">
       <MazPopover transition="pr2-custom-popover" position="bottom">
         <template #trigger>
           <MazBtn color="primary">
-            Custom transition
+            Transition personnalisée
           </MazBtn>
         </template>
         <div class="p-4">
-          Styled with the CSS variable
+          Stylé avec la variable CSS
         </div>
       </MazPopover>
     </ModernisationDemo>

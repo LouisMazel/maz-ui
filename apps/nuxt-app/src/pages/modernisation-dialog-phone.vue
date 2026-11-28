@@ -11,15 +11,15 @@ const isOpen = ref(true)
 <template>
   <div class="min-h-dvh bg-surface p-4">
     <MazBtn @click="isOpen = true">
-      Open the dialog
+      Ouvrir le dialogue
     </MazBtn>
-    <MazDialog v-model="isOpen" :align="align" title="Phone dialog" scrollable>
+    <MazDialog v-model="isOpen" :align="align" title="Dialogue sur téléphone" scrollable>
       <p v-for="i in 20" :key="i" class="pb-4">
-        Paragraph {{ i }}: scroll with the finger inside the dialog.
+        Paragraphe {{ i }} : fais défiler avec le doigt dans le dialogue.
       </p>
       <template #footer="{ close }">
         <MazBtn @click="close">
-          Close
+          Fermer
         </MazBtn>
       </template>
     </MazDialog>

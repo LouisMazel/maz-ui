@@ -7,13 +7,13 @@ const route = useRoute()
 const dir = route.query.dir === 'rtl' ? 'rtl' : 'ltr'
 
 useHead({
-  title: 'Visual regression - Maz UI',
+  title: 'Régression visuelle - Maz UI',
   htmlAttrs: { dir },
 })
 
 const avatar = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="#6366f1" width="200" height="200"/></svg>')}`
 
-const text = ref('Hello Maz UI')
+const text = ref('Bonjour Maz UI')
 const select = ref('vue')
 const radio = ref('b')
 const checkbox = ref(true)
@@ -36,26 +36,26 @@ const selectOptions = [
 ]
 const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive'] as const
 const headers = [
-  { label: 'Name', key: 'name' },
-  { label: 'Role', key: 'role' },
-  { label: 'Status', key: 'status' },
+  { label: 'Nom', key: 'name' },
+  { label: 'Rôle', key: 'role' },
+  { label: 'Statut', key: 'status' },
 ]
 const rows = [
-  { name: 'Alice Martin', role: 'Admin', status: 'Active' },
-  { name: 'Bob Smith', role: 'Editor', status: 'Active' },
-  { name: 'Carol White', role: 'Viewer', status: 'Inactive' },
+  { name: 'Alice Martin', role: 'Admin', status: 'Actif' },
+  { name: 'Bob Smith', role: 'Éditeur', status: 'Actif' },
+  { name: 'Carol White', role: 'Lecteur', status: 'Inactif' },
 ]
 const steps = [
-  { title: 'Account', subtitle: 'Create your account' },
-  { title: 'Profile', subtitle: 'Set up your profile' },
-  { title: 'Confirm', subtitle: 'Review and confirm' },
+  { title: 'Compte', subtitle: 'Crée ton compte' },
+  { title: 'Profil', subtitle: 'Configure ton profil' },
+  { title: 'Confirmation', subtitle: 'Vérifie et confirme' },
 ]
 </script>
 
 <template>
   <div class="grid w-[720px] gap-6 bg-surface p-6 text-foreground">
     <h1 class="text-title-2">
-      Visual regression blocks
+      Blocs de régression visuelle
     </h1>
 
     <div data-visual="btn" class="flex flex-wrap items-center gap-3 p-4">
@@ -63,17 +63,17 @@ const steps = [
         {{ color }}
       </MazBtn>
       <MazBtn size="sm" disabled>
-        Disabled
+        Désactivé
       </MazBtn>
       <MazBtn loading>
-        Loading
+        Chargement
       </MazBtn>
     </div>
 
     <div data-visual="input" class="grid gap-4 p-4">
-      <MazInput v-model="text" label="Default" />
-      <MazInput v-model="text" label="Error" error hint="Something is wrong" />
-      <MazInput v-model="text" label="Disabled" disabled />
+      <MazInput v-model="text" label="Par défaut" />
+      <MazInput v-model="text" label="Erreur" error hint="Quelque chose ne va pas" />
+      <MazInput v-model="text" label="Désactivé" disabled />
     </div>
 
     <div data-visual="select" class="p-4">
@@ -86,13 +86,13 @@ const steps = [
 
     <div data-visual="checkbox" class="flex flex-wrap gap-4 p-4">
       <MazCheckbox v-model="checkbox">
-        Checked
+        Coché
       </MazCheckbox>
       <MazCheckbox :model-value="false">
-        Unchecked
+        Décoché
       </MazCheckbox>
       <MazCheckbox :model-value="true" disabled>
-        Disabled
+        Désactivé
       </MazCheckbox>
     </div>
 
@@ -109,55 +109,55 @@ const steps = [
     </div>
 
     <div data-visual="switch" class="flex flex-wrap gap-4 p-4">
-      <MazSwitch v-model="switchOn" label="On" />
-      <MazSwitch :model-value="false" label="Off" />
-      <MazSwitch :model-value="true" label="Disabled" disabled />
+      <MazSwitch v-model="switchOn" label="Activé" />
+      <MazSwitch :model-value="false" label="Désactivé" />
+      <MazSwitch :model-value="true" label="Désactivé" disabled />
     </div>
 
     <div data-visual="card" class="grid gap-4 p-4">
-      <MazCard title="Card" bordered>
-        Content of the card.
+      <MazCard title="Carte" bordered>
+        Contenu de la carte.
       </MazCard>
-      <MazCard title="Elevated card" elevation>
-        Content of the card.
+      <MazCard title="Carte surélevée" elevation>
+        Contenu de la carte.
         <template #footer>
-          Footer
+          Pied de carte
         </template>
       </MazCard>
     </div>
 
     <div data-visual="dialog" class="p-4">
       <MazBtn data-testid="open-dialog" @click="dialog = true">
-        Open dialog
+        Ouvrir le dialogue
       </MazBtn>
-      <MazDialog v-model="dialog" title="Dialog title">
-        Content of the dialog.
+      <MazDialog v-model="dialog" title="Titre du dialogue">
+        Contenu du dialogue.
         <template #footer="{ close }">
           <MazBtn color="secondary" @click="close">
-            Close
+            Fermer
           </MazBtn>
         </template>
       </MazDialog>
     </div>
 
     <div data-visual="dropdown" class="min-h-64 p-4">
-      <MazDropdown :items="[{ label: 'Edit' }, { label: 'Delete' }, { label: 'Archive' }]">
+      <MazDropdown :items="[{ label: 'Modifier' }, { label: 'Supprimer' }, { label: 'Archiver' }]">
         Actions
       </MazDropdown>
     </div>
 
     <div data-visual="tabs" class="p-4">
       <MazTabs v-model="tab">
-        <MazTabsBar v-model="tab" :items="[{ label: 'Overview' }, { label: 'Features', badge: { content: 3, color: 'primary' } }, { label: 'Pricing' }]" />
+        <MazTabsBar v-model="tab" :items="[{ label: 'Aperçu' }, { label: 'Fonctionnalités', badge: { content: 3, color: 'primary' } }, { label: 'Tarifs' }]" />
         <MazTabsContent>
           <MazTabsContentItem :tab="1">
-            Overview
+            Aperçu
           </MazTabsContentItem>
           <MazTabsContentItem :tab="2">
-            Features
+            Fonctionnalités
           </MazTabsContentItem>
           <MazTabsContentItem :tab="3">
-            Pricing
+            Tarifs
           </MazTabsContentItem>
         </MazTabsContent>
       </MazTabs>
@@ -166,8 +166,8 @@ const steps = [
     <div data-visual="segmented" class="p-4">
       <MazSegmented
         v-model="segmented"
-        :options="[{ label: 'Day', value: 'a' }, { label: 'Week', value: 'b' }, { label: 'Month', value: 'c' }]"
-        aria-label="Range"
+        :options="[{ label: 'Jour', value: 'a' }, { label: 'Semaine', value: 'b' }, { label: 'Mois', value: 'c' }]"
+        aria-label="Période"
       />
     </div>
 
@@ -178,16 +178,16 @@ const steps = [
     </div>
 
     <div data-visual="alert" class="grid gap-3 p-4">
-      <MazAlert color="info" title="Info" content="An informative message." />
-      <MazAlert color="success" title="Success" content="It worked." />
-      <MazAlert color="destructive" title="Error" content="Something failed." />
+      <MazAlert color="info" title="Info" content="Un message informatif." />
+      <MazAlert color="success" title="Succès" content="Ça a marché." />
+      <MazAlert color="destructive" title="Erreur" content="Quelque chose a échoué." />
     </div>
 
     <div data-visual="avatar" class="flex flex-wrap items-center gap-4 p-4">
       <MazAvatar :src="avatar" size="2rem" />
       <MazAvatar :src="avatar" size="3rem" />
       <MazAvatar :src="avatar" size="4rem" bordered />
-      <MazAvatar caption="John Doe" />
+      <MazAvatar caption="Jean Dupont" />
     </div>
 
     <div data-visual="pagination" class="p-4">
@@ -197,27 +197,27 @@ const steps = [
     <div data-visual="stepper" class="p-4">
       <MazStepper v-model="step" :steps="steps">
         <template #content-1>
-          First step
+          Première étape
         </template>
         <template #content-2>
-          Second step
+          Deuxième étape
         </template>
         <template #content-3>
-          Third step
+          Troisième étape
         </template>
       </MazStepper>
     </div>
 
     <div data-visual="table" class="p-4">
-      <MazTable :headers="headers" :rows="rows" title="Team" background-even />
+      <MazTable :headers="headers" :rows="rows" title="Équipe" background-even />
     </div>
 
     <div data-visual="datepicker" class="p-4">
-      <MazDatePicker v-model="date" label="Date" locale="en-US" inline />
+      <MazDatePicker v-model="date" label="Date" locale="fr-FR" inline />
     </div>
 
     <div data-visual="textarea" class="p-4">
-      <MazTextarea v-model="text" label="Textarea" />
+      <MazTextarea v-model="text" label="Zone de texte" />
     </div>
 
     <div data-visual="input-tags" class="p-4">
@@ -232,27 +232,27 @@ const steps = [
     <div data-visual="accordion" class="p-4">
       <MazAccordion v-model="accordion">
         <template #title-1>
-          What is Maz UI?
+          Qu'est-ce que Maz UI ?
         </template>
         <template #content-1>
-          A Vue 3 and Nuxt component library.
+          Une bibliothèque de composants pour Vue 3 et Nuxt.
         </template>
         <template #title-2>
-          How to install?
+          Comment l'installer ?
         </template>
         <template #content-2>
-          With pnpm.
+          Avec pnpm.
         </template>
       </MazAccordion>
     </div>
 
     <div data-visual="drawer" class="p-4">
       <MazBtn data-testid="open-drawer" @click="drawer = true">
-        Open drawer
+        Ouvrir le tiroir
       </MazBtn>
-      <MazDrawer v-model="drawer" title="Drawer">
+      <MazDrawer v-model="drawer" title="Tiroir">
         <p class="px-6 py-4">
-          Content of the drawer.
+          Contenu du tiroir.
         </p>
       </MazDrawer>
     </div>
