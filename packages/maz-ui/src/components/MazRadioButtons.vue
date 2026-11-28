@@ -1,11 +1,12 @@
 <script lang="ts" setup generic="T extends string | number | boolean, Option extends MazRadioButtonsOption<T>">
 import type { CSSProperties, HTMLAttributes } from 'vue'
 import type { MazColor, MazNeutralColor, MazSize } from './types.ts'
-import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
-import { computed } from 'vue'
+import { computed, nextTick, onMounted, ref, shallowRef, watch } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
-import MazIcon from './MazIcon.vue'
+import { useResizeObserver } from '../composables/useResizeObserver.ts'
+import { useSlidingIndicator } from '../composables/useSlidingIndicator.ts'
+import MazDrawnIcon from './MazDrawnIcon.vue'
 import { getColor } from './types.ts'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
@@ -17,6 +18,10 @@ export type MazRadioButtonsOption<T = string | number | boolean> = {
   classes?: any
   /** The style to apply to the option */
   style?: HTMLAttributes['style']
+  /** Second line of the card (variant `cards`) */
+  description?: string
+  /** Price or extra text at the end of the card (variant `cards`) */
+  price?: string
 } & Record<string, unknown>
 
 export interface MazRadioButtonsProps<T = string | number | boolean, Option extends MazRadioButtonsOption<T> = MazRadioButtonsOption<T>> {
@@ -60,6 +65,18 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
    * @default 'md'
    */
   size?: MazSize
+  /**
+   * Look of the options: `default` are buttons, `cards` are choice cards (`label`, `description` and `price` of the option)
+   * whose border draws itself when they are selected
+   * @values `'default' | 'cards'`
+   * @default 'default'
+   */
+  variant?: 'default' | 'cards'
+  /**
+   * A frame slides to the selected option (and stretches on the way)
+   * @default true
+   */
+  animated?: boolean
 }
 
 const {
@@ -77,6 +94,8 @@ const {
   success,
   warning,
   hint,
+  variant = 'default',
+  animated = true,
 } = defineProps<MazRadioButtonsProps<T, Option>>()
 
 const emits = defineEmits<{
@@ -149,6 +168,63 @@ function isSelected(value: Option['value']) {
   return modelValue === value
 }
 
+const isCards = computed(() => variant === 'cards')
+const hasSelector = computed(() => selector || isCards.value)
+
+const cardColor = computed(() => {
+  if (color === 'neutral' || color === 'surface' || color === 'container')
+    return 'var(--maz-foreground)'
+
+  return `var(--maz-${getColor(color)})`
+})
+
+const cardSelectedStyle = computed<CSSProperties>(() => ({
+  backgroundColor: `color-mix(in srgb, ${cardColor.value} 8%, var(--maz-surface))`,
+}))
+
+const wrapperRef = ref<HTMLElement>()
+/** Not reactive: only read to find the selected option */
+const optionRefs: HTMLElement[] = []
+const activeOption = shallowRef<HTMLElement>()
+const rowOffset = ref(0)
+
+const selectedIndex = computed(() => options.findIndex(option => option.value === modelValue))
+
+function syncActive() {
+  activeOption.value = optionRefs[selectedIndex.value]
+  rowOffset.value = orientation === 'row'
+    ? activeOption.value?.offsetTop ?? 0
+    : 0
+}
+
+function setOptionRef(el: unknown, index: number) {
+  if (el)
+    optionRefs[index] = el as HTMLElement
+}
+
+const { style: indicatorStyle } = useSlidingIndicator({
+  container: wrapperRef,
+  active: activeOption,
+  orientation: orientation === 'col'
+    ? 'vertical'
+    : 'horizontal',
+  stretch: true,
+  animated,
+})
+
+useResizeObserver(wrapperRef, syncActive)
+
+onMounted(async () => {
+  await nextTick()
+  syncActive()
+})
+
+watch(() => [selectedIndex.value, options.length], async () => {
+  await nextTick()
+  optionRefs.length = options.length
+  syncActive()
+})
+
 function getOptionId(option: Option, i: number) {
   return `option-${i}-${option.value.toString()}-${groupName.value}`
 }
@@ -179,22 +255,31 @@ const SIZE_CLASS: Record<MazSize, string> = {
     :aria-invalid="error ? 'true' : undefined"
   >
     <div
-      class="m-radio-buttons__wrapper maz:inline-flex maz:gap-2"
+      ref="wrapperRef"
+      class="m-radio-buttons__wrapper maz:relative maz:inline-flex maz:gap-2"
       :class="[
         `--${orientation}`,
         orientation === 'row' ? 'maz:flex-row' : 'maz:flex-col',
         { '--wrap': wrap, 'maz:flex-wrap': wrap, '--block': block },
       ]"
     >
+      <span
+        v-if="animated && !isCards"
+        aria-hidden="true"
+        class="m-radio-buttons__indicator maz:pointer-events-none maz:absolute maz:inset-s-0 maz:top-0 maz:z-1 maz:rounded-md"
+        :style="[indicatorStyle, orientation === 'row' ? { top: `${rowOffset}px` } : {}, { border: `var(--maz-border-width, 1px) solid ${selectedStyle.item.borderColor}` }]"
+      />
       <label
         v-for="(option, i) in options"
         :key="getOptionId(option, i)"
+        :ref="(el) => setOptionRef(el, i)"
         :for="getOptionId(option, i)"
-        class="m-radio-buttons__items maz:group maz:flex maz:cursor-interactive maz:items-center maz:gap-4 maz:rounded-md maz:border
-        maz:border-divider maz:bg-surface maz:px-4 maz:py-2 maz:type-label maz:transition-colors maz:duration-300"
+        class="m-radio-buttons__items maz:group maz:flex maz:cursor-interactive maz:gap-4 maz:border maz:border-divider maz:bg-surface maz:type-label"
         :class="[
           `--size-${size}`,
-          SIZE_CLASS[size],
+          isCards
+            ? 'm-radio-buttons__items--card maz:border-draw maz:items-start maz:rounded-lg maz:p-4'
+            : [SIZE_CLASS[size], 'maz:items-center maz:rounded-md maz:px-4 maz:py-2'],
           {
             '--is-selected': isSelected(option.value),
             'maz:shadow-elevation maz:drop-shadow-md': elevation,
@@ -203,7 +288,9 @@ const SIZE_CLASS: Record<MazSize, string> = {
           option.classes,
         ]"
         :style="[
-          isSelected(option.value) ? selectedStyle.item : {},
+          isCards
+            ? { '--maz-border-draw-color': cardColor, ...(isSelected(option.value) ? cardSelectedStyle : {}) }
+            : (isSelected(option.value) ? selectedStyle.item : {}),
           option.style,
         ]"
       >
@@ -218,9 +305,9 @@ const SIZE_CLASS: Record<MazSize, string> = {
           @blur="onBlur($event)"
           @focus="onFocus($event)"
         >
-        <div v-if="selector" class="m-radio-buttons__items__checkbox maz:flex maz:flex-center">
+        <div v-if="hasSelector" class="m-radio-buttons__items__checkbox maz:flex maz:flex-center" :class="{ 'maz:mt-0.5': isCards }">
           <span
-            class="maz:flex maz:size-6 maz:flex-none maz:flex-center maz:rounded-full maz:border maz:border-divider maz:bg-input maz:p-0.5 maz:text-white maz:transition-colors maz:duration-300"
+            class="maz:flex maz:size-6 maz:flex-none maz:flex-center maz:rounded-full maz:border maz:border-divider maz:bg-input maz:p-0.5 maz:text-white"
             :class="{
               '--is-selected': isSelected(option.value),
             }"
@@ -228,9 +315,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
               isSelected(option.value) ? selectedStyle.selector : {},
             ]"
           >
-            <Transition name="maz-radio-buttons-scale">
-              <MazIcon v-show="isSelected(option.value)" :icon="MazCheck" class="maz:size-full" />
-            </Transition>
+            <MazDrawnIcon name="check" :drawn="isSelected(option.value)" :stroke-width="3" class="maz:size-full" />
           </span>
         </div>
 
@@ -240,8 +325,19 @@ const SIZE_CLASS: Record<MazSize, string> = {
             @binding {string | number | boolean} option - The value of the option
         -->
         <slot :option="option" :selected="isSelected(option.value)">
-          <span v-if="equalSize" class="m-radio-buttons__label maz:min-w-0 maz:truncate">{{ option.label }}</span>
-          <template v-else>
+          <span v-if="isCards" class="m-radio-buttons__text maz:flex maz:min-w-0 maz:flex-1 maz:flex-col maz:gap-0.5">
+            <span class="m-radio-buttons__label">{{ option.label }}</span>
+            <span v-if="option.description" class="m-radio-buttons__description maz:text-body-sm maz:font-normal maz:text-muted">{{ option.description }}</span>
+            <!--
+              @slot Extra content of a card (variant `cards`), under the description
+                @binding {Boolean} selected - If the option is selected
+                @binding {string | number | boolean} option - The value of the option
+            -->
+            <slot name="extra" :option="option" :selected="isSelected(option.value)" />
+          </span>
+          <span v-if="isCards && option.price" class="m-radio-buttons__price maz:flex-none">{{ option.price }}</span>
+          <span v-else-if="equalSize" class="m-radio-buttons__label maz:min-w-0 maz:truncate">{{ option.label }}</span>
+          <template v-else-if="!isCards">
             {{ option.label }}
           </template>
         </slot>
@@ -267,6 +363,11 @@ const SIZE_CLASS: Record<MazSize, string> = {
 @reference "../tailwindcss/tailwind.css";
 
 .m-radio-buttons__items {
+  transition:
+    background-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    border-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+
   &.--equal-size {
     @apply maz:min-w-0 maz:flex-1;
   }
@@ -276,14 +377,20 @@ const SIZE_CLASS: Record<MazSize, string> = {
   }
 
   &:has(input:focus-visible) {
-    outline: var(--maz-border-width) solid var(--maz-primary);
-    outline-offset: 2px;
+    outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
+    outline-offset: var(--maz-focus-ring-offset, 2px);
   }
+}
+
+.m-radio-buttons__items--card:not(:has(input:checked))::after {
+  --maz-border-draw-progress: 0;
 }
 
 .m-radio-buttons__items__checkbox {
   span {
-    transition: border-color 0s;
+    transition:
+      border-color 0s,
+      background-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 
     &.--is-selected {
       @apply maz:border-transparent;
@@ -293,19 +400,5 @@ const SIZE_CLASS: Record<MazSize, string> = {
       @apply maz:group-hover:bg-surface;
     }
   }
-}
-
-.maz-radio-buttons-scale-enter-active,
-.maz-radio-buttons-scale-leave-active {
-  opacity: 1;
-  z-index: 1;
-  transition: all 300ms cubic-bezier(0.4, 0.52, 0.26, 0.9);
-}
-
-.maz-radio-buttons-scale-enter-from,
-.maz-radio-buttons-scale-leave-to {
-  opacity: 0.4;
-  z-index: 1;
-  transform: scale(0);
 }
 </style>

@@ -94,6 +94,12 @@ description: MazSwitch is a standalone component that replaces the standard html
 </template>
 ```
 
+## Motion
+
+- While pressed, the thumb stretches toward the other side, then springs into its place with the `--maz-easing-bounce` token.
+- The keyboard focus shows a 2 px ring around the track.
+- The speed follows the `--maz-motion-*` tokens and reduced motion removes the stretch and the spring. It works the same in RTL.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-switch.doc.md-->
 
 <script lang="ts" setup>

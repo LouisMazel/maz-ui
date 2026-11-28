@@ -175,7 +175,7 @@ function onFocus(event: FocusEvent) {
 }
 
 .m-switch__input:focus-visible + .m-switch__toggle::before {
-  outline: var(--maz-focus-ring-width, var(--maz-border-width)) solid var(--maz-focus-ring-color, var(--switch-color));
+  outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--switch-color));
   outline-offset: var(--maz-focus-ring-offset, 2px);
 }
 
@@ -185,7 +185,8 @@ function onFocus(event: FocusEvent) {
 
 .m-switch__input:checked + .m-switch__toggle {
   &::after {
-    transform: translateX(var(--switch-height));
+    translate: var(--switch-height) 0;
+    transform-origin: 100% 50%;
     background-color: var(--switch-foreground);
   }
 
@@ -196,7 +197,20 @@ function onFocus(event: FocusEvent) {
 }
 
 :where([dir='rtl']) .m-switch__input:checked + .m-switch__toggle::after {
-  transform: translateX(calc(var(--switch-height) * -1));
+  translate: calc(var(--switch-height) * -1) 0;
+  transform-origin: 0% 50%;
+}
+
+:where([dir='rtl']) .m-switch__input:not(:checked) + .m-switch__toggle::after {
+  transform-origin: 100% 50%;
+}
+
+/* The thumb stretches toward the other side while pressed, then springs back into place */
+.m-switch:not(.--is-disabled):active .m-switch__toggle::after,
+.m-switch__input:not(:disabled):active + .m-switch__toggle::after {
+  scale: 1.3 1;
+  transition-duration: calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1));
+  transition-timing-function: var(--maz-easing-out, ease-out);
 }
 
 .m-switch__toggle {
@@ -214,7 +228,10 @@ function onFocus(event: FocusEvent) {
 
   &::before {
     content: '';
-    transition: all 200ms ease-in-out;
+    transition:
+      background-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+      border-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+      box-shadow calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 
     @apply maz:absolute maz:inset-0 maz:rounded-full;
     @apply maz:border maz:border-solid;
@@ -235,7 +252,14 @@ function onFocus(event: FocusEvent) {
     block-size: calc(var(--switch-height) - 0.25rem);
     background-color: var(--m-switch-thumb);
     box-shadow: 0 1px 3px 0 hsl(0deg 0% 0% / 25%);
-    transition: all 200ms ease-in-out;
+    translate: 0 0;
+    transform-origin: 0% 50%;
+    transition:
+      translate calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+        var(--maz-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1)),
+      scale calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+        var(--maz-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1)),
+      background-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
   }
 }
 

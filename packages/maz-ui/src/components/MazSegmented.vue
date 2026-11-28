@@ -1,13 +1,13 @@
 <script lang="ts" setup generic="T extends MazSegmentedValue, O extends MazSegmentedOption<T> = MazSegmentedOption<T>">
-import type { CSSProperties } from 'vue'
 import type { MazIconLike } from '../composables/useMazIconProps.ts'
 import type { VTooltipBindingValue } from '../directives/vTooltip.ts'
 import type { MazBadgeProps } from './MazBadge.vue'
 import type { MazColor, MazSize } from './types.ts'
-import { computed, defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, ref, shallowRef, watch } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
-import { useResizeObserver } from '../composables/useResizeObserver.ts'
+import { useRovingFocus } from '../composables/useRovingFocus.ts'
+import { useSlidingIndicator } from '../composables/useSlidingIndicator.ts'
 import { createLazyTooltipDirective } from '../utils/lazyTooltip.ts'
 import { resolveMazIconProps } from '../utils/resolveMazIconProps.ts'
 import { ROUNDED_SIZE_CLASS } from './constants.ts'
@@ -41,8 +41,11 @@ export interface MazSegmentedOption<T = MazSegmentedValue> {
 }
 
 export interface MazSegmentedProps<T = MazSegmentedValue, O extends MazSegmentedOption<T> = MazSegmentedOption<T>> {
-  /** @model The value of the selected segment */
-  modelValue?: T
+  /**
+   * @model The value of the selected segment, or with `multiple` the array of the selected values
+   * @type {T | T[]}
+   */
+  modelValue?: T | T[]
   /** The segments. Extra fields of an option are passed to the `item` slot */
   options: O[]
   /**
@@ -68,6 +71,22 @@ export interface MazSegmentedProps<T = MazSegmentedValue, O extends MazSegmented
    */
   block?: boolean
   /**
+   * Several segments can be on at once (toggle group): `v-model` is an array of values, the segments are toggle buttons
+   * (`aria-pressed`) in a `group`, each selected one has its own pill
+   * @default false
+   */
+  multiple?: boolean
+  /**
+   * The pill stretches toward the new segment on its way (a drop of ink)
+   * @default false
+   */
+  stretch?: boolean
+  /**
+   * The pill slides to the selected segment
+   * @default true
+   */
+  animated?: boolean
+  /**
    * Disable the whole control
    * @default false
    */
@@ -84,6 +103,9 @@ const {
   options,
   color,
   block = false,
+  multiple = false,
+  stretch = false,
+  animated = true,
   disabled = false,
   ariaLabel,
   ariaLabelledby,
@@ -95,12 +117,12 @@ const emits = defineEmits<{
    * Emitted when the selected segment changes
    * @property {T} value the value of the selected segment
    */
-  'update:model-value': [value: T]
+  'update:model-value': [value: T | T[]]
   /**
    * Emitted when the selected segment changes
-   * @property {T} value the value of the selected segment
+   * @property {T} value the value of the selected segment, or the array of the selected values with `multiple`
    */
-  'change': [value: T]
+  'change': [value: T | T[]]
 }>()
 
 defineSlots<{
@@ -135,7 +157,7 @@ const DOT_BADGE_STYLE = {
   borderRadius: '9999px',
 } as const
 
-const model = defineModel<T>()
+const model = defineModel<T | T[]>()
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: NonNullable<MazSegmentedProps['roundedSize']> }>('MazSegmented', {
   size: 'md',
@@ -152,7 +174,24 @@ const rootRef = ref<HTMLDivElement>()
 /** Not reactive: only read to measure and focus the segments */
 const segmentRefs: HTMLButtonElement[] = []
 
-const selectedIndex = computed(() => options.findIndex(option => option.value === model.value))
+const selectedValues = computed<T[]>(() => {
+  if (Array.isArray(model.value))
+    return model.value
+
+  return model.value === undefined
+    ? []
+    : [model.value]
+})
+
+const selectedIndex = computed(() => multiple
+  ? -1
+  : options.findIndex(option => option.value === selectedValues.value[0]))
+
+function isSelected(index: number) {
+  return multiple
+    ? selectedValues.value.includes(options[index]?.value as T)
+    : index === selectedIndex.value
+}
 
 function isDisabled(index: number) {
   return disabled || !!options[index]?.disabled
@@ -160,90 +199,86 @@ function isDisabled(index: number) {
 
 function select(index: number) {
   const option = options[index]
-  if (!option || isDisabled(index) || option.value === model.value)
+  if (!option || isDisabled(index))
     return
+
+  if (multiple) {
+    const values = selectedValues.value.includes(option.value)
+      ? selectedValues.value.filter(value => value !== option.value)
+      : [...selectedValues.value, option.value]
+    const ordered = options.filter(({ value }) => values.includes(value)).map(({ value }) => value)
+
+    model.value = ordered
+    emits('change', ordered)
+    return
+  }
+
+  if (option.value === model.value)
+    return
+
   model.value = option.value
   emits('change', option.value)
 }
 
-/** Roving tabindex: only the selected segment (or the first enabled one) is in the tab sequence */
+const focusedIndex = ref(0)
+
+/** Roving tabindex: only the selected segment (or the focused one with `multiple`, or the first enabled one) is in the tab sequence */
 function getTabIndex(index: number) {
-  const focusable = selectedIndex.value >= 0 && !isDisabled(selectedIndex.value)
-    ? selectedIndex.value
+  const current = multiple
+    ? focusedIndex.value
+    : selectedIndex.value
+  const focusable = current >= 0 && !isDisabled(current)
+    ? current
     : options.findIndex((_, i) => !isDisabled(i))
   return index === focusable
     ? 0
     : -1
 }
 
-function getNextEnabledIndex(fromIndex: number, step: 1 | -1) {
-  const count = options.length
-  for (let offset = 1; offset <= count; offset++) {
-    const index = (fromIndex + step * offset + count) % count
-    if (!isDisabled(index))
-      return index
-  }
-  return fromIndex
+function onClick(index: number) {
+  focusedIndex.value = index
+  select(index)
 }
 
-function onKeydown(event: KeyboardEvent, index: number) {
-  const isRtl = !!rootRef.value && globalThis.getComputedStyle(rootRef.value).direction === 'rtl'
-  const forwardKeys = isRtl
-    ? ['ArrowLeft', 'ArrowDown']
-    : ['ArrowRight', 'ArrowDown']
-  const backwardKeys = isRtl
-    ? ['ArrowRight', 'ArrowUp']
-    : ['ArrowLeft', 'ArrowUp']
+const { onKeydown, currentIndex } = useRovingFocus({
+  container: rootRef,
+  items: () => segmentRefs.slice(0, options.length),
+  orientation: 'both',
+  activateOnFocus: !multiple,
+  onActivate: index => select(index),
+  currentIndex: focusedIndex,
+})
 
-  let target: number | undefined
-  if (forwardKeys.includes(event.key))
-    target = getNextEnabledIndex(index, 1)
-  else if (backwardKeys.includes(event.key))
-    target = getNextEnabledIndex(index, -1)
-  else if (event.key === 'Home')
-    target = getNextEnabledIndex(-1, 1)
-  else if (event.key === 'End')
-    target = getNextEnabledIndex(options.length, -1)
+watch(selectedIndex, (index) => {
+  if (index >= 0)
+    currentIndex.value = index
+}, { immediate: true })
 
-  if (target === undefined || isDisabled(target))
-    return
+/** The pill slides under the selected segment; no transition on the first placement */
+const activeSegment = shallowRef<HTMLButtonElement>()
 
-  event.preventDefault()
-  segmentRefs[target]?.focus()
-  select(target)
+function syncActive() {
+  activeSegment.value = multiple
+    ? undefined
+    : segmentRefs[selectedIndex.value]
 }
 
-/** The indicator slides under the selected segment; no transition on the first placement */
-const indicatorStyle = ref<CSSProperties>({ opacity: 0 })
-const animated = ref(false)
-
-function placeIndicator() {
-  const segment = segmentRefs[selectedIndex.value]
-  if (!segment) {
-    indicatorStyle.value = { opacity: 0 }
-    return
-  }
-  indicatorStyle.value = {
-    width: `${segment.offsetWidth}px`,
-    height: `${segment.offsetHeight}px`,
-    transform: `translateX(${segment.offsetLeft}px)`,
-  }
-}
-
-useResizeObserver(rootRef, () => placeIndicator())
+const { style: indicatorStyle } = useSlidingIndicator({
+  container: rootRef,
+  active: activeSegment,
+  stretch,
+  animated,
+})
 
 onMounted(async () => {
   await nextTick()
-  placeIndicator()
-  requestAnimationFrame(() => {
-    animated.value = true
-  })
+  syncActive()
 })
 
 watch(() => [selectedIndex.value, options.length], async () => {
   await nextTick()
   segmentRefs.length = options.length
-  placeIndicator()
+  syncActive()
 })
 
 const SIZE_CLASS = {
@@ -254,6 +289,17 @@ const SIZE_CLASS = {
   lg: 'maz:h-13 maz:px-5',
   xl: 'maz:h-15 maz:px-7 maz:text-xl',
 } as const satisfies Record<MazSize, string>
+
+/**
+ * The classes keep the heights of the default density, the style gives the ones of the active density:
+ * the height of the control without the padding of the track, and the horizontal padding scaled
+ */
+const SEGMENT_PADDING_X = { mini: 2, xs: 2.5, sm: 3, md: 4, lg: 5, xl: 7 } as const satisfies Record<MazSize, number>
+
+const segmentStyle = computed(() => ({
+  height: `calc(var(--maz-control-height-${size.value}, 3rem) - var(--maz-space, 0.25rem))`,
+  paddingInline: `calc(var(--maz-space, 0.25rem) * ${SEGMENT_PADDING_X[size.value]} * var(--maz-density-ratio, 1))`,
+}))
 
 /** Same icon sizes as `MazBtn`, so the icons of a segmented control and of buttons line up */
 const ICON_SIZE = {
@@ -304,19 +350,19 @@ function iconProps(icon: MazIconLike) {
       ROUNDED_CLASS[roundedSize],
       { '--disabled maz:disabled-opacity': disabled },
     ]"
-    role="radiogroup"
+    :role="multiple ? 'group' : 'radiogroup'"
     :aria-label="ariaLabel"
     :aria-labelledby="ariaLabelledby"
     :aria-disabled="disabled || undefined"
   >
     <div
+      v-if="!multiple"
       aria-hidden="true"
-      class="m-segmented__indicator maz:pointer-events-none maz:absolute maz:top-0.5 maz:left-0 maz:-z-1 maz:shadow-sm"
+      class="m-segmented__indicator maz:pointer-events-none maz:absolute maz:inset-s-0 maz:top-0.5 maz:-z-1 maz:shadow-sm"
       :class="[
         ROUNDED_CLASS[roundedSize],
         resolvedColor ? '' : 'maz:bg-container maz:dark:bg-foreground/28',
         resolvedColor === 'neutral' ? 'maz:border maz:border-divider' : '',
-        { 'maz:transition-[transform,width] maz:duration-200 maz:ease-out maz:motion-reduce:transition-none': animated },
       ]"
       :style="[indicatorStyle, resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor})` } : {}]"
     />
@@ -327,23 +373,26 @@ function iconProps(icon: MazIconLike) {
       :ref="(el) => setSegmentRef(el as HTMLButtonElement | null, index)"
       v-tooltip="option.tooltip"
       type="button"
-      role="radio"
-      class="m-segmented__segment maz:inline-flex maz:min-w-0 maz:flex-center maz:gap-1.5 maz:border-none maz:bg-transparent maz:type-label maz:whitespace-nowrap maz:transition-colors maz:duration-150 maz:outline-none maz:focus-visible:ring-2 maz:focus-visible:ring-primary/50"
+      :role="multiple ? undefined : 'radio'"
+      class="m-segmented__segment maz:inline-flex maz:min-w-0 maz:flex-center maz:gap-1.5 maz:border-none maz:bg-transparent maz:type-label maz:whitespace-nowrap maz:focus-ring"
       :class="[
         SIZE_CLASS[size],
         ROUNDED_CLASS[roundedSize],
         block && 'maz:flex-1',
         isDisabled(index) ? 'maz:disabled-cursor' : 'maz:cursor-interactive',
-        index === selectedIndex ? '--selected' : 'maz:text-muted maz:hover:text-foreground',
+        isSelected(index) ? '--selected' : 'maz:text-muted maz:hover:text-foreground',
+        multiple && isSelected(index) && !resolvedColor ? 'maz:bg-container maz:shadow-sm maz:dark:bg-foreground/28' : '',
+        resolvedColor === 'neutral' && multiple && isSelected(index) ? 'maz:border maz:border-divider' : '',
         { '--disabled maz:disabled-opacity': option.disabled && !disabled },
       ]"
-      :style="index === selectedIndex ? { color: resolvedColor ? `var(--maz-${resolvedColor}-foreground)` : 'var(--maz-foreground)' } : undefined"
-      :aria-checked="index === selectedIndex"
+      :style="[segmentStyle, isSelected(index) ? { color: resolvedColor ? `var(--maz-${resolvedColor}-foreground)` : 'var(--maz-foreground)', ...(multiple && resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor})` } : {}) } : undefined]"
+      :aria-checked="multiple ? undefined : isSelected(index)"
+      :aria-pressed="multiple ? isSelected(index) : undefined"
       :aria-label="option.ariaLabel"
       :title="option.title"
       :disabled="isDisabled(index)"
       :tabindex="getTabIndex(index)"
-      @click="select(index)"
+      @click="onClick(index)"
       @keydown="onKeydown($event, index)"
     >
       <!--
@@ -352,7 +401,7 @@ function iconProps(icon: MazIconLike) {
           @binding {boolean} selected - `true` if the segment is selected
           @binding {number} index - index of the segment
       -->
-      <slot name="item" :option="option" :selected="index === selectedIndex" :index="index">
+      <slot name="item" :option="option" :selected="isSelected(index)" :index="index">
         <MazIcon v-if="option.icon" v-bind="iconProps(option.icon)" />
         <span v-if="option.label" class="maz:truncate">{{ option.label }}</span>
         <MazBadge
@@ -378,3 +427,11 @@ function iconProps(icon: MazIconLike) {
     </button>
   </div>
 </template>
+
+<style scoped>
+.m-segmented__segment {
+  transition:
+    color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    background-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+}
+</style>

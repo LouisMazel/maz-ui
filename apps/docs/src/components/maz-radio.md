@@ -141,4 +141,10 @@ const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
   const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 
+## Motion
+
+- The dot springs into place when the radio is selected and shrinks faster when it is not.
+- The keyboard focus shows a 2 px ring, the halo is only for hover.
+- The speed follows the `--maz-motion-*` tokens and reduced motion removes the spring.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-radio.doc.md-->

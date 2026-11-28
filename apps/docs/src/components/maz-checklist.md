@@ -303,6 +303,48 @@ You can replace the default search function by providing a custom search functio
   </template>
 </ComponentDemo>
 
+## Cards
+
+Set `variant="cards"` to show each item as a choice card for a multiple choice (options of a plan, extras of an order). The card shows the `label`, an optional `description` and an optional `price` of the item. The checkboxes stay real checkboxes and the border of a selected card draws itself with the color of the checklist. For anything else, use the `item` slot.
+
+<ComponentDemo>
+  <MazChecklist
+    v-model="selectedExtras"
+    :items="extras"
+    variant="cards"
+    title="Extras"
+  />
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazChecklist from 'maz-ui/components/MazChecklist'
+import { ref } from 'vue'
+
+const selectedExtras = ref(['warranty'])
+
+const extras = [
+  { label: 'Extended warranty', value: 'warranty', description: 'Three more years of coverage', price: '$49' },
+  { label: 'Gift wrapping', value: 'gift', description: 'With a handwritten card', price: '$5' },
+  { label: 'Express delivery', value: 'express', description: 'Delivered within 24 hours', price: '$12' },
+]
+</script>
+
+<template>
+  <MazChecklist v-model="selectedExtras" :items="extras" variant="cards" title="Extras" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- With a `search`, the items that stay glide to their new place and the new ones appear with a short rise. Items that no longer match leave at once. `:animated="false"` turns it off.
+- A selected card draws its border and the checkbox draws its check (see [MazCheckbox](./maz-checkbox.md)).
+- The speed follows the `--maz-motion-*` tokens and reduced motion removes the movement.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-checklist.doc.md-->
 
 <script lang="ts" setup>
@@ -417,4 +459,11 @@ You can replace the default search function by providing a custom search functio
       employee.value.toLowerCase().includes(searchTerm)
     )
   }
+  // Cards demo variables
+  const selectedExtras = ref(['warranty'])
+  const extras = [
+    { label: 'Extended warranty', value: 'warranty', description: 'Three more years of coverage', price: '$49' },
+    { label: 'Gift wrapping', value: 'gift', description: 'With a handwritten card', price: '$5' },
+    { label: 'Express delivery', value: 'express', description: 'Delivered within 24 hours', price: '$12' },
+  ]
 </script>

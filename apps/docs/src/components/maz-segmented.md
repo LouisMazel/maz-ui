@@ -445,4 +445,49 @@ const tooltipViewOptions = [
 ]
 </script>
 
+## Multiple (toggle group)
+
+Add `multiple` to let several segments be on at once: bold, italic and underline, or the days of the week. `v-model` is an array of values (in the order of the options), the root is a `group` and each segment is a toggle button with `aria-pressed`. Each selected segment gets its own pill.
+
+<ComponentDemo>
+  <MazSegmented v-model="textStyles" multiple :options="textStyleOptions" aria-label="Text style" />
+  <p class="maz:mt-3 maz:text-sm maz:text-muted">Selected: {{ textStyles }}</p>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazSegmented from 'maz-ui/components/MazSegmented'
+import { ref } from 'vue'
+
+const textStyles = ref(['bold'])
+
+const textStyleOptions = [
+  { label: 'Bold', value: 'bold' },
+  { label: 'Italic', value: 'italic' },
+  { label: 'Underline', value: 'underline' },
+]
+  const textStyles = ref(['bold'])
+  const textStyleOptions = [
+    { label: 'Bold', value: 'bold' },
+    { label: 'Italic', value: 'italic' },
+    { label: 'Underline', value: 'underline' },
+  ]
+</script>
+
+<template>
+  <MazSegmented v-model="textStyles" multiple :options="textStyleOptions" aria-label="Text style" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The pill slides to the selected segment. Set `stretch` to make it stretch toward the new segment on its way, like a drop of ink. `:animated="false"` removes the slide.
+- With `multiple` there is no sliding pill: each selected segment fills in place.
+- The first placement is never animated. The speed follows the `--maz-motion-*` tokens and reduced motion removes the slide.
+- The arrows (all four), <kbd>Home</kbd> and <kbd>End</kbd> move between the segments, in RTL too. The segments show a 2 px ring on keyboard focus only.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-segmented.doc.md-->

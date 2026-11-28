@@ -17,6 +17,10 @@ import MazCheckbox from './MazCheckbox.vue'
 export type MazChecklistItemOption = {
   label: string
   value: string | number
+  /** Second line of the card (variant `cards`) */
+  description?: string
+  /** Price or extra text at the end of the card (variant `cards`) */
+  price?: string
 } & Record<string, any>
 
 export interface MazChecklistProps<T, O> {
@@ -49,6 +53,18 @@ export interface MazChecklistProps<T, O> {
    * @default { enabled: false, debounce: 300, autoFocus: false }
    */
   search?: boolean | MazInputProps<string>
+  /**
+   * Look of the items: `default` is a list in a card, `cards` shows each item as a choice card (`label`, `description`
+   * and `price` of the item) whose border draws itself when it is selected
+   * @values `'default' | 'cards'`
+   * @default 'default'
+   */
+  variant?: 'default' | 'cards'
+  /**
+   * The filtered items move (and the others glide to their new place) when the search changes
+   * @default true
+   */
+  animated?: boolean
   /**
    * The options to normalize the query given to `searchFunction`. `threshold` is the tolerance of the default search to
    * typos: the minimal similarity (from 0 to 1) of a whole item with the query, `1` disables it (default 0.75). The
@@ -85,6 +101,8 @@ const {
   searchOptions,
   searchFunction,
   color = 'primary',
+  variant = 'default',
+  animated = true,
   translations,
 } = defineProps<MazChecklistProps<T, O>>()
 
@@ -166,6 +184,11 @@ const filteredItems = computed(() => {
     ?? items?.filter(({ label, value }) => searchInValue(label, query) || searchInValue(value, query))
 })
 
+/** A filtered-out item leaves at once: the others glide to their new place (`maz-list-move`) */
+function removeAtOnce(_element: Element, done: () => void) {
+  done()
+}
+
 function updateQuery(value?: string) {
   internalQuery.value = value
   emits('update:query', value)
@@ -216,33 +239,52 @@ function updateQuery(value?: string) {
           </div>
         </slot>
       </div>
-      <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-      <label
-        v-for="(item) of filteredItems"
-        :key="item.value"
-        :for="`${id}-checklist-item-${item.value}`"
-        class="m-checklist-item m-reset-css maz:flex maz:w-full maz:cursor-interactive maz:items-center maz:gap-4 maz:rounded-md maz:px-3 maz:py-2 maz:text-start maz:hover:bg-surface-600"
-      >
-        <MazCheckbox
-          :id="`${id}-checklist-item-${item.value}`"
-          :model-value="modelValue"
-          :value="item.value"
-          :color
-          @update:model-value="(event) => emits('update:model-value', event)"
-        />
-        <!-- @slot use this slot to customize the item
-              @binding { selectedValues: T[], item: O }
-         -->
-        <slot
-          :selected-values="modelValue"
-          :item="item"
-          name="item"
+      <TransitionGroup :css="!!search && animated" name="maz-list" @leave="removeAtOnce">
+        <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
+        <label
+          v-for="(item) of filteredItems"
+          :key="item.value"
+          :for="`${id}-checklist-item-${item.value}`"
+          class="m-checklist-item m-reset-css maz:flex maz:w-full maz:cursor-interactive maz:items-center maz:gap-4 maz:text-start"
+          :class="variant === 'cards'
+            ? 'm-checklist-item--card maz:border-draw maz:rounded-lg maz:border maz:border-divider maz:bg-surface maz:px-4 maz:py-3 maz:hover:bg-surface-600'
+            : 'maz:rounded-md maz:px-3 maz:py-2 maz:hover:bg-surface-600'"
+          :style="variant === 'cards' ? { '--maz-border-draw-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})` } : undefined"
         >
-          <span class="item-label maz:cap-f">
-            {{ item.label }}
-          </span>
-        </slot>
-      </label>
+          <MazCheckbox
+            :id="`${id}-checklist-item-${item.value}`"
+            :model-value="modelValue"
+            :value="item.value"
+            :color
+            @update:model-value="(event) => emits('update:model-value', event)"
+          />
+          <!-- @slot use this slot to customize the item
+                @binding { selectedValues: T[], item: O }
+           -->
+          <slot
+            :selected-values="modelValue"
+            :item="item"
+            name="item"
+          >
+            <template v-if="variant === 'cards'">
+              <span class="m-checklist-item__text maz:flex maz:min-w-0 maz:flex-1 maz:flex-col">
+                <span class="item-label maz:type-label maz:cap-f">
+                  {{ item.label }}
+                </span>
+                <span v-if="item.description" class="item-description maz:text-body-sm maz:text-muted">
+                  {{ item.description }}
+                </span>
+              </span>
+              <span v-if="item.price" class="item-price maz:flex-none maz:type-label">
+                {{ item.price }}
+              </span>
+            </template>
+            <span v-else class="item-label maz:cap-f">
+              {{ item.label }}
+            </span>
+          </slot>
+        </label>
+      </TransitionGroup>
     </MazCardSpotlight>
   </div>
 </template>
@@ -251,6 +293,10 @@ function updateQuery(value?: string) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-checklist :deep(.card-content) {
-  @apply maz:flex maz:flex-col maz:gap-2 maz:overflow-y-auto maz:scrollbar-themed maz:bg-surface maz:px-3 maz:py-2;
+  @apply maz:relative maz:flex maz:flex-col maz:gap-2 maz:overflow-y-auto maz:scrollbar-themed maz:bg-surface maz:px-3 maz:py-2;
+}
+
+.m-checklist-item--card:not(:has(input:checked))::after {
+  --maz-border-draw-progress: 0;
 }
 </style>
