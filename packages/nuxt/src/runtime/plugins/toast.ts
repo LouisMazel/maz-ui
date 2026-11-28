@@ -10,6 +10,7 @@ const toastServer = {
   message: (_message: string) => {},
 } as unknown as ToastHandler
 
+// Removed in v6 (plans/ROADMAP.md): plugin of the deprecated `plugins.toast` option, for `$mazToast`
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   if (import.meta.server) {
     return {
@@ -26,15 +27,22 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     ? toastOptions
     : undefined
 
+  const mazToast = new ToastHandler(vueApp, options)
+  // `useToast()` uses the same handler
+  vueApp.provide('mazToast', mazToast)
+
   return {
     provide: {
-      mazToast: new ToastHandler(vueApp, options),
+      mazToast,
     },
   }
 })
 
 declare module 'nuxt/app' {
   interface NuxtApp {
+    /**
+     * @deprecated use `useToast()`, removed in v6
+     */
     $mazToast: ToastHandler
   }
 }

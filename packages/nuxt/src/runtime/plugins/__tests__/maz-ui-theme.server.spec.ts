@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import themePlugin from '../theme'
+import { createVueAppMock } from '../../../__tests__/fixtures/vue-app'
+import mazUiPlugin from '../maz-ui'
 
 const { mockInstall, mockUseHead, mockUseRequestHeaders } = vi.hoisted(() => ({
   mockInstall: vi.fn(),
@@ -8,8 +9,13 @@ const { mockInstall, mockUseHead, mockUseRequestHeaders } = vi.hoisted(() => ({
   mockUseRequestHeaders: vi.fn(() => ({} as Record<string, string>)),
 }))
 
-vi.mock('@maz-ui/themes/plugin', () => ({
-  MazUiTheme: { install: mockInstall },
+vi.mock('maz-ui/plugins/maz-ui', () => ({
+  MazUi: { install: mockInstall },
+  getMotionClasses: (motion?: string) => (motion && motion !== 'auto' ? [`m-motion-${motion}`] : []),
+}))
+
+vi.mock('maz-ui/plugins/aos', () => ({
+  getAosInstance: vi.fn(),
 }))
 
 vi.mock('nuxt/app', () => ({
@@ -17,11 +23,13 @@ vi.mock('nuxt/app', () => ({
   useHead: (...args: any[]) => mockUseHead(...args),
   // @ts-expect-error - test
   useRequestHeaders: (...args: any[]) => mockUseRequestHeaders(...args),
+  useRouter: vi.fn(),
 }))
 
 function createContext(themeOptions: Record<string, any> = {}) {
   return {
-    vueApp: {},
+    vueApp: createVueAppMock(),
+    runWithContext: vi.fn((fn: () => any) => fn()),
     $config: {
       public: {
         mazUi: {
@@ -38,15 +46,15 @@ function createContext(themeOptions: Record<string, any> = {}) {
 async function runPlugin(themeOptions: Record<string, any> = {}, headers: Record<string, string> = {}) {
   mockUseRequestHeaders.mockReturnValue(headers)
   const context = createContext(themeOptions)
-  await (themePlugin as (...args: any[]) => any)(context)
+  await (mazUiPlugin as (...args: any[]) => any)(context)
 
   return {
     head: mockUseHead.mock.lastCall?.[0],
-    install: mockInstall.mock.lastCall?.[1],
+    install: mockInstall.mock.lastCall?.[1].theme,
   }
 }
 
-describe('theme plugin (server)', () => {
+describe('maz-ui plugin theme (server)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -91,17 +99,45 @@ describe('theme plugin (server)', () => {
     })
   })
 
+  describe('given the theme head resolved asynchronously', () => {
+    describe('when the plugin renders the page', () => {
+      it('then the head is added in the Nuxt context, which the await loses', async () => {
+        const context = createContext()
+        let inContext = false
+        context.runWithContext.mockImplementation((fn: () => any) => {
+          inContext = true
+          try {
+            return fn()
+          }
+          finally {
+            inContext = false
+          }
+        })
+        mockUseHead.mockImplementationOnce(() => {
+          if (!inContext) {
+            throw new Error('[NUXT_E1001] called outside of the Nuxt context')
+          }
+        })
+
+        await (mazUiPlugin as (...args: any[]) => any)(context)
+
+        expect(mockUseHead).toHaveBeenCalledOnce()
+      })
+    })
+  })
+
   describe('given no theme config', () => {
     describe('when the plugin renders the page', () => {
       it('then it installs the default preset', async () => {
-        await (themePlugin as (...args: any[]) => any)({
-          vueApp: {},
+        await (mazUiPlugin as (...args: any[]) => any)({
+          vueApp: createVueAppMock(),
+          runWithContext: (fn: () => any) => fn(),
           $config: {
             public: { mazUi: {} },
           },
         })
 
-        expect(mockInstall.mock.lastCall?.[1]).toMatchObject({ _presetBase: 'maz-ui', _colorMode: 'auto' })
+        expect(mockInstall.mock.lastCall?.[1].theme).toMatchObject({ _presetBase: 'maz-ui', _colorMode: 'auto' })
       })
     })
   })

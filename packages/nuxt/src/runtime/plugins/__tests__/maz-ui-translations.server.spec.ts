@@ -2,7 +2,7 @@ import type { MazUiTranslationsInstance } from '@maz-ui/translations'
 import { describe, expect, it, vi } from 'vitest'
 import { createApp } from 'vue'
 
-import translationsPlugin from '../translations'
+import mazUiPlugin from '../maz-ui'
 
 vi.mock('#build/maz-ui-translations.mjs', () => ({
   default: {
@@ -14,12 +14,39 @@ vi.mock('#build/maz-ui-translations.mjs', () => ({
 
 vi.mock('nuxt/app', () => ({
   defineNuxtPlugin: vi.fn((fn: (...args: any[]) => any) => fn),
+  useHead: vi.fn(),
+  useRequestHeaders: vi.fn(() => ({})),
+  useRouter: vi.fn(),
+}))
+
+vi.mock('maz-ui/plugins/maz-ui', async () => {
+  const { MazUiTranslations } = await import('@maz-ui/translations/plugin')
+
+  return {
+    getMotionClasses: () => [],
+    MazUi: {
+      install: (app: any, options: any) => MazUiTranslations.install?.(app, options.translations),
+    },
+  }
+})
+
+vi.mock('maz-ui/plugins/aos', () => ({
+  getAosInstance: vi.fn(),
+}))
+
+vi.mock('@maz-ui/themes/utils', () => ({
+  getRequestThemeContext: vi.fn(),
+  getSystemColorMode: vi.fn(),
+  getThemeHead: vi.fn(() => Promise.resolve({})),
+  getThemeHeadTags: vi.fn(),
+  resolveThemeContext: vi.fn(() => Promise.resolve({})),
 }))
 
 async function renderRequest(translations: Record<string, unknown> = { locale: 'en' }) {
   const vueApp = createApp({})
-  await (translationsPlugin as (...args: any[]) => any)({
+  await (mazUiPlugin as (...args: any[]) => any)({
     vueApp,
+    runWithContext: (fn: () => any) => fn(),
     $config: {
       public: {
         mazUi: { translations },
@@ -30,7 +57,7 @@ async function renderRequest(translations: Record<string, unknown> = { locale: '
   return vueApp.config.globalProperties.$mazTranslations as MazUiTranslationsInstance
 }
 
-describe('translations plugin (server)', () => {
+describe('maz-ui plugin translations (server)', () => {
   describe('given two requests', () => {
     describe('when the first one switches its locale', () => {
       it('then the second one keeps the configured locale', async () => {
