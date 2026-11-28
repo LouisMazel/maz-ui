@@ -113,19 +113,41 @@ Add icons to the header using `start-icon` and `end-icon` props.
 
 ### Elevation
 
-Add shadow to make the container stand out.
+Add a shadow to make the container stand out, from `0` (none) to `3` (large). `true` keeps the default shadow. The shadows follow the theme and are deeper in dark mode.
 
 <ComponentDemo>
-  <MazContainer elevation :bordered="false">
-    Container with elevation effect and no border.
+  <MazContainer :elevation="2" :bordered="false">
+    Container with a level 2 shadow and no border.
   </MazContainer>
 
   <template #code>
 
 ```vue
 <template>
-  <MazContainer elevation :bordered="false">
-    Container with elevation effect and no border.
+  <MazContainer :elevation="2" :bordered="false">
+    Container with a level 2 shadow and no border.
+  </MazContainer>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+### Border draw
+
+The border draws itself from the point where the pointer enters, and on keyboard focus. Set its color with `--maz-border-draw-color`.
+
+<ComponentDemo>
+  <MazContainer border-draw>
+    Enter the container from any side.
+  </MazContainer>
+
+  <template #code>
+
+```vue
+<template>
+  <MazContainer border-draw>
+    Enter the container from any side.
   </MazContainer>
 </template>
 ```

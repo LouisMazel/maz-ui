@@ -234,4 +234,46 @@ describe('given a MazRollingText', () => {
       expect(wrapper.classes()).toContain('m-rolling-text--numeric')
     })
   })
+
+  describe('when the text is Latin', () => {
+    it('then the direction is left to right whatever the page', () => {
+      const wrapper = mount(MazRollingText, { props: { value: 'Vendredi 20 mars' } })
+
+      expect(wrapper.attributes('dir')).toBe('ltr')
+    })
+  })
+
+  describe('when the text is Arabic', () => {
+    it('then the direction is right to left', () => {
+      const wrapper = mount(MazRollingText, { props: { value: 'مارس' } })
+
+      expect(wrapper.attributes('dir')).toBe('rtl')
+    })
+  })
+
+  describe('when the text is Hebrew', () => {
+    it('then the direction is right to left', () => {
+      const wrapper = mount(MazRollingText, { props: { value: 'מרץ' } })
+
+      expect(wrapper.attributes('dir')).toBe('rtl')
+    })
+  })
+
+  describe('when the text starts with digits then Hebrew letters', () => {
+    it('then the first strong character decides', () => {
+      const wrapper = mount(MazRollingText, { props: { value: '20 מרץ' } })
+
+      expect(wrapper.attributes('dir')).toBe('rtl')
+    })
+  })
+
+  describe('when the value is a number or has no letters', () => {
+    it('then the direction is left to right', () => {
+      const numeric = mount(MazRollingText, { props: { value: 2026 } })
+      const empty = mount(MazRollingText, { props: { value: '' } })
+
+      expect(numeric.attributes('dir')).toBe('ltr')
+      expect(empty.attributes('dir')).toBe('ltr')
+    })
+  })
 })

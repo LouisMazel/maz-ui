@@ -10,31 +10,31 @@ const stacked = ref(true)
 const options = computed<ToastOptions>(() => ({ position: position.value, stacked: stacked.value }))
 
 const types = [
-  { label: 'Message', color: 'contrast', show: () => toast.message('A message', options.value) },
-  { label: 'Info', color: 'info', show: () => toast.info('Some information', options.value) },
-  { label: 'Success', color: 'success', show: () => toast.success('Saved with success', options.value) },
-  { label: 'Warning', color: 'warning', show: () => toast.warning('Be careful', options.value) },
-  { label: 'Error', color: 'destructive', show: () => toast.error('Something went wrong', options.value) },
-  { label: 'Accent', color: 'accent', show: () => toast.accent('An accent toast', options.value) },
-  { label: 'Neutral', color: 'neutral', show: () => toast.neutral('A neutral toast', options.value) },
+  { label: 'Message', color: 'contrast', show: () => toast.message('Un message', options.value) },
+  { label: 'Info', color: 'info', show: () => toast.info('Une information', options.value) },
+  { label: 'Succès', color: 'success', show: () => toast.success('Enregistré avec succès', options.value) },
+  { label: 'Avertissement', color: 'warning', show: () => toast.warning('Fais attention', options.value) },
+  { label: 'Erreur', color: 'destructive', show: () => toast.error('Une erreur est survenue', options.value) },
+  { label: 'Accent', color: 'accent', show: () => toast.accent('Un toast accent', options.value) },
+  { label: 'Neutre', color: 'neutral', show: () => toast.neutral('Un toast neutre', options.value) },
 ] as const
 
 function burst(count = 5) {
   for (let index = 1; index <= count; index++) {
-    setTimeout(() => toast.message(`Toast ${index} of ${count}${index % 2 === 0 ? ', a longer message to see the heights differ in the deck' : ''}`, options.value), index * 150)
+    setTimeout(() => toast.message(`Toast ${index} sur ${count}${index % 2 === 0 ? ', un message plus long pour voir les hauteurs différer dans la pile' : ''}`, options.value), index * 150)
   }
 }
 
 function runPromise(shouldResolve: boolean) {
   const task = new Promise<string>((resolve, reject) => {
-    setTimeout(() => (shouldResolve ? resolve('Louis') : reject(new Error('Network down'))), 2000)
+    setTimeout(() => (shouldResolve ? resolve('Louis') : reject(new Error('Réseau indisponible'))), 2000)
   })
 
   toast.promise(task, {
     ...options.value,
-    loading: 'Saving the profile...',
-    success: name => `Profile of ${name} saved`,
-    error: error => `Failed: ${(error as Error).message}`,
+    loading: 'Enregistrement du profil...',
+    success: name => `Profil de ${name} enregistré`,
+    error: error => `Échec : ${(error as Error).message}`,
   })
 
   task.catch(() => {})
@@ -45,9 +45,9 @@ function runPromise(shouldResolve: boolean) {
   <ModernisationSection
     id="pr2-toasts"
     title="Toasts"
-    description="A deck by default, spread on hover or focus. The others glide when a toast comes or goes, a swipe dismisses, the promise toast draws its result, the line shows the time left."
+    description="Une pile par défaut, étalée au survol ou au focus. Les autres glissent quand un toast arrive ou part, un balayage le ferme, le toast de promesse trace son résultat, la ligne montre le temps restant."
   >
-    <ModernisationDemo title="Settings" hint="Applied to the buttons below.">
+    <ModernisationDemo title="Réglages" hint="Appliqués aux boutons ci-dessous.">
       <div class="flex flex-wrap items-center gap-4">
         <MazSelect
           v-model="position"
@@ -56,12 +56,12 @@ function runPromise(shouldResolve: boolean) {
           class="w-48"
         />
         <MazSwitch v-model="stacked">
-          Stacked
+          Empilés
         </MazSwitch>
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="Types" hint="One toast of each type, at the chosen position.">
+    <ModernisationDemo title="Types" hint="Un toast de chaque type, à la position choisie.">
       <div class="flex flex-wrap gap-2">
         <MazBtn v-for="item in types" :key="item.label" :color="item.color" size="sm" @click="item.show()">
           {{ item.label }}
@@ -69,34 +69,34 @@ function runPromise(shouldResolve: boolean) {
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="Stack" hint="A burst of toasts: hover or focus the stack to spread it, hide the tab to pause the timers. With Stacked off, they stay in a list.">
+    <ModernisationDemo title="Pile" hint="Une rafale de toasts : survole ou donne le focus à la pile pour l'étaler, masque l'onglet pour mettre les minuteurs en pause. Sans empilement, ils restent en liste.">
       <div class="flex flex-wrap gap-2">
         <MazBtn size="sm" @click="burst(5)">
-          Burst of 5
+          Rafale de 5
         </MazBtn>
         <MazBtn size="sm" color="secondary" @click="burst(12)">
-          Burst of 12
+          Rafale de 12
         </MazBtn>
-        <MazBtn size="sm" color="secondary" @click="toast.message('Stays until closed', { ...options, timeout: false })">
-          Without timeout
+        <MazBtn size="sm" color="secondary" @click="toast.message('Reste jusqu\'à la fermeture', { ...options, timeout: false })">
+          Sans délai
         </MazBtn>
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="Promise" hint="Loading, then a check or a cross that draws itself, and the text fades.">
+    <ModernisationDemo title="Promesse" hint="Chargement, puis une coche ou une croix qui se trace, et le texte s'estompe.">
       <div class="flex flex-wrap gap-2">
         <MazBtn size="sm" color="success" @click="runPromise(true)">
-          Resolve
+          Résoudre
         </MazBtn>
         <MazBtn size="sm" color="destructive" @click="runPromise(false)">
-          Reject
+          Rejeter
         </MazBtn>
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="Swipe" hint="Drag a toast towards the edge (up or down on the centered positions) or flick it. A short drag springs back. Switch the direction in the toolbar to check RTL.">
-      <MazBtn size="sm" @click="toast.info('Swipe me away', { ...options, timeout: false })">
-        Show a toast to swipe
+    <ModernisationDemo title="Balayage" hint="Fais glisser un toast vers le bord (vers le haut ou le bas sur les positions centrées) ou lance-le. Un glissement court revient en place. Change la direction dans la barre d'outils pour tester le RTL.">
+      <MazBtn size="sm" @click="toast.info('Balaie-moi', { ...options, timeout: false })">
+        Afficher un toast à balayer
       </MazBtn>
     </ModernisationDemo>
   </ModernisationSection>

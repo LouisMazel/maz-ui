@@ -293,11 +293,24 @@ const originMiddleware: Middleware = {
 
 const { collisionPadding } = useGlobalConfig<{ collisionPadding: MazPopoverCollisionPadding }>('MazPopover', { collisionPadding: 5 })
 
+const isReferenceStuck = ref(false)
+
+function hasStuckAncestor(element: Element | null) {
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    const position = getComputedStyle(current).position
+
+    if (position === 'sticky' || position === 'fixed')
+      return true
+  }
+
+  return false
+}
+
 const middleware = computed(() => {
   const padding = collisionPadding.value
   const middleware: Middleware[] = [
     floatingOffset(offset),
-    hide({ padding }),
+    hide({ padding: isReferenceStuck.value ? 0 : padding }),
     shift({ padding }),
   ]
 
@@ -392,6 +405,12 @@ function onBeforeLeave(element: Element) {
 }
 
 const isOpen = defineModel<boolean>({ default: false })
+
+/** A trigger inside a sticky or fixed element is always in the reserved area of `collisionPadding`: it must not hide the panel */
+watch([() => isOpen.value, reference], ([open, element]) => {
+  if (open)
+    isReferenceStuck.value = isClient() && element instanceof Element && hasStuckAncestor(element)
+}, { flush: 'sync' })
 
 /**
  * The panel is only rendered in the browser: its position needs the DOM, and a teleported content

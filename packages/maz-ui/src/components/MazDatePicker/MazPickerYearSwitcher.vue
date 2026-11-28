@@ -63,10 +63,10 @@ function nextYears() {
     <div class="maz-picker-year-switcher__header maz:flex maz:justify-between maz:space-x-2 maz:border-b maz:border-divider maz:p-2">
       <div class="maz:flex maz:space-x-2">
         <MazBtn size="xs" color="transparent" type="button" :aria-label="t('aria.previousYears')" @click.stop="previousYears">
-          <MazIcon :icon="MazChevronLeft" class="maz:text-lg" aria-hidden="true" />
+          <MazIcon :icon="MazChevronLeft" class="maz:text-lg maz:rtl:rotate-180" aria-hidden="true" />
         </MazBtn>
         <MazBtn size="xs" color="transparent" type="button" :aria-label="t('aria.nextYears')" @click.stop="nextYears">
-          <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-lg" aria-hidden="true" />
+          <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-lg maz:rtl:rotate-0" aria-hidden="true" />
         </MazBtn>
       </div>
       <MazBtn size="xs" color="transparent" type="button" :aria-label="t('aria.close')" @click.stop="$emit('close', $event)">

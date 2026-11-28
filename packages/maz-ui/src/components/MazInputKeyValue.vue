@@ -5,6 +5,7 @@ import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { provideInnerFieldsWithoutTopLabel, useFieldTopLabel } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazInput from './MazInput.vue'
 
@@ -195,6 +196,9 @@ function rowId(row: Row, part: 'key' | 'value') {
   return `${instanceId.value}-${row.id}-${part}`
 }
 
+const { topLabelText } = useFieldTopLabel(() => ({ label, topLabel }))
+provideInnerFieldsWithoutTopLabel()
+
 const labelId = computed(() => `${instanceId.value}-label`)
 const assistiveTextId = computed(() => `${instanceId.value}-assistive-text`)
 
@@ -222,18 +226,18 @@ defineExpose({
     :class="[classProp, { '--block': block, 'maz:w-full': block, '--disabled': disabled }]"
     :style
     role="group"
-    :aria-label="topLabel ? undefined : label"
-    :aria-labelledby="topLabel ? labelId : undefined"
+    :aria-label="topLabelText ? undefined : label"
+    :aria-labelledby="topLabelText ? labelId : undefined"
     :aria-describedby="assistiveText ? assistiveTextId : undefined"
   >
     <span
-      v-if="topLabel"
+      v-if="topLabelText"
       :id="labelId"
       class="m-input-key-value__top-label"
       :class="stateTextClass"
       :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
     >
-      {{ topLabel }}
+      {{ topLabelText }}
     </span>
 
     <div

@@ -2,10 +2,12 @@
 import type { StyleValue } from 'vue'
 import type { MazLinkProps } from './MazLink.vue'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, nextTick, onMounted, ref, useSlots, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useMutationObserver } from '../composables/useMutationObserver.ts'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { useResizeObserver } from '../composables/useResizeObserver.ts'
+import { readMotionDuration } from '../utils/motionTokens.ts'
 import MazLink from './MazLink.vue'
 
 export interface MazReadMoreProps {
@@ -47,6 +49,16 @@ export interface MazReadMoreProps {
    * @default 'readMore.ariaLabel' (translations)
    */
   ariaLabel?: string
+  /**
+   * The height of the content animates when it expands and collapses
+   * @default true
+   */
+  animated?: boolean
+  /**
+   * Fade the bottom of the collapsed content
+   * @default false
+   */
+  fade?: boolean
 }
 
 const {
@@ -58,6 +70,8 @@ const {
   expandText,
   id,
   ariaLabel,
+  animated = true,
+  fade = false,
 } = defineProps<MazReadMoreProps>()
 
 const { t } = useTranslations()
@@ -78,6 +92,11 @@ const slots = useSlots()
 const contentRef = ref<HTMLElement>()
 const hiddenSlotRef = ref<HTMLElement>()
 const isExpanded = ref(false)
+const isShown = ref(false)
+const isAnimating = ref(false)
+const isClosing = ref(false)
+
+const { shouldReduceMotion } = useReducedMotion()
 const slotTextContent = ref('')
 
 const hasSlot = computed(() => !!slots.default)
@@ -85,7 +104,7 @@ const hasSlot = computed(() => !!slots.default)
 const shouldShowButton = ref(false)
 
 const truncateStyle = computed<StyleValue>(() => {
-  if (isExpanded.value) {
+  if (isShown.value) {
     return {}
   }
 
@@ -102,7 +121,7 @@ const truncateStyle = computed<StyleValue>(() => {
 })
 
 const displayedText = computed(() => {
-  if (!maxChars || isExpanded.value) {
+  if (!maxChars || isShown.value) {
     return text
   }
 
@@ -114,12 +133,85 @@ const displayedText = computed(() => {
 })
 
 const showTruncatedText = computed(() => {
-  return maxChars && hasSlot.value && !isExpanded.value && slotTextContent.value.length > maxChars
+  return maxChars && hasSlot.value && !isShown.value && slotTextContent.value.length > maxChars
 })
 
-function toggleExpanded() {
-  isExpanded.value = !isExpanded.value
+let cleanupAnimation: (() => void) | undefined
+let animationId = 0
+
+function finishAnimation() {
+  cleanupAnimation?.()
+  cleanupAnimation = undefined
+
+  if (contentRef.value)
+    contentRef.value.style.height = ''
+
+  isAnimating.value = false
+  isClosing.value = false
 }
+
+async function toggleExpanded() {
+  const element = contentRef.value
+  const target = !isExpanded.value
+  const id = ++animationId
+
+  isExpanded.value = target
+
+  if (!animated || shouldReduceMotion.value || !element || typeof element.animate !== 'function') {
+    isShown.value = target
+    return
+  }
+
+  const from = element.getBoundingClientRect().height
+
+  finishAnimation()
+  isShown.value = target
+  await nextTick()
+
+  const to = element.getBoundingClientRect().height
+
+  if (!target) {
+    isShown.value = true
+    await nextTick()
+  }
+
+  if (id !== animationId)
+    return
+
+  if (Math.abs(from - to) < 1) {
+    isShown.value = target
+    return
+  }
+
+  isClosing.value = !target
+  isAnimating.value = true
+  element.style.height = `${from}px`
+  await nextTick()
+
+  if (id !== animationId)
+    return
+
+  element.getBoundingClientRect()
+  element.style.height = `${to}px`
+
+  const done = () => {
+    finishAnimation()
+    isShown.value = target
+  }
+  const onEnd = (event: TransitionEvent) => {
+    if (event.target === element && event.propertyName === 'height')
+      done()
+  }
+  const timer = setTimeout(done, readMotionDuration('--maz-motion-slow', 300) + 100)
+
+  element.addEventListener('transitionend', onEnd)
+  cleanupAnimation = () => {
+    clearTimeout(timer)
+    element.removeEventListener('transitionend', onEnd)
+  }
+}
+
+onBeforeUnmount(() => cleanupAnimation?.())
 
 function checkIfTruncated() {
   if (maxChars && hiddenSlotRef.value) {
@@ -181,7 +273,11 @@ onMounted(() => {
       ref="contentRef"
       class="m-read-more__content"
       :class="{
-        'm-read-more__content--truncated maz:relative': !isExpanded,
+        'm-read-more__content--truncated maz:relative': !isShown,
+        '--animating': isAnimating,
+        '--closing': isClosing,
+        '--fadeable': fade && shouldShowButton,
+        '--faded': !isExpanded,
       }"
       :style="truncateStyle"
       role="region"
@@ -218,6 +314,49 @@ onMounted(() => {
 </template>
 
 <style scoped>
+@property --m-read-more-fade {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.m-read-more__content.--animating {
+  overflow: hidden;
+  transition-timing-function: var(--maz-easing-in-out);
+  transition-duration: calc(var(--maz-motion-slow) * var(--maz-motion-scale));
+  /* stylelint-disable-next-line liberty/use-logical-spec */
+  transition-property: height;
+
+  &.--closing {
+    transition-duration: calc(var(--maz-motion-slow) * var(--maz-motion-scale) * 0.7);
+  }
+}
+
+.m-read-more__content.--fadeable {
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--m-read-more-fade)), transparent);
+  transition-timing-function: var(--maz-easing-out);
+  transition-duration: calc(var(--maz-motion-normal) * var(--maz-motion-scale));
+  transition-property: --m-read-more-fade;
+
+  &.--faded {
+    --m-read-more-fade: 2.2em;
+  }
+
+  &.--animating {
+    transition-timing-function: var(--maz-easing-in-out), var(--maz-easing-out);
+    transition-duration:
+      calc(var(--maz-motion-slow) * var(--maz-motion-scale)), calc(var(--maz-motion-normal) * var(--maz-motion-scale));
+    /* stylelint-disable-next-line liberty/use-logical-spec */
+    transition-property: height, --m-read-more-fade;
+
+    &.--closing {
+      transition-duration:
+        calc(var(--maz-motion-slow) * var(--maz-motion-scale) * 0.7),
+        calc(var(--maz-motion-normal) * var(--maz-motion-scale));
+    }
+  }
+}
+
 .m-read-more__hidden {
   inline-size: 1px;
   block-size: 1px;

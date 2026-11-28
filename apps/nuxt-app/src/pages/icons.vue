@@ -4,8 +4,8 @@ import MazIcon from 'maz-ui/components/MazIcon'
 const isDark = ref(false)
 const themeIcon = computed(() => isDark.value ? 'moon' : 'sun')
 const items = [
-  { label: 'Home', icon: 'home' },
-  { label: 'Settings', icon: 'cog-6-tooth' },
+  { label: 'Accueil', icon: 'home' },
+  { label: 'Réglages', icon: 'cog-6-tooth' },
 ]
 
 const RenderIcon = () => h(MazIcon, { icon: 'bell', size: 'lg' })
@@ -14,7 +14,7 @@ const RenderIcon = () => h(MazIcon, { icon: 'bell', size: 'lg' })
 <template>
   <div class="maz:flex maz:flex-col maz:gap-6 maz:p-8">
     <h1 class="maz:text-2xl maz:font-bold">
-      Icons by name
+      Icônes par nom
     </h1>
 
     <section data-test="names" class="maz:flex maz:items-center maz:gap-4">
@@ -29,10 +29,10 @@ const RenderIcon = () => h(MazIcon, { icon: 'bell', size: 'lg' })
 
     <section data-test="buttons" class="maz:flex maz:items-center maz:gap-4">
       <MazBtn start-icon="moon" data-test="btn" @click="isDark = !isDark">
-        Toggle
+        Basculer
       </MazBtn>
       <MazBtn end-icon="arrow-right" color="secondary">
-        Next
+        Suivant
       </MazBtn>
     </section>
 
@@ -50,7 +50,7 @@ const RenderIcon = () => h(MazIcon, { icon: 'bell', size: 'lg' })
     </section>
 
     <NuxtLink to="/icons-lazy" data-test="lazy-link">
-      Lazy page
+      Page lazy
     </NuxtLink>
   </div>
 </template>

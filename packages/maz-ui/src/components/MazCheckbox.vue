@@ -1,13 +1,11 @@
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types.ts'
-import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
-import { MazMinus } from '@maz-ui/icons/raw/MazMinus'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
-import MazIcon from './MazIcon.vue'
+import MazDrawnIcon from './MazDrawnIcon.vue'
 
 export type MazCheckboxValue = string | number | boolean
 
@@ -265,7 +263,14 @@ function onFocus(event: FocusEvent) {
       @focus="onFocus"
     >
     <span :style="{ width: checkboxSize, height: checkboxSize }">
-      <MazIcon :icon="indeterminate ? MazMinus : MazCheck" class="check-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="[isChecked || indeterminate ? 'maz:scale-100' : 'maz:scale-0', checkIconSize]" :style="{ color: checkIconColor }" />
+      <MazDrawnIcon
+        :name="indeterminate ? 'minus' : 'check'"
+        :drawn="isChecked || indeterminate"
+        :stroke-width="2.5"
+        class="check-icon maz:relative"
+        :class="[isChecked || indeterminate ? 'maz:scale-100' : 'maz:scale-0', checkIconSize]"
+        :style="{ color: checkIconColor }"
+      />
     </span>
     <div v-if="label || hasSlotContent($slots.default) || hint" class="m-checkbox__text maz:flex maz:flex-col maz:gap-0">
       <slot :value>
@@ -292,16 +297,30 @@ function onFocus(event: FocusEvent) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-checkbox {
-  .check-icon :deep(path) {
-    stroke-width: 2.5;
-  }
+  --m-checkbox-fast: calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1));
+  --m-checkbox-normal: calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1));
 
   > span {
-    @apply maz:relative maz:flex maz:rounded-sm maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
+    @apply maz:relative maz:flex maz:rounded-sm maz:border maz:border-divider maz:dark:border-divider-400 maz:flex-center;
+
+    transition:
+      border-color var(--m-checkbox-fast) var(--maz-easing-out, ease-out),
+      box-shadow var(--m-checkbox-fast) var(--maz-easing-out, ease-out);
+
+    /* The ink grows from the center when checked and shrinks faster when unchecked */
+    &::before {
+      position: absolute;
+      inset: calc(var(--maz-border-width, 1px) * -1);
+      border-radius: inherit;
+      background-color: var(--checkbox-selected-color);
+      content: '';
+      scale: 0;
+      transition: scale calc(var(--m-checkbox-normal) * 0.7) var(--maz-easing-in, ease-in);
+    }
   }
 
   input {
-    @apply maz:sr-only;
+    @apply maz:sr-only maz:outline-hidden;
 
     &:not(:checked) ~ span {
       @apply maz:bg-input;
@@ -310,11 +329,25 @@ function onFocus(event: FocusEvent) {
     &:checked ~ span,
     &[aria-checked='mixed'] ~ span {
       border-color: var(--checkbox-selected-color);
-      background-color: var(--checkbox-selected-color);
+
+      &::before {
+        scale: 1;
+        transition-duration: var(--m-checkbox-normal);
+        transition-timing-function: var(--maz-easing-out, ease-out);
+      }
     }
 
     &:disabled ~ span {
       @apply maz:bg-surface-600 maz:dark:bg-surface-300;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    &:focus-visible ~ span {
+      outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
+      outline-offset: var(--maz-focus-ring-offset, 2px);
     }
   }
 
@@ -335,7 +368,6 @@ function onFocus(event: FocusEvent) {
 
   &:not(:has(input:disabled)) {
     &:hover > span,
-    &:focus-within > span,
     &.--error > span,
     &.--warning > span,
     &.--success > span {

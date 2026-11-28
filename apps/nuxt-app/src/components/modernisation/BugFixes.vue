@@ -12,7 +12,7 @@ const selectOptions = [
 ]
 
 const tab = ref('overview')
-const tabItems = ['Overview', 'Activity', 'Settings', 'Billing', 'Team', 'Security', 'Integrations', 'Audit log', 'Support', 'Docs'].map(label => ({ label, value: label.toLowerCase() }))
+const tabItems = ['Aperçu', 'Activité', 'Réglages', 'Facturation', 'Équipe', 'Sécurité', 'Intégrations', 'Journal d\'audit', 'Support', 'Docs'].map(label => ({ label, value: label.toLowerCase() }))
 
 const code = ref('')
 
@@ -31,89 +31,89 @@ onMounted(() => {
 <template>
   <ModernisationSection
     id="bug-fixes"
-    title="6. Bug fixes of the PR"
-    description="Each demo reproduces a bug that is fixed in this PR."
+    title="6. Corrections de bugs de la PR"
+    description="Chaque démo reproduit un bug corrigé dans cette PR."
   >
-    <ModernisationDemo title="Nested dialogs" hint="Escape closes only the top dialog, and the focus stays inside it.">
+    <ModernisationDemo title="Dialogues imbriqués" hint="Échap ferme seulement le dialogue du dessus, et le focus reste à l'intérieur.">
       <MazBtn @click="outerOpen = true">
-        Open the first dialog
+        Ouvrir le premier dialogue
       </MazBtn>
-      <MazDialog v-model="outerOpen" title="First dialog">
+      <MazDialog v-model="outerOpen" title="Premier dialogue">
         <p class="mb-4">
-          Open the second one, then press Escape: only the second closes.
+          Ouvre le second, puis appuie sur Échap : seul le second se ferme.
         </p>
         <MazBtn @click="innerOpen = true">
-          Open the second dialog
+          Ouvrir le second dialogue
         </MazBtn>
-        <MazDialog v-model="innerOpen" title="Second dialog">
+        <MazDialog v-model="innerOpen" title="Second dialogue">
           <p class="mb-4">
-            Focus is trapped here.
+            Le focus est piégé ici.
           </p>
-          <MazInput label="Focus stays in this field" />
+          <MazInput label="Le focus reste dans ce champ" />
         </MazDialog>
       </MazDialog>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazPopover and MazSelect inside a MazDialog" hint="Open the select or the popover, then press Escape: only it closes, the dialog stays open.">
+    <ModernisationDemo title="MazPopover et MazSelect dans un MazDialog" hint="Ouvre le select ou le popover, puis appuie sur Échap : seul lui se ferme, le dialogue reste ouvert.">
       <MazBtn @click="popoverDialogOpen = true">
-        Open the dialog
+        Ouvrir le dialogue
       </MazBtn>
-      <MazDialog v-model="popoverDialogOpen" title="Dialog with overlays">
+      <MazDialog v-model="popoverDialogOpen" title="Dialogue avec overlays">
         <div class="flex flex-col gap-4">
           <MazSelect v-model="selectValue" :options="selectOptions" label="Framework" />
           <MazPopover trigger="click">
             <template #trigger>
               <MazBtn color="secondary">
-                Open a popover
+                Ouvrir un popover
               </MazBtn>
             </template>
             <div class="p-4">
-              Escape closes only me.
+              Échap ne ferme que moi.
             </div>
           </MazPopover>
         </div>
       </MazDialog>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazTabsBar without auto-scroll" hint="The indicator is placed on the active tab even when the bar does not scroll to it.">
+    <ModernisationDemo title="MazTabsBar sans défilement automatique" hint="L'indicateur est placé sur l'onglet actif même quand la barre ne défile pas jusqu'à lui.">
       <div class="max-w-md">
         <MazTabsBar v-model="tab" :items="tabItems" :auto-scroll="false" />
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazDropdown open, arrow keys still scroll the page" hint="Open the dropdown, then use the arrow keys or the wheel: the page scrolls instead of being locked.">
+    <ModernisationDemo title="MazDropdown ouvert, les flèches font toujours défiler la page" hint="Ouvre le dropdown, puis utilise les flèches ou la molette : la page défile au lieu d'être bloquée.">
       <MazDropdown>
-        Open the dropdown
+        Ouvrir le dropdown
         <template #dropdown>
           <div class="w-56 p-4">
-            Scroll the page with the arrow keys while I am open.
+            Fais défiler la page avec les flèches pendant que je suis ouvert.
           </div>
         </template>
       </MazDropdown>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazInputCode" hint="Paste a code or let the browser autofill it (one-time code). In RTL, the arrows follow the direction.">
+    <ModernisationDemo title="MazInputCode" hint="Colle un code ou laisse le navigateur le remplir (code à usage unique). En RTL, les flèches suivent la direction.">
       <div class="flex flex-col gap-4">
         <MazInputCode v-model="code" :code-length="6" />
         <p class="text-caption">
-          Value: {{ code || 'empty' }}
+          Valeur : {{ code || 'vide' }}
         </p>
         <div dir="rtl">
           <p class="mb-2 text-caption">
-            Forced RTL
+            RTL forcé
           </p>
           <MazInputCode :code-length="6" />
         </div>
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazAlert roles" hint="A neutral alert is a status (polite), an urgent one is an alert (assertive).">
+    <ModernisationDemo title="MazAlert roles" hint="Une alerte neutre est un statut (poli), une alerte urgente est une alerte (assertif).">
       <div class="flex flex-col gap-3">
-        <MazAlert ref="infoAlert" color="info" title="Info" content="Read from the DOM: role is announced politely." />
+        <MazAlert ref="infoAlert" color="info" title="Info" content="Lu depuis le DOM : le rôle est annoncé poliment." />
         <p class="text-caption">
           info: role="{{ roles.info || '...' }}"
         </p>
-        <MazAlert ref="destructiveAlert" color="destructive" title="Error" content="Read from the DOM: role is announced right away." />
+        <MazAlert ref="destructiveAlert" color="destructive" title="Erreur" content="Lu depuis le DOM : le rôle est annoncé immédiatement." />
         <p class="text-caption">
           destructive: role="{{ roles.destructive || '...' }}"
         </p>

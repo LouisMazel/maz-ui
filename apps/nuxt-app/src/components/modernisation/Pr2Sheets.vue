@@ -20,83 +20,83 @@ function openDrawer(side: Side) {
 <template>
   <ModernisationSection
     id="pr2-sheets"
-    title="PR 2. Bottom sheet and drawer (Vaul-like)"
-    description="Swipe with the speed of the gesture, snap points, a scrollable content that never fights the drag, a page that steps back. On a desktop, drag the handle or the header with the mouse, or use the touch emulation of the devtools."
+    title="PR 2. Bottom sheet et tiroir (façon Vaul)"
+    description="Un balayage qui suit la vitesse du geste, des points d'accroche, un contenu défilant qui ne lutte jamais contre le glissement, une page qui recule. Sur ordinateur, fais glisser la poignée ou l'en-tête à la souris, ou utilise l'émulation tactile des devtools."
   >
     <ModernisationDemo
       title="Bottom sheet"
-      hint="Drag down slowly: it springs back from where you let go. Flick it: it closes. Drag up: it resists."
+      hint="Glisse lentement vers le bas : elle revient depuis l'endroit où tu lâches. Lance-la : elle se ferme. Glisse vers le haut : elle résiste."
     >
       <MazBtn @click="simpleOpened = true">
-        Open the sheet
+        Ouvrir la sheet
       </MazBtn>
-      <MazBottomSheet v-model="simpleOpened" title="Swipe me">
-        <p>Flick this sheet down, or drag it past the threshold, to close it.</p>
+      <MazBottomSheet v-model="simpleOpened" title="Balaie-moi">
+        <p>Lance cette sheet vers le bas, ou fais-la glisser au-delà du seuil, pour la fermer.</p>
       </MazBottomSheet>
     </ModernisationDemo>
 
     <ModernisationDemo
-      title="Snap points"
-      hint="40%, 70% and full height. Flick to the next point, drag between them, or use the handle (click, Enter, arrows)."
+      title="Points d'accroche"
+      hint="40 %, 70 % et pleine hauteur. Lance vers le point suivant, glisse entre eux, ou utilise la poignée (clic, Entrée, flèches)."
     >
       <MazBtn @click="snapOpened = true">
-        Open with snap points
+        Ouvrir avec des points d'accroche
       </MazBtn>
       <p class="mt-3 text-body-sm text-muted">
-        Active snap point: <strong>{{ activeSnap }}</strong>
+        Point d'accroche actif : <strong>{{ activeSnap }}</strong>
       </p>
-      <MazBottomSheet v-model="snapOpened" v-model:snap="activeSnap" :snap-points="[0.4, 0.7, 1]" title="Snap points">
+      <MazBottomSheet v-model="snapOpened" v-model:snap="activeSnap" :snap-points="[0.4, 0.7, 1]" title="Points d'accroche">
         <p class="mb-3 text-body-sm">
-          Active snap point: <strong>{{ activeSnap }}</strong>
+          Point d'accroche actif : <strong>{{ activeSnap }}</strong>
         </p>
         <p v-for="line in 20" :key="line" class="my-2">
-          Line {{ line }} of a long content. Not fully open, the drag expands the sheet. Fully open, the content scrolls.
+          Ligne {{ line }} d'un long contenu. Pas complètement ouverte, le glissement agrandit la sheet. Complètement ouverte, le contenu défile.
         </p>
       </MazBottomSheet>
     </ModernisationDemo>
 
     <ModernisationDemo
-      title="Scrollable content"
-      hint="Scroll the list, then pull down from the top of the list: the sheet takes over only when the list is at the top."
+      title="Contenu défilant"
+      hint="Fais défiler la liste, puis tire vers le bas depuis le haut de la liste : la sheet prend le relais seulement quand la liste est tout en haut."
     >
       <MazBtn @click="scrollOpened = true">
-        Open with a long list
+        Ouvrir avec une longue liste
       </MazBtn>
-      <MazBottomSheet v-model="scrollOpened" title="Long list">
+      <MazBottomSheet v-model="scrollOpened" title="Longue liste">
         <div class="max-h-64 overflow-y-auto rounded-lg border border-divider p-3">
           <p v-for="line in 40" :key="line" class="my-2">
-            Item {{ line }}
+            Élément {{ line }}
           </p>
         </div>
       </MazBottomSheet>
     </ModernisationDemo>
 
     <ModernisationDemo
-      title="Scale the background"
-      hint="The page steps back with rounded corners and follows the sheet while you drag it. Reduced motion: nothing scales."
+      title="Réduire l'arrière-plan"
+      hint="La page recule avec des coins arrondis et suit la sheet pendant que tu la fais glisser. Animations réduites : rien ne change d'échelle."
     >
       <MazBtn @click="scaleOpened = true">
-        Open with scaled page
+        Ouvrir avec la page réduite
       </MazBtn>
-      <MazBottomSheet v-model="scaleOpened" scale-background title="The page steps back">
-        <p>The page behind this sheet is scaled down. Drag the sheet to see it follow.</p>
+      <MazBottomSheet v-model="scaleOpened" scale-background title="La page recule">
+        <p>La page derrière cette sheet est réduite. Fais glisser la sheet pour la voir suivre.</p>
       </MazBottomSheet>
     </ModernisationDemo>
 
     <ModernisationDemo
-      title="Drawers on the four sides"
-      hint="Swipe towards the side to close, flick to close fast. Use the toolbar to switch to RTL: start and end swap, and so does the swipe."
+      title="Tiroirs sur les quatre côtés"
+      hint="Balaie vers le côté pour fermer, lance pour fermer vite. Passe en RTL avec la barre d'outils : début et fin s'inversent, et le balayage aussi."
     >
       <div class="flex flex-wrap gap-2">
         <MazBtn v-for="side in sides" :key="side" @click="openDrawer(side)">
-          Open {{ side }}
+          Ouvrir {{ side }}
         </MazBtn>
       </div>
-      <MazDrawer v-model="drawerOpened" :side="drawerSide" :title="`Drawer ${drawerSide}`">
+      <MazDrawer v-model="drawerOpened" :side="drawerSide" :title="`Tiroir ${drawerSide}`">
         <div class="p-4">
-          <p>Swipe towards the {{ drawerSide }} side to close it. With a mouse, drag the header.</p>
+          <p>Balaie vers le côté {{ drawerSide }} pour le fermer. À la souris, fais glisser l'en-tête.</p>
           <p v-for="line in 20" :key="line" class="my-2 text-muted">
-            Line {{ line }}
+            Ligne {{ line }}
           </p>
         </div>
       </MazDrawer>

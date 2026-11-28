@@ -404,6 +404,55 @@ The root element is a `radiogroup` of native radio inputs: pass an `aria-label` 
 
 When no `name` is provided, each instance gets a unique one, so two groups of the same page never share their radios.
 
+## Cards
+
+Set `variant="cards"` to pick one offer or one delivery method: each option is a card with its `label`, an optional `description` and an optional `price`. The native radios stay, so the keyboard and the form submission do not change. The border of the selected card draws itself with the `color`, and the `extra` slot adds content under the description.
+
+<ComponentDemo>
+  <MazRadioButtons
+    v-model="delivery"
+    :options="deliveryOptions"
+    variant="cards"
+    orientation="col"
+    aria-label="Delivery method"
+  />
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazRadioButtons from 'maz-ui/components/MazRadioButtons'
+import { ref } from 'vue'
+
+const delivery = ref('standard')
+
+const deliveryOptions = [
+  { label: 'Standard', value: 'standard', description: 'Delivered in 5 days', price: 'Free' },
+  { label: 'Express', value: 'express', description: 'Delivered in 24 hours', price: '$9' },
+  { label: 'Pickup point', value: 'pickup', description: 'Ready tomorrow near you', price: '$3' },
+]
+</script>
+
+<template>
+  <MazRadioButtons
+    v-model="delivery"
+    :options="deliveryOptions"
+    variant="cards"
+    orientation="col"
+    aria-label="Delivery method"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- With the default variant, a frame slides to the selected option and stretches on the way. `:animated="false"` removes it.
+- The check of the `selector` draws itself.
+- The speed follows the `--maz-motion-*` tokens and reduced motion removes the slide. It works in RTL and in a column.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-radio-buttons.doc.md-->
 
 <script lang="ts" setup>
@@ -488,5 +537,11 @@ When no `name` is provided, each instance gets a unique one, so two groups of th
     { label: 'Option A', value: 'a' },
     { label: 'Option B', value: 'b' },
     { label: 'Option C', value: 'c' },
+  ]
+  const delivery = ref('standard')
+  const deliveryOptions = [
+    { label: 'Standard', value: 'standard', description: 'Delivered in 5 days', price: 'Free' },
+    { label: 'Express', value: 'express', description: 'Delivered in 24 hours', price: '$9' },
+    { label: 'Pickup point', value: 'pickup', description: 'Ready tomorrow near you', price: '$3' },
   ]
 </script>

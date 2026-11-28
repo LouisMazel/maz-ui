@@ -230,4 +230,24 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', 'full'] as const
 </script>
 
+## Motion
+
+The copy icon morphs into a check when the value is copied, then goes back.
+
+With `roll-label`, the text also rolls to the copied label. The button keeps the width of the longest text, so nothing moves around it.
+
+<ComponentDemo>
+  <MazBtnClipboard value="usr_8f3a21c9" roll-label />
+
+<template #code>
+
+```html
+<MazBtnClipboard value="usr_8f3a21c9" roll-label />
+```
+
+  </template>
+</ComponentDemo>
+
+With reduced motion, the icon changes without morphing.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-btn-clipboard.doc.md-->

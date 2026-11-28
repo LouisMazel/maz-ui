@@ -152,7 +152,7 @@ function onFocus(event: FocusEvent) {
       :name
       type="radio"
       :checked="isSelected"
-      class="maz:sr-only"
+      class="maz:sr-only maz:outline-hidden"
       @change="emitValue()"
       @blur="onBlur"
       @focus="onFocus"
@@ -192,16 +192,23 @@ function onFocus(event: FocusEvent) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-radio {
+  --m-radio-fast: calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1));
+  --m-radio-normal: calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1));
+
   > span {
-    @apply maz:relative maz:flex maz:rounded-full maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
+    @apply maz:relative maz:flex maz:rounded-full maz:border maz:border-divider maz:dark:border-divider-400 maz:flex-center;
 
     inline-size: var(--radio-size);
     block-size: var(--radio-size);
+    transition:
+      border-color var(--m-radio-fast) var(--maz-easing-out, ease-out),
+      box-shadow var(--m-radio-fast) var(--maz-easing-out, ease-out);
 
     .round {
-      @apply maz:h-[50%] maz:w-[50%] maz:scale-0 maz:rounded-full maz:transition-transform maz:duration-300 maz:ease-in-out;
+      @apply maz:h-[50%] maz:w-[50%] maz:scale-0 maz:rounded-full;
 
       background-color: var(--radio-selected-color);
+      transition: scale calc(var(--m-radio-normal) * 0.7) var(--maz-easing-in, ease-in);
     }
   }
 
@@ -214,6 +221,9 @@ function onFocus(event: FocusEvent) {
 
     .round {
       @apply maz:scale-100;
+
+      transition-duration: var(--m-radio-normal);
+      transition-timing-function: var(--maz-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1));
     }
   }
 
@@ -231,9 +241,13 @@ function onFocus(event: FocusEvent) {
     }
   }
 
+  &:has(input:focus-visible) > span {
+    outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
+    outline-offset: var(--maz-focus-ring-offset, 2px);
+  }
+
   &:not(:has(input:disabled), .--selected) {
-    &:hover > span,
-    &:focus-within > span {
+    &:hover > span {
       box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
     }
   }

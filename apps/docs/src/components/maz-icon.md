@@ -187,6 +187,39 @@ Allowed units: `px`, `em`, `rem`, `%`, `vw`, `vh`, `cm`, `mm`, `in`, `pt`, `pc`,
   </template>
 </ComponentDemo>
 
+## Animated icons
+
+With `animated`, a few icons mime their meaning on hover (or keyboard focus) of the icon or of its closest interactive parent (button, link, menu item...): the bell rings, the trash lifts, the cog turns, the paper airplane takes off, the arrows nudge, the heart beats.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
+    <button v-for="name in ['bell', 'trash', 'cog-6-tooth', 'paper-airplane', 'arrow-right', 'heart']" :key="name" type="button" class="maz:flex maz:items-center maz:gap-2 maz:rounded-lg maz:border maz:border-divider maz:px-4 maz:py-2" :aria-label="name">
+      <MazIcon :icon="name" animated size="lg" />
+    </button>
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <button type="button" aria-label="Notifications">
+    <MazIcon icon="bell" animated />
+  </button>
+  <MazBtn>
+    <MazIcon icon="paper-airplane" animated />
+    Send
+  </MazBtn>
+  <MazIcon :icon="MazStar" animated animation="beat" />
+</template>
+```
+
+</template>
+</ComponentDemo>
+
+The animation is chosen from the name of the icon: `bell` and `bell-alert` (`ring`), `trash` (`lift`), `cog`, `cog-6-tooth` and `cog-8-tooth` (`spin`), `paper-airplane` (`takeoff`), `arrow-*` (`nudge`, toward the direction of the arrow) and `heart` (`beat`). Use `animation` (`'ring' | 'spin' | 'lift' | 'nudge' | 'beat' | 'takeoff'`) for any other icon, or an icon that has no name (a component, an URL, a raw SVG). The whole icon moves: the animation only uses `transform` and `opacity`.
+
+The animation plays once, only on devices that can hover (and on keyboard focus), and is off with `prefers-reduced-motion: reduce` (or the `motion` option of `MazUi`). Icons stay decorative: the animation does not change what is announced.
+
 ## Accessibility
 
 By default `MazIcon` is rendered as decorative (`aria-hidden="true"`, no `role`). Provide an `aria-label` (either on `<MazIcon>` or in `svgAttributes`) to expose it to assistive tech: `role="img"` is set automatically and `aria-hidden` is dropped.

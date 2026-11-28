@@ -297,6 +297,7 @@ Add click handlers to buttons using the `onClick` property in items.
 import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
 import { useToast } from 'maz-ui/composables/useToast'
+import { ref } from 'vue'
 
 const toast = useToast()
 
@@ -455,6 +456,77 @@ interface MazButtonGroupProps {
 }
 ```
 
+## Attached look
+
+The buttons share their borders: only the two ends are rounded, a thin divider separates the filled buttons and the sizes are the ones of `MazBtn`. It works in a column and in RTL.
+
+## Active button
+
+Bind `v-model` to highlight the active button. The value is the `value` of the item, or its index. The active button gets `aria-pressed`. Use it for a view mode or a period, and prefer [MazSegmented](./maz-segmented.md) for a real choice in a form.
+
+<ComponentDemo>
+  <MazBtnGroup v-model="groupPeriod" :items="groupPeriodItems" variant="outline" indicator aria-label="Period" />
+  <p class="maz:mt-3 maz:text-sm maz:text-muted">Active: {{ groupPeriod }}</p>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
+import { ref } from 'vue'
+
+const period = ref('week')
+
+const items = [
+  { text: 'Day', value: 'day' },
+  { text: 'Week', value: 'week' },
+  { text: 'Month', value: 'month' },
+]
+</script>
+
+<template>
+  <MazBtnGroup v-model="period" :items="items" variant="outline" indicator aria-label="Period" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+`indicator` adds a pill that slides to the active button.
+
+## Toolbar
+
+Add `toolbar` for a group of actions (a text editor, for example): the group is a `toolbar`, only one button is in the tab sequence and the arrows, <kbd>Home</kbd> and <kbd>End</kbd> move the focus between the buttons (up and down in a column).
+
+<ComponentDemo>
+  <MazBtnGroup :items="groupToolbarItems" variant="outline" toolbar aria-label="Text actions" />
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
+
+const items = [
+  { text: 'Cut' },
+  { text: 'Copy' },
+  { text: 'Paste' },
+]
+</script>
+
+<template>
+  <MazBtnGroup :items="items" variant="outline" toolbar aria-label="Text actions" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The `indicator` slides to the active button. The first placement is never animated.
+- The speed follows the `--maz-motion-*` tokens and reduced motion removes the slide.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-btn-group.doc.md-->
 
 <script lang="ts" setup>
@@ -464,6 +536,7 @@ import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
 import { MazBars3 } from '@maz-ui/icons/raw/MazBars3'
 import { MazSquares2x2 } from '@maz-ui/icons/raw/MazSquares2x2'
 import { useToast } from 'maz-ui/composables/useToast'
+import { ref } from 'vue'
 
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'neutral', 'surface', 'container'] as const
@@ -513,4 +586,12 @@ const mixedItems: MazButtonGroupOption[] = [
   { text: 'Warning', color: 'warning', variant: 'outline' },
   { text: 'Destructive', color: 'destructive', variant: 'soft' },
 ]
+
+const groupPeriod = ref('week')
+const groupPeriodItems = [
+  { text: 'Day', value: 'day' },
+  { text: 'Week', value: 'week' },
+  { text: 'Month', value: 'month' },
+]
+const groupToolbarItems = [{ text: 'Cut' }, { text: 'Copy' }, { text: 'Paste' }]
 </script>

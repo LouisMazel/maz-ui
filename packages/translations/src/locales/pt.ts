@@ -24,6 +24,10 @@ export default {
     openSidebar: 'Abrir a barra lateral',
     closeSidebar: 'Fechar a barra lateral',
     resizeSheet: 'Redimensionar a folha',
+    before: 'Antes',
+    after: 'Depois',
+    resize: 'Redimensionar',
+    moreItems: 'mais {count}',
   },
   selectCountry: {
     searchPlaceholder: 'Pesquisar país',
@@ -121,12 +125,28 @@ export default {
     add: 'Adicionar',
     duplicateKey: 'Esta chave já está em uso',
   },
+  input: {
+    clear: 'Limpar',
+  },
   inputSecret: {
     saved: 'Guardado',
     replace: 'Substituir',
     clear: 'Limpar',
     cancel: 'Cancelar',
     savedDescription: 'O valor está guardado e oculto',
+    strengthLabel: 'Força da senha',
+    strengthVeryWeak: 'Muito fraca',
+    strengthWeak: 'Fraca',
+    strengthFair: 'Razoável',
+    strengthGood: 'Boa',
+    strengthStrong: 'Forte',
+    ruleLength: 'Pelo menos {minLength} caracteres',
+    ruleLowercase: 'Uma letra minúscula',
+    ruleUppercase: 'Uma letra maiúscula',
+    ruleNumber: 'Um número',
+    ruleSymbol: 'Um símbolo',
+    ruleMet: 'Regra cumprida',
+    ruleNotMet: 'Regra não cumprida',
   },
   readMore: {
     expand: 'Ler mais',
@@ -166,6 +186,9 @@ export default {
   windowMockup: {
     copyUrlToClipboard: 'Copiar URL para a área de transferência',
     urlCopiedToClipboard: 'URL copiada para a área de transferência',
+  },
+  btn: {
+    holdDescription: 'Mantenha pressionado para confirmar',
   },
   btnClipboard: {
     copy: 'Copiar',
@@ -214,5 +237,72 @@ export default {
     previous: 'Imagem anterior',
     next: 'Imagem seguinte',
     loading: 'A carregar...',
+  },
+  tour: {
+    label: 'Visita guiada',
+    next: 'Próximo',
+    previous: 'Anterior',
+    skip: 'Pular',
+    done: 'Concluído',
+    stepOf: 'Passo {step} de {total}',
+  },
+  breadcrumb: {
+    label: 'Trilha de navegação',
+    showHidden: 'Mostrar as páginas ocultas',
+  },
+  navigationMenu: {
+    label: 'Navegação principal',
+  },
+  emptyState: {
+    noResults: 'Nenhum resultado',
+    noResultsFor: 'Nada corresponde a "{query}"',
+  },
+  sparkline: {
+    up: 'em alta',
+    down: 'em queda',
+    flat: 'estável',
+    label: 'Tendência {trend}: mínimo {min}, máximo {max}, último {last}',
+  },
+  statCard: {
+    chart: '{label}: tendência',
+  },
+  tree: {
+    added: 'Adicionado',
+    modified: 'Modificado',
+    deleted: 'Excluído',
+  },
+  rating: {
+    label: 'Avaliação',
+    value: '{value} de {max}',
+  },
+  timePicker: {
+    label: 'Hora',
+    hours: 'Horas',
+    minutes: 'Minutos',
+    period: 'AM ou PM',
+    slots: 'Horários disponíveis',
+  },
+  inlineEdit: {
+    edit: 'Editar',
+  },
+  kbd: {
+    command: 'Comando',
+    control: 'Control',
+    option: 'Opção',
+    shift: 'Shift',
+  },
+  commandPalette: {
+    label: 'Paleta de comandos',
+    placeholder: 'Pesquisar um comando',
+    noResults: 'Nenhum resultado',
+    results: '{count} resultados',
+  },
+  contextMenu: {
+    label: 'Menu de contexto',
+  },
+  themeToggle: {
+    toDark: 'Mudar para o modo escuro',
+    toSystem: 'Usar o tema do sistema',
+    toLight: 'Mudar para o modo claro',
   },
 } satisfies MazUiTranslationsNestedSchema

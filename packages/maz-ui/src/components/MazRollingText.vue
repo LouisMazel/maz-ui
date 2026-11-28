@@ -91,6 +91,20 @@ const text = computed(() =>
     : value,
 )
 
+const RTL_CHARACTER = /[\u0590-\u08FF\uFB1D-\uFDFF\uFE70-\uFEFF]/u
+const STRONG_CHARACTER = /[\p{L}\u0590-\u08FF]/u
+
+const textDirection = computed<'ltr' | 'rtl'>(() => {
+  if (isNumeric.value)
+    return 'ltr'
+
+  const firstStrong = [...text.value].find(char => STRONG_CHARACTER.test(char))
+
+  return firstStrong && RTL_CHARACTER.test(firstStrong)
+    ? 'rtl'
+    : 'ltr'
+})
+
 function toCells(characters: string[], numeric: boolean): Cell[] {
   return characters.map((char, index) => ({
     id: numeric ? `r${characters.length - 1 - index}` : `l${index}`,
@@ -160,6 +174,7 @@ function onLeaveEnd(cell: Cell) {
     :is="tag"
     class="m-rolling-text m-reset-css maz:relative maz:inline-block maz:whitespace-pre"
     :class="{ 'm-rolling-text--numeric maz:tabular-nums': isNumeric }"
+    :dir="textDirection"
   >
     <span class="maz:sr-only">{{ text }}</span>
 
@@ -184,6 +199,10 @@ function onLeaveEnd(cell: Cell) {
 </template>
 
 <style scoped>
+.m-rolling-text {
+  unicode-bidi: isolate;
+}
+
 .m-rolling-text--numeric {
   direction: ltr;
 }

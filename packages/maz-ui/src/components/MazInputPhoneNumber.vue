@@ -19,7 +19,7 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { provideInnerFieldsWithoutTopLabel, useFieldTopLabel, useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 import PhoneInput from './MazInputPhoneNumber/PhoneInput.vue'
@@ -37,7 +37,7 @@ const {
   color = 'primary',
   placeholder = undefined,
   class: className,
-  autoFormat = 'blur',
+  autoFormat = 'typing',
   orientation = 'responsive',
   searchThreshold = 0.75,
   countrySelectAttributes = {
@@ -79,6 +79,8 @@ const {
   onlyCountries = undefined,
   ignoredCountries = undefined,
   preferredCountries = undefined,
+  label = undefined,
+  topLabel = undefined,
 } = defineProps<MazInputPhoneNumberProps>()
 
 const emits = defineEmits<{
@@ -300,8 +302,8 @@ export interface MazInputPhoneNumberProps {
    */
   customCountriesList?: Record<CountryCode, string>
   /**
-   * Disabled auto-format when phone is valid
-   * @default 'blur'
+   * Format the phone number while typing (caret kept in place), when the field loses focus or never
+   * @default 'typing'
    */
   autoFormat?: 'blur' | 'typing' | 'disabled' | false
   /**
@@ -387,6 +389,9 @@ const instanceId = useInstanceUniqId({
 })
 
 const { size, flagSrc } = useGlobalConfig<{ size: MazSize, flagSrc: MazCountryFlagSrc | undefined }>('MazInputPhoneNumber', { size: 'md', flagSrc: undefined })
+
+const { labelOnTop, topLabelText } = useFieldTopLabel(() => ({ label, topLabel }))
+provideInnerFieldsWithoutTopLabel()
 
 /** Models */
 
@@ -699,13 +704,13 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
-      v-if="topLabel"
+      v-if="topLabelText"
       :for="`${instanceId}-phone`"
       class="m-input-phone-number__top-label maz:mb-2"
       :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
       :class="stateLabelColor"
     >
-      {{ topLabel }}
+      {{ topLabelText }}
     </label>
 
     <div
@@ -817,7 +822,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
         :aria-invalid="phoneState.error || undefined"
         :aria-describedby="phoneInputDescribedBy"
         :locales="messages.phoneInput"
-        :label
+        :label="labelOnTop ? undefined : label"
         :placeholder
         @update:model-value="onPhoneNumberChanged({ newPhoneNumber: $event })"
       >

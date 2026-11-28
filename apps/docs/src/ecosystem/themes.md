@@ -1002,6 +1002,84 @@ const calmTheme = definePreset({
 <div role="button" tabindex="0" class="cursor-interactive">Custom control</div>
 ```
 
+### Density
+
+By default, a `md` control is 42px tall (3rem at the 14px base). The `compact` density makes every control about 14% shorter (36px for `md`), with tighter paddings and menu rows. Nothing changes until you enable it.
+
+|                   | `default` | `compact` |
+| ----------------- | --------- | --------- |
+| `mini`            | 21px      | 18px      |
+| `xs`              | 28px      | 24px      |
+| `sm`              | 35px      | 30px      |
+| `md`              | 42px      | 36px      |
+| `lg`              | 49px      | 42px      |
+| `xl`              | 56px      | 48px      |
+
+Heights are given at the 14px base of the `maz-ui` preset. It applies to `MazBtn`, the fields (`MazInput`, `MazSelect`, `MazInputPhoneNumber`, `MazInputPrice`, `MazInputNumber`, `MazInputSecret`, `MazInputAutocomplete`, `MazDatePicker`, `MazTextarea`, `MazInputTags`, `MazInputCode`), `MazSegmented`, `MazTabsBar`, `MazBtnGroup`, `MazPagination`, `MazDropdown`, `MazListItem` and the options of `MazSelect`. The `size` prop still works: compact scales each size.
+
+Enable it with the `density` option of `MazUi`, or `mazUi.density` with Nuxt (the server renders the class: no layout shift):
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  density: 'compact',
+})
+```
+
+The option adds the class `m-density-compact` to `<html>`. The class works on any block, to make only a part of a page compact (`m-density-default` resets a block inside it):
+
+```vue
+<template>
+  <form class="m-density-compact">
+    <MazInput label="Name" />
+    <MazBtn>Save</MazBtn>
+  </form>
+</template>
+```
+
+<ComponentDemo title="Default and compact">
+  <div class="maz:flex maz:flex-wrap maz:items-start maz:gap-8">
+    <div class="m-density-default maz:flex maz:flex-col maz:gap-3">
+      <MazBtn>Default</MazBtn>
+      <MazInput label="Name" />
+    </div>
+    <div class="m-density-compact maz:flex maz:flex-col maz:gap-3">
+      <MazBtn>Compact</MazBtn>
+      <MazInput label="Name" />
+    </div>
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <div class="m-density-default flex flex-col gap-3">
+    <MazBtn>Default</MazBtn>
+    <MazInput label="Name" />
+  </div>
+  <div class="m-density-compact flex flex-col gap-3">
+    <MazBtn>Compact</MazBtn>
+    <MazInput label="Name" />
+  </div>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+The heights, paddings and menu spacing are CSS variables, to use in your own controls (`min-height: var(--maz-control-height-md)`):
+
+| Variable | Default | Compact |
+| -------- | ------- | ------- |
+| `--maz-control-height-{mini,xs,sm,md,lg,xl}` | `1.5rem`, `2rem`, `2.5rem`, `3rem`, `3.5rem`, `4rem` | 6/7 of the default (`lg` is `3rem`) |
+| `--maz-control-padding-x-{mini,xs,sm,md,lg,xl}` | `0.25rem` to `2rem` | about 25% tighter |
+| `--maz-menu-padding`, `--maz-menu-gap`, `--maz-menu-item-padding-y` | `0.5rem`, `0.25rem`, `0.5rem` | `0.25rem`, `0.125rem`, `0.3125rem` |
+| `--maz-density-ratio` | `1` | `0.8571` (multiplier of the other paddings) |
+
+::: info Compact becomes the default in v6
+`density: 'default'` will keep the current heights.
+:::
+
 ### Focus ring
 
 By default each component draws its own focus ring: 2px, offset 2px, in its color. `components.focusRing` sets one ring for all of them, distinct from `primary`: a color per mode, a width and an offset. It applies to `MazBtn` and `MazSwitch`.
@@ -1023,6 +1101,19 @@ const ringTheme = definePreset({
 ```
 
 The variables are `--maz-focus-ring-color`, `--maz-focus-ring-width` and `--maz-focus-ring-offset`: use them in your own controls (`outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary))`). The `windows` preset uses the Fluent ring, black in light mode and white in dark mode.
+
+### Focus border of the fields
+
+A boxed field has no ring on focus: its border takes the color of the field and the width `foundation['focus-border-width']` (`2px` by default, WCAG 2.4.13), with a smooth transition (instant with reduced motion). The width above `border-width` is an inner shadow, so nothing moves. A field without border (`bordered="false"`) and the other controls (checkbox, switch, slider, buttons...) keep the focus ring.
+
+```ts
+foundation: {
+  'border-width': '1px',
+  'focus-border-width': '3px',
+}
+```
+
+For your own fields, put `field-focus` on the box (see [Utilities](../guide/tailwind.md#focus-and-press)).
 
 ### Shadow per color mode
 
@@ -1373,6 +1464,7 @@ Single-value design tokens. Set via `foundation.<key>` on the preset.
 | --- | --- | --- | --- |
 | `base-font-size` | `--maz-base-font-size` | `14px` | Anchors `rem` for the whole app. Apply on `html { font-size: var(--maz-base-font-size) }`. |
 | `border-width` | `--maz-border-width` | `1px` | Default border for components and the global `*::before/::after` reset. |
+| `focus-border-width` | `--maz-focus-border-width` | `2px` | Border width of a boxed field (`MazInput`, `MazSelect`, `MazTextarea`, `MazInputCode`, `MazMarkdownEditor`, `MazDropzone`...) with the focus. Only the color and this width change on focus: the part above `border-width` is drawn inside the box, the layout does not move. See [Focus border of the fields](#focus-border-of-the-fields). |
 | `space` | `--maz-space` | `0.25rem` | Base step for every Tailwind spacing utility (`p-1`, `gap-2`, …). |
 | `font-family` | `--maz-font-family` | preset-specific | Sans / body font stack. Bridged to Tailwind `--font-sans`. |
 | `font-mono-stack` | `--maz-font-mono-stack` | `ui-monospace, …` | Monospace stack — `MazInputCode`, `<code>`, `<kbd>`. Bridged to `--font-mono`. |

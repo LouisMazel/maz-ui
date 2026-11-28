@@ -1,0 +1,47 @@
+/*
+ * Density tokens, read by the controls of the library (buttons, fields, segmented, menus...).
+ * The values of `default` are the heights of maz-ui 5. `compact` (class `m-density-compact`, on `<html>`
+ * or on any ancestor) scales the heights to 6/7 (a `md` control goes from 42px to 36px at a 14px base)
+ * and tightens the paddings of the controls and of the menus. `m-density-default` resets a block.
+ *
+ * Removed in v6 (plans/ROADMAP.md): compact becomes the default density
+ */
+@layer base {
+  :where(:root, .m-density-default) {
+    --maz-density-ratio: 1;
+    --maz-control-height-mini: calc(var(--maz-space, 0.25rem) * 6);
+    --maz-control-height-xs: calc(var(--maz-space, 0.25rem) * 8);
+    --maz-control-height-sm: calc(var(--maz-space, 0.25rem) * 10);
+    --maz-control-height-md: calc(var(--maz-space, 0.25rem) * 12);
+    --maz-control-height-lg: calc(var(--maz-space, 0.25rem) * 14);
+    --maz-control-height-xl: calc(var(--maz-space, 0.25rem) * 16);
+    --maz-control-padding-x-mini: calc(var(--maz-space, 0.25rem) * 1);
+    --maz-control-padding-x-xs: calc(var(--maz-space, 0.25rem) * 2);
+    --maz-control-padding-x-sm: calc(var(--maz-space, 0.25rem) * 3);
+    --maz-control-padding-x-md: calc(var(--maz-space, 0.25rem) * 4);
+    --maz-control-padding-x-lg: calc(var(--maz-space, 0.25rem) * 6);
+    --maz-control-padding-x-xl: calc(var(--maz-space, 0.25rem) * 8);
+    --maz-menu-padding: calc(var(--maz-space, 0.25rem) * 2);
+    --maz-menu-gap: calc(var(--maz-space, 0.25rem) * 1);
+    --maz-menu-item-padding-y: calc(var(--maz-space, 0.25rem) * 2);
+  }
+
+  .m-density-compact {
+    --maz-density-ratio: 0.8571;
+    --maz-control-height-mini: calc(var(--maz-space, 0.25rem) * 36 / 7);
+    --maz-control-height-xs: calc(var(--maz-space, 0.25rem) * 48 / 7);
+    --maz-control-height-sm: calc(var(--maz-space, 0.25rem) * 60 / 7);
+    --maz-control-height-md: calc(var(--maz-space, 0.25rem) * 72 / 7);
+    --maz-control-height-lg: calc(var(--maz-space, 0.25rem) * 12);
+    --maz-control-height-xl: calc(var(--maz-space, 0.25rem) * 96 / 7);
+    --maz-control-padding-x-mini: calc(var(--maz-space, 0.25rem) * 0.75);
+    --maz-control-padding-x-xs: calc(var(--maz-space, 0.25rem) * 1.5);
+    --maz-control-padding-x-sm: calc(var(--maz-space, 0.25rem) * 2.5);
+    --maz-control-padding-x-md: calc(var(--maz-space, 0.25rem) * 3);
+    --maz-control-padding-x-lg: calc(var(--maz-space, 0.25rem) * 4.5);
+    --maz-control-padding-x-xl: calc(var(--maz-space, 0.25rem) * 6.5);
+    --maz-menu-padding: calc(var(--maz-space, 0.25rem) * 1);
+    --maz-menu-gap: calc(var(--maz-space, 0.25rem) * 0.5);
+    --maz-menu-item-padding-y: calc(var(--maz-space, 0.25rem) * 1.25);
+  }
+}

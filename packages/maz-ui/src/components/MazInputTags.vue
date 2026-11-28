@@ -3,10 +3,12 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, onBeforeUnmount, ref, useTemplateRef } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useFieldTopLabel, useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { ROUNDED_SIZE_CLASS, SIZE_TEXT_CLASS } from './constants.ts'
 import MazBadge from './MazBadge.vue'
+import { getFieldFocusColor } from './MazField/useFieldState.ts'
 
 defineOptions({
   inheritAttrs: false,
@@ -29,6 +31,7 @@ const {
   color = 'primary',
   block,
   addTagsOnBlur = true,
+  animated = true,
 } = defineProps<MazInputTagsProps>()
 
 const emits = defineEmits<{
@@ -88,6 +91,11 @@ export interface MazInputTagsProps {
   addTagsOnBlur?: boolean
   /** The hint text displayed in place of the label */
   hint?: string
+  /**
+   * Animate the tags that enter and leave (the others glide) and the shake of a refused duplicate
+   * @default true
+   */
+  animated?: boolean
 }
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazInputTags', {
@@ -103,18 +111,59 @@ const instanceId = useInstanceUniqId({
 })
 
 const inputRef = useTemplateRef('input')
+const fieldRef = useTemplateRef<HTMLElement>('field')
 
-const isFocused = ref(false)
+const { shouldReduceMotion } = useReducedMotion()
+const motionEnabled = computed(() => animated && !shouldReduceMotion.value)
+
+/** A leaving tag is taken out of the flow where it stands, so the others glide to their new place */
+function pinLeavingTag(element: Element) {
+  const tag = element as HTMLElement
+
+  tag.style.width = `${tag.offsetWidth}px`
+  tag.style.height = `${tag.offsetHeight}px`
+  tag.style.left = `${tag.offsetLeft}px`
+  tag.style.top = `${tag.offsetTop}px`
+}
+
 const inputValue = ref('')
 const tagToDelete = ref<string | number>()
 let deleteTimeout: ReturnType<typeof setTimeout> | undefined
 
-onBeforeUnmount(() => clearTimeout(deleteTimeout))
-
 const tags = computed(() => modelValue ?? [])
 
-/** No floating label in a field of tags: the label is the placeholder of the input */
-const inputPlaceholder = computed(() => placeholder || hint || label)
+const SHAKE_DURATION = 300
+const SHAKE_KEYFRAMES = [
+  { transform: 'translateX(0)' },
+  { transform: 'translateX(-4px)', offset: 0.2 },
+  { transform: 'translateX(3px)', offset: 0.4 },
+  { transform: 'translateX(-2px)', offset: 0.6 },
+  { transform: 'translateX(1px)', offset: 0.8 },
+  { transform: 'translateX(0)' },
+]
+const shakes = new Map<Element, Animation>()
+
+function shakeTwin(tag: string | number) {
+  const element = fieldRef.value?.querySelectorAll('.m-input-tags__tag')[tags.value.indexOf(tag)]
+
+  if (!motionEnabled.value || !element || typeof element.animate !== 'function')
+    return
+
+  shakes.get(element)?.cancel()
+  shakes.set(element, element.animate(SHAKE_KEYFRAMES, { duration: SHAKE_DURATION, easing: 'cubic-bezier(0.36, 0.07, 0.19, 0.97)' }))
+}
+
+onBeforeUnmount(() => {
+  clearTimeout(deleteTimeout)
+  for (const shake of shakes.values())
+    shake.cancel()
+  shakes.clear()
+})
+
+const { labelOnTop, topLabelText } = useFieldTopLabel(() => ({ label, topLabel }))
+
+/** No floating label in a field of tags: the label is the placeholder of the input, unless it is shown above the field */
+const inputPlaceholder = computed(() => placeholder || hint || (labelOnTop.value ? undefined : label))
 
 const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
@@ -127,6 +176,8 @@ const stateTextClass = computed(() => {
     return 'maz:text-warning-600!'
   return undefined
 })
+
+const fieldState = computed(() => (error ? 'error' : success ? 'success' : warning ? 'warning' : undefined))
 
 const borderClass = computed(() => {
   if (error)
@@ -154,6 +205,9 @@ function addTags(event?: Event) {
   clearTagToDelete()
 
   const newTags = values.filter((value, index) => !tags.value.includes(value) && values.indexOf(value) === index)
+
+  for (const value of values.filter(value => tags.value.includes(value)))
+    shakeTwin(value)
 
   if (newTags.length) {
     emits('update:model-value', [
@@ -203,7 +257,6 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function onBlur(event: FocusEvent) {
-  isFocused.value = false
   clearTagToDelete()
 
   if (addTagsOnBlur)
@@ -230,23 +283,24 @@ function focusInput() {
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
-      v-if="topLabel"
+      v-if="topLabelText"
       :for="instanceId"
       class="m-input-tags__top-label maz:mb-2"
       :class="stateTextClass"
       :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
     >
-      {{ topLabel }}
+      {{ topLabelText }}
     </label>
 
     <!-- The click only moves the focus to the input, which has the keyboard interactions -->
     <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
     <div
-      class="m-input-tags__field maz:relative maz:flex maz:w-full maz:flex-wrap maz:items-center maz:gap-1 maz:border maz:border-solid maz:bg-input maz:transition-colors maz:duration-300"
-      :class="[borderClass, ROUNDED_CLASS[roundedSize], { '--focused': isFocused }]"
+      ref="field"
+      class="m-input-tags__field maz:relative maz:flex maz:w-full maz:flex-wrap maz:items-center maz:gap-1 maz:border maz:border-solid maz:field-focus maz:bg-input"
+      :class="[borderClass, ROUNDED_CLASS[roundedSize]]" :style="{ '--m-field-color': getFieldFocusColor(color, fieldState) }"
       @click="focusInput"
     >
-      <TransitionGroup name="maz-tags">
+      <TransitionGroup name="m-tags" :css="motionEnabled" @before-leave="pinLeavingTag">
         <MazBadge
           v-for="tag in tags"
           :key="tag"
@@ -275,7 +329,6 @@ function focusInput() {
         :aria-describedby="assistiveText ? `${instanceId}-assistive-text` : undefined"
         :disabled
         @keydown="onKeydown"
-        @focus="isFocused = true"
         @blur="onBlur"
       >
     </div>
@@ -296,69 +349,32 @@ function focusInput() {
 
 /* One line of the field has the height of MazInput: the tags and the input share its inner line */
 .m-input-tags {
-  --m-input-tags-height: 3rem;
+  --m-input-tags-height: var(--maz-control-height-md, 3rem);
   --m-input-tags-padding: 0.375rem;
-  --m-input-tags-focus: var(--maz-primary);
 
   &.--xl {
-    --m-input-tags-height: 4rem;
+    --m-input-tags-height: var(--maz-control-height-xl, 4rem);
     --m-input-tags-padding: 0.5rem;
   }
 
   &.--lg {
-    --m-input-tags-height: 3.5rem;
+    --m-input-tags-height: var(--maz-control-height-lg, 3.5rem);
     --m-input-tags-padding: 0.4375rem;
   }
 
   &.--sm {
-    --m-input-tags-height: 2.5rem;
+    --m-input-tags-height: var(--maz-control-height-sm, 2.5rem);
     --m-input-tags-padding: 0.3125rem;
   }
 
   &.--xs {
-    --m-input-tags-height: 2rem;
+    --m-input-tags-height: var(--maz-control-height-xs, 2rem);
     --m-input-tags-padding: 0.25rem;
   }
 
   &.--mini {
-    --m-input-tags-height: 1.5rem;
+    --m-input-tags-height: var(--maz-control-height-mini, 1.5rem);
     --m-input-tags-padding: 0.1875rem;
-  }
-
-  &.--secondary {
-    --m-input-tags-focus: var(--maz-secondary);
-  }
-
-  &.--accent {
-    --m-input-tags-focus: var(--maz-accent);
-  }
-
-  &.--info {
-    --m-input-tags-focus: var(--maz-info);
-  }
-
-  &.--success {
-    --m-input-tags-focus: var(--maz-success);
-  }
-
-  &.--warning {
-    --m-input-tags-focus: var(--maz-warning);
-  }
-
-  &.--destructive {
-    --m-input-tags-focus: var(--maz-destructive);
-  }
-
-  &.--contrast {
-    --m-input-tags-focus: var(--maz-contrast);
-  }
-
-  &.--neutral {
-    --m-input-tags-focus: var(--maz-neutral-foreground);
-  }
-
-  &:not(.--has-state) .m-input-tags__field.--focused {
-    border-color: var(--m-input-tags-focus);
   }
 
   &.--disabled .m-input-tags__field {
@@ -399,5 +415,29 @@ function focusInput() {
   &:disabled {
     @apply maz:disabled-cursor maz:text-muted;
   }
+}
+
+.m-tags-enter-active,
+.m-tags-move {
+  transition:
+    transform calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1)) var(--maz-easing-spring, ease-out),
+    opacity calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+}
+
+.m-tags-leave-active {
+  position: absolute;
+  transition:
+    transform calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+    opacity calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
+}
+
+.m-tags-enter-from {
+  opacity: 0;
+  transform: scale(0.85);
+}
+
+.m-tags-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
 }
 </style>

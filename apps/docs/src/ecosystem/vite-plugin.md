@@ -203,7 +203,7 @@ All options are optional.
 | Option | Type | Description |
 | --- | --- | --- |
 | `content` | `string[]` | Globs of the files that use maz-ui, relative to the root of the project. Added to the defaults |
-| `entries` | `string[]` | Entries of maz-ui to keep even if the plugin does not find them in the code: a component (`MazBtn`), a directive (`vTooltip`), a plugin (`plugins/aos`) |
+| `entries` | `string[]` | Entries of maz-ui to keep even if the plugin does not find them in the code: a component (`MazBtn`), a directive (`vTooltip`), a plugin (`plugins/toast`) |
 | `safelist` | `(string \| RegExp)[]` | Classes to keep: `maz:` classes of the components or public utilities (`text-title-1`, `/^rich-text/`) |
 | `report` | `boolean` | Print the CSS saved by the purge (default: `true`) |
 
@@ -227,7 +227,7 @@ The default scan ignores `node_modules`, the globs of `content` do not: add the 
 MazUiPurgeCss({
   content: ['node_modules/@acme/ui/dist/**/*.js'],
   // or
-  entries: ['MazBtn', 'MazDialog', 'plugins/aos', 'vTooltip'],
+  entries: ['MazBtn', 'MazDialog', 'plugins/toast', 'vTooltip'],
 })
 ```
 
