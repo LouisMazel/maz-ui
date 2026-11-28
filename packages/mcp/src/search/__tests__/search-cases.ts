@@ -544,7 +544,7 @@ export const SEARCH_CASES: SearchCase[] = [
   },
   {
     query: 'reveal on scroll',
-    expected: ['components/maz-animated-element', 'plugins/aos', 'composables/use-aos'],
+    expected: ['directives/reveal', 'components/maz-reveal'],
     rank: 1,
   },
   {
