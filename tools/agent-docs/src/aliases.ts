@@ -371,6 +371,9 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'metadata fields',
   ],
   'components/maz-input-secret': [
+    'password strength',
+    'password meter',
+    'password rules',
     'secret input',
     'api key input',
     'token input',
@@ -449,6 +452,9 @@ export const DOC_ALIASES: Record<string, string[]> = {
   'components/maz-pull-to-refresh': ['pull to refresh', 'refresh gesture', 'mobile refresh'],
   'components/maz-radio': ['radio', 'radio button', 'single choice'],
   'components/maz-segmented': [
+    'toggle group',
+    'multiple toggles',
+    'toolbar toggles',
     'segmented',
     'toggle group',
     'view mode switch',
@@ -456,6 +462,9 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'segment tooltip',
   ],
   'components/maz-radio-buttons': [
+    'choice cards',
+    'radio cards',
+    'plan picker',
     'radio group',
     'choice cards',
     'option list',

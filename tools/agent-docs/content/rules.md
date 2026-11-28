@@ -25,6 +25,7 @@ Never guess an API: only use documented props, events, slots and imports.
 - These composables work without plugin. Their global options go in the MazUi plugin: `app.use(MazUi, { theme, toast: { position: 'top-right' }, dialog: { acceptText: 'Yes' } })` (Nuxt: `mazUi: { toast: {...}, dialog: {...} }`). Outside of a component (store, router guard), `useToast` and `useDialog` need the MazUi plugin, `useWait` works anywhere.
 - Animations on scroll: `aos: true` in the MazUi plugin with `import 'maz-ui/aos.css'` (Nuxt: `mazUi: { aos: true }`), then `useAos`. The directives are off by default with Nuxt (`mazUi.directives.vTooltip`, or import the directive).
 - Forms: `useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType).
+- Fields: `clearable` on `MazInput`, `counter` on `MazTextarea`, `strength` on `MazInputSecret` for a password meter, `variant="cards"` on `MazRadioButtons` / `MazChecklist` for choices in cards, `multiple` on `MazSegmented` for a group of toggles; a dense UI with the `density: 'compact'` option of MazUi (Nuxt: `mazUi.density`), the label above every field with `defaults.global.topLabel`.
 
 ### Motion
 
