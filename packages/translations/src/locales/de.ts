@@ -23,6 +23,7 @@ export default {
     sidebar: 'Seitenleiste',
     openSidebar: 'Seitenleiste öffnen',
     closeSidebar: 'Seitenleiste schließen',
+    resizeSheet: 'Größe des Sheets ändern',
   },
   selectCountry: {
     searchPlaceholder: 'Land suchen',
@@ -199,5 +200,19 @@ export default {
       h2: 'Überschrift 2',
       h3: 'Überschrift 3',
     },
+  },
+  dialogConfirm: {
+    confirmationLabel: 'Zur Bestätigung „{text}“ eingeben',
+  },
+  /**
+   * Image viewer (lightbox) labels: label, open (thumbnail), close, previous, next, loading.
+   */
+  lightbox: {
+    label: 'Bildbetrachter',
+    open: 'Bild vergrößern',
+    close: 'Schließen',
+    previous: 'Vorheriges Bild',
+    next: 'Nächstes Bild',
+    loading: 'Wird geladen...',
   },
 } satisfies MazUiTranslationsNestedSchema

@@ -23,6 +23,7 @@ export default {
     sidebar: 'サイドバー',
     openSidebar: 'サイドバーを開く',
     closeSidebar: 'サイドバーを閉じる',
+    resizeSheet: 'シートのサイズを変更',
   },
   selectCountry: {
     searchPlaceholder: '国を検索',
@@ -199,5 +200,19 @@ export default {
       h2: '見出し2',
       h3: '見出し3',
     },
+  },
+  dialogConfirm: {
+    confirmationLabel: '確認するには「{text}」と入力してください',
+  },
+  /**
+   * Image viewer (lightbox) labels: label, open (thumbnail), close, previous, next, loading.
+   */
+  lightbox: {
+    label: '画像ビューア',
+    open: '画像を拡大',
+    close: '閉じる',
+    previous: '前の画像',
+    next: '次の画像',
+    loading: '読み込み中...',
   },
 } satisfies MazUiTranslationsNestedSchema

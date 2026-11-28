@@ -26,6 +26,7 @@ export default {
     sidebar: 'Sidebar',
     openSidebar: 'Open sidebar',
     closeSidebar: 'Close sidebar',
+    resizeSheet: 'Resize the sheet',
   },
   /**
    * This is the translation for the input phone number component.
@@ -365,5 +366,22 @@ export default {
       h2: 'Heading 2',
       h3: 'Heading 3',
     },
+  },
+  /**
+   * Reinforced confirmation of MazDialogConfirm: the label of the field where the user types the text.
+   */
+  dialogConfirm: {
+    confirmationLabel: 'Type "{text}" to confirm',
+  },
+  /**
+   * Image viewer (lightbox) labels: label, open (thumbnail), close, previous, next, loading.
+   */
+  lightbox: {
+    label: 'Image viewer',
+    open: 'Enlarge image',
+    close: 'Close',
+    previous: 'Previous image',
+    next: 'Next image',
+    loading: 'Loading...',
   },
 }

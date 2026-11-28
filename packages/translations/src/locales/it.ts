@@ -23,6 +23,7 @@ export default {
     sidebar: 'Barra laterale',
     openSidebar: 'Apri la barra laterale',
     closeSidebar: 'Chiudi la barra laterale',
+    resizeSheet: 'Ridimensiona il foglio',
   },
   selectCountry: {
     searchPlaceholder: 'Cerca paese',
@@ -199,5 +200,19 @@ export default {
       h2: 'Titolo 2',
       h3: 'Titolo 3',
     },
+  },
+  dialogConfirm: {
+    confirmationLabel: 'Digita «{text}» per confermare',
+  },
+  /**
+   * Image viewer (lightbox) labels: label, open (thumbnail), close, previous, next, loading.
+   */
+  lightbox: {
+    label: 'Visualizzatore di immagini',
+    open: 'Ingrandisci immagine',
+    close: 'Chiudi',
+    previous: 'Immagine precedente',
+    next: 'Immagine successiva',
+    loading: 'Caricamento...',
   },
 } satisfies MazUiTranslationsNestedSchema

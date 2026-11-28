@@ -23,6 +23,7 @@ export default {
     sidebar: '侧边栏',
     openSidebar: '打开侧边栏',
     closeSidebar: '关闭侧边栏',
+    resizeSheet: '调整面板大小',
   },
   selectCountry: {
     searchPlaceholder: '搜索国家',
@@ -199,5 +200,19 @@ export default {
       h2: '标题 2',
       h3: '标题 3',
     },
+  },
+  dialogConfirm: {
+    confirmationLabel: '输入“{text}”以确认',
+  },
+  /**
+   * Image viewer (lightbox) labels: label, open (thumbnail), close, previous, next, loading.
+   */
+  lightbox: {
+    label: '图片查看器',
+    open: '放大图片',
+    close: '关闭',
+    previous: '上一张图片',
+    next: '下一张图片',
+    loading: '加载中...',
   },
 } satisfies MazUiTranslationsNestedSchema
