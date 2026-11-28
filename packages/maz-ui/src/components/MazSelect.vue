@@ -560,6 +560,22 @@ function emitInputMainInput() {
 function focusSearchInputAndSetQuery(q: string) {
   searchQuery.value = q
   searchInputRef.value?.$el?.querySelector('input')?.focus()
+  nextTick(() => searchInputRef.value?.$el?.querySelector('input')?.focus())
+}
+
+function typeInSearchInput(event: KeyboardEvent) {
+  if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1 || !event.key.trim())
+    return false
+
+  const target = event.target
+
+  if (target instanceof Element && target.matches('input, textarea, select, [contenteditable]'))
+    return false
+
+  event.preventDefault()
+  focusSearchInputAndSetQuery(`${searchQuery.value ?? ''}${event.key}`)
+
+  return true
 }
 
 function searchOptionWithQuery(keyPressed: string) {
@@ -701,7 +717,10 @@ function keydownHandler(event: KeyboardEvent) {
 
     itemsElements[nextIndex]?.focus()
   }
-  else if (!search && isLetterOrNumberRegex.test(keyPressed)) {
+  else if (search) {
+    typeInSearchInput(event)
+  }
+  else if (isLetterOrNumberRegex.test(keyPressed)) {
     searchOptionWithQuery(keyPressed)
   }
 }

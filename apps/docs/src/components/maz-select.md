@@ -79,7 +79,7 @@ selectedValues: {{ selectedValues }}
 
 Use `search` property to add a search input in the options list.
 
-The search is a fuzzy search (the [fuzzySearch](./../ecosystem/utils/fuzzy-search.md) helper of `@maz-ui/utils`, loaded only with `search`): it finds the prefixes, the words in any order, the initials ("nwz" finds "New Zealand"), the typos ("Franse" finds "France"), whatever the accents and the case. It searches the label, the input value and the value of the options. The best matches come first; with optgroups, the matched options keep the order of the list under their group.
+The search is a fuzzy search (the [fuzzySearch](./../ecosystem/utils/fuzzy-search.md) helper of `@maz-ui/utils`, loaded only with `search`): it finds the prefixes, the words in any order, the initials ("nwz" finds "New Zealand"), the typos ("Franse" finds "France"), whatever the accents and the case. It searches the label, the input value and the value of the options. While the list is open, a letter typed from the trigger or from an option goes into the search input. The best matches come first; with optgroups, the matched options keep the order of the list under their group.
 
 ::: tip
 You can use your own template to replace the empty icon when no results are found
