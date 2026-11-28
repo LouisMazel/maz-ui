@@ -1,9 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SPACE,
-} from './_defaults.ts'
+import { DEFAULT_DISABLED_OPACITY, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SPACE } from './_defaults.ts'
 
 /**
  * Windows preset: the look of a native Windows 11 app (Fluent 2).
@@ -15,8 +11,9 @@ import {
  *   Windows does not expose the user accent to the web: an app that reads it
  *   natively overrides `primary`.
  * - `secondary` is the Fluent purple, `accent` the Fluent magenta and `info`
- *   the Fluent teal, in the same steps: four strong colors that never look
- *   alike.
+ *   the Fluent teal (Fluent 2 palette: the base color on light, its lightest
+ *   tint on dark, as Fluent does for colored text): four strong colors that
+ *   never look alike.
  * - Light gray window (Mica) and lighter cards, small radii (4px controls,
  *   8px cards and flyouts), the Acrylic material for `glass`.
  * - Fluent motion: fast decelerated curves. Controls keep the arrow cursor.
@@ -36,6 +33,10 @@ export const windows: ThemePreset = {
     'motion-fast': '83ms',
     'motion-normal': '167ms',
     'motion-slow': '250ms',
+    ...DEFAULT_MOTION,
+    // Fluent motion does not bounce
+    'motion-instant': '50ms',
+    'easing-bounce': DEFAULT_MOTION['easing-spring'],
     'easing-out': 'cubic-bezier(0, 0, 0, 1)',
     'easing-in': 'cubic-bezier(1, 0, 1, 1)',
     'easing-in-out': 'cubic-bezier(0.33, 0, 0.67, 1)',
@@ -56,11 +57,26 @@ export const windows: ThemePreset = {
       '3xl': '16px',
     },
     shadow: {
-      sm: '0 1px 2px rgb(0 0 0 / 0.14)',
-      md: '0 2px 4px rgb(0 0 0 / 0.14)',
-      lg: '0 8px 16px rgb(0 0 0 / 0.14)',
-      xl: '0 32px 64px rgb(0 0 0 / 0.19), 0 2px 21px rgb(0 0 0 / 0.15)',
-      elevation: '0 8px 16px rgb(0 0 0 / 0.14), 0 0 0 1px rgb(0 0 0 / 0.06)',
+      'sm': '0 1px 2px rgb(0 0 0 / 0.14)',
+      'md': '0 2px 4px rgb(0 0 0 / 0.14)',
+      'lg': '0 8px 16px rgb(0 0 0 / 0.14)',
+      'xl': '0 32px 64px rgb(0 0 0 / 0.19), 0 2px 21px rgb(0 0 0 / 0.15)',
+      'elevation': {
+        light: '0 8px 16px rgb(0 0 0 / 0.14), 0 0 0 1px rgb(0 0 0 / 0.06)',
+        dark: '0 8px 16px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.08)',
+      },
+      'elevation-1': {
+        light: '0 2px 4px rgb(0 0 0 / 0.14), 0 0 0 1px rgb(0 0 0 / 0.05)',
+        dark: '0 2px 4px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.12)',
+      },
+      'elevation-2': {
+        light: '0 8px 16px rgb(0 0 0 / 0.18), 0 0 0 1px rgb(0 0 0 / 0.07)',
+        dark: '0 8px 16px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.2)',
+      },
+      'elevation-3': {
+        light: '0 24px 48px rgb(0 0 0 / 0.24), 0 2px 14px rgb(0 0 0 / 0.14), 0 0 0 1px rgb(0 0 0 / 0.09)',
+        dark: '0 24px 48px rgb(0 0 0 / 0.75), 0 2px 14px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.3)',
+      },
     },
   },
   // Fluent type ramp (px): Display 68/92, Title Large 40/52, Title 28/36,
@@ -116,6 +132,12 @@ export const windows: ThemePreset = {
   },
   components: {
     btn: { 'font-weight': '400' },
+    // Fluent focus rectangle: a black (light) or white (dark) 2px ring, not the accent
+    focusRing: {
+      color: { light: '#000000', dark: '#ffffff' },
+      width: '2px',
+      offset: '2px',
+    },
     container: {
       bg: { light: '#fbfbfb', dark: '#2b2b2b' },
     },
@@ -137,7 +159,7 @@ export const windows: ThemePreset = {
       'foreground': '#1b1b1b',
       'primary': '#005fb8',
       'primary-foreground': '#ffffff',
-      'secondary': '#8764b8',
+      'secondary': '#5c2e91',
       'secondary-foreground': '#ffffff',
       'accent': '#bf0077',
       'accent-foreground': '#ffffff',
@@ -155,17 +177,19 @@ export const windows: ThemePreset = {
       'divider': '#e5e5e5',
       'overlay': 'rgb(0 0 0 / 0.3)',
       'shadow': '#000000',
+      'neutral': '#fbfbfb',
+      'neutral-foreground': '#1b1b1b',
     },
     dark: {
       'surface': '#202020',
       'foreground': '#ffffff',
       'primary': '#60cdff',
       'primary-foreground': '#000000',
-      'secondary': '#b4a0ff',
+      'secondary': '#c6b1de',
       'secondary-foreground': '#000000',
-      'accent': '#ff8fd0',
+      'accent': '#eca5d1',
       'accent-foreground': '#000000',
-      'info': '#4fd1d6',
+      'info': '#9bd9db',
       'info-foreground': '#000000',
       'success': '#6ccb5f',
       'success-foreground': '#000000',
@@ -175,10 +199,12 @@ export const windows: ThemePreset = {
       'destructive-foreground': '#000000',
       'contrast': '#ffffff',
       'contrast-foreground': '#1b1b1b',
-      'muted': '#c5c5c5',
-      'divider': '#353535',
+      'muted': '#cccccc',
+      'divider': '#323232',
       'overlay': 'rgb(0 0 0 / 0.5)',
       'shadow': '#000000',
+      'neutral': '#323232',
+      'neutral-foreground': '#ffffff',
     },
   },
 }
