@@ -24,7 +24,7 @@ function findButton(text: string) {
 }
 
 function findField() {
-  return document.body.querySelector('input') as HTMLInputElement | null
+  return document.body.querySelector('.m-dialog-confirm-confirmation input') as HTMLInputElement | null
 }
 
 async function type(value: string) {
