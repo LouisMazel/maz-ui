@@ -12,7 +12,7 @@ description: MazAnimatedElement is a standalone component that animates its cont
 ## Basic usage
 
 ::: tip
-This component is SSR friendly: its content is in the server markup and the animation is pure CSS, so it starts on the first paint when the element is in the viewport, without waiting for JavaScript. Below the viewport, it plays when the element enters it. With `prefers-reduced-motion: reduce`, the content is displayed without animation.
+This component is SSR friendly: its content is in the server markup and is visible without JavaScript. Once the page is hydrated, it plays when the element enters the screen (it is built on [vReveal](./../directives/reveal.md)). With `prefers-reduced-motion: reduce`, the content fades in quickly. Do not put it on the main content at the top of the page (the LCP).
 :::
 
 <ComponentDemo expanded>
