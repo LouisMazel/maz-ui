@@ -89,7 +89,7 @@ export interface MazDialogConfirmInternalProps {
 
 export type MazDialogConfirmProps = MazDialogConfirmInternalProps & MazDialogConfirmData & MazDialogProps
 
-const { identifier, message, buttons, title, modelValue, closeOnEscape = true, rejectText, acceptText, rejectProps, acceptProps, hideRejectButton = undefined, hideAcceptButton = undefined, confirmation, animated = true, ...dialogProps } = defineProps<MazDialogConfirmProps>()
+const { identifier, message, buttons, title, modelValue, closeOnEscape = true, rejectText, acceptText, rejectProps, acceptProps, hideRejectButton = undefined, hideAcceptButton = undefined, confirmation, animated = true, contentPadding = true, ...dialogProps } = defineProps<MazDialogConfirmProps>()
 
 defineEmits<{
   /**
@@ -246,6 +246,7 @@ function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfi
     ref="dialog"
     v-bind="{ ...$attrs, ...dialogProps }"
     :close-on-escape="closeOnEscape"
+    :content-padding="contentPadding"
     :animated
     :model-value="currentModal?.isActive ?? modelValue ?? false"
     @close="$emit('close', $event)"

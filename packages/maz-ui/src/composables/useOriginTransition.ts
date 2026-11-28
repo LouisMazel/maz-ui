@@ -160,6 +160,16 @@ function isVisible(rect: DOMRect) {
     && rect.left < window.innerWidth
 }
 
+function getKeyframes(isEnter: boolean, { current, hidden, shown, spatial }: { current?: Keyframe, hidden: Keyframe, shown: Keyframe, spatial: boolean }): Keyframe[] {
+  if (current)
+    return isEnter ? [current, shown] : [current, hidden]
+
+  if (spatial)
+    return isEnter ? [hidden, { opacity: '1', offset: 0.3 }, shown] : [shown, { opacity: '1', offset: 0.85 }, hidden]
+
+  return isEnter ? [hidden, shown] : [shown, hidden]
+}
+
 function getHiddenState(
   resolved: ResolvedOrigin | null,
   el: Element,
@@ -235,25 +245,30 @@ export function useOriginTransition(options: UseOriginTransitionOptions = {}) {
     return pointerTarget ? { kind: 'element', element: pointerTarget } : null
   }
 
-  function getDuration(phase: 'enter' | 'leave') {
+  function getDuration(phase: 'enter' | 'leave', spatial = false) {
     const explicit = toValue(options.duration)
-    const base = explicit ?? readNumberVar('--maz-motion-normal', 200, true) * readNumberVar('--maz-motion-scale', 1)
+    const token = spatial ? readNumberVar('--maz-motion-slow', 300, true) : readNumberVar('--maz-motion-normal', 200, true)
+    const base = explicit ?? token * readNumberVar('--maz-motion-scale', 1)
 
-    return phase === 'leave' ? base * (options.leaveRatio ?? 0.7) : base
+    return phase === 'leave' && !spatial ? base * (options.leaveRatio ?? 0.7) : base
   }
 
   function getReducedDuration() {
     return toValue(options.duration) === 0 ? 0 : readNumberVar('--maz-motion-fast', 150, true) * readNumberVar('--maz-motion-scale', 1)
   }
 
-  function getEasing(phase: 'enter' | 'leave') {
+  function getEasing(phase: 'enter' | 'leave', spatial = false) {
     const { easing } = options
     const custom = typeof easing === 'string' ? easing : easing?.[phase]
     if (custom)
       return custom
 
-    return phase === 'enter'
-      ? readEasingVar('--maz-easing-out', DEFAULT_ENTER_EASING)
+    if (phase === 'enter')
+      return readEasingVar('--maz-easing-out', DEFAULT_ENTER_EASING)
+
+    // Back to an origin: the whole way is seen, not a slow start that ends in a fade
+    return spatial
+      ? readEasingVar('--maz-easing-in-out', DEFAULT_LEAVE_EASING)
       : readEasingVar('--maz-easing-in', DEFAULT_LEAVE_EASING)
   }
 
@@ -303,14 +318,16 @@ export function useOriginTransition(options: UseOriginTransitionOptions = {}) {
     const { hidden } = hiddenState
     const origin = transformOrigin ?? hiddenState.origin
 
-    const keyframes = isEnter ? [current ?? hidden, shown] : [current ?? shown, hidden]
-    const duration = reduced ? getReducedDuration() : getDuration(phase)
+    // From an origin, the element is opaque early (enter) and late (leave): its growth from the origin is seen
+    const spatial = !reduced && !!hidden.transform && hiddenState.origin !== undefined
+    const keyframes = getKeyframes(isEnter, { current, hidden, shown, spatial })
+    const duration = reduced ? getReducedDuration() : getDuration(phase, spatial)
     if (duration <= 0) {
       done()
       return
     }
 
-    play(el, keyframes, { duration, easing: getEasing(phase), fill: isEnter ? 'none' : 'forwards' }, origin, done)
+    play(el, keyframes, { duration, easing: getEasing(phase, spatial), fill: isEnter ? 'none' : 'forwards' }, origin, done)
   }
 
   function play(el: HTMLElement, keyframes: Keyframe[], animationOptions: KeyframeAnimationOptions, origin: string | undefined, done: () => void) {

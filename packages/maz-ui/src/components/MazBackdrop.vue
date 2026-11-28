@@ -491,6 +491,28 @@ html.--backdrop-present.--has-scrollbar {
   }
 
   /*
+   * A panel that grows from its origin: only the veil fades, the panel stays visible all the way to its origin
+   */
+  &.--grow.modal-anim-enter-active {
+    transition:
+      background-color var(--m-backdrop-fade-in) var(--maz-easing-out, ease-out),
+      backdrop-filter var(--m-backdrop-fade-in) var(--maz-easing-out, ease-out);
+  }
+
+  &.--grow.modal-anim-leave-active {
+    transition:
+      background-color var(--m-backdrop-panel-in) var(--maz-easing-in-out, ease-in-out),
+      backdrop-filter var(--m-backdrop-panel-in) var(--maz-easing-in-out, ease-in-out);
+  }
+
+  &.--grow.modal-anim-enter-from,
+  &.--grow.modal-anim-leave-to {
+    opacity: 1;
+    background-color: transparent;
+    backdrop-filter: blur(0);
+  }
+
+  /*
    * Panels: slide (drawers, bottom sheet) or scale (modal, unless the panel grows from its origin)
    */
   &.bottom-sheet-anim-enter-active .m-backdrop-content > *,

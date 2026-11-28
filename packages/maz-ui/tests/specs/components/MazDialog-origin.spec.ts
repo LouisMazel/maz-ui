@@ -178,7 +178,7 @@ describe('given a dialog', () => {
 
       await wrapper.setProps({ modelValue: false })
 
-      expect(animations[1]?.keyframes[1]).toMatchObject({ transform: 'scale(0.05)', opacity: '0' })
+      expect(animations[1]?.keyframes.at(-1)).toMatchObject({ transform: 'scale(0.05)', opacity: '0' })
       expect(wrapper.emitted('close')).toBeUndefined()
 
       animations[1]?.onfinish?.()

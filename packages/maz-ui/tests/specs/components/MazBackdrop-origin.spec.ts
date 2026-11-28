@@ -124,8 +124,8 @@ describe('given a backdrop that grows from its origin', () => {
       await wrapper.setProps({ modelValue: false })
 
       expect(animations).toHaveLength(2)
-      expect(lastAnimation().keyframes[1]).toMatchObject({ opacity: '0' })
-      expect(String(lastAnimation().keyframes[1]?.transform)).toContain('translate(')
+      expect(lastAnimation().keyframes.at(-1)).toMatchObject({ opacity: '0' })
+      expect(String(lastAnimation().keyframes.at(-1)?.transform)).toContain('translate(')
       expect(wrapper.emitted('close')).toBeUndefined()
 
       lastAnimation().onfinish?.()

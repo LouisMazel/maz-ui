@@ -163,23 +163,23 @@ const CONTAINER_POSITION_X = {
 } as const
 
 const TOAST_BUTTON_COLOR: Record<NonNullable<ToastOptions['type']>, string> = {
-  info: 'maz:bg-info maz:text-info-foreground maz:border-info-600 maz:hover:bg-info-600 maz:dark:bg-info/10 maz:dark:text-info-400 maz:dark:border-info/20 maz:hover:dark:bg-info/20',
-  success: 'maz:bg-success maz:text-success-foreground maz:border-success-600 maz:hover:bg-success-600 maz:dark:bg-success/10 maz:dark:text-success-400 maz:dark:border-success/20 maz:dark:hover:bg-success/20',
-  warning: 'maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600 maz:dark:bg-warning/10 maz:dark:text-warning-400 maz:dark:border-warning/20 maz:dark:hover:bg-warning/20',
-  destructive: 'maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600 maz:dark:bg-destructive/10 maz:dark:text-destructive-400 maz:dark:border-destructive/20 maz:dark:hover:bg-destructive/20',
+  info: 'maz:bg-info maz:text-info-foreground maz:border-info-600 maz:hover:bg-info-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-info)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:text-info-400 maz:dark:border-info/20 maz:hover:dark:bg-[color-mix(in_oklab,var(--maz-info)_22%,var(--maz-container-bg,var(--maz-surface)))]',
+  success: 'maz:bg-success maz:text-success-foreground maz:border-success-600 maz:hover:bg-success-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-success)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:text-success-400 maz:dark:border-success/20 maz:dark:hover:bg-[color-mix(in_oklab,var(--maz-success)_22%,var(--maz-container-bg,var(--maz-surface)))]',
+  warning: 'maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-warning)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:text-warning-400 maz:dark:border-warning/20 maz:dark:hover:bg-[color-mix(in_oklab,var(--maz-warning)_22%,var(--maz-container-bg,var(--maz-surface)))]',
+  destructive: 'maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-destructive)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:text-destructive-400 maz:dark:border-destructive/20 maz:dark:hover:bg-[color-mix(in_oklab,var(--maz-destructive)_22%,var(--maz-container-bg,var(--maz-surface)))]',
   contrast: 'maz:bg-contrast maz:text-contrast-foreground maz:border-contrast-600/20 maz:hover:bg-contrast-500 maz:dark:hover:bg-contrast/70',
   neutral: 'maz:bg-neutral maz:text-neutral-foreground maz:border-divider maz:hover:bg-[color-mix(in_oklab,var(--maz-neutral-foreground)_10%,var(--maz-neutral))]',
-  accent: 'maz:bg-accent maz:text-accent-foreground maz:border-accent-600 maz:hover:bg-accent-600 maz:dark:bg-accent/10 maz:dark:text-accent-400 maz:dark:border-accent/20 maz:dark:hover:bg-accent/20',
+  accent: 'maz:bg-accent maz:text-accent-foreground maz:border-accent-600 maz:hover:bg-accent-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-accent)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:text-accent-400 maz:dark:border-accent/20 maz:dark:hover:bg-[color-mix(in_oklab,var(--maz-accent)_22%,var(--maz-container-bg,var(--maz-surface)))]',
 } as const
 
 const TOAST_CLOSE_COLOR: Record<NonNullable<ToastOptions['type']>, string> = {
-  info: 'maz:bg-info maz:text-info-foreground maz:border-info-400 maz:hover:bg-info-600 maz:dark:bg-info/10 maz:dark:border-info/20 maz:dark:text-info-600 maz:hover:dark:bg-info/20',
-  success: 'maz:bg-success maz:text-success-foreground maz:border-success-600 maz:hover:bg-success-600 maz:dark:bg-success/10 maz:dark:border-success/20 maz:dark:text-success-600 maz:dark:hover:bg-success/20',
-  warning: 'maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600 maz:dark:bg-warning/10 maz:dark:border-warning/20 maz:dark:text-warning-600 maz:dark:hover:bg-warning/20',
-  destructive: 'maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600 maz:dark:bg-destructive/10 maz:dark:border-destructive/20 maz:dark:text-destructive-600 maz:dark:hover:bg-destructive/20',
+  info: 'maz:bg-info maz:text-info-foreground maz:border-info-400 maz:hover:bg-info-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-info)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:border-info/20 maz:dark:text-info-600 maz:hover:dark:bg-[color-mix(in_oklab,var(--maz-info)_22%,var(--maz-container-bg,var(--maz-surface)))]',
+  success: 'maz:bg-success maz:text-success-foreground maz:border-success-600 maz:hover:bg-success-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-success)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:border-success/20 maz:dark:text-success-600 maz:dark:hover:bg-[color-mix(in_oklab,var(--maz-success)_22%,var(--maz-container-bg,var(--maz-surface)))]',
+  warning: 'maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-warning)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:border-warning/20 maz:dark:text-warning-600 maz:dark:hover:bg-[color-mix(in_oklab,var(--maz-warning)_22%,var(--maz-container-bg,var(--maz-surface)))]',
+  destructive: 'maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-destructive)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:border-destructive/20 maz:dark:text-destructive-600 maz:dark:hover:bg-[color-mix(in_oklab,var(--maz-destructive)_22%,var(--maz-container-bg,var(--maz-surface)))]',
   contrast: 'maz:bg-contrast maz:text-contrast-foreground maz:border-contrast-600/20 maz:hover:bg-contrast/70',
   neutral: 'maz:bg-neutral maz:text-neutral-foreground maz:border-divider maz:hover:bg-[color-mix(in_oklab,var(--maz-neutral-foreground)_10%,var(--maz-neutral))]',
-  accent: 'maz:bg-accent maz:text-accent-foreground maz:border-accent-600 maz:hover:bg-accent-600 maz:dark:bg-accent/10 maz:dark:text-accent-400 maz:dark:border-accent/20 maz:dark:hover:bg-accent/20',
+  accent: 'maz:bg-accent maz:text-accent-foreground maz:border-accent-600 maz:hover:bg-accent-600 maz:dark:bg-[color-mix(in_oklab,var(--maz-accent)_14%,var(--maz-container-bg,var(--maz-surface)))] maz:dark:text-accent-400 maz:dark:border-accent/20 maz:dark:hover:bg-[color-mix(in_oklab,var(--maz-accent)_22%,var(--maz-container-bg,var(--maz-surface)))]',
 } as const
 
 const CLOSE_POSITION_X = {

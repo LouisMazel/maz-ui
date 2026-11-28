@@ -78,6 +78,25 @@ describe('useOriginTransition', () => {
   })
 
   describe('given an element origin', () => {
+    describe('when the element enters and leaves', () => {
+      it('then it is opaque early on enter and late on leave, and the enter takes the slow duration', () => {
+        document.documentElement.style.setProperty('--maz-motion-slow', '300ms')
+        const origin = createElement(rect(100, 100, 50, 20))
+        const element = createElement(rect(300, 200, 500, 400))
+        const { result } = setup({ origin })
+
+        result.enter(element, vi.fn())
+        const enter = lastAnimation()
+        expect(enter.keyframes[1]).toEqual({ opacity: '1', offset: 0.3 })
+        expect(enter.options.duration).toBe(300)
+        enter.finish()
+
+        result.leave(element, vi.fn())
+        expect(lastAnimation().keyframes[1]).toEqual({ opacity: '1', offset: 0.85 })
+        document.documentElement.style.removeProperty('--maz-motion-slow')
+      })
+    })
+
     describe('when the element enters', () => {
       it('then it animates from the rect of the origin to the identity', () => {
         const origin = createElement(rect(100, 100, 50, 20), '8px')
@@ -93,7 +112,7 @@ describe('useOriginTransition', () => {
           opacity: '0',
           borderRadius: '8px',
         })
-        expect(animation.keyframes[1]).toMatchObject({ transform: 'none', opacity: '1', borderRadius: '16px' })
+        expect(animation.keyframes.at(-1)).toMatchObject({ transform: 'none', opacity: '1', borderRadius: '16px' })
         expect(element.style.transformOrigin).toBe('0px 0px')
         expect(element.style.willChange).toBe('transform, opacity')
         expect(done).not.toHaveBeenCalled()
@@ -128,7 +147,7 @@ describe('useOriginTransition', () => {
     })
 
     describe('when the element leaves after the enter', () => {
-      it('then it goes back to the rect of the origin with the leave ratio and the easing in', () => {
+      it('then it goes back to the rect of the origin with the whole duration and the given easing', () => {
         const origin = createElement(rect(100, 100, 50, 20))
         const element = createElement(rect(300, 200, 500, 400))
         const { result } = setup({ origin, duration: 200, easing: { enter: 'ease-out', leave: 'ease-in' } })
@@ -140,8 +159,8 @@ describe('useOriginTransition', () => {
 
         const animation = lastAnimation()
         expect(animation.keyframes[0]).toMatchObject({ transform: 'none', opacity: '1' })
-        expect(animation.keyframes[1]).toMatchObject({ transform: 'translate(-200px, -100px) scale(0.1, 0.05)', opacity: '0' })
-        expect(animation.options).toMatchObject({ duration: 140, easing: 'ease-in', fill: 'forwards' })
+        expect(animation.keyframes.at(-1)).toMatchObject({ transform: 'translate(-200px, -100px) scale(0.1, 0.05)', opacity: '0' })
+        expect(animation.options).toMatchObject({ duration: 200, easing: 'ease-in', fill: 'forwards' })
         animation.finish()
         expect(done).toHaveBeenCalledTimes(1)
         expect(animation.cancel).toHaveBeenCalled()
@@ -160,7 +179,7 @@ describe('useOriginTransition', () => {
         result.setOrigin(() => second)
         result.leave(element, vi.fn())
 
-        expect(lastAnimation().keyframes[1]).toMatchObject({ transform: 'translate(200px, 300px) scale(0.2, 0.25)' })
+        expect(lastAnimation().keyframes.at(-1)).toMatchObject({ transform: 'translate(200px, 300px) scale(0.2, 0.25)' })
       })
     })
   })
@@ -282,7 +301,7 @@ describe('useOriginTransition', () => {
         origin.getBoundingClientRect = vi.fn(() => rect(100, 2000, 50, 20))
         result.leave(element, vi.fn())
 
-        expect(lastAnimation().keyframes[1]).toMatchObject({ transform: 'scale(0.97)', opacity: '0' })
+        expect(lastAnimation().keyframes.at(-1)).toMatchObject({ transform: 'scale(0.97)', opacity: '0' })
       })
     })
 
@@ -464,7 +483,7 @@ describe('useOriginTransition', () => {
         result.leave(element, done)
         lastAnimation().finish()
 
-        expect(lastAnimation().keyframes[1]).toEqual({ opacity: '0' })
+        expect(lastAnimation().keyframes.at(-1)).toEqual({ opacity: '0' })
         expect(done).toHaveBeenCalledTimes(1)
       })
     })
@@ -515,7 +534,7 @@ describe('useOriginTransition', () => {
         result.leave(element, vi.fn())
         result.enter(element, vi.fn())
 
-        expect(lastAnimation().keyframes[1]).toMatchObject({ transform: 'none', opacity: '1' })
+        expect(lastAnimation().keyframes.at(-1)).toMatchObject({ transform: 'none', opacity: '1' })
       })
     })
   })
