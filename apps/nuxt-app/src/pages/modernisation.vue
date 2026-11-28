@@ -44,6 +44,10 @@ useHead({
       <ModernisationPr2Dialogs />
       <ModernisationPr2Sheets />
       <ModernisationPr2Lightbox />
+
+      <ModernisationPullRequest :number="3" title="Forms" description="Every field moves and looks the same: inputs, checkboxes, radios, switches, sliders, selects, the date picker, and the compact density." />
+
+      <!-- PR 3 sections -->
     </main>
   </div>
 </template>
