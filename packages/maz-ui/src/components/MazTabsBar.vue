@@ -143,7 +143,39 @@ export type MazTabsBarItem<Value extends string | number = string | number>
  * 1-based index (number).
  */
 export type MazTabsBarItemValue<Item>
-  = Item extends { value: infer V extends string | number } ? V : number
+  = Item extends { value: infer V extends string | number }
+    ? V
+    : Item extends { value?: infer V extends string | number }
+      ? string | number extends V
+        ? number
+        : V
+      : number
+
+/**
+ * Type of the `value` of an item given to the `item` slot: the literal value of
+ * the item when provided, `undefined` for a string item or an item without value.
+ */
+export type MazTabsBarSlotItemValue<Item>
+  = Item extends string
+    ? undefined
+    : Item extends { value: infer V extends string | number }
+      ? V
+      : Item extends { value?: infer V extends string | number }
+        ? V | undefined
+        : undefined
+
+export interface MazTabsBarSlotItem<Item = MazTabsBarItem> {
+  label: string
+  value: MazTabsBarSlotItemValue<Item>
+  disabled: boolean
+  size: MazSize | undefined
+  roundedSize: MazRoundedSize | undefined
+  color: NonNullable<MazBtnProps['color']>
+  badge: MazTabsBarObjectItem['badge']
+  indicator: MazIndicatorProps | undefined
+  overflowHidden: boolean | undefined
+  btnProps: Record<string, unknown>
+}
 </script>
 
 <script lang="ts" setup generic="Item extends MazTabsBarItem">
@@ -187,6 +219,12 @@ const emits = defineEmits<{
    * @property {MazTabsBarItemValue} value item value when provided, otherwise the 1-based index
    */
   'update:model-value': [value: MazTabsBarItemValue<Item>]
+}>()
+
+defineSlots<{
+  'item'?: (props: { item: MazTabsBarSlotItem<Item>, active: boolean, index: number }) => unknown
+  'badge-content'?: (props: { content: string | number | boolean }) => unknown
+  'indicator'?: (props: { text: string, index: number }) => unknown
 }>()
 
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
@@ -256,11 +294,11 @@ function resolveIndicator(indicator: MazTabsBarObjectItem['indicator']): MazIndi
 }
 
 const normalizedItems = computed(() =>
-  items.map((item) => {
+  items.map((item): MazTabsBarSlotItem<Item> => {
     if (typeof item === 'string') {
       return {
         label: item,
-        value: undefined as string | number | undefined,
+        value: undefined as MazTabsBarSlotItemValue<Item>,
         disabled: false,
         size: undefined as MazSize | undefined,
         roundedSize: undefined as MazRoundedSize | undefined,
@@ -277,7 +315,7 @@ const normalizedItems = computed(() =>
 
     return {
       label,
-      value,
+      value: value as MazTabsBarSlotItemValue<Item>,
       disabled: disabled ?? false,
       size,
       roundedSize,
@@ -301,7 +339,7 @@ const currentTab = computed<number>(() => {
   }
 
   const indexByValue = normalizedItems.value.findIndex(
-    item => item.value !== undefined && item.value === modelValue,
+    item => item.value !== undefined && (item.value as unknown) === modelValue,
   )
   if (indexByValue !== -1) {
     return indexByValue + 1
