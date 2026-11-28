@@ -109,14 +109,12 @@ describe('fullscreenImgHandler', () => {
     binding.value = { src: 'https://example.com/image.jpg', scaleOnHover: true }
     handler.create(el, binding)
     expect(el.classList.contains('maz:hover:scale-[1.04]')).toBe(true)
-    expect(el.style.transitionProperty).toBe('')
   })
 
   it('should apply blur on hover through classes', () => {
     binding.value = { src: 'https://example.com/image.jpg', blurOnHover: true }
     handler.create(el, binding)
     expect(el.classList.contains('maz:hover:blur-[0.1875rem]')).toBe(true)
-    expect(el.style.transitionProperty).toBe('')
   })
 
   it('should remove the hover classes on remove', () => {

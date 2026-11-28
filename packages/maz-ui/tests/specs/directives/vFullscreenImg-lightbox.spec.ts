@@ -276,7 +276,6 @@ describe('given hover options', () => {
       const classes = getThumbnail('a1.jpg').classList
       expect(classes.contains('maz:hover:scale-[1.04]')).toBe(true)
       expect(classes.contains('maz:hover:blur-[0.1875rem]')).toBe(true)
-      expect(classes.contains('maz:duration-200')).toBe(true)
     })
   })
 })

@@ -43,7 +43,16 @@ const INSTANCE_CLASS = 'm-fullscreen-img-instance'
 const HIDDEN_CLASS = 'maz:invisible'
 const GROUP_ATTRIBUTE = 'data-maz-lightbox-group'
 const BASE_CLASSES = ['maz:cursor-zoom-in']
-const HOVER_TRANSITION_CLASSES = ['maz:transition-[transform,filter]', 'maz:duration-200', 'maz:ease-out']
+const HOVER_TIMING = 'calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, cubic-bezier(0.4, 0, 0.2, 1))'
+
+function getHoverTransition(options: VFullscreenImgOptions | undefined) {
+  const properties = [
+    ...(options?.scaleOnHover ? ['scale', 'transform'] : []),
+    ...(options?.blurOnHover ? ['filter'] : []),
+  ]
+
+  return properties.map(property => `${property} ${HOVER_TIMING}`).join(', ')
+}
 
 /**
  * Options of every element with the directive, to build the group of an open lightbox
@@ -176,8 +185,6 @@ export class FullscreenImgHandler {
     el.classList.remove(...this.appliedClasses)
 
     const classes = [...BASE_CLASSES]
-    if (this.options?.scaleOnHover || this.options?.blurOnHover)
-      classes.push(...HOVER_TRANSITION_CLASSES)
     if (this.options?.scaleOnHover)
       classes.push('maz:hover:scale-[1.04]')
     if (this.options?.blurOnHover)
@@ -185,6 +192,12 @@ export class FullscreenImgHandler {
 
     this.appliedClasses = classes
     el.classList.add(...classes)
+
+    const transition = getHoverTransition(this.options)
+    if (transition)
+      el.style.transition = transition
+    else
+      el.style.removeProperty('transition')
   }
 
   private setAccessibility(el: HTMLElement) {
@@ -241,6 +254,7 @@ export class FullscreenImgHandler {
     this.keydownListener = undefined
 
     el.classList.remove(INSTANCE_CLASS, HIDDEN_CLASS, ...this.appliedClasses)
+    el.style.removeProperty('transition')
     for (const name of this.addedAttributes)
       el.removeAttribute(name)
 
