@@ -270,7 +270,16 @@ export class FullscreenImgHandler {
     const placeholder = { destroy: () => {} }
     openLightbox = placeholder
 
-    const { default: MazLightbox } = await import('../../components/MazLightbox.vue')
+    let MazLightbox: Component
+
+    try {
+      MazLightbox = (await import('../../components/MazLightbox.vue')).default
+    }
+    catch (error) {
+      // A failed chunk (offline, new deploy) must not block the next clicks
+      openLightbox = undefined
+      throw error
+    }
 
     const state = reactive({ open: true, index: Math.max(members.indexOf(el), 0) })
     const container = document.createElement('div')

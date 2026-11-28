@@ -643,7 +643,7 @@ function removeDocumentListeners() {
   removeOverlayLayer(layer)
 
   if (isClient()) {
-    document.removeEventListener('keydown', onKeydown)
+    document.removeEventListener('keydown', onKeydown, role === 'tooltip')
     document.removeEventListener('pointerdown', onDocumentPointerDown, true)
   }
 }
@@ -734,7 +734,8 @@ function setOpen(value: boolean) {
       // pour couvrir souris + tactile sur tous les elements. Ajoute APRES l'ouverture
       // pour ne pas capter l'interaction qui vient d'ouvrir.
       if (isClient()) {
-        document.addEventListener('keydown', onKeydown)
+        // A tooltip handles Escape first (capture), the overlay around it then sees `defaultPrevented`
+        document.addEventListener('keydown', onKeydown, role === 'tooltip')
         document.addEventListener('pointerdown', onDocumentPointerDown, true)
       }
     })
@@ -828,7 +829,7 @@ function onKeydown(event: KeyboardEvent) {
   if (!isOpen.value || (role !== 'tooltip' && !isTopOverlayLayer(layer)))
     return
 
-  if (event.key === 'Escape' && closeOnEscape && !persistent) {
+  if (event.key === 'Escape' && closeOnEscape && !persistent && !event.defaultPrevented) {
     event.preventDefault()
     close()
   }
