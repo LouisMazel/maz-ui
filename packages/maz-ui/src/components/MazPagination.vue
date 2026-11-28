@@ -185,7 +185,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.firstPage', { page: 1 }) }}
             </slot>
           </span>
-          <MazIcon :icon="MazChevronDoubleLeft" />
+          <MazIcon :icon="MazChevronDoubleLeft" class="maz:rtl:rotate-180" />
         </MazBtn>
       </li>
 
@@ -206,7 +206,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.previousPage', { page: previousPage }) }}
             </slot>
           </span>
-          <MazIcon :icon="MazChevronLeft" />
+          <MazIcon :icon="MazChevronLeft" class="maz:rtl:rotate-180" />
         </MazBtn>
       </li>
 
@@ -268,7 +268,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.nextPage', { page: nextPage }) }}
             </slot>
           </span>
-          <MazIcon :icon="MazChevronLeft" class="maz:-rotate-180" />
+          <MazIcon :icon="MazChevronLeft" class="maz:-rotate-180 maz:rtl:rotate-0" />
         </MazBtn>
       </li>
 
@@ -289,7 +289,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.lastPage', { page: totalPages }) }}
             </slot>
           </span>
-          <MazIcon :icon="MazChevronDoubleLeft" class="maz:-rotate-180" />
+          <MazIcon :icon="MazChevronDoubleLeft" class="maz:-rotate-180 maz:rtl:rotate-0" />
         </MazBtn>
       </li>
     </ul>

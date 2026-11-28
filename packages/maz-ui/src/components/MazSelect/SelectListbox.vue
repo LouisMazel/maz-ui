@@ -6,6 +6,7 @@ import { MazNoSymbol } from '@maz-ui/icons/lazy/MazNoSymbol'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { useReducedMotion } from '../../composables/useReducedMotion.ts'
+import { useResizeObserver } from '../../composables/useResizeObserver.ts'
 
 export interface SelectListboxProps<Option> {
   /** The id of the listbox */
@@ -74,6 +75,7 @@ const ENTER_DURATION = 400
 
 const hoveredElement = shallowRef<HTMLElement | null>(null)
 const focusedElement = shallowRef<HTMLElement | null>(null)
+const highlightTarget = shallowRef<HTMLElement | null>(null)
 const highlightBox = ref<{ x: number, y: number, width: number, height: number }>()
 const isSliding = ref(false)
 const isMoving = ref(false)
@@ -81,7 +83,7 @@ const isEntering = ref(false)
 
 let enterTimer: ReturnType<typeof setTimeout> | undefined
 
-const highlightElement = computed(() => {
+function resolveHighlightElement() {
   if (hoveredElement.value?.isConnected) {
     return hoveredElement.value
   }
@@ -95,10 +97,11 @@ const highlightElement = computed(() => {
   return focusedElement.value?.isConnected
     ? focusedElement.value
     : null
-})
+}
 
 function placeHighlight() {
-  const element = highlightElement.value
+  const element = resolveHighlightElement()
+  highlightTarget.value = element && wrapperRef.value ? element : null
 
   if (!element || !wrapperRef.value) {
     isMoving.value = false
@@ -119,6 +122,16 @@ watch(
   { flush: 'post' },
 )
 
+useResizeObserver(
+  [wrapperRef, highlightTarget],
+  () => placeHighlight(),
+  { box: 'border-box' },
+)
+
+const highlightedId = computed(() => highlightBox.value
+  ? highlightTarget.value?.id
+  : undefined)
+
 watch(() => activeIndex, () => {
   hoveredElement.value = null
   isSliding.value = false
@@ -135,6 +148,7 @@ watch(wrapperRef, (element) => {
   if (element) {
     enterTimer = setTimeout(() => {
       isEntering.value = false
+      placeHighlight()
     }, ENTER_DURATION)
   }
 }, { flush: 'post' })
@@ -283,6 +297,7 @@ defineExpose({
           {
             '--is-selected': isSelected(option),
             '--is-none-value': isEmptyValue?.(option),
+            '--is-highlighted': highlightedId === getOptionId(i),
             '--is-active': virtualFocus && activeIndex === i,
           },
         ]"
@@ -341,13 +356,17 @@ defineExpose({
     @apply maz:font-semibold maz:text-foreground;
 
     background-color: color-mix(in srgb, var(--maz-foreground) 6%, transparent);
+
+    &.--is-highlighted {
+      background-color: transparent;
+    }
   }
 }
 
 .m-select-list-item__check {
   @apply maz:ms-auto maz:size-4 maz:shrink-0;
 
-  color: var(--selected-text-color, currentcolor);
+  color: var(--maz-foreground);
 }
 
 .m-select-list__no-results {

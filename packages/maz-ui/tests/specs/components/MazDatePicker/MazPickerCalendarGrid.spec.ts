@@ -713,6 +713,19 @@ describe('given MazPickerCalendarGrid component', () => {
     })
   })
 
+  describe('when the calendar is inline and not a range', () => {
+    it('then the container is not a range so the day buttons keep a square size in the stylesheet', async () => {
+      const wrapper = mount(MazPickerCalendarGrid, {
+        props: { ...defaultProps, inline: true, modelValue: '2024-01-10' },
+      })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.find('.maz-picker-calendar-grid__container').classes()).not.toContain('--is-range')
+      expect(wrapper.find('.maz-picker-calendar-grid__indicator').exists()).toBe(true)
+      expect(wrapper.find('[data-date="2024-01-10"]').classes()).toContain('maz:size-8')
+    })
+  })
+
   describe('when range is false', () => {
     it('then container should not have --is-range class', () => {
       const wrapper = mount(MazPickerCalendarGrid, {

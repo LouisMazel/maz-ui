@@ -164,6 +164,72 @@ describe('given a SelectListbox', () => {
     })
   })
 
+  describe('when the highlight is on the selected option', () => {
+    it('then the option is marked highlighted to show a single surface', async () => {
+      const wrapper = mountListbox({ virtualFocus: true, activeIndex: 2 })
+
+      await flushPromises()
+
+      expect(wrapper.find('#option-2').classes()).toContain('--is-selected')
+      expect(wrapper.find('#option-2').classes()).toContain('--is-highlighted')
+      expect(wrapper.find('#option-1').classes()).not.toContain('--is-highlighted')
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when the highlight is on another option than the selected one', () => {
+    it('then the selected option is not marked highlighted', async () => {
+      const wrapper = mountListbox({ virtualFocus: true, activeIndex: 1 })
+
+      await flushPromises()
+
+      expect(wrapper.find('#option-2').classes()).not.toContain('--is-highlighted')
+      expect(wrapper.find('#option-1').classes()).toContain('--is-highlighted')
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when the list is resized', () => {
+    it('then the highlight is measured again', async () => {
+      const originalObserver = globalThis.ResizeObserver
+      const callbacks: ((entries: unknown[], observer: unknown) => void)[] = []
+
+      vi.stubGlobal('ResizeObserver', class {
+        observe = vi.fn()
+        unobserve = vi.fn()
+        disconnect = vi.fn()
+
+        constructor(callback: (entries: unknown[], observer: unknown) => void) {
+          callbacks.push(callback)
+        }
+      })
+
+      const wrapper = mountListbox({ virtualFocus: true, activeIndex: 1 })
+
+      await flushPromises()
+
+      const option = wrapper.find('#option-1').element as HTMLElement
+
+      Object.defineProperties(option, {
+        offsetLeft: { value: 8, configurable: true },
+        offsetTop: { value: 30, configurable: true },
+        offsetWidth: { value: 240, configurable: true },
+        offsetHeight: { value: 36, configurable: true },
+      })
+
+      for (const callback of callbacks) callback([], {})
+      await flushPromises()
+
+      expect(wrapper.find('.m-select-list__highlight').attributes('style')).toContain('width: 240px')
+
+      vi.stubGlobal('ResizeObserver', originalObserver)
+
+      wrapper.unmount()
+    })
+  })
+
   describe('when there is no option', () => {
     it('then the no results state is displayed', () => {
       const wrapper = mountListbox({ options: [] })

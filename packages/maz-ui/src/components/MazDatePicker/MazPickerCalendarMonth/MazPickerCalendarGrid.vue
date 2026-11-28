@@ -741,6 +741,10 @@ watch(
     }
   }
 
+  &:not(.--is-range) button {
+    @apply maz:size-8! maz:justify-self-center;
+  }
+
   & button {
     &:hover:not(.--is-selected, .--is-between, .--is-between-hoverred) {
       background-color: v-bind('hoverColor');
