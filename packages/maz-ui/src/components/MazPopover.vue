@@ -18,6 +18,7 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { getFocusableElements, trapTabKey } from '../utils/focusable.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
@@ -91,6 +92,8 @@ export type MazPopoverFallbackPosition = 'top' | 'right' | 'bottom' | 'left' | '
 export type MazPopoverTrigger = 'click' | 'hover' | 'manual' | 'adaptive'
 export type MazPopoverRole = 'dialog' | 'tooltip' | 'menu'
 
+export type MazPopoverCollisionPadding = number | Partial<Record<'top' | 'right' | 'bottom' | 'left', number>>
+
 export interface MazPopoverProps {
   /**
    * Controls the popover open state
@@ -159,6 +162,12 @@ export interface MazPopoverProps {
    */
   offset?: number
   /**
+   * Space kept free at the edges of the viewport, in pixels: the panel stays out of it, and it is hidden when
+   * its trigger goes under it. `{ top: 64 }` for a sticky header of 64px. Also a global default (`defaults.MazPopover`)
+   * @default 5
+   */
+  collisionPadding?: MazPopoverCollisionPadding
+  /**
    * Delay before showing/hiding in milliseconds
    * @default 0
    */
@@ -172,7 +181,7 @@ export interface MazPopoverProps {
    * CSS transition name for animations
    * @default 'scale-pop'
    * @values 'scale-pop' | 'scale-fade' | string
-   * @description 'scale-pop' | 'scale-fade' are the default animation: the panel fades in and grows from its trigger (see the `--maz-popover-transform-origin` CSS variable of the panel).
+   * @description `scale-pop` (default): the panel springs out of its trigger and is sucked back into it. `scale-fade`: a sober fade and a slight growth from the trigger. Both start from the `--maz-popover-transform-origin` CSS variable of the panel.
    */
   transition?: 'scale-pop' | 'scale-fade' | string
   /**
@@ -282,11 +291,14 @@ const originMiddleware: Middleware = {
   }),
 }
 
+const { collisionPadding } = useGlobalConfig<{ collisionPadding: MazPopoverCollisionPadding }>('MazPopover', { collisionPadding: 5 })
+
 const middleware = computed(() => {
+  const padding = collisionPadding.value
   const middleware: Middleware[] = [
     floatingOffset(offset),
-    hide(),
-    shift({ padding: 5 }),
+    hide({ padding }),
+    shift({ padding }),
   ]
 
   const shouldUseAutoPlacement = position === 'auto' && !preferPosition && !fallbackPosition
@@ -294,10 +306,12 @@ const middleware = computed(() => {
   if (shouldUseAutoPlacement) {
     middleware.push(autoPlacement({
       allowedPlacements: ['top', 'bottom', 'left', 'right'],
+      padding,
     }))
   }
   else {
     middleware.push(flip({
+      padding,
       fallbackPlacements: fallbackPosition
         ? [fallbackPosition]
         : undefined,
@@ -523,11 +537,17 @@ function syncTriggerAria() {
 const isWrapperTrigger = computed(() => !triggerTarget.value)
 
 /**
- * The panel is hidden when its reference leaves the viewport (`hide` middleware), except while
- * the focus is inside it: on Android, the virtual keyboard opened to type in a field of the panel
- * (a select search) covers the reference, hiding the panel would make it lose the focus.
+ * The panel is hidden when its reference leaves the viewport or goes under the `collisionPadding` (`hide`
+ * middleware), except while a field of the panel has the focus: on Android, the virtual keyboard opened to type
+ * in it (a select search) covers the reference, hiding the panel would make it lose the focus.
  */
 const isPanelFocused = ref(false)
+
+const TYPING_FIELD = 'input:not([type="checkbox"], [type="radio"], [type="button"], [type="submit"]), textarea, select, [contenteditable]:not([contenteditable="false"])'
+
+function onPanelFocusin(event: FocusEvent) {
+  isPanelFocused.value = event.target instanceof Element && event.target.matches(TYPING_FIELD)
+}
 
 function onPanelFocusout(event: FocusEvent) {
   const nextFocused = event.relatedTarget as Node | null
@@ -995,7 +1015,7 @@ defineExpose({
           },
         ]"
         v-bind="panelEvents"
-        @focusin="isPanelFocused = true"
+        @focusin="onPanelFocusin"
         @focusout="onPanelFocusout"
       >
         <!--
@@ -1067,27 +1087,23 @@ defineExpose({
 }
 
 /*
- * Grows out of the trigger: from a smaller scale and a few pixels toward the trigger (the side of the panel),
- * the origin being `--maz-popover-transform-origin`
+ * `scale-fade`, the sober one (menus, selects, pickers): from a slightly smaller scale and a few pixels toward
+ * the trigger, the origin being `--maz-popover-transform-origin`
  */
-.maz-scale-fade-enter-active,
-.maz-scale-pop-enter-active {
+.maz-scale-fade-enter-active {
   transition:
     opacity calc(var(--maz-motion-normal, 200ms) * 0.6 * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
-    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) cubic-bezier(0.16, 1, 0.3, 1);
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 }
 
-.maz-scale-fade-leave-active,
-.maz-scale-pop-leave-active {
+.maz-scale-fade-leave-active {
   transition:
     opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
     transform calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
 }
 
 .maz-scale-fade-enter-from,
-.maz-scale-fade-leave-to,
-.maz-scale-pop-enter-from,
-.maz-scale-pop-leave-to {
+.maz-scale-fade-leave-to {
   --m-popover-shift-x: 0px;
   --m-popover-shift-y: 0px;
 
@@ -1110,5 +1126,33 @@ defineExpose({
   &[data-side='right'] {
     --m-popover-shift-x: -6px;
   }
+}
+
+/*
+ * `scale-pop`, the default (tooltips, popovers): springs out of its trigger and is sucked back into it on close
+ */
+.maz-scale-pop-enter-active {
+  transition:
+    opacity calc(var(--maz-motion-normal, 200ms) * 0.5 * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    transform calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1))
+      var(--maz-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1));
+}
+
+.maz-scale-pop-leave-active {
+  transition:
+    opacity calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
+}
+
+.maz-scale-pop-enter-from {
+  @apply maz:opacity-0;
+
+  transform: scale(0.4);
+}
+
+.maz-scale-pop-leave-to {
+  @apply maz:opacity-0;
+
+  transform: scale(0.15);
 }
 </style>

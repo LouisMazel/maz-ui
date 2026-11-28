@@ -1348,7 +1348,12 @@ function onToggle(isOpen) {
 
 ## Motion
 
-The panel fades in and grows from its trigger: it starts at `scale(0.96)` and its transform origin is the center of the trigger, projected on the edge of the panel that faces it. The enter takes `--maz-motion-fast`, the exit about 70% of it. Reduced motion, and the `motion` option of `MazUi`, turn it off.
+The panel grows from its trigger: its transform origin is the center of the trigger, projected on the edge of the panel that faces it. Two animations, with the `transition` prop:
+
+- `scale-pop` (default, tooltips and menus): the panel springs out of its trigger and is sucked back into it on close.
+- `scale-fade` (selects, pickers): a sober fade with a slight growth and a few pixels from the trigger.
+
+Reduced motion, and the `motion` option of `MazUi`, turn them off.
 
 The panel exposes what you need to style it:
 
@@ -1357,6 +1362,21 @@ The panel exposes what you need to style it:
 - `data-side`: `top`, `bottom`, `left` or `right`, the side of the trigger where the panel is.
 
 `positionReference` also takes a point `{ x, y }` (viewport coordinates): the panel opens from this point.
+
+## Sticky header
+
+`collision-padding` keeps space free at the edges of the viewport: the panel stays out of it, and it is hidden when its trigger goes under it. Give the height of your sticky header, once for every popover with the global defaults:
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  defaults: {
+    MazPopover: { collisionPadding: { top: 64 } },
+  },
+})
+```
+
+The selects, dropdowns, date pickers and tooltips use it too.
 
 ```css
 .my-popover-enter-active,
