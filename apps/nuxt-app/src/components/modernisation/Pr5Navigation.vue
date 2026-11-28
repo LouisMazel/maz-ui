@@ -114,9 +114,9 @@ const menuItems = [
                 </MazBtn>
               </div>
               <ul class="m-0 flex list-none flex-col gap-2 p-0 pt-4 text-body-sm">
-                <li><a class="rounded px-2 py-1 hover:underline" href="#pr5-navigation">Documentation</a></li>
-                <li><a class="rounded px-2 py-1 hover:underline" href="#pr5-navigation">Exemples</a></li>
-                <li><a class="rounded px-2 py-1 hover:underline" href="#pr5-navigation">Journal des changements</a></li>
+                <li><a class="block rounded-md px-2 py-1 hover:bg-foreground/5 focus-visible:bg-foreground/5" href="#pr5-navigation">Documentation</a></li>
+                <li><a class="block rounded-md px-2 py-1 hover:bg-foreground/5 focus-visible:bg-foreground/5" href="#pr5-navigation">Exemples</a></li>
+                <li><a class="block rounded-md px-2 py-1 hover:bg-foreground/5 focus-visible:bg-foreground/5" href="#pr5-navigation">Journal des changements</a></li>
               </ul>
             </div>
           </template>

@@ -57,6 +57,14 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-07-22',
 
+  // The sources of maz-ui keep their doc comments in the templates while the server renders the dist, which has none:
+  // the comments make the client hydration fail in dev
+  vue: {
+    compilerOptions: {
+      comments: false,
+    },
+  },
+
   vite: {
     plugins: [
       VitePreNestedCss(),

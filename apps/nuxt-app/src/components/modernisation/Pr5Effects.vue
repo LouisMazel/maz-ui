@@ -10,6 +10,7 @@ import { ref } from 'vue'
 
 const drawKey = ref(0)
 const textKey = ref(0)
+const typeSpeed = ref(90)
 const scrambleText = ref('Les composants prennent vie')
 
 const scrambleChoices = ['Les composants prennent vie', 'Un peu de mouvement, sobrement', 'Accessible, rapide, léger']
@@ -73,13 +74,16 @@ const icons = [
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="v-magnetic : le bouton se penche vers le pointeur" hint="Approche le pointeur sans toucher : le bouton te suit un peu, puis revient en douceur. Désactivé au toucher et sans animations.">
+    <ModernisationDemo title="v-magnetic : le bouton se penche vers le pointeur" hint="Approche le pointeur sans toucher : le bouton te suit un peu, puis revient en douceur. L'option radius règle la distance (en px autour du bouton) à partir de laquelle il est attiré : 80 par défaut, 20 pour un effet discret, 220 pour de loin. Désactivé au toucher et sans animations.">
       <div class="flex flex-wrap items-center gap-12 py-6">
         <MazBtn v-magnetic size="lg">
           Commencer
         </MazBtn>
-        <MazBtn v-magnetic="{ strength: 0.5, radius: 140 }" size="lg" color="secondary">
-          Très attiré
+        <MazBtn v-magnetic="{ radius: 20 }" size="lg" color="info">
+          radius 20
+        </MazBtn>
+        <MazBtn v-magnetic="{ strength: 0.5, radius: 220 }" size="lg" color="secondary">
+          radius 220 et strength 0.5
         </MazBtn>
       </div>
     </ModernisationDemo>
@@ -181,12 +185,17 @@ const icons = [
       <MazAnimatedText effect="rotate" tag="h3" text="Créez des sites" :words="['rapides', 'beaux', 'accessibles', 'sobres']" class="text-title-1" />
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazAnimatedText : typewriter" hint="Le texte est tapé avec un rythme humain (pauses après les virgules et les points) et un curseur.">
+    <ModernisationDemo title="MazAnimatedText : typewriter" hint="Le texte est tapé avec un rythme humain (pauses après les virgules et les points) et un curseur. type-speed règle la vitesse en ms par lettre.">
       <div class="flex flex-col items-start gap-4">
+        <div class="flex gap-2">
+          <MazBtn v-for="speed in [{ label: 'Lent', value: 180 }, { label: 'Normal', value: 90 }, { label: 'Rapide', value: 30 }]" :key="speed.value" size="sm" :color="typeSpeed === speed.value ? 'primary' : 'transparent'" @click="typeSpeed = speed.value">
+            {{ speed.label }}
+          </MazBtn>
+        </div>
         <MazBtn size="sm" @click="textKey++">
           Rejouer
         </MazBtn>
-        <MazAnimatedText :key="textKey" effect="typewriter" tag="p" text="Bonjour. Je tape ce texte, lettre après lettre, comme une vraie personne." class="text-title-3" />
+        <MazAnimatedText :key="`${textKey}-${typeSpeed}`" effect="typewriter" tag="p" :type-speed="typeSpeed" text="Bonjour. Je tape ce texte, lettre après lettre, comme une vraie personne." class="text-title-3" />
       </div>
     </ModernisationDemo>
 
