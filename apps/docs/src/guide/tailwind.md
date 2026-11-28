@@ -96,6 +96,7 @@ Each one has a paired `-foreground` color for text on top of it, and an 11-step 
 | `warning` | Warning state (caution, pending attention) |
 | `destructive` | Errors, invalid fields, destructive actions |
 | `contrast` | Neutral high-contrast color (near black in light mode, near white in dark mode) |
+| `neutral` | Soft grey of the neutral components (`color="neutral"`: push buttons, secondary actions, badges, chips), text in `neutral-foreground` |
 
 ```html
 <button class="bg-primary text-primary-foreground hover:bg-primary-600">Save</button>
@@ -346,7 +347,7 @@ Recurring blocks of an app screen, with the maz-ui classes and components:
 
 <!-- Actions bar (form or dialog footer): low emphasis first, main action last -->
 <div class="flex flex-wrap justify-end gap-2">
-  <MazBtn color="contrast" outlined>Cancel</MazBtn>
+  <MazBtn color="neutral">Cancel</MazBtn>
   <MazBtn>Save</MazBtn>
 </div>
 
@@ -358,8 +359,8 @@ Recurring blocks of an app screen, with the maz-ui classes and components:
 
 ### Action hierarchy
 
-- **One main action per view or group**: a solid `MazBtn` (`color="primary"`, the default). The other actions are `outlined`, `pastel`, or `color="contrast" outlined`.
-- **Low emphasis** for cancel, back and "learn more": an outlined button or a `MazLink`, placed before the main action.
+- **One main action per view or group**: a solid `MazBtn` (`color="primary"`, the default). The other actions are `color="neutral"` (the grey push button), `variant="outline"` or `variant="soft"`.
+- **Low emphasis** for cancel, back and "learn more": a `color="neutral"` button or a `MazLink`, placed before the main action.
 - **Destructive actions** use `color="destructive"` and ask for a confirmation (`useDialog`, `MazDialogConfirm`).
 - **Same size** for neighbouring buttons.
 
@@ -374,8 +375,8 @@ The `review_code` tool of the [MCP server](./../ecosystem/mcp.md) reports solid 
 | `font-sans` | `var(--maz-font-family)` (preset `foundation.font-family`) |
 | `font-mono` | `var(--maz-font-mono-stack)` |
 | `font-display` | `var(--maz-font-display-stack)` (headings) |
-| `ease-out`, `ease-in`, `ease-in-out` | `var(--maz-easing-*)` |
-| `duration-(--duration-fast)`, `duration-(--duration-normal)`, `duration-(--duration-slow)` | `var(--maz-motion-*)` |
+| `ease-out`, `ease-in`, `ease-in-out`, `ease-spring`, `ease-bounce` | `var(--maz-easing-*)` |
+| `duration-(--duration-instant)`, `duration-(--duration-fast)`, `duration-(--duration-normal)`, `duration-(--duration-slow)`, `duration-(--duration-slower)` | `var(--maz-motion-*)` times `var(--maz-motion-scale)` |
 
 The default border width and the default transition duration and easing follow the preset too. Durations are theme variables, not named utilities: write `transition-colors duration-(--duration-fast)`.
 
@@ -396,13 +397,19 @@ Prefer them to `text-2xl font-semibold` or `text-xs text-muted`. See [Typography
 | `flex-center` | `align-items: center; justify-content: center` (combine with `flex` or `grid`) |
 | `text-display`, `text-title-1` ... `text-code` | [Type scale](./typography.md#type-scale) |
 | `type-display`, `type-title-1` ... `type-code` | A level of the [type scale](./typography.md#type-scale) without its font size |
-| `rich-text`, `rich-text-sm`, `rich-text-lg` | [Rich text](./typography.md#rich-text) |
+| `rich-text`, `rich-text-xs`, `rich-text-sm`, `rich-text-lg` | [Rich text](./typography.md#rich-text) |
 | `cap-f` | Capitalizes the first letter |
 | `scrollbar-themed` | Thin scrollbar tinted from the text color, for scrollable areas (lists, panels, code). The scrollable parts of the components already use it, the page scrollbar stays native |
 | `disabled-state`, `disabled-opacity`, `disabled-cursor` | The disabled look of the preset |
 | `cursor-interactive` | Cursor of the interactive controls of the preset (`pointer`, `default` on the macOS, Windows and Linux presets) |
 | `glass` | Translucent material of the preset: `bg-glass` background, blurred backdrop and hairline `border-glass` edge. See [Glass material](./../ecosystem/themes.md#glass-material) |
 | `z-default-backdrop` | `z-index: 1050`, the layer of `MazDialog`, `MazDrawer` and the toasts |
+| `focus-ring` | Focus ring of the preset, on keyboard focus only (`:focus-visible`) |
+| `focus-within-ring` | The same ring when an element inside has the keyboard focus: put it on the wrapper of a field |
+| `field-focus` | Focused border of a boxed field (`:focus-within`): the color `--m-field-color` (primary by default) and the width `focus-border-width` of the theme, drawn inside the box, with a smooth transition |
+| `field-transition` | The same smooth transition of the colors, for a field without border |
+| `press` | Press feedback: the element sinks a little while pressed and springs back |
+| `border-draw` | A border that draws itself on hover and focus (see [Border that draws itself](#border-that-draws-itself)) |
 
 ### Glass and transparency
 
@@ -412,13 +419,48 @@ Prefer them to `text-2xl font-semibold` or `text-xs text-muted`. See [Typography
 <header class="glass transparency-reduce:bg-container transparency-reduce:backdrop-blur-none">...</header>
 ```
 
+### Focus and press
+
+```html
+<a href="/docs" class="focus-ring rounded-md">Docs</a>
+<div class="focus-within-ring rounded-md border border-divider"><input class="outline-none"></div>
+<button class="press focus-ring">Save</button>
+<div class="field-focus rounded-md border border-solid border-divider"><input class="outline-none"></div>
+```
+
+`press` animates the `scale` property, so it combines with any `transform` of the element.
+
+### Border that draws itself
+
+A line runs around the element from its top, in both directions, on hover and keyboard focus. It also stays drawn on a checked element (`aria-checked="true"`, `data-state="checked"`, or a checked input inside).
+
+```html
+<a href="/pricing" class="border-draw rounded-xl p-6">Pricing</a>
+```
+
+Set the start with `--maz-border-draw-from` (an angle, `90deg` is the end side), the color with `--maz-border-draw-color` and the width with `--maz-border-draw-width`.
+
 ### z-index
 
 `z-1` to `z-5`, `z-15`, `z-25`, `z-35`, `z-45`, `z-75`, `z-100`, and `z-default-backdrop` (`1050`, the layer of `MazDialog` and the toasts).
 
 ### Vue transitions
 
-`maz-ui/style.css` ships transition classes you can reuse with `<Transition name="...">`: `maz-scale-fade`, `maz-scale`, `maz-slide`, `maz-slideinvert`, `maz-slidevnext`, `maz-slidevprev`, `maz-expand`.
+`maz-ui/style.css` ships transition classes you can reuse with `<Transition name="...">`: `maz-scale-fade`, `maz-slidevnext`, `maz-slidevprev`.
+
+For lists, `maz-list` animates the items of a `<TransitionGroup>`: a new item fades in and rises, a removed one shrinks away while the others glide to their new place.
+
+```vue
+<template>
+  <TransitionGroup name="maz-list" tag="ul" class="relative">
+    <li v-for="item in items" :key="item.id">
+      {{ item.label }}
+    </li>
+  </TransitionGroup>
+</template>
+```
+
+The container needs `position: relative`: a removed item leaves in `position: absolute`.
 
 ## Dark mode variant
 
