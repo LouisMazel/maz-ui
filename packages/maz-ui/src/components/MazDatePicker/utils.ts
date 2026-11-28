@@ -180,21 +180,6 @@ export function isValueDisabledDate({
   return disabledDates.some(disabledDate => dayjs(value).isSame(dayjs(disabledDate), 'date'))
 }
 
-export function scrollToTarget(scrollContainer: HTMLElement, target: HTMLElement, offset = 0, hasSmoothEffect = true) {
-  scrollContainer.scrollTo({
-    top: target.offsetTop - offset,
-    behavior: hasSmoothEffect ? 'smooth' : 'auto',
-  })
-}
-
-export function findNearestNumberInList(list: number[], number: number): number {
-  return list.reduce((prev, curr) => {
-    return Math.abs(curr - number) < Math.abs(prev - number)
-      ? curr
-      : prev
-  })
-}
-
 export function convertHour24to12Format(baseHour: number): number {
   return baseHour % 12 || 12
 }

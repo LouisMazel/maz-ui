@@ -3,7 +3,6 @@ import {
   convert12To24TimeFormat,
   convertHour12to24Format,
   convertHour24to12Format,
-  findNearestNumberInList,
   getDaysInMonth,
   getDaysOfWeek,
   getDefaultsShortcuts,
@@ -20,7 +19,6 @@ import {
   isValidDate,
   isValueDisabledDate,
   isValueDisabledWeekly,
-  scrollToTarget,
 } from '@components/MazDatePicker/utils.ts'
 import dayjs from 'dayjs/esm/index.js'
 
@@ -285,42 +283,6 @@ describe('given MazDatePicker utils', () => {
         value: '2024-01-17',
         disabledDates: ['2024-01-15', '2024-01-16'],
       })).toBe(false)
-    })
-  })
-
-  describe('scrollToTarget', () => {
-    it('then it should call scrollTo on container', () => {
-      const container = document.createElement('div')
-      const target = document.createElement('div')
-      container.scrollTo = vi.fn()
-
-      scrollToTarget(container, target, 10, true)
-      expect(container.scrollTo).toHaveBeenCalledWith({
-        top: target.offsetTop - 10,
-        behavior: 'smooth',
-      })
-    })
-
-    it('then it should use auto behavior when smooth is false', () => {
-      const container = document.createElement('div')
-      const target = document.createElement('div')
-      container.scrollTo = vi.fn()
-
-      scrollToTarget(container, target, 0, false)
-      expect(container.scrollTo).toHaveBeenCalledWith({
-        top: target.offsetTop,
-        behavior: 'auto',
-      })
-    })
-  })
-
-  describe('findNearestNumberInList', () => {
-    it('then it should find nearest number', () => {
-      expect(findNearestNumberInList([0, 5, 10, 15, 20], 12)).toBe(10)
-    })
-
-    it('then it should return exact match', () => {
-      expect(findNearestNumberInList([0, 5, 10], 5)).toBe(5)
     })
   })
 
