@@ -51,6 +51,33 @@ describe('given MazSidebarTrigger component', () => {
     })
   })
 
+  describe('when the sidebar is collapsed to its icon rail', () => {
+    it('then the button is centered with a small padding to fit the rail', () => {
+      const wrapper = mountWithSidebar({ open: false, collapsible: 'icon', persist: false })
+      const classes = wrapper.find('button.m-sidebar-trigger').classes()
+      expect(classes).toEqual(expect.arrayContaining(['maz:mx-auto', 'maz:p-0.5']))
+      expect(classes).not.toContain('maz:p-2')
+    })
+  })
+
+  describe('when the sidebar is expanded', () => {
+    it('then the button keeps its default padding', () => {
+      const wrapper = mountWithSidebar({ open: true, collapsible: 'icon', persist: false })
+      const classes = wrapper.find('button.m-sidebar-trigger').classes()
+      expect(classes).toContain('maz:p-2')
+      expect(classes).not.toContain('maz:mx-auto')
+    })
+  })
+
+  describe('when the sidebar uses the floating variant', () => {
+    it('then the button has a smaller padding to line up with the menu icons', () => {
+      const wrapper = mountWithSidebar({ open: true, variant: 'floating', persist: false })
+      const classes = wrapper.find('button.m-sidebar-trigger').classes()
+      expect(classes).toContain('maz:p-1')
+      expect(classes).not.toContain('maz:p-2')
+    })
+  })
+
   describe('when a sidebar id is provided', () => {
     it('then aria-controls matches the sidebar id', () => {
       const wrapper = mountWithSidebar({ open: true, id: 'sidebar-A' })
