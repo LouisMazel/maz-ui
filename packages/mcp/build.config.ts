@@ -1,7 +1,8 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  entries: ['src/index', 'src/cli'],
+  // `./server` is the entry OpenCode reads in a plugin package (`src/opencode`)
+  entries: ['src/index', 'src/cli', 'src/opencode'],
   declaration: true,
   clean: true,
   failOnWarn: true,
