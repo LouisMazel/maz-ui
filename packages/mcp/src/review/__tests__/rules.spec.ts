@@ -1669,3 +1669,48 @@ describe('given the deprecated-prop rule', () => {
     })
   })
 })
+
+describe('given the motion rules', () => {
+  function styleBlock(css: string): string {
+    return `${template('<div class="box" />')}<style scoped>\n${css}\n</style>\n`
+  }
+
+  describe('when a transition hard-codes its duration', () => {
+    it('then hardcoded-motion suggests the motion tokens', () => {
+      const finding = review(styleBlock('.box { transition: opacity 300ms ease; }')).find(entry => entry.rule === 'hardcoded-motion')
+
+      expect(finding?.severity).toBe('info')
+      expect(finding?.suggestion).toContain('var(--maz-motion-normal)')
+    })
+  })
+
+  describe('when a transition uses the motion tokens', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(styleBlock('.box { transition: opacity var(--maz-motion-normal) var(--maz-easing-out); }'))).toEqual([])
+    })
+  })
+
+  describe('when a transition animates every property', () => {
+    it('then transition-all is reported', () => {
+      expect(rulesOf(styleBlock('.box { transition: all var(--maz-motion-fast); }'))).toEqual(['transition-all'])
+    })
+  })
+
+  describe('when a transition animates a layout property', () => {
+    it('then layout-transition suggests transform and opacity', () => {
+      expect(rulesOf(styleBlock('.box { transition: height var(--maz-motion-normal); }'))).toEqual(['layout-transition'])
+    })
+  })
+
+  describe('when a class animates every property or hard-codes a duration', () => {
+    it('then transition-all and hardcoded-motion are reported', () => {
+      expect(rulesOf(template('<div class="transition-all duration-300 hover:duration-150" />'))).toEqual(['transition-all', 'hardcoded-motion', 'hardcoded-motion'])
+    })
+  })
+
+  describe('when the classes use the theme durations', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<div class="transition-colors duration-(--duration-fast)" />'))).toEqual([])
+    })
+  })
+})

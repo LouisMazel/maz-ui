@@ -7,7 +7,7 @@ import { NodeTypes } from '@vue/compiler-dom'
 import { closest, toKebab } from '../knowledge/resolve.ts'
 import { backgroundOf, checkClassList, checkClassStrings } from './classes.ts'
 import { isPassthroughAttribute, NATIVE_EVENTS, nativeReplacement } from './html.ts'
-import { checkStyleDeclarations } from './style.ts'
+import { checkMotionDeclarations, checkStyleDeclarations } from './style.ts'
 
 export function toCamel(value: string): string {
   return value.replaceAll(/-([a-z\d])/g, (_, char: string) => char.toUpperCase())
@@ -807,6 +807,7 @@ function checkClassBindings(element: ElementNode, source: string, context: Revie
     }
     else if (prop.type === NodeTypes.ATTRIBUTE && prop.name === 'style' && prop.value) {
       checkStyleDeclarations(prop.value.content, valueOffset(prop, source), context)
+      checkMotionDeclarations(prop.value.content, valueOffset(prop, source), context)
     }
     else if (prop.type === NodeTypes.DIRECTIVE && prop.name === 'bind' && directiveArg(prop) === 'class') {
       const expression = directiveExpression(prop)
