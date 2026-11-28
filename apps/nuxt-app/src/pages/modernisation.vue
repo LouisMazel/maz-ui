@@ -27,12 +27,18 @@ useHead({
         Temporary page: everything the modernisation adds or changes, extended by each PR. Use the toolbar to switch color mode, direction, reduced motion and preset.
       </p>
 
+      <ModernisationPullRequest :number="1" title="Foundations" description="Motion tokens, reduced motion, motion primitives, utilities, the variant prop and the bug fixes." />
+
       <ModernisationMotionTokens />
       <ModernisationReducedMotion />
       <ModernisationUtilities />
       <ModernisationNewComponents />
       <ModernisationNewComposables />
       <ModernisationBugFixes />
+
+      <ModernisationPullRequest :number="2" title="Overlays" description="Everything that opens: popovers, dialogs, drawers, bottom sheets, toasts, tooltips and the lightbox, growing from their origin." />
+
+      <!-- PR 2 sections -->
     </main>
   </div>
 </template>
