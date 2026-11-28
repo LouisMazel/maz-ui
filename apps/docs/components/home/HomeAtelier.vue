@@ -138,7 +138,7 @@ async function applyToDocs() {
             <MazBtn size="sm" @click="applyToDocs">
               Apply to the docs
             </MazBtn>
-            <MazBtn size="sm" color="surface" outlined @click="presetName = 'nova'; resetControls()">
+            <MazBtn size="sm" color="surface" variant="outline" @click="presetName = 'nova'; resetControls()">
               Reset
             </MazBtn>
           </div>

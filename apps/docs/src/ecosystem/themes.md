@@ -669,7 +669,7 @@ For a discreet background, never make `secondary` pale. Use:
 
 - `surface`, `container` or `muted` (for example `bg-muted/10`)
 - the light steps of a color (`bg-primary-50`, `bg-secondary-100`)
-- `MazBtn` with the `pastel` or `outlined` props (`<MazBtn color="secondary" pastel>`)
+- `MazBtn` with `variant="soft"` or `variant="outline"` (`<MazBtn color="secondary" variant="soft">`)
 
 ```html
 <div class="rounded-lg bg-container p-4 text-foreground">
@@ -683,13 +683,13 @@ Check the contrast of every color you set, in light **and** dark modes (WCAG 2):
 
 - Text (a token and its `-foreground`, `foreground` on `surface`, `muted` on `surface`): at least 4.5:1 (AA).
 - UI elements and large text: at least 3:1.
-- A brand color used as text or border (`text-primary`, `MazBtn outlined`, focus ring) must reach 3:1 against `surface` and `container`. This is why `primary` and `secondary` cannot be pale: lower their lightness in light mode, raise it in dark mode.
+- A brand color used as text or border (`text-primary`, `MazBtn variant="outline"`, focus ring) must reach 3:1 against `surface` and `container`. This is why `primary` and `secondary` cannot be pale: lower their lightness in light mode, raise it in dark mode.
 
 The `review_code` tool of the [MCP server](/guide/ai-agents) warns when the `primary` or `secondary` of a `definePreset` is under 3:1 against its surface.
 
 #### Common mistakes
 
-- **A pale `secondary`** (close to `surface`), copied from the shadcn/ui convention where `secondary` is a muted surface: `MazBtn color="secondary" outlined` becomes invisible. Keep it a strong brand color.
+- **A pale `secondary`** (close to `surface`), copied from the shadcn/ui convention where `secondary` is a muted surface: `MazBtn color="secondary" variant="outline"` becomes invisible. Keep it a strong brand color.
 - **Hard-coded colors** (`#3b82f6`, `rgb(...)`, `bg-[#fff]`): they ignore the preset and the dark mode. Use theme colors.
 - **`dark:` overrides of theme colors** (`bg-surface dark:bg-gray-900`): theme colors already resolve per mode with `light-dark()`. `bg-surface` is enough.
 - **The default Tailwind palette** (`bg-blue-500`, `text-gray-600`, `bg-white`): use `bg-primary`, `text-muted`, `bg-surface`.

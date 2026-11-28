@@ -13,7 +13,7 @@ import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 export type MazAlertColor = Exclude<MazColor, 'transparent'>
 export type MazAlertRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
-export type MazAlertVariant = 'soft' | 'solid'
+export type MazAlertVariant = 'soft' | 'solid' | 'outline'
 
 export interface MazAlertProps {
   /**
@@ -62,7 +62,7 @@ export interface MazAlertProps {
   /**
    * Visual variant of the alert
    * @type {MazAlertVariant}
-   * @values `'soft' | 'solid'`
+   * @values `'soft' | 'solid' | 'outline'`
    * @default 'soft'
    */
   variant?: MazAlertVariant
@@ -152,7 +152,7 @@ const currentIcon = computed(() => {
       `--rounded-${roundedSize}`,
       {
         '--bordered': bordered,
-        'maz:text-(--m-alert-color) maz:dark:text-(--m-alert-color-dark)': variant === 'soft',
+        'maz:text-(--m-alert-color) maz:dark:text-(--m-alert-color-dark)': variant === 'soft' || variant === 'outline',
         'maz:bg-(--m-alert-bg) maz:text-(--m-alert-fg)': variant === 'solid',
         'maz:border': bordered,
         'maz:border-(--m-alert-border)': bordered && variant === 'solid',
@@ -196,6 +196,14 @@ const currentIcon = computed(() => {
     }
   }
 
+  &.--outline {
+    background-color: transparent;
+
+    &.--bordered {
+      border-color: color-mix(in srgb, var(--m-alert-color) 60%, transparent);
+    }
+  }
+
   /* Neutral: the soft grey of the theme in both variants, with a divider border */
   &.--neutral {
     background-color: var(--m-alert-bg);
@@ -203,6 +211,11 @@ const currentIcon = computed(() => {
 
     &.--bordered {
       border-color: var(--m-alert-border);
+    }
+
+    &.--outline {
+      background-color: transparent;
+      color: var(--m-alert-color);
     }
   }
 }

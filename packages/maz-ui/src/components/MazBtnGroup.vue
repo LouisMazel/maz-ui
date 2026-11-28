@@ -2,7 +2,7 @@
 import type { ButtonHTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazBtnProps } from './MazBtn.vue'
-import type { MazColor, MazNeutralColor, MazSize } from './types.ts'
+import type { MazColor, MazFillVariant, MazNeutralColor, MazSize } from './types.ts'
 import { defineAsyncComponent } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 
@@ -46,12 +46,20 @@ export interface MazButtonGroupProps {
    */
   roundedSize?: MazBtnProps['roundedSize']
   /**
+   * The fill style of all buttons (only applies to props-based buttons, a `variant` of an item wins)
+   * @values `'solid' | 'soft' | 'outline' | 'ghost'`
+   * @default 'solid'
+   */
+  variant?: MazFillVariant
+  /**
    * The outlined state of the buttons
+   * @deprecated Use `variant="outline"` instead
    * @default false
    */
   outlined?: boolean
   /**
    * The pastel state of the buttons
+   * @deprecated Use `variant="soft"` instead
    * @default false
    */
   pastel?: boolean
@@ -71,7 +79,12 @@ const {
   items,
   orientation = 'row',
   color = 'primary',
+  variant,
 } = defineProps<MazButtonGroupProps>()
+
+function getItemProps(item: MazButtonGroupOption) {
+  return variant ? { variant, ...item } : item
+}
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazBtnProps['roundedSize'] }>('MazBtnGroup', {
   size: 'md',
@@ -91,7 +104,7 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
     <MazBtn
       v-for="(item, index) in items"
       :key="index"
-      v-bind="item"
+      v-bind="getItemProps(item)"
       :size="item.size ?? size"
       :rounded-size="item.roundedSize ?? roundedSize"
       :color="item.color ?? color"

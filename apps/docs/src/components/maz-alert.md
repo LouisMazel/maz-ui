@@ -31,7 +31,7 @@ description: MazAlert is an accessible component for displaying contextual feedb
 
 ## Variants
 
-MazAlert supports two visual variants: `soft` (default) with transparent background, and `solid` with full color background.
+MazAlert supports three visual variants: `soft` (default) with a tinted background, `solid` with a full color background, and `outline` with a border only.
 
 ### Soft variant (default)
 
@@ -75,6 +75,30 @@ The solid variant uses the full color as background with contrasting text.
   <MazAlert color="info" variant="solid" title="Solid Info" content="..." />
   <MazAlert color="success" variant="solid" title="Solid Success" content="..." />
   <MazAlert color="destructive" variant="solid" title="Solid Error" content="..." />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+### Outline variant
+
+The outline variant has no background: a colored border and colored text.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazAlert color="info" variant="outline" title="Outline Info" content="A border and no background." />
+    <MazAlert color="success" variant="outline" title="Outline Success" content="Quiet next to a busy layout." />
+    <MazAlert color="destructive" variant="outline" title="Outline Error" content="The color stays readable." />
+  </div>
+
+  <template #code>
+
+```vue
+<template>
+  <MazAlert color="info" variant="outline" title="Outline Info" content="..." />
+  <MazAlert color="success" variant="outline" title="Outline Success" content="..." />
+  <MazAlert color="destructive" variant="outline" title="Outline Error" content="..." />
 </template>
 ```
 

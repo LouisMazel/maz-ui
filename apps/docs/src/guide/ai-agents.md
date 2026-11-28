@@ -307,7 +307,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | --- | --- | --- |
 | `unknown-component` | error | `<MazButton>` (did you mean `MazBtn`?) |
 | `unknown-prop` | warning | A prop the component does not have (`colour`) |
-| `deprecated-prop` | warning | A prop kept for compatibility (`outlined` on `MazBtn`): the message gives its replacement (`variant="outline"`) |
+| `deprecated-prop` | warning | A prop kept for compatibility: the message gives its replacement |
 | `invalid-prop-value` | error | `color="red"` on a component that accepts `primary`, `secondary`... |
 | `boolean-prop-string` | error | `disabled="false"` (a truthy string) |
 | `unknown-model`, `unknown-event`, `unknown-slot` | error | `v-model:foo`, `@clik`, `<template #captions>` |

@@ -359,7 +359,7 @@ Recurring blocks of an app screen, with the maz-ui classes and components:
 
 ### Action hierarchy
 
-- **One main action per view or group**: a solid `MazBtn` (`color="primary"`, the default). The other actions are `color="neutral"` (the grey push button), `outlined` or `pastel`.
+- **One main action per view or group**: a solid `MazBtn` (`color="primary"`, the default). The other actions are `color="neutral"` (the grey push button), `variant="outline"` or `variant="soft"`.
 - **Low emphasis** for cancel, back and "learn more": a `color="neutral"` button or a `MazLink`, placed before the main action.
 - **Destructive actions** use `color="destructive"` and ask for a confirmation (`useDialog`, `MazDialogConfirm`).
 - **Same size** for neighbouring buttons.

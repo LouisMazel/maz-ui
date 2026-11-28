@@ -194,7 +194,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
   const tabs2: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab', 'Fourth Tab', 'Fifth Tab', 'Sixth Tab', 'Seventh Tab', 'Eighth Tab', 'Ninth Tab', 'Tenth Tab']
 
   const badgeTabs: MazTabsBarItem[] = [
-    { label: 'Inbox', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+    { label: 'Inbox', badge: { content: 12, color: 'primary', variant: 'soft', roundedSize: 'full' } },
     { label: 'Mentions', badge: { content: true, color: 'destructive' } },
     { label: 'Archive' },
   ]
@@ -208,7 +208,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
 
   const sectionTabs: MazTabsBarItem[] = [
     { label: 'General' },
-    { label: 'Notifications', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+    { label: 'Notifications', badge: { content: 12, color: 'primary', variant: 'soft', roundedSize: 'full' } },
     { label: 'Security', badge: { content: true, color: 'destructive' } },
   ]
 
@@ -238,7 +238,7 @@ Each item can show a **badge** next to its label, or an **indicator** on the top
 import type { MazTabsBarItem } from 'maz-ui/components'
 
 const badgeTabs: MazTabsBarItem[] = [
-  { label: 'Inbox', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+  { label: 'Inbox', badge: { content: 12, color: 'primary', variant: 'soft', roundedSize: 'full' } },
   { label: 'Mentions', badge: { content: true, color: 'destructive' } },
   { label: 'Archive' },
 ]
@@ -330,7 +330,7 @@ import type { MazTabsBarItem } from 'maz-ui/components'
 
 const sectionTabs: MazTabsBarItem[] = [
   { label: 'General' },
-  { label: 'Notifications', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+  { label: 'Notifications', badge: { content: 12, color: 'primary', variant: 'soft', roundedSize: 'full' } },
   { label: 'Security', badge: { content: true, color: 'destructive' } },
 ]
 </script>

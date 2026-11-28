@@ -220,6 +220,7 @@ function setPageNumber(page: number) {
           <MazBtn
             v-bind="{
               ...buttonsPropsMerged,
+              ...(page.isActive && buttonsPropsMerged.variant === 'outline' && { variant: 'solid' }),
               color: page.isActive ? activeColor : buttonsPropsMerged.color,
               outlined: page.isActive ? false : buttonsPropsMerged.outlined,
             }"

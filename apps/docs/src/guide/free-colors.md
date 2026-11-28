@@ -12,8 +12,8 @@ Most components only take the [colors of the theme](./../ecosystem/themes.md) (`
 ```vue
 <template>
   <MazBadge color="#e11d48">Bug</MazBadge>
-  <MazBadge color="oklch(0.7 0.15 150)" pastel>Feature</MazBadge>
-  <MazBadge color="var(--label-docs)" outlined>Docs</MazBadge>
+  <MazBadge color="oklch(0.7 0.15 150)" variant="soft">Feature</MazBadge>
+  <MazBadge color="var(--label-docs)" variant="outline">Docs</MazBadge>
 
   <MazProgressBar :value="65" color="#8b5cf6" />
   <MazAvatar caption="Louis Mazel" color="var(--user-color)" />
@@ -52,7 +52,7 @@ A free color is the same in light and dark. Pick it with enough contrast on both
 
 | Component | What takes the color |
 | --- | --- |
-| [MazBadge](./../components/maz-badge.md#free-color) | Background, text, border and `pastel` tint |
+| [MazBadge](./../components/maz-badge.md#free-color) | Background, text, border and `soft` tint |
 | [MazProgressBar](./../components/maz-progress-bar.md#free-colors) | The bar and each segment |
 | [MazCircularProgressBar](./../components/maz-circular-progress-bar.md#free-color) | The stroke gradient |
 | [MazIndicator](./../components/maz-indicator.md#free-color) | Background and text |

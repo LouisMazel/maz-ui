@@ -142,7 +142,7 @@ async function copyUrl() {
           }"
           size="xs"
           color="transparent"
-          outlined
+          variant="outline"
           class="m-window-mockup__url-copy-btn"
           :aria-label="urlCopied ? urlCopiedLabel : copyUrlLabel"
           :icon="urlCopied ? MazCheck : MazLinkIcon"

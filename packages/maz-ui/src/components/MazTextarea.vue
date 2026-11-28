@@ -58,8 +58,14 @@ export interface MazTextareaProps<T extends string | undefined | null> {
    */
   transparent?: boolean
   /**
-   * If the textarea has no border
-   * @default false
+   * Draw the border of the textarea
+   * @default true
+   */
+  bordered?: boolean
+  /**
+   * Draw the border of the textarea
+   * @deprecated Use `bordered` instead
+   * @default true
    */
   border?: boolean
   /**
@@ -121,6 +127,7 @@ const {
   padding = true,
   transparent = false,
   border = true,
+  bordered = undefined,
   autogrow = true,
   minRows = 3,
   appendJustify = 'end',
@@ -190,6 +197,9 @@ const slots = useSlots()
 const hasLabelOrHint = computed(() => label || hint || !!slots.label)
 
 const hasAppend = computed(() => !!slots.append)
+
+// Removed in v6 (plans/ROADMAP.md): `border` is an alias of `bordered`
+const hasBorder = computed(() => bordered ?? border)
 
 const borderStyle = computed(() => {
   if (error)
@@ -277,7 +287,7 @@ const stateLabelColor = computed(() => [
           '--has-placeholder': !!placeholder,
           '--autogrow': autogrow,
           '--padding': padding,
-          'maz:border maz:border-solid': border && !disabled,
+          'maz:border maz:border-solid': hasBorder && !disabled,
           'maz:bg-input': !transparent && !disabled,
           'maz:disabled-cursor maz:border-divider maz:bg-surface-600 maz:text-muted maz:dark:border-divider-400 maz:dark:bg-surface-400': disabled,
         },

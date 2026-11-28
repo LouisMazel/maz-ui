@@ -41,7 +41,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 <MazBtn @click="isOpenedRight = !isOpenedRight"> Open right drawer </MazBtn>
 <MazBtn @click="isOpenedBottom = !isOpenedBottom"> Open bottom drawer </MazBtn>
 
-<MazDrawer variant="top" v-model="isOpenedTop">
+<MazDrawer side="top" v-model="isOpenedTop">
   <template #title> Drawer top </template>
   <template #default="{ close }">
     <div style="padding: 16px">
@@ -53,7 +53,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </MazDrawer>
 
-<MazDrawer variant="bottom" v-model="isOpenedBottom">
+<MazDrawer side="bottom" v-model="isOpenedBottom">
   <template #title> Drawer bottom </template>
   <template #default="{ close }">
     <div style="padding: 16px">
@@ -65,7 +65,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </MazDrawer>
 
-<MazDrawer variant="start" v-model="isOpenedLeft">
+<MazDrawer side="start" v-model="isOpenedLeft">
   <template #title> Drawer left </template>
   <template #default="{ close }">
     <div style="padding: 16px">
@@ -77,7 +77,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </MazDrawer>
 
-<MazDrawer variant="end" v-model="isOpenedRight">
+<MazDrawer side="end" v-model="isOpenedRight">
   <template #title> Drawer right </template>
   <template #default="{ close }">
     <div style="padding: 16px">
@@ -94,7 +94,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 </ComponentDemo>
 
 <div class="vp-raw">
-<MazDrawer variant="top" v-model="isOpenedTop">
+<MazDrawer side="top" v-model="isOpenedTop">
   <template #title>
     Drawer top
   </template>
@@ -114,7 +114,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 </div>
 
 <div class="vp-raw">
-<MazDrawer variant="bottom" v-model="isOpenedBottom">
+<MazDrawer side="bottom" v-model="isOpenedBottom">
   <template #title>
     Drawer bottom
   </template>
@@ -134,7 +134,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 </div>
 
 <div class="vp-raw">
-<MazDrawer variant="start" v-model="isOpenedLeft">
+<MazDrawer side="start" v-model="isOpenedLeft">
   <template #title>
     Drawer left
   </template>
@@ -154,7 +154,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 </div>
 
 <div class="vp-raw">
-<MazDrawer variant="end" v-model="isOpenedRight">
+<MazDrawer side="end" v-model="isOpenedRight">
   <template #title>
     Drawer right
   </template>

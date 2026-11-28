@@ -125,7 +125,7 @@ const SCALES = [
           <MazBtn href="/guide/migration-v5" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">
             Migrate to v5
           </MazBtn>
-          <MazBtn href="/blog/v5" color="surface" outlined>
+          <MazBtn href="/blog/v5" color="surface" variant="outline">
             Read the announcement
           </MazBtn>
         </div>
@@ -161,8 +161,8 @@ const SCALES = [
                 {{ change.description }}
               </p>
               <div v-if="index === 1" class="maz:mt-auto maz:flex maz:flex-wrap maz:gap-3 maz:pt-2">
-                <span dir="ltr"><MazBtn size="sm" color="surface" outlined :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">Next</MazBtn></span>
-                <span dir="rtl" lang="ar"><MazBtn size="sm" color="surface" outlined :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">التالي</MazBtn></span>
+                <span dir="ltr"><MazBtn size="sm" color="surface" variant="outline" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">Next</MazBtn></span>
+                <span dir="rtl" lang="ar"><MazBtn size="sm" color="surface" variant="outline" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">التالي</MazBtn></span>
               </div>
             </MazCardSpotlight>
           </MazAnimatedElement>

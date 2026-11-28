@@ -129,7 +129,7 @@ function autoForeground(role: string) {
             {{ role }}
           </span>
           <ContrastPill :ratio="editor.contrast(role, `${role}-foreground`)" />
-          <MazBtn v-tooltip="{ text: 'Text color with the best contrast', position: 'top' }" size="mini" color="transparent" outlined class="maz:ms-auto" @click="autoForeground(role)">
+          <MazBtn v-tooltip="{ text: 'Text color with the best contrast', position: 'top' }" size="mini" color="transparent" variant="outline" class="maz:ms-auto" @click="autoForeground(role)">
             Auto text
           </MazBtn>
         </div>

@@ -181,7 +181,7 @@ function selectSwatch(swatch?: Rgba) {
         v-if="hasEyeDropper"
         size="sm"
         color="transparent"
-        outlined
+        variant="outline"
         :icon="MazEyeDropper"
         :aria-label="labels.eyeDropper"
         :title="labels.eyeDropper"

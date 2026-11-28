@@ -1,9 +1,9 @@
 <script lang="ts" setup generic="_T">
 import type { CSSProperties } from 'vue'
 import type { MazIconLike } from '../composables/useMazIconProps.ts'
-import type { MazColor, MazNeutralColor, MazRoundedSize, MazSize } from './types.ts'
+import type { MazColor, MazFillVariant, MazNeutralColor, MazRoundedSize, MazSize } from './types.ts'
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useGlobalConfig, useInstanceFillVariant } from '../composables/useGlobalConfig.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
 import { useExternalLinks } from '../utils/externalLinks.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
@@ -44,12 +44,20 @@ export interface MazBtnProps {
    */
   roundedSize?: MazRoundedSize
   /**
+   * Fill style of the button: `solid` the full color, `soft` a tinted background, `outline` a border, `ghost` no background until hovered
+   * @values `'solid' | 'soft' | 'outline' | 'ghost'`
+   * @default 'solid'
+   */
+  variant?: MazFillVariant
+  /**
    * If true, the button have the "border" style
+   * @deprecated Use `variant="outline"` instead
    * @default false
    */
   outlined?: boolean
   /**
    * If true, the button will have a pastel color
+   * @deprecated Use `variant="soft"` instead
    * @default false
    */
   pastel?: boolean
@@ -136,10 +144,17 @@ const {
   overflowHidden = true,
 } = defineProps<MazBtnProps>()
 
-const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazBtn', {
+const { size, roundedSize, variant: configVariant } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize, variant: MazFillVariant | undefined }>('MazBtn', {
   size: 'md',
   roundedSize: 'md',
+  variant: undefined,
 })
+const variant = useInstanceFillVariant(configVariant)
+
+// Removed in v6 (plans/ROADMAP.md): `outlined` and `pastel` are aliases of `variant`
+const isOutlined = computed(() => variant.value ? variant.value === 'outline' : outlined)
+const isPastel = computed(() => variant.value ? variant.value === 'soft' : pastel)
+const isGhost = computed(() => variant.value === 'ghost')
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
@@ -202,7 +217,7 @@ const btnStyle = computed<CSSProperties>(() => {
     ...base,
     '--m-btn-bg': `var(--maz-${c})`,
     '--m-btn-fg': `var(--maz-${c}-foreground)`,
-    ...(pastel && c === 'contrast' && {
+    ...(isPastel.value && c === 'contrast' && {
       '--m-btn-pastel-fg': `var(--maz-contrast)`,
     }),
   }
@@ -270,8 +285,9 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
       {
         'maz:relative': isOverlayLoader,
         'maz:overflow-hidden': overflowHidden,
-        '--outlined': outlined,
-        '--pastel': pastel,
+        '--outlined': isOutlined,
+        '--pastel': isPastel,
+        '--ghost': isGhost,
         '--block': block && !fab,
         '--fab': fab,
         '--loading': loading,
@@ -401,6 +417,22 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
       }
     }
 
+    /* Ghost variant: the color as text, no background until hovered */
+    &.--ghost {
+      @apply maz:bg-transparent;
+
+      color: var(--m-btn-bg);
+
+      &:not(:disabled):hover {
+        background-color: color-mix(in srgb, var(--m-btn-bg) 10%, transparent);
+      }
+
+      &:not(:disabled):active,
+      &.--active:not(:disabled) {
+        background-color: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
+      }
+    }
+
     /* Transparent: no theme color, a foreground tint on hover/active */
     &.--transparent {
       @apply maz:bg-transparent maz:text-foreground;
@@ -473,6 +505,21 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
         &:not(:disabled):active,
         &.--active:not(:disabled) {
           background-color: var(--m-btn-bg-active);
+        }
+      }
+
+      &.--ghost {
+        @apply maz:bg-transparent maz:border-transparent;
+
+        color: var(--m-btn-fg);
+
+        &:not(:disabled):hover {
+          background-color: color-mix(in oklab, var(--maz-foreground) 6%, transparent);
+        }
+
+        &:not(:disabled):active,
+        &.--active:not(:disabled) {
+          background-color: color-mix(in oklab, var(--maz-foreground) 12%, transparent);
         }
       }
 

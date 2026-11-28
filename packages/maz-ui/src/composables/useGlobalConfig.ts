@@ -110,11 +110,23 @@ export const GLOBAL_CONFIG_INJECTION_KEY: InjectionKey<MazUiDefaultsOptions> = S
  * Vue casts an absent boolean prop to `false`, so the value alone cannot tell
  * "not passed" from "passed false". Evaluated once at setup, not per render.
  */
-function isPropProvided(raw: Record<string, unknown> | null | undefined, key: string): boolean {
+export function isPropProvided(raw: Record<string, unknown> | null | undefined, key: string): boolean {
   if (!raw)
     return false
 
   return Object.hasOwn(raw, key) || Object.hasOwn(raw, key.replace(/\B([A-Z])/g, '-$1').toLowerCase())
+}
+
+/**
+ * The `variant` given by the global defaults, unless the instance sets one of the deprecated `outlined` or
+ * `pastel` aliases (and no `variant`): a prop of the instance always wins over the defaults
+ */
+export function useInstanceFillVariant<T>(variant: ComputedRef<T>): ComputedRef<T | undefined> {
+  const vnodeProps = getCurrentInstance()?.vnode.props
+  const aliasOnInstance = !isPropProvided(vnodeProps, 'variant')
+    && (isPropProvided(vnodeProps, 'outlined') || isPropProvided(vnodeProps, 'pastel'))
+
+  return computed(() => (aliasOnInstance ? undefined : variant.value))
 }
 
 /**

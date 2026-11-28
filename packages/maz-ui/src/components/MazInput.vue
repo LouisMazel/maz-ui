@@ -138,6 +138,13 @@ export interface MazInputProps<T = MazInputValue> {
    * @type {boolean}
    * @example true
    */
+  bordered?: boolean
+  /**
+   * Controls whether the input has a visible border
+   * @deprecated Use `bordered` instead
+   * @type {boolean}
+   * @example true
+   */
   border?: boolean
   /**
    * HTML inputmode attribute that provides hints for virtual keyboards on mobile devices
@@ -244,6 +251,7 @@ const {
   hint,
   inputClasses,
   border = true,
+  bordered = undefined,
   inputmode = 'text',
   debounce = false,
   autoFocus = false,
@@ -353,8 +361,11 @@ const isPasswordType = computed(() => type === 'password')
 
 const inputType = computed(() => (hasPasswordVisible.value ? 'text' : type))
 
+// Removed in v6 (plans/ROADMAP.md): `border` is an alias of `bordered`
+const hasBorder = computed(() => bordered ?? border)
+
 const borderStyle = computed(() => {
-  if (!border)
+  if (!hasBorder.value)
     return undefined
   if (error)
     return 'maz:border-destructive'
@@ -469,7 +480,7 @@ const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
         borderStyle,
         ROUNDED_CLASS[roundedSize],
         `--rounded-${roundedSize}`,
-        { '--block': block, '--border': border, 'maz:w-full': block, 'maz:border maz:border-solid': border },
+        { '--block': block, '--border': hasBorder, 'maz:w-full': block, 'maz:border maz:border-solid': hasBorder },
       ]"
     >
       <div v-if="hasStartPart()" class="m-input-wrapper-start maz:relative maz:z-1 maz:flex maz:flex-center maz:space-x-1 maz:py-1 maz:ps-2">

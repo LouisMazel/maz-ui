@@ -289,7 +289,7 @@ defineExpose({
         class="m-input-key-value__add"
         :color
         :size
-        outlined
+        variant="outline"
         :start-icon="MazPlus"
         @click="addRow"
       >

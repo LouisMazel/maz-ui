@@ -44,7 +44,7 @@ const played = ref(false)
             Durations and easings of every transition of the components.
           </p>
         </div>
-        <MazBtn size="xs" color="surface" outlined :start-icon="MazPlay" @click="played = !played">
+        <MazBtn size="xs" color="surface" variant="outline" :start-icon="MazPlay" @click="played = !played">
           Play
         </MazBtn>
       </header>

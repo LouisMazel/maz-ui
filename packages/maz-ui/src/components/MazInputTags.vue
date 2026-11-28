@@ -255,7 +255,7 @@ function focusInput() {
           :size
           :removable="!disabled"
           :remove-label="`${t('aria.remove')} ${tag}`"
-          pastel
+          variant="soft"
           @remove="removeTag(tag)"
         >
           {{ tag }}

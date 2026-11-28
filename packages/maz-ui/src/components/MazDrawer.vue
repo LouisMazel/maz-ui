@@ -10,7 +10,8 @@ import MazIcon from './MazIcon.vue'
 
 const {
   title,
-  variant = 'end',
+  side,
+  variant,
   backdropClass,
   size = '30rem',
   hideCloseButton,
@@ -31,6 +32,8 @@ defineEmits<{
   (name: 'update:model-value', value: boolean): void
 }>()
 
+export type MazDrawerSide = 'start' | 'end' | 'top' | 'bottom'
+
 export interface MazDrawerProps {
   /** The title of the drawer */
   title?: string
@@ -39,8 +42,15 @@ export interface MazDrawerProps {
    * `start` (= left in LTR, right in RTL) and `end` (= right in LTR, left in RTL)
    * follow the document direction; `top` and `bottom` are physical.
    * @values 'start', 'end', 'top', 'bottom'
+   * @default 'end'
    */
-  variant?: 'start' | 'end' | 'top' | 'bottom'
+  side?: MazDrawerSide
+  /**
+   * The edge from which the drawer slides in
+   * @deprecated Use `side` instead
+   * @values 'start', 'end', 'top', 'bottom'
+   */
+  variant?: MazDrawerSide
   /** The size of the drawer */
   size?: MazSizeUnit
   /** The class of the backdrop */
@@ -51,13 +61,16 @@ export interface MazDrawerProps {
   beforeClose?: () => Promise<boolean | void> | boolean | void
 }
 
+// Removed in v6 (plans/ROADMAP.md): `variant` is an alias of `side`
+const drawerSide = computed(() => side ?? variant ?? 'end')
+
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const justify = computed(() => {
-  if (variant === 'start') {
+  if (drawerSide.value === 'start') {
     return 'start'
   }
-  else if (variant === 'end') {
+  else if (drawerSide.value === 'end') {
     return 'end'
   }
 
@@ -65,10 +78,10 @@ const justify = computed(() => {
 })
 
 const align = computed(() => {
-  if (variant === 'top') {
+  if (drawerSide.value === 'top') {
     return 'start'
   }
-  else if (variant === 'bottom') {
+  else if (drawerSide.value === 'bottom') {
     return 'end'
   }
 
@@ -95,7 +108,7 @@ const titleId = computed(() => `${instanceId.value}-title`)
     variant="drawer"
     :before-close
     :aria-labelledby="hasTitle ? titleId : undefined"
-    :transition-name="`drawer-anim-${variant}`"
+    :transition-name="`drawer-anim-${drawerSide}`"
     @close="$emit('close')"
     @open="$emit('open')"
     @before-close="$emit('before-close')"
@@ -105,13 +118,13 @@ const titleId = computed(() => `${instanceId.value}-title`)
       <div
         class="m-drawer-content-wrap maz:pointer-events-auto maz:flex maz:max-h-full maz:flex-col maz:overflow-hidden maz:bg-container"
         :class="[
-          `--${variant}`,
-          (variant === 'start' || variant === 'end') ? 'maz:size-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:h-auto maz:w-full',
+          `--${drawerSide}`,
+          (drawerSide === 'start' || drawerSide === 'end') ? 'maz:size-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:h-auto maz:w-full',
           {
-            'maz:border-r maz:border-divider': variant === 'start',
-            'maz:border-l maz:border-divider': variant === 'end',
-            'maz:border-b maz:border-divider': variant === 'top',
-            'maz:border-t maz:border-divider': variant === 'bottom',
+            'maz:border-r maz:border-divider': drawerSide === 'start',
+            'maz:border-l maz:border-divider': drawerSide === 'end',
+            'maz:border-b maz:border-divider': drawerSide === 'top',
+            'maz:border-t maz:border-divider': drawerSide === 'bottom',
           },
         ]"
         :style="{

@@ -595,7 +595,7 @@ When the sidebar is hidden, keep a control to bring it back somewhere else (a bu
 
 ## Badges
 
-`badge` accepts a `string`, a `number`, or a full `MazBadgeProps` object (with an optional `text`) to fine-tune color, size, outlined, etc. When the sidebar is collapsed to its icons, the badge is hidden and leaves a dot of its color on the icon (a [MazIndicator](./maz-indicator.md) attached to it), so the user still sees that something is pending.
+`badge` accepts a `string`, a `number`, or a full `MazBadgeProps` object (with an optional `text`) to fine-tune color, size, variant, etc. When the sidebar is collapsed to its icons, the badge is hidden and leaves a dot of its color on the icon (a [MazIndicator](./maz-indicator.md) attached to it), so the user still sees that something is pending.
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[22rem] maz:flex">
@@ -609,7 +609,7 @@ When the sidebar is hidden, keep a control to bring it back somewhere else (a bu
             <MazSidebarMenuButton label="Errors" :badge="{ text: 3, color: 'destructive' }" />
           </MazSidebarMenuItem>
           <MazSidebarMenuItem>
-            <MazSidebarMenuButton label="Beta" :badge="{ text: 'NEW', color: 'success', outlined: true }" />
+            <MazSidebarMenuButton label="Beta" :badge="{ text: 'NEW', color: 'success', variant: 'outline' }" />
           </MazSidebarMenuItem>
           <MazSidebarMenuItem>
             <MazSidebarMenuButton label="Settings" />
@@ -636,7 +636,7 @@ When the sidebar is hidden, keep a control to bring it back somewhere else (a bu
 />
 <MazSidebarMenuButton
   label="Beta"
-  :badge="{ text: 'NEW', color: 'success', outlined: true }"
+  :badge="{ text: 'NEW', color: 'success', variant: 'outline' }"
 />
 ```
 

@@ -232,7 +232,7 @@ function onClose(value: void) {
               <MazBtn
                 color="transparent"
                 size="sm"
-                outlined
+                variant="outline"
                 :icon="MazXMark"
                 :aria-label="t('aria.close')"
                 @click="close"

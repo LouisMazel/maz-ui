@@ -215,7 +215,7 @@ function cancelReplace() {
           class="m-input-secret__replace"
           :color
           :size
-          outlined
+          variant="outline"
           :disabled
           @click="startReplace"
         >
@@ -225,7 +225,7 @@ function cancelReplace() {
           class="m-input-secret__clear"
           color="destructive"
           :size
-          outlined
+          variant="outline"
           :disabled
           @click="$emit('clear')"
         >

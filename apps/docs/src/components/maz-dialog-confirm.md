@@ -76,7 +76,7 @@ const buttons: DialogCustomButton[] = [
     text: 'Cancel',
     type: 'reject',
     color: 'destructive',
-    outlined: true,
+    variant: 'outline',
     response: 'cancel',
     size: 'sm',
   },
@@ -192,7 +192,7 @@ interface MazDialogConfirmButton {
   color?: Color
   disabled?: boolean
   loading?: boolean
-  outlined?: boolean
+  variant?: 'solid' | 'soft' | 'outline' | 'ghost'
   rounded?: boolean
   size?: Size
   text: string
@@ -254,7 +254,7 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
       text: 'Cancel',
       type: 'reject',
       color: 'destructive',
-      outlined: true,
+      variant: 'outline',
       response: 'cancel',
       size: 'sm',
     },

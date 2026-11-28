@@ -177,6 +177,12 @@ export interface MazInputAutocompleteProps<T> {
    * Draw the border of the input
    * @default true
    */
+  bordered?: boolean
+  /**
+   * Draw the border of the input
+   * @deprecated Use `bordered` instead
+   * @default true
+   */
   border?: boolean
   /** Disable the component */
   disabled?: boolean
@@ -228,6 +234,7 @@ const {
   openOnFocus = false,
   freeEntry = false,
   border = true,
+  bordered = undefined,
   label,
   topLabel,
   placeholder,
@@ -783,7 +790,7 @@ defineExpose({
         :name
         :inputmode
         :input-classes
-        :border
+        :bordered="bordered ?? border"
         autocomplete="off"
         role="combobox"
         aria-autocomplete="list"

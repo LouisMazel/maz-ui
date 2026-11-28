@@ -1029,7 +1029,7 @@ defineExpose({
                 :icon="MazTrash"
                 :disabled
                 color="destructive"
-                pastel
+                variant="soft"
                 :aria-label="`${t('aria.removeFile')} ${file.name}`"
                 v-bind="removeFileBtnProps"
                 @click.prevent="handleFileRemove(file)"

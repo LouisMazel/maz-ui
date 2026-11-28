@@ -493,24 +493,24 @@ The `content` slot replaces the text of a counter. It receives `{ text }`, the t
 
 ## In a badge
 
-A dot before the text of a pastel [MazBadge](./maz-badge.md) is a compact status.
+A dot before the text of a soft [MazBadge](./maz-badge.md) is a compact status.
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4">
-    <MazBadge color="success" pastel class="maz:gap-2"><MazIndicator color="success" /> Online</MazBadge>
-    <MazBadge color="warning" pastel class="maz:gap-2"><MazIndicator color="warning" /> Away</MazBadge>
-    <MazBadge color="destructive" pastel class="maz:gap-2"><MazIndicator color="destructive" pulse /> Live</MazBadge>
+    <MazBadge color="success" variant="soft" class="maz:gap-2"><MazIndicator color="success" /> Online</MazBadge>
+    <MazBadge color="warning" variant="soft" class="maz:gap-2"><MazIndicator color="warning" /> Away</MazBadge>
+    <MazBadge color="destructive" variant="soft" class="maz:gap-2"><MazIndicator color="destructive" pulse /> Live</MazBadge>
   </div>
 
   <template #code>
 
 ```vue
 <template>
-  <MazBadge color="success" pastel class="gap-2">
+  <MazBadge color="success" variant="soft" class="gap-2">
     <MazIndicator color="success" /> Online
   </MazBadge>
 
-  <MazBadge color="destructive" pastel class="gap-2">
+  <MazBadge color="destructive" variant="soft" class="gap-2">
     <MazIndicator color="destructive" pulse /> Live
   </MazBadge>
 </template>

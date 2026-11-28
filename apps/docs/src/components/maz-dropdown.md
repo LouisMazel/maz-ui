@@ -276,7 +276,7 @@ The `color` prop is applied to the trigger button and accepts `neutral` and the 
 <MazDropdown
   color="primary"
   fab
-  pastel
+  variant="soft"
   :chevron="false"
   :icon="MazBars3"
   size="xl"
@@ -301,7 +301,7 @@ The `color` prop is applied to the trigger button and accepts `neutral` and the 
   <MazDropdown
     color="primary"
     fab
-    pastel
+    variant="soft"
     :chevron="false"
     :icon="MazBars3"
     items-size="sm"

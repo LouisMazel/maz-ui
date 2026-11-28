@@ -20,6 +20,9 @@ export type MazFreeColor
 /** A color of the theme (autocompleted) or a free CSS color, for the components that carry data (categories, series, people) */
 export type MazColorOrFree<T extends string = MazColor> = T | MazFreeColor
 
+/** Fill style of a colored component: `solid` the full color, `soft` a tint, `outline` a border, `ghost` no background until hovered */
+export type MazFillVariant = 'solid' | 'soft' | 'outline' | 'ghost'
+
 export type MazRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
 /**

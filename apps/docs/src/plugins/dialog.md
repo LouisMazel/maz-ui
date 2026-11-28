@@ -125,7 +125,7 @@ function openDialogActions() {
       {
         text: 'Cancel 😱',
         color: 'contrast',
-        outlined: true,
+        variant: 'outline',
         onClick: () => {
           toast.info('Cancel button clicked', {
             position: 'bottom',
@@ -452,7 +452,7 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'acceptP
         {
           text: 'Cancel 😱',
           color: 'destructive',
-          outlined: true,
+          variant: 'outline',
           onClick: () => {
             toast.error('Cancel button clicked', {
               position: 'bottom',

@@ -13,7 +13,8 @@ import MazIcon from './MazIcon.vue'
 import { getColor } from './types.ts'
 
 export type MazBtnClipboardColor = Exclude<MazColor, 'transparent'> | MazNeutralColor
-export type MazBtnClipboardVariant = 'soft' | 'solid' | 'outlined' | 'ghost'
+// Removed in v6 (plans/ROADMAP.md): `outlined` is an alias of `outline`
+export type MazBtnClipboardVariant = 'soft' | 'solid' | 'outline' | 'outlined' | 'ghost'
 export type MazBtnClipboardSize = MazSize
 export type MazBtnClipboardRoundedSize = MazRoundedSize
 
@@ -29,8 +30,8 @@ export interface MazBtnClipboardProps {
    */
   prompt?: string
   /**
-   * Style of the button: `soft` a tinted background, `solid` the full color, `outlined` a border, `ghost` no background until hovered
-   * @values `'soft' | 'solid' | 'outlined' | 'ghost'`
+   * Style of the button: `soft` a tinted background, `solid` the full color, `outline` a border, `ghost` no background until hovered
+   * @values `'soft' | 'solid' | 'outline' | 'ghost'`
    * @default soft
    */
   variant?: MazBtnClipboardVariant
@@ -175,7 +176,7 @@ async function onClick() {
     type="button"
     class="m-btn-clipboard m-reset-css maz:group maz:relative maz:inline-flex maz:max-w-full maz:cursor-pointer maz:items-center maz:border maz:align-middle maz:leading-tight maz:transition-colors maz:duration-200 maz:disabled:cursor-not-allowed maz:disabled:opacity-50"
     :class="[
-      `--${variant}`,
+      `--${variant === 'outline' ? 'outlined' : variant}`,
       `--${resolvedColor}`,
       `--${size}`,
       `--${state}`,

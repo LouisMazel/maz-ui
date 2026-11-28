@@ -148,7 +148,7 @@ const STATS = computed(() => [
       <MazBtn href="https://github.com/LouisMazel/maz-ui/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener" size="lg" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">
         Join the constellation
       </MazBtn>
-      <MazBtn href="https://github.com/LouisMazel/maz-ui/issues" target="_blank" rel="noopener" size="lg" color="surface" outlined :start-icon="MazGithub">
+      <MazBtn href="https://github.com/LouisMazel/maz-ui/issues" target="_blank" rel="noopener" size="lg" color="surface" variant="outline" :start-icon="MazGithub">
         Open issues
       </MazBtn>
     </div>
@@ -168,7 +168,7 @@ const STATS = computed(() => [
           <MazBtn href="https://relizy.dev" target="_blank" rel="noopener" color="secondary" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">
             Discover Relizy
           </MazBtn>
-          <MazBtn href="https://github.com/LouisMazel/relizy" target="_blank" rel="noopener" color="surface" outlined :start-icon="MazGithub">
+          <MazBtn href="https://github.com/LouisMazel/relizy" target="_blank" rel="noopener" color="surface" variant="outline" :start-icon="MazGithub">
             GitHub
           </MazBtn>
         </div>
