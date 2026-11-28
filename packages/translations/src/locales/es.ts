@@ -24,6 +24,10 @@ export default {
     openSidebar: 'Abrir la barra lateral',
     closeSidebar: 'Cerrar la barra lateral',
     resizeSheet: 'Cambiar el tamaño de la hoja',
+    before: 'Antes',
+    after: 'Después',
+    resize: 'Redimensionar',
+    moreItems: '{count} más',
   },
   selectCountry: {
     searchPlaceholder: 'Buscar país',
@@ -233,5 +237,72 @@ export default {
     previous: 'Imagen anterior',
     next: 'Imagen siguiente',
     loading: 'Cargando...',
+  },
+  tour: {
+    label: 'Visita guiada',
+    next: 'Siguiente',
+    previous: 'Anterior',
+    skip: 'Omitir',
+    done: 'Hecho',
+    stepOf: 'Paso {step} de {total}',
+  },
+  breadcrumb: {
+    label: 'Ruta de navegación',
+    showHidden: 'Mostrar las páginas ocultas',
+  },
+  navigationMenu: {
+    label: 'Navegación principal',
+  },
+  emptyState: {
+    noResults: 'Sin resultados',
+    noResultsFor: 'Nada coincide con "{query}"',
+  },
+  sparkline: {
+    up: 'al alza',
+    down: 'a la baja',
+    flat: 'estable',
+    label: 'Tendencia {trend}: mínimo {min}, máximo {max}, último {last}',
+  },
+  statCard: {
+    chart: '{label}: tendencia',
+  },
+  tree: {
+    added: 'Añadido',
+    modified: 'Modificado',
+    deleted: 'Eliminado',
+  },
+  rating: {
+    label: 'Valoración',
+    value: '{value} de {max}',
+  },
+  timePicker: {
+    label: 'Hora',
+    hours: 'Horas',
+    minutes: 'Minutos',
+    period: 'AM o PM',
+    slots: 'Horarios disponibles',
+  },
+  inlineEdit: {
+    edit: 'Editar',
+  },
+  kbd: {
+    command: 'Comando',
+    control: 'Control',
+    option: 'Opción',
+    shift: 'Mayús',
+  },
+  commandPalette: {
+    label: 'Paleta de comandos',
+    placeholder: 'Buscar un comando',
+    noResults: 'Sin resultados',
+    results: '{count} resultados',
+  },
+  contextMenu: {
+    label: 'Menú contextual',
+  },
+  themeToggle: {
+    toDark: 'Cambiar al modo oscuro',
+    toSystem: 'Usar el tema del sistema',
+    toLight: 'Cambiar al modo claro',
   },
 } satisfies MazUiTranslationsNestedSchema
