@@ -33,6 +33,17 @@ describe('given the review_code tool', () => {
       expect(output).toContain('A.vue: no issue found.')
     })
 
+    it('then the maz: prefix is allowed in the maz-ui repository only', async () => {
+      const docs = createTempDir()
+      writeFile(docs, 'package.json', JSON.stringify({ devDependencies: { 'maz-ui': 'workspace:^' } }))
+      const app = createTempDir()
+      writeFile(app, 'package.json', JSON.stringify({ dependencies: { 'maz-ui': '^5.0.0' } }))
+      const code = '<template><div class="maz:flex" /></template>'
+
+      expect(await reviewCodeTool(createContextFor(docs), { code, filename: 'A.vue' })).toContain('A.vue: no issue found.')
+      expect(await reviewCodeTool(createContextFor(app), { code, filename: 'A.vue' })).toContain('[internal-prefix]')
+    })
+
     it('then it labels anonymous code and applies the minimum severity', async () => {
       const output = await reviewCodeTool(getContext(), { code: '<table></table>', minSeverity: 'warning', framework: 'vue' })
 
@@ -70,6 +81,37 @@ describe('given the review_code tool', () => {
       await expect(reviewCodeTool(createContextFor(project), {
         paths: ['src/**/*.vue'],
       })).rejects.toThrow('No .vue, .ts, .js or .css file matches src/**/*.vue')
+    })
+  })
+
+  describe('when the paths are relative to an app of a monorepo', () => {
+    function createMonorepo(): string {
+      const root = createTempDir()
+      writeFile(root, 'package.json', JSON.stringify({ private: true }))
+      writeFile(root, 'pnpm-workspace.yaml', 'packages:\n  - apps/*\n')
+      writeFile(root, 'apps/desktop/package.json', JSON.stringify({ dependencies: { 'maz-ui': '^5.0.0' } }))
+      writeFile(root, 'apps/desktop/src/Card.vue', '<template><MazBtn color="red">x</MazBtn></template>\n')
+      writeFile(root, 'apps/api/package.json', JSON.stringify({ dependencies: { express: '^5.0.0' } }))
+      writeFile(root, 'apps/api/src/Card.vue', '<template><div /></template>\n')
+
+      return root
+    }
+
+    it.each([['src/Card.vue'], ['src'], ['src/**/*.vue']])('then %s is found in the apps that use maz-ui', async (path) => {
+      const output = await reviewCodeTool(createContextFor(createMonorepo()), { paths: [path] })
+
+      expect(output).toContain('Reviewed 1 file:')
+      expect(output).toContain('apps/desktop/src/Card.vue')
+    })
+
+    it('then a path from the root still works', async () => {
+      expect(await reviewCodeTool(createContextFor(createMonorepo()), { paths: ['apps/desktop/src/Card.vue'] })).toContain('Reviewed 1 file:')
+    })
+
+    it('then the error lists the apps when nothing matches', async () => {
+      await expect(reviewCodeTool(createContextFor(createMonorepo()), { paths: ['src/Missing.vue'] }))
+        .rejects
+        .toThrow('nor from its apps that use maz-ui (`apps/desktop`). Pass the paths relative to one of them, or absolute.')
     })
   })
 
