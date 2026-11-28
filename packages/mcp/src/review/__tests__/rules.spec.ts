@@ -1793,6 +1793,10 @@ describe('given the prefer-reveal rule', () => {
     it('then the option set to true is reported', () => {
       expect(reviewReveal('export default defineNuxtConfig({ mazUi: { aos: true } })', 'nuxt.config.ts')).toHaveLength(1)
     })
+
+    it('then the aos option of another library is not reported', () => {
+      expect(reviewReveal('export default defineConfig({ animations: { aos: { once: true } } })', 'app.config.ts')).toHaveLength(0)
+    })
   })
 
   describe('when the installed maz-ui has no vReveal', () => {

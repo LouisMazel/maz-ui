@@ -19,7 +19,7 @@ export function revealEffectOf(aos: string): string {
   return rules.find(([regex]) => regex.test(aos))?.[1] ?? 'fade'
 }
 
-const AOS_PATTERNS: Array<{ regex: RegExp, message: string, suggestion: (match: RegExpExecArray) => string }> = [
+const AOS_PATTERNS: Array<{ regex: RegExp, message: string, suggestion: (match: RegExpExecArray) => string, requires?: RegExp }> = [
   {
     regex: /\bdata-maz-aos\s*=\s*["']([\w-]+)["']/g,
     message: '`data-maz-aos` is the deprecated AOS plugin (removed in v6).',
@@ -37,6 +37,8 @@ const AOS_PATTERNS: Array<{ regex: RegExp, message: string, suggestion: (match: 
   },
   {
     regex: /\baos\s*:\s*(?:true\b|\{)/g,
+    // Only in the options of maz-ui (`app.use(MazUi, ...)`, `mazUi: {}` of Nuxt), not in the config of another library
+    requires: /\bMazUi\b|\bmazUi\s*:/,
     message: 'The `aos` option is deprecated (removed in v6).',
     suggestion: () => 'Remove `aos` and `import \'maz-ui/aos.css\'`, then use `v-reveal` (`maz-ui/directives/vReveal`). With Nuxt, enable `directives: { vReveal: true }`.',
   },
@@ -52,7 +54,10 @@ export function checkReveal(code: string, context: ReviewContext): void {
   if (context.internalSource || !hasReveal(context.knowledge.docsById))
     return
 
-  for (const { regex, message, suggestion } of AOS_PATTERNS) {
+  for (const { regex, message, suggestion, requires } of AOS_PATTERNS) {
+    if (requires && !requires.test(code))
+      continue
+
     for (const match of code.matchAll(regex)) {
       context.report({
         rule: 'prefer-reveal',
