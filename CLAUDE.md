@@ -59,7 +59,8 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - `apps/nuxt-app/` - Nuxt 3 demo application
 - `tools/cli/` - Internal CLI tools
 - `tools/agent-docs/` - Generator of the agent knowledge bundle (see below)
-- `plugins/claude-code/` - Claude Code plugin (skill, MCP server, review hook), exposed by `.claude-plugin/marketplace.json`
+- `tools/agent-evals/` - Evals of the agent tooling: `pnpm -F agent-evals eval` gives tasks to the real Claude Code alone, with `init` and with the plugin (costs tokens, never in CI)
+- `plugins/maz-ui/` - Claude Code and Codex plugin (skill, MCP server, review hooks), exposed by `.claude-plugin/marketplace.json`; the OpenCode plugin is `packages/mcp/src/opencode.ts` (its build copies the skills and agents of `plugins/maz-ui`)
 
 ### Main Library Structure (`packages/maz-ui/src/`)
 
@@ -110,9 +111,10 @@ Within individual packages (e.g., `packages/maz-ui/`):
 - Single source of the docs for AI agents: it reads `apps/docs/src`, the component sources (vue-component-meta + vue-docgen-api), the Tailwind CSS of the lib and the icon list, and writes:
   - `packages/<dir>/agent-docs/` per published package (its fragment: the docs whose `DocEntry.package` is it, built with the package, gitignored) and `packages/mcp/agent-docs/` (every fragment in `<short>/` + `index.json`)
   - `apps/docs/.vitepress/generated-docs/*.doc.md` (API tables of the component pages) and `llms.txt` / `llms-full.txt` / one flat `.md` per page on maz-ui.com
-  - `plugins/claude-code/skills/maz-ui/SKILL.md` (committed: run `pnpm -F agent-docs generate:plugin` after changing `tools/agent-docs/content`, a test fails otherwise)
+  - `plugins/maz-ui/skills/maz-ui/SKILL.md` and `plugins/maz-ui/.mcp.json` (inline copy of `scripts/start-server.mjs`, Codex does not expand `${CLAUDE_PLUGIN_ROOT}`) (committed: run `pnpm -F agent-docs generate:plugin` after changing `tools/agent-docs/content` or `start-server.mjs`, a test fails otherwise)
 - A new published package needs an entry in `tools/agent-docs/src/packages.ts` and a `generate:agent-docs` script in its `build`.
 - The agent rules live in `tools/agent-docs/content/rules.md` (also included in `apps/docs/src/guide/ai-agents.md`).
+- The plugins are easy to forget: a change of the MCP server, the CLI, the rules or the review also updates `plugins/maz-ui` (its README, hooks, `plugin.json` and `marketplace.json` descriptions; its hooks run in Claude Code and Codex) and the OpenCode plugin, and a doc that explains how to set up the agents gives the install command (`claude plugin install maz-ui --marketplace LouisMazel/maz-ui`) next to `init`.
 - The generator warns about broken internal links and unknown alias ids: keep `pnpm -F agent-docs generate --bundle /tmp/x --strict` clean.
 - Docs (site and agent docs): simple and easy to understand but complete, in short sentences, the common case first.
 - Docs examples (code fences) must use plain Tailwind classes, never the internal `maz:` prefix (only live demos rendered by the docs site use it).
@@ -163,6 +165,6 @@ Within individual packages (e.g., `packages/maz-ui/`):
 ### Coverage Requirements
 
 - **ALWAYS run `pnpm test:unit:coverage` (or `CI=1 pnpm vitest run --coverage` from `packages/maz-ui`) before opening a PR that touches `packages/maz-ui/src/**`**. Plain `pnpm test:unit` does not enforce the thresholds.
-- The coverage thresholds are defined in `packages/maz-ui/vitest.config.ts`. They are enforced in CI (`CI=1` disables `autoUpdate`). A run that drops below any threshold fails.
+- The coverage thresholds are defined in the `vitest.config.ts` of each package: round numbers, fixed by hand (no `autoUpdate`), the target is 90%+ everywhere. A run that drops below any threshold fails.
 - New code must keep the global thresholds for **statements / branches / functions / lines** green. Per-file 100% is not enough — adding many covered functions can still shift the global ratio.
-- `autoUpdate` only **raises** thresholds locally — it never lowers them. If a real coverage drift forces the threshold down, update `vitest.config.ts` manually and commit it with the PR.
+- Never lower a threshold to make a PR pass: add the missing tests. Raise it (round number) when the coverage clearly goes above.

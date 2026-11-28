@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "maz-ui": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/start-server.mjs"]
-    }
-  }
-}
