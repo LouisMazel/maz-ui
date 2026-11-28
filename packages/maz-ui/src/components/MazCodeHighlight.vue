@@ -377,17 +377,19 @@ watch([resolvedCode, resolvedTheme, isDiff], highlight, { immediate: true })
 @reference "../tailwindcss/tailwind.css";
 
 .m-code-highlight {
-  --m-code-highlight-pad: calc(var(--spacing) * 4);
+  --m-code-highlight-pad: calc(var(--maz-space, 0.25rem) * 4);
 
   :deep(pre.shiki) {
     @apply maz:rounded-md maz:overflow-auto maz:scrollbar-themed maz:type-code maz:text-sm;
 
+    box-sizing: border-box;
     padding: var(--m-code-highlight-pad);
+    min-block-size: calc(var(--maz-control-height-xs, 2rem) + 1rem);
     max-block-size: var(--m-code-highlight-max-height, none);
   }
 
   &.--size-mini {
-    --m-code-highlight-pad: calc(var(--spacing) * 2);
+    --m-code-highlight-pad: calc(var(--maz-space, 0.25rem) * 2);
   }
 
   &.--size-mini :deep(pre.shiki) {
@@ -395,7 +397,7 @@ watch([resolvedCode, resolvedTheme, isDiff], highlight, { immediate: true })
   }
 
   &.--size-xs {
-    --m-code-highlight-pad: calc(var(--spacing) * 2.5);
+    --m-code-highlight-pad: calc(var(--maz-space, 0.25rem) * 2.5);
   }
 
   &.--size-xs :deep(pre.shiki) {
@@ -403,7 +405,7 @@ watch([resolvedCode, resolvedTheme, isDiff], highlight, { immediate: true })
   }
 
   &.--size-sm {
-    --m-code-highlight-pad: calc(var(--spacing) * 3);
+    --m-code-highlight-pad: calc(var(--maz-space, 0.25rem) * 3);
   }
 
   &.--size-sm :deep(pre.shiki) {
@@ -411,7 +413,7 @@ watch([resolvedCode, resolvedTheme, isDiff], highlight, { immediate: true })
   }
 
   &.--size-lg {
-    --m-code-highlight-pad: calc(var(--spacing) * 5);
+    --m-code-highlight-pad: calc(var(--maz-space, 0.25rem) * 5);
   }
 
   &.--size-lg :deep(pre.shiki) {
@@ -419,7 +421,7 @@ watch([resolvedCode, resolvedTheme, isDiff], highlight, { immediate: true })
   }
 
   &.--size-xl {
-    --m-code-highlight-pad: calc(var(--spacing) * 6);
+    --m-code-highlight-pad: calc(var(--maz-space, 0.25rem) * 6);
   }
 
   &.--size-xl :deep(pre.shiki) {
