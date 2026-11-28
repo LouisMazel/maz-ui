@@ -35,6 +35,8 @@ export const TOOLS: ToolDefinition[] = [
 
 export async function runTool(context: ServerContext, tool: ToolDefinition, args: unknown): Promise<CallToolResult> {
   try {
+    context.refresh()
+
     return {
       content: [
         { type: 'text', text: await tool.run(context, args) },
