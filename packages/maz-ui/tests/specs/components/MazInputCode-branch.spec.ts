@@ -687,13 +687,23 @@ describe('MazInputCode branch coverage', () => {
   describe('input id and name attributes', () => {
     it('generates correct id for each input', () => {
       const wrapper = shallowMount(MazInputCode, {
-        props: { codeLength: 3 },
+        props: { codeLength: 3, id: 'otp' },
       })
 
       const inputs = wrapper.findAll('input')
-      expect(inputs[0].attributes('id')).toBe('m-input-code-1')
-      expect(inputs[1].attributes('id')).toBe('m-input-code-2')
-      expect(inputs[2].attributes('id')).toBe('m-input-code-3')
+      expect(inputs[0].attributes('id')).toBe('otp-1')
+      expect(inputs[1].attributes('id')).toBe('otp-2')
+      expect(inputs[2].attributes('id')).toBe('otp-3')
+    })
+
+    it('generates ids unique to each instance', () => {
+      const wrapper = mount({
+        components: { MazInputCode },
+        template: '<div><MazInputCode /><MazInputCode /></div>',
+      })
+
+      const ids = wrapper.findAllComponents(MazInputCode).map(code => code.find('input').attributes('id'))
+      expect(ids[0]).not.toBe(ids[1])
     })
 
     it('generates correct name for each input', () => {
@@ -709,22 +719,24 @@ describe('MazInputCode branch coverage', () => {
   })
 
   describe('input attributes', () => {
-    it('sets minlength and maxlength to 1', () => {
+    it('sets minlength to 1 and maxlength to 1 after the first input, which takes the whole autofilled code', () => {
       const wrapper = shallowMount(MazInputCode)
 
       const inputs = wrapper.findAll('input')
-      inputs.forEach((input) => {
+      expect(inputs[0].attributes('maxlength')).toBeUndefined()
+      inputs.forEach((input, index) => {
         expect(input.attributes('minlength')).toBe('1')
-        expect(input.attributes('maxlength')).toBe('1')
+        if (index > 0)
+          expect(input.attributes('maxlength')).toBe('1')
       })
     })
 
-    it('disables autocomplete on each input', () => {
+    it('enables the one-time code autofill on the first input only', () => {
       const wrapper = shallowMount(MazInputCode)
 
       const inputs = wrapper.findAll('input')
-      inputs.forEach((input) => {
-        expect(input.attributes('autocomplete')).toBe('off')
+      inputs.forEach((input, index) => {
+        expect(input.attributes('autocomplete')).toBe(index === 0 ? 'one-time-code' : 'off')
         expect(input.attributes('aria-label')).toBeTruthy()
       })
     })
