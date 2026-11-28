@@ -75,12 +75,12 @@ function resolveAos(aos: MazUiNuxtOptions['aos']): MazUiOptions['aos'] {
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const { vueApp, $config } = nuxtApp
-  const { theme = {}, translations, defaults, toast, dialog, aos, motion, plugins } = $config.public.mazUi
+  const { theme = {}, translations, defaults, toast, dialog, aos, motion, density, plugins } = $config.public.mazUi
 
-  // Rendered by the server: no animation before the hydration when the motion is reduced
-  const motionClasses = getMotionClasses(motion)
-  if (motionClasses.length > 0)
-    useHead({ htmlAttrs: { class: motionClasses.join(' ') } })
+  // Rendered by the server: no animation before the hydration when the motion is reduced, no layout shift in compact density
+  const htmlClasses = [...getMotionClasses(motion), ...(density === 'compact' ? ['m-density-compact'] : [])]
+  if (htmlClasses.length > 0)
+    useHead({ htmlAttrs: { class: htmlClasses.join(' ') } })
 
   vueApp.use(MazUi, {
     theme: await resolveTheme(theme as NuxtThemeOptions, nuxtApp),
@@ -93,6 +93,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     dialog,
     aos: resolveAos(aos),
     motion,
+    density,
     openExternal,
   })
 

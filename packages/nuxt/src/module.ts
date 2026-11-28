@@ -105,6 +105,7 @@ const defaults = {
   dialog: {},
   aos: false,
   motion: 'auto',
+  density: 'default',
   plugins: {
     aos: false,
     dialog: false,

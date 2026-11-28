@@ -197,6 +197,15 @@ export interface MazUiNuxtOptions {
   motion?: MazUiOptions['motion']
 
   /**
+   * Density of the controls: `'default'` keeps the heights of maz-ui 5, `'compact'` makes them about 14% shorter
+   * (a `md` control goes from 42px to 36px) with tighter paddings. Rendered as a class of `<html>` by the server.
+   * @default 'default'
+   * @example 'compact'
+   */
+  // Removed in v6 (plans/ROADMAP.md): `compact` becomes the default density
+  density?: MazUiOptions['density']
+
+  /**
    * Animations on scroll: installs the AOS plugin and auto-imports `useAos`
    * @default false
    */

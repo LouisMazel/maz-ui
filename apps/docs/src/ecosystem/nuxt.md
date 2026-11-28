@@ -538,6 +538,18 @@ export default defineNuxtConfig({
 
 `motion: { scope: 'page' }` also stops the animations of the whole page under reduced motion.
 
+### Density
+
+`density: 'compact'` makes the controls (buttons, fields, segmented, menus...) about 14% shorter: a `md` control goes from 42px to 36px. It is `'default'` unless you set it. The server renders the class `m-density-compact` in `<html>`: no layout shift at the hydration. See [Density](./themes.md#density).
+
+```ts
+export default defineNuxtConfig({
+  mazUi: {
+    density: 'compact',
+  },
+})
+```
+
 ### Animations on scroll
 
 Disabled by default. `aos` installs the [aos plugin](./../plugins/aos.md), injects its CSS and auto-imports `useAos`:
