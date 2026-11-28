@@ -123,6 +123,7 @@ const defaults = {
     vFullscreenImg: false,
     vIntersect: false,
     vTooltip: false,
+    vReveal: false,
   },
   agents: {
     rules: false,
@@ -585,6 +586,10 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.directives.vTooltip) {
       addPlugin(resolve(_dirname, './runtime/plugins/v-tooltip'))
+    }
+
+    if (moduleOptions.directives.vReveal) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-reveal'))
     }
 
     // Composables

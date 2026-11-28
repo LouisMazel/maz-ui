@@ -182,6 +182,7 @@ describe('nuxt module', () => {
         vFullscreenImg: false,
         vIntersect: false,
         vTooltip: false,
+        vReveal: false,
       })
     })
 
@@ -1064,6 +1065,15 @@ describe('nuxt module', () => {
         })
         expect(addPlugin).toHaveBeenCalledWith(
           expect.stringContaining('v-tooltip'),
+        )
+      })
+
+      it('should add v-reveal plugin when enabled', () => {
+        callSetup({
+          directives: { vReveal: true },
+        })
+        expect(addPlugin).toHaveBeenCalledWith(
+          expect.stringContaining('v-reveal'),
         )
       })
 

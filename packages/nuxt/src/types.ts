@@ -207,8 +207,10 @@ export interface MazUiNuxtOptions {
 
   /**
    * Animations on scroll: installs the AOS plugin and auto-imports `useAos`
+   * @deprecated Use the `vReveal` directive (`directives: { vReveal: true }`), `MazReveal` or `useReveal` instead
    * @default false
    */
+  // Removed in v6 (plans/ROADMAP.md): the AOS is replaced by vReveal
   aos?:
     | boolean
     | (Omit<AosOptions, 'router'> & {
@@ -546,6 +548,13 @@ export interface MazUiNuxtOptions {
      * @default false
      */
     vTooltip?: boolean | VTooltipOptions
+
+    /**
+     * Install v-reveal directive globally
+     * @description Reveals the elements when they enter the viewport (fade, slide, curtain, lines...), the replacement of the AOS
+     * @default false
+     */
+    vReveal?: boolean
   }
 
   /**
