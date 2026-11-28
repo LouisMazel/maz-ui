@@ -179,6 +179,40 @@ describe('given a popover opened from the panel of another one', () => {
   })
 })
 
+describe('given an open popover with a tooltip open inside it', () => {
+  describe('when Escape is pressed', () => {
+    it('then only the tooltip closes', async () => {
+      const isOuterOpen = ref(true)
+      const isTooltipOpen = ref(true)
+      const wrapper = mount(defineComponent({
+        setup: () => () => h(MazPopover, {
+          'modelValue': isOuterOpen.value,
+          'onUpdate:modelValue': (value: boolean) => (isOuterOpen.value = value),
+        }, {
+          trigger: () => h('button', 'Outer'),
+          default: () => h(MazPopover, {
+            'role': 'tooltip',
+            'trigger': 'manual',
+            'modelValue': isTooltipOpen.value,
+            'onUpdate:modelValue': (value: boolean) => (isTooltipOpen.value = value),
+          }, {
+            trigger: () => h('button', 'Info'),
+            default: () => 'Hint',
+          }),
+        }),
+      }), { attachTo: document.body, global: { stubs: { teleport: false } } })
+      await settle()
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', cancelable: true }))
+      await settle()
+
+      expect(isTooltipOpen.value).toBe(false)
+      expect(isOuterOpen.value).toBe(true)
+      wrapper.unmount()
+    })
+  })
+})
+
 describe('given a panel whose first button is disabled', () => {
   describe('when the popover opens', () => {
     it('focuses the first enabled field, whatever its type', async () => {

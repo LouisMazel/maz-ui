@@ -222,3 +222,39 @@ describe('given vTooltip directive', () => {
     })
   })
 })
+
+describe('given several vTooltip', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+    document.body.innerHTML = ''
+  })
+
+  describe('when a second tooltip opens right after the first one closed', () => {
+    it('then it opens without its delay', async () => {
+      vi.useFakeTimers()
+      const wrapper = mount({
+        template: `<div><button class="a" v-tooltip="{ text: 'A', delay: 500 }">A</button><button class="b" v-tooltip="{ text: 'B', delay: 500 }">B</button></div>`,
+        directives: { tooltip: vTooltip },
+      }, { attachTo: document.body })
+      await nextTick()
+      await vi.advanceTimersByTimeAsync(0)
+
+      const a = wrapper.find('.a')
+      const b = wrapper.find('.b')
+
+      await a.trigger('mouseenter')
+      await vi.advanceTimersByTimeAsync(600)
+      expect(document.querySelector('[role="tooltip"]')).not.toBeNull()
+
+      await a.trigger('mouseleave')
+      await vi.advanceTimersByTimeAsync(100)
+      await b.trigger('mouseenter')
+      await vi.advanceTimersByTimeAsync(0)
+      await nextTick()
+      const tooltipTexts = [...document.querySelectorAll('[role="tooltip"]')].map(element => element.textContent?.trim())
+      expect(tooltipTexts).toContain('B')
+
+      wrapper.unmount()
+    })
+  })
+})
