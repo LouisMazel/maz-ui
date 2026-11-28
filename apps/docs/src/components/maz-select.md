@@ -444,7 +444,7 @@ Set `topLabel: true` in the [global defaults](../guide/global-defaults.md) to sh
 
 ## Motion
 
-The list grows from the field and its options rise in quickly. A highlight slides between the options under the pointer and jumps instantly with the arrow keys. With `search`, the matched letters are underlined (accents and case aside). With reduced motion, everything is instant.
+The list grows from the field and its options rise in quickly. A highlight slides between the options under the pointer and jumps instantly with the arrow keys. With `search`, the matched letters are underlined (accents and case aside). With reduced motion, everything is instant. The selected option is in bold with a check icon (the checkbox with `multiple`), so it does not rely on color.
 
 ## Accessibility
 

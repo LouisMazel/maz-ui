@@ -240,7 +240,7 @@ The component forwards the props of [MazInput](./maz-input.md) that make sense f
 
 ## Motion
 
-The list grows from the input and its options rise in quickly. A highlight slides between the suggestions under the pointer and jumps instantly with the arrow keys. The matched letters are underlined (see `highlight`). With reduced motion, everything is instant.
+The list grows from the input and its options rise in quickly. A highlight slides between the suggestions under the pointer and jumps instantly with the arrow keys. The matched letters are underlined (see `highlight`). With reduced motion, everything is instant. The selected suggestion is in bold with a check icon.
 
 ## Accessibility
 

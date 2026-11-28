@@ -56,6 +56,24 @@ function getLabels(wrapper: Wrapper) {
   return wrapper.findAll('[role="option"]').map(option => option.text())
 }
 
+describe('given a MazInputAutocomplete without rounded-size', () => {
+  describe('when it is rendered', () => {
+    it('then the field has the medium radius like MazInput', () => {
+      const wrapper = mountAutocomplete()
+
+      expect(wrapper.find('.m-input-wrapper').classes()).toContain('--rounded-md')
+    })
+  })
+
+  describe('when rounded-size is set', () => {
+    it('then the field takes it', () => {
+      const wrapper = mountAutocomplete({ roundedSize: 'full' })
+
+      expect(wrapper.find('.m-input-wrapper').classes()).toContain('--rounded-full')
+    })
+  })
+})
+
 describe('given a MazInputAutocomplete with items', () => {
   describe('when a query is typed', () => {
     it('then the matching items are listed, the best first, with the matched characters highlighted', async () => {

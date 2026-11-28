@@ -329,7 +329,7 @@ const messages = computed(() => ({
   freeEntry: translations?.freeEntry || t('inputAutocomplete.freeEntry'),
 } satisfies MazUiTranslationsNestedSchema['inputAutocomplete']))
 
-const { size } = useGlobalConfig<{ size: MazSize }>('MazInputAutocomplete', { size: 'md' })
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazInputAutocomplete', { size: 'md', roundedSize: 'md' })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazInputAutocomplete',
@@ -818,7 +818,6 @@ defineExpose({
       :style="{
         'maxHeight': `${maxListHeight}px`,
         'minWidth': listMinWidth ? `${listMinWidth}px` : undefined,
-        '--selected-bg-color': 'color-mix(in srgb, var(--selected-text-color) 12%, transparent)',
         '--selected-text-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `light-dark(oklch(from var(--maz-${color}) min(l, calc(0.25 + c * 2)) c h), oklch(from var(--maz-${color}) max(l, calc(0.92 - c * 2)) c h))`,
       }"
       @mousedown.prevent

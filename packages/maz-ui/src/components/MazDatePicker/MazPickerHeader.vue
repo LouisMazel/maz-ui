@@ -169,44 +169,32 @@ watch(
 @reference "../../tailwindcss/tailwind.css";
 
 .m-date-picker-header {
-  &.--primary,
-  &.--secondary,
-  &.--info,
-  &.--success,
-  &.--warning,
-  &.--destructive,
-  &.--accent {
-    @apply maz:border-b maz:border-divider maz:text-foreground;
-
-    background-color: color-mix(in srgb, var(--m-date-picker-header-color) 12%, transparent);
-  }
-
   &.--primary {
-    --m-date-picker-header-color: var(--maz-primary);
+    @apply maz:bg-primary maz:text-primary-foreground;
   }
 
   &.--secondary {
-    --m-date-picker-header-color: var(--maz-secondary);
+    @apply maz:bg-secondary maz:text-secondary-foreground;
   }
 
   &.--info {
-    --m-date-picker-header-color: var(--maz-info);
+    @apply maz:bg-info maz:text-info-foreground;
   }
 
   &.--success {
-    --m-date-picker-header-color: var(--maz-success);
+    @apply maz:bg-success maz:text-success-foreground;
   }
 
   &.--warning {
-    --m-date-picker-header-color: var(--maz-warning);
+    @apply maz:bg-warning maz:text-warning-foreground;
   }
 
   &.--destructive {
-    --m-date-picker-header-color: var(--maz-destructive);
+    @apply maz:bg-destructive maz:text-destructive-foreground;
   }
 
   &.--accent {
-    --m-date-picker-header-color: var(--maz-accent);
+    @apply maz:bg-accent maz:text-accent-foreground;
   }
 
   &.--contrast {

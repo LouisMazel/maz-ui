@@ -1,6 +1,7 @@
 <script lang="ts" setup generic="Option extends Record<string, unknown>">
 import type { FuzzySearchSegment } from '@maz-ui/utils/helpers/fuzzySearch'
 import type { MazColor } from '../types.ts'
+import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { MazNoSymbol } from '@maz-ui/icons/lazy/MazNoSymbol'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref, shallowRef, useTemplateRef, watch } from 'vue'
@@ -73,7 +74,7 @@ const ENTER_DURATION = 400
 
 const hoveredElement = shallowRef<HTMLElement | null>(null)
 const focusedElement = shallowRef<HTMLElement | null>(null)
-const highlightBox = ref<{ y: number, height: number }>()
+const highlightBox = ref<{ x: number, y: number, width: number, height: number }>()
 const isSliding = ref(false)
 const isMoving = ref(false)
 const isEntering = ref(false)
@@ -106,7 +107,7 @@ function placeHighlight() {
   }
 
   isMoving.value = isSliding.value && !!highlightBox.value && !shouldReduceMotion.value
-  highlightBox.value = { y: element.offsetTop, height: element.offsetHeight }
+  highlightBox.value = { x: element.offsetLeft, y: element.offsetTop, width: element.offsetWidth, height: element.offsetHeight }
 }
 
 watch(
@@ -180,7 +181,8 @@ function onFocusOut(event: FocusEvent) {
 
 const highlightStyle = computed(() => highlightBox.value
   ? {
-      transform: `translateY(${highlightBox.value.y}px)`,
+      transform: `translate(${highlightBox.value.x}px, ${highlightBox.value.y}px)`,
+      width: `${highlightBox.value.width}px`,
       height: `${highlightBox.value.height}px`,
       opacity: 1,
       transitionProperty: isMoving.value ? 'transform, opacity' : 'opacity',
@@ -313,6 +315,7 @@ defineExpose({
             {{ option[labelKey] }}
           </span>
         </slot>
+        <MazCheck v-if="!multiple && isSelected(option)" class="m-select-list-item__check" aria-hidden="true" />
       </button>
     </template>
   </div>
@@ -335,19 +338,16 @@ defineExpose({
   }
 
   &.--is-selected {
-    color: var(--selected-text-color);
-    background-color: var(--selected-bg-color);
+    @apply maz:font-semibold maz:text-foreground;
 
-    &:focus-within,
-    &.--is-active {
-      outline: var(--selected-text-color) solid var(--maz-border-width);
-      outline-offset: 2px;
-    }
-
-    &.--transparent {
-      @apply maz:bg-surface;
-    }
+    background-color: color-mix(in srgb, var(--maz-foreground) 6%, transparent);
   }
+}
+
+.m-select-list-item__check {
+  @apply maz:ms-auto maz:size-4 maz:shrink-0;
+
+  color: var(--selected-text-color, currentcolor);
 }
 
 .m-select-list__no-results {
@@ -357,7 +357,8 @@ defineExpose({
 .m-select-list__highlight {
   @apply maz:pointer-events-none maz:absolute maz:top-0 maz:rounded-md maz:bg-surface-600 maz:dark:bg-surface-400;
 
-  inset-inline: 0.5rem;
+  /* stylelint-disable-next-line liberty/use-logical-spec -- the translation is the physical offsetLeft of the option */
+  left: 0;
   transition-duration: calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1));
   transition-timing-function: var(--maz-easing-out, ease-out);
   will-change: transform;
