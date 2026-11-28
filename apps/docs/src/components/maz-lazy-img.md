@@ -89,4 +89,18 @@ Hide the spinner shown while the image is loading with `hide-loader`.
 </template>
 ```
 
+## Blur placeholder
+
+By default a spinner is displayed while the image loads. With `placeholder="blur"`, a soft tinted block is displayed instead, then the image fades in and goes from blurred to sharp.
+
+<div class="vp-raw">
+<MazLazyImg src="https://placedog.net/600/400?id=12" placeholder="blur" block />
+</div>
+
+```html
+<MazLazyImg src="/dog.jpg" placeholder="blur" block />
+```
+
+The image is hidden until it is loaded: do not use it for an image above the fold that must paint at once. With reduced motion, the image appears without the transition.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-lazy-img.doc.md-->

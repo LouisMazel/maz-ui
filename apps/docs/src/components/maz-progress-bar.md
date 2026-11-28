@@ -74,6 +74,38 @@ With `max`, `value` is on its scale: 3 of 5 steps.
 <MazProgressBar :value="65" color="warning" label="warning" />
 <MazProgressBar :value="65" color="destructive" label="destructive" />
 <MazProgressBar :value="65" color="contrast" label="contrast" />
+<MazProgressBar :value="65" color="neutral" label="neutral" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Free colors
+
+`color` (the bar and the segments without their own color) and the `color` of each segment also take any CSS color, for categories and series that are not roles of the interface. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazProgressBar :value="65" color="#8b5cf6" label="Design" />
+    <MazProgressBar :segments="[{ value: 8, color: '#e11d48', label: 'bugs' }, { value: 5, color: 'oklch(0.75 0.15 150)', label: 'features' }, { value: 3, color: 'success', label: 'docs' }]" size="md" gap label="Issues" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazProgressBar :value="65" color="#8b5cf6" label="Design" />
+  <MazProgressBar
+    :segments="[
+      { value: 8, color: '#e11d48', label: 'bugs' },
+      { value: 5, color: 'oklch(0.75 0.15 150)', label: 'features' },
+      { value: 3, color: 'success', label: 'docs' },
+    ]"
+    size="md"
+    gap
+    label="Issues"
+  />
+</template>
 ```
 
   </template>
@@ -151,13 +183,57 @@ const updates: MazProgressBarSegment[] = [
 <MazProgressBar role="meter" :value="72" label="Disk usage" value-text="72 GB of 100 GB" color="warning" />
 ```
 
+## Percentage and check
+
+`show-value` displays the percentage after the bar, its digits roll when the value changes. With `check`, a check draws itself once the bar is full.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-3">
+    <MazProgressBar :value="progress" show-value check label="Upload" />
+    <div class="maz:flex maz:gap-2">
+      <MazBtn size="sm" @click="progress = Math.max(0, progress - 20)">-20</MazBtn>
+      <MazBtn size="sm" @click="progress = Math.min(100, progress + 20)">+20</MazBtn>
+    </div>
+  </div>
+
+<template #code>
+
+```html
+<MazProgressBar :value="progress" show-value check label="Upload" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Indeterminate
+
+When the progress is unknown, `indeterminate` slides a segment along the bar.
+
+<ComponentDemo>
+  <MazProgressBar indeterminate label="Loading" />
+
+<template #code>
+
+```html
+<MazProgressBar indeterminate label="Loading" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The parts grow smoothly when the value changes.
+- The percentage rolls and the check draws itself. Use `:animated="false"` to skip them.
+- With reduced motion, the segment of the indeterminate bar stays still.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-progress-bar.doc.md-->
 
 <script lang="ts" setup>
   import { ref } from 'vue'
 
   const progress = ref(40)
-  const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast']
+  const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral']
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
   const updates = [
     { value: 12, color: 'success', label: 'patch' },

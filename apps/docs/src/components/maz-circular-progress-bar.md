@@ -82,12 +82,35 @@ The duration of the animation can be changed by passing the `duration` prop. The
     <MazCircularProgressBar :percentage="75" color="success" />
     <MazCircularProgressBar :percentage="75" color="warning" />
     <MazCircularProgressBar :percentage="75" color="destructive" />
+    <MazCircularProgressBar :percentage="75" color="neutral" />
   </div>
 
 <template #code>
 
 ```vue
 <MazCircularProgressBar :percentage="75" :duration="5000" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Free color
+
+`color` also takes any CSS color, for a gauge that shows data. The gradient of the stroke is derived from it. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <div class="maz:flex maz:gap-3 maz:flex-wrap maz:items-center">
+    <MazCircularProgressBar :percentage="75" color="#8b5cf6" />
+    <MazCircularProgressBar :percentage="40" color="oklch(0.75 0.15 150)" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazCircularProgressBar :percentage="75" color="#8b5cf6" />
+  <MazCircularProgressBar :percentage="40" color="oklch(0.75 0.15 150)" />
+</template>
 ```
 
   </template>
@@ -141,5 +164,51 @@ Obviously, the "counter animation" will not work in this case.
 
   </template>
 </ComponentDemo>
+
+## Rolling digits and check
+
+By default the number counts up when the circle comes into view. With `roll`, the digits roll instead each time `percentage` changes. With `check`, a check replaces the number once the circle is full.
+
+<ComponentDemo>
+  <div class="maz:flex maz:items-center maz:gap-6">
+    <MazCircularProgressBar :percentage="circularValue" roll check suffix="%" size="6em" />
+    <div class="maz:flex maz:gap-2">
+      <MazBtn size="sm" @click="circularValue = Math.max(0, circularValue - 25)">-25</MazBtn>
+      <MazBtn size="sm" @click="circularValue = Math.min(100, circularValue + 25)">+25</MazBtn>
+    </div>
+  </div>
+
+<template #code>
+
+```html
+<MazCircularProgressBar :percentage="percentage" roll check suffix="%" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Indeterminate
+
+When the progress is unknown, `indeterminate` turns an arc around the circle.
+
+<ComponentDemo>
+  <MazCircularProgressBar :percentage="0" indeterminate size="5em" />
+
+<template #code>
+
+```html
+<MazCircularProgressBar :percentage="0" indeterminate />
+```
+
+  </template>
+</ComponentDemo>
+
+With reduced motion, the arc and the digits stay still.
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+
+  const circularValue = ref(50)
+</script>
 
 <!--@include: ./../../.vitepress/generated-docs/maz-circular-progress-bar.doc.md-->
