@@ -66,7 +66,8 @@ const NOT_AUTO_IMPORTED_COMPOSABLES = new Set([
 
 const mazUiComposables = Object.fromEntries(
   mazUiExports.composables
-    .filter(name => !NOT_AUTO_IMPORTED_COMPOSABLES.has(name))
+    // Only the composables: `useOriginTransition` also exports helpers (`getLastPointerTarget`...)
+    .filter(name => name.startsWith('use') && !NOT_AUTO_IMPORTED_COMPOSABLES.has(name))
     .map(name => [name, true]),
 ) as Omit<Record<MazUiComposables, true>, 'useAos' | 'useMazIconProps'>
 
