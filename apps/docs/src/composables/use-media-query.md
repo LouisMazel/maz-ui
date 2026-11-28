@@ -11,12 +11,35 @@ Use it instead of `window.matchMedia` by hand. For the breakpoints of the theme,
 
 ## Usage
 
-```ts
+Resize the window or change the color scheme of your system: the values follow.
+
+<ComponentDemo expanded>
+  <div class="maz:flex maz:flex-col maz:gap-2 maz:text-sm">
+    <div>(min-width: 1024px): <MazBadge :color="isWide ? 'success' : 'container'" size="sm">{{ isWide }}</MazBadge></div>
+    <div>(orientation: landscape): <MazBadge :color="isLandscape ? 'success' : 'container'" size="sm">{{ isLandscape }}</MazBadge></div>
+    <div>(prefers-color-scheme: dark): <MazBadge :color="isDark ? 'success' : 'container'" size="sm">{{ isDark }}</MazBadge></div>
+  </div>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
 import { useMediaQuery } from 'maz-ui/composables/useMediaQuery'
 
 const { matches: isWide } = useMediaQuery('(min-width: 1024px)')
 const { matches: isLandscape } = useMediaQuery(() => '(orientation: landscape)')
+const { matches: isDark } = useMediaQuery('(prefers-color-scheme: dark)')
+</script>
+
+<template>
+  <p>Wide screen: {{ isWide }}</p>
+  <p>Landscape: {{ isLandscape }}</p>
+  <p>Dark scheme: {{ isDark }}</p>
+</template>
 ```
+
+  </template>
+</ComponentDemo>
 
 The query can be a string, a ref or a getter.
 
@@ -50,3 +73,11 @@ function useReducedMotion(options?: UseMediaQueryOptions): {
   isSupported: boolean
 }
 ```
+
+<script lang="ts" setup>
+import { useMediaQuery } from 'maz-ui/composables/useMediaQuery'
+
+const { matches: isWide } = useMediaQuery('(min-width: 1024px)')
+const { matches: isLandscape } = useMediaQuery(() => '(orientation: landscape)')
+const { matches: isDark } = useMediaQuery('(prefers-color-scheme: dark)')
+</script>

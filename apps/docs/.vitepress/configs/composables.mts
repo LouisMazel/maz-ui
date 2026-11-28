@@ -44,6 +44,7 @@ export const composables = {
       link: '/composables/use-pull-to-refresh',
     },
     { text: 'useReadingTime', link: '/composables/use-reading-time' },
+    { text: withNewBadge('useReducedMotion'), link: '/composables/use-reduced-motion' },
     {
       text: withNewBadge('useRelativeTime'),
       link: '/composables/use-relative-time',
@@ -52,6 +53,7 @@ export const composables = {
       text: withNewBadge('useResizeObserver'),
       link: '/composables/use-resize-observer',
     },
+    { text: withNewBadge('useReveal'), link: '/composables/use-reveal' },
     { text: withNewBadge('useRovingFocus'), link: '/composables/use-roving-focus' },
     {
       text: withNewBadge('useScroll'),

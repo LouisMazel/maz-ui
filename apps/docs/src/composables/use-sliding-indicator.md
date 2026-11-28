@@ -11,6 +11,27 @@ description: Slide a pill or a line under the active element of a group - tabs, 
 
 Give the container and the active element. The composable returns the style of the indicator.
 
+<ComponentDemo expanded>
+  <div class="maz:flex maz:flex-col maz:items-start maz:gap-3">
+    <div ref="container" class="maz:relative maz:flex maz:rounded-lg maz:bg-container maz:p-1">
+      <span class="maz:absolute maz:start-0 maz:top-0 maz:rounded-md maz:bg-primary" :style="style" />
+      <button
+        v-for="(label, index) in tabs"
+        ref="buttons"
+        :key="label"
+        type="button"
+        class="maz:relative maz:cursor-pointer maz:rounded-md maz:px-4 maz:py-2 maz:text-sm maz:font-medium maz:transition-colors"
+        :class="activeIndex === index ? 'maz:text-primary-foreground' : 'maz:text-foreground'"
+        @click="activeIndex = index"
+      >
+        {{ label }}
+      </button>
+    </div>
+    <div class="maz:text-sm">isReady: <MazBadge :color="isReady ? 'success' : 'container'" size="sm">{{ isReady }}</MazBadge></div>
+  </div>
+
+  <template #code>
+
 ```vue
 <script lang="ts" setup>
 import { useSlidingIndicator } from 'maz-ui/composables/useSlidingIndicator'
@@ -26,14 +47,15 @@ const { style } = useSlidingIndicator({ container, active })
 </script>
 
 <template>
-  <div ref="container" class="relative flex">
-    <span class="absolute start-0 top-0 rounded-md bg-primary/20" :style="style" />
+  <div ref="container" class="relative flex rounded-lg bg-container p-1">
+    <span class="absolute start-0 top-0 rounded-md bg-primary" :style="style" />
 
     <button
       v-for="(label, index) in ['One', 'Two', 'Three']"
       ref="buttons"
       :key="label"
       class="relative px-4 py-2"
+      :class="activeIndex === index ? 'text-primary-foreground' : 'text-foreground'"
       @click="activeIndex = index"
     >
       {{ label }}
@@ -41,6 +63,9 @@ const { style } = useSlidingIndicator({ container, active })
   </div>
 </template>
 ```
+
+  </template>
+</ComponentDemo>
 
 The indicator must be absolutely positioned at the start of the container (`top: 0` and `inset-inline-start: 0`), and the container must be positioned.
 
@@ -96,3 +121,17 @@ function useSlidingIndicator(options: UseSlidingIndicatorOptions): {
   update: () => void
 }
 ```
+
+<script lang="ts" setup>
+import { useSlidingIndicator } from 'maz-ui/composables/useSlidingIndicator'
+import { computed, ref, useTemplateRef } from 'vue'
+
+const container = useTemplateRef('container')
+const buttons = useTemplateRef<HTMLElement[]>('buttons')
+const activeIndex = ref(0)
+const tabs = ['Overview', 'Details', 'Activity']
+
+const active = computed(() => buttons.value?.[activeIndex.value])
+
+const { style, isReady } = useSlidingIndicator({ container, active })
+</script>

@@ -11,6 +11,32 @@ description: Keyboard navigation of a group (tabs, segmented controls, menus, to
 
 Give the container and a selector for the items. Bind `onKeydown` on the container and `getTabIndex` on each item.
 
+<ComponentDemo expanded>
+  <div class="maz:flex maz:flex-col maz:items-start maz:gap-3 maz:text-sm">
+    <div
+      ref="container"
+      role="toolbar"
+      aria-label="Text formatting"
+      class="maz:flex maz:gap-2 maz:rounded-md maz:border maz:border-divider maz:bg-container maz:p-2"
+      @keydown="onKeydown"
+    >
+      <MazBtn
+        v-for="(label, index) in formats"
+        :key="label"
+        size="sm"
+        color="contrast"
+        :tabindex="getTabIndex(index)"
+        @click="lastAction = label"
+      >
+        {{ label }}
+      </MazBtn>
+    </div>
+    <div class="maz:text-muted">Tab into the toolbar, then use the arrows, Home and End.</div>
+    <div>Current index: <MazBadge color="info" size="sm">{{ currentIndex }}</MazBadge> Last action: <MazBadge color="container" size="sm">{{ lastAction || 'none' }}</MazBadge></div>
+  </div>
+
+  <template #code>
+
 ```vue
 <script lang="ts" setup>
 import { useRovingFocus } from 'maz-ui/composables/useRovingFocus'
@@ -18,7 +44,7 @@ import { useTemplateRef } from 'vue'
 
 const container = useTemplateRef('container')
 
-const { onKeydown, getTabIndex } = useRovingFocus({
+const { onKeydown, getTabIndex, currentIndex } = useRovingFocus({
   container,
   selector: 'button',
 })
@@ -26,12 +52,19 @@ const { onKeydown, getTabIndex } = useRovingFocus({
 
 <template>
   <div ref="container" role="toolbar" @keydown="onKeydown">
-    <button v-for="(label, index) in ['Bold', 'Italic', 'Underline']" :key="label" :tabindex="getTabIndex(index)">
+    <MazBtn
+      v-for="(label, index) in ['Bold', 'Italic', 'Underline']"
+      :key="label"
+      :tabindex="getTabIndex(index)"
+    >
       {{ label }}
-    </button>
+    </MazBtn>
   </div>
 </template>
 ```
+
+  </template>
+</ComponentDemo>
 
 Only one item is reachable with `Tab`. The arrows, `Home` and `End` move the focus between the items.
 
@@ -112,3 +145,17 @@ function useRovingFocus(options?: UseRovingFocusOptions): {
   currentIndex: Ref<number>
 }
 ```
+
+<script lang="ts" setup>
+import { useRovingFocus } from 'maz-ui/composables/useRovingFocus'
+import { ref, useTemplateRef } from 'vue'
+
+const container = useTemplateRef('container')
+const lastAction = ref('')
+const formats = ['Bold', 'Italic', 'Underline', 'Strike']
+
+const { onKeydown, getTabIndex, currentIndex } = useRovingFocus({
+  container,
+  selector: 'button',
+})
+</script>

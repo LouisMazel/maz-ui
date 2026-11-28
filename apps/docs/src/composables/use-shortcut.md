@@ -1,6 +1,6 @@
 ---
 title: useShortcut
-description: Platform aware keyboard shortcut, `mod` is Cmd on macOS and Ctrl elsewhere, with its label (`⌘K` or `Ctrl+K`) and an automatic cleanup.
+description: Platform aware keyboard shortcut, mod is Cmd on macOS and Ctrl elsewhere, with its label (⌘K or Ctrl+K) and an automatic cleanup.
 ---
 
 # {{ $frontmatter.title }}
@@ -11,19 +11,46 @@ Use it instead of a `keydown` handler that tests `event.metaKey || event.ctrlKey
 
 ## Usage
 
+<ComponentDemo expanded>
+  <div class="maz:flex maz:flex-col maz:items-start maz:gap-3 maz:text-sm">
+    <MazBtn size="sm" color="contrast" @click="toggle">
+      Open the palette
+      <MazBadge size="sm" color="container">{{ label }}</MazBadge>
+    </MazBtn>
+    <div class="maz:rounded-md maz:border maz:border-divider maz:bg-container maz:px-4 maz:py-3">
+      Palette: <MazBadge :color="isOpen ? 'success' : 'container'" size="sm">{{ isOpen ? 'open' : 'closed' }}</MazBadge>
+    </div>
+    <div class="maz:text-muted">Press the shortcut, or Escape to close.</div>
+  </div>
+
+  <template #code>
+
 ```vue
 <script lang="ts" setup>
 import { useShortcut } from 'maz-ui/composables/useShortcut'
+import { ref } from 'vue'
 
-const { label } = useShortcut('mod+k', () => openPalette())
+const isOpen = ref(false)
+
+const toggle = () => isOpen.value = !isOpen.value
+
+const { label } = useShortcut('mod+k', toggle)
+useShortcut('escape', () => isOpen.value = false, { enabled: isOpen })
 </script>
 
 <template>
-  <MazBtn @click="openPalette">
-    Search <kbd>{{ label }}</kbd>
+  <MazBtn @click="toggle">
+    Open the palette <kbd>{{ label }}</kbd>
   </MazBtn>
+
+  <p v-if="isOpen">
+    Palette open
+  </p>
 </template>
 ```
+
+  </template>
+</ComponentDemo>
 
 `label` is `⌘K` on macOS and `Ctrl+K` elsewhere. The listener is removed on unmount.
 
@@ -52,3 +79,19 @@ function useShortcut(
 | `apple`          | `boolean`                             | platform of the browser  | Force the platform                                                                  |
 
 `allowInInputs` defaults to `true` for the shortcuts with `mod`, `ctrl` or `meta`, and to `false` for a plain key, `shift` + key or `alt` + key (typing a `k` in a field must not trigger `k`, and `Option` types characters on macOS).
+
+<script lang="ts" setup>
+import { useShortcut } from 'maz-ui/composables/useShortcut'
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+
+function toggle() {
+  isOpen.value = !isOpen.value
+}
+
+const { label } = useShortcut('mod+k', toggle)
+useShortcut('escape', () => {
+  isOpen.value = false
+}, { enabled: isOpen })
+</script>
