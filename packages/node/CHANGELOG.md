@@ -1,5 +1,43 @@
 # Changelog
 
+## @maz-ui/node@5.8.0-beta.1 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/node@5.8.0-beta.0...@maz-ui/node@5.8.0-beta.1)
+
+### 🩹 Fixes
+
+- **node:** Bundle jsonc-parser to fix the builds of Nitro v3 consumers ([4e2f82389](https://github.com/LouisMazel/maz-ui/commit/4e2f82389))
+
+  The UMD build of `jsonc-parser` required its own files at runtime and broke the bundlers of the consumers (Nitro v3): its ESM build is now inlined in `@maz-ui/node`.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## @maz-ui/node@5.8.0-beta.0 (2026-11-24)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/node@5.7.0...@maz-ui/node@5.8.0-beta.0)
+
+### 🚀 Features
+
+- **node:** Set up the Claude Code review hooks and diagnose the agents setup ([50f9ce2e5](https://github.com/LouisMazel/maz-ui/commit/50f9ce2e5))
+
+  `setupAgents({ hooks: true })` adds the review hook of the tool to `.claude/settings.json`: Claude Code reviews each edited file, and the files changed in git at the end of a task. It is skipped when the Claude Code plugin of the tool is enabled, which has its own.
+
+  With the plugin enabled, the server of `.mcp.json` is disabled for you in `.claude/settings.local.json` (`disabledMcpjsonServers`): the plugin runs its own, your teammates keep the one of the project.
+
+  `diagnoseAgents({ rootDir })` lists the MCP servers Claude Code finds in each scope and the problems with their fix: duplicates, servers beside the plugin, older versions, outdated rules. See https://maz-ui.com/ecosystem/node/setup-agents
+
+- **node:** SetupAgents configures Codex and the OpenCode plugin of the tool ([c38493765](https://github.com/LouisMazel/maz-ui/commit/c38493765))
+
+  - The codex target registers the MCP server in .codex/config.toml (read by Codex in the trusted projects), unless the Codex plugin of the tool is enabled for the user. detectAgentTargets detects it from .codex/.
+  - With hooks, the opencode target adds the OpenCode plugin of the tool (the new openCodePlugin option, @maz-ui/mcp for maz-ui) to the plugin list of the OpenCode config, pinned to the version of the MCP server.
+  - isCodexPluginEnabled tells whether the Codex plugin of the tool is enabled.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## @maz-ui/node@5.7.0 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/node@5.6.0...@maz-ui/node@5.7.0)
