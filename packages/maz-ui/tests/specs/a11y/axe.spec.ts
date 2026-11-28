@@ -64,6 +64,16 @@ const cases: AxeCase[] = [
     component: components.MazInputTags,
     props: { label: 'Tags' },
   },
+  {
+    name: 'MazInputKeyValue',
+    component: components.MazInputKeyValue,
+    props: { label: 'Variables', modelValue: { KEY: 'value' } },
+  },
+  {
+    name: 'MazInputSecret',
+    component: components.MazInputSecret,
+    props: { label: 'API key', saved: true },
+  },
   { name: 'MazInputCode', component: components.MazInputCode },
   {
     name: 'MazCheckbox',
@@ -108,6 +118,16 @@ const cases: AxeCase[] = [
   },
   { name: 'MazAvatar', component: components.MazAvatar },
   {
+    name: 'MazBtnClipboard',
+    component: components.MazBtnClipboard,
+    props: { value: 'npm install maz-ui', prompt: '$' },
+  },
+  {
+    name: 'MazBtnClipboard icon only',
+    component: components.MazBtnClipboard,
+    props: { value: 'usr_123', iconOnly: true },
+  },
+  {
     name: 'MazCard',
     component: components.MazCard,
     slots: { default: 'Card body' },
@@ -143,9 +163,24 @@ const cases: AxeCase[] = [
     props: { modelValue: 1, totalPages: 5 },
   },
   {
+    name: 'MazDrawnIcon',
+    component: components.MazDrawnIcon,
+    props: { name: 'check-circle', label: 'Done' },
+  },
+  {
+    name: 'MazMorphIcon',
+    component: components.MazMorphIcon,
+    props: { name: 'menu-close' },
+  },
+  {
     name: 'MazAnimatedCounter',
     component: components.MazAnimatedCounter,
     props: { count: 100 },
+  },
+  {
+    name: 'MazRollingText',
+    component: components.MazRollingText,
+    props: { value: 1234 },
   },
   {
     name: 'MazWindowMockup',
@@ -161,6 +196,11 @@ const cases: AxeCase[] = [
     name: 'MazCodeHighlight',
     component: components.MazCodeHighlight,
     props: { code: 'const a = 1', language: 'js' },
+  },
+  {
+    name: 'MazLogStream',
+    component: components.MazLogStream,
+    props: { lines: ['starting', { text: 'failed', type: 'error', label: 'run' }] },
   },
   {
     name: 'MazTable',
@@ -380,6 +420,11 @@ const cases: AxeCase[] = [
     },
   },
   {
+    name: 'MazMarkdown',
+    component: components.MazMarkdown,
+    props: { content: '# Title\n\nSome **bold** text and a [link](https://maz-ui.com).', highlight: false },
+  },
+  {
     name: 'MazTable (sortable, selectable)',
     component: components.MazTable,
     props: {
@@ -446,6 +491,18 @@ const cases: AxeCase[] = [
     name: 'MazFullscreenLoader',
     component: components.MazFullscreenLoader,
     slots: { default: 'Loading' },
+    auditBody: true,
+  },
+  {
+    name: 'MazLightbox',
+    component: components.MazLightbox,
+    props: {
+      modelValue: true,
+      images: [
+        { src: 'https://example.com/1.jpg', alt: 'First' },
+        { src: 'https://example.com/2.jpg', alt: 'Second' },
+      ],
+    },
     auditBody: true,
   },
   {
