@@ -125,6 +125,7 @@ export const CATALOG_OMITTED: Record<string, string> = {
   'composables/use-aos': 'deprecated, replaced by vReveal',
   'plugins/aos': 'deprecated, replaced by vReveal',
   'composables/use-origin-transition': 'found by `search_docs` (grow from the button, open from the origin)',
+  ...Object.fromEntries(['press', 'ripple', 'magnetic', 'tilt', 'draw'].map(name => [`directives/${name}`, 'found by `search_docs` (press, ripple, magnetic, tilt, draw effects)'])),
   'ecosystem/utils/is-apple': 'found through useShortcut (`formatShortcut`, `matchesShortcut`)',
   'ecosystem/utils/debounce-callback': 'one timer shared by the whole app: `debounce` or `debounceId` fit better',
 }

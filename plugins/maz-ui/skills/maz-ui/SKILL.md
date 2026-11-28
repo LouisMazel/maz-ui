@@ -102,6 +102,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 ### Components
 
 - Use `Maz*` components instead of native elements or hand-made widgets: `MazBtn` (not `<button>`), `MazLink`, `MazInput`, `MazSelect`, `MazCheckbox`, `MazDialog`, `MazDrawer`, `MazPopover`, `MazDropdown`, `MazTabs`, `MazTable`, `MazCard`, `MazAvatar`, `MazBadge`, `MazAlert`, `MazDatePicker`, `MazInputPhoneNumber`, `MazDropzone`, `MazPagination`...
+- Before a hand-made widget, check these too: `MazCommandPalette` (Cmd/Ctrl+K), `MazContextMenu` (right click), `MazTooltip`, `MazTour`, `MazBreadcrumb`, `MazNavigationMenu`, `MazTree`, `MazSplitter`, `MazScrollArea`, `MazEmptyState`, `MazStatCard`, `MazSparkline`, `MazRating`, `MazTimePicker`, `MazInlineEdit`, `MazKbd`, `MazAvatarGroup`, `MazThemeToggle`.
 - Prop values are typed: colors are `primary | secondary | accent | info | success | warning | destructive | contrast | neutral | transparent` (plus `surface` and `container` on some components), sizes `mini | xs | sm | md | lg | xl`.
 - A button with only an icon needs an `aria-label`.
 
@@ -115,7 +116,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 
 ### Motion
 
-- Reuse the motion of maz-ui instead of hand-written animations: `MazRollingText` (a number or a text that changes), `MazDrawnIcon` (a check that draws itself), `MazMorphIcon` (a two-state icon), `useOriginTransition` (a panel that opens from its button), `useSlidingIndicator` (an active pill), `<TransitionGroup name="maz-list">`, the `press`, `focus-ring` and `border-draw` utilities.
+- Reuse the motion of maz-ui instead of hand-written animations: `MazRollingText` (a number or a text that changes), `MazDrawnIcon` (a check that draws itself), `MazMorphIcon` (a two-state icon), `useOriginTransition` (a panel that opens from its button), `useSlidingIndicator` (an active pill), `<TransitionGroup name="maz-list">`, the `press`, `focus-ring` and `border-draw` utilities, the `v-press`, `v-ripple`, `v-magnetic`, `v-tilt` and `v-draw` directives, `animated` on `MazIcon` and `effect` on `MazAnimatedText`.
 - Overlays: a `MazDialog` opens from its trigger (`#trigger` slot or `origin`, `useDialog().confirm({ origin: event })`), `MazDialogConfirm` takes a `confirmation` text to type for destructive actions, `toast.promise()` for an async action, `MazLightbox` (or `v-fullscreen-img`) to view images.
 - Durations and easings from the theme (`var(--maz-motion-normal)`, `var(--maz-easing-out)`, `duration-(--duration-normal)`), only `transform` and `opacity`, `useReducedMotion().shouldReduceMotion` in JS animations.
 
