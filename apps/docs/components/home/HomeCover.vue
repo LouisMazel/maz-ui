@@ -63,7 +63,7 @@ const swatch = computed(() => data.presets.find(preset => preset.name === 'folio
           <MazBtn href="/guide/getting-started" size="lg" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">
             Get started
           </MazBtn>
-          <MazBtn href="https://github.com/LouisMazel/maz-ui" target="_blank" rel="noopener" size="lg" color="surface" outlined :start-icon="MazGithub">
+          <MazBtn href="https://github.com/LouisMazel/maz-ui" target="_blank" rel="noopener" size="lg" color="surface" variant="outline" :start-icon="MazGithub">
             GitHub
             <template v-if="data.stars" #end-icon>
               <span class="maz:border-s maz:border-divider maz:ps-2 maz:text-sm maz:text-muted">
