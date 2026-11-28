@@ -1,4 +1,5 @@
 import MazPickerCalendarGrid from '@components/MazDatePicker/MazPickerCalendarMonth/MazPickerCalendarGrid.vue'
+import gridSource from '@components/MazDatePicker/MazPickerCalendarMonth/MazPickerCalendarGrid.vue?raw'
 import MazPickerCalendarSwitcher from '@components/MazDatePicker/MazPickerCalendarSwitcher.vue'
 import MazPickerHeader from '@components/MazDatePicker/MazPickerHeader.vue'
 import MazRollingText from '@components/MazRollingText.vue'
@@ -238,6 +239,137 @@ describe('given the motion of the date picker', () => {
       await wrapper.setProps({ calendarDate: '2024-02-15' })
 
       expect(wrapper.find('.maz-picker-calendar-grid').attributes('style')).toContain('--m-picker-slide: -1')
+    })
+  })
+})
+
+describe('given the range count and the range band of the date picker', () => {
+  const gridProps = {
+    calendarDate: '2024-01-15',
+    hasTime: false,
+    locale: 'en-US',
+    firstDayOfWeek: 0,
+    color: 'primary' as const,
+    inline: false,
+    disabledWeekly: [] as number[],
+    disabledDates: [] as string[],
+    disabled: false,
+    range: true,
+    modelValue: { start: '2024-01-10', end: undefined },
+  }
+
+  describe('when the hovered day changes while the count is shown', () => {
+    it('then the same count follows the day and rolls its number', async () => {
+      const wrapper = mount(MazPickerCalendarGrid, {
+        props: { ...gridProps, hoverredDay: dayjs('2024-01-14') },
+      })
+      await nextTick()
+      await nextTick()
+
+      const count = wrapper.find('.maz-picker-calendar-grid__count').element
+
+      await wrapper.setProps({ hoverredDay: dayjs('2024-01-16') })
+      await nextTick()
+
+      expect(wrapper.find('.maz-picker-calendar-grid__count').element).toBe(count)
+      expect(wrapper.find('.maz-picker-calendar-grid__count').findComponent(MazRollingText).props('value')).toBe(7)
+    })
+  })
+
+  describe('when the hovered day is lost then found again right away', () => {
+    it('then the count stays and keeps its transition', async () => {
+      vi.useFakeTimers()
+      const wrapper = mount(MazPickerCalendarGrid, {
+        props: { ...gridProps, hoverredDay: dayjs('2024-01-14') },
+      })
+      await nextTick()
+      await nextTick()
+
+      const count = wrapper.find('.maz-picker-calendar-grid__count').element
+
+      await wrapper.setProps({ hoverredDay: undefined })
+      await vi.advanceTimersByTimeAsync(20)
+      await wrapper.setProps({ hoverredDay: dayjs('2024-01-17') })
+      await vi.advanceTimersByTimeAsync(200)
+
+      expect(wrapper.find('.maz-picker-calendar-grid__count').element).toBe(count)
+      expect(wrapper.find('.maz-picker-calendar-grid__count').findComponent(MazRollingText).props('value')).toBe(8)
+
+      vi.useRealTimers()
+    })
+  })
+
+  describe('when the hovered day is lost for good', () => {
+    it('then the count is removed after a short delay', async () => {
+      vi.useFakeTimers()
+      const wrapper = mount(MazPickerCalendarGrid, {
+        props: { ...gridProps, hoverredDay: dayjs('2024-01-14') },
+      })
+      await nextTick()
+      await nextTick()
+
+      await wrapper.setProps({ hoverredDay: undefined })
+      await vi.advanceTimersByTimeAsync(500)
+
+      expect(wrapper.find('.maz-picker-calendar-grid__count').exists()).toBe(false)
+
+      vi.useRealTimers()
+    })
+  })
+
+  describe('when the count appears again after being removed', () => {
+    it('then it is placed without transition', async () => {
+      vi.useFakeTimers()
+      const wrapper = mount(MazPickerCalendarGrid, {
+        props: { ...gridProps, hoverredDay: dayjs('2024-01-14') },
+      })
+      await nextTick()
+      await nextTick()
+      await wrapper.setProps({ hoverredDay: undefined })
+      await vi.advanceTimersByTimeAsync(500)
+
+      await wrapper.setProps({ hoverredDay: dayjs('2024-01-18') })
+      await nextTick()
+      await nextTick()
+
+      expect(wrapper.find('.maz-picker-calendar-grid__count').attributes('style')).toContain('transition-duration: 0s')
+
+      vi.useRealTimers()
+    })
+  })
+
+  describe('when a range is displayed', () => {
+    it('then the container gives the band colors derived from the color and the surface', () => {
+      const wrapper = mount(MazPickerCalendarGrid, {
+        props: { ...gridProps, color: 'success', modelValue: { start: '2024-01-10', end: '2024-01-14' } },
+      })
+
+      const style = wrapper.find('.maz-picker-calendar-grid__container').attributes('style') ?? ''
+
+      expect(style).toContain('--m-range-band:')
+      expect(style).toContain('--m-range-band-dark:')
+      expect(style).toContain('var(--maz-success)')
+      expect(style).toContain('var(--maz-surface)')
+    })
+
+    it('then a single date picker has no band colors', () => {
+      const wrapper = mount(MazPickerCalendarGrid, {
+        props: { ...gridProps, range: false, modelValue: '2024-01-10' },
+      })
+
+      expect(wrapper.find('.maz-picker-calendar-grid__container').attributes('style') ?? '').not.toContain('--m-range-band')
+    })
+
+    it('then the start and end caps use logical corners', () => {
+      expect(gridSource).toContain('maz:rounded-e-none!')
+      expect(gridSource).toContain('maz:rounded-s-none!')
+      expect(gridSource).not.toContain('rounded-r-none')
+      expect(gridSource).not.toContain('rounded-l-none')
+    })
+
+    it('then the hovered day of the band keeps the foreground color', () => {
+      expect(gridSource).not.toContain('hoverTextColor')
+      expect(gridSource).toContain('--m-range-band-hover')
     })
   })
 })

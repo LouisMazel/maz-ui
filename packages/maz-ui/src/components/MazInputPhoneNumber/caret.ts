@@ -84,6 +84,26 @@ export function getPositionAfterSignificant(value: string, count: number) {
 }
 
 /**
+ * Position of the caret in a rewritten value (the formatting changed), so that it stays after the same significant characters.
+ * Returns undefined when the significant characters changed: there is nothing to keep.
+ */
+export function getCaretInRewrittenValue({
+  previousValue,
+  previousCaret,
+  value,
+}: {
+  previousValue: string
+  previousCaret: number
+  value: string
+}) {
+  if (extractSignificant(previousValue) !== extractSignificant(value)) {
+    return undefined
+  }
+
+  return getPositionAfterSignificant(value, countSignificantBefore(previousValue, previousCaret))
+}
+
+/**
  * Format the significant characters of the value and move the caret after the same number of significant characters
  */
 export function formatWithCaret(

@@ -515,13 +515,13 @@ const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
     </label>
 
     <div
-      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:size-full maz:flex-1 maz:overflow-hidden maz:bg-input maz:focus-within-ring maz:transition-colors maz:duration-(--duration-slow)"
+      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:size-full maz:flex-1 maz:overflow-hidden maz:bg-input maz:transition-colors maz:duration-(--duration-slow)"
       :class="[
         inputClasses,
         borderStyle,
         ROUNDED_CLASS[roundedSize],
         `--rounded-${roundedSize}`,
-        { '--block': block, '--border': hasBorder, 'maz:w-full': block, 'maz:border maz:border-solid': hasBorder },
+        { '--block': block, '--border': hasBorder, 'maz:w-full': block, 'maz:border maz:border-solid': hasBorder, 'maz:focus-within-ring': !hasBorder },
       ]"
     >
       <div v-if="hasStartPart()" class="m-input-wrapper-start maz:relative maz:z-1 maz:flex maz:flex-center maz:space-x-1 maz:py-1 maz:ps-2">

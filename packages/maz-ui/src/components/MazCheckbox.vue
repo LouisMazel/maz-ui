@@ -310,7 +310,7 @@ function onFocus(event: FocusEvent) {
     /* The ink grows from the center when checked and shrinks faster when unchecked */
     &::before {
       position: absolute;
-      inset: 0;
+      inset: calc(var(--maz-border-width, 1px) * -1);
       border-radius: inherit;
       background-color: var(--checkbox-selected-color);
       content: '';

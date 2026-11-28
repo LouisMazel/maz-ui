@@ -3,6 +3,7 @@ import {
   countSignificantBefore,
   extractSignificant,
   formatWithCaret,
+  getCaretInRewrittenValue,
   getPositionAfterSignificant,
 } from '@components/MazInputPhoneNumber/caret.ts'
 
@@ -175,6 +176,26 @@ describe('components/MazInputPhoneNumber/caret.ts', () => {
     describe('when delete precedes only punctuation', () => {
       it('then leaves the native behavior', () => {
         expect(computeDeletion({ value: '06 )', selectionStart: 2, selectionEnd: 2, direction: 'forward' })).toBeUndefined()
+      })
+    })
+  })
+  describe('given getCaretInRewrittenValue', () => {
+    describe('when only the formatting changed', () => {
+      it('then keeps the caret after the same digits', () => {
+        expect(getCaretInRewrittenValue({ previousValue: '06 66 7 66 66', previousCaret: 6, value: '06 66 76 66 6' })).toBe(5)
+        expect(getCaretInRewrittenValue({ previousValue: '06668 76 66 6', previousCaret: 5, value: '06 66 87 66 66' })).toBe(7)
+      })
+    })
+
+    describe('when the caret is before every digit', () => {
+      it('then returns 0', () => {
+        expect(getCaretInRewrittenValue({ previousValue: '0666', previousCaret: 0, value: '06 66' })).toBe(0)
+      })
+    })
+
+    describe('when the digits changed', () => {
+      it('then returns undefined', () => {
+        expect(getCaretInRewrittenValue({ previousValue: '+33 6', previousCaret: 5, value: '06' })).toBeUndefined()
       })
     })
   })

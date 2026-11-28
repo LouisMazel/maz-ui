@@ -185,7 +185,7 @@ function onFocus(event: FocusEvent) {
 
 .m-switch__input:checked + .m-switch__toggle {
   &::after {
-    translate: var(--switch-height) 0;
+    translate: var(--m-switch-travel) 0;
     transform-origin: 100% 50%;
     background-color: var(--switch-foreground);
   }
@@ -197,7 +197,7 @@ function onFocus(event: FocusEvent) {
 }
 
 :where([dir='rtl']) .m-switch__input:checked + .m-switch__toggle::after {
-  translate: calc(var(--switch-height) * -1) 0;
+  translate: calc(var(--m-switch-travel) * -1) 0;
   transform-origin: 0% 50%;
 }
 
@@ -205,17 +205,20 @@ function onFocus(event: FocusEvent) {
   transform-origin: 100% 50%;
 }
 
-/* The thumb stretches toward the other side while pressed, then springs back into place */
+/* The capsule thumb stretches a little toward the other side while pressed, then settles into place */
 .m-switch:not(.--is-disabled):active .m-switch__toggle::after,
 .m-switch__input:not(:disabled):active + .m-switch__toggle::after {
-  scale: 1.3 1;
-  transition-duration: calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1));
-  transition-timing-function: var(--maz-easing-out, ease-out);
+  scale: 1.12 1;
 }
 
 .m-switch__toggle {
   inline-size: calc(var(--switch-height) * 2);
   block-size: var(--switch-height);
+
+  /* A pill thumb wider than tall, like the iOS and macOS switches: it travels the width of the track minus its own */
+  --m-switch-thumb-block: calc(var(--switch-height) - 0.25rem);
+  --m-switch-thumb-inline: calc(var(--m-switch-thumb-block) * 1.4);
+  --m-switch-travel: calc(var(--switch-height) * 2 - 0.25rem - var(--m-switch-thumb-inline));
 
   /* No light-dark() here: the build rewrites it into variables that only exist with a color-scheme rule */
   --m-switch-track: color-mix(in srgb, var(--maz-foreground) 16%, transparent);
@@ -248,17 +251,17 @@ function onFocus(event: FocusEvent) {
 
     inset-block-start: 0.125rem;
     inset-inline-start: 0.125rem;
-    inline-size: calc(var(--switch-height) - 0.25rem);
-    block-size: calc(var(--switch-height) - 0.25rem);
+    inline-size: var(--m-switch-thumb-inline);
+    block-size: var(--m-switch-thumb-block);
     background-color: var(--m-switch-thumb);
     box-shadow: 0 1px 3px 0 hsl(0deg 0% 0% / 25%);
     translate: 0 0;
     transform-origin: 0% 50%;
     transition:
-      translate calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
-        var(--maz-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1)),
+      translate calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1))
+        var(--maz-easing-spring, cubic-bezier(0.22, 1, 0.36, 1)),
       scale calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
-        var(--maz-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1)),
+        var(--maz-easing-spring, cubic-bezier(0.22, 1, 0.36, 1)),
       background-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
   }
 }

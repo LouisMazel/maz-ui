@@ -96,7 +96,7 @@ description: MazSwitch is a standalone component that replaces the standard html
 
 ## Motion
 
-- While pressed, the thumb stretches toward the other side, then springs into its place with the `--maz-easing-bounce` token.
+- The thumb is a capsule (wider than tall) in a pill track, like the iOS and macOS switches. It glides to the other side with the `--maz-easing-spring` token, with no overshoot, and stretches a little while pressed.
 - The keyboard focus shows a 2 px ring around the track.
 - The speed follows the `--maz-motion-*` tokens and reduced motion removes the stretch and the spring. It works the same in RTL.
 

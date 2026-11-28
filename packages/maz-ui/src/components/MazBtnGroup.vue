@@ -277,7 +277,7 @@ watch([() => modelValue, () => toolbar, focusedIndex], async () => {
   &.--row {
     .m-button-group__button,
     :deep(.m-btn) {
-      &:not(:last-child) {
+      &:has(~ .m-btn) {
         border-inline-end-width: 0;
         border-start-end-radius: 0;
         border-end-end-radius: 0;
@@ -304,7 +304,7 @@ watch([() => modelValue, () => toolbar, focusedIndex], async () => {
   &.--col {
     .m-button-group__button,
     :deep(.m-btn) {
-      &:not(:last-child) {
+      &:has(~ .m-btn) {
         border-block-end-width: 0;
         border-end-start-radius: 0;
         border-end-end-radius: 0;

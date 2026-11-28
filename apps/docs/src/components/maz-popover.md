@@ -1378,6 +1378,8 @@ app.use(MazUi, {
 
 The selects, dropdowns, date pickers and tooltips use it too.
 
+A trigger inside a `position: sticky` or `fixed` element (the selects of the sticky header itself) is never hidden by it: it is always in the reserved area.
+
 ```css
 .my-popover-enter-active,
 .my-popover-leave-active {

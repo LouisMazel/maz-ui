@@ -940,3 +940,99 @@ describe('components/MazInputPhoneNumber.vue caret while typing', () => {
     })
   })
 })
+
+describe('given a phone number typed in the middle with the typing auto format', () => {
+  function mountFocused() {
+    const phoneModel = ref<string | undefined>('0666776666')
+
+    const Parent = defineComponent({
+      setup: () => () => h(MazInputPhoneNumber, {
+        'modelValue': phoneModel.value,
+        'onUpdate:modelValue': (value: string) => {
+          phoneModel.value = value
+        },
+        'countryCode': 'FR',
+        'autoFormat': 'typing',
+      }),
+    })
+
+    const wrapper = mount(Parent, {
+      attachTo: document.body,
+      global: { stubs: { MazSelectCountry, PhoneInput } },
+    })
+
+    return { wrapper, phoneModel }
+  }
+
+  function editAt(input: HTMLInputElement, { value, caret }: { value: string, caret: number }) {
+    input.value = value
+    input.setSelectionRange(caret, caret)
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+  }
+
+  describe('when the digit before the caret is deleted then replaced', () => {
+    it('then the caret stays right after the edited digit at each step', async () => {
+      const { wrapper } = mountFocused()
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      const input = wrapper.find<HTMLInputElement>('input[name="phone"]').element
+      input.focus()
+      input.setSelectionRange(7, 7)
+
+      expect(input.value).toBe('06 66 77 66 66')
+
+      editAt(input, { value: '06 66 7 66 66', caret: 6 })
+      await flushPromises()
+
+      expect(input.value).toBe('06 66 76 66 6')
+      expect(input.selectionStart).toBe(5)
+      expect(input.selectionEnd).toBe(5)
+
+      editAt(input, { value: '06 668 76 66 6', caret: 6 })
+      await flushPromises()
+
+      expect(input.value).toBe('06 66 87 66 66')
+      expect(input.selectionStart).toBe(7)
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when the displayed value is rewritten after the input handler', () => {
+    it('then the caret goes back after the same digits', async () => {
+      const { wrapper } = mountFocused()
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      const input = wrapper.find<HTMLInputElement>('input[name="phone"]').element
+      input.focus()
+      input.value = '06 66 7 66 66'
+      input.setSelectionRange(6, 6)
+      wrapper.findComponent(PhoneInput).findComponent({ name: 'MazInput' }).vm.$emit('update:model-value', '06 66 7 66 66')
+      await flushPromises()
+
+      expect(input.value).toBe('06 66 76 66 6')
+      expect(input.selectionStart).toBe(5)
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when the input is not focused', () => {
+    it('then the caret is left alone', async () => {
+      const { wrapper, phoneModel } = mountFocused()
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      const input = wrapper.find<HTMLInputElement>('input[name="phone"]').element
+      input.blur()
+      phoneModel.value = '0612345678'
+      await flushPromises()
+
+      expect(input.value).toBe('06 12 34 56 78')
+
+      wrapper.unmount()
+    })
+  })
+})

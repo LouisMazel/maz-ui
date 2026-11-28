@@ -71,7 +71,18 @@ const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 const hoverColor = computed(() => props.color === 'neutral'
   ? 'var(--maz-neutral)'
   : `color-mix(in srgb, var(--maz-${props.color}) 20%, transparent)`)
-const hoverTextColor = computed(() => `var(--maz-${props.color}-foreground)`)
+
+const rangeBandStyle = computed(() => {
+  const color = props.color === 'transparent' ? 'primary' : props.color
+  const mix = (percent: number) => `color-mix(in oklab, var(--maz-${color}) ${percent}%, var(--maz-surface))`
+
+  return {
+    '--m-range-band': mix(22),
+    '--m-range-band-hover': mix(38),
+    '--m-range-band-dark': mix(38),
+    '--m-range-band-dark-hover': mix(60),
+  }
+})
 
 const modelValue = computed({
   get: () => props.modelValue,
@@ -204,16 +215,86 @@ const rangeCountTarget = computed(() => getDayElement(rangeDaysCount.value && pr
   ? getDateKey(props.hoverredDay)
   : undefined))
 
+const lastRangeCountTarget = shallowRef<HTMLElement>()
+const heldRangeDaysCount = ref<number>()
+const hasHeldRangeCount = computed(() => heldRangeDaysCount.value !== undefined)
+const isRangeCountPlacing = ref(false)
+let rangeCountHoldTimer: ReturnType<typeof setTimeout> | undefined
+let rangeCountPlacingFrame: number | undefined
+
+const RANGE_COUNT_HOLD = 80
+
+function stopPlacingAfterFrames() {
+  if (typeof requestAnimationFrame !== 'function') {
+    isRangeCountPlacing.value = false
+    return
+  }
+
+  cancelAnimationFrame(rangeCountPlacingFrame as number)
+  rangeCountPlacingFrame = requestAnimationFrame(() => {
+    rangeCountPlacingFrame = requestAnimationFrame(() => {
+      isRangeCountPlacing.value = false
+    })
+  })
+}
+
+watch([rangeDaysCount, rangeCountTarget], ([count, target]) => {
+  if (count && target) {
+    clearTimeout(rangeCountHoldTimer)
+    rangeCountHoldTimer = undefined
+
+    if (!hasHeldRangeCount.value) {
+      isRangeCountPlacing.value = true
+      stopPlacingAfterFrames()
+    }
+
+    heldRangeDaysCount.value = count
+    lastRangeCountTarget.value = target
+    return
+  }
+
+  if (hasHeldRangeCount.value && rangeCountHoldTimer === undefined) {
+    rangeCountHoldTimer = setTimeout(() => {
+      rangeCountHoldTimer = undefined
+      heldRangeDaysCount.value = undefined
+    }, RANGE_COUNT_HOLD)
+  }
+})
+
+onScopeDispose(() => {
+  clearTimeout(rangeCountHoldTimer)
+
+  if (typeof cancelAnimationFrame === 'function' && rangeCountPlacingFrame !== undefined)
+    cancelAnimationFrame(rangeCountPlacingFrame)
+})
+
 const { style: rangeCountStyle } = useSlidingIndicator({
   container: monthContainer,
-  active: rangeCountTarget,
+  active: lastRangeCountTarget,
   orientation: 'vertical',
 })
 
-const rangeCountInlineStyle = computed(() => ({
-  ...rangeCountStyle.value,
-  ...(isInstant.value && { transitionDuration: '0s' }),
-}))
+const RANGE_COUNT_FADE = 'calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1))'
+const RANGE_COUNT_MOVE = 'calc(var(--maz-motion-normal, 250ms) * var(--maz-motion-scale, 1))'
+
+const rangeCountInlineStyle = computed(() => {
+  const style = rangeCountStyle.value
+  const isMoveInstant = isInstant.value || isRangeCountPlacing.value
+
+  if (!style.transitionProperty) {
+    return isMoveInstant
+      ? { ...style, transitionDuration: '0s' }
+      : style
+  }
+
+  const move = isMoveInstant ? '0s' : RANGE_COUNT_MOVE
+
+  return {
+    ...style,
+    transitionProperty: 'transform, width, height, opacity',
+    transitionDuration: `${move}, ${move}, ${move}, ${RANGE_COUNT_FADE}`,
+  }
+})
 
 function isBeyondBounds(date: Dayjs, step: number) {
   if (step < 0)
@@ -581,6 +662,7 @@ watch(
         :ref="setMonthContainer"
         class="maz-picker-calendar-grid__container maz:relative maz:isolate maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1"
         :class="{ '--is-range': range, 'maz:gap-x-1': !range, '--has-indicator': hasSelectedIndicator }"
+        :style="range ? rangeBandStyle : undefined"
       >
         <span
           v-if="selectedIndicatorKey"
@@ -590,13 +672,13 @@ watch(
         />
         <Transition name="maz-picker-count">
           <span
-            v-if="rangeDaysCount && rangeCountTarget"
+            v-if="range && heldRangeDaysCount"
             class="maz-picker-calendar-grid__count"
             aria-hidden="true"
             :style="rangeCountInlineStyle"
           >
             <span class="maz-picker-calendar-grid__count-chip">
-              <MazRollingText :value="rangeDaysCount" :format="DAY_UNIT_FORMAT" :locale="locale" />
+              <MazRollingText :value="heldRangeDaysCount" :format="DAY_UNIT_FORMAT" :locale="locale" />
             </span>
           </span>
         </Transition>
@@ -665,23 +747,27 @@ watch(
     }
 
     &.--is-first {
-      @apply maz:rounded-r-none!;
+      @apply maz:rounded-e-none!;
     }
 
     &.--is-last-hoverred,
     &.--is-last {
-      @apply maz:rounded-l-none!;
+      @apply maz:rounded-s-none!;
     }
 
     &.--is-between-hoverred {
-      @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none!;
+      @apply maz:rounded-none! maz:bg-(--m-range-band) maz:text-foreground maz:dark:bg-(--m-range-band-dark);
+
+      &:hover {
+        @apply maz:bg-(--m-range-band-hover) maz:text-foreground maz:dark:bg-(--m-range-band-dark-hover);
+      }
     }
 
     &.--is-between {
-      @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none! maz:text-foreground;
+      @apply maz:rounded-none! maz:bg-(--m-range-band) maz:text-foreground maz:dark:bg-(--m-range-band-dark);
 
       &:hover {
-        color: v-bind('hoverTextColor');
+        @apply maz:bg-(--m-range-band-hover) maz:text-foreground maz:dark:bg-(--m-range-band-dark-hover);
       }
 
       &.--transparent {

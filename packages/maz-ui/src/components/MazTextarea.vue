@@ -333,7 +333,7 @@ watch(() => modelValue, () => nextTick(resizeToContent))
       {{ topLabelText }}
     </label>
     <label
-      class="m-textarea maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground maz:focus-within-ring"
+      class="m-textarea maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground"
       :for="instanceId"
       :class="[
         {
@@ -345,6 +345,7 @@ watch(() => modelValue, () => nextTick(resizeToContent))
           '--autogrow': autogrow,
           '--padding': padding,
           'maz:border maz:border-solid': hasBorder && !disabled,
+          'maz:focus-within-ring': !hasBorder,
           'maz:bg-input': !transparent && !disabled,
           'maz:disabled-cursor maz:border-divider maz:bg-surface-600 maz:text-muted maz:dark:border-divider-400 maz:dark:bg-surface-400': disabled,
         },

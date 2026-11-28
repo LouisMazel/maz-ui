@@ -4,10 +4,10 @@ import type { ComponentPublicInstance } from 'vue'
 import type { MazInputProps } from '../MazInput.vue'
 import type { MazInputPhoneNumberInjectedData } from '../MazInputPhoneNumber.vue'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue'
 import { useInjectStrict } from '../../composables/useInjectStrict.ts'
 import MazInput from '../MazInput.vue'
-import { computeDeletion, formatWithCaret } from './caret.ts'
+import { computeDeletion, formatWithCaret, getCaretInRewrittenValue } from './caret.ts'
 import { useLibphonenumber } from './useLibphonenumber.ts'
 import { useMazInputPhoneNumber } from './useMazInputPhoneNumber.ts'
 
@@ -44,8 +44,45 @@ const displayedPhoneNumber = computed({
     : modelValue.value,
   set: (value) => {
     modelValue.value = sanitizePhoneNumber(value)
+    keepCaretAfterRewrite(value)
   },
 })
+
+const inputRef = useTemplateRef<ComponentPublicInstance>('input')
+
+function getInputElement() {
+  return inputRef.value?.$el.querySelector('input') as HTMLInputElement | null | undefined
+}
+
+function keepCaretAfterRewrite(typedValue: string | undefined | null) {
+  const element = getInputElement()
+
+  if (!element || typedValue === undefined || typedValue === null || document.activeElement !== element) {
+    return
+  }
+
+  const { selectionStart, selectionEnd } = element
+
+  if (selectionStart === null || selectionStart !== selectionEnd) {
+    return
+  }
+
+  nextTick(() => {
+    if (document.activeElement !== element) {
+      return
+    }
+
+    const caret = getCaretInRewrittenValue({
+      previousValue: typedValue,
+      previousCaret: selectionStart,
+      value: element.value,
+    })
+
+    if (caret !== undefined && (element.selectionStart !== caret || element.selectionEnd !== caret)) {
+      element.setSelectionRange(caret, caret)
+    }
+  })
+}
 
 function formatInputElement(element: HTMLInputElement) {
   const { selectionStart } = element
@@ -153,15 +190,13 @@ onMounted(() => {
     loadExamples()
 })
 
-const inputRef = useTemplateRef<ComponentPublicInstance>('input')
-
 defineExpose({
   /**
    * Focus the input
    * @description This is used to focus the input
    */
   focus: () => {
-    inputRef.value?.$el.querySelector('input')?.focus()
+    getInputElement()?.focus()
   },
 })
 </script>
