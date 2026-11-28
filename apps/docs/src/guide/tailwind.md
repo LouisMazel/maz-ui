@@ -446,7 +446,7 @@ Set the start with `--maz-border-draw-from` (an angle, `90deg` is the end side),
 
 ### Vue transitions
 
-`maz-ui/style.css` ships transition classes you can reuse with `<Transition name="...">`: `maz-scale-fade`, `maz-scale`, `maz-slide`, `maz-slideinvert`, `maz-slidevnext`, `maz-slidevprev`, `maz-expand`.
+`maz-ui/style.css` ships transition classes you can reuse with `<Transition name="...">`: `maz-scale-fade`, `maz-slidevnext`, `maz-slidevprev`.
 
 For lists, `maz-list` animates the items of a `<TransitionGroup>`: a new item fades in and rises, a removed one shrinks away while the others glide to their new place.
 

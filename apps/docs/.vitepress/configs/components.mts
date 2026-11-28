@@ -190,6 +190,10 @@ export const components = {
         { text: 'ExpandAnimation', link: '/components/maz-expand-animation' },
         { text: 'MorphIcon', link: '/components/maz-morph-icon' },
         {
+          text: withNewBadge('Reveal'),
+          link: '/components/maz-reveal',
+        },
+        {
           text: withNewBadge('RollingText'),
           link: '/components/maz-rolling-text',
         },

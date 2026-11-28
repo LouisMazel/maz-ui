@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MazColor } from './types.ts'
-import { computed, onMounted, ref } from 'vue'
-import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
+import { computed } from 'vue'
+import { vReveal } from '../directives/vReveal.ts'
 
 export interface MazAnimatedTextProps {
   /**
@@ -94,42 +94,14 @@ const {
 
 const words = computed(() => text.split(' '))
 
-const wordCount = computed(() => words.value.length)
-
-const animationClass = computed(() => `maz-animate-slide-${direction}-blur`)
-
-const isPending = ref(false)
-
-const element = ref<HTMLElement>()
-
-function getAnimationStyle(index: number) {
-  return {
-    animationDuration: `${duration}ms`,
-    animationDelay: `${delay + index * wordDelay}ms`,
-  }
-}
-
-function isInViewport(el: HTMLElement) {
-  const { top, bottom } = el.getBoundingClientRect()
-
-  return top < globalThis.innerHeight && bottom > 0
-}
-
-const { resume } = useIntersectionObserver(element, (entries) => {
-  if (entries.at(-1)?.isIntersecting)
-    isPending.value = false
-  else if (!once)
-    isPending.value = true
-}, { once, immediate: false })
-
-onMounted(() => {
-  if (!element.value || globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-    return
-  }
-
-  isPending.value = !isInViewport(element.value)
-  resume()
-})
+const options = computed(() => ({
+  effect: `slide-${direction}` as const,
+  blur: true,
+  delay,
+  duration,
+  once,
+  stagger: wordDelay,
+}))
 
 const gradientStyle = computed(() => {
   if (!lastWord) {
@@ -151,9 +123,9 @@ const gradientStyle = computed(() => {
 </script>
 
 <template>
-  <div class="m-reset-css m-animated-text" :class="{ 'm-animated-text--pending': isPending }" :style="{ '--maz-gradient-style': gradientStyle }">
+  <div class="m-reset-css m-animated-text" :style="{ '--maz-gradient-style': gradientStyle }">
     <!-- eslint-disable better-tailwindcss/no-deprecated-classes -->
-    <component :is="tag" ref="element" v-bind="$attrs" class="m-animated-text__root maz:inline-flex maz:flex-wrap" :style="{ columnGap: `${columnGap}rem`, rowGap: `${rowGap}rem` }">
+    <component :is="tag" v-bind="$attrs" v-reveal="options" class="m-animated-text__root maz:inline-flex maz:flex-wrap" :style="{ columnGap: `${columnGap}rem`, rowGap: `${rowGap}rem` }">
       <span
         v-for="(word, index) in words"
         :key="word + index"
@@ -161,8 +133,7 @@ const gradientStyle = computed(() => {
       >
         <span
           class="m-animated-text__word-inner maz:inline-flex"
-          :class="animationClass"
-          :style="getAnimationStyle(index)"
+          data-maz-reveal-item
         >
           {{ word }}
         </span>
@@ -171,8 +142,7 @@ const gradientStyle = computed(() => {
       <span
         v-if="lastWord"
         class="m-animated-text__last-word maz:inline-flex"
-        :class="animationClass"
-        :style="getAnimationStyle(wordCount)"
+        data-maz-reveal-item
       >
         <span class="m-animated-text__last-word-inner maz:relative maz:inline-flex">
           <span class="m-animated-text__last-word-inner-text maz:relative">{{ lastWord }}</span>
@@ -183,6 +153,11 @@ const gradientStyle = computed(() => {
 </template>
 
 <style scoped>
+.m-animated-text__root {
+  --maz-reveal-distance: 20px;
+  --maz-reveal-easing: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 :where(.dark, [data-theme='dark']) .m-animated-text__last-word-inner::before {
   opacity: 0.5;
 }
@@ -197,97 +172,5 @@ const gradientStyle = computed(() => {
   opacity: 0.4;
   background-image: var(--maz-gradient-style);
   filter: blur(16px);
-}
-
-.m-animated-text--pending .m-animated-text__word-inner,
-.m-animated-text--pending .m-animated-text__last-word {
-  animation: none;
-}
-
-@keyframes slide-up-blur {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-    filter: blur(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes slide-down-blur {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-    filter: blur(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes slide-left-blur {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-    filter: blur(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes slide-right-blur {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-    filter: blur(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-    filter: blur(0);
-  }
-}
-
-.maz-animate-slide-up-blur {
-  animation: slide-up-blur cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.maz-animate-slide-down-blur {
-  animation: slide-down-blur cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.maz-animate-slide-left-blur {
-  animation: slide-left-blur cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.maz-animate-slide-right-blur {
-  animation: slide-right-blur cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.maz-animate-slide-up-blur,
-.maz-animate-slide-down-blur,
-.maz-animate-slide-left-blur,
-.maz-animate-slide-right-blur {
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .m-animated-text__word-inner,
-  .m-animated-text__last-word {
-    animation: none;
-    opacity: 1;
-  }
 }
 </style>

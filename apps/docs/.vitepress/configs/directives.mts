@@ -12,6 +12,10 @@ export const directives = {
       link: '/directives/intersect',
     },
     { text: 'v-lazy-img', link: '/directives/lazy-img' },
+    {
+      text: withNewBadge('v-reveal'),
+      link: '/directives/reveal',
+    },
     { text: 'v-tooltip', link: '/directives/tooltip' },
     { text: 'v-zoom-img', link: '/directives/zoom-img' },
   ],

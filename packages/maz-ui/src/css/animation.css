@@ -1,4 +1,5 @@
 @layer base {
+  /* Deprecated, removed in v6 (plans/ROADMAP.md): the library does not use it, use `<Transition>` classes of your own or vReveal */
   .maz-scale-enter-active,
   .maz-scale-leave-active {
     opacity: 1;
@@ -27,6 +28,7 @@
     transform: scale(0.5);
   }
 
+  /* Deprecated, removed in v6 (plans/ROADMAP.md): the library does not use it, use `<Transition>` classes of your own or vReveal */
   .maz-scale-loading-enter-active,
   .maz-scale-loading-leave-active {
     transition: all 500ms cubic-bezier(0.4, 0.52, 0.26, 0.9);
@@ -75,6 +77,7 @@
     opacity: 0;
   }
 
+  /* Deprecated, removed in v6 (plans/ROADMAP.md): the library does not use it, use `<Transition>` classes of your own or vReveal */
   .maz-slide-enter-active,
   .maz-slide-leave-active {
     opacity: 1;
@@ -90,7 +93,7 @@
     transform: translateY(-20px);
   }
 
-  /** Slide animation **/
+  /* Deprecated, removed in v6 (plans/ROADMAP.md): the library does not use it, use `<Transition>` classes of your own or vReveal */
   .maz-slideinvert-enter-active,
   .maz-slideinvert-leave-active {
     opacity: 1;
@@ -120,6 +123,7 @@
     transform: translateX(-100%);
   }
 
+  /* Deprecated, removed in v6 (plans/ROADMAP.md): the library does not use it, use `<Transition>` classes of your own or vReveal */
   .maz-tags-invert-enter-active,
   .maz-tags-invert-leave-active {
     opacity: 1;
@@ -135,6 +139,7 @@
     transform: translateX(100%);
   }
 
+  /* Deprecated, removed in v6 (plans/ROADMAP.md): the library does not use it, use `<Transition>` classes of your own or vReveal */
   .maz-expand-enter-active,
   .maz-expand-leave-active {
     transition: all 200ms ease-in-out;

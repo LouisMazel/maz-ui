@@ -1,34 +1,12 @@
 ---
 title: useAos
-description: Vue composable to access the AOS plugin instance (animations on scroll) in your components, to refresh or trigger the animations
+description: To run reveal animations from your code, use useReveal with the vReveal directive.
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-::: warning
-Enable aos with the `aos` option of the MazUi plugin (or of the Nuxt module) before using it: [installation](./../plugins/aos.md#installation)
-:::
+Use [vReveal](./../directives/reveal.md) in a template, and [`useReveal`](./../directives/reveal.md#html-you-do-not-control) for HTML you do not control: `scan()` reveals the elements added later.
 
-::: tip
-More info about the [aos plugin](./../plugins/aos.md) can be found in its documentation
-:::
-
-## Usage
-
-```vue
-<script lang="ts" setup>
-import { useAos } from 'maz-ui/composables'
-
-const aos = useAos()
-
-onMounted(() => {
-  aos.runAnimations()
-})
-</script>
-
-<template>
-  <img data-maz-aos="scale-in">
-</template>
-```
+The [migration table](./../directives/reveal.md#migrate-from-the-aos-plugin) lists the equivalent of each former animation name.
