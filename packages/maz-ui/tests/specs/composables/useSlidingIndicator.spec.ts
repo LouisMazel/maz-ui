@@ -249,3 +249,36 @@ describe('given useSlidingIndicator', () => {
     })
   })
 })
+
+describe('given a sliding indicator placed in a left to right page', () => {
+  describe('when the direction of the page changes', () => {
+    it('then the indicator is placed again', async () => {
+      const container = document.createElement('div')
+      const active = document.createElement('button')
+      container.append(active)
+      document.body.append(container)
+      let left = 10
+      active.getBoundingClientRect = () => ({ left, top: 0, width: 40, height: 20, right: left + 40, bottom: 20, x: left, y: 0, toJSON: () => ({}) }) as DOMRect
+      container.getBoundingClientRect = () => ({ left: 0, top: 0, width: 200, height: 20, right: 200, bottom: 20, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect
+
+      const { useSlidingIndicator } = await import('@composables/useSlidingIndicator.ts')
+      const { effectScope, nextTick } = await import('vue')
+      const scope = effectScope()
+      const result = scope.run(() => useSlidingIndicator({ container, active }))!
+      await nextTick()
+      await nextTick()
+      const before = String(result.style.value.transform)
+
+      left = 150
+      document.documentElement.setAttribute('dir', 'rtl')
+      await new Promise(resolve => setTimeout(resolve, 0))
+      await nextTick()
+
+      expect(String(result.style.value.transform)).not.toBe(before)
+
+      document.documentElement.removeAttribute('dir')
+      scope.stop()
+      container.remove()
+    })
+  })
+})

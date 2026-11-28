@@ -758,6 +758,71 @@ watch(isMobile, (mobile) => {
 </template>
 ```
 
+## Motion
+
+- A pill slides from the previous active item to the new one (`:active` on `MazSidebarMenuButton`). It works inside `MazSidebarMenu`, nested sub-menus included. The first placement is not animated.
+- In icon mode, the labels fade and slide out of the way while the sidebar folds.
+- `MazSidebarTrigger` morphs its icon: the menu turns into a cross when the sidebar is open.
+- `:animated="false"` on `MazSidebar` makes the width and the pill instant. Reduced motion does the same.
+- The items show a 2 px ring on keyboard focus only.
+
+<ComponentDemo>
+  <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[20rem] maz:flex">
+    <MazSidebar v-model:open="motionOpen" collapsible="icon" class="maz:h-full" :persist="false">
+      <MazSidebarHeader>
+        <div class="maz:p-2">
+          <MazSidebarTrigger />
+        </div>
+      </MazSidebarHeader>
+      <MazSidebarContent>
+        <MazSidebarMenu>
+          <MazSidebarMenuItem v-for="entry in motionEntries" :key="entry.value">
+            <MazSidebarMenuButton
+              :label="entry.label"
+              :icon="entry.icon"
+              :tooltip="entry.label"
+              :active="motionActive === entry.value"
+              @click="motionActive = entry.value"
+            />
+          </MazSidebarMenuItem>
+        </MazSidebarMenu>
+      </MazSidebarContent>
+    </MazSidebar>
+    <main class="maz:flex-1 maz:p-4">Click an item, then fold the sidebar</main>
+  </div>
+
+  <template #code>
+
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const open = ref(true)
+const active = ref('home')
+</script>
+
+<template>
+  <MazSidebar v-model:open="open" collapsible="icon">
+    <MazSidebarHeader>
+      <MazSidebarTrigger />
+    </MazSidebarHeader>
+    <MazSidebarContent>
+      <MazSidebarMenu>
+        <MazSidebarMenuItem>
+          <MazSidebarMenuButton label="Home" icon="home" :active="active === 'home'" @click="active = 'home'" />
+        </MazSidebarMenuItem>
+        <MazSidebarMenuItem>
+          <MazSidebarMenuButton label="Settings" icon="cog-6-tooth" :active="active === 'settings'" @click="active = 'settings'" />
+        </MazSidebarMenuItem>
+      </MazSidebarMenu>
+    </MazSidebarContent>
+  </MazSidebar>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Programmatic control (v-model + composable)
 
 Use `v-model:open` for two-way binding, or `useSidebar()` inside any descendant component.
@@ -895,6 +960,13 @@ import { MazGitBranch } from '@maz-ui/icons/lazy/MazGitBranch'
 import { MazGitPullRequest } from '@maz-ui/icons/lazy/MazGitPullRequest'
 import { MazSidebarLeft } from '@maz-ui/icons/lazy/MazSidebarLeft'
 
+const motionOpen = ref(true)
+const motionActive = ref('home')
+const motionEntries = [
+  { value: 'home', label: 'Home', icon: MazHome },
+  { value: 'settings', label: 'Settings', icon: MazCog6Tooth },
+  { value: 'branches', label: 'Branches', icon: MazGitBranch },
+]
 const floatingOpen = ref(true)
 const sidebarState = ref('full')
 const sidebarStates = [

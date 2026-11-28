@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import type { Component } from 'vue'
+import type { MazDrawnIconName } from './MazDrawnIcon.vue'
 import type { MazIconValue } from './MazIcon.vue'
 import type { MazColor, MazIconString } from './types.ts'
-import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
-import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
 import { MazExclamationTriangle } from '@maz-ui/icons/lazy/MazExclamationTriangle'
 import {
   computed,
   defineAsyncComponent,
   ref,
   useSlots,
+  watch,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import MazDrawnIcon from './MazDrawnIcon.vue'
 
 const {
   modelValue,
@@ -23,6 +24,7 @@ const {
   allStepsOpened,
   allStepsValidated,
   canCloseSteps,
+  animated = true,
 } = defineProps<MazStepperProps>()
 
 const emits = defineEmits<{
@@ -65,6 +67,11 @@ export interface MazStepperProps {
   allStepsValidated?: boolean
   /** Allow to close the steps */
   canCloseSteps?: boolean
+  /**
+   * The line fills, the checks draw themselves and the content arrives in the direction of the navigation
+   * @default true
+   */
+  animated?: boolean
 }
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
@@ -90,6 +97,14 @@ const currentStep = computed({
   },
 })
 
+const direction = ref<'forward' | 'backward'>('forward')
+
+watch(currentStep, (step, previous) => {
+  direction.value = step < previous
+    ? 'backward'
+    : 'forward'
+})
+
 const instanceId = useInstanceUniqId({ componentName: 'MazStepper' })
 
 function getHeaderId(step: number) {
@@ -104,18 +119,30 @@ function isStepOpen(step: number) {
   return allStepsOpened || currentStep.value === step
 }
 
-function getStepStateData(step: number): { icon?: Component, class: string } {
+function getStepStateData(step: number): { icon?: Component, drawn?: MazDrawnIconName, class: string } {
   if (isStepSuccess(step)) {
-    return { icon: MazCheckCircle, class: '--success' }
+    return { drawn: 'check-circle', class: '--success' }
   }
   else if (isStepWarning(step)) {
     return { icon: MazExclamationTriangle, class: '--warning' }
   }
   else if (isStepError(step)) {
-    return { icon: MazExclamationCircle, class: '--error' }
+    return { drawn: 'exclamation-circle', class: '--error' }
   }
 
   return { class: '--normal' }
+}
+
+/** The line under a step fills when the stepper went through the step */
+function isLineFilled(step: number) {
+  return !isLastStep(step) && (step < currentStep.value || !!isStepSuccess(step))
+}
+
+/** Where the content of a closed step waits: it arrives moving in the direction of the navigation */
+function getContentSide(step: number) {
+  return step < currentStep.value
+    ? 'before'
+    : 'after'
 }
 
 function getStepIcon(step: number): MazIconValue | undefined {
@@ -193,7 +220,7 @@ function isLastStep(step: number): boolean {
 </script>
 
 <template>
-  <div class="m-stepper m-reset-css" :style="[{ '--round-step-bg-color': roundStepBgColor, '--round-step-text-color': roundStepTextColor, '--round-step-border-color': roundStepBorderColor }]">
+  <div class="m-stepper m-reset-css" :class="{ '--animated': animated }" :style="[{ '--round-step-bg-color': roundStepBgColor, '--round-step-text-color': roundStepTextColor, '--round-step-border-color': roundStepBorderColor }]">
     <template v-for="step in stepCount" :key="step">
       <button
         v-if="hasDataForStep('title', step)"
@@ -203,13 +230,13 @@ function isLastStep(step: number): boolean {
         :aria-expanded="isStepOpen(step) ? 'true' : 'false'"
         :aria-controls="getContentId(step)"
         :disabled="isStepDisabled(step)"
-        class="m-stepper__header maz:flex maz:w-full maz:cursor-interactive maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200 maz:select-text"
+        class="m-stepper__header maz:flex maz:w-full maz:cursor-interactive maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:focus-ring maz:transition-colors maz:duration-(--duration-fast) maz:select-text"
         :class="[
           {
             '--is-current-step maz:cursor-default': step === currentStep || allStepsOpened,
-            '--disabled maz:text-gray-400 maz:dark:text-gray-500': step !== currentStep && !allStepsOpened && isStepDisabled(step),
+            '--disabled maz:disabled-opacity': step !== currentStep && !allStepsOpened && isStepDisabled(step),
             'maz:disabled-cursor': isStepDisabled(step),
-            'maz:hover:bg-surface-600 maz:hover:dark:bg-surface-400': !isStepDisabled(step),
+            'maz:hover:bg-foreground/5': !isStepDisabled(step),
           },
           `${getStepStateData(step).class}`,
         ]"
@@ -219,10 +246,18 @@ function isLastStep(step: number): boolean {
           <div class="m-stepper__header__point__wrapper maz:flex maz:size-8 maz:flex-center">
             <slot name="point" :step>
               <span class="m-stepper__count --primary maz:relative maz:flex maz:size-8 maz:flex-none maz:flex-center maz:overflow-hidden maz:rounded-full maz:text-lg">
-                <div class="m-stepper__count__circle maz:absolute maz:inset-0 maz:flex maz:scale-0 maz:flex-center maz:rounded-full maz:transition-all maz:duration-300 maz:ease-in-out">
+                <div class="m-stepper__count__circle maz:absolute maz:inset-0 maz:flex maz:scale-0 maz:flex-center maz:rounded-full">
+                  <MazDrawnIcon
+                    v-if="getStepStateData(step).drawn"
+                    :name="getStepStateData(step).drawn!"
+                    :stroke-width="1.5"
+                    :duration="animated ? undefined : '0ms'"
+                    :delay="animated ? 'calc(var(--maz-motion-fast) * var(--maz-motion-scale))' : '0ms'"
+                    class="icon maz:text-xl"
+                  />
                   <component
                     :is="getStepStateData(step).icon"
-                    v-if="getStepStateData(step).icon"
+                    v-else-if="getStepStateData(step).icon"
                     class="icon maz:text-xl"
                   />
                 </div>
@@ -277,17 +312,21 @@ function isLastStep(step: number): boolean {
 
       <div
         :id="getContentId(step)"
-        class="m-stepper__content maz:ms-[1.95rem] maz:border-s maz:py-2 maz:ps-8"
+        class="m-stepper__content maz:relative maz:ms-[1.95rem] maz:border-s maz:py-2 maz:ps-8"
         :class="{
           'maz:border-transparent': isLastStep(step),
           'maz:border-divider': !isLastStep(step),
+          '--filled': isLineFilled(step),
         }"
       >
         <MazExpandAnimation
           :model-value="isStepOpen(step)"
           :aria-labelledby="hasDataForStep('title', step) ? getHeaderId(step) : undefined"
         >
-          <div class="m-stepper__content__wrapper maz:py-2">
+          <div
+            class="m-stepper__content__wrapper maz:py-2"
+            :class="[isStepOpen(step) ? '--open' : `--${getContentSide(step)}`, `--${direction}`]"
+          >
             <!-- @slot content-${step} - Content of the step
                 @binding {boolean} validated - If the step is validated
                 @binding {boolean} error - If the step has an error
@@ -315,6 +354,58 @@ function isLastStep(step: number): boolean {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
+/* The line under a step fills toward the next one, and empties upward when going back */
+.m-stepper__content::before {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -1px;
+  inline-size: 1px;
+  background-color: var(--round-step-bg-color);
+  content: '';
+  pointer-events: none;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.m-stepper__content.--filled::before {
+  transform: scaleY(1);
+}
+
+.m-stepper.--animated .m-stepper__content::before {
+  transition: transform calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1))
+    var(--maz-easing-in-out, ease-in-out);
+}
+
+/* The content waits above (steps to come) or below (steps passed) and arrives moving in the direction of the navigation */
+.m-stepper__content__wrapper {
+  --m-stepper-shift: 0.5rem;
+
+  &.--after {
+    transform: translateY(calc(var(--m-stepper-shift) * -1));
+  }
+
+  &.--before {
+    transform: translateY(var(--m-stepper-shift));
+  }
+
+  &.--after,
+  &.--before {
+    opacity: 0;
+  }
+}
+
+.m-stepper.--animated .m-stepper__content__wrapper {
+  transition:
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    opacity calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+
+  &.--after,
+  &.--before {
+    transition-duration: calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1));
+    transition-timing-function: var(--maz-easing-in, ease-in);
+  }
+}
+
 .m-stepper__count {
   background-color: var(--round-step-bg-color);
   color: var(--round-step-text-color);
@@ -327,6 +418,11 @@ function isLastStep(step: number): boolean {
 
 .m-stepper__title {
   @apply maz:text-title-4;
+}
+
+.m-stepper.--animated .m-stepper__count__circle {
+  transition: scale calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+    var(--maz-easing-spring, ease-out);
 }
 
 .m-stepper__header {

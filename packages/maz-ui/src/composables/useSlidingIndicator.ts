@@ -1,6 +1,7 @@
 import type { ComponentPublicInstance, CSSProperties, MaybeRefOrGetter } from 'vue'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { computed, getCurrentInstance, nextTick, onMounted, onScopeDispose, ref, toValue, watch } from 'vue'
+import { useMutationObserver } from './useMutationObserver.ts'
 import { useReducedMotion } from './useReducedMotion.ts'
 import { useResizeObserver } from './useResizeObserver.ts'
 
@@ -163,6 +164,13 @@ export function useSlidingIndicator(options: UseSlidingIndicatorOptions) {
   useResizeObserver(
     () => toElement(toValue(options.active)),
     () => place(false),
+  )
+
+  // A change of direction moves the active element without resizing anything
+  useMutationObserver(
+    () => (isClient() ? document.documentElement : undefined),
+    () => place(false),
+    { attributes: true, attributeFilter: ['dir'] },
   )
 
   function enableTransition() {

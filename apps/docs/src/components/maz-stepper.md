@@ -447,10 +447,46 @@ type Steps = Array<{
   import { ref } from 'vue'
 
   const currentStep = ref(2)
+  const motionStep = ref(1)
+  const motionSteps = [
+    { title: 'Account', content: 'Create your account.' },
+    { title: 'Address', content: 'Where do we deliver?' },
+    { title: 'Payment', content: 'How do you pay?' },
+  ]
   const address = ref('20 Cooper Square')
   const email = ref()
   const password = ref()
 </script>
+
+## Motion
+
+- The line under a step fills when the stepper goes through the step, and empties when you go back.
+- A validated step draws its check, a step with an error draws its exclamation mark.
+- The content arrives in the direction of the navigation: moving forward it comes down into place, going back it comes up.
+- `:animated="false"` removes all of it. The speed follows the `--maz-motion-*` tokens, and reduced motion makes everything instant.
+- The headers show a 2 px ring on keyboard focus only.
+
+<div class="vp-raw">
+<MazStepper v-model="motionStep" auto-validate-steps :steps="motionSteps" />
+</div>
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const step = ref(1)
+
+const steps = [
+  { title: 'Account', content: 'Create your account.' },
+  { title: 'Address', content: 'Where do we deliver?' },
+  { title: 'Payment', content: 'How do you pay?' },
+]
+</script>
+
+<template>
+  <MazStepper v-model="step" auto-validate-steps :steps="steps" />
+</template>
+```
 
 ## Accessibility
 
