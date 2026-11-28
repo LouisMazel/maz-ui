@@ -62,7 +62,7 @@ export interface ToastOptions {
    * The type of the toast
    * @default 'info'
    */
-  type?: 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'accent'
+  type?: 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'accent' | 'neutral'
   /**
    * The maximum number of toasts to display
    * @default false
@@ -96,10 +96,16 @@ export interface ToastOptions {
   persistent?: boolean
   /**
    * Icon of the toast, in the formats of MazIcon: a name (`'bell'`, `'app:logo'`), a component, a URL or a raw SVG.
-   * `true` displays the icon of the type (none for `contrast` and `accent`), `false` hides it.
+   * `true` displays the icon of the type (none for `contrast`, `accent` and `neutral`), `false` hides it.
    * @default true
    */
   icon?: boolean | MazIconValue
+  /**
+   * Pile the toasts of a position like a deck, they spread into a list on hover or focus.
+   * `false` keeps the list (one list when a single toast of the position asks for it)
+   * @default true
+   */
+  stacked?: boolean
   /**
    * The action will be displayed as a button in the toast
    * @default undefined
@@ -110,4 +116,19 @@ export interface ToastOptions {
    * @default undefined
    */
   buttons?: ToastButton[]
+}
+
+export interface ToastPromiseOptions<T = unknown> extends Omit<ToastOptions, 'type' | 'icon'> {
+  /**
+   * Message displayed while the promise is pending
+   */
+  loading: string
+  /**
+   * Message displayed when the promise resolves, or a function of its value
+   */
+  success: string | ((data: T) => string)
+  /**
+   * Message displayed when the promise rejects, or a function of its error
+   */
+  error: string | ((error: unknown) => string)
 }
