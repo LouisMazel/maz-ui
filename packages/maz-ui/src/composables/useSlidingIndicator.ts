@@ -59,20 +59,26 @@ function measure(container: HTMLElement, element: HTMLElement): IndicatorBox {
   const rect = element.getBoundingClientRect()
   const isRtl = globalThis.getComputedStyle(container).direction === 'rtl'
 
-  const y = rect.top - containerRect.top - container.clientTop + container.scrollTop
+  // An ancestor that scales (a dialog that opens) scales both rects: the indicator lives in the unscaled space
+  const scaleX = container.offsetWidth > 0 ? containerRect.width / container.offsetWidth : 1
+  const scaleY = container.offsetHeight > 0 ? containerRect.height / container.offsetHeight : 1
+  const width = rect.width / scaleX
+  const height = rect.height / scaleY
+
+  const y = (rect.top - containerRect.top) / scaleY - container.clientTop + container.scrollTop
 
   if (isRtl) {
     const borderEnd = container.offsetWidth - container.clientWidth - container.clientLeft
-    const fromEnd = containerRect.right - borderEnd - rect.right - container.scrollLeft
+    const fromEnd = (containerRect.right - rect.right) / scaleX - borderEnd - container.scrollLeft
 
-    return { x: -fromEnd, y, width: rect.width, height: rect.height }
+    return { x: -fromEnd, y, width, height }
   }
 
   return {
-    x: rect.left - containerRect.left - container.clientLeft + container.scrollLeft,
+    x: (rect.left - containerRect.left) / scaleX - container.clientLeft + container.scrollLeft,
     y,
-    width: rect.width,
-    height: rect.height,
+    width,
+    height,
   }
 }
 

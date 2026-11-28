@@ -82,6 +82,25 @@ describe('given useSlidingIndicator', () => {
     })
   })
 
+  describe('when an ancestor scales the container', () => {
+    it('then the indicator is measured in the unscaled space', async () => {
+      const container = createElement(rect(100, 50, 150, 20))
+      const active = createElement(rect(175, 60, 50, 10))
+
+      Object.defineProperty(container, 'offsetWidth', { value: 300 })
+      Object.defineProperty(container, 'offsetHeight', { value: 40 })
+      Object.defineProperty(container, 'clientWidth', { value: 300 })
+      document.body.append(container)
+      container.append(active)
+
+      const [{ style }] = setup({ container, active })
+
+      await flush()
+
+      expect(style.value).toEqual({ width: '100px', height: '20px', transform: 'translateX(150px)' })
+    })
+  })
+
   describe('when the active element changes', () => {
     it('then the indicator moves with the transition tokens', async () => {
       const { container, first, second } = createGroup()
