@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { SVGAttributes } from 'vue'
 import type { MazColorOrFree, MazSizeUnit } from './types.ts'
-import { computed, defineAsyncComponent, ref, useSlots } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
 import { shiftColorLightness } from '../utils/freeColor.ts'
@@ -87,6 +87,21 @@ export interface MazCircularProgressBarProps {
    * @default true
    */
   once?: boolean
+  /**
+   * The progress is unknown: an arc turns around the circle
+   * @default false
+   */
+  indeterminate?: boolean
+  /**
+   * Draws a check in place of the number once the circle is full
+   * @default false
+   */
+  check?: boolean
+  /**
+   * The digits roll when `percentage` changes, instead of counting up from zero
+   * @default false
+   */
+  roll?: boolean
 }
 
 const {
@@ -105,9 +120,14 @@ const {
   warningPercentage = 75,
   dangerPercentage = 50,
   once = true,
+  indeterminate = false,
+  check = false,
+  roll = false,
 } = defineProps<MazCircularProgressBarProps>()
 
 const MazAnimatedCounter = defineAsyncComponent(() => import('./MazAnimatedCounter.vue'))
+const MazRollingText = defineAsyncComponent(() => import('./MazRollingText.vue'))
+const MazDrawnIcon = defineAsyncComponent(() => import('./MazDrawnIcon.vue'))
 
 const slots = useSlots()
 
@@ -154,8 +174,35 @@ function getStatusColor(percent: number) {
   return 'primary'
 }
 
+const isFull = computed(() => !indeterminate && percentage >= 100)
+const completed = ref(false)
+let completedTimer: ReturnType<typeof setTimeout> | undefined
+
+function updateCompleted() {
+  clearTimeout(completedTimer)
+
+  if (!check || !isFull.value) {
+    completed.value = false
+    return
+  }
+
+  completedTimer = setTimeout(() => {
+    completed.value = true
+  }, delay + duration)
+}
+
+onMounted(updateCompleted)
+watch([isFull, () => check], () => {
+  if (completedTimer !== undefined || completed.value || isFull.value)
+    updateCompleted()
+})
+onBeforeUnmount(() => clearTimeout(completedTimer))
+
 const animationDuration = computed<string>(() => `${duration}ms`)
 const dashoffset = computed<number>(() => {
+  if (indeterminate)
+    return 218
+
   return Math.round(290 - 290 * (adjustedPercentage.value / 100))
 })
 
@@ -181,6 +228,8 @@ useIntersectionObserver(circleRef, (entries) => {
 <template>
   <div
     class="m-circular-progress-bar m-reset-css maz:relative maz:inline-flex maz:size-[1em] maz:flex-center"
+    :role="indeterminate ? 'progressbar' : undefined"
+    :aria-busy="indeterminate ? true : undefined"
     :style="[
       {
         '--animation-duration': animationDuration,
@@ -194,12 +243,16 @@ useIntersectionObserver(circleRef, (entries) => {
   >
     <div class="outer maz:flex maz:size-full maz:flex-center maz:rounded-full">
       <div class="inner maz:flex maz:size-[0.85em] maz:flex-center maz:rounded-full">
-        <span v-if="slots.default">
+        <MazDrawnIcon v-if="completed && !slots.default" name="check" size="1.4em" class="maz:text-success" />
+        <span v-else-if="slots.default">
           <!-- @slot Default slot - Replace the percaentage value -->
           <slot />
         </span>
+        <span v-else-if="roll">
+          <slot name="prefix">{{ prefix }}</slot><MazRollingText :value="percentage" /><slot name="suffix">{{ suffix }}</slot>
+        </span>
         <MazAnimatedCounter
-          v-else
+          v-else-if="!indeterminate"
           :count="percentage"
           :duration
           :delay
@@ -227,7 +280,8 @@ useIntersectionObserver(circleRef, (entries) => {
       width="1em"
       class="maz:absolute maz:-rotate-90"
       :class="{
-        animate: isVisible,
+        'animate': isVisible && !indeterminate,
+        'm-circular-progress-bar__spin': indeterminate,
       }"
       viewBox="0 0 100 100"
     >
@@ -249,7 +303,7 @@ useIntersectionObserver(circleRef, (entries) => {
         r="46"
         :stroke-width="strokeWidth"
         stroke-dasharray="290"
-        :stroke-dashoffset="hasBeenAnimated ? dashoffset : 290"
+        :stroke-dashoffset="hasBeenAnimated || indeterminate ? dashoffset : 290"
         :stroke="stroke ? stroke : `url(#${id}-gradient)`"
         fill="none"
         :stroke-linecap="strokeLinecap"
@@ -276,6 +330,21 @@ useIntersectionObserver(circleRef, (entries) => {
 @keyframes animate {
   to {
     stroke-dashoffset: var(--dashoffset);
+  }
+}
+
+.m-circular-progress-bar__spin {
+  animation: m-circular-progress-bar-spin calc(var(--maz-motion-slower, 450ms) * 3 * var(--maz-motion-scale, 1)) linear
+    infinite;
+}
+
+@keyframes m-circular-progress-bar-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>

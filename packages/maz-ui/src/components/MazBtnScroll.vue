@@ -7,8 +7,9 @@ import { MazArrowDown } from '@maz-ui/icons/raw/MazArrowDown'
 import { MazArrowUp } from '@maz-ui/icons/raw/MazArrowUp'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { useScroll } from '../composables/useScroll.ts'
 import MazBtn from './MazBtn.vue'
 
@@ -96,6 +97,11 @@ export interface MazBtnScrollProps {
    * @default false
    */
   bordered?: boolean
+  /**
+   * The arrow takes off on click
+   * @default true
+   */
+  animated?: boolean
 }
 
 const {
@@ -112,6 +118,7 @@ const {
   icon,
   behavior = 'smooth',
   label,
+  animated = true,
 } = defineProps<MazBtnScrollProps>()
 
 const emits = defineEmits<{
@@ -125,6 +132,9 @@ const emits = defineEmits<{
 const { t } = useTranslations()
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazBtnScroll', { size: 'md', roundedSize: 'full' })
+
+const { shouldReduceMotion } = useReducedMotion()
+const launched = ref(false)
 
 const { y, scrollToTop, scrollToBottom } = useScroll(() => target === undefined && isClient() ? globalThis.window : target)
 
@@ -175,12 +185,21 @@ const POSITION_CLASS = {
 
 const style = computed<CSSProperties>(() => ({
   '--m-btn-scroll-offset': offset,
+  '--m-btn-scroll-dir': to === 'top' ? '-1' : '1',
   '--m-btn-scroll-progress': `${percentage.value}%`,
   '--m-btn-scroll-progress-color': progressColor === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${progressColor})`,
 }))
 
+function onTakeoffEnd(event: AnimationEvent) {
+  if (event.animationName === 'm-btn-scroll-takeoff')
+    launched.value = false
+}
+
 function onClick(event: MouseEvent) {
   emits('click', event)
+
+  if (animated && !shouldReduceMotion.value)
+    launched.value = true
 
   if (event.defaultPrevented)
     return
@@ -197,8 +216,9 @@ function onClick(event: MouseEvent) {
     <div
       v-if="isVisible"
       class="m-btn-scroll m-reset-css maz:bottom-(--m-btn-scroll-offset) maz:inline-flex"
-      :class="[POSITION_CLASS[position], targetElement ? 'maz:absolute maz:z-10' : 'maz:fixed maz:z-40', { '--progress': progress }]"
+      :class="[POSITION_CLASS[position], targetElement ? 'maz:absolute maz:z-10' : 'maz:fixed maz:z-40', { '--progress': progress, '--launched': launched }]"
       :style
+      @animationend="onTakeoffEnd"
     >
       <span
         class="m-btn-scroll__ring maz:inline-flex"
@@ -226,19 +246,51 @@ function onClick(event: MouseEvent) {
 .m-btn-scroll.--progress .m-btn-scroll__ring {
   padding: 3px;
   background: conic-gradient(var(--m-btn-scroll-progress-color) var(--m-btn-scroll-progress), var(--maz-divider) 0);
-  transition: background 100ms linear;
+  transition: background calc(var(--maz-motion-instant, 80ms) * var(--maz-motion-scale, 1)) linear;
 }
 
-.m-btn-scroll-enter-active,
+.m-btn-scroll.--launched :deep(.m-btn > :first-child) {
+  animation: m-btn-scroll-takeoff calc(var(--maz-motion-slow, 320ms) * var(--maz-motion-scale, 1))
+    var(--maz-easing-in-out, ease-in-out);
+}
+
+.m-btn-scroll-enter-active {
+  transition:
+    opacity calc(var(--maz-motion-normal, 220ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    transform calc(var(--maz-motion-normal, 220ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+}
+
 .m-btn-scroll-leave-active {
   transition:
-    opacity 250ms ease-in-out,
-    transform 250ms ease-in-out;
+    opacity calc(var(--maz-motion-normal, 220ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+    transform calc(var(--maz-motion-normal, 220ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
 }
 
 .m-btn-scroll-enter-from,
 .m-btn-scroll-leave-to {
   opacity: 0;
   transform: translateY(1rem);
+}
+
+@keyframes m-btn-scroll-takeoff {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  45% {
+    opacity: 0;
+    transform: translateY(calc(var(--m-btn-scroll-dir) * 140%));
+  }
+
+  46% {
+    opacity: 0;
+    transform: translateY(calc(var(--m-btn-scroll-dir) * -140%));
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
