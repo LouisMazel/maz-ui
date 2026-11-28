@@ -37,7 +37,7 @@ const {
   color = 'primary',
   placeholder = undefined,
   class: className,
-  autoFormat = 'blur',
+  autoFormat = 'typing',
   orientation = 'responsive',
   searchThreshold = 0.75,
   countrySelectAttributes = {
@@ -300,8 +300,8 @@ export interface MazInputPhoneNumberProps {
    */
   customCountriesList?: Record<CountryCode, string>
   /**
-   * Disabled auto-format when phone is valid
-   * @default 'blur'
+   * Format the phone number while typing (caret kept in place), when the field loses focus or never
+   * @default 'typing'
    */
   autoFormat?: 'blur' | 'typing' | 'disabled' | false
   /**

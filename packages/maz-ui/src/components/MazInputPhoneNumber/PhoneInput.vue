@@ -7,6 +7,7 @@ import { useTranslations } from '@maz-ui/translations/composables/useTranslation
 import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { useInjectStrict } from '../../composables/useInjectStrict.ts'
 import MazInput from '../MazInput.vue'
+import { computeDeletion, formatWithCaret } from './caret.ts'
 import { useLibphonenumber } from './useLibphonenumber.ts'
 import { useMazInputPhoneNumber } from './useMazInputPhoneNumber.ts'
 
@@ -45,6 +46,71 @@ const displayedPhoneNumber = computed({
     modelValue.value = sanitizePhoneNumber(value)
   },
 })
+
+function formatInputElement(element: HTMLInputElement) {
+  const { selectionStart } = element
+
+  if (selectionStart === null || selectionStart === undefined) {
+    return
+  }
+
+  const { value, caret } = formatWithCaret(
+    element.value,
+    selectionStart,
+    significant => getAsYouTypeFormat(selectedCountry.value, significant),
+  )
+
+  if (value !== element.value) {
+    element.value = value
+  }
+
+  element.setSelectionRange(caret, caret)
+}
+
+function onInput(event: Event) {
+  if (autoFormat !== 'typing' || (event as InputEvent).isComposing) {
+    return
+  }
+
+  formatInputElement(event.target as HTMLInputElement)
+}
+
+function onKeydown(event: KeyboardEvent) {
+  if (
+    autoFormat !== 'typing'
+    || (event.key !== 'Backspace' && event.key !== 'Delete')
+    || event.isComposing
+    || event.ctrlKey
+    || event.altKey
+    || event.metaKey
+    || event.shiftKey
+  ) {
+    return
+  }
+
+  const element = event.target as HTMLInputElement
+  const { selectionStart, selectionEnd } = element
+
+  if (selectionStart === null || selectionEnd === null) {
+    return
+  }
+
+  const deletion = computeDeletion({
+    value: element.value,
+    selectionStart,
+    selectionEnd,
+    direction: event.key === 'Backspace' ? 'backward' : 'forward',
+  })
+
+  if (!deletion) {
+    return
+  }
+
+  event.preventDefault()
+  element.value = deletion.value
+  element.setSelectionRange(deletion.caret, deletion.caret)
+  element.dispatchEvent(new Event('input', { bubbles: true }))
+}
 
 const { t } = useTranslations()
 function getCountryPhoneNumberExample(selectedCountry?: CountryCode | undefined | null) {
@@ -126,6 +192,9 @@ defineExpose({
       },
     ]"
     :style="styleAttributes"
+    dir="ltr"
+    @keydown="onKeydown"
+    @input="onInput"
     @focus="inputFocused = true"
     @blur="inputFocused = false"
   >

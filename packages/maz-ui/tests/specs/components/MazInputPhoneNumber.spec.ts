@@ -713,3 +713,230 @@ describe('given a server side rendering', () => {
     })
   })
 })
+
+describe('components/MazInputPhoneNumber.vue caret while typing', () => {
+  async function getTypingInput(props: Partial<MazInputPhoneNumberProps> = {}) {
+    const wrapper = await getWrapper({
+      props: { modelValue: '', countryCode: 'FR', ...props },
+      attrs: { name: 'phone' },
+    })
+    await vi.dynamicImportSettled()
+    const input = wrapper.find<HTMLInputElement>('input[name="phone"]')
+
+    async function type(value: string, caret = value.length) {
+      input.element.value = value
+      input.element.setSelectionRange(caret, caret)
+      await input.trigger('input')
+      await nextTick()
+    }
+
+    async function press(key: string) {
+      await input.trigger('keydown', { key })
+      await nextTick()
+    }
+
+    return { wrapper, input, type, press }
+  }
+
+  describe('given the default autoFormat', () => {
+    describe('when typing a number', () => {
+      it('then formats it while typing', async () => {
+        const { input, type } = await getTypingInput()
+
+        await type('0666')
+
+        expect(input.element.value).toBe('06 66')
+      })
+    })
+  })
+
+  describe('given autoFormat typing', () => {
+    describe('when typing digits one by one', () => {
+      it('then formats progressively and keeps the caret at the end', async () => {
+        const { input, type } = await getTypingInput({ autoFormat: 'typing' })
+        const steps: string[] = []
+
+        for (const digit of '0666776666') {
+          await type(input.element.value + digit)
+          steps.push(input.element.value)
+        }
+
+        expect(steps.at(-1)).toBe('06 66 77 66 66')
+        expect(input.element.selectionStart).toBe(14)
+      })
+    })
+
+    describe('when a digit is typed in the middle', () => {
+      it('then keeps the caret right after the typed digit', async () => {
+        const { input, type } = await getTypingInput({ autoFormat: 'typing' })
+
+        await type('066677666')
+        await type('06 661 77 66 6', 6)
+
+        expect(input.element.value).toBe('06 66 17 76 66')
+        expect(input.element.selectionStart).toBe(7)
+      })
+    })
+
+    describe('when backspace is pressed after a space', () => {
+      it('then removes the previous digit and keeps the caret there', async () => {
+        const { input, type, press } = await getTypingInput({ autoFormat: 'typing' })
+
+        await type('0666776666')
+        input.element.setSelectionRange(3, 3)
+        await press('Backspace')
+
+        expect(input.element.value).toBe('06 67 76 66 6')
+        expect(input.element.selectionStart).toBe(1)
+      })
+    })
+
+    describe('when backspace is pressed after a closing parenthesis', () => {
+      it('then removes the previous digit', async () => {
+        const { input, type, press } = await getTypingInput({ autoFormat: 'typing', countryCode: 'US' })
+
+        await type('5551234567')
+        expect(input.element.value).toBe('(555) 123-4567')
+
+        input.element.setSelectionRange(5, 5)
+        await press('Backspace')
+
+        expect(input.element.value).toBe('(551) 234-567')
+      })
+    })
+
+    describe('when the whole number is deleted with backspace', () => {
+      it('then the input ends empty', async () => {
+        const { input, type, press } = await getTypingInput({ autoFormat: 'typing', countryCode: 'US' })
+
+        await type('5551234567')
+
+        for (let index = 0; index < 20 && input.element.value; index++) {
+          const end = input.element.value.length
+          input.element.setSelectionRange(end, end)
+          await press('Backspace')
+          if (input.element.value.length === end) {
+            input.element.value = input.element.value.slice(0, -1)
+            await input.trigger('input')
+            await nextTick()
+          }
+        }
+
+        expect(input.element.value).toBe('')
+      })
+    })
+
+    describe('when delete is pressed before a space', () => {
+      it('then removes the next digit and keeps the caret', async () => {
+        const { input, type, press } = await getTypingInput({ autoFormat: 'typing' })
+
+        await type('0666776666')
+        input.element.setSelectionRange(2, 2)
+        await press('Delete')
+
+        expect(input.element.value).toBe('06 67 76 66 6')
+        expect(input.element.selectionStart).toBe(2)
+      })
+    })
+
+    describe('when a selection is deleted', () => {
+      it('then removes it and reformats', async () => {
+        const { input, type, press } = await getTypingInput({ autoFormat: 'typing' })
+
+        await type('0666776666')
+        input.element.setSelectionRange(3, 8)
+        await press('Backspace')
+
+        expect(input.element.value).toBe('06 66 66')
+      })
+    })
+
+    describe('when a selection is replaced by a digit', () => {
+      it('then formats with the caret after the digit', async () => {
+        const { input, type } = await getTypingInput({ autoFormat: 'typing' })
+
+        await type('0666776666')
+        await type('06 9 77 66 66', 4)
+
+        expect(input.element.value).toBe('06 97 76 66 6')
+        expect(input.element.selectionStart).toBe(4)
+      })
+    })
+
+    describe('when backspace is pressed with a modifier key', () => {
+      it('then keeps the native behavior', async () => {
+        const { input, type } = await getTypingInput({ autoFormat: 'typing' })
+
+        await type('0666776666')
+        input.element.setSelectionRange(3, 3)
+        await input.trigger('keydown', { key: 'Backspace', ctrlKey: true })
+
+        expect(input.element.value).toBe('06 66 77 66 66')
+      })
+    })
+
+    describe('when another key is pressed', () => {
+      it('then does nothing', async () => {
+        const { input, type, press } = await getTypingInput({ autoFormat: 'typing' })
+
+        await type('0666776666')
+        await press('a')
+
+        expect(input.element.value).toBe('06 66 77 66 66')
+      })
+    })
+
+    describe('when a number is pasted with the international prefix', () => {
+      it('then switches the country', async () => {
+        const { wrapper, input, type } = await getTypingInput({ autoFormat: 'typing', countryCode: 'US' })
+
+        await type('+33612345678')
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const data = wrapper.vm as unknown as { selectedCountry: CountryCode }
+
+        expect(data.selectedCountry).toBe('FR')
+        expect(input.element.value).toBe('06 12 34 56 78')
+      })
+    })
+  })
+
+  describe('given autoFormat blur', () => {
+    describe('when typing while focused', () => {
+      it('then does not format the value', async () => {
+        const { input, type } = await getTypingInput({ autoFormat: 'blur' })
+
+        await input.trigger('focus')
+        await type('0666')
+
+        expect(input.element.value).toBe('0666')
+      })
+    })
+
+    describe('when the backspace is pressed after a space', () => {
+      it('then keeps the native behavior', async () => {
+        const { input, press } = await getTypingInput({ autoFormat: 'blur', modelValue: '0666776666' })
+
+        await input.trigger('focus')
+        input.element.value = '06 66'
+        input.element.setSelectionRange(3, 3)
+        await press('Backspace')
+
+        expect(input.element.value).toBe('06 66')
+      })
+    })
+  })
+
+  describe('given autoFormat disabled', () => {
+    describe('when typing', () => {
+      it('then does not format the value', async () => {
+        const { input, type } = await getTypingInput({ autoFormat: 'disabled' })
+
+        await type('0666')
+
+        expect(input.element.value).toBe('0666')
+      })
+    })
+  })
+})

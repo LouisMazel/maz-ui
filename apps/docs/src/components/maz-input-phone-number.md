@@ -310,12 +310,12 @@ The detected country is only selected when it belongs to the offered countries (
 
 ## Phone Number Formatting
 
-Control how phone numbers are automatically formatted as users type.
+Control how phone numbers are automatically formatted. By default (`auto-format="typing"`), the number is formatted while the user types, and the caret stays where it is: editing a digit in the middle of the number does not move the caret to the end. Backspace and Delete on a space, a parenthesis or a dash remove the nearest digit, so the number can always be fully deleted. Phone numbers always read left to right, also in RTL pages.
 
 <ComponentDemo>
   <div class="maz:space-y-6">
     <div>
-      <h4 class="maz:font-semibold maz:mb-2">Format on Blur (Default)</h4>
+      <h4 class="maz:font-semibold maz:mb-2">Format on Blur</h4>
       <p class="maz:text-sm maz:text-muted maz:mb-2">Shows raw input while typing, formats when field loses focus</p>
       <MazInputPhoneNumber
         auto-format="blur"
@@ -328,8 +328,8 @@ Control how phone numbers are automatically formatted as users type.
       />
     </div>
     <div>
-      <h4 class="maz:font-semibold maz:mb-2">Format While Typing</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Real-time formatting as you type</p>
+      <h4 class="maz:font-semibold maz:mb-2">Format While Typing (Default)</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Formatted as you type, the caret stays in place</p>
       <MazInputPhoneNumber
         auto-format="typing"
         country-code="FR"
@@ -359,10 +359,10 @@ Control how phone numbers are automatically formatted as users type.
 
 ```vue
 <template>
-  <!-- Format on blur (default) - best UX for most cases -->
+  <!-- Format on blur - raw input while typing -->
   <MazInputPhoneNumber auto-format="blur" />
 
-  <!-- Format while typing - immediate visual feedback -->
+  <!-- Format while typing (default) - the caret keeps its place -->
   <MazInputPhoneNumber auto-format="typing" />
 
   <!-- Disable formatting - for special cases -->
