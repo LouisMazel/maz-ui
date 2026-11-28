@@ -79,7 +79,7 @@ One word of the sentence changes in a loop. Give the words with `words`: they fo
 
 ### Typewriter
 
-The text is typed with a human rhythm (longer pauses after commas and full stops) and a caret. The delay of `delay` is waited first.
+The text is typed with a human rhythm (longer pauses after commas and full stops) and a caret. The delay of `delay` is waited first. `type-speed` sets the average time per character in milliseconds (about 90 by default): the pauses after the punctuation are kept, scaled to it.
 
 <ComponentDemo>
   <MazAnimatedText effect="typewriter" tag="p" text="Hello. I type this text, letter after letter, like a person." class="maz:text-xl" />
@@ -88,7 +88,7 @@ The text is typed with a human rhythm (longer pauses after commas and full stops
 
 ```vue
 <template>
-  <MazAnimatedText effect="typewriter" tag="p" text="Hello. I type this text, letter after letter." :delay="300" />
+  <MazAnimatedText effect="typewriter" tag="p" text="Hello. I type this text, letter after letter." :delay="300" :type-speed="40" />
 </template>
 ```
 

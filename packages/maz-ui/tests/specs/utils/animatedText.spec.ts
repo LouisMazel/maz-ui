@@ -79,6 +79,13 @@ describe('given typingDelays', () => {
       expect(delays[0]).toBe(55)
     })
   })
+
+  describe('when a speed is given', () => {
+    it('then the rhythm is scaled to the average delay', () => {
+      expect(typingDelays('a, b', () => 0, 45)).toEqual([28, 28, 98, 28])
+      expect(typingDelays('ab', () => 0, 0)).toEqual([0, 0])
+    })
+  })
 })
 
 describe('given runTypewriter', () => {

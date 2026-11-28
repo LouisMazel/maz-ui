@@ -3,6 +3,8 @@ const SCRAMBLABLE = /[\p{L}\p{N}]/u
 
 export type Random = () => number
 
+const AVERAGE_TYPING_DELAY = 90
+
 /**
  * The text to show at `progress` (0 to 1) of a scramble: the letters from left to right settle on their real value,
  * with some jitter, the others show a random character. Spaces and punctuation never change
@@ -60,24 +62,26 @@ export function runScramble(text: string, options: { duration: number, onFrame: 
 
 /**
  * The delay in milliseconds before each character of a typed text: a human rhythm, a little random, longer after a
- * comma and a full stop
+ * comma and a full stop. `speed` is the average delay per character: the rhythm is scaled to it
  */
-export function typingDelays(text: string, random: Random = Math.random): number[] {
+export function typingDelays(text: string, random: Random = Math.random, speed?: number): number[] {
+  const scale = speed === undefined ? 1 : Math.max(0, speed) / AVERAGE_TYPING_DELAY
+
   return [...text].map((character, index, characters) => {
     const previous = characters[index - 1] ?? ''
     const base = character === ' ' ? 35 : 55
     const pause = /[.!?]/.test(previous) ? 320 : /[,;:]/.test(previous) ? 160 : 0
 
-    return Math.round(base + random() * 70 + pause)
+    return Math.round((base + random() * 70 + pause) * scale)
   })
 }
 
 /**
  * Types a text one character at a time (timeouts, no polling). Returns the function that cancels it
  */
-export function runTypewriter(text: string, options: { onType: (value: string) => void, onDone: () => void, delay?: number, random?: Random }): () => void {
+export function runTypewriter(text: string, options: { onType: (value: string) => void, onDone: () => void, delay?: number, random?: Random, speed?: number }): () => void {
   const characters = [...text]
-  const delays = typingDelays(text, options.random)
+  const delays = typingDelays(text, options.random, options.speed)
   let timer: ReturnType<typeof setTimeout>
   let index = 0
 

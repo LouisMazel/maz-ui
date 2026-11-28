@@ -69,6 +69,12 @@ export interface MazAnimatedTextProps {
    */
   effect?: MazAnimatedTextEffect
   /**
+   * Average time in milliseconds to type a character (`typewriter`). Without it, a human rhythm of about 90ms. The
+   * pauses after the commas and the full stops are kept, scaled to it
+   * @example 40
+   */
+  typeSpeed?: number
+  /**
    * The words that take turns at the end of the sentence (`rotate`). Put `{word}` in `text` to place them elsewhere
    * @example ["fast", "beautiful", "accessible"]
    */
@@ -128,6 +134,7 @@ const {
   once = true,
   effect,
   words: rotatingWords = [],
+  typeSpeed,
   interval = 2500,
   highlight,
   highlightType = 'marker',
@@ -236,7 +243,7 @@ function run() {
     }
     else {
       typing.value = true
-      cancel = runTypewriter(text, { onType: value => (display.value = value), onDone: finish })
+      cancel = runTypewriter(text, { onType: value => (display.value = value), onDone: finish, speed: typeSpeed })
     }
   }, delay)
 }

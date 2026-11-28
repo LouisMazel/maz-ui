@@ -169,6 +169,32 @@ describe('given a MazAnimatedText with an effect', () => {
       })
     })
 
+    describe('when a type speed of 1ms is given', () => {
+      it('then the whole text is typed almost at once', async () => {
+        const wrapper = render({ effect: 'typewriter', typeSpeed: 1 })
+
+        enter()
+        await nextTick()
+        vi.advanceTimersByTime(200)
+        await nextTick()
+
+        expect(wrapper.find('.m-animated-text__overlay').exists()).toBe(false)
+      })
+    })
+
+    describe('when a slow type speed is given', () => {
+      it('then the text is still being typed after one second', async () => {
+        const wrapper = render({ effect: 'typewriter', typeSpeed: 400 })
+
+        enter()
+        await nextTick()
+        vi.advanceTimersByTime(1000)
+        await nextTick()
+
+        expect(wrapper.find('.m-animated-text__overlay').exists()).toBe(true)
+      })
+    })
+
     describe('when the component is unmounted while typing', () => {
       it('then the timers are cleared', async () => {
         const wrapper = render({ effect: 'typewriter' })
