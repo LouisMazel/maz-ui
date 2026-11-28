@@ -16,6 +16,20 @@ describe('given an input code of 4 characters', () => {
     })
   })
 
+  describe('when a key is typed in a filled input', () => {
+    it('then it replaces the character of this input only', async () => {
+      const wrapper = mount(MazInputCode, { props: { codeLength: 4, modelValue: '12' } })
+      const first = wrapper.findAll('input')[0]
+
+      first.element.value = '19'
+      first.element.dispatchEvent(new InputEvent('input', { inputType: 'insertText', data: '9' }))
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['92'])
+      expect(first.element.value).toBe('9')
+    })
+  })
+
   describe('when a hint and an error are set', () => {
     it('then the inputs are invalid and described by the hint', () => {
       const wrapper = mount(MazInputCode, { props: { hint: 'Check your SMS', error: true, id: 'otp' } })

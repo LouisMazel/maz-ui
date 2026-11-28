@@ -123,9 +123,19 @@ function getMapValues(value = modelValue) {
 }
 
 function handleNewValue(event: Event, item: number) {
-  const rawValue = (event.target as HTMLInputElement)?.value ?? ''
+  const target = event.target as HTMLInputElement | null
+  let rawValue = target?.value ?? ''
+  const { inputType, data } = event as InputEvent
 
-  // SMS autofill (`one-time-code`) or a fast typing puts several characters in one input
+  // A key typed in a filled input replaces its character
+  if (rawValue.length > 1 && inputType === 'insertText' && data?.length === 1) {
+    rawValue = data
+
+    if (target)
+      target.value = data
+  }
+
+  // SMS autofill (`one-time-code`) or a paste puts several characters in one input
   if (rawValue.length > 1) {
     fillFromIndex(item, rawValue)
     return
