@@ -34,6 +34,12 @@ export function useEventListener<K extends keyof WindowEventMap>(
   listener: (event: WindowEventMap[K]) => void,
   options?: UseEventListenerOptions,
 ): () => void
+export function useEventListener<K extends keyof WindowEventMap>(
+  target: UseEventListenerTarget<typeof globalThis>,
+  event: K | K[],
+  listener: (event: WindowEventMap[K]) => void,
+  options?: UseEventListenerOptions,
+): () => void
 export function useEventListener<K extends keyof DocumentEventMap>(
   target: UseEventListenerTarget<Document>,
   event: K | K[],

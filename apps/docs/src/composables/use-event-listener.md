@@ -72,14 +72,14 @@ When the target is a ref or a getter, the listener follows it: moved to the new 
 
 ```ts
 function useEventListener(
-  target: MaybeRefOrGetter<Window | Document | HTMLElement | EventTarget | null | undefined>,
+  target: MaybeRefOrGetter<Window | typeof globalThis | Document | HTMLElement | EventTarget | null | undefined>,
   event: string | string[],
   listener: (event: Event) => void,
   options?: boolean | AddEventListenerOptions,
 ): () => void
 ```
 
-The event names and the type of `event` follow the target (`WindowEventMap`, `DocumentEventMap`, `HTMLElementEventMap`). It returns a `stop` function to remove the listener before the unmount.
+The event names and the type of `event` follow the target (`WindowEventMap` for `window` and `globalThis`, `DocumentEventMap`, `HTMLElementEventMap`). It returns a `stop` function to remove the listener before the unmount.
 
 ## Related
 
