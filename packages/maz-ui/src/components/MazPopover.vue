@@ -1066,26 +1066,49 @@ defineExpose({
   }
 }
 
+/*
+ * Grows out of the trigger: from a smaller scale and a few pixels toward the trigger (the side of the panel),
+ * the origin being `--maz-popover-transform-origin`
+ */
 .maz-scale-fade-enter-active,
 .maz-scale-pop-enter-active {
   transition:
-    opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
-    transform calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+    opacity calc(var(--maz-motion-normal, 200ms) * 0.6 * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .maz-scale-fade-leave-active,
 .maz-scale-pop-leave-active {
   transition:
-    opacity calc(var(--maz-motion-fast, 150ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
-    transform calc(var(--maz-motion-fast, 150ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
+    opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+    transform calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
 }
 
 .maz-scale-fade-enter-from,
 .maz-scale-fade-leave-to,
 .maz-scale-pop-enter-from,
 .maz-scale-pop-leave-to {
+  --m-popover-shift-x: 0px;
+  --m-popover-shift-y: 0px;
+
   @apply maz:opacity-0;
 
-  transform: scale(0.96);
+  transform: translate(var(--m-popover-shift-x), var(--m-popover-shift-y)) scale(0.9);
+
+  &[data-side='top'] {
+    --m-popover-shift-y: 6px;
+  }
+
+  &[data-side='bottom'] {
+    --m-popover-shift-y: -6px;
+  }
+
+  &[data-side='left'] {
+    --m-popover-shift-x: 6px;
+  }
+
+  &[data-side='right'] {
+    --m-popover-shift-x: -6px;
+  }
 }
 </style>
