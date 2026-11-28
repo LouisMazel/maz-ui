@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { ResizeTarget } from './useResizeObserver.ts'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
-import { onScopeDispose, ref, toValue } from 'vue'
+import { getCurrentScope, onScopeDispose, ref, toValue } from 'vue'
 
 export type RovingFocusOrientation = 'horizontal' | 'vertical' | 'both'
 
@@ -271,7 +271,8 @@ export function useRovingFocus(options: UseRovingFocusOptions = {}) {
       focusItem(target)
   }
 
-  onScopeDispose(() => clearTimeout(bufferTimer))
+  if (getCurrentScope())
+    onScopeDispose(() => clearTimeout(bufferTimer))
 
   return { onKeydown, getTabIndex, focusItem, currentIndex }
 }
