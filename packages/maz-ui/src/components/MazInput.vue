@@ -16,7 +16,7 @@ import {
   useAttrs,
   useSlots,
 } from 'vue'
-import { useGlobalConfig, useGlobalTopLabel } from '../composables/useGlobalConfig.ts'
+import { useFieldTopLabel, useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
 import { useReducedMotion } from '../composables/useReducedMotion.ts'
@@ -347,7 +347,6 @@ const emits = defineEmits<{
 const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazInput', { size: 'md', roundedSize: 'md' })
 
 const attrs = useAttrs()
-const globalTopLabel = useGlobalTopLabel()
 const { shouldReduceMotion } = useReducedMotion()
 const { t } = useTranslations()
 
@@ -405,9 +404,7 @@ const { state, hasState, borderClass, importantTextClass: stateColor } = useFiel
 
 const borderStyle = computed(() => (hasBorder.value ? borderClass.value : undefined))
 
-const labelOnTop = computed(() => !topLabel && !!label && globalTopLabel.value)
-
-const topLabelText = computed(() => topLabel || (labelOnTop.value ? label : undefined))
+const { labelOnTop, topLabelText } = useFieldTopLabel(() => ({ label, topLabel }))
 
 const floatingText = computed(() => hint || (labelOnTop.value ? undefined : label))
 

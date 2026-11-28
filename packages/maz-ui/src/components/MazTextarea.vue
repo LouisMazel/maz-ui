@@ -114,7 +114,7 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 <script lang="ts" setup generic="T extends string | undefined | null">
 import type { HTMLAttributes } from 'vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useAttrs, useSlots, watch } from 'vue'
-import { useGlobalConfig, useGlobalTopLabel } from '../composables/useGlobalConfig.ts'
+import { useFieldTopLabel, useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync.ts'
@@ -215,12 +215,9 @@ function change(event: Event) {
 const slots = useSlots()
 
 const attrs = useAttrs()
-const globalTopLabel = useGlobalTopLabel()
 const { shouldReduceMotion } = useReducedMotion()
 
-const labelOnTop = computed(() => !topLabel && !!label && globalTopLabel.value)
-
-const topLabelText = computed(() => topLabel || (labelOnTop.value ? label : undefined))
+const { labelOnTop, topLabelText } = useFieldTopLabel(() => ({ label, topLabel }))
 
 const hasLabelOrHint = computed(() => hint || !!slots.label || (!labelOnTop.value && !!label))
 

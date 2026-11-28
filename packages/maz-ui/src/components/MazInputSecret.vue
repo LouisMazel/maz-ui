@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { useFieldTopLabel } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazInput from './MazInput.vue'
 
@@ -202,6 +203,8 @@ const MASK = '•'.repeat(12)
 
 const { t } = useTranslations()
 
+const { topLabelText } = useFieldTopLabel(() => ({ label, topLabel }))
+
 const instanceId = useInstanceUniqId({
   componentName: 'MazInputSecret',
   providedId: id,
@@ -386,7 +389,7 @@ function cancelReplace() {
     <div
       v-if="saved"
       class="m-input-secret__actions maz:flex maz:flex-none maz:gap-2"
-      :class="{ 'maz:mt-6': topLabel }"
+      :class="{ 'maz:mt-6': topLabelText }"
     >
       <template v-if="isMasked">
         <MazBtn

@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, onBeforeUnmount, ref, useTemplateRef } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useFieldTopLabel, useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { ROUNDED_SIZE_CLASS, SIZE_TEXT_CLASS } from './constants.ts'
@@ -160,8 +160,10 @@ onBeforeUnmount(() => {
   shakes.clear()
 })
 
-/** No floating label in a field of tags: the label is the placeholder of the input */
-const inputPlaceholder = computed(() => placeholder || hint || label)
+const { labelOnTop, topLabelText } = useFieldTopLabel(() => ({ label, topLabel }))
+
+/** No floating label in a field of tags: the label is the placeholder of the input, unless it is shown above the field */
+const inputPlaceholder = computed(() => placeholder || hint || (labelOnTop.value ? undefined : label))
 
 const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
@@ -280,13 +282,13 @@ function focusInput() {
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
-      v-if="topLabel"
+      v-if="topLabelText"
       :for="instanceId"
       class="m-input-tags__top-label maz:mb-2"
       :class="stateTextClass"
       :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
     >
-      {{ topLabel }}
+      {{ topLabelText }}
     </label>
 
     <!-- The click only moves the focus to the input, which has the keyboard interactions -->

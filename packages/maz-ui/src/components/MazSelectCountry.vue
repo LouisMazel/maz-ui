@@ -169,6 +169,7 @@ const {
   locale: componentLocale,
   color = 'primary',
   label,
+  topLabel,
   hint,
   translations,
   search = true,
@@ -365,6 +366,7 @@ const flagUrl = computed(() => {
       :color
       :placeholder
       :label
+      :top-label
       :size
       :multiple="false"
       :list-position

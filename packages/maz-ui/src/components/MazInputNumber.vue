@@ -8,7 +8,7 @@ import { useTranslations } from '@maz-ui/translations/composables/useTranslation
 import { throttle } from '@maz-ui/utils/helpers/throttle'
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/index.ts'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { provideInnerFieldsWithoutTopLabel, useFieldTopLabel, useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
@@ -30,7 +30,9 @@ const {
   step = 1,
   textCenter = true,
   inputmode = 'numeric',
+  label = undefined,
   topLabel = undefined,
+  inputProps = undefined,
   prefix = undefined,
   suffix = undefined,
   error = false,
@@ -75,6 +77,10 @@ defineSlots<{
 }>()
 
 const { size } = useGlobalConfig<{ size: MazSize }>('MazInputNumber', { size: 'md' })
+
+const fieldLabel = computed(() => label ?? inputProps?.label)
+const { labelOnTop, topLabelText } = useFieldTopLabel(() => ({ label: fieldLabel.value, topLabel }))
+provideInnerFieldsWithoutTopLabel()
 const { t } = useTranslations()
 
 const instanceId = useInstanceUniqId({
@@ -178,6 +184,10 @@ export interface MazInputNumberProps {
    * Text displayed after the number, inside the field (a unit like `min` or `kg`). Use the `suffix` slot for rich content
    */
   suffix?: string
+  /**
+   * The label of the field: floating inside it, or above it with `defaults.global.topLabel`
+   */
+  label?: string
   /**
    * Static label displayed above the input field. Unlike the floating label, this remains fixed
    * @example "User Information"
@@ -373,13 +383,13 @@ const stateColor = computed(() => {
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
-      v-if="topLabel"
+      v-if="topLabelText"
       :for="instanceId"
       class="m-input-number__top-label"
       :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
       :class="stateColor"
     >
-      {{ topLabel }}
+      {{ topLabelText }}
     </label>
 
     <div class="m-input-number__wrapper maz:flex maz:items-center maz:align-top">
@@ -398,6 +408,7 @@ const stateColor = computed(() => {
       <MazInput
         v-bind="{ ...$attrs, ...inputProps }"
         :id="instanceId"
+        :label="labelOnTop ? undefined : fieldLabel"
         :model-value="currentValue"
         type="number"
         class="m-input-number__input"

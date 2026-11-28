@@ -92,6 +92,10 @@ You can remove the buttons with the props `hide-buttons`
   </template>
 </ComponentDemo>
 
+## Label above the field
+
+Set `topLabel: true` in the [global defaults](../guide/global-defaults.md) to show the `label` above the field instead of floating inside it. A `top-label` set on an instance still wins.
+
 ## Motion
 
 - A click on <kbd>+</kbd> or <kbd>-</kbd> slides the value a little in the direction of the change. Typing and the arrow keys never animate.

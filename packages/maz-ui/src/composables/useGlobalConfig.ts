@@ -35,7 +35,7 @@ import type { MazTabsBarProps } from '../components/MazTabsBar.vue'
 import type { MazTextareaProps } from '../components/MazTextarea.vue'
 import type { MazTimelineProps } from '../components/MazTimeline.vue'
 import type { MazCountryFlagSrc, MazRoundedSize, MazSize } from '../components/types.ts'
-import { computed, getCurrentInstance, inject } from 'vue'
+import { computed, getCurrentInstance, inject, provide } from 'vue'
 
 /**
  * Cross-cutting props that can be set once for every globalized component
@@ -51,7 +51,7 @@ export interface GlobalizableProps {
    */
   flagSrc?: MazCountryFlagSrc
   /**
-   * Show the `label` of the fields (`MazInput`, `MazTextarea`) above the field instead of floating inside it.
+   * Show the `label` of the fields (`MazInput`, `MazTextarea`, `MazSelect`, `MazInputPhoneNumber`...) above the field instead of floating inside it.
    * A `top-label` set on an instance still wins.
    */
   topLabel?: boolean
@@ -190,4 +190,41 @@ export function useGlobalConfig<T extends Record<string, unknown>>(
 export function useGlobalTopLabel(): ComputedRef<boolean> {
   const config = inject(GLOBAL_CONFIG_INJECTION_KEY, undefined)
   return computed(() => config?.global?.topLabel === true)
+}
+
+/**
+ * The label of a field as the field shows it: above the field when it has a `topLabel`, or when `defaults.global.topLabel` is on
+ * and the field has a `label` (an explicit `topLabel` always wins), floating inside it otherwise.
+ */
+export function useFieldTopLabel(source: () => { label?: string, topLabel?: string }) {
+  const globalTopLabel = useGlobalTopLabel()
+
+  const labelOnTop = computed(() => {
+    const { label, topLabel } = source()
+    return !topLabel && !!label && globalTopLabel.value
+  })
+
+  const topLabelText = computed(() => {
+    const { label, topLabel } = source()
+    return topLabel || (labelOnTop.value ? label : undefined)
+  })
+
+  return { labelOnTop, topLabelText }
+}
+
+/**
+ * For a field made of other fields (phone number, number, key / value): its own label is the one shown on top,
+ * the fields inside it keep their floating label whatever `defaults.global.topLabel` is.
+ */
+export function provideInnerFieldsWithoutTopLabel(): void {
+  const config = inject(GLOBAL_CONFIG_INJECTION_KEY, undefined)
+
+  if (!config)
+    return
+
+  provide(GLOBAL_CONFIG_INJECTION_KEY, new Proxy(config, {
+    get: (target, key, receiver) => key === 'global'
+      ? { ...target.global, topLabel: false }
+      : Reflect.get(target, key, receiver),
+  }))
 }

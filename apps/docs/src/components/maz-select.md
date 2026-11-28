@@ -438,6 +438,10 @@ const customOptions = [
 type ModelValueSimple = string | number | null | undefined | boolean
 ```
 
+## Label above the field
+
+Set `topLabel: true` in the [global defaults](../guide/global-defaults.md) to show the `label` above the field instead of floating inside it. A `top-label` set on an instance still wins.
+
 ## Motion
 
 The list grows from the field and its options rise in quickly. A highlight slides between the options under the pointer and jumps instantly with the arrow keys. With `search`, the matched letters are underlined (accents and case aside). With reduced motion, everything is instant.

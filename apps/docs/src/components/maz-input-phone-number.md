@@ -886,6 +886,10 @@ function onSubmitError() {
 </template>
 ```
 
+## Label above the field
+
+Set `topLabel: true` in the [global defaults](../guide/global-defaults.md) to show the `label` above the field instead of floating inside it. A `top-label` set on an instance still wins.
+
 ## Accessibility
 
 The phone number input gets `aria-invalid` when the phone number is invalid (with `validation-error`, the default) and `aria-describedby` pointing to the `assistive-text`, merged with your own `aria-describedby`. The assistive text is announced when it changes (`aria-live="polite"`).
