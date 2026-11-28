@@ -1,0 +1,32 @@
+{
+  "name": "agent-evals",
+  "type": "module",
+  "version": "5.0.0",
+  "private": true,
+  "description": "Measures whether Claude Code reuses the maz-ui ecosystem, alone, with `npx @maz-ui/mcp init` and with the maz-ui plugin",
+  "scripts": {
+    "eval": "tsx src/cli.ts",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:^",
+    "@maz-ui/mcp": "workspace:^",
+    "@maz-ui/utils": "workspace:^",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "maz-ui": "workspace:^",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "lint-staged": {
+    "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  }
+}

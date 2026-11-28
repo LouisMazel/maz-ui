@@ -119,6 +119,37 @@ describe('given cleanMarkdown', () => {
     })
   })
 
+  describe('when a script block after a demo uses generics', () => {
+    const source = [
+      '<ComponentDemo>',
+      '  <MazBtn>Button</MazBtn>',
+      '</ComponentDemo>',
+      '',
+      '<script lang="ts" setup>',
+      '  const ids = ref<string[]>([])',
+      '  const page = ref<number>(1)',
+      '  const rows = computed<Array<{ id: number }>>(() => [])',
+      '</script>',
+      '',
+      '## Types',
+      '',
+      'The content after the script stays.',
+    ].join('\n')
+
+    it('then the generics are not read as elements and the page is not swallowed', () => {
+      const result = cleanMarkdown(source, createContext())
+
+      expect(result).toContain('## Types')
+      expect(result).toContain('The content after the script stays.')
+      expect(result).not.toContain('ref<')
+    })
+
+    it('then a one line script and an unclosed style are handled', () => {
+      expect(cleanMarkdown('<script setup>const a = ref<string>()</script>\n\nAfter', createContext())).toContain('After')
+      expect(cleanMarkdown('<style>\n.a > .b { color: red }\n</STYLE>\n\nAfter', createContext())).toContain('After')
+    })
+  })
+
   describe('when a ComponentDemo contains a live demo and a code slot', () => {
     const source = [
       '## Basic usage',
