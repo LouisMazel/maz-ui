@@ -1,5 +1,6 @@
 import MazDropdown from '@components/MazDropdown.vue'
 import { mount } from '@vue/test-utils'
+import { h } from 'vue'
 
 function mountDropdown() {
   return mount(MazDropdown, {
@@ -47,6 +48,29 @@ describe('given an open dropdown and the focus on a field outside of it', () => 
     it('then the field keeps the key', () => {
       expect(press('Enter').defaultPrevented).toBe(false)
     })
+  })
+})
+
+describe('given an open dropdown with a custom item and the focus on it', () => {
+  it('then Enter clicks the item', async () => {
+    const onClick = vi.fn()
+    const wrapper = mount(MazDropdown, {
+      props: { items: [{ label: 'Settings' }], trigger: 'click' },
+      slots: {
+        default: 'Menu',
+        menuitem: () => h('div', { tabindex: 0, class: 'custom-item', onClick }, 'Custom'),
+      },
+      attachTo: document.body,
+      global: { stubs: { teleport: true, MazLink: true } },
+    })
+    await wrapper.find('.m-popover-trigger').trigger('click')
+    await vi.dynamicImportSettled()
+    wrapper.find<HTMLElement>('.custom-item').element.focus()
+
+    expect(press('Enter').defaultPrevented).toBe(true)
+    expect(onClick).toHaveBeenCalledTimes(1)
+
+    wrapper.unmount()
   })
 })
 

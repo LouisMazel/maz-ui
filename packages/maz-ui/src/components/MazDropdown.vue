@@ -8,7 +8,7 @@ import type { MazColor, MazNeutralColor, MazSize } from './types.ts'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
-import { computed, defineAsyncComponent, useTemplateRef, watch } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, useTemplateRef, watch } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
@@ -289,7 +289,9 @@ function keydownHandler(event: KeyboardEvent) {
   else if (event.key === 'Enter') {
     const item = document.activeElement as HTMLElement | null
 
-    if (!item?.classList.contains('menuitem'))
+    const menu = document.getElementById(`${instanceId.value}-menu`)
+
+    if (!item || !menu?.contains(item) || item === menu)
       return
 
     event.preventDefault()
@@ -357,6 +359,11 @@ watch(
     }
   },
 )
+
+onBeforeUnmount(() => {
+  if (isClient())
+    document.removeEventListener('keydown', keydownHandler)
+})
 </script>
 
 <template>
