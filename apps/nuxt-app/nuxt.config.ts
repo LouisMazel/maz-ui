@@ -6,8 +6,11 @@ import { VitePreNestedCss } from '@maz-ui/vite-config'
 import svgLoader from '@maz-ui/vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 
-// In dev, the app reads the sources of the packages (HMR, no rebuild): `MAZ_UI_DIST=1 pnpm dev` tests their dist
-const isDev = process.env.NODE_ENV !== 'production' && process.env.MAZ_UI_DIST !== '1'
+// In dev, the app reads the sources of the packages (HMR, no rebuild). `false` (or `MAZ_UI_DIST=1 pnpm dev`)
+// reads their dist instead: run `pnpm build:packages` first, then restart the dev server
+const USE_PACKAGE_SOURCES = true
+
+const isDev = process.env.NODE_ENV !== 'production' && USE_PACKAGE_SOURCES && process.env.MAZ_UI_DIST !== '1'
 
 const mazUiSources = fileURLToPath(new URL('../../packages/maz-ui/src/components/', import.meta.url))
 
