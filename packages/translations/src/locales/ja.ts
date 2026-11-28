@@ -225,6 +225,8 @@ export default {
     },
   },
   dialogConfirm: {
+    accept: '確認',
+    cancel: 'キャンセル',
     confirmationLabel: '確認するには「{text}」と入力してください',
   },
   /**

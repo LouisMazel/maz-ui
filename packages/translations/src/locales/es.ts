@@ -225,6 +225,8 @@ export default {
     },
   },
   dialogConfirm: {
+    accept: 'Confirmar',
+    cancel: 'Cancelar',
     confirmationLabel: 'Escribe «{text}» para confirmar',
   },
   /**

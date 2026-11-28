@@ -415,6 +415,8 @@ export default {
    * Reinforced confirmation of MazDialogConfirm: the label of the field where the user types the text.
    */
   dialogConfirm: {
+    accept: 'Confirm',
+    cancel: 'Cancel',
     confirmationLabel: 'Type "{text}" to confirm',
   },
   /**

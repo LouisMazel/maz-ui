@@ -225,6 +225,8 @@ export default {
     },
   },
   dialogConfirm: {
+    accept: '确认',
+    cancel: '取消',
     confirmationLabel: '输入“{text}”以确认',
   },
   /**
