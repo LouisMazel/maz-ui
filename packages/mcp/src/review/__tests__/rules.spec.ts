@@ -58,7 +58,7 @@ describe('given the unknown-component rule', () => {
 
   describe('when the tag is a component, an icon, a kebab-case or a lazy Nuxt component', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf(template('<MazBtn>x</MazBtn><maz-btn outlined>x</maz-btn><LazyMazBtn pastel>x</LazyMazBtn><MazTrash class="size-5" />'))).toEqual([])
+      expect(rulesOf(template('<MazBtn>x</MazBtn><maz-btn variant="outline">x</maz-btn><LazyMazBtn variant="soft">x</LazyMazBtn><MazTrash class="size-5" />'))).toEqual([])
     })
   })
 
@@ -144,7 +144,7 @@ describe('given the unknown-prop rule', () => {
 
   describe('when the component forwards its attributes to another component', () => {
     it('then the props of the receiving components are accepted', () => {
-      expect(rulesOf(template('<MazDropdown icon="trash" :items="items" outlined /><MazSelectCountry label="l" debounce /><MazDatePicker label="l" hint="h" error /><MazInputPhoneNumber label="l" hint="h" success />'))).toEqual([])
+      expect(rulesOf(template('<MazDropdown icon="trash" :items="items" variant="outline" /><MazSelectCountry label="l" debounce /><MazDatePicker label="l" hint="h" error /><MazInputPhoneNumber label="l" hint="h" success />'))).toEqual([])
     })
 
     it('then the values of the forwarded props are checked', () => {
@@ -1035,7 +1035,17 @@ describe('given the multiple-primary-actions rule', () => {
 
   describe('when only one button is solid primary', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn outlined>Draft</MazBtn><MazBtn color="secondary">x</MazBtn><MazBtn :color="c">y</MazBtn><MazBtn :pastel="true">z</MazBtn><MazBtn fab>w</MazBtn></div><div><MazBtn>Other group</MazBtn></div>'))).toEqual([])
+      expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn variant="outline">Draft</MazBtn><MazBtn color="secondary">x</MazBtn><MazBtn :color="c">y</MazBtn><MazBtn variant="soft">z</MazBtn><MazBtn fab>w</MazBtn></div><div><MazBtn>Other group</MazBtn></div>'))).toEqual([])
+    })
+  })
+
+  describe('when the other buttons use a variant', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn variant="outline">Draft</MazBtn><MazBtn variant="soft">x</MazBtn><MazBtn variant="ghost">y</MazBtn><MazBtn :variant="v">z</MazBtn></div>'))).toEqual([])
+    })
+
+    it('then a solid variant still counts as a main action', () => {
+      expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn variant="solid">Send</MazBtn></div>'))).toEqual(['multiple-primary-actions'])
     })
   })
 
@@ -1320,7 +1330,7 @@ describe('given the button-navigation rule', () => {
 
   describe('when the button has a link or another click handler', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf(template('<MazBtn to="/x">Go</MazBtn><MazBtn outlined @click="save">Save</MazBtn><MazBtn outlined @click="location === \'x\'">Go</MazBtn><a href="/x">Go</a>'))).toEqual([])
+      expect(rulesOf(template('<MazBtn to="/x">Go</MazBtn><MazBtn variant="outline" @click="save">Save</MazBtn><MazBtn variant="outline" @click="location === \'x\'">Go</MazBtn><a href="/x">Go</a>'))).toEqual([])
     })
   })
 })

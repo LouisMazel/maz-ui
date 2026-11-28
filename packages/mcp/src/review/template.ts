@@ -225,7 +225,7 @@ const PROP_SYNONYMS: Record<string, string[]> = {
   helper: ['hint'],
   message: ['hint'],
   errorMessage: ['hint', 'error'],
-  variant: ['color', 'fill', 'outlined'],
+  variant: ['color', 'fill'],
   image: ['src'],
   leftIcon: ['startIcon'],
   rightIcon: ['endIcon'],
@@ -938,11 +938,15 @@ function hasProp(element: ElementNode, name: string): boolean {
     : prop.name === 'bind' && directiveArg(prop) !== undefined && toCamel(directiveArg(prop)!) === name)
 }
 
-/** A `MazBtn` with the solid primary look: the default color (or `primary`), not outlined nor pastel */
+/** A `MazBtn` with the solid primary look: the default color (or `primary`), not outline nor soft */
 function isSolidPrimaryButton(element: ElementNode): boolean {
   const color = staticAttribute(element, 'color')?.value?.content
 
+  const variant = staticAttribute(element, 'variant')?.value?.content
+  const isSolidVariant = !hasProp(element, 'variant') || variant === 'solid'
+
   return (color === undefined || color === 'primary')
+    && isSolidVariant
     && ![
       'color',
       'outlined',
@@ -970,7 +974,7 @@ function checkActionHierarchy(buttons: ElementNode[], context: ReviewContext): v
     rule: 'multiple-primary-actions',
     severity: 'info',
     message: `${solid.length} solid primary \`MazBtn\` side by side: the main action does not stand out.`,
-    suggestion: 'Keep one solid `color="primary"` button for the main action; make the others `color="neutral"` (the grey push button), `outlined` or `pastel`, and use a `MazLink` for cancel or back.',
+    suggestion: 'Keep one solid `color="primary"` button for the main action; make the others `color="neutral"` (the grey push button), `variant="outline"` or `variant="soft"`, and use a `MazLink` for cancel or back.',
   }, solid[1].loc.start.offset)
 }
 
