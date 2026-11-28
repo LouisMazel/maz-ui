@@ -25,7 +25,7 @@ import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { ROUNDED_SIZE_CLASS, SIZE_TEXT_CLASS } from './constants.ts'
 import MazDrawnIcon from './MazDrawnIcon.vue'
 import MazFieldMessage from './MazField/MazFieldMessage.vue'
-import { useFieldState } from './MazField/useFieldState.ts'
+import { getFieldFocusColor, useFieldState } from './MazField/useFieldState.ts'
 
 export type MazInputValue = string | number | null | undefined | boolean
 
@@ -502,7 +502,7 @@ const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
       classProp,
       `--${color}`,
       SIZE_TEXT_CLASS[size],
-    ]" :style="[styleProp, { '--m-input-tint-bg': `var(--maz-${color})` }]"
+    ]" :style="[styleProp, { '--m-input-tint-bg': `var(--maz-${color})`, '--m-field-color': getFieldFocusColor(color, state) }]"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
@@ -516,13 +516,13 @@ const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
     </label>
 
     <div
-      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:size-full maz:flex-1 maz:overflow-hidden maz:bg-input maz:transition-colors maz:duration-(--duration-slow)"
+      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:size-full maz:flex-1 maz:overflow-hidden maz:bg-input"
       :class="[
         inputClasses,
         borderStyle,
         ROUNDED_CLASS[roundedSize],
         `--rounded-${roundedSize}`,
-        { '--block': block, '--border': hasBorder, 'maz:w-full': block, 'maz:border maz:border-solid': hasBorder, 'maz:focus-within-ring': !hasBorder },
+        { '--block': block, '--border': hasBorder, 'maz:w-full': block, 'maz:border maz:border-solid maz:field-focus': hasBorder, 'maz:focus-within-ring maz:field-transition': !hasBorder },
       ]"
     >
       <div v-if="hasStartPart()" class="m-input-wrapper-start maz:relative maz:z-1 maz:flex maz:flex-center maz:space-x-1 maz:py-1 maz:ps-2">
@@ -690,49 +690,8 @@ const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
     @apply maz:z-3;
   }
 
-  &.--primary .m-input-wrapper:focus-within,
-  &.--primary.--border-active .m-input-wrapper {
-    @apply maz:border-primary;
-  }
-
-  &.--secondary .m-input-wrapper:focus-within,
-  &.--secondary.--border-active .m-input-wrapper {
-    @apply maz:border-secondary;
-  }
-
-  &.--accent .m-input-wrapper:focus-within,
-  &.--accent.--border-active .m-input-wrapper {
-    @apply maz:border-accent;
-  }
-
-  &.--info .m-input-wrapper:focus-within,
-  &.--info.--border-active .m-input-wrapper {
-    @apply maz:border-info;
-  }
-
-  &.--success .m-input-wrapper:focus-within,
-  &.--success.--border-active .m-input-wrapper {
-    @apply maz:border-success;
-  }
-
-  &.--warning .m-input-wrapper:focus-within,
-  &.--warning.--border-active .m-input-wrapper {
-    @apply maz:border-warning;
-  }
-
-  &.--destructive .m-input-wrapper:focus-within,
-  &.--destructive.--border-active .m-input-wrapper {
-    @apply maz:border-destructive;
-  }
-
-  &.--contrast .m-input-wrapper:focus-within,
-  &.--contrast.--border-active .m-input-wrapper {
-    @apply maz:border-contrast;
-  }
-
-  &.--neutral .m-input-wrapper:focus-within,
-  &.--neutral.--border-active .m-input-wrapper {
-    border-color: var(--maz-neutral-foreground);
+  &.--border-active .m-input-wrapper.--border {
+    @apply maz:field-focused;
   }
 }
 

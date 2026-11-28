@@ -6,6 +6,7 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
+import { getFieldFocusColor } from './MazField/useFieldState.ts'
 
 export type MazInputCodeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export interface MazInputCodeProps<T = string | number> {
@@ -373,10 +374,10 @@ const borderColorState = computed(() => {
     class="m-input-code m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top"
     :class="[size ? `--${size}` : undefined, SIZE_TEXT_CLASS[size], classProp, { '--complete': isComplete, '--static': !animated }]"
     :disabled
-    :style="[style, { '--input-border-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})` }]"
+    :style="[style, { '--input-border-color': getFieldFocusColor(color), '--m-field-color': getFieldFocusColor(color) }]"
   >
     <div ref="codeWrapper" class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
-      <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:size-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:border-divider-400 maz:dark:bg-input" :class="borderColorState">
+      <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:size-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:field-focus maz:border-divider maz:dark:border-divider-400 maz:dark:bg-input" :class="borderColorState">
         <input
           :id="`${instanceId}-${item}`"
           :ref="
@@ -430,15 +431,6 @@ const borderColorState = computed(() => {
   .input-wrapper {
     inline-size: calc(4em * var(--maz-density-ratio, 1));
     block-size: calc(4em * var(--maz-density-ratio, 1));
-    transition:
-      color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
-      background-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
-        var(--maz-easing-out, ease-out),
-      border-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
-
-    &:focus-within {
-      border-color: var(--input-border-color);
-    }
 
     input {
       @apply maz:h-full maz:w-full maz:bg-transparent maz:text-center maz:text-[1.5em] maz:outline-hidden maz:font-mono;

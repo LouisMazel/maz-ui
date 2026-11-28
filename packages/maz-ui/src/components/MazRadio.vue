@@ -152,7 +152,7 @@ function onFocus(event: FocusEvent) {
       :name
       type="radio"
       :checked="isSelected"
-      class="maz:sr-only"
+      class="maz:sr-only maz:outline-hidden"
       @change="emitValue()"
       @blur="onBlur"
       @focus="onFocus"

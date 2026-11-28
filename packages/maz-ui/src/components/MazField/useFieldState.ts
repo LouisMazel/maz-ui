@@ -49,3 +49,20 @@ export function useFieldState(source: MaybeRefOrGetter<MazFieldStateSource>) {
 
   return { state, hasState: computed(() => !!state.value), borderClass, textClass, importantTextClass }
 }
+
+const STATE_COLOR_VAR: Record<MazFieldState, string> = {
+  error: 'var(--maz-destructive)',
+  success: 'var(--maz-success)',
+  warning: 'var(--maz-warning)',
+}
+
+/**
+ * Value of `--m-field-color`, the color of the focused border (`field-focus` utility):
+ * the one of the validation state, else the color of the field.
+ */
+export function getFieldFocusColor(color: string, state?: MazFieldState): string {
+  if (state)
+    return STATE_COLOR_VAR[state]
+
+  return color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})`
+}

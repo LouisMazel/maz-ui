@@ -320,7 +320,7 @@ function onFocus(event: FocusEvent) {
   }
 
   input {
-    @apply maz:sr-only;
+    @apply maz:sr-only maz:outline-hidden;
 
     &:not(:checked) ~ span {
       @apply maz:bg-input;

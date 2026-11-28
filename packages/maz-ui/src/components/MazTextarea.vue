@@ -120,7 +120,7 @@ import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync.ts'
 import MazDrawnIcon from './MazDrawnIcon.vue'
 import MazFieldMessage from './MazField/MazFieldMessage.vue'
-import { useFieldState } from './MazField/useFieldState.ts'
+import { getFieldFocusColor, useFieldState } from './MazField/useFieldState.ts'
 
 defineOptions({
   inheritAttrs: false,
@@ -344,8 +344,8 @@ watch(() => modelValue, () => nextTick(resizeToContent))
           '--has-placeholder': !!placeholder,
           '--autogrow': autogrow,
           '--padding': padding,
-          'maz:border maz:border-solid': hasBorder && !disabled,
-          'maz:focus-within-ring': !hasBorder,
+          'maz:border maz:border-solid maz:field-focus': hasBorder && !disabled,
+          'maz:focus-within-ring maz:field-transition': !hasBorder,
           'maz:bg-input': !transparent && !disabled,
           'maz:disabled-cursor maz:border-divider maz:bg-surface-600 maz:text-muted maz:dark:border-divider-400 maz:dark:bg-surface-400': disabled,
         },
@@ -354,7 +354,7 @@ watch(() => modelValue, () => nextTick(resizeToContent))
         ROUNDED_CLASS[roundedSize],
         `--${color}`,
       ]"
-      :style="[`--append-justify: ${appendJustify}`, `--maz-textarea-min-rows: ${minRows}`, sizeVars]"
+      :style="[`--append-justify: ${appendJustify}`, { '--m-field-color': getFieldFocusColor(color, state) }, `--maz-textarea-min-rows: ${minRows}`, sizeVars]"
     >
       <!-- eslint-disable vuejs-accessibility/label-has-for -->
       <label
@@ -504,42 +504,6 @@ watch(() => modelValue, () => nextTick(resizeToContent))
   &:has(textarea:not(:placeholder-shown)) .m-textarea__label,
   &:has(textarea:-webkit-autofill) .m-textarea__label {
     transform: scale(0.8) translateY(calc(-1 * var(--mt-padding-block)));
-  }
-
-  &.--primary:focus-within {
-    @apply maz:border-primary;
-  }
-
-  &.--secondary:focus-within {
-    @apply maz:border-secondary;
-  }
-
-  &.--accent:focus-within {
-    @apply maz:border-accent;
-  }
-
-  &.--info:focus-within {
-    @apply maz:border-info;
-  }
-
-  &.--success:focus-within {
-    @apply maz:border-success;
-  }
-
-  &.--warning:focus-within {
-    @apply maz:border-warning;
-  }
-
-  &.--destructive:focus-within {
-    @apply maz:border-destructive;
-  }
-
-  &.--contrast:focus-within {
-    @apply maz:border-contrast;
-  }
-
-  &.--neutral:focus-within {
-    border-color: var(--maz-neutral-foreground);
   }
 
   &.--autogrow textarea {

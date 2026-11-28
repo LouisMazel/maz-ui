@@ -42,6 +42,7 @@ import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useDropzone } from './../composables/useDropzone.ts'
 import MazBtn from './MazBtn.vue'
+import { getFieldFocusColor } from './MazField/useFieldState.ts'
 import MazIcon from './MazIcon.vue'
 import MazLink from './MazLink.vue'
 
@@ -976,18 +977,24 @@ defineExpose({
 </script>
 
 <template>
+  <!-- The label is the keyboard target of the hidden file input: Enter and Space open the picker -->
+  <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
   <label
     ref="dropZoneRef"
     :for="`input-file-uploader-${instanceId}`"
-    class="m-dropzone m-reset-css maz:flex maz:w-full maz:cursor-pointer maz:flex-col maz:flex-center maz:gap-2 maz:overflow-hidden maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:bg-input maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50"
+    :tabindex="disabled ? -1 : 0"
+    class="m-dropzone m-reset-css maz:flex maz:w-full maz:cursor-pointer maz:flex-col maz:flex-center maz:gap-2 maz:overflow-hidden maz:rounded-md maz:border maz:border-dashed maz:field-focus maz:border-divider maz:bg-input maz:p-6 maz:outline-hidden maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50"
     :class="{
       'm-dropzone--disabled maz:disabled-state': disabled,
       'm-dropzone--is-over-drop-zone': isOverDropZone && !isOverError,
       'm-dropzone--is-over-error': isOverError,
     }"
     :style="{
-      '--active-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})`,
+      '--active-color': getFieldFocusColor(color),
+      '--m-field-color': getFieldFocusColor(color),
     }"
+    @keydown.enter.self.prevent="!disabled && handleFileInputClick()"
+    @keydown.space.self.prevent="!disabled && handleFileInputClick()"
   >
     <!--
       @slot files-area - Slot to customize the files area

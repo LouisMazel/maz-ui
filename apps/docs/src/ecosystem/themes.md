@@ -1102,6 +1102,19 @@ const ringTheme = definePreset({
 
 The variables are `--maz-focus-ring-color`, `--maz-focus-ring-width` and `--maz-focus-ring-offset`: use them in your own controls (`outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary))`). The `windows` preset uses the Fluent ring, black in light mode and white in dark mode.
 
+### Focus border of the fields
+
+A boxed field has no ring on focus: its border takes the color of the field and the width `foundation['focus-border-width']` (`2px` by default, WCAG 2.4.13), with a smooth transition (instant with reduced motion). The width above `border-width` is an inner shadow, so nothing moves. A field without border (`bordered="false"`) and the other controls (checkbox, switch, slider, buttons...) keep the focus ring.
+
+```ts
+foundation: {
+  'border-width': '1px',
+  'focus-border-width': '3px',
+}
+```
+
+For your own fields, put `field-focus` on the box (see [Utilities](../guide/tailwind.md#focus-and-press)).
+
 ### Shadow per color mode
 
 A black shadow is barely visible on a dark background. Each entry of `scales.shadow` is a string, or `{ light, dark }` for a shadow per mode: a stronger shadow, or a light hairline, in dark mode. The bundled presets already do it: their shadows are deeper in dark mode, and the large ones get a hairline light edge.
@@ -1451,6 +1464,7 @@ Single-value design tokens. Set via `foundation.<key>` on the preset.
 | --- | --- | --- | --- |
 | `base-font-size` | `--maz-base-font-size` | `14px` | Anchors `rem` for the whole app. Apply on `html { font-size: var(--maz-base-font-size) }`. |
 | `border-width` | `--maz-border-width` | `1px` | Default border for components and the global `*::before/::after` reset. |
+| `focus-border-width` | `--maz-focus-border-width` | `2px` | Border width of a boxed field (`MazInput`, `MazSelect`, `MazTextarea`, `MazInputCode`, `MazMarkdownEditor`, `MazDropzone`...) with the focus. Only the color and this width change on focus: the part above `border-width` is drawn inside the box, the layout does not move. See [Focus border of the fields](#focus-border-of-the-fields). |
 | `space` | `--maz-space` | `0.25rem` | Base step for every Tailwind spacing utility (`p-1`, `gap-2`, …). |
 | `font-family` | `--maz-font-family` | preset-specific | Sans / body font stack. Bridged to Tailwind `--font-sans`. |
 | `font-mono-stack` | `--maz-font-mono-stack` | `ui-monospace, …` | Monospace stack — `MazInputCode`, `<code>`, `<kbd>`. Bridged to `--font-mono`. |

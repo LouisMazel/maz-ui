@@ -406,6 +406,8 @@ Prefer them to `text-2xl font-semibold` or `text-xs text-muted`. See [Typography
 | `z-default-backdrop` | `z-index: 1050`, the layer of `MazDialog`, `MazDrawer` and the toasts |
 | `focus-ring` | Focus ring of the preset, on keyboard focus only (`:focus-visible`) |
 | `focus-within-ring` | The same ring when an element inside has the keyboard focus: put it on the wrapper of a field |
+| `field-focus` | Focused border of a boxed field (`:focus-within`): the color `--m-field-color` (primary by default) and the width `focus-border-width` of the theme, drawn inside the box, with a smooth transition |
+| `field-transition` | The same smooth transition of the colors, for a field without border |
 | `press` | Press feedback: the element sinks a little while pressed and springs back |
 | `border-draw` | A border that draws itself on hover and focus (see [Border that draws itself](#border-that-draws-itself)) |
 
@@ -423,6 +425,7 @@ Prefer them to `text-2xl font-semibold` or `text-xs text-muted`. See [Typography
 <a href="/docs" class="focus-ring rounded-md">Docs</a>
 <div class="focus-within-ring rounded-md border border-divider"><input class="outline-none"></div>
 <button class="press focus-ring">Save</button>
+<div class="field-focus rounded-md border border-solid border-divider"><input class="outline-none"></div>
 ```
 
 `press` animates the `scale` property, so it combines with any `transform` of the element.

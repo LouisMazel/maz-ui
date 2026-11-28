@@ -8,6 +8,7 @@ import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { ROUNDED_SIZE_CLASS, SIZE_TEXT_CLASS } from './constants.ts'
 import MazBadge from './MazBadge.vue'
+import { getFieldFocusColor } from './MazField/useFieldState.ts'
 
 defineOptions({
   inheritAttrs: false,
@@ -125,7 +126,6 @@ function pinLeavingTag(element: Element) {
   tag.style.top = `${tag.offsetTop}px`
 }
 
-const isFocused = ref(false)
 const inputValue = ref('')
 const tagToDelete = ref<string | number>()
 let deleteTimeout: ReturnType<typeof setTimeout> | undefined
@@ -176,6 +176,8 @@ const stateTextClass = computed(() => {
     return 'maz:text-warning-600!'
   return undefined
 })
+
+const fieldState = computed(() => (error ? 'error' : success ? 'success' : warning ? 'warning' : undefined))
 
 const borderClass = computed(() => {
   if (error)
@@ -255,7 +257,6 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function onBlur(event: FocusEvent) {
-  isFocused.value = false
   clearTagToDelete()
 
   if (addTagsOnBlur)
@@ -295,8 +296,8 @@ function focusInput() {
     <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
     <div
       ref="field"
-      class="m-input-tags__field maz:relative maz:flex maz:w-full maz:flex-wrap maz:items-center maz:gap-1 maz:border maz:border-solid maz:bg-input maz:transition-colors maz:duration-300"
-      :class="[borderClass, ROUNDED_CLASS[roundedSize], { '--focused': isFocused }]"
+      class="m-input-tags__field maz:relative maz:flex maz:w-full maz:flex-wrap maz:items-center maz:gap-1 maz:border maz:border-solid maz:field-focus maz:bg-input"
+      :class="[borderClass, ROUNDED_CLASS[roundedSize]]" :style="{ '--m-field-color': getFieldFocusColor(color, fieldState) }"
       @click="focusInput"
     >
       <TransitionGroup name="m-tags" :css="motionEnabled" @before-leave="pinLeavingTag">
@@ -328,7 +329,6 @@ function focusInput() {
         :aria-describedby="assistiveText ? `${instanceId}-assistive-text` : undefined"
         :disabled
         @keydown="onKeydown"
-        @focus="isFocused = true"
         @blur="onBlur"
       >
     </div>
@@ -351,7 +351,6 @@ function focusInput() {
 .m-input-tags {
   --m-input-tags-height: var(--maz-control-height-md, 3rem);
   --m-input-tags-padding: 0.375rem;
-  --m-input-tags-focus: var(--maz-primary);
 
   &.--xl {
     --m-input-tags-height: var(--maz-control-height-xl, 4rem);
@@ -376,42 +375,6 @@ function focusInput() {
   &.--mini {
     --m-input-tags-height: var(--maz-control-height-mini, 1.5rem);
     --m-input-tags-padding: 0.1875rem;
-  }
-
-  &.--secondary {
-    --m-input-tags-focus: var(--maz-secondary);
-  }
-
-  &.--accent {
-    --m-input-tags-focus: var(--maz-accent);
-  }
-
-  &.--info {
-    --m-input-tags-focus: var(--maz-info);
-  }
-
-  &.--success {
-    --m-input-tags-focus: var(--maz-success);
-  }
-
-  &.--warning {
-    --m-input-tags-focus: var(--maz-warning);
-  }
-
-  &.--destructive {
-    --m-input-tags-focus: var(--maz-destructive);
-  }
-
-  &.--contrast {
-    --m-input-tags-focus: var(--maz-contrast);
-  }
-
-  &.--neutral {
-    --m-input-tags-focus: var(--maz-neutral-foreground);
-  }
-
-  &:not(.--has-state) .m-input-tags__field.--focused {
-    border-color: var(--m-input-tags-focus);
   }
 
   &.--disabled .m-input-tags__field {

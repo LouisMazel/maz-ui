@@ -135,7 +135,7 @@ function onFocus(event: FocusEvent) {
       :checked="modelValue"
       :aria-label="$attrs['aria-label'] as string ?? label"
       :disabled="disabled"
-      class="m-switch__input maz:absolute"
+      class="m-switch__input maz:absolute maz:outline-hidden"
       @change="emit"
       @blur="onBlur"
       @focus="onFocus"
@@ -175,7 +175,7 @@ function onFocus(event: FocusEvent) {
 }
 
 .m-switch__input:focus-visible + .m-switch__toggle::before {
-  outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--switch-color));
+  outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
   outline-offset: var(--maz-focus-ring-offset, 2px);
 }
 
