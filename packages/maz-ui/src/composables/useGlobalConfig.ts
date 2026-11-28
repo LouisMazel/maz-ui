@@ -3,8 +3,10 @@ import type { MazAlertProps } from '../components/MazAlert.vue'
 import type { MazAvatarProps } from '../components/MazAvatar.vue'
 import type { MazBadgeProps } from '../components/MazBadge.vue'
 import type { MazBtnProps } from '../components/MazBtn.vue'
+import type { MazBtnClipboardProps } from '../components/MazBtnClipboard.vue'
 import type { MazBtnDropdownProps } from '../components/MazBtnDropdown.vue'
 import type { MazButtonGroupProps } from '../components/MazBtnGroup.vue'
+import type { MazBtnScrollProps } from '../components/MazBtnScroll.vue'
 import type { MazCardProps } from '../components/MazCard.vue'
 import type { MazCheckboxProps } from '../components/MazCheckbox.vue'
 import type { MazCodeHighlightProps } from '../components/MazCodeHighlight.vue'
@@ -15,21 +17,25 @@ import type { MazInputAutocompleteProps } from '../components/MazInputAutocomple
 import type { MazInputNumberProps } from '../components/MazInputNumber.vue'
 import type { MazInputPhoneNumberProps } from '../components/MazInputPhoneNumber.vue'
 import type { MazInputTagsProps } from '../components/MazInputTags.vue'
+import type { MazLogStreamProps } from '../components/MazLogStream.vue'
+import type { MazMarkdownProps } from '../components/MazMarkdown.vue'
 import type { MazMarkdownEditorProps } from '../components/MazMarkdownEditor.vue'
 import type { MazPageSectionProps } from '../components/MazPageSection.vue'
 import type { MazPaginationProps } from '../components/MazPagination.vue'
+import type { MazPopoverProps } from '../components/MazPopover.vue'
 import type { MazRadioProps } from '../components/MazRadio.vue'
 import type { MazRadioButtonsProps } from '../components/MazRadioButtons.vue'
 import type { MazSegmentedProps } from '../components/MazSegmented.vue'
 import type { MazSelectProps } from '../components/MazSelect.vue'
 import type { MazSelectCountryProps } from '../components/MazSelectCountry.vue'
 import type { MazSkeletonProps } from '../components/MazSkeleton.vue'
+import type { MazSwitchProps } from '../components/MazSwitch.vue'
 import type { MazTableProps } from '../components/MazTable.vue'
 import type { MazTabsBarProps } from '../components/MazTabsBar.vue'
 import type { MazTextareaProps } from '../components/MazTextarea.vue'
 import type { MazTimelineProps } from '../components/MazTimeline.vue'
 import type { MazCountryFlagSrc, MazRoundedSize, MazSize } from '../components/types.ts'
-import { computed, getCurrentInstance, inject } from 'vue'
+import { computed, getCurrentInstance, inject, provide } from 'vue'
 
 /**
  * Cross-cutting props that can be set once for every globalized component
@@ -44,6 +50,11 @@ export interface GlobalizableProps {
    * (URL template or function, e.g. `loadCountryFlag` from `maz-ui/country-flags`)
    */
   flagSrc?: MazCountryFlagSrc
+  /**
+   * Show the `label` of the fields (`MazInput`, `MazTextarea`, `MazSelect`, `MazInputPhoneNumber`...) above the field instead of floating inside it.
+   * A `top-label` set on an instance still wins.
+   */
+  topLabel?: boolean
 }
 
 /**
@@ -64,6 +75,8 @@ export interface MazUiDefaultsOptions {
   MazBadge?: Partial<MazBadgeProps>
   MazBtn?: Partial<MazBtnProps>
   MazBtnGroup?: Partial<MazButtonGroupProps>
+  MazBtnScroll?: Partial<MazBtnScrollProps>
+  MazBtnClipboard?: Partial<MazBtnClipboardProps>
   MazBtnDropdown?: Partial<MazBtnDropdownProps>
   MazCard?: Partial<MazCardProps>
   MazCheckbox?: Partial<MazCheckboxProps>
@@ -75,15 +88,19 @@ export interface MazUiDefaultsOptions {
   MazInputNumber?: Partial<MazInputNumberProps>
   MazInputPhoneNumber?: Partial<MazInputPhoneNumberProps>
   MazInputTags?: Partial<MazInputTagsProps>
+  MazLogStream?: Partial<MazLogStreamProps>
+  MazMarkdown?: Partial<MazMarkdownProps>
   MazMarkdownEditor?: Partial<MazMarkdownEditorProps>
   MazPageSection?: Partial<MazPageSectionProps>
   MazPagination?: Partial<MazPaginationProps>
+  MazPopover?: Partial<MazPopoverProps>
   MazRadio?: Partial<MazRadioProps>
   MazRadioButtons?: Partial<MazRadioButtonsProps>
   MazSelect?: Partial<MazSelectProps<any, any, any>>
   MazSelectCountry?: Partial<MazSelectCountryProps>
   MazSegmented?: Partial<MazSegmentedProps>
   MazSkeleton?: Partial<MazSkeletonProps>
+  MazSwitch?: Partial<MazSwitchProps>
   MazTable?: Partial<MazTableProps<any>>
   MazTabsBar?: Partial<MazTabsBarProps<any>>
   MazTextarea?: Partial<MazTextareaProps<string>>
@@ -92,7 +109,7 @@ export interface MazUiDefaultsOptions {
 
 export type MazComponentName = Exclude<keyof MazUiDefaultsOptions, 'global'>
 
-export const GLOBAL_CONFIG_INJECTION_KEY: InjectionKey<MazUiDefaultsOptions> = Symbol('mazGlobalConfig')
+export const GLOBAL_CONFIG_INJECTION_KEY: InjectionKey<MazUiDefaultsOptions> = Symbol.for('maz-ui:global-config')
 
 /**
  * Whether the prop `key` (or its kebab-case form) was explicitly passed to the
@@ -100,11 +117,23 @@ export const GLOBAL_CONFIG_INJECTION_KEY: InjectionKey<MazUiDefaultsOptions> = S
  * Vue casts an absent boolean prop to `false`, so the value alone cannot tell
  * "not passed" from "passed false". Evaluated once at setup, not per render.
  */
-function isPropProvided(raw: Record<string, unknown> | null | undefined, key: string): boolean {
+export function isPropProvided(raw: Record<string, unknown> | null | undefined, key: string): boolean {
   if (!raw)
     return false
 
   return Object.hasOwn(raw, key) || Object.hasOwn(raw, key.replace(/\B([A-Z])/g, '-$1').toLowerCase())
+}
+
+/**
+ * The `variant` given by the global defaults, unless the instance sets one of the deprecated `outlined` or
+ * `pastel` aliases (and no `variant`): a prop of the instance always wins over the defaults
+ */
+export function useInstanceFillVariant<T>(variant: ComputedRef<T>): ComputedRef<T | undefined> {
+  const vnodeProps = getCurrentInstance()?.vnode.props
+  const aliasOnInstance = !isPropProvided(vnodeProps, 'variant')
+    && (isPropProvided(vnodeProps, 'outlined') || isPropProvided(vnodeProps, 'pastel'))
+
+  return computed(() => (aliasOnInstance ? undefined : variant.value))
 }
 
 /**
@@ -152,4 +181,50 @@ export function useGlobalConfig<T extends Record<string, unknown>>(
   }
 
   return result
+}
+
+/**
+ * Whether the `label` of the fields is shown above the field (`defaults.global.topLabel`) instead of floating inside it.
+ * The `topLabel` prop of a field is a text, so it cannot be resolved by `useGlobalConfig`: the field reads this instead.
+ */
+export function useGlobalTopLabel(): ComputedRef<boolean> {
+  const config = inject(GLOBAL_CONFIG_INJECTION_KEY, undefined)
+  return computed(() => config?.global?.topLabel === true)
+}
+
+/**
+ * The label of a field as the field shows it: above the field when it has a `topLabel`, or when `defaults.global.topLabel` is on
+ * and the field has a `label` (an explicit `topLabel` always wins), floating inside it otherwise.
+ */
+export function useFieldTopLabel(source: () => { label?: string, topLabel?: string }) {
+  const globalTopLabel = useGlobalTopLabel()
+
+  const labelOnTop = computed(() => {
+    const { label, topLabel } = source()
+    return !topLabel && !!label && globalTopLabel.value
+  })
+
+  const topLabelText = computed(() => {
+    const { label, topLabel } = source()
+    return topLabel || (labelOnTop.value ? label : undefined)
+  })
+
+  return { labelOnTop, topLabelText }
+}
+
+/**
+ * For a field made of other fields (phone number, number, key / value): its own label is the one shown on top,
+ * the fields inside it keep their floating label whatever `defaults.global.topLabel` is.
+ */
+export function provideInnerFieldsWithoutTopLabel(): void {
+  const config = inject(GLOBAL_CONFIG_INJECTION_KEY, undefined)
+
+  if (!config)
+    return
+
+  provide(GLOBAL_CONFIG_INJECTION_KEY, new Proxy(config, {
+    get: (target, key, receiver) => key === 'global'
+      ? { ...target.global, topLabel: false }
+      : Reflect.get(target, key, receiver),
+  }))
 }
