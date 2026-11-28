@@ -18,7 +18,7 @@ Bring the pointer close to the button, without touching it: the button follows y
 <ComponentDemo expanded>
   <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-12 maz:py-6">
     <MazBtn v-magnetic size="lg">Get started</MazBtn>
-    <MazBtn v-magnetic="{ strength: 0.5, radius: 140 }" size="lg" color="secondary">Strongly attracted</MazBtn>
+    <MazBtn v-magnetic="{ strength: 0.5, radius: 220 }" size="lg" color="secondary">Strongly attracted</MazBtn>
   </div>
 
 <template #code>
@@ -30,7 +30,7 @@ import { vMagnetic } from 'maz-ui/directives/vMagnetic'
 
 <template>
   <MazBtn v-magnetic size="lg">Get started</MazBtn>
-  <MazBtn v-magnetic="{ strength: 0.5, radius: 140 }" size="lg">Strongly attracted</MazBtn>
+  <MazBtn v-magnetic="{ strength: 0.5, radius: 220 }" size="lg">Strongly attracted</MazBtn>
 </template>
 ```
 
@@ -46,7 +46,7 @@ The element moves with the independent `translate` property, so it combines with
 | `strength` | How far the element follows the pointer, as a ratio of the distance to its center (0 to 1) | `0.3` |
 | `radius` | Distance in pixels around the element where the pointer attracts it | `80` |
 
-The value can be `true`, an object, or `false`.
+The value can be `true`, an object, or `false`. `radius` is the distance, measured from the edge of the element: with `{ radius: 20 }` the element only reacts when the pointer is almost on it, with `{ radius: 220 }` it follows from far away.
 
 ## Performance
 

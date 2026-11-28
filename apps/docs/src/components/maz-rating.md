@@ -110,7 +110,7 @@ With `clearable`, a click on the current value clears it: the value becomes `nul
 
 ## Scale
 
-`variant="scale"` shows boxes from `min` to `max`, for a score out of 10 (NPS) or 5. The chosen box fills from the bottom. `min-label` and `max-label` name the ends.
+`variant="scale"` shows boxes from `min` to `max`, for a score out of 10 (NPS) or 5. The boxes form a segmented row of equal cells, and the chosen one fills from the bottom. `min-label` and `max-label` name the ends.
 
 <ComponentDemo>
   <MazRating

@@ -345,20 +345,42 @@ function getPanelStyle(index: number) {
   flex: none;
   align-items: center;
   justify-content: center;
-  background-color: var(--maz-divider, currentcolor);
+  z-index: 1;
   touch-action: none;
+}
+
+.m-splitter__handle::before {
+  position: absolute;
+  inset: 0;
+  background-color: var(--maz-divider, currentcolor);
+  content: '';
   transition: background-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1))
     var(--maz-easing-out, ease-out);
 }
 
+.m-splitter__handle::after {
+  position: absolute;
+  content: '';
+}
+
 .m-splitter--horizontal > .m-splitter__handle {
-  inline-size: 8px;
+  inline-size: 1px;
   cursor: col-resize;
 }
 
+.m-splitter--horizontal > .m-splitter__handle::after {
+  inset-block: 0;
+  inset-inline: -4px;
+}
+
 .m-splitter--vertical > .m-splitter__handle {
-  block-size: 8px;
+  block-size: 1px;
   cursor: row-resize;
+}
+
+.m-splitter--vertical > .m-splitter__handle::after {
+  inset-block: -4px;
+  inset-inline: 0;
 }
 
 .m-splitter__handle:focus-visible {
@@ -366,12 +388,13 @@ function getPanelStyle(index: number) {
   outline-offset: -2px;
 }
 
-.m-splitter__handle:hover,
-.m-splitter__handle--active {
-  background-color: color-mix(in oklab, var(--maz-primary) 35%, var(--maz-divider, transparent));
+.m-splitter__handle:hover::before,
+.m-splitter__handle--active::before {
+  background-color: var(--maz-primary);
 }
 
 .m-splitter__grip {
+  position: relative;
   border-radius: 9999px;
   background-color: var(--maz-foreground, currentcolor);
   opacity: 0.6;
@@ -396,7 +419,7 @@ function getPanelStyle(index: number) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .m-splitter__handle {
+  .m-splitter__handle::before {
     transition: none;
   }
 }

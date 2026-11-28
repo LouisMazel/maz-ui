@@ -393,7 +393,7 @@ defineExpose({
     </template>
 
     <template #header>
-      <div class="m-command-palette__header maz:flex maz:items-center maz:gap-3 maz:border-b maz:border-divider maz:px-4">
+      <div class="m-command-palette__header maz:flex maz:items-center maz:gap-3 maz:border-b maz:border-divider maz:px-4 maz:focus-within-ring">
         <span :id="titleId" class="maz:sr-only">{{ searchLabel }}</span>
         <MazIcon :icon="MazMagnifyingGlass" class="maz:shrink-0 maz:text-xl maz:text-muted" aria-hidden="true" />
         <input
@@ -501,6 +501,14 @@ defineExpose({
 
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
+
+.m-command-palette__header {
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+  outline-offset: -2px;
+  transition: outline-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+    var(--maz-easing-out, ease-out);
+}
 
 .m-command-palette__item {
   &.--disabled {

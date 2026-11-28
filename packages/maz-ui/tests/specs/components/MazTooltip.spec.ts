@@ -186,6 +186,49 @@ describe('given a MazTooltip', () => {
 
       expect(wrapper.emitted('close')).toHaveLength(1)
     })
+
+    it('then the focus that follows the press does not reopen it', async () => {
+      const wrapper = mountTooltip({ delay: 0 })
+      const trigger = wrapper.find('.m-tooltip__trigger')
+
+      await trigger.trigger('mouseenter')
+      await flush()
+      await trigger.trigger('pointerdown')
+      await trigger.trigger('focusin')
+      await trigger.trigger('mouseenter')
+      vi.advanceTimersByTime(1000)
+      await flush()
+
+      expect(wrapper.emitted('open')).toHaveLength(1)
+      expect(wrapper.emitted('close')).toHaveLength(1)
+    })
+
+    it('then it opens again once the pointer left and came back', async () => {
+      const wrapper = mountTooltip({ delay: 0 })
+      const trigger = wrapper.find('.m-tooltip__trigger')
+
+      await trigger.trigger('mouseenter')
+      await flush()
+      await trigger.trigger('pointerdown')
+      await trigger.trigger('mouseleave')
+      await trigger.trigger('mouseenter')
+      await flush()
+
+      expect(wrapper.emitted('open')).toHaveLength(2)
+    })
+
+    it('then it opens again on the next keyboard focus', async () => {
+      const wrapper = mountTooltip({ delay: 0 })
+      const trigger = wrapper.find('.m-tooltip__trigger')
+
+      await trigger.trigger('pointerdown')
+      await trigger.trigger('focusin')
+      await trigger.trigger('focusout')
+      await trigger.trigger('focusin')
+      await flush()
+
+      expect(wrapper.emitted('open')).toHaveLength(1)
+    })
   })
 
   describe('when there is no content', () => {

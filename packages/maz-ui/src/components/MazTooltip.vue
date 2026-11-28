@@ -152,10 +152,12 @@ function openNow() {
     void slideFrom(from)
 }
 
+let isDismissed = false
+
 function show() {
   cancelTimers()
 
-  if (isOpen.value)
+  if (isDismissed || isOpen.value)
     return
 
   const wait = shouldSkipTooltipDelay() ? 0 : delay
@@ -168,6 +170,11 @@ function show() {
 
 function hide(event?: Event) {
   cancelTimers()
+
+  if (event?.type === 'pointerdown')
+    isDismissed = true
+  else if (event?.type === 'mouseleave' || event?.type === 'focusout')
+    isDismissed = false
 
   if (!isOpen.value)
     return

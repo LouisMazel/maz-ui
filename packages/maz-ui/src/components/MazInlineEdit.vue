@@ -284,8 +284,9 @@ function onInput() {
   cursor: text;
   outline: var(--maz-focus-ring-width, 2px) solid transparent;
   outline-offset: 1px;
-  transition: background-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1))
-    var(--maz-easing-out, ease-out);
+  transition:
+    background-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    outline-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 }
 
 .m-inline-edit__display:hover:not(:disabled) {

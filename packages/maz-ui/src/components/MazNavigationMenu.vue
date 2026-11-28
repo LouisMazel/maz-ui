@@ -535,6 +535,7 @@ defineExpose({
             :href="item.href"
             :disabled="item.disabled"
             color="inherit"
+            :underline-hover="false"
             class="m-navigation-menu__link maz:rounded-lg maz:px-3 maz:py-2 maz:text-body-sm maz:font-medium maz:text-foreground maz:focus-ring"
             @keydown="onTriggerKeydown($event, index)"
           >
@@ -587,6 +588,7 @@ defineExpose({
                   :to="link.to"
                   :href="link.href"
                   color="inherit"
+                  :underline-hover="false"
                   class="maz:flex! maz:items-start maz:gap-3 maz:rounded-lg maz:p-3 maz:no-underline maz:focus-ring maz:hover:bg-foreground/5"
                   @click="close"
                 >
@@ -611,6 +613,10 @@ defineExpose({
 .m-navigation-menu {
   --m-nav-duration: calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1));
   --m-nav-glide: calc(var(--maz-motion-slow, 300ms) * var(--maz-motion-scale, 1));
+}
+
+.m-navigation-menu :deep(a:is(:hover, :focus-visible)) {
+  text-decoration-line: none;
 }
 
 .m-navigation-menu__pill-fill {

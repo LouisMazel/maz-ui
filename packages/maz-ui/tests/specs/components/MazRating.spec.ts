@@ -173,8 +173,10 @@ describe('given a MazRating', () => {
       const wrapper = mount(MazRating, { props: { modelValue: 4.3, readonly: true } })
       const fills = wrapper.findAll('.m-rating__fill')
 
-      expect(fills[3]!.attributes('style')).toContain('inline-size: 100%')
-      expect(fills[4]!.attributes('style')).toMatch(/inline-size: (29\.9|30)/)
+      expect(fills[3]!.attributes('style')).toContain('--m-rating-clip: 0%')
+      expect(fills[4]!.attributes('style')).toMatch(/--m-rating-clip: (69\.9|70)/)
+      expect(wrapper.findAll('.m-rating__item')[3]!.classes()).not.toContain('--partial')
+      expect(wrapper.findAll('.m-rating__item')[4]!.classes()).toContain('--partial')
     })
 
     it('then the label includes the group name and the text of the nearest label', () => {

@@ -181,9 +181,9 @@ function fillStyle(value: number) {
     : Math.min((value - sweepFrom.value - 1) * 30, 240)
 
   return {
-    inlineSize: part > 0 && part < 1 ? `${part * 100}%` : '100%',
-    opacity: part > 0 ? 1 : 0,
-    transitionDelay: `${delay}ms`,
+    '--m-rating-clip': `${part > 0 && part < 1 ? (1 - part) * 100 : 0}%`,
+    'opacity': part > 0 ? 1 : 0,
+    'transitionDelay': `${delay}ms`,
   }
 }
 
@@ -233,7 +233,7 @@ const style = computed(() => ({ '--m-rating-color': `var(--maz-${color})`, '--m-
     <div class="m-rating__row maz:inline-flex maz:items-center maz:gap-3">
       <div
         class="m-rating__items maz:inline-flex maz:items-center"
-        :class="[isScale ? 'maz:gap-1' : '', SIZE_CLASS[size]]"
+        :class="[isScale ? 'm-rating__segments' : '', SIZE_CLASS[size]]"
       >
         <component
           :is="readonly ? 'span' : 'label'"
@@ -256,7 +256,7 @@ const style = computed(() => ({ '--m-rating-color': `var(--maz-${color})`, '--m-
             @click="onClick(value)"
           >
 
-          <span v-if="isScale" class="m-rating__box" :class="{ 'maz:text-base': size === 'lg' || size === 'xl' }" aria-hidden="true">
+          <span v-if="isScale" class="m-rating__box" aria-hidden="true">
             <span class="m-rating__box-fill" />
             <span class="m-rating__box-text">{{ value }}</span>
           </span>
@@ -320,9 +320,8 @@ const style = computed(() => ({ '--m-rating-color': `var(--maz-${color})`, '--m-
 
 .m-rating__fill {
   position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
-  overflow: hidden;
+  inset: 0;
+  display: flex;
   color: var(--m-rating-color);
   transform: scale(0.6);
   transition:
@@ -349,8 +348,17 @@ const style = computed(() => ({ '--m-rating-color': `var(--maz-${color})`, '--m-
   opacity: 0;
 }
 
-.m-rating__item.--on .m-rating__fill {
+.m-rating__item.--on .m-rating__fill,
+.m-rating__item.--partial .m-rating__fill {
   transform: scale(1);
+}
+
+.m-rating__item.--partial .m-rating__fill {
+  clip-path: inset(0 var(--m-rating-clip) 0 0);
+}
+
+[dir='rtl'] .m-rating__item.--partial .m-rating__fill {
+  clip-path: inset(0 0 0 var(--m-rating-clip));
 }
 
 .m-rating:not(.--readonly) .m-rating__item:hover .m-rating__icon {
@@ -364,6 +372,7 @@ const style = computed(() => ({ '--m-rating-color': `var(--maz-${color})`, '--m-
 
 .m-rating.--reduced .m-rating__fill,
 .m-rating.--reduced .m-rating__item.--on .m-rating__fill,
+.m-rating.--reduced .m-rating__item.--partial .m-rating__fill,
 .m-rating.--reduced .m-rating__item:hover .m-rating__icon {
   transform: none;
 }
@@ -381,17 +390,37 @@ const style = computed(() => ({ '--m-rating-color': `var(--maz-${color})`, '--m-
   justify-content: center;
   overflow: hidden;
   box-sizing: border-box;
-  inline-size: 1.4em;
-  block-size: 1.4em;
-  border: 1px solid color-mix(in oklab, var(--maz-foreground) 25%, transparent);
-  border-radius: 0.3em;
+  inline-size: 100%;
+  min-inline-size: 2.6em;
+  block-size: 2.6em;
+  padding-inline: 0.5em;
   font-size: 0.5em;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   color: var(--maz-foreground);
   transition:
-    border-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    background-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
     color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+}
+
+.m-rating__segments {
+  overflow: hidden;
+  max-inline-size: 100%;
+  border: 1px solid var(--maz-divider);
+  border-radius: 0.5em;
+  background-color: var(--maz-container, transparent);
+
+  & > .m-rating__item {
+    flex: 1 1 auto;
+  }
+
+  & > .m-rating__item + .m-rating__item .m-rating__box {
+    border-inline-start: 1px solid var(--maz-divider);
+  }
+}
+
+.m-rating__segments > .m-rating__item:has(input:focus-visible) .m-rating__box {
+  outline-offset: -2px;
 }
 
 .m-rating__box-fill {
@@ -413,12 +442,11 @@ const style = computed(() => ({ '--m-rating-color': `var(--maz-${color})`, '--m-
 }
 
 .m-rating__item.--on .m-rating__box {
-  border-color: var(--m-rating-color);
   color: var(--m-rating-foreground);
 }
 
-.m-rating:not(.--readonly, .--disabled) .m-rating__item:hover .m-rating__box {
-  border-color: var(--m-rating-color);
+.m-rating:not(.--readonly, .--disabled) .m-rating__item:not(.--on):hover .m-rating__box {
+  background-color: color-mix(in oklab, var(--m-rating-color) 14%, transparent);
 }
 
 .m-rating.--reduced .m-rating__box-fill {

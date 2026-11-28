@@ -116,6 +116,6 @@ Set `collapsible: true` on a panel: press `Enter` on its handle to collapse it, 
 - Each handle is a focusable `separator` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-controls` (window splitter pattern).
 - Arrows move the handle by `step` (2 by default, `Shift` for ten times more), `Home` and `End` go to the limits. The horizontal arrows are mirrored in a right-to-left context.
 - A collapsed panel is `inert`, so its content leaves the tab order.
-- The handle only changes its color, and not at all when the user reduces motion.
+- The visible line is 1px wide, the area that catches the pointer is 9px wide. The handle only changes its color, and not at all when the user reduces motion.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-splitter.doc.md-->

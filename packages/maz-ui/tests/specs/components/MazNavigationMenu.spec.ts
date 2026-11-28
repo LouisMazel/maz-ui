@@ -46,6 +46,25 @@ describe('given a MazNavigationMenu', () => {
     vi.useRealTimers()
   })
 
+  describe('when the links are rendered', () => {
+    it('then none of them underlines on hover', async () => {
+      const wrapper = await mountMenu({ modelValue: 'products' })
+
+      await settle()
+
+      const links = wrapper.findAll('a.m-link')
+
+      expect(links.length).toBeGreaterThan(2)
+
+      for (const link of links) {
+        expect(link.classes()).not.toContain('--underline-hover')
+        expect(link.classes().join(' ')).not.toContain('hover:underline')
+      }
+
+      wrapper.unmount()
+    })
+  })
+
   describe('when it renders', () => {
     it('then it is a labelled navigation with triggers and links', async () => {
       const wrapper = await mountMenu()
