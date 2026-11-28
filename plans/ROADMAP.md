@@ -92,6 +92,14 @@ En v6 :
 - [ ] `tools/agent-docs/src/sources/tokens.ts` lit les valeurs par défaut dans les fallbacks de `tailwindcss/utilities.css`.
 - [ ] À documenter dans le guide de migration.
 
+### Densité : `compact` devient le défaut
+
+En 5.x, `density: 'default' | 'compact'` (`MazUi`, `mazUi.density` côté Nuxt, classe `m-density-compact` sur `<html>` ou sur un bloc) est opt-in : `default` garde les hauteurs de la v5. Le code à retirer est marqué `Removed in v6 (plans/ROADMAP.md)` (`utils/density.ts`, `css/density.css`).
+
+- [ ] Density : `compact` devient le défaut (`density: 'default'` garde les hauteurs actuelles) : changer `DEFAULT_DENSITY`, les valeurs de `:root` dans `css/density.css` (le défaut devient `compact`, `m-density-default` garde l'ancien rendu), le défaut de `mazUi.density` (Nuxt) et les docs.
+- [ ] Note dans le guide de migration : les contrôles font environ 14 % de moins en hauteur (`md` : 42 px vers 36 px) ; pour garder les hauteurs de la v5, passer `density: 'default'` à `MazUi` (ou `mazUi.density` avec Nuxt). Vérifier les mises en page qui dépendent de la hauteur d'un contrôle.
+- [ ] Régénérer les captures de tests visuels.
+
 ### Plugins toast, dialog et wait
 
 `useToast`, `useDialog` et `useWait` marchent sans plugin : `useWait` partout (même hors de Vue), `useToast` et `useDialog` dans le `setup` d'un composant, ou dans un contexte d'injection avec le plugin `MazUi` (qui donne l'app et les options globales `toast` et `dialog`). Le code à retirer est marqué `Removed in v6 (plans/ROADMAP.md)` (`git grep "Removed in v6 (plans"`).

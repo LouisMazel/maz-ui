@@ -238,23 +238,23 @@ const TEXT_COLOR: Record<NonNullable<MazBtnProps['textColor']>, string> = {
 } as const
 
 const SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
-  xl: 'maz:min-h-16 maz:px-8 maz:text-xl',
-  lg: 'maz:min-h-14 maz:px-6',
-  md: 'maz:min-h-12 maz:px-4',
-  sm: 'maz:min-h-10 maz:px-3',
-  xs: 'maz:min-h-8 maz:px-2 maz:text-sm',
-  mini: 'maz:min-h-6 maz:px-1 maz:text-xs',
+  xl: 'maz:min-h-[var(--maz-control-height-xl,4rem)] maz:px-[var(--maz-control-padding-x-xl,2rem)] maz:text-xl',
+  lg: 'maz:min-h-[var(--maz-control-height-lg,3.5rem)] maz:px-[var(--maz-control-padding-x-lg,1.5rem)]',
+  md: 'maz:min-h-[var(--maz-control-height-md,3rem)] maz:px-[var(--maz-control-padding-x-md,1rem)]',
+  sm: 'maz:min-h-[var(--maz-control-height-sm,2.5rem)] maz:px-[var(--maz-control-padding-x-sm,0.75rem)]',
+  xs: 'maz:min-h-[var(--maz-control-height-xs,2rem)] maz:px-[var(--maz-control-padding-x-xs,0.5rem)] maz:text-sm',
+  mini: 'maz:min-h-[var(--maz-control-height-mini,1.5rem)] maz:px-[var(--maz-control-padding-x-mini,0.25rem)] maz:text-xs',
 } as const
 
 const ROUNDED_CLASS: Record<NonNullable<MazBtnProps['roundedSize']>, string> = ROUNDED_SIZE_CLASS
 
 const FAB_SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
-  xl: 'maz:size-16',
-  lg: 'maz:size-14',
-  md: 'maz:size-12',
-  sm: 'maz:size-10',
-  xs: 'maz:size-8',
-  mini: 'maz:size-6',
+  xl: 'maz:size-[var(--maz-control-height-xl,4rem)]',
+  lg: 'maz:size-[var(--maz-control-height-lg,3.5rem)]',
+  md: 'maz:size-[var(--maz-control-height-md,3rem)]',
+  sm: 'maz:size-[var(--maz-control-height-sm,2.5rem)]',
+  xs: 'maz:size-[var(--maz-control-height-xs,2rem)]',
+  mini: 'maz:size-[var(--maz-control-height-mini,1.5rem)]',
 } as const
 
 const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: string, end: string }> = {

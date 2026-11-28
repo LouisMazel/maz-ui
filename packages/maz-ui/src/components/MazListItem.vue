@@ -182,6 +182,22 @@ const SIZE_CLASS = {
   lg: 'maz:min-h-14 maz:gap-3 maz:px-4 maz:py-2.5',
 } as const satisfies Record<MazListSize, string>
 
+/** The classes keep the sizes of the default density, the style scales them with the active density */
+const SIZE_UNITS = {
+  sm: { height: 9, paddingBlock: 1.5 },
+  md: { height: 11, paddingBlock: 2 },
+  lg: { height: 14, paddingBlock: 2.5 },
+} as const satisfies Record<MazListSize, { height: number, paddingBlock: number }>
+
+const sizeStyle = computed(() => {
+  const { height, paddingBlock } = SIZE_UNITS[resolvedSize.value]
+
+  return {
+    minHeight: `calc(var(--maz-space, 0.25rem) * ${height} * var(--maz-density-ratio, 1))`,
+    paddingBlock: `calc(var(--maz-space, 0.25rem) * ${paddingBlock} * var(--maz-density-ratio, 1))`,
+  }
+})
+
 const hasText = computed(() => !!title || !!subtitle || hasSlotContent(slots.title) || hasSlotContent(slots.subtitle))
 </script>
 
@@ -206,6 +222,7 @@ const hasText = computed(() => !!title || !!subtitle || hasSlotContent(slots.tit
           disabled && 'maz:disabled-state',
           hasSlotContent($slots.actions) && 'maz:pe-2',
         ]"
+        :style="sizeStyle"
         :type="tag === 'button' ? 'button' : undefined"
         :disabled="tag === 'button' && disabled ? true : undefined"
         :aria-disabled="isLink && disabled ? true : undefined"

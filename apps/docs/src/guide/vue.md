@@ -68,6 +68,8 @@ app.use(MazUi, {
   aos: true,
   // Motion of the components: 'auto' (default), 'reduced' or 'full'
   motion: 'auto',
+  // Density of the controls: 'default' (current heights) or 'compact'
+  density: 'default',
   // Open the external links outside of the WebView (Tauri, Electron), see the desktop apps guide
   openExternal: href => openUrl(href),
 })
@@ -88,6 +90,17 @@ app.use(MazUi, {
 ```
 
 To also stop the animations of the whole page under reduced motion, use `motion: { scope: 'page' }`. In your own code, `shouldReduceMotion` of [useReducedMotion](./../composables/use-media-query.md#usereducedmotion) follows the same option.
+
+### Density
+
+The `density` option makes the controls (buttons, fields, segmented, menus...) about 14% shorter, a `md` control goes from 42px to 36px. It is `'default'` unless you set it. See [Density](./../ecosystem/themes.md#density) for what changes and how to compact only a block.
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  density: 'compact',
+})
+```
 
 ::: tip Why provide preset and messages?
 - **`preset`** -- Providing the theme preset synchronously avoids FOUC (Flash of Unstyled Content). Without it, components render without their CSS variables until the theme loads.

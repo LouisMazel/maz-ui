@@ -9,6 +9,10 @@ description: MazBtn is a standalone component that replaces the standard html bu
 
 <!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
+::: tip Compact density
+The `density: 'compact'` option makes every size about 14% shorter. See [Density](./../ecosystem/themes.md#density).
+:::
+
 ## Basic usage
 
 <ComponentDemo expanded>

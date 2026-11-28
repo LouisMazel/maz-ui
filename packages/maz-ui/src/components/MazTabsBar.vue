@@ -529,7 +529,7 @@ onMounted(() => {
     ref="tabsBarRef"
     role="tablist"
     :aria-orientation="resolvedOrientation"
-    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:scrollbar-themed maz:gap-1 maz:bg-container maz:p-2 maz:align-top"
+    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:scrollbar-themed maz:gap-(--maz-menu-gap,0.25rem) maz:bg-container maz:p-(--maz-menu-padding,0.5rem) maz:align-top"
     :class="[
       ROUNDED_CLASS[resolvedRoundedSize],
       {

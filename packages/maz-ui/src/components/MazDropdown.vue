@@ -466,7 +466,7 @@ onBeforeUnmount(() => {
       <div
         :id="`${instanceId}-menu`"
         role="none"
-        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:scrollbar-themed maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2"
+        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:scrollbar-themed maz:flex-col maz:gap-(--maz-menu-gap,0.25rem) maz:overflow-auto maz:p-(--maz-menu-padding,0.5rem)"
         tabindex="-1"
         :class="menuPanelClass"
         :style="menuPanelStyle"
