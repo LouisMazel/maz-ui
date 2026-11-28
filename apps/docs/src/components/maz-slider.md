@@ -190,10 +190,35 @@ const multipleSilders = ref([25, 50, 75])
 </template>
 ```
 
+## Ticks
+
+`ticks` draws a tick for each step. The ticks follow the fill and take the color of the slider as it passes them. Not used with `log` nor with more than 100 steps.
+
+<ComponentDemo>
+  <MazSlider v-model="ticksValue" :step="10" ticks />
+
+<template #code>
+
+```html
+<MazSlider v-model="value" :step="10" ticks />
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- While a cursor is dragged or focused, a bubble with its value pops out of it.
+- The cursor sinks a little when pressed.
+- The ticks change color as the fill passes them.
+
+In right-to-left languages the fill starts from the right and <kbd>←</kbd> increases the value. Set `:animated="false"` to turn the bubble and the ticks transitions off. Reduced motion is respected.
+
 <script lang="ts" setup>
   import { ref } from 'vue'
   const sliderValue = ref(50)
   const sliderStepValue = ref(50)
+  const ticksValue = ref(30)
   const multipleSilders = ref([25, 50, 75])
   const multipleSildersLabels = ['Small', 'Middle', 'Big']
 

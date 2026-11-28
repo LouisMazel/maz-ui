@@ -92,6 +92,26 @@ You can remove the buttons with the props `hide-buttons`
   </template>
 </ComponentDemo>
 
+## Motion
+
+- A click on <kbd>+</kbd> or <kbd>-</kbd> slides the value a little in the direction of the change. Typing and the arrow keys never animate.
+- Hold a button: after a short delay the value repeats and the repeat speeds up. It stops at `min` and `max`.
+- At a limit the button fades out.
+
+Set `:animated="false"` to turn the slide and the hold to repeat off. Reduced motion is respected.
+
+<ComponentDemo>
+  <MazInputNumber v-model="holdValue" :min="0" :max="200" />
+
+<template #code>
+
+```html
+<MazInputNumber v-model="value" :min="0" :max="200" />
+```
+
+  </template>
+</ComponentDemo>
+
 <!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../../.vitepress/generated-docs/maz-input-number.doc.md-->
 
@@ -100,4 +120,5 @@ You can remove the buttons with the props `hide-buttons`
   const numberValue = ref()
   const price = ref(20)
   const duration = ref(30)
+  const holdValue = ref(10)
 </script>

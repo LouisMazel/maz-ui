@@ -6,9 +6,10 @@ import { MazMinus } from '@maz-ui/icons/raw/MazMinus'
 import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { throttle } from '@maz-ui/utils/helpers/throttle'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/index.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
@@ -35,6 +36,7 @@ const {
   error = false,
   success = false,
   warning = false,
+  animated = true,
 } = defineProps<MazInputNumberProps>()
 
 const emits = defineEmits<{
@@ -181,6 +183,12 @@ export interface MazInputNumberProps {
    * @example "User Information"
    */
   topLabel?: string
+  /**
+   * Slide the value a little when the + and - buttons change it, and speed up while a button is held.
+   * Typing and the arrow keys never animate
+   * @default true
+   */
+  animated?: boolean
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -217,6 +225,104 @@ emitValue(currentValue.value)
 
 const incrementDisabled = computed(() => modelValue && modelValue >= max)
 const decrementDisabled = computed(() => modelValue && modelValue <= min)
+
+const root = ref<HTMLElement>()
+const { shouldReduceMotion } = useReducedMotion()
+
+const HOLD_DELAY = 400
+const HOLD_START_INTERVAL = 160
+const HOLD_MIN_INTERVAL = 40
+const HOLD_ACCELERATION = 12
+const SLIDE_DISTANCE = '30%'
+const SLIDE_DURATION = 150
+
+let holdTimer: ReturnType<typeof setTimeout> | undefined
+let holdCount = 0
+let handledByHold = false
+let slide: Animation | undefined
+
+function slideValue(direction: 1 | -1) {
+  if (!animated || shouldReduceMotion.value)
+    return
+
+  const input = root.value?.querySelector('input')
+
+  if (!input || typeof input.animate !== 'function')
+    return
+
+  const offset = direction === 1 ? SLIDE_DISTANCE : `-${SLIDE_DISTANCE}`
+
+  slide?.cancel()
+  slide = input.animate(
+    [
+      { transform: `translateY(${offset})`, opacity: 0 },
+      { transform: 'translateY(0)', opacity: 1, offset: 0.7 },
+      { transform: 'translateY(0)', opacity: 1 },
+    ],
+    { duration: SLIDE_DURATION, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+  )
+}
+
+function stepValue(direction: 1 | -1, withSlide: boolean) {
+  if (direction === 1)
+    increment()
+  else
+    decrement()
+
+  if (withSlide)
+    nextTick(() => slideValue(direction))
+}
+
+function stopHold() {
+  clearTimeout(holdTimer)
+  holdTimer = undefined
+  holdCount = 0
+  globalThis.removeEventListener('pointerup', stopHold)
+  globalThis.removeEventListener('pointercancel', stopHold)
+}
+
+function repeatHold(direction: 1 | -1) {
+  const edgeReached = direction === 1 ? incrementDisabled.value : decrementDisabled.value
+
+  if (disabled || edgeReached) {
+    stopHold()
+    return
+  }
+
+  handledByHold = true
+  stepValue(direction, false)
+  holdCount++
+  holdTimer = setTimeout(
+    repeatHold,
+    Math.max(HOLD_MIN_INTERVAL, HOLD_START_INTERVAL - holdCount * HOLD_ACCELERATION),
+    direction,
+  )
+}
+
+function startHold(event: PointerEvent, direction: 1 | -1) {
+  if (!animated || event.button !== 0)
+    return
+
+  stopHold()
+  handledByHold = false
+  globalThis.addEventListener('pointerup', stopHold)
+  globalThis.addEventListener('pointercancel', stopHold)
+  holdTimer = setTimeout(repeatHold, HOLD_DELAY, direction)
+}
+
+function onButtonClick(direction: 1 | -1) {
+  if (handledByHold) {
+    handledByHold = false
+    return
+  }
+
+  stepValue(direction, true)
+}
+
+onBeforeUnmount(() => {
+  stopHold()
+  slide?.cancel()
+})
 
 function increment() {
   if (disabled || incrementDisabled.value)
@@ -260,6 +366,7 @@ const stateColor = computed(() => {
 
 <template>
   <div
+    ref="root"
     class="m-input-number m-reset-css maz:inline-flex maz:flex-col maz:gap-2"
     :class="[`m-input-number--${size}`, SIZE_TEXT_CLASS[size], className, { '--block': block, 'maz:w-full': block }]"
     :style="style"
@@ -283,7 +390,8 @@ const stateColor = computed(() => {
         :aria-label="t('aria.decrement')"
         class="m-input-number__button m-input-number__decrement-button"
         :disabled="decrementDisabled || disabled"
-        @click="decrement"
+        @pointerdown="startHold($event, -1)"
+        @click="onButtonClick(-1)"
       >
         <MazIcon :icon="MazMinus" class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
@@ -333,7 +441,8 @@ const stateColor = computed(() => {
         :aria-label="t('aria.increment')"
         class="m-input-number__button m-input-number__increment-button"
         :disabled="incrementDisabled || disabled"
-        @click="increment"
+        @pointerdown="startHold($event, 1)"
+        @click="onButtonClick(1)"
       >
         <MazIcon :icon="MazPlus" class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
@@ -393,13 +502,13 @@ const stateColor = computed(() => {
     }
 
     &:first-child {
-      @apply maz:rounded-r-none!;
+      @apply maz:rounded-e-none!;
 
       margin-inline-end: calc(-1 * 2px);
     }
 
     &:last-child {
-      @apply maz:rounded-l-none!;
+      @apply maz:rounded-s-none!;
 
       margin-inline-start: calc(-1 * 2px);
     }

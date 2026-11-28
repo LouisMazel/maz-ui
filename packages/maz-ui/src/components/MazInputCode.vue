@@ -2,8 +2,9 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { SIZE_TEXT_CLASS } from './constants.ts'
 
 export type MazInputCodeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -40,6 +41,12 @@ export interface MazInputCodeProps<T = string | number> {
    * Base of the ids of the inputs (`<id>-1`, `<id>-2`...), unique by default
    */
   id?: string
+  /**
+   * Animate the characters that rise into place, the cells that fill when the code is complete
+   * and the shake of an `error`
+   * @default true
+   */
+  animated?: boolean
 }
 
 defineOptions({
@@ -60,6 +67,7 @@ const {
   size = 'md',
   color = 'primary',
   id,
+  animated = true,
 } = defineProps<MazInputCodeProps<T>>()
 
 const emits = defineEmits<{
@@ -78,7 +86,10 @@ const { t } = useTranslations()
 
 const instanceId = useInstanceUniqId({ componentName: 'm-input-code', providedId: id })
 
+const { shouldReduceMotion } = useReducedMotion()
+
 const inputList = ref<HTMLInputElement[]>([])
+const codeWrapper = ref<HTMLElement>()
 const localMap = ref<Map<number, string | undefined>>(new Map())
 
 watch(
@@ -122,6 +133,56 @@ function getMapValues(value = modelValue) {
   return map
 }
 
+const RISE_DURATION = 180
+const RISE_STAGGER = 30
+const SHAKE_DURATION = 350
+const SHAKE_KEYFRAMES = [
+  { transform: 'translateX(0)' },
+  { transform: 'translateX(-6px)', offset: 0.2 },
+  { transform: 'translateX(5px)', offset: 0.4 },
+  { transform: 'translateX(-4px)', offset: 0.6 },
+  { transform: 'translateX(2px)', offset: 0.8 },
+  { transform: 'translateX(0)' },
+]
+
+const animations = new Map<Element, Animation>()
+
+function playAnimation(element: Element | undefined, keyframes: Keyframe[], options: KeyframeAnimationOptions) {
+  if (!animated || shouldReduceMotion.value || !element || typeof element.animate !== 'function')
+    return
+
+  animations.get(element)?.cancel()
+  animations.set(element, element.animate(keyframes, options))
+}
+
+function riseInto(indexes: number[]) {
+  nextTick(() => {
+    for (const [order, index] of indexes.entries()) {
+      playAnimation(
+        inputList.value[index - 1],
+        [
+          { transform: 'translateY(40%)', opacity: 0 },
+          { transform: 'translateY(0)', opacity: 1 },
+        ],
+        { duration: RISE_DURATION, delay: order * RISE_STAGGER, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'backwards' },
+      )
+    }
+  })
+}
+
+const isComplete = computed(() => [...localMap.value.values()].filter(Boolean).length === codeLength)
+
+watch(() => error, (hasError) => {
+  if (hasError)
+    playAnimation(codeWrapper.value, SHAKE_KEYFRAMES, { duration: SHAKE_DURATION, easing: 'cubic-bezier(0.36, 0.07, 0.19, 0.97)' })
+})
+
+onBeforeUnmount(() => {
+  for (const animation of animations.values())
+    animation.cancel()
+  animations.clear()
+})
+
 function handleNewValue(event: Event, item: number) {
   const target = event.target as HTMLInputElement | null
   let rawValue = target?.value ?? ''
@@ -146,6 +207,7 @@ function handleNewValue(event: Event, item: number) {
   inputValues.value = localMap.value.set(item, newValue)
 
   if (newValue) {
+    riseInto([item])
     focusAndSelectInputByIndex(item)
   }
 }
@@ -202,6 +264,8 @@ function handleKeydown(event: KeyboardEvent, inputIndex: number) {
 function fillFromIndex(startIndex: number, value: string) {
   const characters = [...value].map(getValueSanitized).filter(Boolean) as string[]
 
+  const filled: number[] = []
+
   for (const [offset, character] of characters.entries()) {
     const index = startIndex + offset
 
@@ -209,7 +273,10 @@ function fillFromIndex(startIndex: number, value: string) {
       break
 
     localMap.value.set(index, character)
+    filled.push(index)
   }
+
+  riseInto(filled)
 
   inputValues.value = localMap.value
 
@@ -234,14 +301,19 @@ function setValueOnPaste(event: ClipboardEvent) {
     ][i] ?? undefined) as string | undefined,
   }))
 
+  const pasted: number[] = []
+
   for (const { index, value } of indexInputsFromPastePlace) {
     const sanitizedValue = value
       ? getValueSanitized(value)
       : undefined
     if (sanitizedValue) {
       localMap.value.set(index, sanitizedValue)
+      pasted.push(index)
     }
   }
+
+  riseInto(pasted)
 
   setTimeout(() => {
     const lastInputWithoutValueIndex = getLastInputWithoutValueIndex()
@@ -299,11 +371,11 @@ const borderColorState = computed(() => {
 <template>
   <fieldset
     class="m-input-code m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top"
-    :class="[size ? `--${size}` : undefined, SIZE_TEXT_CLASS[size], classProp]"
+    :class="[size ? `--${size}` : undefined, SIZE_TEXT_CLASS[size], classProp, { '--complete': isComplete, '--static': !animated }]"
     :disabled
     :style="[style, { '--input-border-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `var(--maz-${color})` }]"
   >
-    <div class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
+    <div ref="codeWrapper" class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
       <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:size-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:border-divider-400 maz:dark:bg-input" :class="borderColorState">
         <input
           :id="`${instanceId}-${item}`"
@@ -356,12 +428,34 @@ const borderColorState = computed(() => {
   }
 
   .input-wrapper {
+    inline-size: calc(4em * var(--maz-density-ratio, 1));
+    block-size: calc(4em * var(--maz-density-ratio, 1));
+    transition:
+      color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+      background-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+        var(--maz-easing-out, ease-out),
+      border-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+      outline-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+    outline: var(--maz-focus-ring-width, 2px) solid transparent;
+    outline-offset: var(--maz-focus-ring-offset, 2px);
+
     &:focus-within {
       border-color: var(--input-border-color);
     }
 
+    &:has(:focus-visible) {
+      outline-color: var(--maz-focus-ring-color, var(--maz-primary));
+    }
+
     input {
       @apply maz:h-full maz:w-full maz:bg-transparent maz:text-center maz:text-[1.5em] maz:outline-hidden maz:font-mono;
+    }
+
+    &:has(input:not(:disabled)) {
+      @at-root .m-input-code.--complete & {
+        border-color: var(--input-border-color);
+        background-color: color-mix(in oklab, var(--input-border-color) 10%, transparent);
+      }
     }
 
     &:has(input:disabled) {
@@ -372,5 +466,37 @@ const borderColorState = computed(() => {
       }
     }
   }
+}
+
+.m-input-code.--complete .input-wrapper:nth-child(2) {
+  transition-delay: calc(40ms * var(--maz-motion-scale, 1));
+}
+
+.m-input-code.--complete .input-wrapper:nth-child(3) {
+  transition-delay: calc(80ms * var(--maz-motion-scale, 1));
+}
+
+.m-input-code.--complete .input-wrapper:nth-child(4) {
+  transition-delay: calc(120ms * var(--maz-motion-scale, 1));
+}
+
+.m-input-code.--complete .input-wrapper:nth-child(5) {
+  transition-delay: calc(160ms * var(--maz-motion-scale, 1));
+}
+
+.m-input-code.--complete .input-wrapper:nth-child(6) {
+  transition-delay: calc(200ms * var(--maz-motion-scale, 1));
+}
+
+.m-input-code.--complete .input-wrapper:nth-child(7) {
+  transition-delay: calc(240ms * var(--maz-motion-scale, 1));
+}
+
+.m-input-code.--complete .input-wrapper:nth-child(8) {
+  transition-delay: calc(280ms * var(--maz-motion-scale, 1));
+}
+
+.m-input-code.--static .input-wrapper {
+  transition: none;
 }
 </style>
