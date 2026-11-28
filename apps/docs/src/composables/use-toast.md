@@ -1,18 +1,14 @@
 ---
 title: useToast
-description: Vue composable to display toast notifications (info, success, warning, error, with actions and buttons) from your components, through the toast plugin
+description: Vue composable to display toast notifications (info, success, warning, error, with actions and buttons) from your components, without plugin to install
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-::: warning
-You must install [toast plugin](./../plugins/toast.md#install) before use it
-:::
-
 ::: tip
-More info about [toast plugin](./../plugins/toast.md) in its documentation
+No plugin to install. Global options, actions, buttons and all the options: [toast documentation](./../plugins/toast.md)
 :::
 
 ## Usage
@@ -40,7 +36,15 @@ toast.success('success message', {
 toast.warning('warning message')
 toast.error('error message')
 toast.accent('accent message')
+toast.neutral('neutral message')
 toast.message('3 new messages', { icon: 'bell' })
+
+// loading, then success or error
+await toast.promise(save(), {
+  loading: 'Saving...',
+  success: 'Saved',
+  error: 'Failed',
+})
 </script>
 ```
 
@@ -68,6 +72,7 @@ toast.message('3 new messages', { icon: 'bell' })
     toast.warning('warning message')
     toast.error('error message')
     toast.accent('accent message')
+    toast.neutral('neutral message')
     toast.message('3 new messages', { icon: 'bell' })
   })
 

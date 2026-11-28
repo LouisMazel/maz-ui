@@ -9,40 +9,42 @@ description: Displays messages to your users in flexible and promised dialogs
 
 It is a simple and easy-to-use plugin that allows you to display messages to your users in flexible and promised dialogs. The plugin will mount the `MazDialogConfirm` component to the root of your application and provide you with a handler to open the dialog, close it and return a promise.
 
-::: tip
-This plugin has a composable for easier use, after installing it you can use [useDialog](./../composables/use-dialog.md)
-:::
+Use the [useDialog](./../composables/use-dialog.md) composable in your components: no plugin to install.
 
-## Installation
+## Global options
+
+The options of every dialog, a dialog can override them. All options are listed in the [Options](#options) section.
 
 ::: code-group
 
 ```ts [Vue]
-import { createApp } from 'vue'
-import { DialogPlugin, DialogOptions } from 'maz-ui/plugins/dialog'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
 
-const app = createApp(App)
-
-const dialogOptions: DialogOptions = {
-  // ...
-}
-
-app.use(DialogPlugin, dialogOptions)
-
-app.mount('#app')
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  dialog: {
+    acceptText: 'Yes',
+    rejectText: 'No',
+  },
+})
 ```
 
 ```ts [Nuxt]
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],
   mazUi: {
-    composables: {
-      useDialog: true,
+    dialog: {
+      acceptText: 'Yes',
+      rejectText: 'No',
     },
   },
 })
 ```
 
+:::
+
+::: tip Outside of a component
+`useDialog()` works in the `setup` of a component. In a store, a router guard or `app.runWithContext()`, install the [MazUi plugin](./../guide/vue.md#install-plugin): it gives the app to the dialogs.
 :::
 
 ## Basic usage
@@ -123,7 +125,7 @@ function openDialogActions() {
       {
         text: 'Cancel 😱',
         color: 'contrast',
-        outlined: true,
+        variant: 'outline',
         onClick: () => {
           toast.info('Cancel button clicked', {
             position: 'bottom',
@@ -400,6 +402,20 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'acceptP
    */
   contentProps?: MaybeRefOrGetter<Record<string, unknown>>
   /**
+   * Where the dialog grows from: an element, a CSS selector, a click event or a `{ x, y }` point.
+   * Without it, the element last pressed is used.
+   */
+  origin?: Element | string | MouseEvent | { x: number, y: number }
+  /**
+   * `false` gives a plain fade instead of growing from the origin
+   * @default true
+   */
+  animated?: boolean
+  /**
+   * Text the user must type before the accept button is enabled
+   */
+  confirmation?: string
+  /**
    * Function to execute when the dialog is accepted (when the user click on the confirm button)
    * Only available if the button type is 'accept'
    */
@@ -450,7 +466,7 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'acceptP
         {
           text: 'Cancel 😱',
           color: 'destructive',
-          outlined: true,
+          variant: 'outline',
           onClick: () => {
             toast.error('Cancel button clicked', {
               position: 'bottom',

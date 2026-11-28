@@ -3,11 +3,6 @@ import type { Theme } from 'vitepress'
 
 import en from '@maz-ui/translations/locales/en'
 import { MazUi } from 'maz-ui/plugins'
-import { AosPlugin } from 'maz-ui/plugins/aos'
-
-import { DialogPlugin } from 'maz-ui/plugins/dialog'
-import { ToastPlugin } from 'maz-ui/plugins/toast'
-import { WaitPlugin } from 'maz-ui/plugins/wait'
 
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import { watch } from 'vue'
@@ -33,21 +28,18 @@ export default {
           en,
         },
       } satisfies MazUiTranslationsOptions,
-    })
-
-    app.use(DialogPlugin)
-    app.use(ToastPlugin, {
-      persistent: false,
-      position: 'bottom-right',
-      timeout: 10_000,
-    })
-    app.use(WaitPlugin)
-    app.use(AosPlugin, {
-      delay: 500,
-      animation: {
-        duration: 400,
-        once: false,
-        delay: 0,
+      toast: {
+        persistent: false,
+        position: 'bottom-right',
+        timeout: 10_000,
+      },
+      aos: {
+        delay: 500,
+        animation: {
+          duration: 400,
+          once: false,
+          delay: 0,
+        },
       },
     })
 
