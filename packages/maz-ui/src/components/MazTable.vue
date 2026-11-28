@@ -950,7 +950,7 @@ onBeforeMount(() => {
                 :style="{ width: header.width, textAlign: header.align, maxWidth: header.maxWidth, minWidth: header.minWidth }"
                 class="maz:group"
                 :class="[
-                  { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable },
+                  { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable, '--sorted-column': columnIndex === sortedColumnIndex },
                   header.classes,
                   `--${size}`,
                 ]"
@@ -1057,7 +1057,7 @@ onBeforeMount(() => {
                     v-for="({ key, align, classes }, dataIndex) in headersNormalized"
                     :key="dataIndex"
                     :align="align"
-                    :class="classes"
+                    :class="[classes, { '--sorted-column': dataIndex === sortedColumnIndex }]"
                   >
                     <!--
                     @slot Replace all row cells
@@ -1242,7 +1242,12 @@ onBeforeMount(() => {
         }
 
         &.--sortable {
-          @apply maz:cursor-interactive maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400;
+          @apply maz:cursor-interactive maz:hover:bg-foreground/5;
+
+          &:focus-visible {
+            outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
+            outline-offset: calc(var(--maz-focus-ring-width, 2px) * -1);
+          }
         }
 
         &.--xl {
@@ -1277,7 +1282,7 @@ onBeforeMount(() => {
           }
 
           .m-table-sort-icon {
-            @apply maz:text-muted maz:transition-transform maz:duration-300 maz:ease-out;
+            @apply maz:text-muted maz:transition-transform maz:duration-(--duration-normal) maz:ease-out;
 
             &.--sorted {
               @apply maz:block maz:text-foreground;
@@ -1312,7 +1317,7 @@ onBeforeMount(() => {
 }
 
 .m-table-expand-icon {
-  @apply maz:transition-transform maz:duration-200 maz:motion-reduce:transition-none;
+  @apply maz:transition-transform maz:duration-(--duration-fast) maz:ease-out maz:motion-reduce:transition-none;
 
   &.--open {
     @apply maz:rotate-90;
@@ -1323,7 +1328,7 @@ onBeforeMount(() => {
   @apply maz:px-3 maz:py-3;
 }
 
-.m-table-wrapper.--virtualized {
+.m-table-wrapper.--scrollable {
   /* With `border-collapse: collapse` the thead bottom border belongs to the
      collapsed grid, not the sticky cells, so it scrolls away. Drop it and redraw
      the divider as an inset shadow on the sticky th, which follows the header
@@ -1473,11 +1478,32 @@ onBeforeMount(() => {
   }
 }
 
+/* Soft band on the sorted column */
+.m-table th.--sorted-column,
+.m-table td.--sorted-column {
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: color-mix(in srgb, var(--maz-foreground) 4%, transparent);
+    content: '';
+    pointer-events: none;
+    transition: opacity calc(var(--maz-motion-normal) * var(--maz-motion-scale)) var(--maz-easing-out);
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
 /* Reordering animation (FLIP) when `animatedRows` is enabled. The class is set by
    TransitionGroup on the child row element, hence `:deep`. Disabled when the user
    prefers reduced motion. */
 :deep(.m-table-row-move) {
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform calc(var(--maz-motion-slower) * var(--maz-motion-scale)) var(--maz-easing-out);
 }
 
 @media (prefers-reduced-motion: reduce) {

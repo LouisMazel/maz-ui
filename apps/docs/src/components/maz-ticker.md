@@ -500,7 +500,7 @@ You can change the size of the overlay by setting the `overlay-size` prop to a C
 
 ### Pause on hover
 
-When a child element is hovered, the animation will pause.
+When a child element is hovered, the animation slows down smoothly until it stops, then speeds up again when the pointer leaves. Touch screens do not stop it.
 
 <ComponentDemo>
   <MazTicker pause-on-hover>
@@ -522,7 +522,7 @@ When a child element is hovered, the animation will pause.
 
 ### Pause on focus
 
-When a child element is focused, the animation will pause.
+When a child element is focused, the animation slows down smoothly until it stops.
 
 <ComponentDemo>
   <MazTicker pause-on-focus>

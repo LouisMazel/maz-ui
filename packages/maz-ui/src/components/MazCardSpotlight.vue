@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import type { HTMLAttributes, StyleValue } from 'vue'
+import type { MazElevation } from '../utils/elevation.ts'
 import type { MazColorOrFree } from './types.ts'
-import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { useIntersectionObserver } from '../composables/useIntersectionObserver.ts'
-import { useScroll } from '../composables/useScroll.ts'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
+import { setBorderDrawFrom } from '../utils/borderDraw.ts'
+import { getElevationClass } from '../utils/elevation.ts'
 import { mixColor } from '../utils/freeColor.ts'
 
 export interface MazCardSpotlightProps {
@@ -14,10 +16,12 @@ export interface MazCardSpotlightProps {
    */
   color?: MazColorOrFree
   /**
-   * Add elevation to the component
-   * @default true
+   * Elevation of the component (shadow of the theme, deeper in dark mode): `0` none, `1` small, `2` medium, `3` large.
+   * `true` keeps the historical shadow.
+   * @type {boolean | 0 | 1 | 2 | 3}
+   * @default false
    */
-  elevation?: boolean
+  elevation?: MazElevation
   /**
    * Add padding to the content
    * @default true
@@ -38,6 +42,12 @@ export interface MazCardSpotlightProps {
    * @default 0.95
    */
   innerOpacity?: number
+  /**
+   * The border draws itself around the card from the point where the pointer enters (and on keyboard focus).
+   * Set its color with `--maz-border-draw-color`
+   * @default false
+   */
+  borderDraw?: boolean
 }
 
 const {
@@ -47,11 +57,15 @@ const {
   contentClass = undefined,
   contentStyle = undefined,
   innerOpacity = 0.95,
+  borderDraw = false,
 } = defineProps<MazCardSpotlightProps>()
 
 const containerElement = ref<HTMLDivElement>()
 const blobElement = ref<HTMLDivElement>()
 const blobVisible = ref<boolean>(false)
+const blobActive = ref<boolean>(false)
+
+const { shouldReduceMotion } = useReducedMotion()
 
 let rafId: number | null = null
 
@@ -60,81 +74,94 @@ const { isIntersecting } = useIntersectionObserver(containerElement, () => {
     stopBlobAnimation()
   }
 })
-let cachedRect: DOMRect | null = null
 
 /** A light grey halo would disappear: neutral uses its foreground */
 const haloColor = computed(() => color === 'neutral' ? 'var(--maz-neutral-foreground)' : color)
 const alphaColor = computed(() => mixColor(haloColor.value, 60))
 const alphaColor20 = computed(() => mixColor(haloColor.value, 20))
+const elevationClass = computed(() => getElevationClass(elevation))
 
-function updateCachedRect() {
-  if (containerElement.value) {
-    cachedRect = containerElement.value.getBoundingClientRect()
-  }
-}
+const BLOB_SIZE = 208
 
 function updateBlobPosition(x: number, y: number) {
-  if (!blobElement.value || !cachedRect) {
+  const rect = containerElement.value?.getBoundingClientRect()
+
+  if (!blobElement.value || !rect) {
     return
   }
 
-  const blobWidth = 208
-  const blobHeight = 208
-  const translateX = x - cachedRect.left - blobWidth / 2
-  const translateY = y - cachedRect.top - blobHeight / 2
-
-  blobElement.value.style.transform = `translate(${translateX}px, ${translateY}px)`
+  blobElement.value.style.transform = `translate(${x - rect.left - BLOB_SIZE / 2}px, ${y - rect.top - BLOB_SIZE / 2}px)`
 }
 
-function handleMouseMove(event: MouseEvent) {
-  if (!isIntersecting.value || rafId !== null) {
+function followPointer(event: PointerEvent | MouseEvent) {
+  if (shouldReduceMotion.value || !isIntersecting.value || rafId !== null) {
     return
   }
 
   blobVisible.value = true
 
+  const { clientX, clientY } = event
+
   rafId = requestAnimationFrame(() => {
-    updateBlobPosition(event.clientX, event.clientY)
+    updateBlobPosition(clientX, clientY)
+    blobActive.value = true
     rafId = null
   })
 }
 
-function stopBlobAnimation() {
-  blobVisible.value = false
+function onPointerEnter(event: PointerEvent) {
+  if (borderDraw) {
+    setBorderDrawFrom(event)
+  }
+
+  followPointer(event)
+}
+
+function onPointerUp(event: PointerEvent) {
+  if (event.pointerType === 'touch') {
+    fadeBlob()
+  }
+}
+
+function cancelFrame() {
   if (rafId !== null) {
     cancelAnimationFrame(rafId)
     rafId = null
   }
 }
 
-useScroll(undefined, { onScroll: updateCachedRect })
+function fadeBlob() {
+  cancelFrame()
+  blobActive.value = false
+}
 
-onMounted(() => {
-  if (isServer() || !containerElement.value) {
-    return
+function onBlobTransitionEnd() {
+  if (!blobActive.value) {
+    blobVisible.value = false
   }
+}
 
-  updateCachedRect()
+function stopBlobAnimation() {
+  blobVisible.value = false
+  blobActive.value = false
+  cancelFrame()
+}
 
-  globalThis.addEventListener('mousemove', handleMouseMove, { passive: true })
-  globalThis.addEventListener('resize', updateCachedRect, { passive: true })
-
-  onBeforeUnmount(() => {
-    if (rafId !== null) {
-      cancelAnimationFrame(rafId)
-    }
-    globalThis.removeEventListener('mousemove', handleMouseMove)
-    globalThis.removeEventListener('resize', updateCachedRect)
-  })
-})
+onBeforeUnmount(cancelFrame)
 </script>
 
 <template>
   <div
     ref="containerElement"
     class="m-card-spotlight m-reset-css maz:relative maz:inline-flex maz:overflow-hidden maz:rounded-md"
-    :class="{ 'maz:shadow-elevation maz:drop-shadow-md': elevation }"
+    :class="[elevationClass, { 'maz:border-draw': borderDraw }]"
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
+    @pointerenter="onPointerEnter"
+    @pointermove="followPointer"
+    @pointerdown="followPointer"
+    @pointerleave="fadeBlob"
+    @pointerup="onPointerUp"
+    @pointercancel="fadeBlob"
   >
     <div class="inner maz:relative maz:h-auto maz:w-full maz:overflow-hidden">
       <div class="content maz:relative maz:z-2 maz:size-full" :class="[{ 'maz:p-4': padding }, contentClass]" :style="contentStyle">
@@ -145,7 +172,10 @@ onMounted(() => {
       v-show="blobVisible"
       ref="blobElement"
       class="blob maz:absolute maz:top-0 maz:left-0 maz:z-0 maz:rounded-full maz:blur-2xl"
+      :class="{ '--active': blobActive }"
       :style="{ backgroundColor: alphaColor }"
+      aria-hidden="true"
+      @transitionend="onBlobTransitionEnd"
     />
   </div>
 </template>
@@ -172,8 +202,13 @@ onMounted(() => {
   .blob {
     inline-size: 208px;
     block-size: 208px;
-    will-change: transform;
-    transition: opacity 150ms ease-out;
+    opacity: 0;
+    transition: opacity calc(var(--maz-motion-fast) * var(--maz-motion-scale)) var(--maz-easing-out);
+
+    &.--active {
+      opacity: 1;
+      will-change: transform;
+    }
   }
 }
 </style>

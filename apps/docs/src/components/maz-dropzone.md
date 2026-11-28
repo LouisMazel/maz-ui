@@ -451,6 +451,24 @@ Customize the upload request using `uploadUrl`, `requestOptions` and `transformB
   </template>
 </ComponentDemo>
 
+## Motion
+
+- While a file is dragged over the zone, the border marches around it. A refused file does not.
+- Set `uploading` and `progress` (from `0` to `100`) on a file of the `v-model`: the percentage rolls and a thin bar fills. Drop a file, then press the button.
+
+<MazDropzone v-model="progressFiles" multiple />
+
+<MazBtn class="maz:mt-4" size="sm" :disabled="progressFiles.length === 0" @click="simulateUpload">
+  Simulate an upload
+</MazBtn>
+
+```ts
+file.uploading = true
+file.progress = 40
+```
+
+Reduced motion stops the marching and the rolling.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-dropzone.doc.md-->
 
 <script setup lang="ts">
@@ -458,6 +476,30 @@ import { ref } from 'vue'
 import { useToast } from 'maz-ui/composables/useToast'
 
 const files = ref<File[]>([])
+const progressFiles = ref<any[]>([])
+
+function simulateUpload() {
+  for (const file of progressFiles.value) {
+    file.uploading = true
+    file.success = false
+    file.progress = 0
+  }
+
+  const timer = setInterval(() => {
+    for (const file of progressFiles.value) {
+      file.progress = Math.min(100, (file.progress ?? 0) + 8)
+
+      if (file.progress === 100) {
+        file.uploading = false
+        file.success = true
+      }
+    }
+
+    if (progressFiles.value.every(file => file.progress === 100))
+      clearInterval(timer)
+  }, 250)
+}
+
 const dropzone = ref<InstanceType<typeof MazDropzone>>()
 const toast = useToast()
 

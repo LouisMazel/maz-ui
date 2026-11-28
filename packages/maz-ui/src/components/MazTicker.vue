@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import type { MazSizeUnit } from './types.ts'
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
+import { readMotionDuration } from '../utils/motionTokens.ts'
 
 export type MazTickerOrientation = 'horizontal' | 'vertical'
 
@@ -35,12 +37,12 @@ export interface MazTickerProps {
    */
   repeat?: number
   /**
-   * Pause animation on mouse hover
+   * Pause animation on mouse hover: the ticker slows down smoothly until it stops, then speeds up again on leave
    * @default false
    */
   pauseOnHover?: boolean
   /**
-   * Pause animation when a child element receives focus
+   * Pause animation when a child element receives focus (it also slows down smoothly)
    * @default false
    */
   pauseOnFocus?: boolean
@@ -80,6 +82,73 @@ const {
   animationTimingFunction = 'linear',
 } = defineProps<MazTickerProps>()
 
+const wrapperElement = ref<HTMLElement>()
+const isEased = ref(false)
+const { shouldReduceMotion } = useReducedMotion()
+
+let rate = 1
+let rafId: number | undefined
+
+function getScrollAnimations() {
+  return wrapperElement.value
+    ?.getAnimations({ subtree: true })
+    .filter(animation => (animation as CSSAnimation).animationName?.includes('m-ticker-scroll')) ?? []
+}
+
+function easeTo(target: 0 | 1) {
+  if (!isEased.value)
+    return
+
+  cancelAnimationFrame(rafId!)
+
+  const startRate = rate
+  const startTime = performance.now()
+  const duration = readMotionDuration('--maz-motion-slower', 450)
+
+  const step = (now: number) => {
+    const progress = duration > 0
+      ? Math.min(1, (now - startTime) / duration)
+      : 1
+
+    rate = startRate + (target - startRate) * (1 - (1 - progress) ** 3)
+
+    for (const animation of getScrollAnimations())
+      animation.playbackRate = rate
+
+    rafId = progress < 1
+      ? requestAnimationFrame(step)
+      : undefined
+  }
+
+  rafId = requestAnimationFrame(step)
+}
+
+function onPointerEnter(event: PointerEvent) {
+  if (pauseOnHover && event.pointerType !== 'touch')
+    easeTo(0)
+}
+
+function onPointerLeave(event: PointerEvent) {
+  if (pauseOnHover && event.pointerType !== 'touch')
+    easeTo(1)
+}
+
+function onFocusIn() {
+  if (pauseOnFocus)
+    easeTo(0)
+}
+
+function onFocusOut(event: FocusEvent) {
+  if (pauseOnFocus && !wrapperElement.value?.contains(event.relatedTarget as Node | null))
+    easeTo(1)
+}
+
+onMounted(() => {
+  isEased.value = typeof wrapperElement.value?.getAnimations === 'function' && !shouldReduceMotion.value
+})
+
+onBeforeUnmount(() => cancelAnimationFrame(rafId!))
+
 const cssVars = computed<CSSProperties>(() => ({
   '--m-ticker-duration': `${duration}s`,
   '--m-ticker-gap': gap,
@@ -103,13 +172,22 @@ const cssVars = computed<CSSProperties>(() => ({
         '--paused': paused,
         '--pause-on-hover': pauseOnHover,
         '--pause-on-focus': pauseOnFocus,
+        '--eased': isEased,
       },
     ]"
   >
     <!-- @slot Static content before the scrolling area -->
     <slot name="before" />
 
-    <div class="m-ticker-wrapper maz:relative maz:flex maz:overflow-hidden" :class="orientation === 'vertical' ? 'maz:flex-col' : ''">
+    <div
+      ref="wrapperElement"
+      class="m-ticker-wrapper maz:relative maz:flex maz:overflow-hidden"
+      :class="orientation === 'vertical' ? 'maz:flex-col' : ''"
+      @pointerenter="onPointerEnter"
+      @pointerleave="onPointerLeave"
+      @focusin="onFocusIn"
+      @focusout="onFocusOut"
+    >
       <div v-if="overlay || hasSlotContent($slots['overlay-start'])" class="m-ticker-overlay --start maz:pointer-events-none maz:absolute maz:z-10" :class="orientation === 'horizontal' ? 'maz:inset-y-0 maz:left-0' : 'maz:inset-x-0 maz:top-0'">
         <!-- @slot Custom overlay for the start edge (left in horizontal, top in vertical). Replaces default gradient. -->
         <slot name="overlay-start" />
@@ -187,11 +265,11 @@ const cssVars = computed<CSSProperties>(() => ({
     animation-play-state: paused;
   }
 
-  &.--pause-on-hover .m-ticker-wrapper:hover .m-ticker-content {
+  &.--pause-on-hover:not(.--eased) .m-ticker-wrapper:hover .m-ticker-content {
     animation-play-state: paused;
   }
 
-  &.--pause-on-focus .m-ticker-wrapper:focus-within .m-ticker-content {
+  &.--pause-on-focus:not(.--eased) .m-ticker-wrapper:focus-within .m-ticker-content {
     animation-play-state: paused;
   }
 }
