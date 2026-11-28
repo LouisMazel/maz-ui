@@ -47,7 +47,7 @@ watch(
 </script>
 
 <template>
-  <div class="maz-picker-shortcuts maz:flex maz:scrollbar-themed maz:flex-col maz:items-start maz:gap-1 maz:overflow-y-auto maz:border-e maz:border-divider maz:p-2">
+  <div class="maz-picker-shortcuts maz:flex maz:scrollbar-themed maz:flex-col maz:items-stretch maz:gap-1.5 maz:overflow-y-auto maz:border-e maz:border-divider maz:p-2">
     <MazBtn
       v-for="{ identifier, label, value } in shortcuts"
       :key="identifier"
@@ -76,7 +76,7 @@ watch(
   max-block-size: 18.75rem;
 
   & > button {
-    @apply maz:w-full maz:flex-none maz:truncate;
+    @apply maz:flex-none maz:truncate maz:rounded-full!;
     @apply maz:text-xs!;
 
     &:not(.--is-selected) {

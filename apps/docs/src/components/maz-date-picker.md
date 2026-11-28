@@ -22,6 +22,7 @@ description: A powerful and flexible date picker component with support for sing
 - [Internationalization](#internationalization)
 - [Validation & Constraints](#validation--constraints)
 - [Types](#types)
+- [Motion](#motion)
 - [Props](#props)
 - [Events](#events)
 - [Slots](#slots)
@@ -1059,11 +1060,40 @@ interface MazDatePickerShortcut {
 }
 ```
 
+## Motion
+
+Nothing to configure, the picker moves with the [motion tokens](./../guide/motion.md):
+
+- The months slide a short way in the direction of the navigation (reversed in RTL).
+- The month, the year and the selected date in the header roll ([MazRollingText](./maz-rolling-text.md)).
+- In a single date picker, the mark of the selected day travels to the new day when you click it. With the keyboard it jumps.
+- In a range, a chip follows the pointer and counts the days between the start and the hovered day.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:gap-4">
+    <MazDatePicker v-model="motionDate" inline />
+    <MazDatePicker v-model="motionRange" inline range :shortcuts="false" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazDatePicker v-model="date" inline />
+  <MazDatePicker v-model="range" inline range />
+</template>
+```
+
+</template>
+</ComponentDemo>
+
+Reduced motion, and the `motion` option of `MazUi`, turn all of it off.
+
 ## Accessibility
 
 - The input is a `combobox` opening a `dialog` (`aria-haspopup="dialog"`, `aria-expanded`, `aria-controls`).
 - Each month is a `grid` labelled by the month and the year, the days of the week are its column headers and each day has its full date as label (`aria-current="date"` for today, `aria-selected` on the selected days).
-- **Keyboard** in the calendar: only one day is in the tab sequence, the arrows move by day (<kbd>←</kbd> <kbd>→</kbd>) and by week (<kbd>↑</kbd> <kbd>↓</kbd>), <kbd>Home</kbd> / <kbd>End</kbd> go to the start / end of the week, <kbd>Page Up</kbd> / <kbd>Page Down</kbd> to the previous / next month (with <kbd>Shift</kbd>: year). Disabled days are skipped and the calendar follows the focus to the displayed month.
+- **Keyboard** in the calendar: only one day is in the tab sequence, the arrows move by day (<kbd>←</kbd> <kbd>→</kbd>) and by week (<kbd>↑</kbd> <kbd>↓</kbd>), <kbd>Home</kbd> / <kbd>End</kbd> go to the start / end of the week, <kbd>Page Up</kbd> / <kbd>Page Down</kbd> to the previous / next month (with <kbd>Shift</kbd>: year). The horizontal arrows follow the reading direction (RTL). Disabled days are skipped and the calendar follows the focus to the displayed month.
 - The navigation buttons labels come from `@maz-ui/translations` (`aria` namespace).
 
 <!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
@@ -1085,6 +1115,8 @@ const triggerDate = ref()
 // Date selection
 const dateSelection = ref()
 const inlineDate = ref()
+const motionDate = ref('2024-03-15')
+const motionRange = ref({ start: undefined, end: undefined })
 const doubleDate = ref()
 
 // Time selection

@@ -6,8 +6,11 @@ import type { MazDatePickerValue } from '../types.ts'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs/esm/index.js'
-import { computed, ref, watch } from 'vue'
+import { computed, onScopeDispose, ref, shallowRef, watch } from 'vue'
+import { useReducedMotion } from '../../../composables/useReducedMotion.ts'
+import { useSlidingIndicator } from '../../../composables/useSlidingIndicator.ts'
 import MazBtn from '../../MazBtn.vue'
+import MazRollingText from '../../MazRollingText.vue'
 
 import { getDaysInMonth, getFirstDayOfMonth, isRangeValue, isSameDate, isSameDay, isValidDate } from '../utils.ts'
 
@@ -41,7 +44,27 @@ enum DaySelect {
 }
 
 const MazDatePickerGrid = ref<HTMLDivElement>()
-const transitionName = ref<'maz-slidenext' | 'maz-slideprev'>('maz-slidenext')
+const monthContainer = shallowRef<HTMLElement>()
+const slideSign = ref(1)
+const isKeyboardInput = ref(false)
+const isMonthChanging = ref(false)
+let monthChangeTimer: ReturnType<typeof setTimeout> | undefined
+
+const { shouldReduceMotion } = useReducedMotion()
+
+const INDICATOR_COLORS = new Set<MazColor>(['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral'])
+const DAY_UNIT_FORMAT: Intl.NumberFormatOptions = { style: 'unit', unit: 'day', unitDisplay: 'long' }
+
+function setMonthContainer(element: unknown) {
+  if (element)
+    monthContainer.value = element as HTMLElement
+}
+
+function getDayElement(key: string | undefined) {
+  return key
+    ? monthContainer.value?.querySelector<HTMLElement>(`[data-date="${key}"]`) ?? undefined
+    : undefined
+}
 
 const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 
@@ -140,6 +163,58 @@ const tabbableDateKey = computed(() => {
   return candidates.find(key => key && enabledKeys.includes(key)) ?? enabledKeys[0]
 })
 
+const selectedIndicatorKey = computed(() => {
+  const key = props.range || !INDICATOR_COLORS.has(props.color)
+    ? undefined
+    : getSelectedDateKey()
+
+  return key && monthDays.value.some(({ date }) => getDateKey(date) === key)
+    ? key
+    : undefined
+})
+
+const selectedIndicatorTarget = computed(() => getDayElement(selectedIndicatorKey.value))
+
+const { style: selectedIndicatorStyle, isReady: isSelectedIndicatorReady } = useSlidingIndicator({
+  container: monthContainer,
+  active: selectedIndicatorTarget,
+  orientation: 'vertical',
+})
+
+const hasSelectedIndicator = computed(() => isSelectedIndicatorReady.value && !!selectedIndicatorTarget.value)
+
+const isInstant = computed(() => isKeyboardInput.value || isMonthChanging.value)
+
+const indicatorInlineStyle = computed(() => ({
+  ...selectedIndicatorStyle.value,
+  ...(isInstant.value && { transitionDuration: '0s' }),
+  backgroundColor: `var(--maz-${props.color})`,
+}))
+
+const rangeDaysCount = computed(() => {
+  const value = props.modelValue
+
+  if (!props.range || !props.hoverredDay || !isRangeValue(value) || !value.start || value.end)
+    return undefined
+
+  return props.hoverredDay.startOf('day').diff(dayjs(value.start).startOf('day'), 'day') + 1
+})
+
+const rangeCountTarget = computed(() => getDayElement(rangeDaysCount.value && props.hoverredDay
+  ? getDateKey(props.hoverredDay)
+  : undefined))
+
+const { style: rangeCountStyle } = useSlidingIndicator({
+  container: monthContainer,
+  active: rangeCountTarget,
+  orientation: 'vertical',
+})
+
+const rangeCountInlineStyle = computed(() => ({
+  ...rangeCountStyle.value,
+  ...(isInstant.value && { transitionDuration: '0s' }),
+}))
+
 function isBeyondBounds(date: Dayjs, step: number) {
   if (step < 0)
     return !!props.minDate && date.isBefore(props.minDate, 'date')
@@ -232,6 +307,8 @@ function focusDate(date: Dayjs) {
 }
 
 function onDayKeydown(event: KeyboardEvent, date: Dayjs) {
+  isKeyboardInput.value = true
+
   const target = getKeyboardTarget(event, date)
 
   if (!target)
@@ -356,6 +433,18 @@ function isSelectedOrBetween(day: Dayjs): DaySelect {
   return DaySelect.UNSELECTED
 }
 
+function onDayClick(event: MouseEvent, date: Dayjs) {
+  isKeyboardInput.value = event.detail === 0
+  selectDay(date)
+}
+
+function onDayHover(date: Dayjs) {
+  isKeyboardInput.value = false
+
+  if (props.range)
+    setHoverredDay(date)
+}
+
 function selectDay(value: Dayjs) {
   if (props.range) {
     setHoverredDay()
@@ -441,11 +530,14 @@ function isBiggerMaxDate(day: Dayjs): boolean {
   return dayjs(day).isAfter(props.maxDate, 'date')
 }
 
+const SLIDE_RELEASE_DELAY = 400
+const MONTH_CHANGE_SETTLE = 100
+
 const removeContainerHeight = debounce(() => {
   if (MazDatePickerGrid.value) {
     MazDatePickerGrid.value.style.minHeight = ''
   }
-}, 400)
+}, SLIDE_RELEASE_DELAY)
 
 function setContainerHeight() {
   if (MazDatePickerGrid.value) {
@@ -455,12 +547,21 @@ function setContainerHeight() {
   }
 }
 
+onScopeDispose(() => clearTimeout(monthChangeTimer))
+
 watch(
   () => props.calendarDate,
   (calendarDate, oldCalendarValue) => {
-    transitionName.value = dayjs(calendarDate).isAfter(oldCalendarValue, 'date')
-      ? 'maz-slidenext'
-      : 'maz-slideprev'
+    const isRtl = !!MazDatePickerGrid.value && globalThis.getComputedStyle(MazDatePickerGrid.value).direction === 'rtl'
+    const isNext = dayjs(calendarDate).isAfter(oldCalendarValue, 'date')
+
+    isMonthChanging.value = true
+    clearTimeout(monthChangeTimer)
+    monthChangeTimer = setTimeout(() => {
+      isMonthChanging.value = false
+    }, MONTH_CHANGE_SETTLE)
+
+    slideSign.value = (isNext ? 1 : -1) * (isRtl ? -1 : 1)
 
     setContainerHeight()
   },
@@ -470,15 +571,35 @@ watch(
 <template>
   <div
     ref="MazDatePickerGrid"
-    class="maz-picker-calendar-grid maz:relative maz:transition-all maz:duration-300 maz:ease-in-out"
+    class="maz-picker-calendar-grid maz:relative"
+    :style="{ '--m-picker-slide': slideSign }"
   >
-    <TransitionGroup :name="transitionName">
+    <TransitionGroup name="maz-picker-month" :css="!shouldReduceMotion">
       <div
         v-for="(dateArray, dateIndex) in [calendarDateArray]"
         :key="`${dateArray[dateIndex]}`"
-        class="maz-picker-calendar-grid__container maz:relative maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1"
-        :class="{ '--is-range': range, 'maz:gap-x-1': !range }"
+        :ref="setMonthContainer"
+        class="maz-picker-calendar-grid__container maz:relative maz:isolate maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1"
+        :class="{ '--is-range': range, 'maz:gap-x-1': !range, '--has-indicator': hasSelectedIndicator }"
       >
+        <span
+          v-if="selectedIndicatorKey"
+          class="maz-picker-calendar-grid__indicator"
+          aria-hidden="true"
+          :style="indicatorInlineStyle"
+        />
+        <Transition name="maz-picker-count">
+          <span
+            v-if="rangeDaysCount && rangeCountTarget"
+            class="maz-picker-calendar-grid__count"
+            aria-hidden="true"
+            :style="rangeCountInlineStyle"
+          >
+            <span class="maz-picker-calendar-grid__count-chip">
+              <MazRollingText :value="rangeDaysCount" :format="DAY_UNIT_FORMAT" :locale="locale" />
+            </span>
+          </span>
+        </Transition>
         <div v-for="(week, weekIndex) in weeks" :key="weekIndex" role="row" class="maz:contents">
           <template v-for="(day, dayIndex) in week" :key="day ? getDateKey(day.date) : `empty-${dayIndex}`">
             <div v-if="!day" role="gridcell" />
@@ -498,7 +619,7 @@ watch(
                 :aria-label="getDayLabel(day.date)"
                 :aria-current="isToday(day.date) ? 'date' : undefined"
                 :tabindex="tabbableDateKey === getDateKey(day.date) ? 0 : -1"
-                class="maz:size-8 maz:cursor-interactive maz:rounded-full"
+                class="maz:relative maz:z-1 maz:size-8 maz:cursor-interactive maz:rounded-full"
                 :class="{
                   '--is-first': isFirstDay(day.date) && isSelectedOrBetween(day.date) === DaySelect.SELECTED,
                   '--is-last': isLastDay(day.date) && isSelectedOrBetween(day.date) === DaySelect.SELECTED,
@@ -509,9 +630,9 @@ watch(
                     ? isBetweenHoverred(day.date) === DaySelect.BETWEEN_HOVERRED
                     : undefined,
                 }"
-                @click="selectDay(day.date)"
+                @click="onDayClick($event, day.date)"
                 @keydown="onDayKeydown($event, day.date)"
-                @mouseover="range ? setHoverredDay(day.date) : undefined"
+                @mouseover="onDayHover(day.date)"
                 @mouseleave="range ? setHoverredDay() : undefined"
                 @focus="onDayFocus(day.date)"
                 @blur="range ? setHoverredDay() : undefined"
@@ -578,24 +699,84 @@ watch(
   }
 }
 
-/** Slide next/prev animation  **/
-.maz-slidenext-leave-active,
-.maz-slidenext-enter-active,
-.maz-slideprev-leave-active,
-.maz-slideprev-enter-active {
-  @apply maz:absolute maz:left-0 maz:inset-e-0 maz:top-0;
-
-  transition: transform 300ms ease-in-out;
+/* Months slide a short way in the direction of the navigation (the sign follows the RTL) */
+.maz-picker-month-enter-active,
+.maz-picker-month-leave-active {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
 }
 
-/* .maz-slidenext-enter-to, */
-.maz-slideprev-leave-to,
-.maz-slidenext-enter-from {
-  transform: translateX(100%);
+.maz-picker-month-enter-active {
+  transition:
+    transform calc(var(--maz-motion-normal, 250ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    opacity calc(var(--maz-motion-normal, 250ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 }
 
-.maz-slidenext-leave-to,
-.maz-slideprev-enter-from {
-  transform: translateX(-100%);
+.maz-picker-month-leave-active {
+  transition:
+    transform calc(var(--maz-motion-normal, 250ms) * var(--maz-motion-scale, 1) * 0.7) var(--maz-easing-in, ease-in),
+    opacity calc(var(--maz-motion-normal, 250ms) * var(--maz-motion-scale, 1) * 0.7) var(--maz-easing-in, ease-in);
+}
+
+.maz-picker-month-enter-from {
+  opacity: 0;
+  transform: translateX(calc(var(--m-picker-slide, 1) * 1.5rem));
+}
+
+.maz-picker-month-leave-to {
+  opacity: 0;
+  transform: translateX(calc(var(--m-picker-slide, 1) * -1.5rem));
+}
+
+/* The mark of the selected day travels between days: the day keeps its text, the background is the indicator */
+.maz-picker-calendar-grid__indicator,
+.maz-picker-calendar-grid__count {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  pointer-events: none;
+}
+
+.maz-picker-calendar-grid__indicator {
+  z-index: 0;
+  border-radius: 9999px;
+}
+
+.maz-picker-calendar-grid__container.--has-indicator button.--is-selected:not(:disabled) {
+  background-color: transparent !important;
+}
+
+.maz-picker-calendar-grid__count {
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.maz-picker-calendar-grid__count-chip {
+  flex: none;
+  padding-inline: 0.5rem;
+  border-radius: 9999px;
+  background-color: var(--maz-contrast);
+  color: var(--maz-contrast-foreground);
+  font-size: 0.6875rem;
+  line-height: 1.125rem;
+  white-space: nowrap;
+  translate: 0 calc(-100% - 0.125rem);
+}
+
+.maz-picker-count-enter-active {
+  transition: opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
+}
+
+.maz-picker-count-leave-active {
+  transition: opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1) * 0.7)
+    var(--maz-easing-in, ease-in);
+}
+
+.maz-picker-count-enter-from,
+.maz-picker-count-leave-to {
+  opacity: 0;
 }
 </style>
