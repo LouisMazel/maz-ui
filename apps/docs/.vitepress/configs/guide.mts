@@ -18,6 +18,10 @@ export const guide = {
       text: withNewBadge('Free colors'),
       link: '/guide/free-colors',
     },
+    {
+      text: withNewBadge('Motion'),
+      link: '/guide/motion',
+    },
     { text: 'Translations (i18n)', link: '/ecosystem/translations' },
     {
       text: withNewBadge('Global component defaults'),
