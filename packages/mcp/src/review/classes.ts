@@ -128,7 +128,7 @@ function themeSuggestion(utility: string, hue: string, step: string): string {
   return colors.map(color => `\`${utility}-${color}${scale}\``).join(' or ')
 }
 
-const THEME_BACKGROUND = /^(?:[\w-]+:)*!?bg-(primary|secondary|accent|info|success|warning|destructive|contrast)(?:-\d{2,3})?(?:\/\d+)?!?$/
+const THEME_BACKGROUND = /^(?:[\w-]+:)*!?bg-(primary|secondary|accent|info|success|warning|destructive|contrast|neutral)(?:-\d{2,3})?(?:\/\d+)?!?$/
 /** Backgrounds that keep the same color in light and dark mode (overlay, black, media, gradients...) */
 const FIXED_BACKGROUND = /^(?:[\w-]+:)*!?(?:bg-(?:overlay|black|white|transparent|linear|radial|conic|gradient|none)|bg-\[|bg-\(|from-|via-|to-)/
 
@@ -182,6 +182,48 @@ function reportBlackWhite(token: string, utility: string, color: string, backgro
   }, position)
 }
 
+/** Reports a class with the internal `maz:` prefix, allowed in the maz-ui repository only: `true` when the class has it */
+function checkInternalPrefix(token: string, position: number, context: ReviewContext): boolean {
+  if (!/^(?:[\w-]+:)*maz:/.test(token))
+    return false
+
+  if (!context.internalSource) {
+    context.report({
+      rule: 'internal-prefix',
+      severity: 'error',
+      message: `\`${token}\` uses the \`maz:\` prefix, which is internal to the maz-ui library and its docs: it does not exist in your project.`,
+      suggestion: `Use \`${token.replace(/maz:/g, '')}\`.`,
+    }, position)
+  }
+
+  return true
+}
+
+/** `transition-all` and the durations out of the theme (`duration-300`): `true` when reported */
+function checkMotionClass(token: string, position: number, context: ReviewContext): boolean {
+  if (/^(?:[\w-]+:)*transition-all$/.test(token)) {
+    context.report({
+      rule: 'transition-all',
+      severity: 'info',
+      message: `\`${token}\` animates every property: a layout change (size, position) is animated too.`,
+      suggestion: 'Use the utility of what moves: `transition-colors`, `transition-opacity`, `transition-transform`.',
+    }, position)
+    return true
+  }
+
+  if (/^(?:[\w-]+:)*duration-\d+$/.test(token)) {
+    context.report({
+      rule: 'hardcoded-motion',
+      severity: 'info',
+      message: `\`${token}\` hard-codes a duration: it ignores the rhythm of the preset and the reduced motion of the user.`,
+      suggestion: 'Use a duration of the theme: `duration-(--duration-fast)`, `duration-(--duration-normal)`, `duration-(--duration-slow)`.',
+    }, position)
+    return true
+  }
+
+  return false
+}
+
 /**
  * Checks a list of Tailwind classes. `offset` is the position of the first class in the reviewed source,
  * `inherited` the background set by a parent element
@@ -193,15 +235,8 @@ export function checkClassList(value: string, offset: number, context: ReviewCon
     const token = match[0]
     const position = offset + (match.index ?? 0)
 
-    if (/^(?:[\w-]+:)*maz:/.test(token) || token.startsWith('maz:')) {
-      context.report({
-        rule: 'internal-prefix',
-        severity: 'error',
-        message: `\`${token}\` uses the \`maz:\` prefix, which is internal to the maz-ui library and its docs: it does not exist in your project.`,
-        suggestion: `Use \`${token.replace(/maz:/g, '')}\`.`,
-      }, position)
+    if (checkInternalPrefix(token, position, context) || checkMotionClass(token, position, context))
       continue
-    }
 
     const palette = PALETTE_CLASS.exec(token)
 

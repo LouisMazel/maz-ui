@@ -2,16 +2,18 @@ This project is built with **maz-ui** and its ecosystem. Reuse what it provides 
 
 ### Look it up before you write it
 
-- **MCP server `maz-ui`** (when available): `search_docs` (describe the need: "confirm before delete"), `get_component_api`, `find_icons`, `get_theme_tokens`, `get_doc` (icons, helpers, themes, translations, plugins, forms), `review_code`.
+- **MCP server `maz-ui`** (when available): `get_project_info`, `search_docs` (describe the need: "confirm before delete"), `get_component_api`, `find_icons`, `get_theme_tokens`, `get_doc` (helpers, themes, plugins, forms), `review_code`.
 - Otherwise the version-matched docs in `node_modules/maz-ui/agent-docs/` and `node_modules/@maz-ui/<package>/agent-docs/` (start with `node_modules/maz-ui/agent-docs/README.md`; in a monorepo, the packages of the app).
 
 Never guess an API: only use documented props, events, slots and imports.
+
+<!--@include: ../../../apps/docs/.vitepress/generated-docs/ecosystem-catalog.doc.md-->
 
 ### Rules
 
 - `Maz*` components instead of native elements or hand-made widgets (`MazBtn` not `<button>`, `MazInput`, `MazSelect`, `MazDialog`, `MazCard`...). A button with only an icon needs an `aria-label`.
 - Icons from `@maz-ui/icons` (`find_icons`), never inline SVG nor another icon library. With `MazUi()` of `@maz-ui/vite-plugin` or `@maz-ui/nuxt`, by name in the icon props: `<MazBtn start-icon="trash">`.
-- `@maz-ui/utils` and the maz-ui composables instead of lodash, VueUse or custom helpers, `search_docs` first. `useToast()` for notifications, `useDialog()` for confirmations (they need their plugin).
+- `@maz-ui/utils` and the maz-ui composables instead of lodash, VueUse or custom helpers (list above). `useToast()` for notifications, `useDialog()` for confirmations (no plugin to install).
 - Theme (brand colors, dark mode) through a `@maz-ui/themes` preset and `useTheme()`, never by hand.
 
 ### Styling with Tailwind
@@ -29,4 +31,4 @@ Only use theme tokens (`bg-surface text-foreground border-divider`, `bg-primary 
 
 ### Before you finish
 
-Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <files>`, and fix every finding.
+Run `review_code` on the files you changed (or `npx @maz-ui/mcp review <files>`) and fix every error and warning.

@@ -121,6 +121,30 @@ describe('given search_docs', () => {
       expect(formatDocLine(docs.get('guide/vue')!)).toMatch(/^- \*\*/)
     })
   })
+
+  describe('when a composable has the page of its plugin', () => {
+    const doc = (id: string, title: string, category: 'composable' | 'plugin', symbols: string[]) => fakeDoc({ id, slug: id.split('/')[1], title, category, file: `${id}.md`, symbols })
+    const docsById = new Map([
+      doc('composables/use-aos', 'useAos', 'composable', ['useAos']),
+      doc('plugins/aos', 'aos', 'plugin', ['AosPlugin']),
+      doc('composables/use-wait', 'useWait', 'composable', ['useWait']),
+      doc('plugins/wait', 'wait', 'plugin', ['useWait']),
+    ].map(entry => [entry.id, entry]))
+
+    it('then the line gives the plugin to install once', () => {
+      expect(formatDocLine(docsById.get('composables/use-aos')!, 0, docsById)).toContain('Needs `aos` once: `app.use(MazUi, { theme, aos: true })` in `main.ts` (or `app.use(AosPlugin)` from `maz-ui/plugins/aos`), Nuxt: `mazUi: { aos: true }`.')
+    })
+
+    it('then an older maz-ui, whose composables need their plugin, gets the plugin to install', () => {
+      const legacy = new Map([...docsById, ['plugins/toast', doc('plugins/toast', 'toast', 'plugin', ['ToastPlugin'])]])
+
+      expect(formatDocLine(legacy.get('composables/use-aos')!, 0, legacy)).toContain('Needs its plugin once: `app.use(AosPlugin)` from `maz-ui/plugins/aos` in `main.ts` (Nuxt: `mazUi: { plugins: { aos: true } }`).')
+    })
+
+    it('then nothing is asked when the page of the plugin gives the composable (no plugin needed)', () => {
+      expect(formatDocLine(docsById.get('composables/use-wait')!, 0, docsById)).not.toContain('Needs `')
+    })
+  })
 })
 
 describe('given get_doc', () => {
@@ -231,7 +255,18 @@ describe('given get_component_api', () => {
       expect(output).toContain('## MazBtn API')
       expect(output).toContain('## MazDialog API')
       expect(output.match(/## MazBtn API/g)).toHaveLength(1)
-      expect(output).toContain('Examples: `get_doc({ id: "components/maz-btn" })`')
+      expect(output).toContain('Examples: `get_doc({ id: "components/maz-btn", sections: ["Basic usage"] })`, sections: Basic usage, Sizes, Colors')
+      expect(output).toContain(', RouterLink')
+    })
+  })
+
+  describe('when the compact form is requested', () => {
+    it('then it keeps the names, types and defaults without the descriptions', () => {
+      const output = getComponentApi(getContext(), { names: ['MazBtn'], compact: true })
+
+      expect(output).toContain('- `color` (`"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "neutral" | "transparent" | "surface" | "container"`, default: `"primary"`)\n')
+      expect(output).not.toContain('Predifined sizes of the button')
+      expect(output.length).toBeLessThan(getComponentApi(getContext(), { names: ['MazBtn'] }).length * 0.7)
     })
   })
 
@@ -317,6 +352,15 @@ describe('given find_icons', () => {
 
       expect(output).toContain('- `MazCog`')
       expect(output).toContain('import { MazCog } from \'@maz-ui/icons/static/MazCog\'')
+    })
+  })
+
+  describe('when the query is pin, pinned or unpin', () => {
+    it('then the pin icons are found', () => {
+      expect(findIcons(getContext(), { query: 'pin' })).toMatch(/^- `MazPin` \(`pin`\)$/m)
+      expect(findIcons(getContext(), { query: 'pinned' })).toContain('- `MazPin`')
+      expect(findIcons(getContext(), { query: 'unpin' })).toContain('- `MazPin`')
+      expect(findIcons(getContext(), { query: 'pin' })).toContain('<MazIcon icon="pin" />')
     })
   })
 
@@ -518,7 +562,7 @@ describe('given list_docs', () => {
     it('then only this category is listed', () => {
       const output = listDocs(getContext(), { category: 'directive' })
 
-      expect(output).toContain('## Directives (maz-ui) (5)')
+      expect(output).toContain('## Directives (maz-ui) (12)')
       expect(output).not.toContain('## Components')
     })
   })

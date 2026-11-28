@@ -7,6 +7,8 @@ This project is built with **maz-ui** and its ecosystem. Reuse what it provides 
 
 Never guess an API: only use documented props, events, slots and imports.
 
+<!--@include: ../../../apps/docs/.vitepress/generated-docs/ecosystem-catalog.doc.md-->
+
 ### Which package for what
 
 `maz-ui` (components, composables, directives, plugins), `@maz-ui/themes` (brand colors, fonts, dark mode), `@maz-ui/icons` (icons, logos, flags), `@maz-ui/utils` (helpers), `@maz-ui/translations` (texts of the components), `@maz-ui/nuxt` (Nuxt module).
@@ -14,14 +16,23 @@ Never guess an API: only use documented props, events, slots and imports.
 ### Components
 
 - Use `Maz*` components instead of native elements or hand-made widgets: `MazBtn` (not `<button>`), `MazLink`, `MazInput`, `MazSelect`, `MazCheckbox`, `MazDialog`, `MazDrawer`, `MazPopover`, `MazDropdown`, `MazTabs`, `MazTable`, `MazCard`, `MazAvatar`, `MazBadge`, `MazAlert`, `MazDatePicker`, `MazInputPhoneNumber`, `MazDropzone`, `MazPagination`...
-- Prop values are typed: colors are `primary | secondary | accent | info | success | warning | destructive | contrast | transparent` (plus `surface` on some components), sizes `mini | xs | sm | md | lg | xl`.
+- Before a hand-made widget, check these too: `MazCommandPalette` (Cmd/Ctrl+K), `MazContextMenu` (right click), `MazTooltip`, `MazTour`, `MazBreadcrumb`, `MazNavigationMenu`, `MazTree`, `MazSplitter`, `MazScrollArea`, `MazEmptyState`, `MazStatCard`, `MazSparkline`, `MazRating`, `MazTimePicker`, `MazInlineEdit`, `MazKbd`, `MazAvatarGroup`, `MazThemeToggle`.
+- Prop values are typed: colors are `primary | secondary | accent | info | success | warning | destructive | contrast | neutral | transparent` (plus `surface` and `container` on some components), sizes `mini | xs | sm | md | lg | xl`.
 - A button with only an icon needs an `aria-label`.
 
 ### Feedback, overlays and forms
 
-- `useToast()` for notifications, `useDialog()` or `MazDialogConfirm` for confirmations, `useWait()` for loading states, `MazSkeleton` / `MazSpinner` while data loads.
-- These composables need their plugin. Vue: `app.use(ToastPlugin)` from `maz-ui/plugins/toast` (`DialogPlugin`, `WaitPlugin`, `AosPlugin` likewise). Nuxt: `mazUi: { plugins: { toast: true } }`, off by default like the directives (`mazUi.directives.vTooltip`, or import the directive).
+- `useToast()` for notifications, `useDialog()` or `MazDialogConfirm` for confirmations, `useWait()` for a loading state shared between components, `MazSkeleton` / `MazSpinner` while data loads.
+- These composables work without plugin. Their global options go in the MazUi plugin: `app.use(MazUi, { theme, toast: { position: 'top-right' }, dialog: { acceptText: 'Yes' } })` (Nuxt: `mazUi: { toast: {...}, dialog: {...} }`). Outside of a component (store, router guard), `useToast` and `useDialog` need the MazUi plugin, `useWait` works anywhere.
+- Animations on scroll: `v-reveal` (`maz-ui/directives/vReveal`), `MazReveal` or `useReveal` for HTML you do not control; the AOS (`aos`, `useAos`, `data-maz-aos`) is deprecated. The directives are off by default with Nuxt (`mazUi.directives.vReveal`, `vTooltip`, or import the directive).
 - Forms: `useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType).
+- Fields: `clearable` on `MazInput`, `counter` on `MazTextarea`, `strength` on `MazInputSecret` for a password meter, `variant="cards"` on `MazRadioButtons` / `MazChecklist` for choices in cards, `multiple` on `MazSegmented` for a group of toggles; a dense UI with the `density: 'compact'` option of MazUi (Nuxt: `mazUi.density`), the label above every field with `defaults.global.topLabel`.
+
+### Motion
+
+- Reuse the motion of maz-ui instead of hand-written animations: `MazRollingText` (a number or a text that changes), `MazDrawnIcon` (a check that draws itself), `MazMorphIcon` (a two-state icon), `useOriginTransition` (a panel that opens from its button), `useSlidingIndicator` (an active pill), `<TransitionGroup name="maz-list">`, the `press`, `focus-ring` and `border-draw` utilities, the `v-press`, `v-ripple`, `v-magnetic`, `v-tilt` and `v-draw` directives, `animated` on `MazIcon` and `effect` on `MazAnimatedText`.
+- Overlays: a `MazDialog` opens from its trigger (`#trigger` slot or `origin`, `useDialog().confirm({ origin: event })`), `MazDialogConfirm` takes a `confirmation` text to type for destructive actions, `toast.promise()` for an async action, `MazLightbox` (or `v-fullscreen-img`) to view images.
+- Durations and easings from the theme (`var(--maz-motion-normal)`, `var(--maz-easing-out)`, `duration-(--duration-normal)`), only `transform` and `opacity`, `useReducedMotion().shouldReduceMotion` in JS animations.
 
 ### Icons
 
@@ -32,10 +43,6 @@ Use `@maz-ui/icons`, never inline SVG nor another icon library. Pick the format 
 - **Not visible at first render** (`v-if`, menus, dialogs, tabs): the lazy component, `@maz-ui/icons/lazy/MazTrash`. Never for icons visible on load: each one is an extra request.
 - **Illustrations, logos, flags** at their own size and colors: `<MazSvg icon="flag-fr" width="32" />`. `<img>` or CSS only for multicolor icons, the text color does not apply there: the files are `@maz-ui/icons/svg/star.svg`, `@maz-ui/icons/flags/3x2/FR.svg` (`flags/1x1` for the square ones) and `@maz-ui/icons/logos/vue.svg`.
 
-### Helpers and composables
-
-Before writing browser or reactive logic by hand (`addEventListener`, `setTimeout` / `setInterval`, `matchMedia`, an observer, a gesture, drag and drop, a search in a list, `provide` / `inject`...) or importing lodash or VueUse, call `search_docs` with the need: `@maz-ui/utils` and the maz-ui composables and directives probably have it (`debounce`, `formatDate`, `useBreakpoints`, `useTimer`, `useDropzone`, `vClickOutside`...).
-
 ### Texts and languages
 
 The texts built in the components come from `@maz-ui/translations`: change the language with `useTranslations().setLocale('fr')` and customize the texts in its options, not in every component.
@@ -45,13 +52,13 @@ The texts built in the components come from `@maz-ui/translations`: change the l
 The maz-ui theme is exposed to Tailwind (`@import 'maz-ui/tailwindcss/theme.css'`) and the project usually extends it. Only use theme tokens:
 
 - **Project tokens first**: the Tailwind entry of the project adds its own `@theme` tokens, variants and utilities, and the `definePreset` file sets the brand values. `get_theme_tokens` lists both (or read these files). When a value is missing, add a token to the project `@theme` instead of an arbitrary value.
-- Colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` (each with `-foreground` and `-50` to `-950`), `surface`, `foreground`, `muted`, `divider`, `overlay`, `bg-container`, `bg-input`. Example: `bg-surface text-foreground border-divider`. The page color is `surface`, not shadcn's `background` (`bg-background` does not exist).
+- Colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast`, `neutral` (each with `-foreground` and `-50` to `-950`), `surface`, `foreground`, `muted`, `divider`, `overlay`, `bg-container`, `bg-input`. Example: `bg-surface text-foreground border-divider`. The page color is `surface`, not shadcn's `background` (`bg-background` does not exist).
 - `secondary` is the second strong brand color, not a muted surface (unlike shadcn/ui): never make `primary` or `secondary` pale (3:1 minimum against `surface`, light and dark); discreet backgrounds use `surface`, `container`, `muted` or the `-50`/`-100` steps.
 - Never the default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`, `text-black`) nor hard-coded colors (`#fff`, `rgb()`, `bg-[#...]`). Theme colors already adapt to dark mode: no `dark:` color overrides.
 - Radius `rounded-*`, shadows `shadow-sm` to `shadow-xl` and `shadow-elevation`, spacing scale (`p-4`, `gap-2`), utilities `flex-center`, `disabled-state`.
 - Layout: `MazPageSection` (or the `padded-container` class) on each full-width band of a page (header, sections, footer) instead of `container mx-auto px-4`; breakpoints `mob-*`, `tab-*`, `lap-*` (`tab-m:grid-cols-2`), and the same names as container queries under an `@container` parent (`@tab-m:grid-cols-2`).
 - Text: the type scale (`text-display`, `text-title-1` to `text-title-4`, `text-body-lg`, `text-body`, `text-body-sm`, `text-label`, `text-caption`, `text-overline`, `text-code`; `type-<level>` keeps the font size of the element) instead of ad hoc sizes (`text-2xl font-semibold`, `text-xs text-muted`, `text-[13px]`); `rich-text` on raw HTML (Markdown, CMS).
-- One solid primary `MazBtn` per group of actions; the others `outlined`, `pastel` or a `MazLink`.
+- One solid primary `MazBtn` per group of actions; the others `variant="outline"`, `variant="soft"` or a `MazLink`.
 - **No `maz:` prefix** in this project: it is internal to the maz-ui library.
 - In custom CSS, use the variables: `var(--maz-primary)`, `var(--maz-rounded-md)`, `calc(var(--maz-space) * 4)`.
 
@@ -66,4 +73,4 @@ Brand colors, fonts, radius and spacing come from a `@maz-ui/themes` preset (`de
 
 ### Before you finish
 
-Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <files>`, and fix every finding.
+Run `review_code` (MCP) on the files you changed, or `npx @maz-ui/mcp review <files>`, and fix every error and warning until none is left.
