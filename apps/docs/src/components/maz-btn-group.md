@@ -151,20 +151,20 @@ Use the `color` prop to apply a color to all buttons in the group. Neutral color
 
 ## Button variants
 
-Use the `outlined` or `pastel` properties on individual buttons or apply different variants to buttons in the group.
+Set `variant` on the group to style every button: `solid` (default), `soft`, `outline` or `ghost`. A `variant` set on an item wins.
 
-### Outlined
+### Soft
 
-<br />
+A tinted background.
 
 <ComponentDemo>
-  <MazBtnGroup :items="outlinedItems" />
+  <MazBtnGroup :items="basicItems" variant="soft" />
 
   <template #code>
 
 ```vue
 <template>
-  <MazBtnGroup :items="items" />
+  <MazBtnGroup :items="items" variant="soft" />
 </template>
 
 <script lang="ts" setup>
@@ -172,9 +172,9 @@ import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
 
 const items: MazButtonGroupOption[] = [
-  { text: 'Day', outlined: true },
-  { text: 'Week', outlined: true },
-  { text: 'Month', outlined: true },
+  { text: 'Day' },
+  { text: 'Week', active: true },
+  { text: 'Month' },
 ]
 </script>
 ```
@@ -182,18 +182,18 @@ const items: MazButtonGroupOption[] = [
   </template>
 </ComponentDemo>
 
-### Pastel
+### Outline
 
-<br />
+A border and a transparent background.
 
 <ComponentDemo>
-  <MazBtnGroup :items="pastelItems" />
+  <MazBtnGroup :items="basicItems" variant="outline" />
 
   <template #code>
 
 ```vue
 <template>
-  <MazBtnGroup :items="items" />
+  <MazBtnGroup :items="items" variant="outline" />
 </template>
 
 <script lang="ts" setup>
@@ -201,9 +201,38 @@ import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
 
 const items: MazButtonGroupOption[] = [
-  { text: 'Day', pastel: true },
-  { text: 'Week', pastel: true },
-  { text: 'Month', pastel: true },
+  { text: 'Day' },
+  { text: 'Week', active: true },
+  { text: 'Month' },
+]
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
+### Ghost
+
+No background until a button is hovered.
+
+<ComponentDemo>
+  <MazBtnGroup :items="basicItems" variant="ghost" />
+
+  <template #code>
+
+```vue
+<template>
+  <MazBtnGroup :items="items" variant="ghost" />
+</template>
+
+<script lang="ts" setup>
+import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
+import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
+
+const items: MazButtonGroupOption[] = [
+  { text: 'Day' },
+  { text: 'Week', active: true },
+  { text: 'Month' },
 ]
 </script>
 ```
@@ -218,14 +247,14 @@ const items: MazButtonGroupOption[] = [
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
     <MazBtnGroup>
-      <MazBtn outlined>Edit</MazBtn>
-      <MazBtn outlined>Save</MazBtn>
-      <MazBtn outlined>Delete</MazBtn>
+      <MazBtn variant="outline">Edit</MazBtn>
+      <MazBtn variant="outline">Save</MazBtn>
+      <MazBtn variant="outline">Delete</MazBtn>
     </MazBtnGroup>
     <MazBtnGroup>
-      <MazBtn pastel>Edit</MazBtn>
-      <MazBtn pastel>Save</MazBtn>
-      <MazBtn pastel>Delete</MazBtn>
+      <MazBtn variant="soft">Edit</MazBtn>
+      <MazBtn variant="soft">Save</MazBtn>
+      <MazBtn variant="soft">Delete</MazBtn>
     </MazBtnGroup>
   </div>
 
@@ -234,15 +263,15 @@ const items: MazButtonGroupOption[] = [
 ```vue
 <template>
   <MazBtnGroup>
-    <MazBtn outlined>Edit</MazBtn>
-    <MazBtn outlined>Save</MazBtn>
-    <MazBtn outlined>Delete</MazBtn>
+    <MazBtn variant="outline">Edit</MazBtn>
+    <MazBtn variant="outline">Save</MazBtn>
+    <MazBtn variant="outline">Delete</MazBtn>
   </MazBtnGroup>
 
   <MazBtnGroup>
-    <MazBtn pastel>Edit</MazBtn>
-    <MazBtn pastel>Save</MazBtn>
-    <MazBtn pastel>Delete</MazBtn>
+    <MazBtn variant="soft">Edit</MazBtn>
+    <MazBtn variant="soft">Save</MazBtn>
+    <MazBtn variant="soft">Delete</MazBtn>
   </MazBtnGroup>
 </template>
 ```
@@ -268,6 +297,7 @@ Add click handlers to buttons using the `onClick` property in items.
 import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
 import { useToast } from 'maz-ui/composables/useToast'
+import { ref } from 'vue'
 
 const toast = useToast()
 
@@ -311,8 +341,8 @@ const items: MazButtonGroupOption[] = [
 ]
 
 const iconOnlyItems: MazButtonGroupOption[] = [
-  { icon: MazBars3, color: 'transparent', outlined: true, active: true },
-  { icon: MazSquares2x2, color: 'transparent', outlined: true },
+  { icon: MazBars3, color: 'transparent', variant: 'outline', active: true },
+  { icon: MazSquares2x2, color: 'transparent', variant: 'outline' },
 ]
 </script>
 ```
@@ -369,8 +399,8 @@ import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
 const items: MazButtonGroupOption[] = [
   { text: 'Primary', color: 'primary' },
   { text: 'Success', color: 'success' },
-  { text: 'Warning', color: 'warning', outlined: true },
-  { text: 'Destructive', color: 'destructive', pastel: true },
+  { text: 'Warning', color: 'warning', variant: 'outline' },
+  { text: 'Destructive', color: 'destructive', variant: 'soft' },
 ]
 </script>
 ```
@@ -426,6 +456,77 @@ interface MazButtonGroupProps {
 }
 ```
 
+## Attached look
+
+The buttons share their borders: only the two ends are rounded, a thin divider separates the filled buttons and the sizes are the ones of `MazBtn`. It works in a column and in RTL.
+
+## Active button
+
+Bind `v-model` to highlight the active button. The value is the `value` of the item, or its index. The active button gets `aria-pressed`. Use it for a view mode or a period, and prefer [MazSegmented](./maz-segmented.md) for a real choice in a form.
+
+<ComponentDemo>
+  <MazBtnGroup v-model="groupPeriod" :items="groupPeriodItems" variant="outline" indicator aria-label="Period" />
+  <p class="maz:mt-3 maz:text-sm maz:text-muted">Active: {{ groupPeriod }}</p>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
+import { ref } from 'vue'
+
+const period = ref('week')
+
+const items = [
+  { text: 'Day', value: 'day' },
+  { text: 'Week', value: 'week' },
+  { text: 'Month', value: 'month' },
+]
+</script>
+
+<template>
+  <MazBtnGroup v-model="period" :items="items" variant="outline" indicator aria-label="Period" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+`indicator` adds a pill that slides to the active button.
+
+## Toolbar
+
+Add `toolbar` for a group of actions (a text editor, for example): the group is a `toolbar`, only one button is in the tab sequence and the arrows, <kbd>Home</kbd> and <kbd>End</kbd> move the focus between the buttons (up and down in a column).
+
+<ComponentDemo>
+  <MazBtnGroup :items="groupToolbarItems" variant="outline" toolbar aria-label="Text actions" />
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
+
+const items = [
+  { text: 'Cut' },
+  { text: 'Copy' },
+  { text: 'Paste' },
+]
+</script>
+
+<template>
+  <MazBtnGroup :items="items" variant="outline" toolbar aria-label="Text actions" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+- The `indicator` slides to the active button. The first placement is never animated.
+- The speed follows the `--maz-motion-*` tokens and reduced motion removes the slide.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-btn-group.doc.md-->
 
 <script lang="ts" setup>
@@ -435,6 +536,7 @@ import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
 import { MazBars3 } from '@maz-ui/icons/raw/MazBars3'
 import { MazSquares2x2 } from '@maz-ui/icons/raw/MazSquares2x2'
 import { useToast } from 'maz-ui/composables/useToast'
+import { ref } from 'vue'
 
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'neutral', 'surface', 'container'] as const
@@ -445,16 +547,16 @@ const basicItems: MazButtonGroupOption[] = [
   { text: 'Month' },
 ]
 
-const outlinedItems: MazButtonGroupOption[] = [
-  { text: 'Day', outlined: true },
-  { text: 'Week', outlined: true, active: true },
-  { text: 'Month', outlined: true },
+const outlineItems: MazButtonGroupOption[] = [
+  { text: 'Day', variant: 'outline' },
+  { text: 'Week', variant: 'outline', active: true },
+  { text: 'Month', variant: 'outline' },
 ]
 
-const pastelItems: MazButtonGroupOption[] = [
-  { text: 'Day', pastel: true },
-  { text: 'Week', pastel: true },
-  { text: 'Month', pastel: true },
+const softItems: MazButtonGroupOption[] = [
+  { text: 'Day', variant: 'soft' },
+  { text: 'Week', variant: 'soft' },
+  { text: 'Month', variant: 'soft' },
 ]
 
 const toast = useToast()
@@ -470,7 +572,7 @@ const iconItems: MazButtonGroupOption[] = [
 ]
 const iconOnlyItems: MazButtonGroupOption[] = [
   { icon: MazBars3, color: 'primary', active: true },
-  { icon: MazSquares2x2, color: 'transparent', outlined: true },
+  { icon: MazSquares2x2, color: 'transparent', variant: 'outline' },
 ]
 
 const linkItems: MazButtonGroupOption[] = [
@@ -481,7 +583,15 @@ const linkItems: MazButtonGroupOption[] = [
 const mixedItems: MazButtonGroupOption[] = [
   { text: 'Primary', color: 'primary' },
   { text: 'Success', color: 'success' },
-  { text: 'Warning', color: 'warning', outlined: true },
-  { text: 'Destructive', color: 'destructive', pastel: true },
+  { text: 'Warning', color: 'warning', variant: 'outline' },
+  { text: 'Destructive', color: 'destructive', variant: 'soft' },
 ]
+
+const groupPeriod = ref('week')
+const groupPeriodItems = [
+  { text: 'Day', value: 'day' },
+  { text: 'Week', value: 'week' },
+  { text: 'Month', value: 'month' },
+]
+const groupToolbarItems = [{ text: 'Cut' }, { text: 'Copy' }, { text: 'Paste' }]
 </script>

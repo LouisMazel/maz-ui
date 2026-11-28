@@ -14,7 +14,7 @@ describe('given MazAlert component', () => {
 
       expect(wrapper.classes()).toContain('--rounded-md')
       expect(wrapper.classes()).toContain('--bordered')
-      expect(wrapper.attributes('role')).toBe('alert')
+      expect(wrapper.attributes('role')).toBe('status')
     })
 
     it('then it applies color CSS variables for info', () => {

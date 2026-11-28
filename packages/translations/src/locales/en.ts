@@ -26,6 +26,11 @@ export default {
     sidebar: 'Sidebar',
     openSidebar: 'Open sidebar',
     closeSidebar: 'Close sidebar',
+    resizeSheet: 'Resize the sheet',
+    before: 'Before',
+    after: 'After',
+    resize: 'Resize',
+    moreItems: '{count} more',
   },
   /**
    * This is the translation for the input phone number component.
@@ -215,6 +220,14 @@ export default {
     duplicateKey: 'This key is already used',
   },
   /**
+   * This is the translation for the input component.
+   * The keys are:
+   * - clear: The translation for the clear button.
+   */
+  input: {
+    clear: 'Clear',
+  },
+  /**
    * This is the translation for the input secret component.
    * The keys are:
    * - saved: The translation for the badge of a saved value.
@@ -222,6 +235,19 @@ export default {
    * - clear: The translation for the clear button.
    * - cancel: The translation for the cancel button.
    * - savedDescription: The translation for the description of a saved value.
+   * - strengthLabel: The translation for the accessible name of the strength meter.
+   * - strengthVeryWeak: The translation for the very weak verdict.
+   * - strengthWeak: The translation for the weak verdict.
+   * - strengthFair: The translation for the fair verdict.
+   * - strengthGood: The translation for the good verdict.
+   * - strengthStrong: The translation for the strong verdict.
+   * - ruleLength: The translation for the minimum length rule, with the `{minLength}` parameter.
+   * - ruleLowercase: The translation for the lowercase letter rule.
+   * - ruleUppercase: The translation for the uppercase letter rule.
+   * - ruleNumber: The translation for the number rule.
+   * - ruleSymbol: The translation for the symbol rule.
+   * - ruleMet: The translation for the screen reader text of a rule that is met.
+   * - ruleNotMet: The translation for the screen reader text of a rule that is not met.
    */
   inputSecret: {
     saved: 'Saved',
@@ -229,6 +255,19 @@ export default {
     clear: 'Clear',
     cancel: 'Cancel',
     savedDescription: 'The value is saved and hidden',
+    strengthLabel: 'Password strength',
+    strengthVeryWeak: 'Very weak',
+    strengthWeak: 'Weak',
+    strengthFair: 'Fair',
+    strengthGood: 'Good',
+    strengthStrong: 'Strong',
+    ruleLength: 'At least {minLength} characters',
+    ruleLowercase: 'A lowercase letter',
+    ruleUppercase: 'An uppercase letter',
+    ruleNumber: 'A number',
+    ruleSymbol: 'A symbol',
+    ruleMet: 'Rule met',
+    ruleNotMet: 'Rule not met',
   },
   /**
    * This is the translation for the read more component.
@@ -313,6 +352,12 @@ export default {
     urlCopiedToClipboard: 'URL copied to clipboard',
   },
   /**
+   * Button texts: the description read by screen readers on a button to hold
+   */
+  btn: {
+    holdDescription: 'Press and hold to confirm',
+  },
+  /**
    * This is the translation for the btn clipboard component.
    * The keys are:
    * - copy: Label/tooltip of the button (default state).
@@ -365,5 +410,131 @@ export default {
       h2: 'Heading 2',
       h3: 'Heading 3',
     },
+  },
+  /**
+   * Reinforced confirmation of MazDialogConfirm: the label of the field where the user types the text.
+   */
+  dialogConfirm: {
+    confirmationLabel: 'Type "{text}" to confirm',
+  },
+  /**
+   * Image viewer (lightbox) labels: label, open (thumbnail), close, previous, next, loading.
+   */
+  lightbox: {
+    label: 'Image viewer',
+    open: 'Enlarge image',
+    close: 'Close',
+    previous: 'Previous image',
+    next: 'Next image',
+    loading: 'Loading...',
+  },
+  /**
+   * Guided tour (MazTour): label of the dialog, buttons and step counter.
+   */
+  tour: {
+    label: 'Guided tour',
+    next: 'Next',
+    previous: 'Previous',
+    skip: 'Skip',
+    done: 'Done',
+    stepOf: 'Step {step} of {total}',
+  },
+  /**
+   * Breadcrumb (MazBreadcrumb): label of the navigation and of the button that shows the collapsed pages.
+   */
+  breadcrumb: {
+    label: 'Breadcrumb',
+    showHidden: 'Show the hidden pages',
+  },
+  /**
+   * Navigation menu (MazNavigationMenu): label of the navigation.
+   */
+  navigationMenu: {
+    label: 'Main navigation',
+  },
+  /**
+   * Empty state (MazEmptyState): default title, and the one with a search query.
+   */
+  emptyState: {
+    noResults: 'No results',
+    noResultsFor: 'Nothing matches "{query}"',
+  },
+  /**
+   * Sparkline (MazSparkline): the trend words and the text read by screen readers.
+   */
+  sparkline: {
+    up: 'rising',
+    down: 'falling',
+    flat: 'steady',
+    label: 'Trend {trend}: minimum {min}, maximum {max}, last {last}',
+  },
+  /**
+   * Stat card (MazStatCard): label of its chart.
+   */
+  statCard: {
+    chart: '{label}: trend',
+  },
+  /**
+   * Tree (MazTree): the status of a node.
+   */
+  tree: {
+    added: 'Added',
+    modified: 'Modified',
+    deleted: 'Deleted',
+  },
+  /**
+   * Rating (MazRating): label of the group and the value read by screen readers.
+   */
+  rating: {
+    label: 'Rating',
+    value: '{value} out of {max}',
+  },
+  /**
+   * Time picker (MazTimePicker): label of the field and of its columns.
+   */
+  timePicker: {
+    label: 'Time',
+    hours: 'Hours',
+    minutes: 'Minutes',
+    period: 'AM or PM',
+    slots: 'Available times',
+  },
+  /**
+   * Inline edit (MazInlineEdit): label of the button that starts the edition.
+   */
+  inlineEdit: {
+    edit: 'Edit',
+  },
+  /**
+   * Keyboard keys (MazKbd): names of the modifier keys read by screen readers.
+   */
+  kbd: {
+    command: 'Command',
+    control: 'Control',
+    option: 'Option',
+    shift: 'Shift',
+  },
+  /**
+   * Command palette (MazCommandPalette): label, placeholder, empty text and count of results.
+   */
+  commandPalette: {
+    label: 'Command palette',
+    placeholder: 'Search a command',
+    noResults: 'No results',
+    results: '{count} results',
+  },
+  /**
+   * Context menu (MazContextMenu): label of the menu.
+   */
+  contextMenu: {
+    label: 'Context menu',
+  },
+  /**
+   * Theme toggle (MazThemeToggle): label of the button, by the mode it switches to.
+   */
+  themeToggle: {
+    toDark: 'Switch to dark mode',
+    toSystem: 'Use the system theme',
+    toLight: 'Switch to light mode',
   },
 }

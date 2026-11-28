@@ -21,7 +21,7 @@ describe('given a backdrop with a beforeClose function', () => {
     it('then it keeps the backdrop open on Escape', async () => {
       const beforeClose = vi.fn(() => false)
       const wrapper = mountBackdrop(beforeClose)
-      document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }))
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
       await flushPromises()
       expect(beforeClose).toHaveBeenCalledOnce()
       expect(wrapper.vm.present).toBe(true)

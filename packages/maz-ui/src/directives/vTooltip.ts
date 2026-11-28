@@ -3,6 +3,7 @@ import type { MazPopoverPosition, MazPopoverProps, MazPopoverTrigger } from '../
 import { h, nextTick, ref, watch } from 'vue'
 import MazPopover from '../components/MazPopover.vue'
 import { useMountComponent } from '../composables/useMountComponent.ts'
+import { forgetTooltip, markTooltipClosed, markTooltipOpen, shouldSkipTooltipDelay } from '../utils/tooltipGroup.ts'
 
 interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
   /**
@@ -35,8 +36,8 @@ interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
    */
   closeOnClickOutside?: boolean
   /**
-   * Close on escape
-   * @default false
+   * Close on escape (without closing the dialog around the tooltip)
+   * @default true
    */
   closeOnEscape?: boolean
   /**
@@ -71,7 +72,7 @@ class TooltipHandler {
       trigger: 'hover',
       role: 'tooltip',
       closeOnClickOutside: false,
-      closeOnEscape: false,
+      closeOnEscape: true,
       color: 'contrast',
       ...options,
     }
@@ -143,8 +144,13 @@ class TooltipHandler {
     let vNodeInstance: ReturnType<typeof useMountComponent> | null = null
 
     const createTooltip = () => {
-      const popoverProps: MazPopoverProps & { onAfterCloseAnimation?: () => void } = {
+      const popoverProps: MazPopoverProps & {
+        onOpen?: () => void
+        onClose?: () => void
+        onAfterCloseAnimation?: () => void
+      } = {
         ...tooltipProps,
+        delay: shouldSkipTooltipDelay() ? 0 : tooltipProps.delay,
         panelClass: [
           'm-tooltip-panel',
           'maz:text-sm',
@@ -156,6 +162,12 @@ class TooltipHandler {
         ].filter(Boolean).join(' '),
         modelValue: isOpen.value,
         positionReference: el,
+        onOpen: () => markTooltipOpen(el),
+        // No `onUpdate:modelValue`: `defineModel` would then follow the fixed `modelValue` given here
+        onClose: () => {
+          markTooltipClosed(el)
+          isOpen.value = false
+        },
         onAfterCloseAnimation: () => {
           vNodeInstance?.destroy()
           vNodeInstance = null
@@ -248,11 +260,12 @@ class TooltipHandler {
       }
       else if (vNodeInstance) {
         const instance = vNodeInstance
-        instance?.vNode.component?.exposed?.close()
+        instance?.vNode.component?.exposed?.close(true)
       }
     }, { immediate: true })
 
     function destroy() {
+      forgetTooltip(el)
       cleanupTriggers()
       if (vNodeInstance) {
         vNodeInstance.destroy()

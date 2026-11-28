@@ -338,7 +338,7 @@ The default slot receives `{ open }`: render heavy content (a table, a chart, a 
         <MazAvatar :caption="project.name" color="auto" size="1.75rem" no-elevation />
       </template>
       <template #end>
-        <MazBadge size="sm" :color="project.status === 'On track' ? 'success' : 'warning'" pastel>
+        <MazBadge size="sm" :color="project.status === 'On track' ? 'success' : 'warning'" variant="soft">
           {{ project.status }}
         </MazBadge>
       </template>
@@ -412,7 +412,7 @@ const projects = reactive([
       </template>
 
       <template #end>
-        <MazBadge size="sm" :color="project.status === 'On track' ? 'success' : 'warning'" pastel>
+        <MazBadge size="sm" :color="project.status === 'On track' ? 'success' : 'warning'" variant="soft">
           {{ project.status }}
         </MazBadge>
       </template>
@@ -830,6 +830,12 @@ import MazListItem from 'maz-ui/components/MazListItem'
 
   </template>
 </ComponentDemo>
+
+## Motion
+
+- A clickable row gets a soft background on hover and a 2 px ring on keyboard focus only.
+- The chevron of a collapsible row turns with the speed and the easing of the theme (`--maz-motion-*`), and the content opens with the same speed. Reduced motion makes both instant.
+- `MazListItem` is the menu row of the library: `MazDropdown` uses the same hover and focus look.
 
 ## Accessibility
 

@@ -53,7 +53,7 @@ const STATS = computed(() => [
             <MazBtn :href="`#${PROJECTS[0].id}`" size="lg" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">
               See the products
             </MazBtn>
-            <MazBtn :href="ISSUE_URL" target="_blank" rel="noopener" size="lg" color="surface" outlined :start-icon="MazPlusCircle">
+            <MazBtn :href="ISSUE_URL" target="_blank" rel="noopener" size="lg" color="surface" variant="outline" :start-icon="MazPlusCircle">
               Add your project
             </MazBtn>
           </div>
@@ -116,7 +116,7 @@ const STATS = computed(() => [
             <MazBtn :href="ISSUE_URL" target="_blank" rel="noopener" :start-icon="MazPlusCircle">
               Propose my project
             </MazBtn>
-            <MazBtn :href="EDIT_URL" target="_blank" rel="noopener" color="surface" outlined :start-icon="MazGithub">
+            <MazBtn :href="EDIT_URL" target="_blank" rel="noopener" color="surface" variant="outline" :start-icon="MazGithub">
               Open a pull request
             </MazBtn>
           </div>

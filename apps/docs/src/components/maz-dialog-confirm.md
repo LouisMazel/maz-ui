@@ -76,7 +76,7 @@ const buttons: DialogCustomButton[] = [
     text: 'Cancel',
     type: 'reject',
     color: 'destructive',
-    outlined: true,
+    variant: 'outline',
     response: 'cancel',
     size: 'sm',
   },
@@ -165,6 +165,26 @@ The default slot accepts any content (list, alert, form), and receives the `acce
 
 With the [dialog plugin](./../plugins/dialog.md#rich-content), use the `content` option and reactive `acceptProps` instead.
 
+## Reinforced confirmation
+
+For a destructive action, set `confirmation`: the accept button stays disabled until the user types this text (spaces around it are ignored). The reject button always works.
+
+```vue
+<MazDialogConfirm
+  identifier="delete-project"
+  title="Delete the project"
+  message="This action cannot be undone."
+  confirmation="my-project"
+  accept-text="Delete"
+/>
+```
+
+With [useDialog](./../composables/use-dialog.md#reinforced-confirmation): `dialog.confirm({ confirmation: 'my-project' })`. The label of the field is translated (`dialogConfirm.confirmationLabel`).
+
+## Motion
+
+The dialog grows from the element that opened it (the last pressed one, or the `origin` prop) and goes back into it. `:animated="false"` and reduced motion give a plain fade. See [MazDialog](./maz-dialog.md#motion).
+
 ## Types
 
 ```ts
@@ -183,6 +203,10 @@ interface MazDialogConfirmData {
    * @type {MazDialogConfirmButton[]}
    */
   buttons?: MazDialogConfirmButton[]
+  /**
+   * Text to type before the accept button is enabled
+   */
+  confirmation?: string
 }
 
 // All props of MazBtn
@@ -192,7 +216,7 @@ interface MazDialogConfirmButton {
   color?: Color
   disabled?: boolean
   loading?: boolean
-  outlined?: boolean
+  variant?: 'solid' | 'soft' | 'outline' | 'ghost'
   rounded?: boolean
   size?: Size
   text: string
@@ -254,7 +278,7 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
       text: 'Cancel',
       type: 'reject',
       color: 'destructive',
-      outlined: true,
+      variant: 'outline',
       response: 'cancel',
       size: 'sm',
     },

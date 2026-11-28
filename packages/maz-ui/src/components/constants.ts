@@ -24,3 +24,18 @@ export const SIZE_TEXT_CLASS = {
   xs: 'maz:text-xs',
   mini: 'maz:text-xs',
 } as const
+
+/**
+ * The radius classes of the `roundedSize` props: one scale for every component (a component keeps a
+ * different value only where it always had one)
+ */
+export const ROUNDED_SIZE_CLASS = {
+  'none': '',
+  'sm': 'maz:rounded-xs',
+  'md': 'maz:rounded-md',
+  'lg': 'maz:rounded-lg',
+  'xl': 'maz:rounded-xl',
+  '2xl': 'maz:rounded-2xl',
+  '3xl': 'maz:rounded-3xl',
+  'full': 'maz:rounded-full',
+} as const

@@ -1,6 +1,7 @@
 import type { Mock } from 'vitest'
 import MazCardSpotlight from '@components/MazCardSpotlight.vue'
 import { flushPromises, mount } from '@vue/test-utils'
+import { MAZ_UI_CONTEXT_INJECTION_KEY } from '@/utils/mazUiContext.ts'
 
 describe('given mazCardSpotlight component', () => {
   let intersectionObserverCallback: IntersectionObserverCallback
@@ -185,277 +186,201 @@ describe('given mazCardSpotlight component', () => {
       expect(intersectionObserverInstance.observe).toHaveBeenCalled()
     })
 
-    it('caches getBoundingClientRect on mount', async () => {
-      const getBoundingClientRectSpy = vi.spyOn(Element.prototype, 'getBoundingClientRect')
-
-      const wrapper = mount(MazCardSpotlight)
-
-      await wrapper.vm.$nextTick()
-
-      expect(getBoundingClientRectSpy).toHaveBeenCalled()
-    })
-
-    it.each(['mousemove', 'scroll', 'resize'])('adds %s event listener', async (eventName) => {
+    it.each(['mousemove', 'scroll', 'resize'])('adds no %s listener on the window', async (eventName) => {
       const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
 
       const wrapper = mount(MazCardSpotlight)
 
       await wrapper.vm.$nextTick()
 
-      expect(addEventListenerSpy).toHaveBeenCalledWith(
-        eventName,
-        expect.any(Function),
-        { passive: true },
-      )
+      expect(addEventListenerSpy).not.toHaveBeenCalledWith(eventName, expect.any(Function), expect.anything())
     })
   })
 
   describe('when blob animation is triggered', () => {
-    it('shows blob when mouse moves and component is intersecting', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
+    const intersect = (isIntersecting: boolean) => intersectionObserverCallback(
+      [{ isIntersecting } as IntersectionObserverEntry],
+      {} as IntersectionObserver,
+    )
 
+    it('shows the blob when the pointer moves on the card and the card is intersecting', async () => {
       const wrapper = mount(MazCardSpotlight)
 
       await flushPromises()
-
-      intersectionObserverCallback(
-        [
-          { isIntersecting: true } as IntersectionObserverEntry,
-        ],
-        {} as IntersectionObserver,
-      )
-
-      const mouseMoveHandler = addEventListenerSpy.mock.calls.find(
-        (call: any[]) => call[0] === 'mousemove',
-      )?.[1]
-
-      if (typeof mouseMoveHandler === 'function') {
-        mouseMoveHandler({ clientX: 150, clientY: 150 } as MouseEvent)
-      }
-
+      intersect(true)
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
       await flushPromises()
 
       const blob = wrapper.find('.blob')
-      expect(blob.exists()).toBe(true)
+
       expect(blob.attributes('style')).not.toContain('display: none')
+      expect(blob.classes()).toContain('--active')
     })
 
     it('uses requestAnimationFrame for blob position updates', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
-
       const wrapper = mount(MazCardSpotlight)
 
       await wrapper.vm.$nextTick()
-
-      intersectionObserverCallback(
-        [
-          { isIntersecting: true } as IntersectionObserverEntry,
-        ],
-        {} as IntersectionObserver,
-      )
-
-      const mouseMoveHandler = addEventListenerSpy.mock.calls.find(
-        (call: any[]) => call[0] === 'mousemove',
-      )?.[1]
-
-      if (typeof mouseMoveHandler === 'function') {
-        mouseMoveHandler({ clientX: 150, clientY: 150 } as MouseEvent)
-      }
+      intersect(true)
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
 
       expect(globalThis.requestAnimationFrame).toHaveBeenCalled()
     })
 
     it('updates blob transform using direct DOM manipulation', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
-
       const wrapper = mount(MazCardSpotlight)
 
       await wrapper.vm.$nextTick()
+      intersect(true)
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
 
-      intersectionObserverCallback(
-        [
-          { isIntersecting: true } as IntersectionObserverEntry,
-        ],
-        {} as IntersectionObserver,
-      )
-
-      const blob = wrapper.find('.blob')
-      const blobElement = blob.element as HTMLElement
-
-      const mouseMoveHandler = addEventListenerSpy.mock.calls.find(
-        (call: any[]) => call[0] === 'mousemove',
-      )?.[1]
-
-      if (typeof mouseMoveHandler === 'function') {
-        mouseMoveHandler({ clientX: 150, clientY: 150 } as MouseEvent)
-      }
-
-      await wrapper.vm.$nextTick()
-
-      expect(blobElement.style.transform).toBe('translate(-54px, -54px)')
+      expect((wrapper.find('.blob').element as HTMLElement).style.transform).toBe('translate(-54px, -54px)')
     })
 
-    it('does not show blob when component is not intersecting', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
+    it('follows a touch that presses the card', async () => {
+      const wrapper = mount(MazCardSpotlight)
 
+      await wrapper.vm.$nextTick()
+      intersect(true)
+      await wrapper.trigger('pointerdown', { clientX: 150, clientY: 150, pointerType: 'touch' })
+
+      expect((wrapper.find('.blob').element as HTMLElement).style.transform).toBe('translate(-54px, -54px)')
+    })
+
+    it('does not show the blob when the card is not intersecting', async () => {
       const wrapper = mount(MazCardSpotlight, { attachTo: document.body })
 
       await wrapper.vm.$nextTick()
+      intersect(false)
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
 
-      intersectionObserverCallback(
-        [
-          { isIntersecting: false } as IntersectionObserverEntry,
-        ],
-        {} as IntersectionObserver,
-      )
+      expect(wrapper.find('.blob').isVisible()).toBe(false)
 
-      const blob = wrapper.find('.blob')
-
-      const mouseMoveHandler = addEventListenerSpy.mock.calls.find(
-        (call: any[]) => call[0] === 'mousemove',
-      )?.[1]
-
-      if (typeof mouseMoveHandler === 'function') {
-        mouseMoveHandler({ clientX: 150, clientY: 150 } as MouseEvent)
-      }
-
-      await wrapper.vm.$nextTick()
-
-      expect(blob.isVisible()).toBe(false)
       wrapper.unmount()
     })
 
-    it('stops animation when component leaves viewport', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
-
+    it('hides the blob when the card leaves the viewport', async () => {
       const wrapper = mount(MazCardSpotlight)
 
       await flushPromises()
-
-      intersectionObserverCallback(
-        [
-          { isIntersecting: true } as IntersectionObserverEntry,
-        ],
-        {} as IntersectionObserver,
-      )
-
-      const mouseMoveHandler = addEventListenerSpy.mock.calls.find(
-        (call: any[]) => call[0] === 'mousemove',
-      )?.[1]
-
-      if (typeof mouseMoveHandler === 'function') {
-        mouseMoveHandler({ clientX: 150, clientY: 150 } as MouseEvent)
-      }
-
+      intersect(true)
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
       await flushPromises()
 
       const blob = wrapper.find('.blob')
+
       expect(blob.attributes('style')).not.toContain('display: none')
 
-      intersectionObserverCallback(
-        [
-          { isIntersecting: false } as IntersectionObserverEntry,
-        ],
-        {} as IntersectionObserver,
-      )
-
+      intersect(false)
       await flushPromises()
 
       expect(blob.attributes('style')).toContain('display: none')
     })
 
+    it('fades the blob when the pointer leaves the card, then hides it', async () => {
+      const wrapper = mount(MazCardSpotlight)
+
+      await flushPromises()
+      intersect(true)
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
+      await wrapper.trigger('pointerleave')
+
+      const blob = wrapper.find('.blob')
+
+      expect(blob.classes()).not.toContain('--active')
+      expect(blob.attributes('style')).not.toContain('display: none')
+
+      await blob.trigger('transitionend')
+
+      expect(blob.attributes('style')).toContain('display: none')
+    })
+
+    it('keeps the blob while a mouse button is released on the card', async () => {
+      const wrapper = mount(MazCardSpotlight)
+
+      await flushPromises()
+      intersect(true)
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
+      await wrapper.trigger('pointerup', { pointerType: 'mouse' })
+
+      expect(wrapper.find('.blob').classes()).toContain('--active')
+    })
+
+    it('fades the blob when a touch is released', async () => {
+      const wrapper = mount(MazCardSpotlight)
+
+      await flushPromises()
+      intersect(true)
+      await wrapper.trigger('pointerdown', { clientX: 150, clientY: 150, pointerType: 'touch' })
+      await wrapper.trigger('pointerup', { pointerType: 'touch' })
+
+      expect(wrapper.find('.blob').classes()).not.toContain('--active')
+    })
+
     it('prevents multiple simultaneous requestAnimationFrame calls', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
+      const rafMock = globalThis.requestAnimationFrame as Mock
+
+      rafMock.mockClear()
+      rafMock.mockImplementation(() => 1)
 
       const wrapper = mount(MazCardSpotlight)
 
       await wrapper.vm.$nextTick()
-
-      intersectionObserverCallback(
-        [
-          { isIntersecting: true } as IntersectionObserverEntry,
-        ],
-        {} as IntersectionObserver,
-      )
-
-      const mouseMoveHandler = addEventListenerSpy.mock.calls.find(
-        (call: any[]) => call[0] === 'mousemove',
-      )?.[1]
-
-      const rafMock = globalThis.requestAnimationFrame as Mock
-      rafMock.mockClear()
-      rafMock.mockReturnValue(123)
-      rafMock.mockImplementation((callback: FrameRequestCallback) => {
-        setTimeout(callback, 16)
-        return 123
-      })
-
-      if (typeof mouseMoveHandler === 'function') {
-        mouseMoveHandler({ clientX: 150, clientY: 150 } as MouseEvent)
-        mouseMoveHandler({ clientX: 151, clientY: 151 } as MouseEvent)
-        mouseMoveHandler({ clientX: 152, clientY: 152 } as MouseEvent)
-      }
+      intersect(true)
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
+      await wrapper.trigger('pointermove', { clientX: 151, clientY: 151 })
+      await wrapper.trigger('pointermove', { clientX: 152, clientY: 152 })
 
       expect(rafMock).toHaveBeenCalledTimes(1)
     })
+
+    it('does not follow the pointer under reduced motion', async () => {
+      const wrapper = mount(MazCardSpotlight, {
+        global: { provide: { [MAZ_UI_CONTEXT_INJECTION_KEY as symbol]: { motion: 'reduced' } } },
+      })
+
+      await wrapper.vm.$nextTick()
+      intersect(true)
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
+
+      expect(wrapper.find('.blob').attributes('style')).toContain('display: none')
+    })
   })
 
-  describe('when scroll or resize occurs', () => {
-    it('recalculates cached rect on scroll', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
-      const getBoundingClientRectSpy = vi.spyOn(Element.prototype, 'getBoundingClientRect')
+  describe('when the border draws itself', () => {
+    it('sets the entry angle of the pointer and the utility class', async () => {
+      const wrapper = mount(MazCardSpotlight, { props: { borderDraw: true } })
 
-      const wrapper = mount(MazCardSpotlight)
+      await wrapper.trigger('pointerenter', { clientX: 300, clientY: 200 })
 
-      await wrapper.vm.$nextTick()
-
-      const initialCallCount = getBoundingClientRectSpy.mock.calls.length
-
-      const scrollHandler = addEventListenerSpy.mock.calls.find(
-        (call: any[]) => call[0] === 'scroll',
-      )?.[1]
-
-      if (typeof scrollHandler === 'function') {
-        scrollHandler({} as Event)
-      }
-
-      expect(getBoundingClientRectSpy).toHaveBeenCalledTimes(initialCallCount + 1)
+      expect(wrapper.classes()).toContain('maz:border-draw')
+      expect((wrapper.element as HTMLElement).style.getPropertyValue('--maz-border-draw-from')).toBe('90deg')
     })
 
-    it('recalculates cached rect on resize', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
-      const getBoundingClientRectSpy = vi.spyOn(Element.prototype, 'getBoundingClientRect')
-
+    it('does nothing without the option', async () => {
       const wrapper = mount(MazCardSpotlight)
 
-      await wrapper.vm.$nextTick()
+      await wrapper.trigger('pointerenter', { clientX: 300, clientY: 200 })
 
-      const initialCallCount = getBoundingClientRectSpy.mock.calls.length
+      expect(wrapper.classes()).not.toContain('maz:border-draw')
+      expect((wrapper.element as HTMLElement).style.getPropertyValue('--maz-border-draw-from')).toBe('')
+    })
+  })
 
-      const resizeHandler = addEventListenerSpy.mock.calls.find(
-        (call: any[]) => call[0] === 'resize',
-      )?.[1]
+  describe('when elevation is a level', () => {
+    it.each([
+      [1, 'maz:shadow-elevation-1'],
+      [2, 'maz:shadow-elevation-2'],
+      [3, 'maz:shadow-elevation-3'],
+    ] as const)('applies the shadow of the level %s', (elevation, expected) => {
+      const wrapper = mount(MazCardSpotlight, { props: { elevation } })
 
-      if (typeof resizeHandler === 'function') {
-        resizeHandler({} as Event)
-      }
-
-      expect(getBoundingClientRectSpy).toHaveBeenCalledTimes(initialCallCount + 1)
+      expect(wrapper.classes()).toContain(expected)
+      expect(wrapper.classes()).not.toContain('maz:drop-shadow-md')
     })
   })
 
   describe('when component is unmounted', () => {
-    it.each(['mousemove', 'scroll', 'resize'])('removes %s event listener', async (eventName) => {
-      const removeEventListenerSpy = vi.spyOn(globalThis, 'removeEventListener')
-
-      const wrapper = mount(MazCardSpotlight)
-
-      await wrapper.vm.$nextTick()
-      wrapper.unmount()
-
-      expect(removeEventListenerSpy).toHaveBeenCalledWith(eventName, expect.any(Function))
-    })
-
     it('disconnects IntersectionObserver', async () => {
       const wrapper = mount(MazCardSpotlight)
 
@@ -466,31 +391,19 @@ describe('given mazCardSpotlight component', () => {
     })
 
     it('cancels pending requestAnimationFrame', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
       const rafMock = globalThis.requestAnimationFrame as Mock
+
       rafMock.mockClear()
-      rafMock.mockReturnValue(123)
       rafMock.mockImplementation(() => 123)
 
       const wrapper = mount(MazCardSpotlight)
 
       await wrapper.vm.$nextTick()
-
       intersectionObserverCallback(
-        [
-          { isIntersecting: true } as IntersectionObserverEntry,
-        ],
+        [{ isIntersecting: true } as IntersectionObserverEntry],
         {} as IntersectionObserver,
       )
-
-      const mouseMoveHandler = addEventListenerSpy.mock.calls.find(
-        (call: any[]) => call[0] === 'mousemove',
-      )?.[1]
-
-      if (typeof mouseMoveHandler === 'function') {
-        mouseMoveHandler({ clientX: 150, clientY: 150 } as MouseEvent)
-      }
-
+      await wrapper.trigger('pointermove', { clientX: 150, clientY: 150 })
       wrapper.unmount()
 
       expect(globalThis.cancelAnimationFrame).toHaveBeenCalledWith(123)

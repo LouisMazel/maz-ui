@@ -2,15 +2,19 @@ import type { MazUiThemeOptions } from '@maz-ui/themes/plugin'
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { Plugin } from 'vue'
 import type { MazUiDefaultsOptions } from '../composables/useGlobalConfig.ts'
+import type { MazUiDensity } from '../utils/density.ts'
 import type { MazUiExternalLinksOptions } from '../utils/externalLinks.ts'
+import type { MazUiMotion } from '../utils/motion.ts'
 import type { AosOptions } from './aos.ts'
 import type { DialogOptions } from './dialog/DialogHandler.ts'
 import type { ToastOptions } from './toast/types.ts'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { MazUiTranslations } from '@maz-ui/translations/plugin'
 import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig.ts'
+import { applyDensityClasses } from '../utils/density.ts'
 import { EXTERNAL_LINKS_INJECTION_KEY } from '../utils/externalLinks.ts'
 import { MAZ_UI_CONTEXT_INJECTION_KEY } from '../utils/mazUiContext.ts'
+import { applyMotionClasses } from '../utils/motion.ts'
 import { AosPlugin } from './aos.ts'
 
 export interface MazUiOptions extends MazUiExternalLinksOptions {
@@ -43,8 +47,24 @@ export interface MazUiOptions extends MazUiExternalLinksOptions {
    * Animations on scroll (`useAos()`): `true` with the default options, or its options.
    * Also import `maz-ui/aos.css`.
    * @default false
+   * @deprecated Use `vReveal` (`<p v-reveal="'slide-up'">`), it needs no option nor CSS file
+   * Removed in v6 (plans/ROADMAP.md)
    */
   aos?: boolean | AosOptions
+  /**
+   * Motion of the components: `'auto'` follows `prefers-reduced-motion`, `'reduced'` and `'full'` force it.
+   * `{ scope: 'page' }` also stops the animations of the whole page under reduced motion.
+   * @default 'auto'
+   */
+  motion?: MazUiMotion
+  /**
+   * Density of the controls (buttons, fields, segmented, menus...): `'default'` keeps the heights of maz-ui 5,
+   * `'compact'` makes them about 14% shorter (a `md` control goes from 42px to 36px) with tighter paddings.
+   * Applied as the class `m-density-compact` on `<html>`; the class also works on any block.
+   * @default 'default'
+   */
+  // Removed in v6 (plans/ROADMAP.md): `compact` becomes the default density
+  density?: MazUiDensity
 }
 
 /**
@@ -83,12 +103,14 @@ export interface MazUiOptions extends MazUiExternalLinksOptions {
  */
 export const MazUi: Plugin<[MazUiOptions]> = {
   install(app, options) {
-    const { theme, translations, defaults, toast, dialog, aos, openExternal, isExternalLink } = options
+    const { theme, translations, defaults, toast, dialog, aos, motion, density, openExternal, isExternalLink } = options
 
     app.use(MazUiTheme, theme)
     app.use(MazUiTranslations, translations)
 
-    app.provide(MAZ_UI_CONTEXT_INJECTION_KEY, { app, toast, dialog })
+    app.provide(MAZ_UI_CONTEXT_INJECTION_KEY, { app, toast, dialog, motion })
+    applyMotionClasses(motion)
+    applyDensityClasses(density)
 
     if (aos) {
       app.use(AosPlugin, aos === true
@@ -114,3 +136,8 @@ declare module 'vue' {
     $mazGlobalConfig?: MazUiDefaultsOptions
   }
 }
+
+export type { MazUiDensity } from '../utils/density.ts'
+export { getDensityClasses } from '../utils/density.ts'
+export type { MazUiMotion, MazUiMotionMode, MazUiMotionOptions } from '../utils/motion.ts'
+export { getMotionClasses } from '../utils/motion.ts'

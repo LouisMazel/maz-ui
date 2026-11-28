@@ -62,12 +62,16 @@ export interface PropApi {
   strictValues: boolean
   /** v-model argument (`modelValue` for `v-model`, `open` for `v-model:open`) */
   model?: string
+  /** Text of its `@deprecated` JSDoc tag (the alternative): hidden from the docs, known by the review */
+  deprecated?: string
 }
 
 export interface EventApi {
   name: string
   description?: string
   payload?: string
+  /** Text of its `@deprecated` JSDoc tag: hidden from the docs, known by the review */
+  deprecated?: string
 }
 
 export interface SlotBindingApi {

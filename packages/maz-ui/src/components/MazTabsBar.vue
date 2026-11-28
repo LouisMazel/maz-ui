@@ -4,6 +4,7 @@ import type { MazBtnProps } from './MazBtn.vue'
 import type { MazIndicatorProps } from './MazIndicator.vue'
 import type { MazTabsOrientation, MazTabsProvide } from './MazTabs.vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 
 /**
  * Props of MazBtn that an item is not allowed to forward, because they are
@@ -87,6 +88,16 @@ export interface MazTabsBarProps<Item extends MazTabsBarItem = MazTabsBarItem> {
    * @default true
    */
   bordered?: boolean
+  /**
+   * The indicator slides to the selected tab
+   * @default true
+   */
+  animated?: boolean
+  /**
+   * The indicator stretches toward the new tab on its way (a drop of ink)
+   * @default false
+   */
+  stretch?: boolean
 }
 
 export type MazTabsBarObjectItem<Value extends string | number = string | number>
@@ -150,6 +161,8 @@ import {
 } from 'vue'
 import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useRovingFocus } from '../composables/useRovingFocus.ts'
+import { useSlidingIndicator } from '../composables/useSlidingIndicator.ts'
 import MazBtn from './MazBtn.vue'
 
 const {
@@ -164,6 +177,8 @@ const {
   block = false,
   elevation = false,
   bordered = true,
+  animated = true,
+  stretch = false,
 } = defineProps<MazTabsBarProps<Item>>()
 
 const emits = defineEmits<{
@@ -217,14 +232,7 @@ const resolvedColor = computed<MazColor | undefined>(() => color ?? tabsContext.
 const resolvedOrientation = computed<MazTabsOrientation>(() => orientation ?? tabsContext.value?.orientation?.value ?? 'horizontal')
 const isVertical = computed(() => resolvedOrientation.value === 'vertical')
 
-const ROUNDED_CLASS: Record<MazRoundedSize, string> = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS: Record<MazRoundedSize, string> = ROUNDED_SIZE_CLASS
 
 /** A badge with `content: true` is a dot: no text, so no padding nor line box */
 const DOT_BADGE_STYLE = {
@@ -358,47 +366,28 @@ function getTabIndex(index: number) {
     : -1
 }
 
-function getNextEnabledIndex(fromIndex: number, step: 1 | -1) {
-  const count = normalizedItems.value.length
+const { onKeydown: onRovingKeydown } = useRovingFocus({
+  container: tabsBarRef,
+  items: () => itemRefs.value.slice(0, normalizedItems.value.length),
+  orientation: 'both',
+  activateOnFocus: true,
+  onActivate: index => selectTab(index),
+  currentIndex: computed({
+    get: () => currentTab.value - 1,
+    set: () => {},
+  }),
+})
 
-  for (let offset = 1; offset <= count; offset++) {
-    const index = (fromIndex + step * offset + count) % count
-
-    if (!normalizedItems.value[index].disabled)
-      return index
-  }
-
-  return fromIndex
-}
+const CROSS_KEYS = {
+  horizontal: ['ArrowUp', 'ArrowDown'],
+  vertical: ['ArrowLeft', 'ArrowRight'],
+} as const
 
 function onTabKeydown(event: KeyboardEvent, index: number) {
-  const isRtl = !!tabsBarRef.value && globalThis.getComputedStyle(tabsBarRef.value).direction === 'rtl'
-  const forwardKey = isVertical.value
-    ? 'ArrowDown'
-    : isRtl ? 'ArrowLeft' : 'ArrowRight'
-  const backwardKey = isVertical.value
-    ? 'ArrowUp'
-    : isRtl ? 'ArrowRight' : 'ArrowLeft'
-
-  let targetIndex: number | undefined
-
-  if (event.key === forwardKey)
-    targetIndex = getNextEnabledIndex(index, 1)
-  else if (event.key === backwardKey)
-    targetIndex = getNextEnabledIndex(index, -1)
-  else if (event.key === 'Home')
-    targetIndex = getNextEnabledIndex(-1, 1)
-  else if (event.key === 'End')
-    targetIndex = getNextEnabledIndex(normalizedItems.value.length, -1)
-
-  if (targetIndex === undefined || normalizedItems.value[targetIndex]?.disabled)
+  if ((CROSS_KEYS[resolvedOrientation.value] as readonly string[]).includes(event.key))
     return
 
-  event.preventDefault()
-  itemRefs.value[targetIndex]?.focus()
-
-  if (targetIndex !== index)
-    selectTab(targetIndex)
+  onRovingKeydown(event, index)
 }
 
 function isActiveTab(index: number) {
@@ -417,7 +406,6 @@ function addElementToItemRefs({
     : mazBtn
 }
 
-const tabsIndicatorState = ref<StyleValue>()
 const tabsBarHasScrollAnimation = ref(false)
 
 function scrollToTab(tabsBar: HTMLElement, activeTab: HTMLElement) {
@@ -444,11 +432,30 @@ function scrollToTab(tabsBar: HTMLElement, activeTab: HTMLElement) {
   }
 }
 
-async function setIndicatorAndScroll() {
-  if (!autoScroll) {
-    return
-  }
+function useIndicator(orientation: 'horizontal' | 'vertical') {
+  return useSlidingIndicator({
+    container: tabsBarRef,
+    active: () => {
+      const tabs = normalizedItems.value
 
+      return (orientation === 'vertical') === isVertical.value && tabs.length > 0
+        ? itemRefs.value[currentTab.value - 1]
+        : undefined
+    },
+    orientation,
+    stretch: () => stretch,
+    animated: () => animated,
+  })
+}
+
+const horizontalIndicator = useIndicator('horizontal')
+const verticalIndicator = useIndicator('vertical')
+
+const indicatorStyle = computed(() => isVertical.value
+  ? verticalIndicator.style.value
+  : horizontalIndicator.style.value)
+
+async function setIndicatorAndScroll() {
   await sleep(150)
 
   const tabsBar = tabsBarRef.value
@@ -458,23 +465,11 @@ async function setIndicatorAndScroll() {
     return
   }
 
-  scrollToTab(tabsBar, activeTab)
+  if (autoScroll)
+    scrollToTab(tabsBar, activeTab)
 
-  if (typeof currentTab.value !== 'number') {
-    return
-  }
-
-  const indicatorWidth = activeTab?.offsetWidth ?? 0
-  const indicatorHeight = activeTab?.offsetHeight ?? 0
-  const translateXValue = activeTab?.offsetLeft ?? 0
-
-  tabsIndicatorState.value = {
-    transform: isVertical.value
-      ? `translate(${translateXValue}px, ${activeTab?.offsetTop ?? 0}px)`
-      : `translateX(${translateXValue}px)`,
-    width: `${indicatorWidth}px`,
-    height: `${indicatorHeight}px`,
-  }
+  horizontalIndicator.update()
+  verticalIndicator.update()
 
   tabsBarHasScrollAnimation.value = true
 }
@@ -538,7 +533,7 @@ onMounted(() => {
     ref="tabsBarRef"
     role="tablist"
     :aria-orientation="resolvedOrientation"
-    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:scrollbar-themed maz:gap-1 maz:bg-container maz:p-2 maz:align-top"
+    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:scrollbar-themed maz:gap-(--maz-menu-gap,0.25rem) maz:bg-container maz:p-(--maz-menu-padding,0.5rem) maz:align-top"
     :class="[
       ROUNDED_CLASS[resolvedRoundedSize],
       {
@@ -555,16 +550,13 @@ onMounted(() => {
   >
     <div
       aria-hidden="true"
-      class="m-tabs-bar__indicator maz:absolute maz:left-0 maz:text-center"
+      class="m-tabs-bar__indicator maz:pointer-events-none maz:absolute maz:inset-s-0 maz:text-center"
       :class="[
         { 'maz:top-0': isVertical },
         ROUNDED_CLASS[resolvedRoundedSize],
-        {
-          'maz:transition-all maz:duration-300 maz:ease-in-out': tabsBarHasScrollAnimation,
-          'maz:bg-surface-600 maz:dark:bg-surface-400': !resolvedColor,
-        },
+        { 'maz:bg-surface-600 maz:dark:bg-surface-400': !resolvedColor },
       ]"
-      :style="[tabsIndicatorState, resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor === 'neutral' ? 'neutral-foreground' : resolvedColor})` } : {}]"
+      :style="[indicatorStyle, resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor === 'neutral' ? 'neutral-foreground' : resolvedColor})` } : {}]"
     />
     <template v-for="(item, index) in normalizedItems" :key="index">
       <MazBtn

@@ -1,18 +1,5 @@
 import type { ThemePreset } from '../types.ts'
-import {
-  DEFAULT_BTN_FONT_WEIGHT,
-  DEFAULT_CONTAINER_BG,
-  DEFAULT_DIALOG_MAX_WIDTH,
-  DEFAULT_DIALOG_MIN_WIDTH,
-  DEFAULT_DISABLED_CURSOR,
-  DEFAULT_DISABLED_OPACITY,
-  DEFAULT_FONT_MONO,
-  DEFAULT_INPUT_BG,
-  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
-  DEFAULT_SHADOW,
-  DEFAULT_SPACE,
-  typographyWith,
-} from './_defaults.ts'
+import { DEFAULT_BTN_FONT_WEIGHT, DEFAULT_CONTAINER_BG, DEFAULT_DIALOG_MAX_WIDTH, DEFAULT_DIALOG_MIN_WIDTH, DEFAULT_DISABLED_CURSOR, DEFAULT_DISABLED_OPACITY, DEFAULT_FONT_MONO, DEFAULT_INPUT_BG, DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT, DEFAULT_MOTION, DEFAULT_SHADOW, DEFAULT_SPACE, typographyWith } from './_defaults.ts'
 
 /**
  * Nova preset — modern startup / AI / creative.
@@ -47,6 +34,7 @@ export const nova: ThemePreset = {
     'motion-fast': '100ms',
     'motion-normal': '180ms',
     'motion-slow': '280ms',
+    ...DEFAULT_MOTION,
     'easing-out': 'cubic-bezier(0.22, 1, 0.36, 1)',
     'easing-in': 'cubic-bezier(0.55, 0, 0.85, 0)',
     'easing-in-out': 'cubic-bezier(0.83, 0, 0.17, 1)',

@@ -4,6 +4,8 @@ import type { MazIconLike } from '../composables/useMazIconProps.ts'
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { MazEye } from '@maz-ui/icons/lazy/MazEye'
 import { MazEyeSlash } from '@maz-ui/icons/lazy/MazEyeSlash'
+import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { debounce as debounceFn } from '@maz-ui/utils/helpers/debounce'
 import {
   computed,
@@ -11,14 +13,19 @@ import {
   onBeforeUnmount,
   onMounted,
   ref,
+  useAttrs,
   useSlots,
 } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useFieldTopLabel, useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
-import { SIZE_TEXT_CLASS } from './constants.ts'
+import { ROUNDED_SIZE_CLASS, SIZE_TEXT_CLASS } from './constants.ts'
+import MazDrawnIcon from './MazDrawnIcon.vue'
+import MazFieldMessage from './MazField/MazFieldMessage.vue'
+import { getFieldFocusColor, useFieldState } from './MazField/useFieldState.ts'
 
 export type MazInputValue = string | number | null | undefined | boolean
 
@@ -138,6 +145,13 @@ export interface MazInputProps<T = MazInputValue> {
    * @type {boolean}
    * @example true
    */
+  bordered?: boolean
+  /**
+   * Controls whether the input has a visible border
+   * @deprecated Use `bordered` instead
+   * @type {boolean}
+   * @example true
+   */
   border?: boolean
   /**
    * HTML inputmode attribute that provides hints for virtual keyboards on mobile devices
@@ -218,6 +232,22 @@ export interface MazInputProps<T = MazInputValue> {
    * @default false
    */
   loading?: boolean
+  /**
+   * Shows a button that clears the value, once the field has one
+   * @default false
+   */
+  clearable?: boolean
+  /**
+   * Accessible name of the clear button
+   * @default Translated `Clear`
+   */
+  clearLabel?: string
+  /**
+   * Animates the field: the check drawn when `success`, the clear button that appears and the message that
+   * gives way to the next one. Set to `false` to keep the field as it was (no check, no animation)
+   * @default true
+   */
+  animated?: boolean
 }
 
 defineOptions({
@@ -244,6 +274,7 @@ const {
   hint,
   inputClasses,
   border = true,
+  bordered = undefined,
   inputmode = 'text',
   debounce = false,
   autoFocus = false,
@@ -254,6 +285,9 @@ const {
   name,
   autocomplete,
   loading = false,
+  clearable = false,
+  clearLabel,
+  animated = true,
 } = defineProps<MazInputProps<T>>()
 
 const emits = defineEmits<{
@@ -302,9 +336,19 @@ const emits = defineEmits<{
    * <MazInput @input="onInputType" />
    */
   'input': [event: Event]
+  /**
+   * Triggered when the user clicks on the clear button (`clearable`). The value is reset to an empty string
+   * @example
+   * <MazInput clearable @clear="onClear" />
+   */
+  'clear': []
 }>()
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazInput', { size: 'md', roundedSize: 'md' })
+
+const attrs = useAttrs()
+const { shouldReduceMotion } = useReducedMotion()
+const { t } = useTranslations()
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -353,17 +397,23 @@ const isPasswordType = computed(() => type === 'password')
 
 const inputType = computed(() => (hasPasswordVisible.value ? 'text' : type))
 
-const borderStyle = computed(() => {
-  if (!border)
-    return undefined
-  if (error)
-    return 'maz:border-destructive'
-  if (success)
-    return 'maz:border-success'
-  if (warning)
-    return 'maz:border-warning'
-  return '--default-border maz:border-divider maz:dark:border-divider-400'
-})
+// Removed in v6 (plans/ROADMAP.md): `border` is an alias of `bordered`
+const hasBorder = computed(() => bordered ?? border)
+
+const { state, hasState, borderClass, importantTextClass: stateColor } = useFieldState(() => ({ error, success, warning }))
+
+const borderStyle = computed(() => (hasBorder.value ? borderClass.value : undefined))
+
+const { labelOnTop, topLabelText } = useFieldTopLabel(() => ({ label, topLabel }))
+
+const floatingText = computed(() => hint || (labelOnTop.value ? undefined : label))
+
+const messageId = computed(() => `${instanceId.value}-message`)
+
+// A function, not a computed: the attributes are not reactive
+function getDescribedBy() {
+  return (attrs['aria-describedby'] as string | undefined) ?? (assistiveText ? messageId.value : undefined)
+}
 
 const slots = useSlots()
 
@@ -387,9 +437,13 @@ const model = computed({
   set: (value?: T) => emitValue(value),
 })
 
-const hasLabel = computed(() => !!label || !!hint)
+const hasLabel = computed(() => !!floatingText.value)
 
 const alwaysUp = computed(() => ['date', 'month', 'week'].includes(type))
+
+const showValidCheck = computed(() => animated && success && !error)
+
+const canClear = computed(() => clearable && !disabled && !readonly && modelValue !== undefined && modelValue !== null && modelValue !== '')
 
 function hasEndPart(): boolean {
   return (
@@ -397,7 +451,16 @@ function hasEndPart(): boolean {
     || isPasswordType.value
     || !!endIcon
     || loading
+    || clearable
+    || showValidCheck.value
   )
+}
+
+function clear() {
+  debounceEmitValue.cancel()
+  emits('update:model-value', '' as T)
+  emits('clear')
+  input.value?.focus()
 }
 
 function hasStartPart(): boolean {
@@ -419,24 +482,7 @@ function emitInputEvent(event: Event) {
   return emits('input', event)
 }
 
-const stateColor = computed(() => {
-  if (error)
-    return 'maz:text-destructive-600!'
-  if (success)
-    return 'maz:text-success-600!'
-  if (warning)
-    return 'maz:text-warning-600!'
-  return undefined
-})
-
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 </script>
 
 <template>
@@ -448,35 +494,35 @@ const ROUNDED_CLASS = {
         '--has-placeholder': !!placeholder,
         '--has-label': hasLabel,
         '--is-readonly': readonly,
-        '--has-z-2': error || warning || success,
-        '--has-state': error || warning || success,
+        '--has-z-2': hasState,
+        '--has-state': hasState,
         '--block': block,
         'maz:w-full': block,
       },
       classProp,
       `--${color}`,
       SIZE_TEXT_CLASS[size],
-    ]" :style="[styleProp, { '--m-input-tint-bg': `var(--maz-${color})` }]"
+    ]" :style="[styleProp, { '--m-input-tint-bg': `var(--maz-${color})`, '--m-field-color': getFieldFocusColor(color, state) }]"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
-      v-if="topLabel"
+      v-if="topLabelText"
       :for="instanceId"
       class="m-input-top-label maz:mb-2"
       :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
       :class="stateColor"
     >
-      {{ topLabel }}
+      {{ topLabelText }}
     </label>
 
     <div
-      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:size-full maz:flex-1 maz:overflow-hidden maz:bg-input maz:transition-colors maz:duration-300"
+      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:size-full maz:flex-1 maz:overflow-hidden maz:bg-input"
       :class="[
         inputClasses,
         borderStyle,
         ROUNDED_CLASS[roundedSize],
         `--rounded-${roundedSize}`,
-        { '--block': block, '--border': border, 'maz:w-full': block, 'maz:border maz:border-solid': border },
+        { '--block': block, '--border': hasBorder, 'maz:w-full': block, 'maz:border maz:border-solid maz:field-focus': hasBorder, 'maz:focus-within-ring maz:field-transition': !hasBorder },
       ]"
     >
       <div v-if="hasStartPart()" class="m-input-wrapper-start maz:relative maz:z-1 maz:flex maz:flex-center maz:space-x-1 maz:py-1 maz:ps-2">
@@ -493,7 +539,7 @@ const ROUNDED_CLASS = {
         class="m-input-wrapper-input maz:relative maz:flex maz:w-full maz:max-w-full maz:flex-1 maz:items-center"
         :class="[
           `--${size}`,
-          { '--top-label': !!topLabel,
+          { '--top-label': !!topLabelText,
             '--has-start-icon': hasStartPart(),
             '--has-end-icon': hasEndPart(),
           },
@@ -504,6 +550,8 @@ const ROUNDED_CLASS = {
           v-bind="$attrs"
           ref="input"
           v-model="model"
+          :aria-invalid="error || undefined"
+          :aria-describedby="getDescribedBy()"
           :placeholder="placeholder || ' '"
           :aria-label="label || placeholder"
           :type="inputType"
@@ -513,7 +561,7 @@ const ROUNDED_CLASS = {
           :disabled
           :readonly
           :required
-          class="m-input-input maz:m-0 maz:size-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:px-4 maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden"
+          class="m-input-input maz:m-0 maz:size-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:px-(--maz-control-padding-x-md,1rem) maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden"
           :class="[{ 'maz:ps-2!': hasStartPart(), 'maz:pe-2!': hasEndPart() }]"
           v-on="{
             blur,
@@ -525,9 +573,9 @@ const ROUNDED_CLASS = {
         >
 
         <span
-          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:inset-s-4 maz:w-full maz:origin-top-left maz:items-center maz:truncate maz:overflow-hidden maz:text-start maz:leading-6 maz:whitespace-nowrap" :class="[stateColor, { 'maz:inset-s-2!': hasStartPart(), 'maz:pe-3!': hasLabel }]"
+          v-if="floatingText" class="m-input-label maz:pointer-events-none maz:absolute maz:inset-s-(--maz-control-padding-x-md,1rem) maz:w-full maz:origin-top-left maz:items-center maz:truncate maz:overflow-hidden maz:text-start maz:leading-6 maz:whitespace-nowrap" :class="[stateColor, { 'maz:inset-s-2!': hasStartPart(), 'maz:pe-3!': hasLabel }]"
         >
-          {{ hint || label }}
+          {{ floatingText }}
         </span>
       </div>
 
@@ -540,6 +588,20 @@ const ROUNDED_CLASS = {
         <slot v-if="hasSlotContent(slots['end-icon']) || endIcon" name="end-icon">
           <MazIcon v-if="endIconProps" v-bind="endIconProps" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
         </slot>
+
+        <Transition name="m-input-end-action" :css="animated && !shouldReduceMotion">
+          <button
+            v-if="canClear"
+            type="button"
+            class="m-input-clear maz:flex maz:cursor-pointer maz:rounded-full maz:border-none maz:bg-transparent maz:p-0.5 maz:text-muted maz:focus-ring maz:hover:text-foreground"
+            :aria-label="clearLabel || t('input.clear')"
+            @click.stop="clear"
+          >
+            <MazXMark class="maz:text-xl" />
+          </button>
+        </Transition>
+
+        <MazDrawnIcon v-if="showValidCheck" name="check" class="m-input-valid maz:text-xl maz:text-success-600" />
 
         <MazBtn
           v-if="isPasswordType" color="transparent" tabindex="-1" size="mini"
@@ -562,18 +624,14 @@ const ROUNDED_CLASS = {
       </div>
     </div>
 
-    <div
-      v-if="assistiveText" class="m-input-bottom-text maz:mt-1 maz:text-body-sm" :class="[
-        {
-          'maz:text-destructive-600': error,
-          'maz:text-success-600': success,
-          'maz:text-warning-600': warning,
-          'maz:text-muted': !error && !success && !warning,
-        },
-      ]"
-    >
-      {{ assistiveText }}
-    </div>
+    <MazFieldMessage
+      v-if="assistiveText"
+      :id="messageId"
+      :text="assistiveText"
+      :state
+      :animated
+      class="m-input-bottom-text maz:mt-1"
+    />
   </div>
 </template>
 
@@ -632,54 +690,14 @@ const ROUNDED_CLASS = {
     @apply maz:z-3;
   }
 
-  &.--primary .m-input-wrapper:focus-within,
-  &.--primary.--border-active .m-input-wrapper {
-    @apply maz:border-primary;
-  }
-
-  &.--secondary .m-input-wrapper:focus-within,
-  &.--secondary.--border-active .m-input-wrapper {
-    @apply maz:border-secondary;
-  }
-
-  &.--accent .m-input-wrapper:focus-within,
-  &.--accent.--border-active .m-input-wrapper {
-    @apply maz:border-accent;
-  }
-
-  &.--info .m-input-wrapper:focus-within,
-  &.--info.--border-active .m-input-wrapper {
-    @apply maz:border-info;
-  }
-
-  &.--success .m-input-wrapper:focus-within,
-  &.--success.--border-active .m-input-wrapper {
-    @apply maz:border-success;
-  }
-
-  &.--warning .m-input-wrapper:focus-within,
-  &.--warning.--border-active .m-input-wrapper {
-    @apply maz:border-warning;
-  }
-
-  &.--destructive .m-input-wrapper:focus-within,
-  &.--destructive.--border-active .m-input-wrapper {
-    @apply maz:border-destructive;
-  }
-
-  &.--contrast .m-input-wrapper:focus-within,
-  &.--contrast.--border-active .m-input-wrapper {
-    @apply maz:border-contrast;
-  }
-
-  &.--neutral .m-input-wrapper:focus-within,
-  &.--neutral.--border-active .m-input-wrapper {
-    border-color: var(--maz-neutral-foreground);
+  &.--border-active .m-input-wrapper.--border {
+    @apply maz:field-focused;
   }
 }
 
 .m-input-label {
-  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  transition: transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+    var(--maz-easing-out, cubic-bezier(0, 0, 0.2, 1));
 }
 
 /* The browsers only paint the autofilled <input>: the whole field gets an autofill tint instead */
@@ -688,13 +706,15 @@ const ROUNDED_CLASS = {
 }
 
 .m-input-input {
-  transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  transition: padding calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+    var(--maz-easing-out, cubic-bezier(0, 0, 0.2, 1));
 
   &:-webkit-autofill {
     -webkit-text-fill-color: var(--maz-foreground);
     caret-color: var(--maz-foreground);
     transition:
-      padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+      padding calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+        var(--maz-easing-out, cubic-bezier(0, 0, 0.2, 1)),
       background-color 0s 600000s,
       color 0s 600000s;
   }
@@ -706,27 +726,45 @@ const ROUNDED_CLASS = {
 
 .m-input-wrapper-input {
   &.--xl {
-    block-size: calc(4rem - (var(--maz-border-width) * 2));
+    block-size: calc(var(--maz-control-height-xl, 4rem) - (var(--maz-border-width) * 2));
   }
 
   &.--lg {
-    block-size: calc(3.5rem - (var(--maz-border-width) * 2));
+    block-size: calc(var(--maz-control-height-lg, 3.5rem) - (var(--maz-border-width) * 2));
   }
 
   &.--md {
-    block-size: calc(3rem - (var(--maz-border-width) * 2));
+    block-size: calc(var(--maz-control-height-md, 3rem) - (var(--maz-border-width) * 2));
   }
 
   &.--sm {
-    block-size: calc(2.5rem - (var(--maz-border-width) * 2));
+    block-size: calc(var(--maz-control-height-sm, 2.5rem) - (var(--maz-border-width) * 2));
   }
 
   &.--xs {
-    block-size: calc(2rem - (var(--maz-border-width) * 2));
+    block-size: calc(var(--maz-control-height-xs, 2rem) - (var(--maz-border-width) * 2));
   }
 
   &.--mini {
-    block-size: calc(1.5rem - (var(--maz-border-width) * 2));
+    block-size: calc(var(--maz-control-height-mini, 1.5rem) - (var(--maz-border-width) * 2));
   }
+}
+
+.m-input-end-action-enter-active {
+  transition:
+    opacity calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-spring, ease-out);
+}
+
+.m-input-end-action-leave-active {
+  transition:
+    opacity calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+    transform calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
+}
+
+.m-input-end-action-enter-from,
+.m-input-end-action-leave-to {
+  opacity: 0;
+  transform: scale(0.6);
 }
 </style>

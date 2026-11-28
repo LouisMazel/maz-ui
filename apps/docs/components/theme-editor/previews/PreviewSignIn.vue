@@ -48,7 +48,7 @@ function submit() {
           </p>
         </header>
 
-        <MazBtn color="surface" outlined block :start-icon="MazGithub">
+        <MazBtn color="surface" variant="outline" block :start-icon="MazGithub">
           Continue with GitHub
         </MazBtn>
 

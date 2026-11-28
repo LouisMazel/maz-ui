@@ -1,6 +1,6 @@
 ---
 title: MazAnimatedCounter
-description: MazAnimatedCounter is a standalone component that allows you to animate a number from 0 to a specific value. Fully animated with CSS.
+description: MazAnimatedCounter is a standalone component that allows you to animate a number from 0 to a specific value. It starts when it enters the screen.
 ---
 
 # {{ $frontmatter.title }}
@@ -47,6 +47,24 @@ onMounted(() => {
     }, 3000)
   })
 </script>
+
+## roll
+
+With `roll`, the digits roll like an odometer ([MazRollingText](./../components/maz-rolling-text.md)) instead of counting up. `duration` is not used.
+
+<ComponentDemo>
+  <MazAnimatedCounter :count="count" roll />
+
+<template #code>
+
+```vue
+<template>
+  <MazAnimatedCounter :count="4000" roll />
+</template>
+```
+
+  </template>
+</ComponentDemo>
 
 ## duration
 

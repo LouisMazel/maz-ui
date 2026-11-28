@@ -125,7 +125,7 @@ function openDialogActions() {
       {
         text: 'Cancel 😱',
         color: 'contrast',
-        outlined: true,
+        variant: 'outline',
         onClick: () => {
           toast.info('Cancel button clicked', {
             position: 'bottom',
@@ -402,6 +402,20 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'acceptP
    */
   contentProps?: MaybeRefOrGetter<Record<string, unknown>>
   /**
+   * Where the dialog grows from: an element, a CSS selector, a click event or a `{ x, y }` point.
+   * Without it, the element last pressed is used.
+   */
+  origin?: Element | string | MouseEvent | { x: number, y: number }
+  /**
+   * `false` gives a plain fade instead of growing from the origin
+   * @default true
+   */
+  animated?: boolean
+  /**
+   * Text the user must type before the accept button is enabled
+   */
+  confirmation?: string
+  /**
    * Function to execute when the dialog is accepted (when the user click on the confirm button)
    * Only available if the button type is 'accept'
    */
@@ -452,7 +466,7 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'acceptP
         {
           text: 'Cancel 😱',
           color: 'destructive',
-          outlined: true,
+          variant: 'outline',
           onClick: () => {
             toast.error('Cancel button clicked', {
               position: 'bottom',

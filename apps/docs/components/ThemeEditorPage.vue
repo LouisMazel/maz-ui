@@ -193,7 +193,7 @@ onBeforeUnmount(() => {
         <div class="maz:flex maz:flex-col maz:gap-3 maz:lap-s:items-end">
           <p class="maz:m-0 maz:flex maz:items-center maz:gap-2 maz:font-mono maz:text-xs maz:text-muted">
             Based on <strong class="maz:font-semibold maz:text-foreground">{{ editor.base.value.label }}</strong>
-            <MazBadge :color="editor.changeCount.value > 0 ? 'primary' : 'surface'" size="sm" :pastel="editor.changeCount.value > 0" :outlined="editor.changeCount.value === 0">
+            <MazBadge :color="editor.changeCount.value > 0 ? 'primary' : 'surface'" size="sm" :variant="editor.changeCount.value > 0 ? 'soft' : 'outline'">
               {{ editor.changeCount.value }} change{{ editor.changeCount.value === 1 ? '' : 's' }}
             </MazBadge>
           </p>
@@ -201,10 +201,10 @@ onBeforeUnmount(() => {
             <MazBtn href="#export" :end-icon="MazArrowDown">
               Get the code
             </MazBtn>
-            <MazBtn color="surface" outlined :start-icon="MazShare" @click="share">
+            <MazBtn color="surface" variant="outline" :start-icon="MazShare" @click="share">
               Share
             </MazBtn>
-            <MazBtn color="surface" outlined :start-icon="MazArrowPath" :disabled="editor.changeCount.value === 0" @click="resetAll">
+            <MazBtn color="surface" variant="outline" :start-icon="MazArrowPath" :disabled="editor.changeCount.value === 0" @click="resetAll">
               Reset
             </MazBtn>
           </div>

@@ -1346,6 +1346,64 @@ function onToggle(isOpen) {
   </template>
 </ComponentDemo>
 
+## Motion
+
+The panel grows from its trigger: its transform origin is the center of the trigger, projected on the edge of the panel that faces it. Two animations, with the `transition` prop:
+
+- `scale-pop` (default, tooltips and menus): the panel springs out of its trigger and is sucked back into it on close.
+- `scale-fade` (selects, pickers): a sober fade with a slight growth and a few pixels from the trigger.
+
+Reduced motion, and the `motion` option of `MazUi`, turn them off.
+
+The panel exposes what you need to style it:
+
+- `--maz-popover-transform-origin`: the origin of the growth, for your own transition.
+- `data-state`: `open` or `closed` (while it leaves).
+- `data-side`: `top`, `bottom`, `left` or `right`, the side of the trigger where the panel is.
+
+`positionReference` also takes a point `{ x, y }` (viewport coordinates): the panel opens from this point.
+
+## Sticky header
+
+`collision-padding` keeps space free at the edges of the viewport: the panel stays out of it, and it is hidden when its trigger goes under it. Give the height of your sticky header, once for every popover with the global defaults:
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  defaults: {
+    MazPopover: { collisionPadding: { top: 64 } },
+  },
+})
+```
+
+The selects, dropdowns, date pickers and tooltips use it too.
+
+A trigger inside a `position: sticky` or `fixed` element (the selects of the sticky header itself) is never hidden by it: it is always in the reserved area.
+
+```css
+.my-popover-enter-active,
+.my-popover-leave-active {
+  transition:
+    transform var(--maz-motion-normal) var(--maz-easing-spring),
+    opacity var(--maz-motion-normal);
+  transform-origin: var(--maz-popover-transform-origin);
+}
+
+.my-popover-enter-from,
+.my-popover-leave-to {
+  opacity: 0;
+  transform: scale(0.8) rotate(-4deg);
+}
+```
+
+```html
+<MazPopover transition="my-popover">
+  ...
+</MazPopover>
+```
+
+`scale-pop` and `scale-fade` (the `transition` prop) are the same default animation.
+
 ## Position values
 
 - `auto` - Automatically choose best position

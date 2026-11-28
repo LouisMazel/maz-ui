@@ -284,7 +284,7 @@ defineExpose({
       <div
         v-for="(line, index) in visibleLines"
         :key="keyOf(line, index)"
-        v-memo="[line, textOf(line), typeOf(line), labelOf(line), labelColorOf(line), isMarkdown(line)]"
+        v-memo="[line, textOf(line), typeOf(line), labelOf(line), labelColorOf(line), isMarkdown(line), hiddenCount]"
         class="m-log-stream__line"
         :class="LINE_TYPE_CLASSES[typeOf(line) ?? 'default']"
       >

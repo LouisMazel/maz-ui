@@ -1,13 +1,15 @@
 <script lang="ts" setup generic="_T">
 import type { CSSProperties } from 'vue'
 import type { MazIconLike } from '../composables/useMazIconProps.ts'
-import type { MazColor, MazNeutralColor, MazRoundedSize, MazSize } from './types.ts'
-import { computed, defineAsyncComponent, useAttrs } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import type { MazColor, MazFillVariant, MazNeutralColor, MazRoundedSize, MazSize } from './types.ts'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
+import { computed, defineAsyncComponent, onBeforeUnmount, ref, useAttrs, useId } from 'vue'
+import { useGlobalConfig, useInstanceFillVariant } from '../composables/useGlobalConfig.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
 import { useExternalLinks } from '../utils/externalLinks.ts'
 import { hasSlotContent } from '../utils/hasSlotContent.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 import { getColor } from './types.ts'
 
 export interface MazBtnProps {
@@ -43,12 +45,20 @@ export interface MazBtnProps {
    */
   roundedSize?: MazRoundedSize
   /**
+   * Fill style of the button: `solid` the full color, `soft` a tinted background, `outline` a border, `ghost` no background until hovered
+   * @values `'solid' | 'soft' | 'outline' | 'ghost'`
+   * @default 'solid'
+   */
+  variant?: MazFillVariant
+  /**
    * If true, the button have the "border" style
+   * @deprecated Use `variant="outline"` instead
    * @default false
    */
   outlined?: boolean
   /**
    * If true, the button will have a pastel color
+   * @deprecated Use `variant="soft"` instead
    * @default false
    */
   pastel?: boolean
@@ -114,6 +124,25 @@ export interface MazBtnProps {
    * @default false
    */
   overflowHidden?: boolean
+  /**
+   * Success state, after `loading`: a check draws itself (in the loader, or in place of the start loader) and, with `successText`, the label rolls to it
+   * @default false
+   */
+  success?: boolean
+  /**
+   * Label displayed while `success` is true, the label rolls from `text` to it. The width of the button is the one of the longest label: it never jumps
+   */
+  successText?: string
+  /**
+   * Hold to confirm: the button fills while it is pressed (pointer, Space or Enter) and emits `hold-confirm` once the `holdDuration` is reached. Released earlier, the fill drains and nothing happens
+   * @default false
+   */
+  hold?: boolean
+  /**
+   * Time to hold the button to confirm, in milliseconds (`hold` only)
+   * @default 1000
+   */
+  holdDuration?: number
 }
 
 const {
@@ -133,15 +162,36 @@ const {
   padding = true,
   active,
   overflowHidden = true,
+  success,
+  successText,
+  hold,
+  holdDuration = 1000,
+  text,
 } = defineProps<MazBtnProps>()
 
-const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazBtn', {
+const emit = defineEmits<{
+  /**
+   * Emitted once the button has been held for `holdDuration` (`hold` only)
+   */
+  'hold-confirm': []
+}>()
+
+const { size, roundedSize, variant: configVariant } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize, variant: MazFillVariant | undefined }>('MazBtn', {
   size: 'md',
   roundedSize: 'md',
+  variant: undefined,
 })
+const variant = useInstanceFillVariant(configVariant)
+
+// Removed in v6 (plans/ROADMAP.md): `outlined` and `pastel` are aliases of `variant`
+const isOutlined = computed(() => variant.value ? variant.value === 'outline' : outlined)
+const isPastel = computed(() => variant.value ? variant.value === 'soft' : pastel)
+const isGhost = computed(() => variant.value === 'ghost')
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
+const MazDrawnIcon = defineAsyncComponent(() => import('./MazDrawnIcon.vue'))
+const MazRollingText = defineAsyncComponent(() => import('./MazRollingText.vue'))
 
 const attrs = useAttrs()
 const { href, to } = attrs
@@ -156,12 +206,77 @@ const component = computed(() => {
 })
 
 function onClick(event: MouseEvent) {
+  if (hold) {
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    return
+  }
+
   if (component.value === 'a')
     onLinkClick(event, href as string | undefined, attrs.target as string | undefined)
 }
 
 const isStartLoader = computed(() => !!loading && loadingPosition === 'start')
 const isOverlayLoader = computed(() => !!loading && loadingPosition !== 'start')
+const isStartSuccess = computed(() => !!success && !loading && loadingPosition === 'start')
+const isOverlaySuccess = computed(() => !!success && !loading && loadingPosition !== 'start')
+const hasStartStatus = computed(() => isStartLoader.value || isStartSuccess.value)
+const isRollingLabel = computed(() => successText !== undefined && text !== undefined)
+
+const { t } = useTranslations()
+const holdId = useId()
+const holding = ref(false)
+let holdTimer: ReturnType<typeof setTimeout> | undefined
+
+function startHold() {
+  if (loading || disabled || holding.value)
+    return
+
+  holding.value = true
+  holdTimer = setTimeout(() => {
+    holdTimer = undefined
+    holding.value = false
+    emit('hold-confirm')
+  }, holdDuration)
+}
+
+function cancelHold() {
+  clearTimeout(holdTimer)
+  holdTimer = undefined
+  holding.value = false
+}
+
+function isActivationKey(event: KeyboardEvent) {
+  return event.key === ' ' || event.key === 'Enter'
+}
+
+const holdListeners = {
+  pointerdown: (event: PointerEvent) => {
+    if (event.button === 0)
+      startHold()
+  },
+  pointerup: cancelHold,
+  pointerleave: cancelHold,
+  pointercancel: cancelHold,
+  blur: cancelHold,
+  keydown: (event: KeyboardEvent) => {
+    if (!isActivationKey(event))
+      return
+
+    event.preventDefault()
+
+    if (!event.repeat)
+      startHold()
+  },
+  keyup: (event: KeyboardEvent) => {
+    if (isActivationKey(event)) {
+      event.preventDefault()
+      cancelHold()
+    }
+  },
+}
+
+onBeforeUnmount(cancelHold)
 
 const resolvedColor = computed(() => getColor(color))
 
@@ -201,7 +316,7 @@ const btnStyle = computed<CSSProperties>(() => {
     ...base,
     '--m-btn-bg': `var(--maz-${c})`,
     '--m-btn-fg': `var(--maz-${c}-foreground)`,
-    ...(pastel && c === 'contrast' && {
+    ...(isPastel.value && c === 'contrast' && {
       '--m-btn-pastel-fg': `var(--maz-contrast)`,
     }),
   }
@@ -222,30 +337,23 @@ const TEXT_COLOR: Record<NonNullable<MazBtnProps['textColor']>, string> = {
 } as const
 
 const SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
-  xl: 'maz:min-h-16 maz:px-8 maz:text-xl',
-  lg: 'maz:min-h-14 maz:px-6',
-  md: 'maz:min-h-12 maz:px-4',
-  sm: 'maz:min-h-10 maz:px-3',
-  xs: 'maz:min-h-8 maz:px-2 maz:text-sm',
-  mini: 'maz:min-h-6 maz:px-1 maz:text-xs',
+  xl: 'maz:min-h-[var(--maz-control-height-xl,4rem)] maz:px-[var(--maz-control-padding-x-xl,2rem)] maz:text-xl',
+  lg: 'maz:min-h-[var(--maz-control-height-lg,3.5rem)] maz:px-[var(--maz-control-padding-x-lg,1.5rem)]',
+  md: 'maz:min-h-[var(--maz-control-height-md,3rem)] maz:px-[var(--maz-control-padding-x-md,1rem)]',
+  sm: 'maz:min-h-[var(--maz-control-height-sm,2.5rem)] maz:px-[var(--maz-control-padding-x-sm,0.75rem)]',
+  xs: 'maz:min-h-[var(--maz-control-height-xs,2rem)] maz:px-[var(--maz-control-padding-x-xs,0.5rem)] maz:text-sm',
+  mini: 'maz:min-h-[var(--maz-control-height-mini,1.5rem)] maz:px-[var(--maz-control-padding-x-mini,0.25rem)] maz:text-xs',
 } as const
 
-const ROUNDED_CLASS: Record<NonNullable<MazBtnProps['roundedSize']>, string> = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS: Record<NonNullable<MazBtnProps['roundedSize']>, string> = ROUNDED_SIZE_CLASS
 
 const FAB_SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
-  xl: 'maz:size-16',
-  lg: 'maz:size-14',
-  md: 'maz:size-12',
-  sm: 'maz:size-10',
-  xs: 'maz:size-8',
-  mini: 'maz:size-6',
+  xl: 'maz:size-[var(--maz-control-height-xl,4rem)]',
+  lg: 'maz:size-[var(--maz-control-height-lg,3.5rem)]',
+  md: 'maz:size-[var(--maz-control-height-md,3rem)]',
+  sm: 'maz:size-[var(--maz-control-height-sm,2.5rem)]',
+  xs: 'maz:size-[var(--maz-control-height-xs,2rem)]',
+  mini: 'maz:size-[var(--maz-control-height-mini,1.5rem)]',
 } as const
 
 const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: string, end: string }> = {
@@ -262,7 +370,7 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
   <component
     :is="component"
     :disabled="isDisabled"
-    class="m-btn m-reset-css maz:inline-flex maz:cursor-interactive maz:items-center maz:gap-2 maz:border maz:border-solid maz:py-0.5 maz:text-center maz:align-top maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out"
+    class="m-btn m-reset-css maz:inline-flex maz:cursor-interactive maz:items-center maz:gap-2 maz:border maz:border-solid maz:py-0.5 maz:text-center maz:align-top maz:no-underline"
     :class="[
       `--${resolvedColor}`,
       `--${size}`,
@@ -271,32 +379,43 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
       !fab && SIZE_CLASS[size],
       fab ? 'maz:flex maz:flex-center maz:rounded-full maz:p-1' : ROUNDED_CLASS[roundedSize],
       fab ? FAB_SIZE_CLASS[size] : '',
-      (isStartLoader || !!startIcon || hasSlotContent($slots['start-icon'])) ? ICON_PADDING_CLASS[size].start : '',
+      (hasStartStatus || !!startIcon || hasSlotContent($slots['start-icon'])) ? ICON_PADDING_CLASS[size].start : '',
       (!!endIcon || hasSlotContent($slots['end-icon'])) ? ICON_PADDING_CLASS[size].end : '',
       {
-        'maz:relative': isOverlayLoader,
+        'maz:relative': isOverlayLoader || isOverlaySuccess || hold,
+        'maz:isolate': hold,
         'maz:overflow-hidden': overflowHidden,
-        '--outlined': outlined,
-        '--pastel': pastel,
+        '--outlined': isOutlined,
+        '--pastel': isPastel,
+        '--ghost': isGhost,
         '--block': block && !fab,
         '--fab': fab,
         '--loading': loading,
+        '--success': success,
+        '--hold': hold,
+        '--holding': holding,
         '--active': active,
         '--no-padding': !padding,
-        '--has-start-icon': isStartLoader || !!startIcon || hasSlotContent($slots['start-icon']),
+        '--has-start-icon': hasStartStatus || !!startIcon || hasSlotContent($slots['start-icon']),
         '--has-end-icon': !!endIcon || hasSlotContent($slots['end-icon']),
       },
     ]"
-    :style="btnStyle"
     :type="btnType"
+    :aria-busy="loading ? true : undefined"
+    :aria-describedby="hold ? holdId : undefined"
+    :style="[btnStyle, hold ? { '--m-btn-hold-duration': `${holdDuration}ms` } : undefined]"
+    v-on="hold ? holdListeners : {}"
     @click="onClick"
   >
+    <span v-if="hold" class="m-btn__hold-fill" aria-hidden="true" />
+
     <!--
       @slot start-icon - The icon to display on the inline-start edge (left in LTR, right in RTL)
     -->
     <slot v-if="isStartLoader" name="loader">
       <MazSpinner size="1.25em" />
     </slot>
+    <MazDrawnIcon v-else-if="isStartSuccess" name="check" size="1.25em" />
     <slot v-else name="start-icon">
       <MazIcon v-if="startIconProps" v-bind="startIconProps" />
     </slot>
@@ -312,7 +431,14 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
       @slot default - The content of the button
     -->
     <slot>
-      {{ text }}
+      <span v-if="isRollingLabel" class="m-btn__label maz:inline-grid maz:justify-items-center" aria-live="polite">
+        <span class="maz:invisible maz:col-start-1 maz:row-start-1" aria-hidden="true">{{ text }}</span>
+        <span class="maz:invisible maz:col-start-1 maz:row-start-1" aria-hidden="true">{{ successText }}</span>
+        <MazRollingText class="maz:col-start-1 maz:row-start-1" :value="success ? successText! : text!" />
+      </span>
+      <template v-else>
+        {{ text }}
+      </template>
     </slot>
 
     <!--
@@ -322,14 +448,17 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
       <MazIcon v-if="endIconProps" v-bind="endIconProps" />
     </slot>
 
-    <div v-if="isOverlayLoader" class="m-btn-loader-container">
+    <div v-if="isOverlayLoader || isOverlaySuccess" :key="isOverlaySuccess ? 'success' : 'loading'" class="m-btn-loader-container">
+      <MazDrawnIcon v-if="isOverlaySuccess" name="check" size="1.5em" />
       <!--
         @slot loader - The loader to display in the button
       -->
-      <slot name="loader">
+      <slot v-else name="loader">
         <MazSpinner size="2em" />
       </slot>
     </div>
+
+    <span v-if="hold" :id="holdId" class="maz:sr-only">{{ t('btn.holdDescription') }}</span>
   </component>
 </template>
 
@@ -404,6 +533,22 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
       &.--active:not(:disabled) {
         background-color: var(--m-btn-bg-hover);
         color: var(--m-btn-fg);
+      }
+    }
+
+    /* Ghost variant: the color as text, no background until hovered */
+    &.--ghost {
+      @apply maz:bg-transparent;
+
+      color: var(--m-btn-bg);
+
+      &:not(:disabled):hover {
+        background-color: color-mix(in srgb, var(--m-btn-bg) 10%, transparent);
+      }
+
+      &:not(:disabled):active,
+      &.--active:not(:disabled) {
+        background-color: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
       }
     }
 
@@ -482,6 +627,21 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
         }
       }
 
+      &.--ghost {
+        @apply maz:bg-transparent maz:border-transparent;
+
+        color: var(--m-btn-fg);
+
+        &:not(:disabled):hover {
+          background-color: color-mix(in oklab, var(--maz-foreground) 6%, transparent);
+        }
+
+        &:not(:disabled):active,
+        &.--active:not(:disabled) {
+          background-color: color-mix(in oklab, var(--maz-foreground) 12%, transparent);
+        }
+      }
+
       &.--outlined {
         @apply maz:bg-transparent maz:border-divider;
 
@@ -509,6 +669,24 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
 
 /* Outside of the layer: these states keep winning over the utility classes of the button and of its parents */
 .m-btn {
+  transition:
+    background-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    border-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    outline-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    scale calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-bounce, ease-out);
+
+  &:not(:disabled, [aria-disabled='true']):active {
+    scale: 0.97;
+    transition-duration: calc(var(--maz-motion-instant, 80ms) * var(--maz-motion-scale, 1));
+  }
+
+  &.--hold {
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
   &.--block {
     @apply maz:w-full;
   }
@@ -524,5 +702,36 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
   &.--no-padding {
     @apply maz:p-0;
   }
+}
+
+.m-btn__hold-fill {
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in srgb, currentcolor 22%, transparent);
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform calc(var(--maz-motion-fast, 150ms) * 0.7 * var(--maz-motion-scale, 1))
+    var(--maz-easing-in, ease-in);
+}
+
+[dir='rtl'] .m-btn__hold-fill {
+  transform-origin: right center;
+}
+
+.m-btn.--holding .m-btn__hold-fill {
+  transform: scaleX(1);
+  transition: transform var(--m-btn-hold-duration, 1000ms) linear;
+}
+
+@keyframes m-btn-status-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.m-btn-loader-container {
+  animation: m-btn-status-in calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1))
+    var(--maz-easing-out, ease-out);
 }
 </style>

@@ -307,6 +307,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | --- | --- | --- |
 | `unknown-component` | error | `<MazButton>` (did you mean `MazBtn`?) |
 | `unknown-prop` | warning | A prop the component does not have (`colour`) |
+| `deprecated-prop` | warning | A prop kept for compatibility: the message gives its replacement |
 | `invalid-prop-value` | error | `color="red"` on a component that accepts `primary`, `secondary`... |
 | `boolean-prop-string` | error | `disabled="false"` (a truthy string) |
 | `unknown-model`, `unknown-event`, `unknown-slot` | error | `v-model:foo`, `@clik`, `<template #captions>` |
@@ -331,6 +332,8 @@ The command exits with an error code when it finds errors (or more warnings than
 | `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers, and hand-written code it provides (`Intl.NumberFormat` for a currency, a `setTimeout` debounce, a loading `ref` shared by a module, `JSON.stringify` to compare objects, a click outside listener, `navigator.clipboard`, a countdown with `setInterval`, the iOS detection, a case conversion regex, `document.cookie`, a `resize` or `scroll` listener, a `new IntersectionObserver`, `body.style.overflow`...). Warning when the tool covers the case, info when the hand-written code can be intended |
 | `theme-colors` | warning | Default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`) |
 | `hardcoded-color` | warning | `bg-[#1d90ff]`, `color: #fff` |
+| `hardcoded-motion` | info | `duration-300`, `transition: opacity 300ms`: the motion tokens follow the preset and the reduced motion (`var(--maz-motion-normal)`, `duration-(--duration-normal)`) |
+| `transition-all`, `layout-transition` | info | `transition-all`, `transition: all`, `transition: height`: animate `transform` and `opacity` |
 | `pale-brand-color` | warning | A `primary` or `secondary` of `definePreset` under 3:1 against the surface: they are strong brand colors, not subtle backgrounds |
 | `internal-prefix` | error | The internal `maz:` prefix |
 | `tailwind-v3` | warning | `bg-opacity-50`, `flex-shrink-0`... |
@@ -339,6 +342,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | `root-import`, `internal-import` | error | Runtime imports from `maz-ui` (types only) or from `src`/`dist` |
 | `nuxt-auto-import` | info | Imports that `@maz-ui/nuxt` already auto-imports (a component used in the script, `h(MazIcon)`, keeps its import) |
 | `deprecated-api` | warning | `app.use(ToastPlugin)`, `DialogPlugin`, `WaitPlugin`, `$mazToast`... and `mazUi.plugins` in `nuxt.config`: the composables work without them (removed in v6) |
+| `prefer-reveal` | warning | `data-maz-aos`, `useAos`, `AosPlugin`, the `aos` option and `maz-ui/aos.css`: `v-reveal` replaces them, with the equivalent effect |
 | `parse-error` | error | A file the parser cannot read (an unclosed tag): it is not reviewed |
 | `invalid-ignore` | error | A `maz-ui-review-ignore` comment without a reason, or on a rule that cannot be ignored |
 

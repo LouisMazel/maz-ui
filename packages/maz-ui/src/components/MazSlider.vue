@@ -36,6 +36,13 @@ export interface MazSliderProps {
   color?: MazColor
   /** disables cursor animation when active */
   cursorAnim?: boolean
+  /** show a tick at each step, they darken as the fill passes them (ignored with `log`) */
+  ticks?: boolean
+  /**
+   * Animate the value bubble, the ticks and the press of the cursor
+   * @default true
+   */
+  animated?: boolean
 }
 
 const {
@@ -48,6 +55,8 @@ const {
   divider = true,
   log = false,
   cursorAnim = true,
+  ticks = false,
+  animated = true,
 } = defineProps<MazSliderProps>()
 
 const emits = defineEmits(['update:model-value'])
@@ -62,6 +71,7 @@ const tmpValues = ref<number[]>()
 
 const buttonStyles = ref<CSSProperties[]>([])
 const dividers = ref<CSSProperties[]>([])
+const isRtl = ref(false)
 
 // COMPUTED
 
@@ -102,6 +112,33 @@ const sliderStyle = computed<StyleValue>(() => {
 })
 const hasMultipleValues = computed(() => Array.isArray(modelValue))
 
+const MAX_TICKS = 101
+
+const tickList = computed(() => {
+  const count = Math.floor((max - min) / step)
+
+  if (!ticks || log || !Number.isFinite(count) || count < 1 || count + 1 > MAX_TICKS)
+    return []
+
+  const values = tmpValues.value ?? computedValue.value
+  const low = values.length > 1 ? Math.min(...values) : min
+  const high = Math.max(...values)
+
+  return Array.from({ length: count + 1 }, (_, index) => {
+    const value = min + index * step
+
+    return {
+      key: index,
+      style: { insetInlineStart: `${(index * step / (max - min)) * 100}%` } satisfies CSSProperties,
+      passed: value >= low && value <= high,
+    }
+  })
+})
+
+function readDirection() {
+  isRtl.value = MazSlider.value ? globalThis.getComputedStyle(MazSlider.value).direction === 'rtl' : false
+}
+
 watch(
   () => modelValue,
   () => (tmpValues.value = computedValue.value),
@@ -125,6 +162,7 @@ onBeforeUnmount(() => {
 })
 
 async function buildComponent(emitValue?: boolean) {
+  readDirection()
   if (emitValue === true)
     checkValues()
   await calcPos()
@@ -174,12 +212,12 @@ function getKeyboardValue(event: KeyboardEvent, i: number): number | undefined {
   const { lower, upper } = getCursorBounds(i)
 
   switch (event.key) {
-    case 'ArrowLeft':
+    case isRtl.value ? 'ArrowRight' : 'ArrowLeft':
     case 'ArrowDown':
       return isBetween(current - step, values[i - 1], values[i + 1], 'minus')
         ? Math.max(min, roundToStep(current - step))
         : current
-    case 'ArrowRight':
+    case isRtl.value ? 'ArrowLeft' : 'ArrowRight':
     case 'ArrowUp':
       return isBetween(current + step, values[i - 1], values[i + 1], 'plus')
         ? Math.min(max, roundToStep(current + step))
@@ -257,7 +295,7 @@ async function setBtnStyle(i: number) {
     const width = cursor?.clientWidth + 16
 
     const btnStyle = {
-      left:
+      insetInlineStart:
           typeof buttonPositions.value?.[i] === 'number'
             ? `${buttonPositions.value[i] - width / 2 || 1}px`
             : '',
@@ -277,10 +315,10 @@ function setDividers() {
     const middle = Math.round(baseLength / 2)
     // generate dividers items with style
     dividers.value = base.map((pos, i) => ({
-      left: i === 0
+      insetInlineStart: i === 0
         ? 0
         : `${base[i - 1]}px`, // ATTENTION: buttonPositions.value[i - 1]
-      right: i + 1 === baseLength
+      insetInlineEnd: i + 1 === baseLength
         ? 0
         : `calc( 100% - ${pos}px )`,
       backgroundColor:
@@ -330,6 +368,7 @@ function handleMousedown(_event: MouseEvent | TouchEvent | FocusEvent, i: number
   if (activeCursor.value !== undefined)
     return
 
+  readDirection()
   activeCursor.value = i
   setBtnDividers(i)
 }
@@ -360,7 +399,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
       return console.error('[maz-ui](MazSlider/handleMousemove) MazSlider not available')
 
     buttonPositions.value[activeCursor.value] = (() => {
-      const movement = getPos(event, MazSlider.value).x
+      const movement = getPos(event, MazSlider.value, isRtl.value).x
 
       if (movement < prevValue) {
         return prevValue
@@ -384,7 +423,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   <div
     :style="[wrapperStyle, sliderStyle, { fontSize: size }]"
     class="m-slider m-reset-css"
-    :class="[`m-slider--${color}`]"
+    :class="[`m-slider--${color}`, { 'm-slider--labels': labels, 'm-slider--static': !animated }]"
     @mousemove.passive="handleMousemove"
     @mouseup.passive="handleMouseup"
     @mouseleave.passive="handleMouseup"
@@ -394,6 +433,20 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
       ref="MazSlider"
       class="m-slider__bar maz:relative maz:flex maz:flex-center maz:rounded-full"
     >
+      <div
+        v-if="tickList.length"
+        class="m-slider__ticks"
+        aria-hidden="true"
+      >
+        <span
+          v-for="tick in tickList"
+          :key="`tick-${tick.key}`"
+          class="m-slider__tick"
+          :data-passed="tick.passed"
+          :style="tick.style"
+        />
+      </div>
+
       <div
         v-for="(div, i) in dividers"
         :key="`divider-${i}`"
@@ -412,6 +465,8 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         :aria-valuemax="max"
         :aria-valuetext="getLabel(i)"
         :data-label="getLabel(i)"
+        :data-value="tmpValues?.[i]"
+        :data-state="i === activeCursor ? 'active' : 'idle'"
         class="m-slider__btn maz:flex maz:flex-center maz:rounded-full maz:border maz:border-solid maz:border-divider maz:bg-surface maz:shadow-md maz:hover:bg-surface-200"
         :class="{
           'active-cursor maz:z-2 maz:border maz:shadow-lg': i === activeCursor && cursorAnim,
@@ -446,10 +501,10 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   font-weight: bold;
   line-height: 1;
   transition:
-    box-shadow 300ms ease-in-out,
-    inline-size 300ms ease-in-out,
-    transform 300ms ease-in-out,
-    background-color 300ms ease-in-out;
+    box-shadow calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    scale calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1)) var(--maz-easing-bounce, ease-out),
+    background-color calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
   z-index: 1;
   user-select: none;
   padding-block: 0.25em;
@@ -464,6 +519,16 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     border-color: var(--m-slider-color);
   }
 
+  &:focus-visible {
+    outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
+    outline-offset: var(--maz-focus-ring-offset, 2px);
+  }
+
+  &:active {
+    scale: 0.94;
+    transition-duration: calc(var(--maz-motion-instant, 80ms) * var(--maz-motion-scale, 1));
+  }
+
   &::before {
     content: attr(data-label);
     position: absolute;
@@ -471,6 +536,74 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     font-size: 0.8em;
     font-weight: 500;
     color: var(--maz-foreground);
+  }
+
+  &::after {
+    content: attr(data-value) / '';
+    position: absolute;
+    inset-block-end: calc(100% + 0.6em);
+    inset-inline: 0;
+    inline-size: max-content;
+    margin-inline: auto;
+    translate: 0 0.4em;
+    scale: 0.9;
+    padding-block: 0.25em;
+    padding-inline: 0.6em;
+    border-radius: 0.5em;
+    background-color: var(--maz-foreground);
+    color: var(--maz-surface);
+    font-size: 0.9em;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity calc(var(--maz-motion-fast, 100ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+      translate calc(var(--maz-motion-fast, 100ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
+      scale calc(var(--maz-motion-fast, 100ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
+  }
+
+  &[data-state='active']::after,
+  &:focus-visible::after {
+    translate: 0 0;
+    scale: 1;
+    opacity: 1;
+    transition-duration: calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1));
+    transition-timing-function: var(--maz-easing-spring, ease-out);
+  }
+}
+
+.m-slider--labels .m-slider__btn::after {
+  inset-block-end: calc(100% + 1.9em);
+}
+
+.m-slider--static .m-slider__btn,
+.m-slider--static .m-slider__btn::after,
+.m-slider--static .m-slider__tick {
+  transition: none;
+}
+
+.m-slider__ticks {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(100% + 0.35em);
+  block-size: 0.4em;
+  pointer-events: none;
+}
+
+.m-slider__tick {
+  position: absolute;
+  inset-block-start: 0;
+  inline-size: 2px;
+  block-size: 100%;
+  margin-inline-start: -1px;
+  border-radius: 1px;
+  background-color: var(--maz-divider);
+  transition: background-color calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1))
+    var(--maz-easing-out, ease-out);
+
+  &[data-passed='true'] {
+    background-color: var(--m-slider-color, var(--maz-foreground));
   }
 }
 

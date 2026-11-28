@@ -113,7 +113,7 @@ function isLevelModified(level: TypographyLevel): boolean {
             :key="name"
             size="xs"
             :color="editor.get(['foundation', font.key]) === stack ? 'primary' : 'surface'"
-            :outlined="editor.get(['foundation', font.key]) !== stack"
+            :variant="editor.get(['foundation', font.key]) !== stack ? 'outline' : 'solid'"
             :style="{ fontFamily: stack }"
             @click="editor.set(['foundation', font.key], stack)"
           >

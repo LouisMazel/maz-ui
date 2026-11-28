@@ -66,7 +66,7 @@ description: Convert country code in unicode flag
         {{ option.unicodeFlag }}
       </span>
       <MazBadge
-        pastel
+        variant="soft"
         size="xs"
         class="maz:w-9"
         :class="{ 'maz:text-muted': !isSelected }"
@@ -157,7 +157,7 @@ description: Convert country code in unicode flag
           {{ option.unicodeFlag }}
         </span>
         <MazBadge
-          pastel
+          variant="soft"
           size="xs"
           class="w-9"
           :class="{ 'text-muted': !isSelected }"

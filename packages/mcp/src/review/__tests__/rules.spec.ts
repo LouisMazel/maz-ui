@@ -25,6 +25,26 @@ function withLegacyPlugins(): Knowledge {
   })))
 }
 
+function withoutReveal(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: {
+      ...loaded.fragment,
+      docs: loaded.fragment.docs.filter(doc => doc.id !== 'directives/reveal'),
+    },
+  })))
+}
+
+function withReveal(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: {
+      ...loaded.fragment,
+      docs: [...loaded.fragment.docs, { ...loaded.fragment.docs[0]!, id: 'directives/reveal', symbols: ['vReveal'] }],
+    },
+  })))
+}
+
 function review(code: string, filename = 'Test.vue', framework?: Framework): Finding[] {
   return reviewCode(code, {
     knowledge: getKnowledge(),
@@ -58,7 +78,7 @@ describe('given the unknown-component rule', () => {
 
   describe('when the tag is a component, an icon, a kebab-case or a lazy Nuxt component', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf(template('<MazBtn>x</MazBtn><maz-btn outlined>x</maz-btn><LazyMazBtn pastel>x</LazyMazBtn><MazTrash class="size-5" />'))).toEqual([])
+      expect(rulesOf(template('<MazBtn>x</MazBtn><maz-btn variant="outline">x</maz-btn><LazyMazBtn variant="soft">x</LazyMazBtn><MazTrash class="size-5" />'))).toEqual([])
     })
   })
 
@@ -144,7 +164,7 @@ describe('given the unknown-prop rule', () => {
 
   describe('when the component forwards its attributes to another component', () => {
     it('then the props of the receiving components are accepted', () => {
-      expect(rulesOf(template('<MazDropdown icon="trash" :items="items" outlined /><MazSelectCountry label="l" debounce /><MazDatePicker label="l" hint="h" error /><MazInputPhoneNumber label="l" hint="h" success />'))).toEqual([])
+      expect(rulesOf(template('<MazDropdown icon="trash" :items="items" variant="outline" /><MazSelectCountry label="l" debounce /><MazDatePicker label="l" hint="h" error /><MazInputPhoneNumber label="l" hint="h" success />'))).toEqual([])
     })
 
     it('then the values of the forwarded props are checked', () => {
@@ -313,14 +333,14 @@ describe('given the unknown-event rule', () => {
     })
 
     it('then it explains that DOM events still work when the component declares none', () => {
-      expect(review(template('<MazBtn @qwxzvqwxzv="go">x</MazBtn>'))[0].suggestion).toContain('none (DOM events like @click still work)')
+      expect(review(template('<MazCarousel @qwxzvqwxzv="go">x</MazCarousel>'))[0].suggestion).toContain('none (DOM events like @click still work)')
     })
   })
 
   describe('when update:x targets a missing prop', () => {
     it('then it is an error', () => {
       expect(rulesOf(template('<MazDialog @update:qwxzv="go" />'))).toEqual(['unknown-event'])
-      expect(review(template('<MazBtn @update:qwxzv="go">x</MazBtn>'))[0].suggestion).toBe('Events: none.')
+      expect(review(template('<MazCarousel @update:qwxzv="go">x</MazCarousel>'))[0].suggestion).toBe('Events: none.')
     })
   })
 
@@ -1035,7 +1055,17 @@ describe('given the multiple-primary-actions rule', () => {
 
   describe('when only one button is solid primary', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn outlined>Draft</MazBtn><MazBtn color="secondary">x</MazBtn><MazBtn :color="c">y</MazBtn><MazBtn :pastel="true">z</MazBtn><MazBtn fab>w</MazBtn></div><div><MazBtn>Other group</MazBtn></div>'))).toEqual([])
+      expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn variant="outline">Draft</MazBtn><MazBtn color="secondary">x</MazBtn><MazBtn :color="c">y</MazBtn><MazBtn variant="soft">z</MazBtn><MazBtn fab>w</MazBtn></div><div><MazBtn>Other group</MazBtn></div>'))).toEqual([])
+    })
+  })
+
+  describe('when the other buttons use a variant', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn variant="outline">Draft</MazBtn><MazBtn variant="soft">x</MazBtn><MazBtn variant="ghost">y</MazBtn><MazBtn :variant="v">z</MazBtn></div>'))).toEqual([])
+    })
+
+    it('then a solid variant still counts as a main action', () => {
+      expect(rulesOf(template('<div><MazBtn>Save</MazBtn><MazBtn variant="solid">Send</MazBtn></div>'))).toEqual(['multiple-primary-actions'])
     })
   })
 
@@ -1320,7 +1350,7 @@ describe('given the button-navigation rule', () => {
 
   describe('when the button has a link or another click handler', () => {
     it('then nothing is reported', () => {
-      expect(rulesOf(template('<MazBtn to="/x">Go</MazBtn><MazBtn outlined @click="save">Save</MazBtn><MazBtn outlined @click="location === \'x\'">Go</MazBtn><a href="/x">Go</a>'))).toEqual([])
+      expect(rulesOf(template('<MazBtn to="/x">Go</MazBtn><MazBtn variant="outline" @click="save">Save</MazBtn><MazBtn variant="outline" @click="location === \'x\'">Go</MazBtn><a href="/x">Go</a>'))).toEqual([])
     })
   })
 })
@@ -1624,6 +1654,180 @@ describe('given the prefer-markdown rule', () => {
       '<div v-html="remarked" />',
     ])('then %s is not reported', (markup) => {
       expect(rulesOf(template(markup))).not.toContain('prefer-markdown')
+    })
+  })
+})
+
+function withDeprecatedProp(): Knowledge {
+  return new Knowledge(getKnowledge().fragments.map(loaded => ({
+    ...loaded,
+    fragment: {
+      ...loaded.fragment,
+      components: loaded.fragment.components.map(component => component.name === 'MazBtn'
+        ? {
+            ...component,
+            props: component.props.map(prop => prop.name === 'outlined'
+              ? { ...prop, deprecated: 'Use `variant="outline"` instead' }
+              : prop),
+          }
+        : component),
+    },
+  })))
+}
+
+describe('given the deprecated-prop rule', () => {
+  function reviewDeprecated(markup: string): Finding[] {
+    return reviewCode(template(markup), { knowledge: withDeprecatedProp(), filename: 'Test.vue' })
+  }
+
+  describe('when a deprecated prop is set', () => {
+    it.each([
+      '<MazBtn outlined>Save</MazBtn>',
+      '<MazBtn :outlined="true">Save</MazBtn>',
+    ])('then %s is reported with the alternative', (markup) => {
+      const finding = reviewDeprecated(markup).find(entry => entry.rule === 'deprecated-prop')
+
+      expect(finding?.severity).toBe('warning')
+      expect(finding?.message).toContain('`outlined` of MazBtn is deprecated')
+      expect(finding?.suggestion).toBe('Use `variant="outline"` instead')
+    })
+  })
+
+  describe('when only current props are set', () => {
+    it('then nothing is reported', () => {
+      expect(reviewDeprecated('<MazBtn color="primary">Save</MazBtn>').map(entry => entry.rule)).not.toContain('deprecated-prop')
+    })
+  })
+})
+
+describe('given the motion rules', () => {
+  function styleBlock(css: string): string {
+    return `${template('<div class="box" />')}<style scoped>\n${css}\n</style>\n`
+  }
+
+  describe('when a transition hard-codes its duration', () => {
+    it('then hardcoded-motion suggests the motion tokens', () => {
+      const finding = review(styleBlock('.box { transition: opacity 300ms ease; }')).find(entry => entry.rule === 'hardcoded-motion')
+
+      expect(finding?.severity).toBe('info')
+      expect(finding?.suggestion).toContain('var(--maz-motion-normal)')
+    })
+  })
+
+  describe('when a transition uses the motion tokens', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(styleBlock('.box { transition: opacity var(--maz-motion-normal) var(--maz-easing-out); }'))).toEqual([])
+    })
+  })
+
+  describe('when a transition animates every property', () => {
+    it('then transition-all is reported', () => {
+      expect(rulesOf(styleBlock('.box { transition: all var(--maz-motion-fast); }'))).toEqual(['transition-all'])
+    })
+  })
+
+  describe('when a transition animates a layout property', () => {
+    it('then layout-transition suggests transform and opacity', () => {
+      expect(rulesOf(styleBlock('.box { transition: height var(--maz-motion-normal); }'))).toEqual(['layout-transition'])
+    })
+  })
+
+  describe('when a class animates every property or hard-codes a duration', () => {
+    it('then transition-all and hardcoded-motion are reported', () => {
+      expect(rulesOf(template('<div class="transition-all duration-300 hover:duration-150" />'))).toEqual(['transition-all', 'hardcoded-motion', 'hardcoded-motion'])
+    })
+  })
+
+  describe('when the classes use the theme durations', () => {
+    it('then nothing is reported', () => {
+      expect(rulesOf(template('<div class="transition-colors duration-(--duration-fast)" />'))).toEqual([])
+    })
+  })
+})
+
+describe('given the prefer-reveal rule', () => {
+  const reviewReveal = (code: string, filename = 'Test.vue', internalSource = false) => reviewCode(code, {
+    knowledge: withReveal(),
+    filename,
+    internalSource,
+  }).filter(finding => finding.rule === 'prefer-reveal')
+
+  describe.each([
+    ['fade-up', 'slide-up'],
+    ['fade-down-left', 'slide-down'],
+    ['slide-right', 'slide-start'],
+    ['fade-left', 'slide-end'],
+    ['zoom-in-up', 'scale'],
+    ['scale-in', 'scale'],
+    ['zoom-out', 'fade'],
+    ['flip-left', 'curtain-start'],
+    ['rotate-right', 'curtain-end'],
+    ['flip-up', 'curtain-up'],
+    ['flip-down', 'curtain-down'],
+  ])('when a template uses data-maz-aos="%s"', (aos, effect) => {
+    it(`then vReveal ${effect} is proposed`, () => {
+      const findings = reviewReveal(`<template>\n  <p data-maz-aos="${aos}" data-maz-aos-delay="200">Hello</p>\n</template>`)
+
+      expect(findings).toHaveLength(1)
+      expect(findings[0]?.line).toBe(2)
+      expect(findings[0]?.severity).toBe('warning')
+      expect(findings[0]?.suggestion).toContain(`v-reveal="'${effect}'"`)
+      expect(findings[0]?.suggestion).toContain(`data-maz-reveal="${effect}"`)
+    })
+  })
+
+  describe('when the script uses useAos, AosPlugin or the aos option', () => {
+    it('then each one is reported with its replacement', () => {
+      const code = 'import { useAos } from \'maz-ui/composables/useAos\'\nimport \'maz-ui/aos.css\'\napp.use(AosPlugin)\napp.use(MazUi, { theme, aos: { router } })\nconst aos = useAos()'
+      const findings = reviewReveal(code, 'main.ts')
+
+      expect(findings.map(finding => finding.message)).toEqual(expect.arrayContaining([
+        '`useAos` is the deprecated AOS plugin (removed in v6).',
+        '`AosPlugin` is deprecated (removed in v6).',
+        'The `aos` option is deprecated (removed in v6).',
+        '`maz-ui/aos.css` is the deprecated AOS plugin (removed in v6).',
+      ]))
+      expect(findings.find(finding => finding.message.startsWith('`useAos`'))?.suggestion).toContain('useReveal()')
+    })
+
+    it('then the option set to true is reported', () => {
+      expect(reviewReveal('export default defineNuxtConfig({ mazUi: { aos: true } })', 'nuxt.config.ts')).toHaveLength(1)
+    })
+
+    it('then the aos option of another library is not reported', () => {
+      expect(reviewReveal('export default defineConfig({ animations: { aos: { once: true } } })', 'app.config.ts')).toHaveLength(0)
+    })
+  })
+
+  describe('when the installed maz-ui has no vReveal', () => {
+    it('then nothing is proposed', () => {
+      expect(reviewCode('<template><p data-maz-aos="fade-up">Hello</p></template>', { knowledge: withoutReveal(), filename: 'Test.vue' }).map(finding => finding.rule)).not.toContain('prefer-reveal')
+    })
+  })
+
+  describe('when the code is the maz-ui repository', () => {
+    it('then nothing is reported', () => {
+      expect(reviewReveal('export function useAos() {}', 'useAos.ts', true)).toEqual([])
+    })
+  })
+
+  describe('when a style mentions aos', () => {
+    it('then nothing is reported', () => {
+      expect(reviewReveal('.a { color: red; } /* useAos */', 'a.css')).toEqual([])
+    })
+  })
+
+  describe('when the code uses vReveal', () => {
+    it('then nothing is reported', () => {
+      expect(reviewReveal('<template><p v-reveal="\'slide-up\'" data-maz-reveal="fade">Hello</p></template>')).toEqual([])
+    })
+  })
+
+  describe('when the aos npm package is imported', () => {
+    it('then vReveal is proposed', () => {
+      const findings = review('import AOS from \'aos\'', 'main.ts').filter(finding => finding.rule === 'prefer-ecosystem')
+
+      expect(findings[0]?.suggestion).toContain('vReveal')
     })
   })
 })

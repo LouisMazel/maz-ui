@@ -182,6 +182,22 @@ const SIZE_CLASS = {
   lg: 'maz:min-h-14 maz:gap-3 maz:px-4 maz:py-2.5',
 } as const satisfies Record<MazListSize, string>
 
+/** The classes keep the sizes of the default density, the style scales them with the active density */
+const SIZE_UNITS = {
+  sm: { height: 9, paddingBlock: 1.5 },
+  md: { height: 11, paddingBlock: 2 },
+  lg: { height: 14, paddingBlock: 2.5 },
+} as const satisfies Record<MazListSize, { height: number, paddingBlock: number }>
+
+const sizeStyle = computed(() => {
+  const { height, paddingBlock } = SIZE_UNITS[resolvedSize.value]
+
+  return {
+    minHeight: `calc(var(--maz-space, 0.25rem) * ${height} * var(--maz-density-ratio, 1))`,
+    paddingBlock: `calc(var(--maz-space, 0.25rem) * ${paddingBlock} * var(--maz-density-ratio, 1))`,
+  }
+})
+
 const hasText = computed(() => !!title || !!subtitle || hasSlotContent(slots.title) || hasSlotContent(slots.subtitle))
 </script>
 
@@ -202,10 +218,11 @@ const hasText = computed(() => !!title || !!subtitle || hasSlotContent(slots.tit
         class="m-list-item__main maz:flex maz:min-w-0 maz:flex-1 maz:items-center maz:text-start maz:text-foreground"
         :class="[
           SIZE_CLASS[resolvedSize],
-          isInteractive && 'maz:cursor-interactive maz:border-none maz:bg-transparent maz:no-underline maz:transition-colors maz:duration-150 maz:outline-none maz:hover:bg-foreground/3 maz:focus-visible:bg-foreground/5',
+          isInteractive && 'maz:cursor-interactive maz:border-none maz:bg-transparent maz:no-underline maz:focus-ring maz:transition-colors maz:duration-(--duration-fast) maz:hover:bg-foreground/3 maz:focus-visible:bg-foreground/5',
           disabled && 'maz:disabled-state',
           hasSlotContent($slots.actions) && 'maz:pe-2',
         ]"
+        :style="sizeStyle"
         :type="tag === 'button' ? 'button' : undefined"
         :disabled="tag === 'button' && disabled ? true : undefined"
         :aria-disabled="isLink && disabled ? true : undefined"
@@ -216,7 +233,7 @@ const hasText = computed(() => !!title || !!subtitle || hasSlotContent(slots.tit
         <MazIcon
           v-if="collapsible && chevronPosition === 'start'"
           :icon="MazChevronRight"
-          class="m-list-item__chevron maz:size-3.5 maz:flex-none maz:text-muted maz:transition-transform maz:duration-200 maz:motion-reduce:transition-none"
+          class="m-list-item__chevron maz:size-3.5 maz:flex-none maz:text-muted maz:transition-transform maz:duration-(--duration-normal) maz:ease-spring maz:motion-reduce:transition-none"
           :class="{ 'maz:rotate-90': openModel }"
           aria-hidden="true"
         />
@@ -245,7 +262,7 @@ const hasText = computed(() => !!title || !!subtitle || hasSlotContent(slots.tit
         <MazIcon
           v-if="collapsible && chevronPosition === 'end'"
           :icon="MazChevronRight"
-          class="m-list-item__chevron maz:size-3.5 maz:flex-none maz:text-muted maz:transition-transform maz:duration-200 maz:motion-reduce:transition-none"
+          class="m-list-item__chevron maz:size-3.5 maz:flex-none maz:text-muted maz:transition-transform maz:duration-(--duration-normal) maz:ease-spring maz:motion-reduce:transition-none"
           :class="{ 'maz:rotate-90': openModel }"
           aria-hidden="true"
         />
@@ -257,7 +274,7 @@ const hasText = computed(() => !!title || !!subtitle || hasSlotContent(slots.tit
       </div>
     </div>
 
-    <MazExpandAnimation v-if="collapsible" :id="contentId" v-model="openModel" duration="200ms" :lazy>
+    <MazExpandAnimation v-if="collapsible" :id="contentId" v-model="openModel" duration="calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))" :lazy>
       <div class="m-list-item__content maz:bg-foreground/3" :class="contentClass ?? 'maz:px-3 maz:pt-1 maz:pb-3'">
         <!-- @slot default - Expanded content of a collapsible row -->
         <slot :open="openModel" />
@@ -269,3 +286,9 @@ const hasText = computed(() => !!title || !!subtitle || hasSlotContent(slots.tit
     </div>
   </div>
 </template>
+
+<style scoped>
+.m-list-item__main {
+  --maz-focus-ring-offset: -2px;
+}
+</style>

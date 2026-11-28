@@ -174,6 +174,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
   <div
     v-if="images.length > 0 || hasEmptyLayer"
     class="m-gallery m-reset-css maz:relative maz:flex maz:overflow-hidden"
+    data-maz-lightbox-group
     :style="[sizeStyle, {
       '--gallery-separator-color': separatorColor,
       '--gallery-background-color': backgroundColor,

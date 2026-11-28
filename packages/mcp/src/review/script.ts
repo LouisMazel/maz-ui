@@ -269,7 +269,7 @@ const THIRD_PARTY_RULES: ThirdPartyRule[] = [
   },
   {
     packages: ['aos'],
-    replacement: 'the maz-ui AOS plugin (`useAos`)',
+    replacement: 'the maz-ui `vReveal` directive (`maz-ui/directives/vReveal`)',
     severity: 'warning',
     rule: 'prefer-ecosystem',
   },
@@ -812,7 +812,7 @@ const HANDWRITTEN_PATTERNS: HandwrittenPattern[] = [
     rule: 'prefer-ecosystem',
     severity: 'warning',
     message: 'Creates an `IntersectionObserver` by hand.',
-    suggestion: 'Use `useIntersectionObserver(target, callback)` from `maz-ui/composables/useIntersectionObserver` (`isIntersecting`, `once`, stops on unmount) or the `v-intersect` directive (`maz-ui/directives/vIntersect`). To load the next page of a list: `useInfiniteScroll`. For images: `vLazyImg` or MazLazyImg; for animations on scroll: MazAnimatedElement or `useAos`.',
+    suggestion: 'Use `useIntersectionObserver(target, callback)` from `maz-ui/composables/useIntersectionObserver` (`isIntersecting`, `once`, stops on unmount) or the `v-intersect` directive (`maz-ui/directives/vIntersect`). To load the next page of a list: `useInfiniteScroll`. For images: `vLazyImg` or MazLazyImg; for animations on scroll: `v-reveal` (vReveal) or MazAnimatedElement.',
   },
   {
     regex: /\baddEventListener\(\s*['"`]scroll['"`]/g,

@@ -52,12 +52,13 @@ export interface MazSidebarMenuButtonProps {
 
 <script lang="ts" setup generic="_T">
 import type { Component } from 'vue'
-import { computed, defineAsyncComponent, getCurrentInstance } from 'vue'
+import { computed, defineAsyncComponent, getCurrentInstance, inject, onBeforeUnmount, useTemplateRef, watch } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict.ts'
 import { useMazIconProps } from '../composables/useMazIconProps.ts'
 import { useExternalLinks } from '../utils/externalLinks.ts'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent.ts'
 import { mazSidebarKey } from './MazSidebar.vue'
+import { mazSidebarMenuKey } from './MazSidebarMenu.vue'
 
 const { to, href, disabled, icon, endIcon, badge, tooltip, tooltipMode, active, size = 'md' } = defineProps<MazSidebarMenuButtonProps>()
 
@@ -181,6 +182,36 @@ const routerActiveClass = computed(() => {
 
 const isActive = computed(() => active === true)
 
+const menu = inject(mazSidebarMenuKey, undefined)
+const buttonRef = useTemplateRef<HTMLElement | { $el: HTMLElement }>('button')
+
+function getButtonElement(): HTMLElement | undefined {
+  const target = buttonRef.value
+
+  return target && '$el' in target
+    ? target.$el
+    : target ?? undefined
+}
+
+/** The active button gives its place to the pill of the menu, that slides from the previous active button */
+watch(
+  [isActive, buttonRef],
+  () => {
+    const element = getButtonElement()
+
+    if (isActive.value && element)
+      menu?.setActive(element)
+  },
+  { flush: 'post' },
+)
+
+onBeforeUnmount(() => {
+  if (isActive.value)
+    menu?.setActive(undefined)
+})
+
+const hasPill = computed(() => isActive.value && !!menu?.hasPill.value)
+
 /** The floating variant follows the native sidebars: neutral selection, no hover fill, accent-colored icons. */
 const stateClass = computed(() => {
   if (sidebar.variant.value === 'floating') {
@@ -191,21 +222,23 @@ const stateClass = computed(() => {
   }
   return isActive.value
     ? 'maz:cursor-auto maz:bg-primary/10 maz:font-semibold maz:text-primary'
-    : 'maz:cursor-interactive maz:bg-transparent maz:font-medium maz:text-foreground maz:hover:not-disabled:bg-surface-600 maz:dark:not-disabled:hover:bg-surface-400'
+    : 'maz:cursor-interactive maz:bg-transparent maz:font-medium maz:text-foreground maz:hover:not-disabled:bg-foreground/5'
 })
 </script>
 
 <template>
   <component
     :is="tag"
+    ref="button"
     v-tooltip="tooltipBinding"
-    class="m-sidebar-menu-btn m-reset-css maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:rounded-md maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-var(--maz-sidebar-inset,0rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:no-underline maz:transition-colors maz:duration-150 maz:ease-in-out maz:focus-visible:outline-2 maz:focus-visible:outline-offset-1 maz:focus-visible:outline-primary maz:disabled:cursor-not-allowed maz:disabled:opacity-50 maz:motion-reduce:transition-none"
+    class="m-sidebar-menu-btn m-reset-css maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:rounded-md maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-var(--maz-sidebar-inset,0rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:no-underline maz:focus-ring maz:transition-colors maz:duration-(--duration-fast) maz:ease-in-out maz:disabled:cursor-not-allowed maz:disabled:disabled-opacity maz:motion-reduce:transition-none"
     :class="[
       SIZE_CLASS[size],
       stateClass,
       routerActiveClass,
       {
         '--active': isActive,
+        '--pill': hasPill,
         '--disabled': disabled,
         '--icon-collapsed': isIconCollapsed,
       },
@@ -231,7 +264,7 @@ const stateClass = computed(() => {
     </span>
 
     <span
-      class="m-sidebar-menu-btn__label maz:flex-1 maz:truncate maz:text-start maz:transition-opacity maz:duration-150 maz:motion-reduce:transition-none"
+      class="m-sidebar-menu-btn__label maz:flex-1 maz:truncate maz:text-start maz:transition-[opacity,translate] maz:duration-(--duration-fast) maz:motion-reduce:transition-none"
       :class="isIconCollapsed ? 'maz:opacity-0' : 'maz:opacity-100'"
       :aria-hidden="isIconCollapsed || undefined"
     >
@@ -257,3 +290,21 @@ const stateClass = computed(() => {
     </span>
   </component>
 </template>
+
+<style scoped>
+.m-sidebar-menu-btn {
+  --maz-focus-ring-offset: -2px;
+
+  &.--pill {
+    background-color: transparent;
+  }
+
+  &.--icon-collapsed .m-sidebar-menu-btn__label {
+    translate: -0.5rem 0;
+
+    &:dir(rtl) {
+      translate: 0.5rem 0;
+    }
+  }
+}
+</style>

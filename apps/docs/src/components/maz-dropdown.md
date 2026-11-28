@@ -276,7 +276,7 @@ The `color` prop is applied to the trigger button and accepts `neutral` and the 
 <MazDropdown
   color="primary"
   fab
-  pastel
+  variant="soft"
   :chevron="false"
   :icon="MazBars3"
   size="xl"
@@ -301,7 +301,7 @@ The `color` prop is applied to the trigger button and accepts `neutral` and the 
   <MazDropdown
     color="primary"
     fab
-    pastel
+    variant="soft"
     :chevron="false"
     :icon="MazBars3"
     items-size="sm"
@@ -726,9 +726,22 @@ type MazDropdownMenuItem = {
 } & Record<string, unknown>
 ```
 
+## Motion
+
+- A highlight slides from an item to the next one under the pointer. With the keyboard there is no slide: the focused item shows its own style at once.
+- `:animated="false"` shows the highlight without the slide. Reduced motion does the same.
+- Rows follow the density of the theme (see `compact` in the [themes guide](./../ecosystem/themes.md)). Use `items-size="sm"` for tighter rows.
+- The chevron turns when the menu opens (`dropdown-icon-animation`).
+
 ## Accessibility
 
-The trigger button exposes the menu state (`aria-haspopup="menu"`, `aria-expanded`, `aria-controls`), the panel is a `menu` and each item a `menuitem`. <kbd>↓</kbd> / <kbd>↑</kbd> move between the items, <kbd>Enter</kbd> runs the focused item and <kbd>Esc</kbd> closes the menu.
+The trigger button exposes the menu state (`aria-haspopup="menu"`, `aria-expanded`, `aria-controls`), the panel is a `menu` and each item a `menuitem`.
+
+- <kbd>↓</kbd> / <kbd>↑</kbd> move between the items and loop. From the trigger, <kbd>↓</kbd> goes to the first item.
+- <kbd>Home</kbd> / <kbd>End</kbd> go to the first and the last item.
+- Typing letters jumps to the item that starts with them.
+- <kbd>Enter</kbd> runs the focused item and <kbd>Esc</kbd> closes the menu.
+- Disabled items are skipped. Elsewhere in the page the keys keep their usual behavior.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-dropdown.doc.md-->
 

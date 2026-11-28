@@ -15,7 +15,7 @@ export async function getProjectInfo(context: ServerContext): Promise<string> {
 export const getProjectInfoTool = defineTool({
   name: 'get_project_info',
   title: 'maz-ui setup of the project',
-  description: 'How this project uses maz-ui, in one call: Vue or Nuxt, the installed versions of the ecosystem, the apps of a monorepo, the plugins and options to set up (useToast, useDialog, useWait, useAos), auto-imports, icons by name or imported, theme presets, and the maz-ui components and helpers the code already uses. Call it once at the start of a task in an unknown project.',
+  description: 'How this project uses maz-ui, in one call: Vue or Nuxt, the installed versions of the ecosystem, the apps of a monorepo, the plugins and options to set up (useToast, useDialog, useWait), auto-imports, icons by name or imported, theme presets, and the maz-ui components and helpers the code already uses. Call it once at the start of a task in an unknown project.',
   inputSchema: {},
   run: getProjectInfo,
 })

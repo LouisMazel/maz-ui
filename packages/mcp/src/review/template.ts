@@ -7,7 +7,7 @@ import { NodeTypes } from '@vue/compiler-dom'
 import { closest, toKebab } from '../knowledge/resolve.ts'
 import { backgroundOf, checkClassList, checkClassStrings } from './classes.ts'
 import { isPassthroughAttribute, NATIVE_EVENTS, nativeReplacement } from './html.ts'
-import { checkStyleDeclarations } from './style.ts'
+import { checkMotionDeclarations, checkStyleDeclarations } from './style.ts'
 
 export function toCamel(value: string): string {
   return value.replaceAll(/-([a-z\d])/g, (_, char: string) => char.toUpperCase())
@@ -225,7 +225,7 @@ const PROP_SYNONYMS: Record<string, string[]> = {
   helper: ['hint'],
   message: ['hint'],
   errorMessage: ['hint', 'error'],
-  variant: ['color', 'fill', 'outlined'],
+  variant: ['color', 'fill'],
   image: ['src'],
   leftIcon: ['startIcon'],
   rightIcon: ['endIcon'],
@@ -282,6 +282,19 @@ function reportUnknownProp(name: string, offset: number, component: ComponentApi
     suggestion: near.length > 0
       ? `Did you mean ${names}? Check \`get_component_api({ names: ["${component.name}"] })\`.`
       : `Check the real API with \`get_component_api({ names: ["${component.name}"] })\`.`,
+  }, offset)
+}
+
+/** A prop kept for compatibility: its JSDoc gives the alternative */
+function reportDeprecatedProp(prop: PropApi, offset: number, component: ComponentApi, context: ReviewContext): void {
+  if (prop.deprecated === undefined)
+    return
+
+  context.report({
+    rule: 'deprecated-prop',
+    severity: 'warning',
+    message: `\`${toKebab(prop.name)}\` of ${component.name} is deprecated and will be removed in a major version.`,
+    suggestion: prop.deprecated,
   }, offset)
 }
 
@@ -473,9 +486,14 @@ function checkStaticAttribute(attribute: AttributeNode, component: ComponentApi,
 
   const definition = findProp(component, attribute.name, context)
 
-  if (!definition)
+  if (!definition) {
     reportUnknownProp(attribute.name, attribute.loc.start.offset, component, context)
-  else if (attribute.value)
+    return
+  }
+
+  reportDeprecatedProp(definition, attribute.loc.start.offset, component, context)
+
+  if (attribute.value)
     checkPropValue(definition, attribute.value.content, valueOffset(attribute, source), component, context)
 }
 
@@ -491,6 +509,8 @@ function checkBoundProp(directive: DirectiveNode, component: ComponentApi, conte
     reportUnknownProp(name, directive.loc.start.offset, component, context)
     return
   }
+
+  reportDeprecatedProp(definition, directive.loc.start.offset, component, context)
 
   const expression = directiveExpression(directive)
   const literal = expression?.content.trim()
@@ -787,6 +807,7 @@ function checkClassBindings(element: ElementNode, source: string, context: Revie
     }
     else if (prop.type === NodeTypes.ATTRIBUTE && prop.name === 'style' && prop.value) {
       checkStyleDeclarations(prop.value.content, valueOffset(prop, source), context)
+      checkMotionDeclarations(prop.value.content, valueOffset(prop, source), context)
     }
     else if (prop.type === NodeTypes.DIRECTIVE && prop.name === 'bind' && directiveArg(prop) === 'class') {
       const expression = directiveExpression(prop)
@@ -917,11 +938,15 @@ function hasProp(element: ElementNode, name: string): boolean {
     : prop.name === 'bind' && directiveArg(prop) !== undefined && toCamel(directiveArg(prop)!) === name)
 }
 
-/** A `MazBtn` with the solid primary look: the default color (or `primary`), not outlined nor pastel */
+/** A `MazBtn` with the solid primary look: the default color (or `primary`), not outline nor soft */
 function isSolidPrimaryButton(element: ElementNode): boolean {
   const color = staticAttribute(element, 'color')?.value?.content
 
+  const variant = staticAttribute(element, 'variant')?.value?.content
+  const isSolidVariant = !hasProp(element, 'variant') || variant === 'solid'
+
   return (color === undefined || color === 'primary')
+    && isSolidVariant
     && ![
       'color',
       'outlined',
@@ -949,7 +974,7 @@ function checkActionHierarchy(buttons: ElementNode[], context: ReviewContext): v
     rule: 'multiple-primary-actions',
     severity: 'info',
     message: `${solid.length} solid primary \`MazBtn\` side by side: the main action does not stand out.`,
-    suggestion: 'Keep one solid `color="primary"` button for the main action; make the others `color="neutral"` (the grey push button), `outlined` or `pastel`, and use a `MazLink` for cancel or back.',
+    suggestion: 'Keep one solid `color="primary"` button for the main action; make the others `color="neutral"` (the grey push button), `variant="outline"` or `variant="soft"`, and use a `MazLink` for cancel or back.',
   }, solid[1].loc.start.offset)
 }
 

@@ -70,7 +70,7 @@ describe('given DialogHandler confirm', () => {
       const promise = handler.confirm({ message: 'Message' })
       await nextTick()
       await vi.waitFor(() => expect(findButton(yes())).toBeDefined())
-      document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }))
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
 
       await expect(promise).resolves.toBe(false)
     })

@@ -1,6 +1,7 @@
 import MazAnimatedCounter from '@components/MazAnimatedCounter.vue'
+import MazRollingText from '@components/MazRollingText.vue'
 import { IntersectionObserverMock } from '@tests/vitest-global.setup.ts'
-import { shallowMount } from '@vue/test-utils'
+import { enableAutoUnmount, mount, shallowMount } from '@vue/test-utils'
 import { createSSRApp, h, nextTick } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 
@@ -32,6 +33,8 @@ function getValues(wrapper: ReturnType<typeof shallowMount>) {
     placeholder: placeholder.text(),
   }
 }
+
+enableAutoUnmount(afterEach)
 
 describe('given a MazAnimatedCounter', () => {
   beforeEach(() => {
@@ -125,6 +128,35 @@ describe('given a MazAnimatedCounter', () => {
 
       expect(getValues(wrapper).value).toBe('50')
       expect(IntersectionObserverMock.disconnect).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('when it rolls', () => {
+    it('then the digits are given to the rolling text when it enters the viewport', async () => {
+      const wrapper = mount(MazAnimatedCounter, {
+        props: { count: 120, delay: 0, roll: true },
+      })
+
+      expect(wrapper.findComponent(MazRollingText).props('value')).toBe(0)
+
+      await intersect(wrapper.element)
+      await vi.advanceTimersByTimeAsync(0)
+
+      expect(wrapper.findComponent(MazRollingText).props('value')).toBe(120)
+      expect(wrapper.find('.maz\\:sr-only').text()).toBe('120')
+    })
+
+    it('then the target is displayed immediately when the user prefers reduced motion', async () => {
+      Object.defineProperty(globalThis, 'matchMedia', {
+        configurable: true,
+        value: () => ({ matches: true }),
+      })
+      const wrapper = mount(MazAnimatedCounter, { props: { count: 120, roll: true } })
+
+      await intersect(wrapper.element)
+
+      expect(wrapper.findComponent(MazRollingText).props('value')).toBe(120)
+      Reflect.deleteProperty(globalThis, 'matchMedia')
     })
   })
 

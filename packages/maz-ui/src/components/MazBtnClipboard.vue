@@ -1,18 +1,19 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import type { MazColor, MazNeutralColor, MazRoundedSize, MazSize } from './types.ts'
-import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
 import { MazExclamationCircle } from '@maz-ui/icons/raw/MazExclamationCircle'
-import { MazSquare2Stack } from '@maz-ui/icons/raw/MazSquare2Stack'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed } from 'vue'
+import { computed, defineAsyncComponent, useSlots } from 'vue'
 import { useClipboard } from '../composables/useClipboard.ts'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
+import MazMorphIcon from './MazMorphIcon.vue'
 import { getColor } from './types.ts'
 
 export type MazBtnClipboardColor = Exclude<MazColor, 'transparent'> | MazNeutralColor
-export type MazBtnClipboardVariant = 'soft' | 'solid' | 'outlined' | 'ghost'
+// Removed in v6 (plans/ROADMAP.md): `outlined` is an alias of `outline`
+export type MazBtnClipboardVariant = 'soft' | 'solid' | 'outline' | 'outlined' | 'ghost'
 export type MazBtnClipboardSize = MazSize
 export type MazBtnClipboardRoundedSize = MazRoundedSize
 
@@ -28,8 +29,8 @@ export interface MazBtnClipboardProps {
    */
   prompt?: string
   /**
-   * Style of the button: `soft` a tinted background, `solid` the full color, `outlined` a border, `ghost` no background until hovered
-   * @values `'soft' | 'solid' | 'outlined' | 'ghost'`
+   * Style of the button: `soft` a tinted background, `solid` the full color, `outline` a border, `ghost` no background until hovered
+   * @values `'soft' | 'solid' | 'outline' | 'ghost'`
    * @default soft
    */
   variant?: MazBtnClipboardVariant
@@ -85,6 +86,11 @@ export interface MazBtnClipboardProps {
   copyLabel?: string
   /** Label once copied (translated "Copied" by default) */
   copiedLabel?: string
+  /**
+   * Rolls the text to the copied label while copied. The width of the button is the one of the longest text: it never jumps
+   * @default false
+   */
+  rollLabel?: boolean
 }
 
 const {
@@ -101,6 +107,7 @@ const {
   disabled = false,
   copyLabel,
   copiedLabel,
+  rollLabel = false,
 } = defineProps<MazBtnClipboardProps>()
 
 const emits = defineEmits<{
@@ -123,6 +130,9 @@ defineSlots<{
 
 const { t } = useTranslations()
 
+const MazRollingText = defineAsyncComponent(() => import('./MazRollingText.vue'))
+const slots = useSlots()
+
 const { size, roundedSize } = useGlobalConfig<{ size: MazBtnClipboardSize, roundedSize: MazBtnClipboardRoundedSize }>('MazBtnClipboard', { size: 'md', roundedSize: 'md' })
 
 const { copy, copied, error } = useClipboard({ copiedDuring })
@@ -136,16 +146,10 @@ const state = computed(() => {
 
   return error.value === undefined ? 'idle' : 'error'
 })
-const icon = computed(() => ({ idle: MazSquare2Stack, copied: MazCheck, error: MazExclamationCircle })[state.value])
+const displayedText = computed(() => label ?? value)
+const isRolling = computed(() => rollLabel && !slots.default)
 
-const ROUNDED_CLASS = {
-  none: 'maz:rounded-none',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const satisfies Record<MazBtnClipboardRoundedSize, string>
+const ROUNDED_CLASS = { ...ROUNDED_SIZE_CLASS, none: 'maz:rounded-none' }
 
 const SIZE_CLASS = {
   mini: 'maz:text-[0.6875rem]',
@@ -179,9 +183,9 @@ async function onClick() {
 <template>
   <button
     type="button"
-    class="m-btn-clipboard m-reset-css maz:group maz:relative maz:inline-flex maz:max-w-full maz:cursor-pointer maz:items-center maz:border maz:align-middle maz:leading-tight maz:transition-colors maz:duration-200 maz:disabled:cursor-not-allowed maz:disabled:opacity-50"
+    class="m-btn-clipboard m-reset-css maz:group maz:relative maz:inline-flex maz:max-w-full maz:cursor-pointer maz:items-center maz:border maz:align-middle maz:leading-tight maz:disabled:disabled-state"
     :class="[
-      `--${variant}`,
+      `--${variant === 'outline' ? 'outlined' : variant}`,
       `--${resolvedColor}`,
       `--${size}`,
       `--${state}`,
@@ -207,13 +211,21 @@ async function onClick() {
       :class="truncate ? 'maz:truncate' : 'maz:break-all'"
     >
       <!-- @slot Text displayed instead of the value -->
-      <slot>{{ label ?? value }}</slot>
+      <slot>
+        <span v-if="isRolling" class="maz:inline-grid maz:justify-items-start">
+          <span class="maz:invisible maz:col-start-1 maz:row-start-1" aria-hidden="true">{{ displayedText }}</span>
+          <span class="maz:invisible maz:col-start-1 maz:row-start-1" aria-hidden="true">{{ resolvedCopiedLabel }}</span>
+          <MazRollingText class="maz:col-start-1 maz:row-start-1" :value="copied ? resolvedCopiedLabel : displayedText" />
+        </span>
+        <template v-else>
+          {{ displayedText }}
+        </template>
+      </slot>
     </span>
 
     <span class="m-btn-clipboard__icon maz:relative maz:inline-flex maz:shrink-0 maz:flex-center" aria-hidden="true">
-      <Transition name="m-btn-clipboard-icon" mode="out-in">
-        <MazIcon :key="state" :icon />
-      </Transition>
+      <MazIcon v-if="state === 'error'" :icon="MazExclamationCircle" />
+      <MazMorphIcon v-else name="copy-check" :active="copied" />
     </span>
 
     <span class="maz:sr-only" role="status">{{ copied ? resolvedCopiedLabel : resolvedCopyLabel }}</span>
@@ -239,14 +251,24 @@ async function onClick() {
   }
 
   gap: 0.5em;
+  transition:
+    background-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    border-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    scale calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-bounce, ease-out);
   padding-block: 0.4em;
   padding-inline: 0.7em;
   text-align: start;
-  outline: 2px solid transparent;
-  outline-offset: 2px;
+  outline: var(--maz-focus-ring-width, 2px) solid transparent;
+  outline-offset: var(--maz-focus-ring-offset, 2px);
 
   &:focus-visible {
-    outline-color: var(--m-btn-clipboard-color);
+    outline-color: var(--maz-focus-ring-color, var(--m-btn-clipboard-color));
+  }
+
+  &:not(:disabled):active {
+    scale: 0.97;
+    transition-duration: calc(var(--maz-motion-instant, 80ms) * var(--maz-motion-scale, 1));
   }
 
   &.--icon-only {
@@ -265,8 +287,8 @@ async function onClick() {
     font-size: 1.1em;
     opacity: 0.6;
     transition:
-      opacity 200ms ease-in-out,
-      color 200ms ease-in-out;
+      opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+      color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
   }
 
   &:not(:disabled):hover .m-btn-clipboard__icon,
@@ -458,18 +480,5 @@ async function onClick() {
   &.--container {
     --m-btn-clipboard-bg: var(--maz-container-bg, var(--maz-surface));
   }
-}
-
-.m-btn-clipboard-icon-enter-active,
-.m-btn-clipboard-icon-leave-active {
-  transition:
-    opacity 150ms ease-in-out,
-    transform 150ms ease-in-out;
-}
-
-.m-btn-clipboard-icon-enter-from,
-.m-btn-clipboard-icon-leave-to {
-  opacity: 0;
-  transform: scale(0.6);
 }
 </style>

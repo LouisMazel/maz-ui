@@ -57,7 +57,7 @@ const REVIEWS = [
       <p class="maz:m-0 maz:flex maz:items-baseline maz:gap-3">
         <span class="maz:text-title-2 maz:tabular-nums">$249</span>
         <span class="maz:text-body maz:text-muted maz:line-through">$299</span>
-        <MazBadge color="success" size="sm" pastel>
+        <MazBadge color="success" size="sm" variant="soft">
           -17%
         </MazBadge>
       </p>
@@ -81,7 +81,7 @@ const REVIEWS = [
         <MazBtn :start-icon="MazShoppingBag" class="maz:flex-1">
           Add to cart
         </MazBtn>
-        <MazBtn color="surface" outlined :icon="MazHeart" aria-label="Save for later" />
+        <MazBtn color="surface" variant="outline" :icon="MazHeart" aria-label="Save for later" />
       </div>
 
       <MazAlert color="info" :icon="MazTruck" content="Free delivery tomorrow, free returns for 30 days." />

@@ -348,8 +348,39 @@ import MazSkeleton from 'maz-ui/components/MazSkeleton'
 </template>
 </ComponentDemo>
 
+## Reveal the content
+
+Put the real content in the default slot and set `loaded` when it is ready. The content stays hidden under the skeleton, then a soft edge sweeps and reveals it. The skeleton keeps the size of the content.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-3">
+    <MazSkeleton :loaded="skeletonLoaded" height="3rem">
+      <p class="maz:m-0">Your profile is up to date.</p>
+    </MazSkeleton>
+    <MazBtn size="sm" class="maz:self-start" @click="skeletonLoaded = !skeletonLoaded">{{ skeletonLoaded ? 'Reset' : 'Load' }}</MazBtn>
+  </div>
+
+<template #code>
+
+```html
+<MazSkeleton :loaded="!pending" height="3rem">
+  <p>Your profile is up to date.</p>
+</MazSkeleton>
+```
+
+  </template>
+</ComponentDemo>
+
+## Motion
+
+All the skeletons of a page shine in sync, as one. Use `:animated="false"` to stop the shine and the reveal. With reduced motion, the content appears at once.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-skeleton.doc.md-->
 
 <script lang="ts" setup>
-const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', 'full'] as const
+  import { ref } from 'vue'
+
+  const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', 'full'] as const
+
+  const skeletonLoaded = ref(false)
 </script>

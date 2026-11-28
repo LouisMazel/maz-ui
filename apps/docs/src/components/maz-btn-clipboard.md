@@ -39,7 +39,7 @@ import MazBtnClipboard from 'maz-ui/components/MazBtnClipboard'
 
 ## Variants
 
-Four styles: `soft` (default), `solid`, `outlined` and `ghost`.
+Four styles: `soft` (default), `solid`, `outline` and `ghost`.
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-4">
@@ -57,7 +57,7 @@ Four styles: `soft` (default), `solid`, `outlined` and `ghost`.
 <template>
   <MazBtnClipboard variant="soft" value="pnpm add maz-ui" prompt="$" />
   <MazBtnClipboard variant="solid" color="primary" value="ord_7731" prompt="#" />
-  <MazBtnClipboard variant="outlined" color="success" value="demo_live_51Hb" />
+  <MazBtnClipboard variant="outline" color="success" value="demo_live_51Hb" />
   <MazBtnClipboard variant="ghost" value="pnpm add maz-ui" prompt="$" />
 </template>
 ```
@@ -224,10 +224,30 @@ app.use(MazUi, {
 For a copy action of your own (a menu item, a shortcut), use the [useClipboard](./../composables/use-clipboard.md) composable.
 
 <script lang="ts" setup>
-const variants = ['soft', 'solid', 'outlined', 'ghost'] as const
+const variants = ['soft', 'solid', 'outline', 'ghost'] as const
 const colors = ['container', 'surface', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'neutral'] as const
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', 'full'] as const
 </script>
+
+## Motion
+
+The copy icon morphs into a check when the value is copied, then goes back.
+
+With `roll-label`, the text also rolls to the copied label. The button keeps the width of the longest text, so nothing moves around it.
+
+<ComponentDemo>
+  <MazBtnClipboard value="usr_8f3a21c9" roll-label />
+
+<template #code>
+
+```html
+<MazBtnClipboard value="usr_8f3a21c9" roll-label />
+```
+
+  </template>
+</ComponentDemo>
+
+With reduced motion, the icon changes without morphing.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-btn-clipboard.doc.md-->

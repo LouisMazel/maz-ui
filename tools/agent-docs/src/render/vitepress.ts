@@ -27,7 +27,7 @@ function table(headers: string[], rows: string[][]): string {
  */
 export function renderVitepressApi(api: ComponentApi): string {
   const sections: string[] = []
-  const props = api.props.filter(prop => !HTML_ATTRIBUTE_PROPS.has(prop.name))
+  const props = api.props.filter(prop => !HTML_ATTRIBUTE_PROPS.has(prop.name) && prop.deprecated === undefined)
 
   if (props.length > 0) {
     sections.push(`## Props\n\n${table(
@@ -56,10 +56,12 @@ export function renderVitepressApi(api: ComponentApi): string {
     )}`)
   }
 
-  if (api.events.length > 0) {
+  const events = api.events.filter(event => event.deprecated === undefined)
+
+  if (events.length > 0) {
     sections.push(`## Events\n\n${table(
       ['Event name', 'Payload', 'Description'],
-      api.events.map(event => [
+      events.map(event => [
         cell(event.name),
         event.payload
           ? code(event.payload)

@@ -51,6 +51,13 @@ export interface ThemeColors {
 export interface ThemeFoundation {
   'base-font-size'?: SizeUnit
   'border-width': SizeUnit
+  /**
+   * Border width of a boxed field (input, select, textarea, date picker, code, tags, markdown editor, dropzone...) with the focus.
+   * The width above `border-width` is drawn inside the box, so the layout does not move.
+   * Emitted as `--maz-focus-border-width`.
+   * @default '2px'
+   */
+  'focus-border-width'?: SizeUnit
   /** Body / sans font stack. */
   'font-family'?: string
   /**
@@ -74,9 +81,34 @@ export interface ThemeFoundation {
   'motion-fast'?: Duration
   'motion-normal'?: Duration
   'motion-slow'?: Duration
+  /**
+   * Shortest duration: press, hover, toggle. Bridged into Tailwind's `--duration-instant`.
+   * @default '80ms'
+   */
+  'motion-instant'?: Duration
+  /**
+   * Longest duration: large layout transitions and reveals. Bridged into Tailwind's `--duration-slower`.
+   * @default '450ms'
+   */
+  'motion-slower'?: Duration
+  /**
+   * Multiplier of every duration of the components: `0.5` twice faster, `0` no motion.
+   * Lowered under `prefers-reduced-motion: reduce`.
+   * @default '1'
+   */
+  'motion-scale'?: string
   'easing-out'?: string
   'easing-in'?: string
   'easing-in-out'?: string
+  /**
+   * Spring without bounce (a `linear()` easing, see `springEasing`): sliding indicators, sheets.
+   * Bridged into Tailwind's `--ease-spring`.
+   */
+  'easing-spring'?: string
+  /**
+   * Spring with a small bounce: check marks, press feedback, badges. Bridged into Tailwind's `--ease-bounce`.
+   */
+  'easing-bounce'?: string
   /**
    * Opacity applied to disabled interactive elements (buttons, inputs, etc.).
    * @default '0.5'
@@ -156,6 +188,7 @@ export interface ThemeScales {
    * MazContainer, MazPopover, etc.
    */
   shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', ThemeShadowValue>
+    & Partial<Record<'elevation-1' | 'elevation-2' | 'elevation-3', ThemeShadowValue>>
   /**
    * Derivation of the 50..950 steps of the brand colors.
    * @default 'relative'

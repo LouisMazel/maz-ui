@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazColor, MazColorOrFree, MazNeutralColor, MazSize } from './types.ts'
+import type { MazColor, MazColorOrFree, MazFillVariant, MazNeutralColor, MazSize } from './types.ts'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
-import { computed } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { computed, Text, useSlots } from 'vue'
+import { useGlobalConfig, useInstanceFillVariant } from '../composables/useGlobalConfig.ts'
 import { isFreeColor, resolveColorForeground } from '../utils/freeColor.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
+import MazRollingText from './MazRollingText.vue'
 import { getColor } from './types.ts'
 
 export type MazBadgeColor = MazColor | MazNeutralColor
@@ -35,12 +37,20 @@ export interface MazBadgeProps {
    */
   nowrap?: boolean
   /**
+   * Fill style of the badge: `solid` the full color, `soft` a tinted background, `outline` a border, `ghost` no background nor border
+   * @values `'solid' | 'soft' | 'outline' | 'ghost'`
+   * @default 'solid'
+   */
+  variant?: MazFillVariant
+  /**
    * Will add a border to the badge
+   * @deprecated Use `variant="outline"` instead
    * @default false
    */
   outlined?: boolean
   /**
    * Will add a pastel style to the badge
+   * @deprecated Use `variant="soft"` instead
    * @default false
    */
   pastel?: boolean
@@ -59,6 +69,11 @@ export interface MazBadgeProps {
    * Accessible label of the remove button (translated "Remove" by default)
    */
   removeLabel?: string
+  /**
+   * A number as the content rolls when it changes (the digits are then rendered by `MazRollingText`)
+   * @default false
+   */
+  animated?: boolean
 }
 
 const {
@@ -68,6 +83,7 @@ const {
   pastel = false,
   removable = false,
   removeLabel,
+  animated = false,
 } = defineProps<MazBadgeProps>()
 
 const emits = defineEmits<{
@@ -80,7 +96,27 @@ const emits = defineEmits<{
 
 const { t } = useTranslations()
 
-const { size, roundedSize } = useGlobalConfig<{ size: MazBadgeSize, roundedSize: MazBadgeRoundedSize }>('MazBadge', { size: 'md', roundedSize: 'md' })
+const slots = useSlots()
+const NUMBER_PATTERN = /^-?\d+(?:\.\d+)?$/
+
+function getRollingValue() {
+  if (!animated)
+    return undefined
+
+  const nodes = slots.default?.()
+  const node = nodes?.length === 1 ? nodes[0] : undefined
+  const content = node?.type === Text && typeof node.children === 'string' ? node.children.trim() : undefined
+
+  return content !== undefined && NUMBER_PATTERN.test(content) ? Number(content) : undefined
+}
+
+const { size, roundedSize, variant: configVariant } = useGlobalConfig<{ size: MazBadgeSize, roundedSize: MazBadgeRoundedSize, variant: MazFillVariant | undefined }>('MazBadge', { size: 'md', roundedSize: 'md', variant: undefined })
+const variant = useInstanceFillVariant(configVariant)
+
+// Removed in v6 (plans/ROADMAP.md): `outlined` and `pastel` are aliases of `variant`
+const isOutlined = computed(() => variant.value ? variant.value === 'outline' : outlined)
+const isPastel = computed(() => variant.value ? variant.value === 'soft' : pastel)
+const isGhost = computed(() => variant.value === 'ghost')
 
 const freeColor = computed(() => isFreeColor(color))
 
@@ -88,14 +124,7 @@ const resolvedColor = computed(() => freeColor.value
   ? 'free'
   : getColor(color as MazBadgeColor))
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
 const SIZE_CLASS = {
   mini: 'maz:text-[0.625rem]',
@@ -123,7 +152,7 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
       ? 'var(--m-badge-contrast-bg)'
       : `var(--maz-${c})`,
     '--m-badge-fg': `var(--maz-${c}-foreground)`,
-    ...(pastel && c === 'contrast' && {
+    ...(isPastel.value && c === 'contrast' && {
       '--m-badge-pastel-fg': `var(--maz-contrast)`,
     }),
   }
@@ -140,16 +169,18 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
       ROUNDED_CLASS[roundedSize],
       SIZE_CLASS[size],
       {
-        '--outlined': outlined,
-        '--pastel': pastel,
+        '--outlined': isOutlined,
+        '--pastel': isPastel,
+        '--ghost': isGhost,
         'maz:text-nowrap': nowrap,
         'maz:whitespace-nowrap': nowrap,
       },
     ]"
     :style="badgeStyle"
   >
+    <MazRollingText v-if="getRollingValue() !== undefined" :value="getRollingValue()!" />
     <!-- @slot Badge content -->
-    <slot />
+    <slot v-else />
 
     <button
       v-if="removable"
@@ -194,6 +225,13 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
   &.--pastel {
     background-color: var(--m-badge-pastel-bg);
     color: var(--m-badge-pastel-fg);
+    border-color: transparent;
+  }
+
+  &.--ghost {
+    @apply maz:bg-transparent;
+
+    color: var(--m-badge-bg);
     border-color: transparent;
   }
 
@@ -257,6 +295,14 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
     }
   }
 
+  &.--surface.--ghost,
+  &.--container.--ghost,
+  &.--neutral.--ghost {
+    @apply maz:bg-transparent maz:border-transparent;
+
+    color: var(--m-badge-fg);
+  }
+
   &.--transparent {
     @apply maz:bg-transparent maz:border-transparent;
   }
@@ -269,8 +315,8 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
     background-color: transparent;
     opacity: 0.75;
     transition:
-      opacity 150ms ease-in-out,
-      background-color 150ms ease-in-out;
+      opacity calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+      background-color calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 
     &:hover {
       opacity: 1;
@@ -279,7 +325,7 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
 
     &:focus-visible {
       opacity: 1;
-      outline: 2px solid currentcolor;
+      outline: var(--maz-focus-ring-width, 2px) solid currentcolor;
       outline-offset: 1px;
     }
   }

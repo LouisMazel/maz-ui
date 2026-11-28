@@ -1,18 +1,20 @@
 <script lang="ts" setup generic="_T">
-import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties } from 'vue'
+import type { MazDrawnIconName } from './MazDrawnIcon.vue'
 import type { MazIconProps, MazIconValue } from './MazIcon.vue'
 import type { MazColor } from './types.ts'
-import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
-import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
-import { MazInformationCircle } from '@maz-ui/icons/lazy/MazInformationCircle'
-import { MazXCircle } from '@maz-ui/icons/lazy/MazXCircle'
-import { computed, defineAsyncComponent, useId, useSlots } from 'vue'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
+import { computed, defineAsyncComponent, ref, useId, useSlots, watch } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
+import { readMotionDuration, readMotionEasing } from '../utils/motionTokens.ts'
+import { ROUNDED_SIZE_CLASS } from './constants.ts'
+import MazDrawnIcon from './MazDrawnIcon.vue'
 
 export type MazAlertColor = Exclude<MazColor, 'transparent'>
 export type MazAlertRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
-export type MazAlertVariant = 'soft' | 'solid'
+export type MazAlertVariant = 'soft' | 'solid' | 'outline'
 
 export interface MazAlertProps {
   /**
@@ -61,10 +63,33 @@ export interface MazAlertProps {
   /**
    * Visual variant of the alert
    * @type {MazAlertVariant}
-   * @values `'soft' | 'solid'`
+   * @values `'soft' | 'solid' | 'outline'`
    * @default 'soft'
    */
   variant?: MazAlertVariant
+  /**
+   * How a screen reader announces the alert when it appears: `alert` interrupts the user, `status` waits
+   * for a pause. By default `alert` for the `destructive` and `warning` colors, `status` otherwise
+   * @values `'alert' | 'status'`
+   */
+  role?: 'alert' | 'status'
+  /**
+   * Adds a close button: the alert folds away and `open` becomes `false`
+   * @default false
+   */
+  dismissible?: boolean
+  /**
+   * The icon draws itself and a dismissed alert folds away, instead of just appearing and disappearing
+   * @default true
+   */
+  animated?: boolean
+}
+
+export interface MazAlertEmits {
+  /**
+   * Emitted when the close button is clicked (`dismissible` only)
+   */
+  (event: 'close'): void
 }
 
 const {
@@ -76,7 +101,74 @@ const {
   iconSize = 'md',
   bordered = true,
   variant = 'soft',
+  role,
+  dismissible = false,
+  animated = true,
 } = defineProps<MazAlertProps>()
+
+const emit = defineEmits<MazAlertEmits>()
+
+/**
+ * Shows the alert. `false` folds it away (the alert stays mounted)
+ * @default true
+ */
+const open = defineModel<boolean>('open', { default: true })
+
+const { t } = useTranslations()
+const { shouldReduceMotion } = useReducedMotion()
+
+const alertRef = ref<HTMLElement>()
+const rendered = ref(open.value)
+let foldAnimation: Animation | undefined
+
+function finishFold() {
+  foldAnimation?.cancel()
+  foldAnimation = undefined
+  rendered.value = open.value
+  alertRef.value?.style.removeProperty('overflow')
+}
+
+function fold() {
+  const element = alertRef.value
+
+  if (!element || !animated || typeof element.animate !== 'function') {
+    rendered.value = false
+    return
+  }
+
+  const duration = shouldReduceMotion.value ? 0 : readMotionDuration('--maz-motion-normal', 220) * 0.7
+  const easing = readMotionEasing('--maz-easing-in', 'ease-in')
+
+  element.style.overflow = 'hidden'
+  foldAnimation = element.animate(
+    shouldReduceMotion.value
+      ? [{ opacity: 1 }, { opacity: 0 }]
+      : [
+          { blockSize: `${element.offsetHeight}px`, opacity: 1 },
+          { blockSize: '0px', opacity: 0, paddingBlock: '0px', marginBlock: '0px', borderBlockWidth: '0px' },
+        ],
+    { duration: Math.max(duration, 1), easing, fill: 'forwards' },
+  )
+  foldAnimation.finished.then(finishFold).catch(() => {})
+}
+
+watch(open, (value) => {
+  foldAnimation?.cancel()
+  foldAnimation = undefined
+  alertRef.value?.style.removeProperty('overflow')
+
+  if (value)
+    rendered.value = true
+  else
+    fold()
+})
+
+function dismiss() {
+  open.value = false
+  emit('close')
+}
+
+const computedRole = computed(() => role ?? (color === 'destructive' || color === 'warning' ? 'alert' : 'status'))
 
 const { roundedSize } = useGlobalConfig<{ roundedSize: MazAlertRoundedSize }>('MazAlert', { roundedSize: 'md' })
 
@@ -101,45 +193,30 @@ const colorStyles = computed<CSSProperties>(() => ({
   }),
 }))
 
-const ROUNDED_CLASS = {
-  'none': '',
-  'sm': 'maz:rounded-xs',
-  'md': 'maz:rounded-md',
-  'lg': 'maz:rounded-lg',
-  'xl': 'maz:rounded-xl',
-  '2xl': 'maz:rounded-2xl',
-  '3xl': 'maz:rounded-3xl',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
-const currentIcon = computed(() => {
-  if (hideIcon) {
-    return undefined
-  }
+const DRAWN_ICON: Record<MazAlertColor, MazDrawnIconName> = {
+  success: 'check-circle',
+  warning: 'exclamation-circle',
+  destructive: 'x-circle',
+  info: 'information-circle',
+  primary: 'information-circle',
+  secondary: 'information-circle',
+  accent: 'information-circle',
+  contrast: 'information-circle',
+  neutral: 'information-circle',
+}
 
-  if (icon) {
-    return icon
-  }
-
-  const iconMap: Record<MazAlertColor, IconComponent> = {
-    success: MazCheckCircle,
-    warning: MazExclamationCircle,
-    destructive: MazXCircle,
-    info: MazInformationCircle,
-    primary: MazInformationCircle,
-    secondary: MazInformationCircle,
-    accent: MazInformationCircle,
-    contrast: MazInformationCircle,
-    neutral: MazInformationCircle,
-  }
-
-  return iconMap[color]
-})
+const hasIcon = computed(() => !hideIcon)
+const drawnIcon = computed(() => icon ? undefined : DRAWN_ICON[color])
 </script>
 
 <template>
   <div
+    v-show="rendered"
+    ref="alertRef"
     class="m-alert m-reset-css maz:flex maz:items-start maz:gap-3 maz:p-4"
-    role="alert"
+    :role="computedRole"
     :aria-labelledby="hasTitle ? headingId : undefined"
     :aria-describedby="hasContent ? contentId : undefined"
     :style="colorStyles"
@@ -150,16 +227,23 @@ const currentIcon = computed(() => {
       `--rounded-${roundedSize}`,
       {
         '--bordered': bordered,
-        'maz:text-(--m-alert-color) maz:dark:text-(--m-alert-color-dark)': variant === 'soft',
+        'maz:text-(--m-alert-color) maz:dark:text-(--m-alert-color-dark)': variant === 'soft' || variant === 'outline',
         'maz:bg-(--m-alert-bg) maz:text-(--m-alert-fg)': variant === 'solid',
         'maz:border': bordered,
         'maz:border-(--m-alert-border)': bordered && variant === 'solid',
       },
     ]"
   >
-    <div v-if="currentIcon" class="m-alert-icon maz:flex maz:shrink-0 maz:flex-center" aria-hidden="true">
+    <div v-if="hasIcon" class="m-alert-icon maz:flex maz:shrink-0 maz:flex-center" aria-hidden="true">
+      <MazDrawnIcon
+        v-if="drawnIcon"
+        :name="drawnIcon"
+        :size="iconSize"
+        :duration="animated ? undefined : '0s'"
+      />
       <MazIcon
-        :icon="currentIcon"
+        v-else-if="icon"
+        :icon="icon"
         :size="iconSize"
       />
     </div>
@@ -176,6 +260,16 @@ const currentIcon = computed(() => {
         <slot>{{ content }}</slot>
       </div>
     </div>
+
+    <button
+      v-if="dismissible"
+      type="button"
+      class="m-alert-close maz:inline-flex maz:shrink-0 maz:cursor-pointer maz:rounded-sm maz:border-0 maz:bg-transparent maz:p-1 maz:text-inherit maz:opacity-70 maz:focus-ring maz:hover:opacity-100"
+      :aria-label="t('aria.close')"
+      @click="dismiss"
+    >
+      <MazIcon :icon="MazXMark" size="sm" aria-hidden="true" />
+    </button>
   </div>
 </template>
 
@@ -194,6 +288,14 @@ const currentIcon = computed(() => {
     }
   }
 
+  &.--outline {
+    background-color: transparent;
+
+    &.--bordered {
+      border-color: color-mix(in srgb, var(--m-alert-color) 60%, transparent);
+    }
+  }
+
   /* Neutral: the soft grey of the theme in both variants, with a divider border */
   &.--neutral {
     background-color: var(--m-alert-bg);
@@ -201,6 +303,11 @@ const currentIcon = computed(() => {
 
     &.--bordered {
       border-color: var(--m-alert-border);
+    }
+
+    &.--outline {
+      background-color: transparent;
+      color: var(--m-alert-color);
     }
   }
 }

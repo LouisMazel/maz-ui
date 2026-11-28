@@ -1,4 +1,5 @@
 import type { ThemePreset } from '../../types.ts'
+import { DEFAULT_LIGHT_SHADOW } from '../../presets/_defaults.ts'
 import { folio } from '../../presets/folio.ts'
 import { linux } from '../../presets/linux.ts'
 import { macos } from '../../presets/macos.ts'
@@ -23,7 +24,7 @@ function withShadow(shadow: ThemePreset['scales']['shadow']): ThemePreset {
 }
 
 const perModeShadow = withShadow({
-  ...mazUi.scales.shadow,
+  ...DEFAULT_LIGHT_SHADOW,
   elevation: { light: '0 1px 2px rgb(0 0 0 / 0.1)', dark: '0 4px 8px rgb(0 0 0 / 0.6)' },
 })
 
@@ -75,9 +76,20 @@ describe('given a preset with a shadow per color mode', () => {
 describe('given a preset with plain shadows', () => {
   describe('when generating CSS with mode both', () => {
     it('then no dark shadow block is emitted', () => {
-      const css = generateCSS(mazUi, { ...BASE_OPTIONS, mode: 'both' })
+      const css = generateCSS(withShadow(DEFAULT_LIGHT_SHADOW), { ...BASE_OPTIONS, mode: 'both' })
 
       expect(css).not.toContain('.dark { --maz-shadow-style')
+    })
+  })
+})
+
+describe('given the maz-ui preset', () => {
+  describe('when generating CSS with mode both', () => {
+    it('then its shadows are deeper in dark mode', () => {
+      const css = generateCSS(mazUi, { ...BASE_OPTIONS, mode: 'both' })
+
+      expect(css).toContain('--maz-shadow-style-elevation: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06);')
+      expect(css).toContain('.dark { --maz-shadow-style-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);')
     })
   })
 })

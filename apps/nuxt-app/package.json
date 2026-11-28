@@ -12,7 +12,9 @@
     "lint:js": "cross-env NODE_ENV=production eslint --fix .",
     "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
     "types:check": "nuxi typecheck",
-    "build:analyze": "nuxt analyze --no-serve"
+    "build:analyze": "nuxt analyze --no-serve",
+    "test:visual": "playwright test -c tests/visual/playwright.config.ts",
+    "test:visual:update": "playwright test -c tests/visual/playwright.config.ts --update-snapshots"
   },
   "dependencies": {
     "@maz-ui/icons": "workspace:^",
@@ -27,6 +29,7 @@
     "@maz-ui/vite-config": "workspace:^",
     "@maz-ui/vite-svg-loader": "workspace:^",
     "@nuxt/devtools": "catalog:",
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@types/node": "catalog:",

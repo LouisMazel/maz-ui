@@ -49,13 +49,13 @@ const tab = ref('overview')
           <MazBtn size="sm" :end-icon="MazArrowRight">
             Continue
           </MazBtn>
-          <MazBtn size="sm" color="surface" outlined>
+          <MazBtn size="sm" color="surface" variant="outline">
             Cancel
           </MazBtn>
-          <MazBtn size="sm" pastel :start-icon="MazPlus">
+          <MazBtn size="sm" variant="soft" :start-icon="MazPlus">
             Add item
           </MazBtn>
-          <MazBtn size="sm" color="destructive" outlined>
+          <MazBtn size="sm" color="destructive" variant="outline">
             Delete
           </MazBtn>
           <MazBtn size="sm" color="transparent" :icon="MazHeart" aria-label="Like" />
@@ -79,11 +79,11 @@ const tab = ref('overview')
           <MazBadge v-for="color in STATUS" :key="color" :color size="sm">
             {{ color }}
           </MazBadge>
-          <MazBadge color="primary" size="sm" pastel>
-            pastel
+          <MazBadge color="primary" size="sm" variant="soft">
+            soft
           </MazBadge>
-          <MazBadge color="surface" size="sm" outlined>
-            outlined
+          <MazBadge color="surface" size="sm" variant="outline">
+            outline
           </MazBadge>
           <MazBadge color="container" size="sm">
             container

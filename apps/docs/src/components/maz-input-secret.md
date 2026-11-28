@@ -121,11 +121,67 @@ function save() {
 Do not fake a saved secret with a `MazInput type="password"` and a placeholder of bullets: use this component.
 :::
 
+## Password strength
+
+Add `strength` to show how strong the typed secret is: a meter fills, a verdict rolls and the rules tick themselves. The score goes from `0` to `4` and is emitted by the `strength` event.
+
+<ComponentDemo>
+  <MazInputSecret v-model="strongSecret" label="Password" strength block />
+
+<template #code>
+
+```html
+<MazInputSecret v-model="password" label="Password" strength @strength="score = $event" />
+```
+
+  </template>
+</ComponentDemo>
+
+The default rules are the length (8 characters), lowercase, uppercase, a number and a symbol. Pass an object to change them: your own rules, the minimum length or the scoring.
+
+<ComponentDemo>
+  <MazInputSecret
+    v-model="customSecret"
+    label="Passphrase"
+    :strength="{
+      minLength: 12,
+      rules: ['length', 'number', { label: 'No spaces', test: value => !value.includes(' ') }],
+      score: (value, results) => results.filter(result => result.passed).length + (value.length > 20 ? 1 : 0),
+    }"
+    block
+  />
+
+<template #code>
+
+```html
+<MazInputSecret
+  v-model="passphrase"
+  label="Passphrase"
+  :strength="{
+    minLength: 12,
+    rules: ['length', 'number', { label: 'No spaces', test: value => !value.includes(' ') }],
+    score: (value, results) => results.filter(result => result.passed).length + (value.length > 20 ? 1 : 0),
+  }"
+/>
+```
+
+  </template>
+</ComponentDemo>
+
+`showRules: false` keeps the meter and the verdict only. The texts come from the translations (`inputSecret.*`).
+
+## Motion
+
+- The meter fills, the verdict rolls and a check is drawn in front of each rule that is met.
+
+Set `:animated="false"` to turn them off. Reduced motion is respected.
+
 ## Accessibility
 
 - The masked field is read-only and described by `saved-text`.
 - The buttons are real buttons, disabled with the component.
 - The input gets the focus when the replace mode starts.
+- The meter is a `meter` with the verdict as its text, and each rule says if it is met. The input is described by the strength block.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-input-secret.doc.md-->
 
@@ -135,6 +191,8 @@ Do not fake a saved secret with a `MazInput type="password"` and a placeholder o
   const newSecret = ref('')
   const hasSecret = ref(true)
   const otherSecret = ref('')
+  const strongSecret = ref('')
+  const customSecret = ref('')
 
   function save() {
     if (!newSecret.value)

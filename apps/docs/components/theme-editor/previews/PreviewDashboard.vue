@@ -96,7 +96,7 @@ const STATUS_COLOR = { paid: 'success', pending: 'warning', refunded: 'destructi
         size="xs"
       />
       <div class="maz:flex maz:gap-2">
-        <MazBtn size="sm" color="surface" outlined :start-icon="MazArrowDownTray">
+        <MazBtn size="sm" color="surface" variant="outline" :start-icon="MazArrowDownTray">
           Export
         </MazBtn>
         <MazBtn size="sm" :start-icon="MazPlus">
@@ -192,7 +192,7 @@ const STATUS_COLOR = { paid: 'success', pending: 'warning', refunded: 'destructi
                 {{ order.amount }}
               </td>
               <td class="maz:px-4 maz:py-3">
-                <MazBadge :color="STATUS_COLOR[order.status]" size="sm" pastel>
+                <MazBadge :color="STATUS_COLOR[order.status]" size="sm" variant="soft">
                   {{ order.status }}
                 </MazBadge>
               </td>

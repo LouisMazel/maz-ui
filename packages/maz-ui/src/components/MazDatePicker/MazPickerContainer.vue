@@ -16,6 +16,8 @@ const {
   shortcuts,
   shortcut,
   hasTime,
+  minDate,
+  maxDate,
   format,
   range,
 } = defineProps<{
@@ -48,7 +50,7 @@ const emits = defineEmits(['update:model-value', 'update:calendar-date', 'close'
 
 const MazPickerCalendar = defineAsyncComponent(() => import('./MazPickerCalendar.vue'))
 const MazPickerHeader = defineAsyncComponent(() => import('./MazPickerHeader.vue'))
-const MazPickerTime = defineAsyncComponent(() => import('./MazPickerTime.vue'))
+const MazTimePickerPanel = defineAsyncComponent(() => import('../MazTimePicker/MazTimePickerPanel.vue'))
 
 const lastTimeValue = ref<string>(typeof modelValue === 'string' && hasTime
   ? dayjs(modelValue).format('HH:mm')
@@ -69,6 +71,21 @@ function emitDateValue(value: string) {
   else {
     emits('update:model-value', value)
   }
+}
+
+const selectedDate = computed(() => typeof modelValue === 'string' && modelValue ? dayjs(modelValue) : undefined)
+const timeValue = computed(() => selectedDate.value?.format('HH:mm'))
+const minTime = computed(() => selectedDate.value && minDate && dayjs(minDate).isSame(selectedDate.value, 'day')
+  ? dayjs(minDate).format('HH:mm')
+  : undefined)
+const maxTime = computed(() => selectedDate.value && maxDate && dayjs(maxDate).isSame(selectedDate.value, 'day')
+  ? dayjs(maxDate).format('HH:mm')
+  : undefined)
+
+function onTimeChange(time: string) {
+  const [hours, minutes] = time.split(':').map(Number)
+
+  saveLastTimeValue((selectedDate.value ?? dayjs()).hour(hours!).minute(minutes!).format())
 }
 
 const currentDate = computed({
@@ -127,23 +144,25 @@ const currentCalendarDate = computed({
         @update:model-value="emitDateValue"
       />
 
-      <MazPickerTime
+      <div
         v-if="hasTime"
-        :model-value="currentDate"
-        :color
-        :locale
-        :min-date
-        :max-date
-        :has-date
-        :format
-        :disabled
-        :disabled-hours
-        :minute-interval
-        :formatter-options
-        :is-hour12
-        class="m-date-picker-container__time"
-        @update:model-value="saveLastTimeValue"
-      />
+        class="m-date-picker-container__time maz:flex maz:flex-center"
+        :class="hasDate ? 'maz:border-s maz:border-divider' : 'maz:w-full maz:min-w-48'"
+      >
+        <MazTimePickerPanel
+          variant="wheel"
+          :model-value="timeValue"
+          :hour12="isHour12"
+          :locale="locale || undefined"
+          :step="minuteInterval"
+          :min="minTime"
+          :max="maxTime"
+          :disabled-hours
+          :color
+          :disabled
+          @update:model-value="onTimeChange"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -158,20 +177,6 @@ const currentCalendarDate = computed({
 
   & :deep(button):is(:disabled) {
     @apply maz:bg-transparent! maz:text-gray-300! maz:dark:text-gray-700! maz:border-none maz:hover:bg-transparent!;
-  }
-
-  &:not(.--has-date) {
-    .m-date-picker-container__time {
-      @apply maz:w-full;
-
-      &:deep(.m-date-picker-time__column__hour) {
-        @apply maz:w-1/2;
-      }
-
-      &:deep(.m-date-picker-time__column__minute) {
-        @apply maz:w-1/2;
-      }
-    }
   }
 }
 </style>

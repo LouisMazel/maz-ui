@@ -303,6 +303,22 @@ By default, the textarea automatically expands as the user types. You can disabl
   </template>
 </ComponentDemo>
 
+## Counter
+
+Add `counter` with a `maxlength` to show `n/max` and a ring that fills as you get near the limit. It turns orange at 90% and red at the limit.
+
+<ComponentDemo>
+  <MazTextarea v-model="counterValue" label="Bio" counter maxlength="80" />
+
+<template #code>
+
+```html
+<MazTextarea v-model="value" label="Bio" counter maxlength="80" />
+```
+
+  </template>
+</ComponentDemo>
+
 ## Minimum rows (compact / input-like)
 
 Use the `min-rows` prop to control the initial (minimum) height of the textarea. It defaults to `3` lines. Set it to `1` to make the textarea start at the height of a regular input while keeping the autogrow behavior: it grows line by line as the user types.
@@ -380,6 +396,19 @@ The `size` prop controls the padding (height) and text size of the textarea, mir
   </template>
 </ComponentDemo>
 
+## Label above the field
+
+To show the `label` above every field of your app instead of floating inside it, set `topLabel: true` in the [global defaults](../guide/global-defaults.md). A `top-label` set on an instance still wins.
+
+## Motion
+
+- The floating label moves with the motion tokens.
+- On `success`, a check is drawn in the corner of the field.
+- When the assistive text changes, the old text fades out and the new one rolls in.
+- The ring of the counter fills smoothly.
+
+Set `:animated="false"` to turn them off. Reduced motion is respected. The height follows the text with `field-sizing: content`, and a small script on the browsers that do not support it.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-textarea.doc.md-->
 
 <script lang="ts" setup>
@@ -388,6 +417,7 @@ The `size` prop controls the padding (height) and text size of the textarea, mir
 
   const mainValue = ref()
   const value = ref()
+  const counterValue = ref('')
 
   const toast = useToast()
 

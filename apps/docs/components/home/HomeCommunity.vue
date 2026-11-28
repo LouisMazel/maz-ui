@@ -3,7 +3,8 @@ import type { HomeData } from '../../.vitepress/data/home.data'
 import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
 import { MazGithub } from '@maz-ui/icons/raw/MazGithub'
 import { vTooltip } from 'maz-ui/directives/vTooltip'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useMotionPreference } from './hero/useMotionPreference'
 import HomeChapter from './HomeChapter.vue'
 
 const { data } = defineProps<{ data: HomeData }>()
@@ -72,14 +73,28 @@ const RELIZY_STEPS = [
 const relizyStep = ref(RELIZY_STEPS.length - 1)
 let relizyTimer: ReturnType<typeof setInterval> | undefined
 
-onMounted(() => {
-  if (globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches)
+const reducedMotion = useMotionPreference()
+
+function stopRelizy() {
+  clearInterval(relizyTimer)
+  relizyTimer = undefined
+}
+
+function startRelizy() {
+  stopRelizy()
+  if (reducedMotion.value) {
+    relizyStep.value = RELIZY_STEPS.length - 1
     return
+  }
   relizyStep.value = 0
   relizyTimer = setInterval(() => {
     relizyStep.value = (relizyStep.value + 1) % RELIZY_STEPS.length
   }, 1800)
-})
+}
+
+onMounted(startRelizy)
+
+watch(reducedMotion, startRelizy)
 
 onBeforeUnmount(() => clearInterval(relizyTimer))
 
@@ -95,7 +110,7 @@ const STATS = computed(() => [
 </script>
 
 <template>
-  <HomeChapter id="community" number="06" label="Community" :swatch night>
+  <HomeChapter id="community" number="07" label="Community" :swatch night>
     <header>
       <p class="home-eyebrow">
         Our constellation
@@ -125,7 +140,7 @@ const STATS = computed(() => [
           v-for="star in stars"
           :key="star.id"
           v-tooltip="star.tooltip"
-          class="maz:absolute maz:-translate-1/2 maz:rounded-full maz:shadow-[0_0_1.25rem_color-mix(in_oklch,var(--maz-primary)_55%,transparent)] maz:motion-safe:animate-[home-twinkle_3.6s_ease-in-out_infinite]"
+          class="home-twinkle maz:absolute maz:-translate-1/2 maz:rounded-full maz:shadow-[0_0_1.25rem_color-mix(in_oklch,var(--maz-primary)_55%,transparent)]"
           :style="{ left: `${star.x}%`, top: `${star.y}%`, animationDelay: `${star.delay}s` }"
         >
           <MazAvatar v-bind="star.avatarProps" target="_blank" rounded-size="full" no-elevation loading="lazy" />
@@ -148,7 +163,7 @@ const STATS = computed(() => [
       <MazBtn href="https://github.com/LouisMazel/maz-ui/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener" size="lg" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">
         Join the constellation
       </MazBtn>
-      <MazBtn href="https://github.com/LouisMazel/maz-ui/issues" target="_blank" rel="noopener" size="lg" color="surface" outlined :start-icon="MazGithub">
+      <MazBtn href="https://github.com/LouisMazel/maz-ui/issues" target="_blank" rel="noopener" size="lg" color="surface" variant="outline" :start-icon="MazGithub">
         Open issues
       </MazBtn>
     </div>
@@ -168,7 +183,7 @@ const STATS = computed(() => [
           <MazBtn href="https://relizy.dev" target="_blank" rel="noopener" color="secondary" :end-icon="{ icon: MazArrowRight, flipIconForRtl: true }">
             Discover Relizy
           </MazBtn>
-          <MazBtn href="https://github.com/LouisMazel/relizy" target="_blank" rel="noopener" color="surface" outlined :start-icon="MazGithub">
+          <MazBtn href="https://github.com/LouisMazel/relizy" target="_blank" rel="noopener" color="surface" variant="outline" :start-icon="MazGithub">
             GitHub
           </MazBtn>
         </div>

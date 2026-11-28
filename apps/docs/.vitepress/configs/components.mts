@@ -38,12 +38,14 @@ export const components = {
         { text: withNewBadge('InputSecret'), link: '/components/maz-input-secret' },
         { text: 'InputTags', link: '/components/maz-input-tags' },
         { text: 'InputPhoneNumber', link: '/components/maz-input-phone-number' },
+        { text: withNewBadge('InlineEdit'), link: '/components/maz-inline-edit' },
         {
           text: withNewBadge('MarkdownEditor'),
           link: '/components/maz-markdown-editor',
         },
         { text: 'Radio', link: '/components/maz-radio' },
         { text: 'RadioButtons', link: '/components/maz-radio-buttons' },
+        { text: withNewBadge('Rating'), link: '/components/maz-rating' },
         {
           text: withNewBadge('Segmented'),
           link: '/components/maz-segmented',
@@ -53,6 +55,7 @@ export const components = {
         { text: 'Slider', link: '/components/maz-slider' },
         { text: 'Switch', link: '/components/maz-switch' },
         { text: 'Textarea', link: '/components/maz-textarea' },
+        { text: withNewBadge('TimePicker'), link: '/components/maz-time-picker' },
       ],
     },
     {
@@ -72,6 +75,8 @@ export const components = {
           link: '/components/maz-page-section',
         },
         { text: 'ReadMore', link: '/components/maz-read-more' },
+        { text: withNewBadge('ScrollArea'), link: '/components/maz-scroll-area' },
+        { text: withNewBadge('Splitter'), link: '/components/maz-splitter' },
       ],
     },
     {
@@ -79,6 +84,10 @@ export const components = {
       collapsed: false,
       items: [
         { text: 'Tabs', link: '/components/maz-tabs' },
+        { text: withNewBadge('Breadcrumb'), link: '/components/maz-breadcrumb' },
+        { text: withNewBadge('NavigationMenu'), link: '/components/maz-navigation-menu' },
+        { text: withNewBadge('CommandPalette'), link: '/components/maz-command-palette' },
+        { text: withNewBadge('Tour'), link: '/components/maz-tour' },
         { text: 'Stepper', link: '/components/maz-stepper' },
         {
           text: withNewBadge('Timeline'),
@@ -109,6 +118,8 @@ export const components = {
         { text: 'Popover', link: '/components/maz-popover' },
         { text: 'Dropdown', link: '/components/maz-dropdown' },
         { text: 'Backdrop', link: '/components/maz-backdrop' },
+        { text: withNewBadge('ContextMenu'), link: '/components/maz-context-menu' },
+        { text: withNewBadge('Tooltip'), link: '/components/maz-tooltip' },
       ],
     },
     {
@@ -118,6 +129,10 @@ export const components = {
         { text: 'Chart', link: '/components/maz-chart' },
         { text: 'Table (data-table)', link: '/components/maz-table' },
         { text: 'Dropzone', link: '/components/maz-dropzone' },
+        { text: withNewBadge('StatCard'), link: '/components/maz-stat-card' },
+        { text: withNewBadge('Sparkline'), link: '/components/maz-sparkline' },
+        { text: withNewBadge('Tree'), link: '/components/maz-tree' },
+        { text: withNewBadge('EmptyState'), link: '/components/maz-empty-state' },
       ],
     },
     {
@@ -132,10 +147,14 @@ export const components = {
           text: withNewBadge('Markdown'),
           link: '/components/maz-markdown',
         },
+        { text: withNewBadge('MiddleTruncate'), link: '/components/maz-middle-truncate' },
+        { text: withNewBadge('RelativeTime'), link: '/components/maz-relative-time' },
+        { text: withNewBadge('ThemeToggle'), link: '/components/maz-theme-toggle' },
         {
           text: withNewBadge('Indicator'),
           link: '/components/maz-indicator',
         },
+        { text: withNewBadge('Kbd'), link: '/components/maz-kbd' },
         {
           text: withNewBadge('LogStream'),
           link: '/components/maz-log-stream',
@@ -168,8 +187,11 @@ export const components = {
       collapsed: false,
       items: [
         { text: 'Avatar', link: '/components/maz-avatar' },
+        { text: withNewBadge('AvatarGroup'), link: '/components/maz-avatar-group' },
+        { text: withNewBadge('BeforeAfter'), link: '/components/maz-before-after' },
         { text: 'Gallery', link: '/components/maz-gallery' },
         { text: 'LazyImg', link: '/components/maz-lazy-img' },
+        { text: withNewBadge('Lightbox'), link: '/components/maz-lightbox' },
         { text: 'Carousel', link: '/components/maz-carousel' },
         { text: 'Icon', link: '/components/maz-icon' },
         {
@@ -185,7 +207,18 @@ export const components = {
         { text: 'AnimatedCounter', link: '/components/maz-animated-counter' },
         { text: 'AnimatedElement', link: '/components/maz-animated-element' },
         { text: 'AnimatedText', link: '/components/maz-animated-text' },
+        { text: 'DrawnIcon', link: '/components/maz-drawn-icon' },
         { text: 'ExpandAnimation', link: '/components/maz-expand-animation' },
+        { text: 'MorphIcon', link: '/components/maz-morph-icon' },
+        { text: withNewBadge('ProgressiveBlur'), link: '/components/maz-progressive-blur' },
+        {
+          text: withNewBadge('Reveal'),
+          link: '/components/maz-reveal',
+        },
+        {
+          text: withNewBadge('RollingText'),
+          link: '/components/maz-rolling-text',
+        },
         {
           text: withNewBadge('Ticker'),
           link: '/components/maz-ticker',

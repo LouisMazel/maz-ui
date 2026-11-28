@@ -177,6 +177,12 @@ export interface MazInputAutocompleteProps<T> {
    * Draw the border of the input
    * @default true
    */
+  bordered?: boolean
+  /**
+   * Draw the border of the input
+   * @deprecated Use `bordered` instead
+   * @default true
+   */
   border?: boolean
   /** Disable the component */
   disabled?: boolean
@@ -228,6 +234,7 @@ const {
   openOnFocus = false,
   freeEntry = false,
   border = true,
+  bordered = undefined,
   label,
   topLabel,
   placeholder,
@@ -322,7 +329,7 @@ const messages = computed(() => ({
   freeEntry: translations?.freeEntry || t('inputAutocomplete.freeEntry'),
 } satisfies MazUiTranslationsNestedSchema['inputAutocomplete']))
 
-const { size } = useGlobalConfig<{ size: MazSize }>('MazInputAutocomplete', { size: 'md' })
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazInputAutocomplete', { size: 'md', roundedSize: 'md' })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazInputAutocomplete',
@@ -783,7 +790,7 @@ defineExpose({
         :name
         :inputmode
         :input-classes
-        :border
+        :bordered="bordered ?? border"
         autocomplete="off"
         role="combobox"
         aria-autocomplete="list"
@@ -811,7 +818,6 @@ defineExpose({
       :style="{
         'maxHeight': `${maxListHeight}px`,
         'minWidth': listMinWidth ? `${listMinWidth}px` : undefined,
-        '--selected-bg-color': 'color-mix(in srgb, var(--selected-text-color) 12%, transparent)',
         '--selected-text-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `light-dark(oklch(from var(--maz-${color}) min(l, calc(0.25 + c * 2)) c h), oklch(from var(--maz-${color}) max(l, calc(0.92 - c * 2)) c h))`,
       }"
       @mousedown.prevent
@@ -904,10 +910,16 @@ defineExpose({
 }
 
 .m-input-autocomplete-free-entry {
-  @apply maz:cursor-interactive maz:border-none maz:bg-transparent maz:px-4 maz:py-2 maz:text-start maz:text-foreground maz:hover:bg-foreground/5;
+  @apply maz:mx-2 maz:mb-2 maz:cursor-interactive maz:rounded-md maz:border-none maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:text-foreground maz:transition-colors maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
+
+  transition-duration: calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1));
 }
 
 .m-input-autocomplete-mark {
   @apply maz:bg-transparent maz:font-semibold maz:text-inherit;
+
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 </style>

@@ -86,7 +86,7 @@ describe('given renderProjectInfo', () => {
       expect(output).toContain('- Installed: maz-ui 5.8.0')
       expect(output).toContain('`app.use(MazUi)` (`maz-ui/plugins/maz-ui`) not found')
       expect(output).toContain('- Toast, dialog and wait: `useToast`, `useDialog` and `useWait` need no plugin')
-      expect(output).toContain('- Animations on scroll: disabled')
+      expect(output).toContain('- Animations on scroll: use `v-reveal` (`maz-ui/directives/vReveal`).')
       expect(output).toContain('import each one')
       expect(output).toContain('add `MazUi()` of `@maz-ui/vite-plugin` to use them by name')
       expect(output).toContain('Theme presets: the default one')
@@ -128,7 +128,7 @@ describe('given renderProjectInfo', () => {
 
       expect(output).toContain('## App `apps/shop`: Nuxt (`@maz-ui/nuxt`)')
       expect(output).toContain('no package of the ecosystem in node_modules')
-      expect(output).toContain('- Animations on scroll: enabled (`useAos`).\n')
+      expect(output).toContain('- Animations on scroll: use `v-reveal` (`maz-ui/directives/vReveal`, `mazUi: { directives: { vReveal: true } }`). The AOS plugin (`useAos`) is enabled: it is deprecated and removed in v6, migrate to `v-reveal`.\n')
       expect(output).toContain('- Deprecated: `mazUi.plugins` still works, removed in v6')
       expect(output).toContain('Components: auto-imported in the templates. Composables: auto-imported.')
       expect(output).toContain('- Components already used: `MazCard` (1)')
@@ -174,14 +174,14 @@ describe('given the setup of the toasts, dialogs, loaders and animations', () =>
   })
 
   describe('when a Vue app installs no plugin', () => {
-    it('then toast, dialog and wait need nothing and aos tells how to enable it', async () => {
+    it('then toast, dialog and wait need nothing and the animations on scroll use vReveal', async () => {
       const cwd = createTempDir()
       createVueApp(cwd, { mainTs: 'app.use(MazUi, { theme: { preset } })\n' })
 
       const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS))
 
       expect(output).toContain('- Toast, dialog and wait: `useToast`, `useDialog` and `useWait` need no plugin, their global options go in `app.use(MazUi, { toast, dialog })`.')
-      expect(output).toContain('- Animations on scroll: disabled, enable them with `app.use(MazUi, { aos: true })` and `import \'maz-ui/aos.css\'` before using `useAos`.')
+      expect(output).toContain('- Animations on scroll: use `v-reveal` (`maz-ui/directives/vReveal`).\n')
       expect(output).not.toContain('Before using')
       expect(output).not.toContain('Deprecated')
     })
@@ -196,7 +196,7 @@ describe('given the setup of the toasts, dialogs, loaders and animations', () =>
       const output = renderProjectInfo([app])
 
       expect(app.aos).toBe(true)
-      expect(output).toContain('- Animations on scroll: enabled (`useAos`).')
+      expect(output).toContain('The AOS plugin (`useAos`) is enabled: it is deprecated and removed in v6, migrate to `v-reveal`.')
       expect(output).toContain('- Deprecated: `app.use(ToastPlugin)`, `app.use(WaitPlugin)` still works, removed in v6: remove it and move its options to `app.use(MazUi, { toast, dialog })`.')
     })
   })
@@ -210,20 +210,21 @@ describe('given the setup of the toasts, dialogs, loaders and animations', () =>
       const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS))
 
       expect(output).toContain('their global options go in `mazUi.toast` and `mazUi.dialog` in `nuxt.config`.')
-      expect(output).toContain('- Animations on scroll: enabled (`useAos`).')
+      expect(output).toContain('The AOS plugin (`useAos`) is enabled: it is deprecated and removed in v6, migrate to `v-reveal`.')
       expect(output).toContain('- Deprecated: `mazUi.plugins` still works, removed in v6')
     })
   })
 
-  describe('when a Nuxt app does not enable aos', () => {
-    it('then it gives the Nuxt option', async () => {
+  describe('when a Nuxt app does not enable the AOS plugin', () => {
+    it('then it gives the Nuxt option of vReveal', async () => {
       const cwd = createTempDir()
       writeFile(cwd, 'package.json', JSON.stringify({ devDependencies: { '@maz-ui/nuxt': '^5.0.0' } }))
       writeFile(cwd, 'nuxt.config.ts', 'export default defineNuxtConfig({ mazUi: { toast: { position: \'top\' } } })\n')
 
       const output = renderProjectInfo(await readProjectInfo(cwd, COMPONENTS))
 
-      expect(output).toContain('enable them with `mazUi: { aos: true }` before using `useAos`.')
+      expect(output).toContain('use `v-reveal` (`maz-ui/directives/vReveal`, `mazUi: { directives: { vReveal: true } }`).')
+      expect(output).not.toContain('AOS plugin')
       expect(output).not.toContain('Deprecated')
     })
   })

@@ -19,7 +19,7 @@ const { project, number, reversed = false } = defineProps<{
         <p class="home-eyebrow maz:flex maz:flex-wrap maz:items-center maz:gap-x-3 maz:gap-y-2">
           <span>{{ project.kind }}</span>
           <span>{{ project.year }}</span>
-          <MazBadge v-if="project.status" color="primary" size="sm" outlined rounded-size="full">
+          <MazBadge v-if="project.status" color="primary" size="sm" variant="outline" rounded-size="full">
             {{ project.status }}
           </MazBadge>
         </p>
@@ -42,7 +42,7 @@ const { project, number, reversed = false } = defineProps<{
 
         <ul class="maz:mt-8 maz:mb-0 maz:flex maz:list-none maz:flex-wrap maz:gap-2 maz:p-0" :aria-label="`Stack of ${project.name}`">
           <li v-for="tech in project.stack" :key="tech">
-            <MazBadge :color="tech === 'Maz-UI' ? 'primary' : 'surface'" size="sm" rounded-size="full" :outlined="tech !== 'Maz-UI'">
+            <MazBadge :color="tech === 'Maz-UI' ? 'primary' : 'surface'" size="sm" rounded-size="full" :variant="tech !== 'Maz-UI' ? 'outline' : 'solid'">
               {{ tech }}
             </MazBadge>
           </li>
@@ -52,7 +52,7 @@ const { project, number, reversed = false } = defineProps<{
           <MazBtn :href="project.url" target="_blank" rel="noopener" size="lg" :end-icon="MazArrowTopRightOnSquare">
             Visit {{ project.name }}
           </MazBtn>
-          <MazBtn v-if="project.github" :href="project.github" target="_blank" rel="noopener" size="lg" color="surface" outlined :start-icon="MazGithub">
+          <MazBtn v-if="project.github" :href="project.github" target="_blank" rel="noopener" size="lg" color="surface" variant="outline" :start-icon="MazGithub">
             GitHub
           </MazBtn>
         </div>
@@ -79,7 +79,7 @@ const { project, number, reversed = false } = defineProps<{
   .made-with-shot__link {
     transform: rotateY(var(--made-with-tilt, -8deg)) rotateX(3deg);
     transform-origin: var(--made-with-origin, right center);
-    transition: transform 700ms var(--home-ease);
+    transition: transform calc(var(--maz-motion-slower, 450ms) * 1.5 * var(--maz-motion-scale, 1)) var(--home-ease);
   }
 
   .made-with-shot:hover .made-with-shot__link {

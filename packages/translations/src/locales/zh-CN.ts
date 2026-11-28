@@ -23,6 +23,11 @@ export default {
     sidebar: '侧边栏',
     openSidebar: '打开侧边栏',
     closeSidebar: '关闭侧边栏',
+    resizeSheet: '调整面板大小',
+    before: '之前',
+    after: '之后',
+    resize: '调整大小',
+    moreItems: '另外 {count} 个',
   },
   selectCountry: {
     searchPlaceholder: '搜索国家',
@@ -120,12 +125,28 @@ export default {
     add: '添加',
     duplicateKey: '此键已被使用',
   },
+  input: {
+    clear: '清除',
+  },
   inputSecret: {
     saved: '已保存',
     replace: '替换',
     clear: '清除',
     cancel: '取消',
     savedDescription: '值已保存并隐藏',
+    strengthLabel: '密码强度',
+    strengthVeryWeak: '非常弱',
+    strengthWeak: '弱',
+    strengthFair: '一般',
+    strengthGood: '良好',
+    strengthStrong: '强',
+    ruleLength: '至少 {minLength} 个字符',
+    ruleLowercase: '包含小写字母',
+    ruleUppercase: '包含大写字母',
+    ruleNumber: '包含数字',
+    ruleSymbol: '包含符号',
+    ruleMet: '规则已满足',
+    ruleNotMet: '规则未满足',
   },
   readMore: {
     expand: '阅读更多',
@@ -166,6 +187,9 @@ export default {
     copyUrlToClipboard: '复制 URL 到剪贴板',
     urlCopiedToClipboard: 'URL 已复制到剪贴板',
   },
+  btn: {
+    holdDescription: '长按以确认',
+  },
   btnClipboard: {
     copy: '复制',
     copied: '已复制',
@@ -199,5 +223,86 @@ export default {
       h2: '标题 2',
       h3: '标题 3',
     },
+  },
+  dialogConfirm: {
+    confirmationLabel: '输入“{text}”以确认',
+  },
+  /**
+   * Image viewer (lightbox) labels: label, open (thumbnail), close, previous, next, loading.
+   */
+  lightbox: {
+    label: '图片查看器',
+    open: '放大图片',
+    close: '关闭',
+    previous: '上一张图片',
+    next: '下一张图片',
+    loading: '加载中...',
+  },
+  tour: {
+    label: '导览',
+    next: '下一步',
+    previous: '上一步',
+    skip: '跳过',
+    done: '完成',
+    stepOf: '第 {step} 步，共 {total} 步',
+  },
+  breadcrumb: {
+    label: '面包屑导航',
+    showHidden: '显示隐藏的页面',
+  },
+  navigationMenu: {
+    label: '主导航',
+  },
+  emptyState: {
+    noResults: '没有结果',
+    noResultsFor: '没有与“{query}”匹配的内容',
+  },
+  sparkline: {
+    up: '上升',
+    down: '下降',
+    flat: '平稳',
+    label: '趋势{trend}：最小 {min}，最大 {max}，最新 {last}',
+  },
+  statCard: {
+    chart: '{label}：趋势',
+  },
+  tree: {
+    added: '已添加',
+    modified: '已修改',
+    deleted: '已删除',
+  },
+  rating: {
+    label: '评分',
+    value: '{value} / {max}',
+  },
+  timePicker: {
+    label: '时间',
+    hours: '小时',
+    minutes: '分钟',
+    period: '上午或下午',
+    slots: '可用时间',
+  },
+  inlineEdit: {
+    edit: '编辑',
+  },
+  kbd: {
+    command: '命令',
+    control: '控制',
+    option: '选项',
+    shift: 'Shift',
+  },
+  commandPalette: {
+    label: '命令面板',
+    placeholder: '搜索命令',
+    noResults: '没有结果',
+    results: '{count} 个结果',
+  },
+  contextMenu: {
+    label: '上下文菜单',
+  },
+  themeToggle: {
+    toDark: '切换到深色模式',
+    toSystem: '使用系统主题',
+    toLight: '切换到浅色模式',
   },
 } satisfies MazUiTranslationsNestedSchema

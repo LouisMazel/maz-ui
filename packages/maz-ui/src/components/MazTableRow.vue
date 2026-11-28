@@ -33,7 +33,7 @@ const isStriped = computed(() => (stripeIndex! % 2 === 0 ? backgroundOdd.value :
       '--hoverable': injectedHoverable && hoverable && !isHead,
       '--background-odd': backgroundOdd,
       '--background-even': backgroundEven,
-      'maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-300': injectedHoverable && hoverable && !isHead,
+      'maz:hover:bg-foreground/5': injectedHoverable && hoverable && !isHead,
       'maz:odd:bg-surface-600/70 maz:dark:odd:bg-surface-400/70': backgroundOdd && !isStripedByIndex,
       'maz:even:bg-surface-600/70 maz:dark:even:bg-surface-400/70': backgroundEven && !isStripedByIndex,
       [STRIPE_CLASS]: isStripedByIndex && isStriped,

@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
-import { SIZE_TEXT_CLASS } from './constants.ts'
+import { ROUNDED_SIZE_CLASS, SIZE_TEXT_CLASS } from './constants.ts'
 
 export interface MazTextareaProps<T extends string | undefined | null> {
   /** Style attribut of the component root element */
@@ -58,8 +58,14 @@ export interface MazTextareaProps<T extends string | undefined | null> {
    */
   transparent?: boolean
   /**
-   * If the textarea has no border
-   * @default false
+   * Draw the border of the textarea
+   * @default true
+   */
+  bordered?: boolean
+  /**
+   * Draw the border of the textarea
+   * @deprecated Use `bordered` instead
+   * @default true
    */
   border?: boolean
   /**
@@ -90,15 +96,31 @@ export interface MazTextareaProps<T extends string | undefined | null> {
    * @example "Must contain at least 8 characters"
    */
   assistiveText?: string
+  /**
+   * Shows the number of characters typed, with the `maxlength` set on the textarea (`n/max`),
+   * and a ring that fills as the limit gets near
+   * @default false
+   */
+  counter?: boolean
+  /**
+   * Animates the textarea: the check drawn when `success`, the ring of the counter and the message that
+   * gives way to the next one. Set to `false` to keep the field as it was
+   * @default true
+   */
+  animated?: boolean
 }
 </script>
 
 <script lang="ts" setup generic="T extends string | undefined | null">
 import type { HTMLAttributes } from 'vue'
-import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
-import { useGlobalConfig } from '../composables/useGlobalConfig.ts'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useAttrs, useSlots, watch } from 'vue'
+import { useFieldTopLabel, useGlobalConfig } from '../composables/useGlobalConfig.ts'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
+import { useReducedMotion } from '../composables/useReducedMotion.ts'
 import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync.ts'
+import MazDrawnIcon from './MazDrawnIcon.vue'
+import MazFieldMessage from './MazField/MazFieldMessage.vue'
+import { getFieldFocusColor, useFieldState } from './MazField/useFieldState.ts'
 
 defineOptions({
   inheritAttrs: false,
@@ -121,9 +143,14 @@ const {
   padding = true,
   transparent = false,
   border = true,
+  bordered = undefined,
   autogrow = true,
   minRows = 3,
   appendJustify = 'end',
+  topLabel,
+  assistiveText,
+  counter = false,
+  animated = true,
 } = defineProps<MazTextareaProps<T>>()
 
 const emits = defineEmits<{
@@ -187,19 +214,47 @@ function change(event: Event) {
 
 const slots = useSlots()
 
-const hasLabelOrHint = computed(() => label || hint || !!slots.label)
+const attrs = useAttrs()
+const { shouldReduceMotion } = useReducedMotion()
+
+const { labelOnTop, topLabelText } = useFieldTopLabel(() => ({ label, topLabel }))
+
+const hasLabelOrHint = computed(() => hint || !!slots.label || (!labelOnTop.value && !!label))
+
+const messageId = computed(() => `${instanceId.value}-message`)
+
+// A function, not a computed: the attributes are not reactive
+function getDescribedBy() {
+  return (attrs['aria-describedby'] as string | undefined) ?? (assistiveText ? messageId.value : undefined)
+}
+
+const { state, hasState, borderClass: borderStyle, textClass } = useFieldState(() => ({ error, success, warning }))
+
+const showValidCheck = computed(() => animated && success && !error)
+
+const maxLength = computed(() => {
+  const value = Number(attrs.maxlength ?? attrs.maxLength)
+  return Number.isFinite(value) && value > 0 ? value : undefined
+})
+
+const characterCount = computed(() => String(modelValue ?? '').length)
+
+const counterRatio = computed(() => (maxLength.value ? Math.min(characterCount.value / maxLength.value, 1) : 0))
+
+const counterState = computed(() => {
+  if (counterRatio.value >= 1)
+    return 'full'
+  if (counterRatio.value >= 0.9)
+    return 'near'
+  return 'normal'
+})
+
+const counterLabel = computed(() => (maxLength.value ? `${characterCount.value}/${maxLength.value}` : `${characterCount.value}`))
 
 const hasAppend = computed(() => !!slots.append)
 
-const borderStyle = computed(() => {
-  if (error)
-    return 'maz:border-destructive'
-  if (success)
-    return 'maz:border-success'
-  if (warning)
-    return 'maz:border-warning'
-  return '--default-border maz:border-divider maz:dark:border-divider-400'
-})
+// Removed in v6 (plans/ROADMAP.md): `border` is an alias of `bordered`
+const hasBorder = computed(() => bordered ?? border)
 
 let autofillCleanup: (() => void) | undefined
 
@@ -223,14 +278,7 @@ onBeforeUnmount(() => {
   autofillCleanup?.()
 })
 
-const ROUNDED_CLASS = {
-  none: '',
-  sm: 'maz:rounded-xs',
-  md: 'maz:rounded-md',
-  lg: 'maz:rounded-lg',
-  xl: 'maz:rounded-xl',
-  full: 'maz:rounded-full',
-} as const
+const ROUNDED_CLASS = ROUNDED_SIZE_CLASS
 
 const SIZE_CONFIG = {
   xl: { height: '4rem', lineHeight: '1.75rem', paddingInline: '1.25rem' },
@@ -247,31 +295,42 @@ const sizeVars = computed(() => {
   const config = SIZE_CONFIG[size.value]
   return {
     '--mt-height': config.height,
+    '--mt-control-height': `var(--maz-control-height-${size.value}, ${config.height})`,
     '--mt-line-height': config.lineHeight,
     '--mt-padding-inline': config.paddingInline,
   }
 })
 
-const stateLabelColor = computed(() => [
-  {
-    'maz:text-destructive-600': error,
-    'maz:text-success-600': success,
-    'maz:text-warning-600': warning,
-  },
-])
+const stateLabelColor = computed(() => [textClass.value])
+
+const supportsFieldSizing = typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('field-sizing', 'content')
+
+function resizeToContent() {
+  const element = textarea.value
+  if (!element || supportsFieldSizing || !autogrow)
+    return
+
+  element.style.blockSize = 'auto'
+  if (element.scrollHeight > 0)
+    element.style.blockSize = `${element.scrollHeight}px`
+}
+
+onMounted(resizeToContent)
+
+watch(() => modelValue, () => nextTick(resizeToContent))
 </script>
 
 <template>
   <div class="m-textarea-wrapper m-reset-css maz:flex maz:flex-col maz:gap-2" :class="[classProp, SIZE_TEXT_CLASS[size]]" :style>
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
-      v-if="topLabel"
+      v-if="topLabelText"
       :for="instanceId"
       class="m-textarea__top-label"
       :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
       :class="stateLabelColor"
     >
-      {{ topLabel }}
+      {{ topLabelText }}
     </label>
     <label
       class="m-textarea maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground"
@@ -280,11 +339,13 @@ const stateLabelColor = computed(() => [
         {
           '--is-disabled': disabled,
           '--has-label': hasLabelOrHint,
+          '--has-state': hasState,
           '--background-transparent': transparent,
           '--has-placeholder': !!placeholder,
           '--autogrow': autogrow,
           '--padding': padding,
-          'maz:border maz:border-solid': border && !disabled,
+          'maz:border maz:border-solid maz:field-focus': hasBorder && !disabled,
+          'maz:focus-within-ring maz:field-transition': !hasBorder,
           'maz:bg-input': !transparent && !disabled,
           'maz:disabled-cursor maz:border-divider maz:bg-surface-600 maz:text-muted maz:dark:border-divider-400 maz:dark:bg-surface-400': disabled,
         },
@@ -293,7 +354,7 @@ const stateLabelColor = computed(() => [
         ROUNDED_CLASS[roundedSize],
         `--${color}`,
       ]"
-      :style="[`--append-justify: ${appendJustify}`, `--maz-textarea-min-rows: ${minRows}`, sizeVars]"
+      :style="[`--append-justify: ${appendJustify}`, { '--m-field-color': getFieldFocusColor(color, state) }, `--maz-textarea-min-rows: ${minRows}`, sizeVars]"
     >
       <!-- eslint-disable vuejs-accessibility/label-has-for -->
       <label
@@ -303,7 +364,7 @@ const stateLabelColor = computed(() => [
         :class="[
           ...stateLabelColor,
           {
-            '--has-state': error || warning || success,
+            '--has-state': hasState,
           },
         ]"
       >
@@ -323,6 +384,8 @@ const stateLabelColor = computed(() => [
         ref="textarea"
         v-bind="$attrs"
         v-model="inputValue"
+        :aria-invalid="error || undefined"
+        :aria-describedby="getDescribedBy()"
         :placeholder="placeholder || ' '"
         :name
         :rows="minRows"
@@ -340,20 +403,44 @@ const stateLabelColor = computed(() => [
         <!-- @slot Append - Replace the append -->
         <slot name="append" />
       </div>
+      <MazDrawnIcon v-if="showValidCheck" name="check" class="m-textarea__valid maz:text-xl maz:text-success-600" />
     </label>
 
-    <div
-      v-if="assistiveText" class="m-textarea__bottom-text maz:-mt-1 maz:text-body-sm" :class="[
-        {
-          'maz:text-destructive-600': error,
-          'maz:text-success-600': success,
-          'maz:text-warning-600': warning,
-          'maz:text-muted': !error && !success && !warning,
-        },
-      ]"
-    >
-      {{ assistiveText }}
+    <div v-if="counter" class="m-textarea__footer maz:-mt-1 maz:flex maz:items-start maz:gap-2">
+      <MazFieldMessage
+        v-if="assistiveText"
+        :id="messageId"
+        :text="assistiveText"
+        :state
+        :animated
+        class="m-textarea__bottom-text maz:flex-1"
+      />
+      <span v-else class="maz:flex-1" />
+      <span class="m-textarea__counter maz:flex maz:items-center maz:gap-1 maz:text-body-sm" :class="`--${counterState}`">
+        <svg v-if="maxLength" class="m-textarea__counter-ring" viewBox="0 0 24 24" fill="none" aria-hidden="true" :class="{ '--animated': animated && !shouldReduceMotion }">
+          <circle class="m-textarea__counter-track" cx="12" cy="12" r="9" stroke-width="3" />
+          <circle
+            class="m-textarea__counter-progress"
+            cx="12"
+            cy="12"
+            r="9"
+            stroke-width="3"
+            pathLength="1"
+            stroke-linecap="round"
+            :stroke-dashoffset="1 - counterRatio"
+          />
+        </svg>
+        <span class="m-textarea__counter-text">{{ counterLabel }}</span>
+      </span>
     </div>
+    <MazFieldMessage
+      v-else-if="assistiveText"
+      :id="messageId"
+      :text="assistiveText"
+      :state
+      :animated
+      class="m-textarea__bottom-text maz:-mt-1"
+    />
   </div>
 </template>
 
@@ -361,12 +448,13 @@ const stateLabelColor = computed(() => [
 @reference "../tailwindcss/tailwind.css";
 
 .m-textarea {
+  --mt-field-height: var(--mt-control-height, var(--mt-height, 3rem));
   --mt-padding-block: calc(
-    (var(--mt-height, 3rem) - var(--mt-line-height, 1.5rem) - (var(--maz-border-width) * 2)) / 2
+    (var(--mt-field-height) - var(--mt-line-height, 1.5rem) - (var(--maz-border-width) * 2)) / 2
   );
 
   &.--padding {
-    padding-inline: var(--mt-padding-inline, 1rem);
+    padding-inline: calc(var(--mt-padding-inline, 1rem) * var(--maz-density-ratio, 1));
     padding-block: var(--mt-padding-block);
   }
 
@@ -380,7 +468,8 @@ const stateLabelColor = computed(() => [
     @apply maz:w-full maz:outline-hidden maz:bg-transparent;
 
     line-height: var(--mt-line-height, 1.5rem);
-    transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    transition: padding calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+      var(--maz-easing-out, cubic-bezier(0, 0, 0.2, 1));
 
     &.--has-append {
       @apply maz:pb-4;
@@ -389,7 +478,8 @@ const stateLabelColor = computed(() => [
     &:-webkit-autofill {
       -webkit-text-fill-color: var(--maz-foreground);
       transition:
-        padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+        padding calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+          var(--maz-easing-out, cubic-bezier(0, 0, 0.2, 1)),
         background-color 0s 600000s,
         color 0s 600000s;
     }
@@ -416,42 +506,6 @@ const stateLabelColor = computed(() => [
     transform: scale(0.8) translateY(calc(-1 * var(--mt-padding-block)));
   }
 
-  &.--primary:focus-within {
-    @apply maz:border-primary;
-  }
-
-  &.--secondary:focus-within {
-    @apply maz:border-secondary;
-  }
-
-  &.--accent:focus-within {
-    @apply maz:border-accent;
-  }
-
-  &.--info:focus-within {
-    @apply maz:border-info;
-  }
-
-  &.--success:focus-within {
-    @apply maz:border-success;
-  }
-
-  &.--warning:focus-within {
-    @apply maz:border-warning;
-  }
-
-  &.--destructive:focus-within {
-    @apply maz:border-destructive;
-  }
-
-  &.--contrast:focus-within {
-    @apply maz:border-contrast;
-  }
-
-  &.--neutral:focus-within {
-    border-color: var(--maz-neutral-foreground);
-  }
-
   &.--autogrow textarea {
     @apply maz:resize-none;
 
@@ -468,14 +522,58 @@ const stateLabelColor = computed(() => [
   @apply maz:pointer-events-none maz:absolute maz:block maz:w-max maz:origin-top-left maz:truncate;
   @apply maz:flex maz:flex-center;
 
-  inset-inline-start: var(--mt-padding-inline, 1rem);
+  inset-inline-start: calc(var(--mt-padding-inline, 1rem) * var(--maz-density-ratio, 1));
   inset-block-start: var(--mt-padding-block);
   line-height: var(--mt-line-height, 1.5rem);
-  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  transition: transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1))
+    var(--maz-easing-out, cubic-bezier(0, 0, 0.2, 1));
 
   &:not(.--has-state) {
     @apply maz:text-muted;
   }
+}
+
+.m-textarea__valid {
+  position: absolute;
+  inset-block-start: var(--mt-padding-block);
+  inset-inline-end: calc(var(--mt-padding-inline, 1rem) * var(--maz-density-ratio, 1));
+  line-height: var(--mt-line-height, 1.5rem);
+}
+
+.m-textarea__counter {
+  font-variant-numeric: tabular-nums;
+  color: var(--maz-muted);
+
+  &.--near {
+    color: var(--maz-warning-600);
+  }
+
+  &.--full {
+    color: var(--maz-destructive-600);
+  }
+}
+
+.m-textarea__counter-ring {
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  transform: rotate(-90deg);
+
+  & circle {
+    stroke: currentcolor;
+  }
+
+  &.--animated .m-textarea__counter-progress {
+    transition: stroke-dashoffset calc(var(--maz-motion-fast, 100ms) * var(--maz-motion-scale, 1))
+      var(--maz-easing-out, ease-out);
+  }
+}
+
+.m-textarea__counter-track {
+  opacity: 0.2;
+}
+
+.m-textarea__counter-progress {
+  stroke-dasharray: 1;
 }
 
 .m-textarea__append {

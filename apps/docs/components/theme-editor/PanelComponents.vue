@@ -33,7 +33,7 @@ const WEIGHTS = ['400', '500', '600', '700'].map(value => ({ label: value, value
         <MazBtn size="sm">
           Primary
         </MazBtn>
-        <MazBtn size="sm" color="surface" outlined>
+        <MazBtn size="sm" color="surface" variant="outline">
           Outlined
         </MazBtn>
       </div>

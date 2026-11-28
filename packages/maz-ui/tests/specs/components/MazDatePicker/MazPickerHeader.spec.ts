@@ -1,4 +1,5 @@
 import MazPickerHeader from '@components/MazDatePicker/MazPickerHeader.vue'
+import MazRollingText from '@components/MazRollingText.vue'
 import { mount } from '@vue/test-utils'
 
 describe('given MazPickerHeader component', () => {
@@ -44,7 +45,7 @@ describe('given MazPickerHeader component', () => {
       })
 
       const yearText = wrapper.find('.m-date-picker-header__year-text')
-      expect(yearText.text()).toBe('-')
+      expect(yearText.findComponent(MazRollingText).props('value')).toBe('-')
     })
 
     it('then dateString should display a dash when no modelValue', () => {
@@ -56,7 +57,7 @@ describe('given MazPickerHeader component', () => {
       })
 
       const dateText = wrapper.find('.m-date-picker-header__date-text')
-      expect(dateText.text()).toBe('-')
+      expect(dateText.findComponent(MazRollingText).props('value')).toBe('-')
     })
   })
 
@@ -164,7 +165,7 @@ describe('given MazPickerHeader component', () => {
       })
 
       const dateText = wrapper.find('.m-date-picker-header__date-text')
-      expect(dateText.text()).toBe('-')
+      expect(dateText.findComponent(MazRollingText).props('value')).toBe('-')
     })
   })
 

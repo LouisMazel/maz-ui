@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import type { ClassValue } from 'vue'
-import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
 import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 
 import MazExpandAnimation from './MazExpandAnimation.vue'
-import MazIcon from './MazIcon.vue'
+import MazMorphIcon from './MazMorphIcon.vue'
 
 export interface MazAccordionProps {
   id?: string
@@ -17,6 +16,11 @@ export interface MazAccordionProps {
    * @default false
    */
   lazy?: boolean
+  /**
+   * Wrap each item in a `MazCardSpotlight` (a halo follows the pointer). When `false`, the items are plain bordered cards
+   * @default true
+   */
+  spotlight?: boolean
 }
 
 const {
@@ -24,6 +28,7 @@ const {
   modelValue = 0,
   contentClass = undefined,
   lazy = false,
+  spotlight = true,
 } = defineProps<MazAccordionProps>()
 
 const emits = defineEmits(['update:model-value'])
@@ -67,38 +72,63 @@ function selectStep(index: number) {
 <template>
   <div class="m-accordion m-reset-css maz:relative maz:inline-flex maz:flex-col maz:gap-4 maz:align-top" role="presentation">
     <template v-for="step in stepCount" :key="step">
-      <MazCardSpotlight class="m-accordion__spotlight maz:w-full" :padding="false">
+      <component
+        :is="spotlight ? MazCardSpotlight : 'div'"
+        v-bind="spotlight ? { padding: false } : {}"
+        class="m-accordion__spotlight maz:w-full"
+        :class="{ 'maz:overflow-hidden maz:rounded-md maz:border maz:border-divider maz:bg-container': !spotlight }"
+      >
         <button
           :id="`${instanceId}-header-${step}`"
-          class="m-accordion__header maz:inline-flex maz:w-full maz:items-center maz:justify-between maz:gap-4 maz:p-4 maz:text-start maz:type-label maz:transition-colors maz:duration-300 maz:ease-in-out"
+          class="m-accordion__header maz:inline-flex maz:w-full maz:items-center maz:justify-between maz:gap-4 maz:p-4 maz:text-start maz:type-label maz:focus-ring"
           :aria-controls="`${instanceId}-panel-${step}`"
           :aria-expanded="isStepOpen(step)"
           @click="selectStep(step)"
         >
           <slot :name="`title-${step}`" :is-open="isStepOpen(step)" />
 
-          <MazIcon :icon="MazPlus" class="header-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="{ '--rotate': isStepOpen(step) }" />
+          <MazMorphIcon name="plus-minus" :active="isStepOpen(step)" class="header-icon" :class="{ '--rotate': isStepOpen(step) }" />
         </button>
 
         <MazExpandAnimation
           :id="`${instanceId}-panel-${step}`"
-          duration="300ms"
           :model-value="isStepOpen(step)"
           :lazy
           :aria-labelledby="`${instanceId}-header-${step}`"
         >
-          <div class="m-accordion__content maz:p-4" :class="contentClass">
+          <div class="m-accordion__content maz:p-4" :class="[contentClass, { '--open': isStepOpen(step) }]">
             <slot name="content" :is-open="isStepOpen(step)" />
             <slot :name="`content-${step}`" :is-open="isStepOpen(step)" />
           </div>
         </MazExpandAnimation>
-      </MazCardSpotlight>
+      </component>
     </template>
   </div>
 </template>
 
 <style scoped>
-.m-accordion__header .header-icon.--rotate {
-  transform: rotate(135deg);
+.m-accordion__header {
+  outline-offset: calc(var(--maz-focus-ring-width, 2px) * -1);
+}
+
+.m-accordion__content {
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition:
+    transform calc(var(--maz-motion-normal) * var(--maz-motion-scale) * 0.7) var(--maz-easing-in),
+    opacity calc(var(--maz-motion-normal) * var(--maz-motion-scale) * 0.7) var(--maz-easing-in);
+
+  &.--open {
+    opacity: 1;
+    transform: none;
+    transition:
+      transform calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out),
+      opacity calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out);
+
+    @starting-style {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+  }
 }
 </style>

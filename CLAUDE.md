@@ -165,6 +165,6 @@ Within individual packages (e.g., `packages/maz-ui/`):
 ### Coverage Requirements
 
 - **ALWAYS run `pnpm test:unit:coverage` (or `CI=1 pnpm vitest run --coverage` from `packages/maz-ui`) before opening a PR that touches `packages/maz-ui/src/**`**. Plain `pnpm test:unit` does not enforce the thresholds.
-- The coverage thresholds are defined in `packages/maz-ui/vitest.config.ts`. They are enforced in CI (`CI=1` disables `autoUpdate`). A run that drops below any threshold fails.
+- The coverage thresholds are defined in the `vitest.config.ts` of each package: round numbers, fixed by hand (no `autoUpdate`), the target is 90%+ everywhere. A run that drops below any threshold fails.
 - New code must keep the global thresholds for **statements / branches / functions / lines** green. Per-file 100% is not enough — adding many covered functions can still shift the global ratio.
-- `autoUpdate` only **raises** thresholds locally — it never lowers them. If a real coverage drift forces the threshold down, update `vitest.config.ts` manually and commit it with the PR.
+- Never lower a threshold to make a PR pass: add the missing tests. Raise it (round number) when the coverage clearly goes above.

@@ -476,3 +476,41 @@ describe('given attrsTarget', () => {
     })
   })
 })
+
+describe('given toPropApi with a deprecated tag', () => {
+  describe('when the tag has a text', () => {
+    it('then the prop keeps the text as its deprecation', () => {
+      const result = toPropApi(prop({
+        name: 'outlined',
+        type: 'boolean | undefined',
+        tags: [{ name: 'deprecated', text: 'Use `variant="outline"` instead' }],
+      }), new Set())
+
+      expect(result.deprecated).toBe('Use `variant="outline"` instead')
+    })
+  })
+
+  describe('when the tag has no text', () => {
+    it('then the deprecation is a generic one', () => {
+      const result = toPropApi(prop({ name: 'pastel', type: 'boolean', tags: [{ name: 'deprecated' }] }), new Set())
+
+      expect(result.deprecated).toBe('Deprecated')
+    })
+  })
+
+  describe('when there is no deprecated tag', () => {
+    it('then the prop has no deprecation', () => {
+      expect(toPropApi(prop({ name: 'size', type: 'string' }), new Set())).not.toHaveProperty('deprecated')
+    })
+  })
+})
+
+describe('given toEventApi with a deprecated tag', () => {
+  describe('when the event is deprecated', () => {
+    it('then it keeps the text as its deprecation', () => {
+      const result = toEventApi({ name: 'old', type: '[]', signature: '', schema: [], description: '', tags: [{ name: 'deprecated', text: 'Use `new`' }] } as any)
+
+      expect(result.deprecated).toBe('Use `new`')
+    })
+  })
+})

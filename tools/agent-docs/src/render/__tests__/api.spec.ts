@@ -168,3 +168,32 @@ describe('given renderComponentApi', () => {
     })
   })
 })
+
+describe('given renderComponentApi with deprecated members', () => {
+  const api: ComponentApi = {
+    name: 'MazBtn',
+    docId: 'components/maz-btn',
+    import: 'import MazBtn from \'maz-ui/components/MazBtn\'',
+    props: [
+      prop({ name: 'variant' }),
+      prop({ name: 'outlined', type: 'boolean', deprecated: 'Use `variant="outline"` instead' }),
+    ],
+    events: [
+      { name: 'click' },
+      { name: 'old-click', deprecated: 'Use `click`' },
+    ],
+    slots: [],
+    expose: [],
+  }
+
+  describe('when it is rendered', () => {
+    it('then the deprecated props and events are left out', () => {
+      const rendered = renderComponentApi(api)
+
+      expect(rendered).toContain('`variant`')
+      expect(rendered).toContain('`@click`')
+      expect(rendered).not.toContain('outlined')
+      expect(rendered).not.toContain('old-click')
+    })
+  })
+})

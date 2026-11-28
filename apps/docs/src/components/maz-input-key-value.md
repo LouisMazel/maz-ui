@@ -117,6 +117,10 @@ const variables = ref<Record<string, string>>({ NODE_ENV: 'production' })
   </template>
 </ComponentDemo>
 
+## Label above the field
+
+Set `topLabel: true` in the [global defaults](../guide/global-defaults.md) to show the `label` above the field instead of floating inside it. A `top-label` set on an instance still wins. The key and value fields of the rows keep their floating label.
+
 ## Accessibility
 
 - The component is a `group` named by `label` or `top-label`, and described by `assistive-text`.
