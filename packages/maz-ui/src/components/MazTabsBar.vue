@@ -443,8 +443,8 @@ function useIndicator(orientation: 'horizontal' | 'vertical') {
         : undefined
     },
     orientation,
-    stretch,
-    animated,
+    stretch: () => stretch,
+    animated: () => animated,
   })
 }
 

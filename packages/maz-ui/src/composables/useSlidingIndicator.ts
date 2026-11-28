@@ -28,12 +28,12 @@ export interface UseSlidingIndicatorOptions {
    * The indicator stretches toward the target, then shrinks, like a drop of ink
    * @default false
    */
-  stretch?: boolean
+  stretch?: MaybeRefOrGetter<boolean>
   /**
    * Animates the moves of the indicator (never the first placement)
    * @default true
    */
-  animated?: boolean
+  animated?: MaybeRefOrGetter<boolean | undefined>
 }
 
 const STRETCH_DELAY = 120
@@ -95,12 +95,12 @@ export function useSlidingIndicator(options: UseSlidingIndicatorOptions) {
   const box = ref<IndicatorBox>()
   const isReady = ref(false)
   const hasTransition = ref(false)
-  const shouldAnimate = computed(() => animated && !shouldReduceMotion.value && hasTransition.value)
+  const shouldAnimate = computed(() => toValue(animated) !== false && !shouldReduceMotion.value && hasTransition.value)
 
   let stretchTimer: ReturnType<typeof setTimeout> | undefined
 
   function resolveBox(target: IndicatorBox, previous: IndicatorBox | undefined): IndicatorBox {
-    if (!stretch || !previous || !shouldAnimate.value)
+    if (!toValue(stretch) || !previous || !shouldAnimate.value)
       return target
 
     const horizontal = orientation === 'horizontal'
