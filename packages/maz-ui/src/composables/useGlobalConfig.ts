@@ -50,6 +50,11 @@ export interface GlobalizableProps {
    * (URL template or function, e.g. `loadCountryFlag` from `maz-ui/country-flags`)
    */
   flagSrc?: MazCountryFlagSrc
+  /**
+   * Show the `label` of the fields (`MazInput`, `MazTextarea`) above the field instead of floating inside it.
+   * A `top-label` set on an instance still wins.
+   */
+  topLabel?: boolean
 }
 
 /**
@@ -176,4 +181,15 @@ export function useGlobalConfig<T extends Record<string, unknown>>(
   }
 
   return result
+}
+
+/**
+ * Whether the `label` of the fields is shown above the field (`defaults.global.topLabel`) instead of floating inside it.
+ * The `topLabel` prop of a field is a text, so it cannot be resolved by `useGlobalConfig`: the field reads this instead.
+ */
+export function useGlobalTopLabel(): ComputedRef<boolean> {
+  const config = inject(GLOBAL_CONFIG_INJECTION_KEY, undefined)
+  const resolved = config?.global?.topLabel === true
+
+  return computed(() => resolved)
 }

@@ -9,6 +9,10 @@ description: MazInput is a standalone component that replaces the standard html 
 
 <!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
+::: tip Compact density
+The `density: 'compact'` option makes every size about 14% shorter. See [Density](./../ecosystem/themes.md#density).
+:::
+
 ## Basic usage
 
 <ComponentDemo>
@@ -62,6 +66,22 @@ const inputValue = ref()
 
 ```html
 <MazInput v-model="inputValue" top-label="Top label" assistive-text="Assistive text" placeholder="Placeholder" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Clearable
+
+Add `clearable` to show a button that empties the field once it has a value. It emits `clear`.
+
+<ComponentDemo>
+  <MazInput v-model="clearableValue" label="Search" clearable autocomplete="off" />
+
+<template #code>
+
+```html
+<MazInput v-model="value" label="Search" clearable @clear="onClear" />
 ```
 
   </template>
@@ -424,6 +444,8 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
 
 ## State
 
+With `error`, `warning` or `success`, the border and the assistive text take the color of the state. The field is also marked `aria-invalid` on error and linked to its assistive text with `aria-describedby`.
+
 <ComponentDemo title="destructive">
   <MazInput v-model="inputValue" label="Label" error autocomplete="off" />
 
@@ -469,6 +491,9 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
 <script setup lang="ts">
   import { ref, computed } from 'vue'
   const inputValue = ref()
+  const clearableValue = ref('Maz UI')
+  const motionValue = ref('')
+  const motionValid = computed(() => motionValue.value.length >= 3)
   const passwordValue = ref()
   const defaultInputValue = ref('any value')
 
@@ -486,5 +511,51 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
     'neutral',
   ]
 </script>
+
+## Label above the field
+
+To show the `label` above every field of your app instead of floating inside it, set it once in the [global defaults](../guide/global-defaults.md):
+
+```ts
+app.use(MazUi, {
+  defaults: { global: { topLabel: true } },
+})
+```
+
+A `top-label` set on an instance still wins.
+
+## Motion
+
+- The floating label moves with the motion tokens.
+- On `success`, a check is drawn at the end of the field.
+- The clear button grows in when the field gets a value.
+- When the assistive text changes (for example to an error message), the old text fades out and the new one rolls in.
+
+Set `:animated="false"` to turn the check and these transitions off. Reduced motion is respected.
+
+<ComponentDemo>
+  <MazInput
+    v-model="motionValue"
+    label="Type 3 characters"
+    :success="motionValid"
+    :error="!!motionValue && !motionValid"
+    :assistive-text="motionValid ? 'Looks good' : 'At least 3 characters'"
+    autocomplete="off"
+  />
+
+<template #code>
+
+```html
+<MazInput
+  v-model="value"
+  label="Type 3 characters"
+  :success="isValid"
+  :error="!!value && !isValid"
+  :assistive-text="isValid ? 'Looks good' : 'At least 3 characters'"
+/>
+```
+
+  </template>
+</ComponentDemo>
 
 <!--@include: ./../../.vitepress/generated-docs/maz-input.doc.md-->

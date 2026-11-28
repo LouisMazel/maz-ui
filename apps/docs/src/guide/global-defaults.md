@@ -63,7 +63,7 @@ export default defineNuxtConfig({
 
 ## `global` vs per-component
 
-- `defaults.global` holds **cross-cutting** props shared by many components: `roundedSize`, `size` and `flagSrc`. Set them once and every component that exposes them picks the value up.
+- `defaults.global` holds **cross-cutting** props shared by many components: `roundedSize`, `size`, `flagSrc` and `topLabel`. Set them once and every component that exposes them picks the value up.
 - `defaults.<ComponentName>` holds **per-component** props (including booleans such as `bordered`, `elevation`, `padding`). A per-component entry always wins over `global`.
 
 ```ts
@@ -90,6 +90,7 @@ defaults: {
 | `roundedSize` | `MazRoundedSize` (`'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'`) | `MazBtn`, `MazBtnGroup`, `MazBtnDropdown`, `MazContainer`, `MazInput`, `MazTextarea`, `MazTable`, `MazBadge`, `MazAlert`, `MazAvatar`, `MazSkeleton`, `MazTimeline`, `MazSegmented` |
 | `flagSrc` | `MazCountryFlagSrc` (URL template or function, e.g. `loadCountryFlag` from `maz-ui/country-flags`) | `MazSelectCountry`, `MazInputPhoneNumber` (see [flags source](../components/maz-select-country.md#flags-source)) |
 | `size` | `MazSize` (`'mini' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`) | `MazBtn`, `MazBtnGroup`, `MazBtnDropdown`, `MazBadge`, `MazInput`, `MazSelect`, `MazSelectCountry`, `MazInputNumber`, `MazInputTags`, `MazInputPhoneNumber`, `MazCheckbox`, `MazRadio`, `MazRadioButtons`, `MazDropdown`, `MazPagination`, `MazTable`, `MazTimeline`, `MazSegmented`, `MazCodeHighlight`, `MazLogStream` |
+| `topLabel` | `boolean` (show the `label` above the field instead of floating inside it; a `top-label` on an instance wins) | `MazInput`, `MazTextarea` |
 | `bordered`, `elevation`, `padding`, `transparent`, `overflowHidden` | `boolean` | `MazContainer` |
 | `bordered`, `elevation`, `padding`, `radius`, `scale`, `overflowHidden` | `boolean` | `MazCard` |
 | `as`, `maxWidth`, `gutter`, `fullBleed`, `container` | `MazPageSectionTag`, `string \| number`, `boolean`, `boolean`, `boolean` | `MazPageSection` |
