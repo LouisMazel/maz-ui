@@ -22,23 +22,28 @@ export interface MazDialogConfirmButtonPromised extends Omit<MazBtnProps, 'type'
   response?: unknown
 }
 
+export interface MazDialogConfirmButtonOptions extends Omit<MazBtnProps, 'type'> {
+  text?: string
+  type?: 'accept' | 'reject'
+  response?: unknown
+  onClick?: () => unknown
+}
+
 export type MazDialogConfirmButton = MazDialogConfirmButtonPromised | MazDialogConfirmButtonAction
 
 export type MazDialogConfirmData = Omit<MazDialogConfirmInternalProps, 'identifier'>
 
 export const defaultData = {
   buttons: undefined,
-  acceptText: 'Confirm',
   hideAcceptButton: false,
   acceptProps: {
     color: 'success',
     type: 'accept',
     response: 'accept',
   } satisfies MazDialogConfirmButtonPromised,
-  rejectText: 'Cancel',
   hideRejectButton: false,
   rejectProps: {
-    color: 'destructive',
+    color: 'neutral',
     type: 'reject',
     response: 'reject',
   } satisfies MazDialogConfirmButtonPromised,

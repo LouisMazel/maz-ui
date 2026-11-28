@@ -145,6 +145,8 @@ async function askToUser() {
 </template>
 ```
 
+The default button texts come from the translations (`dialogConfirm.accept`, `dialogConfirm.cancel`). Set `accept-text` and `reject-text` to change them. The reject button is `neutral` by default.
+
 ## Rich content and reactive buttons
 
 The default slot accepts any content (list, alert, form), and receives the `accept` and `reject` functions. The `accept-props` and `reject-props` are regular props: bind them to a reactive state to disable or put the button in loading state.
@@ -199,7 +201,7 @@ interface MazDialogConfirmData {
   message?: string
   /**
    * Dialog custom buttons
-   * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
+   * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'neutral', type: 'reject' }]
    * @type {MazDialogConfirmButton[]}
    */
   buttons?: MazDialogConfirmButton[]

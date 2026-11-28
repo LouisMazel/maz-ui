@@ -326,6 +326,8 @@ function warn() {
 
 ## Reactive buttons
 
+The `acceptProps` and `rejectProps` of a call are merged with the ones of the plugin options (`dialog`): the call only needs to give what changes. Without `acceptText` and `rejectText`, the buttons use the translated texts `dialogConfirm.accept` and `dialogConfirm.cancel`. The reject button is `neutral` by default.
+
 `acceptProps` and `rejectProps` can be a ref, a getter or a reactive object. The buttons update while the dialog is open, for example to block the confirmation until a condition is met.
 
 ```vue
@@ -381,7 +383,7 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'acceptP
   identifier?: string
   /**
    * Custom buttons to display in the dialog and replace the default confirm and cancel buttons
-   * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
+   * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'neutral', type: 'reject' }]
    */
   buttons?: MazDialogConfirmButton[]
   /**

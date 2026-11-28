@@ -1,15 +1,15 @@
 <script lang="ts">
 export { useMazDialogConfirm } from './MazDialogConfirm/useMazDialogConfirm.ts'
-export type { MazDialogConfirmButton, MazDialogConfirmData } from './MazDialogConfirm/useMazDialogConfirm.ts'
+export type { MazDialogConfirmButton, MazDialogConfirmButtonOptions, MazDialogConfirmData } from './MazDialogConfirm/useMazDialogConfirm.ts'
 </script>
 
 <script lang="ts" setup>
 import type { ComponentPublicInstance, ComputedRef } from 'vue'
-import type { MazBtnProps } from './MazBtn.vue'
 import type { MazDialogProps } from './MazDialog.vue'
 import type {
   MazDialogConfirmButton,
   MazDialogConfirmButtonAction,
+  MazDialogConfirmButtonOptions,
   MazDialogConfirmButtonPromised,
   MazDialogConfirmData,
   MazDialogConfirmState,
@@ -37,16 +37,16 @@ export interface MazDialogConfirmInternalProps {
 
   /**
    * Text for the reject button - will be applied only if buttons props is not provided
-   * @default undefined
+   * @default the translation `dialogConfirm.cancel` ('Cancel')
    */
   rejectText?: string
 
   /**
    * Props for the reject button - will be applied only if buttons props is not provided
-   * @default { color: 'destructive', type: 'reject', text: 'Cancel', response: 'reject' }
-   * @type {Omit<MazBtnProps, 'type'> & MazDialogConfirmButton}
+   * @default { color: 'neutral', type: 'reject', response: 'reject' } with the translated `dialogConfirm.cancel` text
+   * @type {MazDialogConfirmButtonOptions}
    */
-  rejectProps?: Omit<MazBtnProps, 'type'> & MazDialogConfirmButton
+  rejectProps?: MazDialogConfirmButtonOptions
 
   /**
    * Hide the reject button (unset: the value of `useMazDialogConfirm().data`, else shown)
@@ -56,16 +56,16 @@ export interface MazDialogConfirmInternalProps {
 
   /**
    * Text for the accept button
-   * @default undefined
+   * @default the translation `dialogConfirm.accept` ('Confirm')
    */
   acceptText?: string
 
   /**
    * Props for the accept button - will be applied only if buttons props is not provided
-   * @default { color: 'success', type: 'accept', text: 'Confirm', response: 'accept' }
-   * @type {Omit<MazBtnProps, 'type'> & MazDialogConfirmButton}
+   * @default { color: 'success', type: 'accept', response: 'accept' } with the translated `dialogConfirm.accept` text
+   * @type {MazDialogConfirmButtonOptions}
    */
-  acceptProps?: Omit<MazBtnProps, 'type'> & MazDialogConfirmButton
+  acceptProps?: MazDialogConfirmButtonOptions
 
   /**
    * Hide the accept button (unset: the value of `useMazDialogConfirm().data`, else shown)
@@ -116,26 +116,28 @@ const currentData = computed<MazDialogConfirmData>(() => {
   const baseData = {
     ...defaultData,
     ...data.value,
+    acceptText: data.value.acceptText ?? data.value.acceptProps?.text ?? t('dialogConfirm.accept'),
+    rejectText: data.value.rejectText ?? data.value.rejectProps?.text ?? t('dialogConfirm.cancel'),
     hideAcceptButton: data.value.hideAcceptButton ?? defaultData.hideAcceptButton,
     hideRejectButton: data.value.hideRejectButton ?? defaultData.hideRejectButton,
     acceptProps: {
       ...defaultData.acceptProps,
       ...data.value.acceptProps,
-      text: acceptText ?? data.value.acceptText ?? data.value.acceptProps?.text ?? defaultData.acceptText,
+      text: acceptText ?? data.value.acceptText ?? data.value.acceptProps?.text ?? t('dialogConfirm.accept'),
       type: data.value.acceptProps?.type ?? defaultData.acceptProps.type,
     },
     rejectProps: {
       ...defaultData.rejectProps,
       ...data.value.rejectProps,
-      text: rejectText ?? data.value.rejectText ?? data.value.rejectProps?.text ?? defaultData.rejectText,
+      text: rejectText ?? data.value.rejectText ?? data.value.rejectProps?.text ?? t('dialogConfirm.cancel'),
       type: data.value.rejectProps?.type ?? defaultData.rejectProps.type,
     },
   } satisfies MazDialogConfirmData
 
   return {
     ...baseData,
-    acceptText: acceptText ?? baseData.acceptText,
-    rejectText: rejectText ?? baseData.rejectText,
+    acceptText: acceptText ?? acceptProps?.text ?? baseData.acceptText,
+    rejectText: rejectText ?? rejectProps?.text ?? baseData.rejectText,
     hideAcceptButton: hideAcceptButton ?? baseData.hideAcceptButton,
     hideRejectButton: hideRejectButton ?? baseData.hideRejectButton,
     acceptProps: {
@@ -175,6 +177,8 @@ defineExpose<{
   isActive: computed(() => currentModal.value?.isActive ?? modelValue ?? false),
 })
 
+type AnyButton = MazDialogConfirmButton | MazDialogConfirmButtonOptions
+
 const typedConfirmation = ref('')
 
 const isConfirmed = computed(() => !confirmation || typedConfirmation.value.trim() === confirmation)
@@ -183,11 +187,11 @@ watch(() => currentModal.value?.isActive ?? modelValue, () => {
   typedConfirmation.value = ''
 })
 
-function isAcceptButton(button: MazDialogConfirmButton | undefined) {
+function isAcceptButton(button: AnyButton | undefined) {
   return !isPromiseButton(button) || button.type === 'accept'
 }
 
-function isButtonDisabled(button: MazDialogConfirmButton | undefined) {
+function isButtonDisabled(button: AnyButton | undefined) {
   return !!button?.disabled || (!isConfirmed.value && isAcceptButton(button))
 }
 
@@ -220,7 +224,7 @@ function submitConfirmation() {
     (button as MazDialogConfirmButtonAction | undefined)?.onClick?.()
 }
 
-function isPromiseButton(button: MazDialogConfirmButton | undefined): button is MazDialogConfirmButtonPromised {
+function isPromiseButton(button: AnyButton | undefined): button is MazDialogConfirmButtonPromised {
   if (!button)
     return false
 
