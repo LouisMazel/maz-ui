@@ -1,0 +1,10 @@
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@import 'maz-ui/tailwindcss/theme.css';
+@import 'maz-ui/tailwindcss/utilities.css';
+
+@source "../pages/modernisation.vue";
+@source "../pages/visual.vue";
+@source "../components/modernisation";

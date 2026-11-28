@@ -163,6 +163,7 @@ Design et API :
 - [ ] `MazAlert` : `role="alert"` toujours, une alerte statique est annoncée comme urgente (`status` par défaut, `alert` en option : comportement de lecteur d'écran seulement, pas d'API cassée).
 - [ ] `MazDrawer` : titre en `<h4>` codé en dur.
 - [ ] `vFullscreenImg` : instance partagée entre tous les éléments (voir sa section, corrigé par la refonte).
+- [ ] `MazSlider` : le remplissage ne s'inverse pas en RTL (il part toujours de la gauche), relevé par les tests visuels. À corriger en PR 3 (formulaires), puis mettre à jour les captures RTL.
 
 ## Phase 0 : fondations
 
