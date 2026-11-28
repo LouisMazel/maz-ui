@@ -20,7 +20,7 @@ async function getWrapper(props: Record<string, unknown> = {}) {
 }
 
 function findButton(text: string) {
-  return [...document.body.querySelectorAll('button')].find(button => button.textContent?.trim() === text)
+  return [...document.body.querySelectorAll('.m-dialog button')].find(button => button.textContent?.trim() === text) as HTMLButtonElement | undefined
 }
 
 function findField() {
