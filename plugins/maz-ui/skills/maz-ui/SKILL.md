@@ -77,7 +77,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 - pull to refresh: `MazPullToRefresh` (`maz-ui/components/MazPullToRefresh`), `usePullToRefresh` (`maz-ui/composables/usePullToRefresh`)
 - a tooltip on hover: `vTooltip` (`maz-ui/directives/vTooltip`)
 - an element enters the viewport (infinite scroll, lazy images, animations), instead of `new IntersectionObserver`: `useIntersectionObserver`, `useInfiniteScroll` (`maz-ui/composables/<name>`), `vIntersect`, `vLazyImg` (`maz-ui/directives/<name>`), `MazLazyImg`, `MazAnimatedElement` (`maz-ui/components/<name>`)
-- animate elements when they appear on scroll (fade, zoom, slide), with `aos: true` in MazUi or `mazUi`: `useAos` (`maz-ui/composables/useAos`)
+- reveal elements when they appear on scroll (fade, slide, curtain, lines of text), `v-reveal` or `MazReveal`: `vReveal` (`maz-ui/directives/vReveal`), `MazReveal` (`maz-ui/components/MazReveal`)
 - scroll position, direction or end, "back to top" or "to bottom" button, instead of `addEventListener("scroll")`: `useScroll` (`maz-ui/composables/useScroll`), `MazBtnScroll` (`maz-ui/components/MazBtnScroll`)
 - lock the page scroll, instead of `body.style.overflow`: `useScrollLock` (`maz-ui/composables/useScrollLock`)
 - enlarge an image on click, browse a gallery in fullscreen, instead of `requestFullscreen`: `vZoomImg`, `vFullscreenImg` (`maz-ui/directives/<name>`)
@@ -109,7 +109,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 
 - `useToast()` for notifications, `useDialog()` or `MazDialogConfirm` for confirmations, `useWait()` for a loading state shared between components, `MazSkeleton` / `MazSpinner` while data loads.
 - These composables work without plugin. Their global options go in the MazUi plugin: `app.use(MazUi, { theme, toast: { position: 'top-right' }, dialog: { acceptText: 'Yes' } })` (Nuxt: `mazUi: { toast: {...}, dialog: {...} }`). Outside of a component (store, router guard), `useToast` and `useDialog` need the MazUi plugin, `useWait` works anywhere.
-- Animations on scroll: `aos: true` in the MazUi plugin with `import 'maz-ui/aos.css'` (Nuxt: `mazUi: { aos: true }`), then `useAos`. The directives are off by default with Nuxt (`mazUi.directives.vTooltip`, or import the directive).
+- Animations on scroll: `v-reveal` (`maz-ui/directives/vReveal`), `MazReveal` or `useReveal` for HTML you do not control; the AOS (`aos`, `useAos`, `data-maz-aos`) is deprecated. The directives are off by default with Nuxt (`mazUi.directives.vReveal`, `vTooltip`, or import the directive).
 - Forms: `useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType).
 - Fields: `clearable` on `MazInput`, `counter` on `MazTextarea`, `strength` on `MazInputSecret` for a password meter, `variant="cards"` on `MazRadioButtons` / `MazChecklist` for choices in cards, `multiple` on `MazSegmented` for a group of toggles; a dense UI with the `density: 'compact'` option of MazUi (Nuxt: `mazUi.density`), the label above every field with `defaults.global.topLabel`.
 

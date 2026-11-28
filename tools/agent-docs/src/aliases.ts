@@ -633,7 +633,7 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'screenshot frame',
   ],
 
-  'composables/use-aos': ['animate on scroll', 'scroll animation', 'reveal'],
+  'directives/reveal': ['animate on scroll', 'scroll animation', 'reveal on scroll', 'aos', 'fade in on scroll', 'text reveal'],
   'composables/use-breakpoints': [
     'breakpoints',
     'responsive',
@@ -779,7 +779,6 @@ export const DOC_ALIASES: Record<string, string[]> = {
   ],
   'directives/zoom-img': ['zoom image', 'image zoom', 'enlarge image'],
 
-  'plugins/aos': ['animate on scroll', 'scroll animations'],
   'plugins/dialog': ['confirm dialog plugin', 'global dialog'],
   'plugins/toast': ['toast plugin', 'notifications', 'snackbar'],
   'plugins/wait': ['loading state plugin', 'global loading'],
@@ -1079,7 +1078,7 @@ export const RELATED_DOCS: Array<[string, string]> = [
   ['plugins/toast', 'composables/use-toast'],
   ['plugins/dialog', 'composables/use-dialog'],
   ['plugins/dialog', 'components/maz-dialog-confirm'],
-  ['plugins/aos', 'composables/use-aos'],
+  ['directives/reveal', 'components/maz-reveal'],
   ['plugins/wait', 'composables/use-wait'],
   ['components/maz-dialog', 'components/maz-dialog-confirm'],
   ['components/maz-btn-dropdown', 'components/maz-dropdown'],
