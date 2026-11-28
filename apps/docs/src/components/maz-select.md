@@ -438,6 +438,10 @@ const customOptions = [
 type ModelValueSimple = string | number | null | undefined | boolean
 ```
 
+## Motion
+
+The list grows from the field and its options rise in quickly. A highlight slides between the options under the pointer and jumps instantly with the arrow keys. With `search`, the matched letters are underlined (accents and case aside). With reduced motion, everything is instant.
+
 ## Accessibility
 
 `MazSelect` follows the [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) with a listbox popup:

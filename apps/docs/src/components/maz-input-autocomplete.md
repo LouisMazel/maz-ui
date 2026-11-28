@@ -238,6 +238,10 @@ const fruits = ['Apple', 'Apricot', 'Banana', 'Cherry', 'Grape']
 
 The component forwards the props of [MazInput](./maz-input.md) that make sense for a text with suggestions: `rounded-size`, `start-icon`, `end-icon`, `hint`, `assistive-text`, `error`, `success`, `warning`, `required`, `readonly`, `name`, `inputmode`, `input-classes` and `border`.
 
+## Motion
+
+The list grows from the input and its options rise in quickly. A highlight slides between the suggestions under the pointer and jumps instantly with the arrow keys. The matched letters are underlined (see `highlight`). With reduced motion, everything is instant.
+
 ## Accessibility
 
 The input is a [combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) (`aria-autocomplete="list"`): the focus stays in it, `aria-activedescendant` points to the active suggestion, and the number of results is announced to the screen readers.

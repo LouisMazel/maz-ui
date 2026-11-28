@@ -4,6 +4,7 @@
   generic="Option extends MazSelectOption, Value extends MazInputValue, Multiple extends boolean"
 >
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
+import type { FuzzySearchSegment } from '@maz-ui/utils/helpers/fuzzySearch'
 import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstanceType'
 import type { HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
@@ -467,12 +468,28 @@ function withOptGroups(matchedOptions: MazSelectNormalizedOption[]) {
   return result
 }
 
+let lastSearch: { engine: NonNullable<typeof optionsSearch.value>, query: string, results: ReturnType<NonNullable<typeof optionsSearch.value>['search']> } | undefined
+
+function runSearch(query: string) {
+  const engine = optionsSearch.value
+
+  if (!engine) {
+    return undefined
+  }
+
+  if (lastSearch?.engine !== engine || lastSearch.query !== query) {
+    lastSearch = { engine, query, results: engine.search(query) }
+  }
+
+  return lastSearch.results
+}
+
 function getFilteredOptionWithQuery(query?: string) {
   if (!query) {
     return optionsNormalized.value
   }
 
-  const matchedOptions = optionsSearch.value?.search(query).map(result => result.item)
+  const matchedOptions = runSearch(query)?.map(result => result.item)
     ?? searchableOptions.value.filter(option => [option[optionLabelKey], option[optionInputValueKey], option[optionValueKey]].some(value => searchInValue(value, query)))
 
   return hasOptGroups.value
@@ -487,6 +504,33 @@ const optionList = computed(() => {
 
   return getFilteredOptionWithQuery(searchQuery.value)
 })
+
+const matchedIndexes = computed(() => {
+  const indexes = new Map<MazSelectNormalizedOption, number[]>()
+
+  if (!search || searchFunction || !searchQuery.value) {
+    return indexes
+  }
+
+  for (const result of runSearch(searchQuery.value) ?? []) {
+    const labelValue = String(result.item[optionLabelKey])
+    const match = result.matches.find(item => item.value === labelValue && item.indexes.length > 0)
+
+    if (match) {
+      indexes.set(result.item, match.indexes)
+    }
+  }
+
+  return indexes
+})
+
+function getSegments(option: MazSelectNormalizedOption): FuzzySearchSegment[] | undefined {
+  const indexes = matchedIndexes.value.get(option)
+
+  return indexes
+    ? fuzzySearchModule.value?.highlightMatches(String(option[optionLabelKey]), indexes)
+    : undefined
+}
 
 const listboxId = computed(() => `${instanceId.value}-listbox`)
 const hasListbox = computed(() => isOpen.value && !!optionList.value?.length)
@@ -840,6 +884,7 @@ defineExpose({
           :multiple
           :color
           :item-height
+          :get-segments
           @select="option => updateValue(option, true)"
         >
           <template v-if="$slots['no-results']" #no-results>
@@ -862,6 +907,7 @@ defineExpose({
               @slot Custom option
                 @binding {Object} option - the option object
                 @binding {Boolean} is-selected - if the option is selected
+                @binding {FuzzySearchSegment[] | undefined} segments - the label split into the parts matching the search (to underline them)
                 @binding {Boolean} is-open - if the popover is open
                 @binding {function} close - function to close the popover
                 @binding {function} open - function to open the popover
@@ -870,12 +916,19 @@ defineExpose({
             <slot
               :option="(option as Option)"
               :is-selected="isSelected"
+              :segments="getSegments(option)"
               :is-open="isOpen"
               :close="close"
               :open="openPicker"
               :toggle="togglePopover"
             >
-              <span>
+              <span v-if="getSegments(option)">
+                <template v-for="(segment, segmentIndex) in getSegments(option)" :key="segmentIndex">
+                  <mark v-if="segment.match" class="m-select-list-mark">{{ segment.text }}</mark>
+                  <template v-else>{{ segment.text }}</template>
+                </template>
+              </span>
+              <span v-else>
                 {{ option[optionLabelKey] }}
               </span>
             </slot>
@@ -936,6 +989,14 @@ defineExpose({
   @apply maz:z-default-backdrop maz:flex maz:flex-col maz:gap-1 maz:overflow-hidden maz:rounded-md maz:bg-container maz:drop-shadow-md maz:shadow-elevation;
 
   min-inline-size: 3.5rem;
+}
+
+.m-select-list-mark {
+  @apply maz:bg-transparent maz:font-semibold maz:text-inherit;
+
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .m-select-list__search-wrapper {

@@ -911,10 +911,16 @@ defineExpose({
 }
 
 .m-input-autocomplete-free-entry {
-  @apply maz:cursor-interactive maz:border-none maz:bg-transparent maz:px-4 maz:py-2 maz:text-start maz:text-foreground maz:hover:bg-foreground/5;
+  @apply maz:mx-2 maz:mb-2 maz:cursor-interactive maz:rounded-md maz:border-none maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:text-foreground maz:transition-colors maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
+
+  transition-duration: calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1));
 }
 
 .m-input-autocomplete-mark {
   @apply maz:bg-transparent maz:font-semibold maz:text-inherit;
+
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 </style>
