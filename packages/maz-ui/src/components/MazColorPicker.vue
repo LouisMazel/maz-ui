@@ -299,7 +299,7 @@ onBeforeUnmount(removeListener)
         <template #start-icon>
           <button
             type="button"
-            class="m-color-picker__trigger m-color-picker-checkerboard maz:relative maz:flex maz:size-6 maz:shrink-0 maz:cursor-interactive maz:overflow-hidden maz:rounded-sm maz:border maz:border-foreground/20 maz:p-0 maz:disabled:disabled-cursor"
+            class="m-color-picker__trigger m-color-picker-checkerboard maz:relative maz:flex maz:size-6 maz:shrink-0 maz:cursor-interactive maz:overflow-hidden maz:rounded-sm maz:border maz:border-foreground/20 maz:p-0 maz:focus-ring maz:disabled:disabled-cursor"
             :aria-label="openPickerLabel"
             :aria-expanded="isOpen"
             aria-haspopup="dialog"
