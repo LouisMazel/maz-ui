@@ -63,15 +63,17 @@ const basicOpened = ref(false)
 
 ## Swipe to close (iOS-like)
 
-By default a drag handle (grab bar) is shown at the top of the sheet, and you can **close the sheet by dragging that handle down** - the sheet follows your pointer and either dismisses (past the threshold) or snaps back. This works with both touch and mouse.
+By default a drag handle (grab bar) is shown at the top of the sheet. Drag the sheet down to close it: it follows your finger, and a quick flick closes it even before the distance threshold. Released too early, it springs back from where you let go. Dragging it up resists, like a rubber band.
 
-Disable it with `:swipe-to-close="false"` (the handle is then hidden too), or replace the handle with the `#handle` slot. A `persistent` sheet never dismisses on swipe: it snaps back instead.
+A finger or a pen drags from anywhere on the sheet. A mouse drags the handle and the header, so the text of the content stays selectable. The gesture is ignored when it starts in a content that can still scroll that way (a long list scrolled in the middle), and it starts as soon as that content is back at the top. Fields and any element with `data-maz-no-drag` never start a drag.
+
+Disable it with `:swipe-to-close="false"` (the handle is then hidden too), or replace the handle with the `#handle` slot. A `persistent` sheet never dismisses on swipe: it springs back instead.
 
 <ComponentDemo>
   <MazBtn @click="swipeOpened = true">Open swipeable sheet</MazBtn>
 
   <MazBottomSheet v-model="swipeOpened" title="Drag me down">
-    <p>Grab the bar at the top and drag down to close, or release before the threshold to snap back.</p>
+    <p>Drag the sheet down, or flick it, to close it. Release before the threshold to snap back.</p>
   </MazBottomSheet>
 
 <template #code>
@@ -79,7 +81,7 @@ Disable it with `:swipe-to-close="false"` (the handle is then hidden too), or re
 ```html
 <!-- enabled by default -->
 <MazBottomSheet v-model="swipeOpened" title="Drag me down">
-  <p>Grab the bar at the top and drag down to close.</p>
+  <p>Drag the sheet down to close it.</p>
 </MazBottomSheet>
 
 <!-- disable the handle and the gesture -->
@@ -90,6 +92,101 @@ Disable it with `:swipe-to-close="false"` (the handle is then hidden too), or re
   <template #handle>
     <span class="h-1.5 w-12 rounded-full bg-primary" />
   </template>
+</MazBottomSheet>
+```
+
+  </template>
+</ComponentDemo>
+
+## Snap points
+
+Give the sheet several heights with `snap-points`. It opens at the first one, rests at the others when you release it, and a flick goes to the next one. A flick down from the lowest closes it, and a `persistent` sheet never closes.
+
+A number up to `1` is a fraction of the screen height (`0.5` is half), a bigger number is in pixels, and a string is a CSS length (`'50%'`, `'20rem'`, `'60vh'`). The sheet is as tall as the biggest point, and its content scrolls inside.
+
+Bind `v-model:snap` to read or change the active point (one of the values of `snap-points`). The handle becomes a button: a click or <kbd>Enter</kbd> cycles the points, <kbd>ArrowUp</kbd> and <kbd>ArrowDown</kbd> move between them.
+
+While the sheet is not fully open, dragging up expands it instead of scrolling the content. Once it is fully open, the content scrolls.
+
+<ComponentDemo>
+  <MazBtn @click="snapOpened = true">Open with snap points</MazBtn>
+
+  <MazBottomSheet v-model="snapOpened" v-model:snap="activeSnap" :snap-points="[0.4, 0.7, 1]" title="Snap points">
+    <p>Active snap point: <strong>{{ activeSnap }}</strong></p>
+    <p v-for="line in 12" :key="line" class="maz:my-2">Line {{ line }} of a long content.</p>
+  </MazBottomSheet>
+
+<template #code>
+
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const activeSnap = ref(0.4)
+</script>
+
+<template>
+  <MazBottomSheet v-model="isOpen" v-model:snap="activeSnap" :snap-points="[0.4, 0.7, 1]" title="Snap points">
+    <p>Active snap point: {{ activeSnap }}</p>
+  </MazBottomSheet>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Scale the background
+
+With `scale-background`, the page behind the sheet scales down slightly and gets rounded corners while the sheet is open, like on iOS. It follows the sheet when you drag it.
+
+The page is the root of the app (`#__nuxt` or `#app`), or the first element of the body that is not an overlay. Choose another one with `scale-background-target` (a CSS selector). The element is restored when the sheet closes. Under reduced motion, nothing scales.
+
+::: warning
+The scaled element is transformed, so its `position: fixed` children (a fixed header) are placed against it instead of the screen while the sheet is open. Target a wrapper of your content if you have some.
+:::
+
+<ComponentDemo>
+  <MazBtn @click="scaleOpened = true">Open with scaled page</MazBtn>
+
+  <MazBottomSheet v-model="scaleOpened" scale-background title="The page steps back">
+    <p>The page behind this sheet is scaled down.</p>
+  </MazBottomSheet>
+
+<template #code>
+
+```html
+<MazBottomSheet v-model="isOpen" scale-background title="The page steps back">
+  <p>The page behind this sheet is scaled down.</p>
+</MazBottomSheet>
+
+<!-- another element than the root of the app -->
+<MazBottomSheet v-model="isOpen" scale-background scale-background-target="#page" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Scrollable content
+
+A long content scrolls inside the sheet. The swipe never fights the scroll: scroll the content, and drag the sheet down once the content is back at the top.
+
+<ComponentDemo>
+  <MazBtn @click="scrollOpened = true">Open with a long content</MazBtn>
+
+  <MazBottomSheet v-model="scrollOpened" title="Long content">
+    <div class="maz:max-h-64 maz:overflow-y-auto">
+      <p v-for="line in 30" :key="line" class="maz:my-2">Line {{ line }}</p>
+    </div>
+  </MazBottomSheet>
+
+<template #code>
+
+```html
+<MazBottomSheet v-model="isOpen" title="Long content">
+  <div class="max-h-64 overflow-y-auto">
+    <p v-for="line in 30" :key="line">Line {{ line }}</p>
+  </div>
 </MazBottomSheet>
 ```
 
@@ -249,6 +346,16 @@ A `persistent` sheet cannot be closed by clicking outside or pressing escape, an
 
   </template>
 </ComponentDemo>
+
+## Keep the sheet open
+
+`before-close` returning `false` (or a promise of `false`) keeps the sheet open, drag to close, Escape and click outside included. Any other result closes it.
+
+```vue
+<MazBottomSheet v-model="isOpen" :before-close="() => !hasChanges">
+  ...
+</MazBottomSheet>
+```
 
 ## Full example
 
@@ -457,9 +564,15 @@ function openProductOptions() {
   </template>
 </ComponentDemo>
 
+## Motion
+
+The sheet rests and springs back with `--maz-easing-spring` over `--maz-motion-slow`, and follows your pointer without any delay while you drag. Only `transform` moves. Under reduced motion, the springs become instant, the page does not scale, and the drag still follows the pointer. See [Motion](./../guide/motion.md).
+
 ## Accessibility
 
 The bottom sheet is a modal `dialog` labelled by its `title` and described by its content. The focus is trapped inside while it is open, <kbd>Esc</kbd> closes it, and the rest of the page is `inert` (except the toasts and the live regions).
+
+Swiping is a shortcut, never the only way: the close button, <kbd>Esc</kbd> and a click outside still close the sheet. With several snap points, the handle is a focusable button labelled from `@maz-ui/translations` (`aria.resizeSheet`).
 
 <!--@include: ./../../.vitepress/generated-docs/maz-bottom-sheet.doc.md-->
 
@@ -473,6 +586,10 @@ The bottom sheet is a modal `dialog` labelled by its `title` and described by it
   const wideOpened = ref(false)
   const noHeaderOpened = ref(false)
   const persistentOpened = ref(false)
+  const snapOpened = ref(false)
+  const activeSnap = ref(0.4)
+  const scaleOpened = ref(false)
+  const scrollOpened = ref(false)
 
   const isProductOpen = ref(false)
   const isUserOpen = ref(false)
