@@ -12,12 +12,13 @@ describe('given constants', () => {
         'warning',
         'destructive',
         'contrast',
+        'neutral',
         'transparent',
       ])
     })
 
-    it('then it should have 9 colors', () => {
-      expect(colors).toHaveLength(9)
+    it('then it should have 10 colors', () => {
+      expect(colors).toHaveLength(10)
     })
   })
 

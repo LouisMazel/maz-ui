@@ -15,3 +15,15 @@ describe('mazReadingProgressBar.vue', () => {
     expect(wrapper.props('distance')).toBeUndefined()
   })
 })
+
+describe('given MazReadingProgressBar with the neutral color', () => {
+  it('then the bar uses the neutral foreground', async () => {
+    const wrapper = mount(MazReadingProgressBar, {
+      props: { color: 'neutral' },
+      global: { stubs: { Teleport: true } },
+    })
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.html()).toContain('background-color: var(--maz-neutral-foreground)')
+  })
+})

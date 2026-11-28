@@ -12,6 +12,7 @@ const COLOR_USAGES: Record<string, string> = {
   warning: 'Warning state (caution, pending attention)',
   destructive: 'Error / danger state, invalid fields, destructive actions',
   contrast: 'Neutral high-contrast color (near black in light mode, near white in dark mode)',
+  neutral: 'Soft grey of the neutral components (color="neutral": the push button of the native platforms, secondary buttons, badges, chips), with neutral-foreground text; as an accent (check, switch, progress) it renders in neutral-foreground',
   surface: 'Page background (cards, dialogs and inputs use container and input)',
   foreground: 'Body text on surface',
   divider: 'Borders and separators',

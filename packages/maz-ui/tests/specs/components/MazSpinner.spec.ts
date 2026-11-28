@@ -81,3 +81,14 @@ describe('given MazSpinner component', () => {
     })
   })
 })
+
+describe('given MazSpinner with the neutral color', () => {
+  describe('when rendered', () => {
+    it('then it uses the neutral foreground so the stroke stays visible', () => {
+      const wrapper = mount(MazSpinner, { props: { color: 'neutral' } })
+
+      expect(wrapper.classes()).toContain('m-spinner--neutral')
+      expect(wrapper.find('svg').attributes('style')).toContain('color: var(--maz-neutral-foreground)')
+    })
+  })
+})
