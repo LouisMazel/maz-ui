@@ -1,4 +1,4 @@
-<script lang="ts" setup generic="T extends MazSegmentedValue, O extends MazSegmentedOption<T> = MazSegmentedOption<T>">
+<script lang="ts" setup generic="T extends MazSegmentedValue, O extends MazSegmentedOption<T> = MazSegmentedOption<T>, Multiple extends boolean = false">
 import type { MazIconLike } from '../composables/useMazIconProps.ts'
 import type { VTooltipBindingValue } from '../directives/vTooltip.ts'
 import type { MazBadgeProps } from './MazBadge.vue'
@@ -40,14 +40,16 @@ export interface MazSegmentedOption<T = MazSegmentedValue> {
   }
 }
 
-export interface MazSegmentedProps<T = MazSegmentedValue, O extends MazSegmentedOption<T> = MazSegmentedOption<T>> {
+export type MazSegmentedModel<T, Multiple extends boolean = boolean> = Multiple extends true ? T[] : T
+
+export interface MazSegmentedProps<T = MazSegmentedValue, O extends MazSegmentedOption<T> = MazSegmentedOption<T>, Multiple extends boolean = false> {
   /**
    * @model The value of the selected segment, or with `multiple` the array of the selected values
    * @type {T | T[]}
    */
-  modelValue?: T | T[]
+  modelValue?: MazSegmentedModel<T, Multiple>
   /** The segments. Extra fields of an option are passed to the `item` slot */
-  options: O[]
+  options: readonly O[]
   /**
    * Color of the selected segment. Without it, the selected segment is a neutral raised surface
    * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'neutral'`
@@ -75,7 +77,7 @@ export interface MazSegmentedProps<T = MazSegmentedValue, O extends MazSegmented
    * (`aria-pressed`) in a `group`, each selected one has its own pill
    * @default false
    */
-  multiple?: boolean
+  multiple?: Multiple
   /**
    * The pill stretches toward the new segment on its way (a drop of ink)
    * @default false
@@ -110,19 +112,19 @@ const {
   ariaLabel,
   ariaLabelledby,
   id,
-} = defineProps<MazSegmentedProps<T, O>>()
+} = defineProps<MazSegmentedProps<T, O, Multiple>>()
 
 const emits = defineEmits<{
   /**
    * Emitted when the selected segment changes
    * @property {T} value the value of the selected segment
    */
-  'update:model-value': [value: T | T[]]
+  'update:model-value': [value: MazSegmentedModel<T, Multiple>]
   /**
    * Emitted when the selected segment changes
    * @property {T} value the value of the selected segment, or the array of the selected values with `multiple`
    */
-  'change': [value: T | T[]]
+  'change': [value: MazSegmentedModel<T, Multiple>]
 }>()
 
 defineSlots<{
@@ -157,7 +159,7 @@ const DOT_BADGE_STYLE = {
   borderRadius: '9999px',
 } as const
 
-const model = defineModel<T | T[]>()
+const model = defineModel<MazSegmentedModel<T, Multiple>>({ default: undefined as never })
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: NonNullable<MazSegmentedProps['roundedSize']> }>('MazSegmented', {
   size: 'md',
@@ -176,11 +178,11 @@ const segmentRefs: HTMLButtonElement[] = []
 
 const selectedValues = computed<T[]>(() => {
   if (Array.isArray(model.value))
-    return model.value
+    return model.value as T[]
 
   return model.value === undefined
     ? []
-    : [model.value]
+    : [model.value as T]
 })
 
 const selectedIndex = computed(() => multiple
@@ -208,16 +210,16 @@ function select(index: number) {
       : [...selectedValues.value, option.value]
     const ordered = options.filter(({ value }) => values.includes(value)).map(({ value }) => value)
 
-    model.value = ordered
-    emits('change', ordered)
+    model.value = ordered as MazSegmentedModel<T, Multiple>
+    emits('change', ordered as MazSegmentedModel<T, Multiple>)
     return
   }
 
   if (option.value === model.value)
     return
 
-  model.value = option.value
-  emits('change', option.value)
+  model.value = option.value as MazSegmentedModel<T, Multiple>
+  emits('change', option.value as MazSegmentedModel<T, Multiple>)
 }
 
 const focusedIndex = ref(0)
