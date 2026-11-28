@@ -1,12 +1,17 @@
+export type ThrottledFunction<T extends (...args: any[]) => any> = ((...args: Parameters<T>) => void) & {
+  /** Drop the trailing call, if any */
+  cancel: () => void
+}
+
 export function throttle<T extends (...args: Parameters<T>) => ReturnType<T>>(
   func: T,
   limit: number,
-): (...args: Parameters<T>) => void {
+): ThrottledFunction<T> {
   let inThrottle: boolean = false
   let lastFunc: ReturnType<typeof setTimeout>
   let lastRan: number
 
-  return function (this: any, ...args: Parameters<T>): void {
+  const throttled = function (this: any, ...args: Parameters<T>): void {
     if (!inThrottle) {
       func.apply(this, args)
       lastRan = Date.now()
@@ -21,5 +26,11 @@ export function throttle<T extends (...args: Parameters<T>) => ReturnType<T>>(
         }
       }, Math.max(limit - (Date.now() - lastRan), 0))
     }
+  } as ThrottledFunction<T>
+
+  throttled.cancel = () => {
+    clearTimeout(lastFunc)
   }
+
+  return throttled
 }
