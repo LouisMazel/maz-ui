@@ -38,6 +38,13 @@ toast.error('error message')
 toast.accent('accent message')
 toast.neutral('neutral message')
 toast.message('3 new messages', { icon: 'bell' })
+
+// loading, then success or error
+await toast.promise(save(), {
+  loading: 'Saving...',
+  success: 'Saved',
+  error: 'Failed',
+})
 </script>
 ```
 

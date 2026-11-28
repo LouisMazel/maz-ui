@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import type { MazToastProps } from './MazToast.vue'
-import type { ToastButton, ToastOptions } from './types.ts'
+import type { ToastButton, ToastOptions, ToastPromiseOptions } from './types.ts'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { useMountComponent } from '../../composables/useMountComponent.ts'
 import MazToast from './MazToast.vue'
@@ -9,6 +9,7 @@ const DEFAULT_OPTIONS: ToastOptions = {
   position: 'bottom-right',
   timeout: 10_000,
   persistent: false,
+  stacked: true,
 }
 
 export class ToastHandler {
@@ -18,10 +19,17 @@ export class ToastHandler {
   ) {}
 
   private show(message: string, options: ToastOptions) {
+    const { destroy, close } = this.mount(message, options)
+
+    return { destroy, close }
+  }
+
+  private mount(message: string, options: ToastOptions, loading = false) {
     if (!isClient()) {
       return {
         destroy: () => {},
         close: () => {},
+        settle: (_status: 'success' | 'error', _message: string) => {},
       }
     }
 
@@ -30,6 +38,7 @@ export class ToastHandler {
       ...this.globalOptions,
       ...options,
       message,
+      loading,
     }
 
     const { destroy, vNode } = useMountComponent<typeof MazToast, MazToastProps>(MazToast, {
@@ -40,6 +49,7 @@ export class ToastHandler {
     return {
       destroy,
       close: () => vNode.component?.exposed?.closeToast(),
+      settle: (status: 'success' | 'error', text: string) => vNode.component?.exposed?.settle(status, text),
     }
   }
 
@@ -96,5 +106,27 @@ export class ToastHandler {
 
   neutral(message: string, options?: Omit<ToastOptions, 'type'>) {
     return this.show(message, this.getLocalOptions({ ...options, type: 'neutral' }))
+  }
+
+  /**
+   * Show a loading toast, then a success or an error one when the promise settles.
+   * Returns the promise, untouched.
+   */
+  promise<T>(promise: Promise<T> | (() => Promise<T>), options: ToastPromiseOptions<T>): Promise<T> {
+    const { loading, success, error, ...toastOptions } = options
+    const source = typeof promise === 'function' ? promise() : promise
+
+    if (!isClient()) {
+      return source
+    }
+
+    const { settle } = this.mount(loading, this.getLocalOptions({ ...toastOptions, type: 'neutral' }), true)
+
+    source.then(
+      data => settle('success', typeof success === 'function' ? success(data) : success),
+      reason => settle('error', typeof error === 'function' ? error(reason) : error),
+    )
+
+    return source
   }
 }

@@ -1,3 +1,4 @@
+import type { ToastPromiseOptions } from '../plugins/toast/types.ts'
 import { hasInjectionContext, inject } from 'vue'
 import { ToastHandler } from '../plugins/toast/ToastHandler.ts'
 import { createAppHandlerResolver, injectMazUiContext } from '../utils/mazUiContext.ts'
@@ -23,5 +24,6 @@ export function useToast() {
     warning: toast.warning.bind(toast),
     accent: toast.accent.bind(toast),
     neutral: toast.neutral.bind(toast),
+    promise: <T>(promise: Promise<T> | (() => Promise<T>), options: ToastPromiseOptions<T>) => toast.promise<T>(promise, options),
   }
 }
