@@ -24,12 +24,27 @@ export const DEFAULT_ROUNDED_RATIOS: Record<Exclude<RoundedScaleKey, 'md'>, numb
   '3xl': 4,
 }
 
-export const DEFAULT_SHADOW: ThemeScales['shadow'] = {
+/**
+ * The light shadows of the first presets, without color mode (a preset with one mode only)
+ */
+export const DEFAULT_LIGHT_SHADOW = {
   sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
   md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
   lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
   xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
   elevation: '0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06)',
+} satisfies ThemeScales['shadow']
+
+/**
+ * On a dark background a black shadow at 5-10% is invisible: the dark shadows are deeper, and the large
+ * ones get a hairline light edge that detaches the surface. The light ones are unchanged.
+ */
+export const DEFAULT_SHADOW: ThemeScales['shadow'] = {
+  sm: { light: DEFAULT_LIGHT_SHADOW.sm, dark: '0 1px 2px 0 rgb(0 0 0 / 0.4)' },
+  md: { light: DEFAULT_LIGHT_SHADOW.md, dark: '0 4px 6px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.4)' },
+  lg: { light: DEFAULT_LIGHT_SHADOW.lg, dark: '0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.04)' },
+  xl: { light: DEFAULT_LIGHT_SHADOW.xl, dark: '0 20px 25px -5px rgb(0 0 0 / 0.55), 0 8px 10px -6px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.05)' },
+  elevation: { light: DEFAULT_LIGHT_SHADOW.elevation, dark: '0 4px 12px -2px rgb(0 0 0 / 0.45), 0 2px 4px -1px rgb(0 0 0 / 0.35), 0 0 0 1px rgb(255 255 255 / 0.04)' },
 }
 
 /**

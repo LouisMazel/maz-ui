@@ -1,4 +1,5 @@
 import { isServer } from '@maz-ui/utils/helpers/isServer'
+import { DEFAULT_LIGHT_SHADOW } from '../../presets/_defaults.ts'
 import { mazUi } from '../../presets/mazUi.ts'
 import { CSS_ID, generateCSS, injectCSS, removeCSS } from '../css-generator.ts'
 
@@ -65,7 +66,7 @@ describe('given generateCSS function', () => {
   })
 
   describe('when generating with mode=both and darkSelectorStrategy=media', () => {
-    const css = generateCSS(mazUi, {
+    const css = generateCSS({ ...mazUi, scales: { ...mazUi.scales, shadow: DEFAULT_LIGHT_SHADOW } }, {
       prefix: 'maz',
       mode: 'both',
       darkSelectorStrategy: 'media',

@@ -1026,7 +1026,7 @@ The variables are `--maz-focus-ring-color`, `--maz-focus-ring-width` and `--maz-
 
 ### Shadow per color mode
 
-A black shadow is barely visible on a dark background. Each entry of `scales.shadow` is a string, or `{ light, dark }` for a shadow per mode: a stronger shadow, or a light hairline, in dark mode.
+A black shadow is barely visible on a dark background. Each entry of `scales.shadow` is a string, or `{ light, dark }` for a shadow per mode: a stronger shadow, or a light hairline, in dark mode. The bundled presets already do it: their shadows are deeper in dark mode, and the large ones get a hairline light edge.
 
 ```typescript
 const shadowTheme = definePreset({

@@ -115,6 +115,7 @@ exports[`given generateCSS function > when generating with mode=both and darkSel
     --maz-muted: light-dark(oklch(0.5624 0 0), oklch(0.6324 0 0));
     --maz-shadow: light-dark(oklch(0.2103 0.0059 285.88), oklch(0.2741 0.0055 286.03));
   }
+  .dark { --maz-shadow-style-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4); --maz-shadow-style-md: 0 4px 6px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.4); --maz-shadow-style-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.04); --maz-shadow-style-xl: 0 20px 25px -5px rgb(0 0 0 / 0.55), 0 8px 10px -6px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.05); --maz-shadow-style-elevation: 0 4px 12px -2px rgb(0 0 0 / 0.45), 0 2px 4px -1px rgb(0 0 0 / 0.35), 0 0 0 1px rgb(255 255 255 / 0.04); }
   .dark { color-scheme: only dark; }
   .light { color-scheme: only light; }
 }"
