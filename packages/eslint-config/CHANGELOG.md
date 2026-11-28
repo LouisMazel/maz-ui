@@ -1,5 +1,19 @@
 # Change Log
 
+## @maz-ui/eslint-config@5.6.1-beta.0 (2026-11-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/eslint-config@5.6.0...@maz-ui/eslint-config@5.6.1-beta.0)
+
+### 🩹 Fixes
+
+- **eslint-config:** Declare TypeScript 5 and 6 as an optional peer dependency ([19433a530](https://github.com/LouisMazel/maz-ui/commit/19433a530))
+
+  TypeScript 7 is not supported yet by `typescript-eslint`: the docs explain how to keep TypeScript 6 for ESLint next to TypeScript 7 for `tsc`.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## @maz-ui/eslint-config@5.6.0 (2026-11-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/@maz-ui/eslint-config@5.5.0...@maz-ui/eslint-config@5.6.0)

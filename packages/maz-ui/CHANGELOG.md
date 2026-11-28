@@ -1,5 +1,310 @@
 # Change Log
 
+## v5.9.0-beta.1 (2026-11-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.9.0-beta.0...v5.9.0-beta.1)
+
+### 🚀 Features
+
+- **maz-ui:** Add useEventListener, useWindow, useWindowFocus, useMediaQuery, useReducedMotion and useShortcut ([d580aa7ef](https://github.com/LouisMazel/maz-ui/commit/d580aa7ef))
+
+  Listeners, media queries and shortcuts without `addEventListener` nor `matchMedia` by hand: SSR safe and removed when the component is unmounted.
+
+  - `useEventListener(target, event, listener)` on a window, document, element or ref, `useWindow().on(event, listener)` and `useWindowFocus()`.
+  - `useMediaQuery(query)` and `useReducedMotion()`.
+  - `useShortcut('mod+k', handler)` (Cmd on macOS, Ctrl elsewhere) returns the `label` to display.
+
+- **maz-ui:** Open the links outside of the WebView in desktop apps ([7ea5a452a](https://github.com/LouisMazel/maz-ui/commit/7ea5a452a))
+
+  Pass `openExternal(href, event)` to the MazUi plugin or to `MazUiProvider` (Tauri, Electron): the external links of `MazLink`, `MazBtn`, `MazCard`, `MazAvatar`, `MazListItem`, `MazSidebarMenuButton` and `MazMarkdown` call it instead of navigating in the WebView, and the external icon follows the same rule. `isExternalLink(href, target)` changes which links are external. See the [desktop apps guide](https://maz-ui.com/guide/desktop-apps).
+
+- **maz-ui:** Add MazMarkdown to render markdown ([03293d36c](https://github.com/LouisMazel/maz-ui/commit/03293d36c))
+
+  `<MazMarkdown :content="notes" />` renders markdown with the `rich-text` styles of the theme, sanitized, with its code blocks highlighted by `MazCodeHighlight` (`highlight`), external links in a new tab and a `link-click` event. `inline` renders one line inside a sentence. `MazMarkdownEditor` uses it for its preview, and `rich-text-xs` joins the sizes of `rich-text`.
+
+- **maz-ui:** Show a diff in MazCodeHighlight and add MazLogStream ([ca7c8a1ef](https://github.com/LouisMazel/maz-ui/commit/ca7c8a1ef))
+
+  `<MazCodeHighlight :code="after" :diff="before" />` shows the added and removed lines with their numbers and folds the unchanged ones (`diff-context`), with the same themes and buttons as a code block: the diff is loaded only when `diff` is set.
+
+  `MazLogStream` displays a log or a terminal output that grows (`lines`), in the frame and the themes of `MazCodeHighlight`: it sticks to the bottom while it streams, with copy and "scroll to bottom" buttons, muted and error lines, labels and markdown lines.
+
+- **maz-ui:** Add MazInputKeyValue and MazInputSecret ([92ea18850](https://github.com/LouisMazel/maz-ui/commit/92ea18850))
+
+  - `MazInputKeyValue` edits an object of strings (`v-model`), with add and remove buttons and the duplicated keys flagged.
+  - `MazInputSecret` shows a saved secret that is never read back (`saved`), with Replace and Clear buttons (`clear`, `replace` and `cancel` events).
+
+- **maz-ui:** Accept free colors in the components that show data ([dcad219ba](https://github.com/LouisMazel/maz-ui/commit/dcad219ba))
+
+  `MazProgressBar` (and its segments), `MazCircularProgressBar`, `MazBadge`, `MazIndicator`, `MazAvatar`, `MazTimeline` (per step) and `MazCardSpotlight` take a CSS color (`#16a34a`, `oklch(...)`, `var(--brand)`) in `color`, next to the theme colors. See the [free colors guide](https://maz-ui.com/guide/free-colors).
+
+  Also: `MazTimeline` gets `subtitle-lines` and solid steps in dark mode, `MazBadge` `contrast`, `surface` and `container` are readable in both modes, and the initials of `MazAvatar` fit in the avatar.
+
+- **maz-ui:** Add the vertical orientation of MazTabs ([aa69e0f37](https://github.com/LouisMazel/maz-ui/commit/aa69e0f37))
+
+  `<MazTabs orientation="vertical">` places the tabs in a column next to their content, with the up and down arrows and the badges at the end of each tab.
+
+- **maz-ui:** Add a tooltip and a badge per option of MazSegmented ([864c28c80](https://github.com/LouisMazel/maz-ui/commit/864c28c80))
+
+  Options accept `tooltip` and `badge`, their other fields reach the `#item` slot, and the selected segment stands out more in dark mode.
+
+- **maz-ui:** Add the indeterminate state of MazCheckbox ([d4b3f3881](https://github.com/LouisMazel/maz-ui/commit/d4b3f3881))
+
+  `<MazCheckbox indeterminate />` shows a dash and `aria-checked="mixed"`, for a "select all" box when some rows are checked.
+
+- **maz-ui:** Add the size prop of MazSwitch ([8251f2fd0](https://github.com/LouisMazel/maz-ui/commit/8251f2fd0))
+
+  `size` (`mini` to `xl`) follows the sizes of `MazCheckbox`.
+
+- **maz-ui:** Add the expandable rows of MazTable ([372bb60af](https://github.com/LouisMazel/maz-ui/commit/372bb60af))
+
+  `expandable` adds a chevron to each row and renders the `#expanded-row` slot (`{ row, index }`) under it, at the first opening. `v-model:expanded` holds the keys of the open rows (with `row-key`).
+
+- **maz-ui:** Add MazListSeparator and a content area to MazListItem ([396c9901e](https://github.com/LouisMazel/maz-ui/commit/396c9901e))
+
+  - `MazListSeparator` adds a titled separator between groups of a `MazList`.
+  - A row that is not `collapsible` renders the default slot of `MazListItem` under it, full width.
+  - `MazList` no longer renders an empty block, and its `#header-end` slot has its header row without `title`.
+
+- **maz-ui:** Keep the label of a loading MazBtn and let the utility classes win ([ed093f9b9](https://github.com/LouisMazel/maz-ui/commit/ed093f9b9))
+
+  - `loading-position="start"` shows the loader as the start icon and keeps the label.
+  - The utility classes given to a `MazBtn` (`text-*`, `bg-*`, `border-*`) override its colors without `!`.
+  - `active` is no longer hidden by the hover of `color="transparent"`, and `color="neutral"` uses the push button color of the native presets.
+
+- **maz-ui:** Align MazInputAutocomplete with MazInput and accept a free entry ([20f6387c2](https://github.com/LouisMazel/maz-ui/commit/20f6387c2))
+
+  It takes `rounded-size`, `start-icon`, `end-icon`, `hint`, `error` and the other props of `MazInput`. With `free-entry`, a value missing from the list is offered as "Use x" and emitted by the `free-entry` event.
+
+- **maz-ui:** Add the prefix and suffix of MazInputNumber ([fc75e2783](https://github.com/LouisMazel/maz-ui/commit/fc75e2783))
+
+  `prefix` and `suffix` (or their slots) display a unit inside the field (`$`, `min`). The native arrows are also hidden on Safari.
+
+- **maz-ui:** Add an end icon to MazSidebarMenuButton ([c2f72555e](https://github.com/LouisMazel/maz-ui/commit/c2f72555e))
+
+  `end-icon` or the `end` slot add an icon after the label, which stays truncated.
+
+- **maz-ui:** Add a tooltip per item of MazDropdown ([d57217741](https://github.com/LouisMazel/maz-ui/commit/d57217741))
+
+  `tooltip` on an item explains it on hover (a disabled entry for example). The hidden label of the trigger no longer scrolls the window in a scrollable area.
+
+- **maz-ui:** Cancel the close of a dialog from before-close ([1dd679a36](https://github.com/LouisMazel/maz-ui/commit/1dd679a36))
+
+  A `before-close` prop that returns `false` (or a promise of `false`) keeps `MazDialog`, `MazDrawer` and `MazBottomSheet` open, on the close button, Escape and the click outside: ask before losing unsaved changes. The header of `MazDialog` gets equal paddings and `header-divider`, and `content-padding` applies to the content.
+
+- **maz-ui:** Add the neutral color to every component ([e0803c09c](https://github.com/LouisMazel/maz-ui/commit/e0803c09c))
+
+  `neutral` joins `MazColor`: every component with a `color` prop accepts it, and Tailwind gets `bg-neutral`, `text-neutral-foreground` and the `neutral-50` to `neutral-950` steps.
+
+  As a fill (button, badge, alert, avatar, popover, selected segment, stepper, date picker header) it is the soft grey of the theme with a divider border. As an accent (checkbox, radio, switch, slider, progress, spinner, tab indicator, link, input focus) it is the dark grey of `neutral-foreground`, like the graphite accent of macOS. `toast.neutral()` shows a neutral toast.
+
+- **maz-ui:** Add the motion option and stop only the animations of the library under reduced motion ([e14c85a50](https://github.com/LouisMazel/maz-ui/commit/e14c85a50))
+
+  Under `prefers-reduced-motion: reduce`, maz-ui stopped every animation and transition of the page, the ones of your app included. It now only stops the ones of its components.
+
+  Force the motion with the new `motion` option of `MazUi`: `'reduced'`, `'full'` or `'auto'` (the default). `{ scope: 'page' }` also stops the animations of the whole page. In your code, `shouldReduceMotion` of `useReducedMotion` follows the same option.
+
+- **maz-ui:** Add the focus-ring, press and border-draw utilities and the maz-list transition ([9b35039ed](https://github.com/LouisMazel/maz-ui/commit/9b35039ed))
+
+  - `focus-ring` and `focus-within-ring`: the focus ring of the preset, on keyboard focus only
+  - `press`: the element sinks a little while pressed and springs back
+  - `border-draw`: a border that draws itself on hover, focus and when checked
+  - `<TransitionGroup name="maz-list">`: new items rise in, removed ones shrink away and the others glide to their place
+
+- **maz-ui:** Add MazRollingText, MazDrawnIcon and MazMorphIcon ([36a0c3f05](https://github.com/LouisMazel/maz-ui/commit/36a0c3f05))
+
+  - `MazRollingText`: a text or a number whose changed characters roll, like an odometer, formatted with `Intl.NumberFormat` (`<MazRollingText :value="price" :format="{ style: 'currency', currency: 'EUR' }" />`)
+  - `MazDrawnIcon`: a check, a cross or a status icon that draws itself when it appears
+  - `MazMorphIcon`: an icon whose strokes move into another one for the buttons with two states (menu and close, play and pause, eye and crossed eye...)
+
+- **maz-ui:** Add useOriginTransition, useSlidingIndicator and useRovingFocus ([e785fa260](https://github.com/LouisMazel/maz-ui/commit/e785fa260))
+
+  - `useOriginTransition`: an element grows out of the one that opened it (a button, a thumbnail, the point of a click) and goes back into it, as the hooks of a `<Transition :css="false">`
+  - `useSlidingIndicator`: the style of a pill or a line that slides to the active item of a group
+  - `useRovingFocus`: the arrow keys, Home, End and the type-ahead of a group of items, with one item in the tab order
+
+- **maz-ui:** Add the variant prop to the buttons and the badges, bordered to the fields and side to MazDrawer ([010c7aec4](https://github.com/LouisMazel/maz-ui/commit/010c7aec4))
+
+  - `variant`: `solid` (default), `soft`, `outline` or `ghost` on `MazBtn`, `MazBadge`, `MazBtnGroup` and `MazBtnDropdown`, `outline` on `MazAlert` and `MazBtnClipboard`, also in the global defaults
+  - `bordered` on `MazInput`, `MazTextarea` and `MazInputAutocomplete`, like the other components
+  - `side` on `MazDrawer` (`start`, `end`, `top`, `bottom`), like `MazSidebar`
+
+  `outlined`, `pastel`, `border` and the `variant` of `MazDrawer` still work the same way: they are deprecated, your editor shows their replacement.
+
+- **maz-ui:** Make the popovers grow from their trigger and group the delay of the tooltips ([d36894be6](https://github.com/LouisMazel/maz-ui/commit/d36894be6))
+
+  - `MazPopover` and every component built on it (`MazDropdown`, `MazSelect`, `MazDatePicker`, `MazColorPicker`, `v-tooltip`...) grow from their trigger with a short fade. The origin is exposed as `--maz-popover-transform-origin`, with `data-state` and `data-side` on the panel, to style your own transitions
+  - `positionReference` also takes a `{ x, y }` point
+  - `close(true)` closes without the delay of the hover trigger
+  - `v-tooltip`: after a first tooltip, the next ones open at once, a tooltip closes as soon as the pointer leaves, and Escape closes it without closing the dialog around
+
+- **maz-ui:** Open the dialogs from their trigger, centered on mobile ([c9801a8b9](https://github.com/LouisMazel/maz-ui/commit/c9801a8b9))
+
+  - `MazDialog` grows out of the element that opened it and goes back into it: the `#trigger` slot, the `origin` prop (an element, an event, a `{ x, y }` point), or `useDialog().confirm({ origin: event })`. Without it, from the element of the last click
+  - On mobile, the dialog is centered instead of stuck at the bottom of the screen (`align="end"` keeps the old look, `MazBottomSheet` is the real sheet), and its content scrolls on touch screens
+  - `MazDialogConfirm` takes a `confirmation` text to type before a destructive action
+  - The dialogs get a shadow and a larger radius, the animations of `MazBackdrop` follow the motion tokens, and `animated: false` gives a plain fade
+
+- **maz-ui:** Drag the bottom sheet between snap points and swipe the drawers to close them ([e95b4d428](https://github.com/LouisMazel/maz-ui/commit/e95b4d428))
+
+  - `MazBottomSheet`: a quick flick closes it, `snap-points` stop it at several heights (`v-model:snap`), it resists beyond the top, the drag waits for a scrollable content to reach its top, and `scale-background` scales the page behind it
+  - `MazDrawer` closes with a swipe toward its side, right to left included (`swipe-to-close`, on by default)
+
+- **maz-ui:** Stack the toasts, swipe them away and follow a promise ([8a08fb5b3](https://github.com/LouisMazel/maz-ui/commit/8a08fb5b3))
+
+  - The toasts of a position pile up like a deck and spread on hover or focus (`stacked: false` keeps the list); the others glide when one leaves
+  - A swipe dismisses a toast, the time left runs on a thin line and pauses when the tab is hidden
+  - `toast.promise(promise, { loading, success, error })` shows a loading toast, then its result with an icon that draws itself
+
+- **maz-ui:** Add MazLightbox and rebuild v-fullscreen-img and MazGallery on it ([110851d55](https://github.com/LouisMazel/maz-ui/commit/110851d55))
+
+  `MazLightbox` shows images full screen: the image grows from its thumbnail and goes back to it, with arrows, keyboard and swipe navigation (right to left included), a counter, captions, zoom on the clicked point, pinch and a drag down to close. It is a real dialog, loaded on the first open.
+
+  `v-fullscreen-img` and `MazGallery` use it: same options, plus `group`, `caption` and `fullSrc`. The images of the same container are browsed together, not every image of the page, and a thumbnail opens with the keyboard.
+
+- **maz-ui:** Bring back the springy popover animation, add a sober one and keep the popovers out of sticky headers ([6ba1dab34](https://github.com/LouisMazel/maz-ui/commit/6ba1dab34))
+
+  - `scale-pop` (default, tooltips and menus) springs out of its trigger and is sucked back into it, `scale-fade` (selects, pickers) is a sober fade with a slight growth
+  - The new `collisionPadding` prop (also a global default of `MazPopover`) keeps space free at the edges of the viewport: give the height of your sticky header, the panel stays under it and hides when its trigger goes under it
+
+- **maz-ui:** Clear button, valid mark and animated messages for MazInput and MazTextarea ([ef8aadc33](https://github.com/LouisMazel/maz-ui/commit/ef8aadc33))
+
+  - `clearable` adds a button that clears `MazInput`, `counter` shows the count and a ring that fills near the `maxlength` of `MazTextarea`
+  - A valid field (`success`) draws a check, the hint gives way to the error message with a short animation, the focus ring of the theme is on the field
+  - `defaults.global.topLabel` puts the label above every field of the app
+
+- **maz-ui:** Animate the checkboxes, radios and switches, add choice cards and toggle groups ([bae2d7713](https://github.com/LouisMazel/maz-ui/commit/bae2d7713))
+
+  - The check of `MazCheckbox` draws itself, the thumb of `MazSwitch` stretches while pressed, a pill slides to the option of `MazRadioButtons` and `MazSegmented`
+  - `variant="cards"` on `MazRadioButtons` and `MazChecklist`: choices in cards whose border draws itself when picked
+  - `multiple` on `MazSegmented`: a group of toggles with a `v-model` array
+  - `MazBtnGroup` looks attached, with an optional active state and keyboard navigation
+
+- **maz-ui:** Password strength, value bubble of the slider and moving tags ([30b2a8f98](https://github.com/LouisMazel/maz-ui/commit/30b2a8f98))
+
+  - `strength` on `MazInputSecret`: a meter, a verdict and rules that tick themselves; the eye morphs into a crossed eye
+  - `MazSlider` fills from the right in right-to-left pages, shows its value in a bubble and its ticks darken as the fill passes
+  - `MazInputNumber` speeds up while a button is held, `MazInputCode` digits rise into place and shake on error, `MazInputTags` tags glide when one is removed
+
+- **maz-ui:** A highlight that slides between the options of the selects and the matched letters underlined ([ec014d816](https://github.com/LouisMazel/maz-ui/commit/ec014d816))
+
+  The options of `MazSelect`, `MazInputAutocomplete` and `MazSelectCountry` rise in when the list opens, a highlight slides to the option under the pointer, the letters matching the search are underlined, and "no result" shows an icon.
+
+- **maz-ui:** Modernize MazDatePicker ([2c5d52942](https://github.com/LouisMazel/maz-ui/commit/2c5d52942))
+
+  The month name and the year roll when they change, the months slide in the direction of the navigation, the mark of the selected day travels to the new one, the range band follows the pointer, the shortcuts are chips, and the grid follows the keyboard pattern of a date picker. `MazRollingText` keeps the reading order of a text in a right-to-left page.
+
+- **maz-ui:** Format the phone number while typing in MazInputPhoneNumber ([bceb71f6c](https://github.com/LouisMazel/maz-ui/commit/bceb71f6c))
+
+  The number is formatted as you type (`auto-format="typing"`, the new default): editing a digit in the middle keeps the caret there, and a Backspace on a parenthesis or a space removes the digit before it. `auto-format="blur"` keeps the previous behavior.
+
+- **maz-ui:** Add the compact density ([299d52762](https://github.com/LouisMazel/maz-ui/commit/299d52762))
+
+  `density: 'compact'` in the MazUi plugin (or the `m-density-compact` class on any element) makes the controls denser: a `md` control is 36px high instead of 42px, with tighter paddings and menu rows, for the buttons, the fields, the selects, the segmented controls, the tabs, the pagination and the menus. The default density does not change.
+
+- **maz-ui:** Put the label above every field with the global topLabel, and add label to MazInputNumber ([eccd5a1e8](https://github.com/LouisMazel/maz-ui/commit/eccd5a1e8))
+- **maz-ui:** One smooth focus border on every field, and MazDropzone usable with the keyboard ([f41e9c2b2](https://github.com/LouisMazel/maz-ui/commit/f41e9c2b2))
+- **maz-ui:** Reveal the elements on scroll with vReveal, MazReveal and useReveal ([973092392](https://github.com/LouisMazel/maz-ui/commit/973092392))
+
+  `v-reveal="'slide-up'"` reveals an element when it enters the viewport: fades, slides, blur, curtains, iris, lines and words of a text, an automatic cascade for the elements that enter together, and a mode driven by the scroll. Nothing is hidden before the hydration, and the reduced motion turns every effect into a short fade.
+
+  `MazReveal` wraps a block, `useReveal` reveals the HTML you do not control. The AOS plugin and `useAos` are deprecated: the docs of vReveal list the equivalent of each animation. `MazAnimatedText`, `MazAnimatedElement` and `MazAnimatedCounter` (new `roll` option) use it, with the same look.
+
+- **maz-ui:** Animate the navigation components ([92646400c](https://github.com/LouisMazel/maz-ui/commit/92646400c))
+
+  - an indicator that slides between the tabs, the pages of MazPagination (with rolling numbers) and the items of MazSidebar
+  - the lines of MazStepper fill, its check and error icons are drawn
+  - a highlight that follows the pointer in MazDropdown, its keyboard navigation with Home, End and the letters
+
+- **maz-ui:** Success, hold to confirm and animated feedback ([ea45adb39](https://github.com/LouisMazel/maz-ui/commit/ea45adb39))
+
+  - MazBtn: a press effect, `success` (rolling label and drawn check) and `hold` to confirm a dangerous action (`hold-confirm` event)
+  - MazAlert: `dismissible` with `v-model:open`, drawn icons
+  - MazProgressBar and MazCircularProgressBar: `indeterminate`, a rolling value and a check at the end
+  - MazSpinner: `variant` (`ring`, `dots`, `bars`, `pulse`) and `done`
+  - MazLoadingBar: `loading` follows a real loading, MazSkeleton: `loaded` reveals its content, MazLazyImg: `placeholder="blur"`
+  - MazBtnClipboard morphs its icon into a check, MazBadge rolls its number with `animated`
+
+- **maz-ui:** Elevation levels, drawn borders and motion of the display components ([611b9e27d](https://github.com/LouisMazel/maz-ui/commit/611b9e27d))
+
+  - MazCard, MazContainer and MazCardSpotlight: `elevation` from 0 to 3 and `border-draw`, a border drawn from the side of the pointer
+  - MazAccordion: a plus that morphs into a minus, MazReadMore animates its height, MazTable highlights the sorted column
+  - MazCarousel: `counter`, `progress` and `drag-scroll`, MazTimeline fills its line on scroll
+  - MazDropzone: a moving border while dragging and a `progress` per file, MazTicker slows down on hover, MazColorPicker slides its handles
+
+- **maz-ui:** Add MazCommandPalette, MazContextMenu, MazTooltip and MazThemeToggle ([b457fecdd](https://github.com/LouisMazel/maz-ui/commit/b457fecdd))
+- **maz-ui:** Add MazRating, MazTimePicker, MazInlineEdit and MazKbd ([aa774daf2](https://github.com/LouisMazel/maz-ui/commit/aa774daf2))
+- **maz-ui:** Add MazEmptyState, MazSparkline, MazStatCard, MazTree, MazRelativeTime and MazMiddleTruncate ([0f51e8a1d](https://github.com/LouisMazel/maz-ui/commit/0f51e8a1d))
+- **maz-ui:** Add MazBeforeAfter, MazSplitter, MazScrollArea, MazProgressiveBlur and MazAvatarGroup ([7901b1c93](https://github.com/LouisMazel/maz-ui/commit/7901b1c93))
+- **maz-ui:** Add the vPress, vRipple, vMagnetic, vTilt and vDraw directives, animated icons and text effects ([2024efb7d](https://github.com/LouisMazel/maz-ui/commit/2024efb7d))
+- **maz-ui:** Add MazTour, MazBreadcrumb and MazNavigationMenu ([29441f5a3](https://github.com/LouisMazel/maz-ui/commit/29441f5a3))
+- **maz-ui:** Pick the time of MazDatePicker with the wheels of MazTimePicker, and disabledHours on MazTimePicker ([418180a6c](https://github.com/LouisMazel/maz-ui/commit/418180a6c))
+
+### 🩹 Fixes
+
+- **maz-ui:** Fix edge cases of the scroll composables and MazBtnScroll ([8c8f6a034](https://github.com/LouisMazel/maz-ui/commit/8c8f6a034))
+
+  - `useInfiniteScroll` stops loading pages after `stop()` or when its scope is disposed
+  - `useScrollLock` keeps the existing inline-end padding of the element
+  - `MazBtnScroll` no longer reads the DOM during SSR
+
+- **maz-ui:** Fix the equal tiles of MazRadioButtons and the measure of MazReadMore ([3cd4682fe](https://github.com/LouisMazel/maz-ui/commit/3cd4682fe))
+
+  - With `equal-size`, a long label of `MazRadioButtons` is truncated instead of widening its tile.
+  - `MazReadMore` measures its content again when it changes (async content, images).
+
+- **maz-ui:** Close only the top overlay with Escape and keep the focus in it ([23b1c4959](https://github.com/LouisMazel/maz-ui/commit/23b1c4959))
+
+  - Escape closes only the overlay on top: a popover, a tooltip or a dialog opened above another one
+  - The focus stays in its own dialog when dialogs are nested
+  - The fields without `type`, the range, color and file inputs are focusable in the dialogs
+  - The backdrop of `MazBackdrop` fades in and out in left-to-right pages too
+
+- **maz-ui:** Place the indicator of MazTabsBar when autoScroll is disabled ([5ebc50aba](https://github.com/LouisMazel/maz-ui/commit/5ebc50aba))
+- **maz-ui:** Keep the arrow and Enter keys of the page while a MazDropdown is open ([1bc15068a](https://github.com/LouisMazel/maz-ui/commit/1bc15068a))
+- **maz-ui:** Improve the accessibility of MazInputCode, MazAlert and MazDrawer ([89d878127](https://github.com/LouisMazel/maz-ui/commit/89d878127))
+
+  - `MazInputCode` has unique ids, set them with the new `id` prop
+  - `MazInputCode` takes the code of the SMS autofill (`one-time-code`), follows the direction of the page with the arrow keys and links its hint and its error to the inputs
+  - `MazAlert` is a `status` by default and an `alert` for the `destructive` and `warning` colors, change it with the new `role` prop
+  - The title of `MazDrawer` is an `h2`
+
+- **maz-ui:** Give each image of vFullscreenImg its own options and listeners ([ef177547e](https://github.com/LouisMazel/maz-ui/commit/ef177547e))
+- **maz-ui:** MazSegmented keeps a light track in dark mode ([9864b0b39](https://github.com/LouisMazel/maz-ui/commit/9864b0b39))
+- **maz-ui:** Remove the keyboard listener of MazDropdown when it unmounts while open ([f6ae4d6f3](https://github.com/LouisMazel/maz-ui/commit/f6ae4d6f3))
+
+  Enter also activates the custom items of the `menuitem` slot again.
+
+- **maz-ui:** Make the growth of the popovers from their trigger visible ([5fbe9dd41](https://github.com/LouisMazel/maz-ui/commit/5fbe9dd41))
+
+  The popovers, the menus, the selects and the tooltips grow from a smaller scale and slide a few pixels from their trigger, with a longer and strongly decelerated entrance: the previous one was too subtle to see.
+
+- **maz-ui:** Show the dialogs going back to their origin, the padding of MazDialogConfirm and opaque toasts in dark mode ([74acae442](https://github.com/LouisMazel/maz-ui/commit/74acae442))
+
+  - A dialog that grows from its origin is opaque early when it opens and until it reaches its origin when it closes: only the veil behind it fades
+  - The content of `MazDialogConfirm` and `useDialog().confirm` keeps its padding
+  - The colored toasts are opaque in dark mode, the stack no longer shows through
+
+- **maz-ui:** Type in the search field of MazSelect while its list is open ([365f8ee94](https://github.com/LouisMazel/maz-ui/commit/365f8ee94))
+
+  With `search`, the letters typed while an option or the trigger has the focus now go into the search field, as before.
+
+- **maz-ui:** Keep the same number of pages in MazPagination so its width never changes ([b2d647c06](https://github.com/LouisMazel/maz-ui/commit/b2d647c06))
+- **maz-ui:** Share the global defaults between several copies of maz-ui, the server render then matches the client ([08df88469](https://github.com/LouisMazel/maz-ui/commit/08df88469))
+
+### 💅 Refactors
+
+- **maz-ui:** Share the radius classes of the roundedSize props ([1af5f64be](https://github.com/LouisMazel/maz-ui/commit/1af5f64be))
+
+### 🧪 Tests
+
+- **maz-ui:** Read the field of the reinforced confirmation inside its dialog ([6970d310c](https://github.com/LouisMazel/maz-ui/commit/6970d310c))
+- **maz-ui:** Find the buttons of the confirm dialog inside the dialog ([f0b5bc797](https://github.com/LouisMazel/maz-ui/commit/f0b5bc797))
+- **maz-ui:** Wait for the confirmation field of the confirm dialog itself ([fa10feb8a](https://github.com/LouisMazel/maz-ui/commit/fa10feb8a))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.9.0-beta.0 (2026-11-24)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)

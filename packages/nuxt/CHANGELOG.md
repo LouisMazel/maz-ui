@@ -1,5 +1,37 @@
 # Change Log
 
+## v5.9.0-beta.1 (2026-11-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.9.0-beta.0...v5.9.0-beta.1)
+
+### 🚀 Features
+
+- **nuxt:** Add the openExternal option ([f57c71bff](https://github.com/LouisMazel/maz-ui/commit/f57c71bff))
+
+  `mazUi: { openExternal: '~/utils/open-external' }` points to a file whose default export opens the external links outside of the WebView (Tauri, Electron), for every maz-ui component with a link.
+
+- **nuxt:** Add the motion option, rendered by the server ([9e4753c8d](https://github.com/LouisMazel/maz-ui/commit/9e4753c8d))
+
+  `mazUi.motion` (`'auto'`, `'reduced'`, `'full'`, or `{ scope: 'page' }`) gives the motion option to maz-ui, and the server renders its classes in `<html>`: no animation plays before the hydration.
+
+- **nuxt:** Add the density option, rendered by the server ([60505d620](https://github.com/LouisMazel/maz-ui/commit/60505d620))
+
+  `mazUi.density: 'compact'` makes the controls denser, the server renders its class in `<html>`.
+
+- **nuxt:** Add the vReveal directive ([cb5d04129](https://github.com/LouisMazel/maz-ui/commit/cb5d04129))
+
+  `mazUi: { directives: { vReveal: true } }` installs the directive. The `aos` option is deprecated.
+
+- **nuxt:** Add the vPress, vRipple, vMagnetic, vTilt and vDraw directives ([bdb929bc6](https://github.com/LouisMazel/maz-ui/commit/bdb929bc6))
+
+### 🩹 Fixes
+
+- **nuxt:** Auto-import only the composables of maz-ui, not the helpers exported next to them ([b011f0030](https://github.com/LouisMazel/maz-ui/commit/b011f0030))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.9.0-beta.0 (2026-11-24)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.8.1...v5.9.0-beta.0)
