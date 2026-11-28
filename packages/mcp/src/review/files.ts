@@ -197,7 +197,7 @@ export interface ReviewFilesOptions {
   minSeverity?: Severity
 }
 
-export async function reviewFiles(patterns: string[], { knowledge, cwd, framework, minSeverity = 'info' }: ReviewFilesOptions): Promise<{ reviews: FileReview[], truncated: boolean }> {
+export async function reviewFiles(patterns: string[], { knowledge, cwd, framework, minSeverity = 'info' }: ReviewFilesOptions): Promise<{ reviews: FileReview[], truncated: boolean, skipped: number }> {
   const files = await expandPaths(patterns, cwd)
   const icons = new Map<string, IconNames>()
   const internalSources = new Map<string, boolean>()
@@ -210,6 +210,7 @@ export async function reviewFiles(patterns: string[], { knowledge, cwd, framewor
 
   return {
     truncated: files.length > MAX_REVIEWED_FILES,
+    skipped: Math.max(0, files.length - MAX_REVIEWED_FILES),
     reviews: files.slice(0, MAX_REVIEWED_FILES).map(file => ({
       file: displayPath(cwd, file),
       findings: filterBySeverity(

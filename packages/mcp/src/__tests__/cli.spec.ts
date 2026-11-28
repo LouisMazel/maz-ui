@@ -5,6 +5,7 @@ import { join } from 'node:path'
 import { Readable } from 'node:stream'
 import packageJson from '../../package.json' with { type: 'json' }
 import { HELP, main, runCli } from '../cli.ts'
+import { MAX_REVIEWED_FILES } from '../review/files.ts'
 import { startStdioServer } from '../server.ts'
 import { BUNDLE_DIR, cleanTempDirs, createTempDir, writeFakeMazUi, writeFile } from './helpers.ts'
 
@@ -203,6 +204,33 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(output.totals.error).toBe(1)
       expect(output.files[0].file).toBe('a.ts')
       expect(output.truncated).toBe(false)
+    })
+  })
+
+  describe('when a review stops at the file limit', () => {
+    it('then it warns with the number of files not reviewed and how to review them', async () => {
+      const cwd = createTempDir()
+
+      for (let index = 0; index < MAX_REVIEWED_FILES + 5; index++) writeFile(cwd, `src/f${String(index).padStart(3, '0')}.ts`, '')
+
+      await runCli(['review', 'src', '--cwd', cwd, '--framework', 'vue'])
+
+      expect(logged()).toContain(`${MAX_REVIEWED_FILES} file(s) reviewed`)
+      expect(errored()).toContain('5 more file(s) were NOT reviewed')
+      expect(errored()).toContain('narrower paths')
+    })
+
+    it('then the JSON output gives the number of skipped files', async () => {
+      const cwd = createTempDir()
+
+      for (let index = 0; index < MAX_REVIEWED_FILES + 3; index++) writeFile(cwd, `src/f${String(index).padStart(3, '0')}.ts`, '')
+
+      await runCli(['review', 'src', '--cwd', cwd, '--format', 'json', '--framework', 'vue'])
+
+      const output = JSON.parse(logged()) as { truncated: boolean, skipped: number }
+
+      expect(output.truncated).toBe(true)
+      expect(output.skipped).toBe(3)
     })
   })
 

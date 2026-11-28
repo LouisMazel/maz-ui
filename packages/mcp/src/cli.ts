@@ -281,6 +281,7 @@ export async function runReview(values: Record<string, unknown>, positionals: st
   const context = createContext({ cwd, docsDir })
   const framework = values.framework as Framework | undefined
   const [{ countBySeverity, formatFindings }, { reviewFiles }] = await Promise.all([import('./review/index.ts'), import('./review/files.ts')])
+  const { MAX_REVIEWED_FILES } = await import('./review/files.ts')
 
   if (values.hook)
     return runReviewHook(context, cwd, framework, docsDir)
@@ -290,7 +291,7 @@ export async function runReview(values: Record<string, unknown>, positionals: st
     return 1
   }
 
-  const { reviews, truncated } = await reviewFiles(positionals, {
+  const { reviews, truncated, skipped } = await reviewFiles(positionals, {
     knowledge: context.knowledge,
     cwd,
     framework,
@@ -303,6 +304,7 @@ export async function runReview(values: Record<string, unknown>, positionals: st
       version: context.knowledge.version,
       totals,
       truncated,
+      skipped,
       files: reviews,
     }, null, 2))
   }
@@ -310,6 +312,9 @@ export async function runReview(values: Record<string, unknown>, positionals: st
     for (const review of reviews.filter(entry => entry.findings.length > 0)) console.log(`${formatFindings(review.findings, review.file)}\n`)
 
     console.log(`${reviews.length} file(s) reviewed against maz-ui ${context.knowledge.version}: ${totals.error} error(s), ${totals.warning} warning(s), ${totals.info} info.`)
+
+    if (truncated)
+      console.error(`Warning: ${skipped} more file(s) were NOT reviewed (limit of ${MAX_REVIEWED_FILES} files per run). Review them by batches: pass narrower paths (a sub-folder or a glob per run, e.g. "src/components" then "src/pages").`)
   }
 
   const maxWarnings = values['max-warnings'] === undefined

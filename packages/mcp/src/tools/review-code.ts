@@ -41,7 +41,7 @@ export async function reviewCodeTool(context: ServerContext, { paths, code, file
   }
 
   if (paths?.length) {
-    const { reviews, truncated } = await reviewFiles(paths, {
+    const { reviews, truncated, skipped } = await reviewFiles(paths, {
       knowledge: context.knowledge,
       cwd: context.cwd,
       framework,
@@ -62,7 +62,7 @@ export async function reviewCodeTool(context: ServerContext, { paths, code, file
     sections.push(`Reviewed ${reviews.length} file${reviews.length > 1
       ? 's'
       : ''}: ${totals.error} errors, ${totals.warning} warnings, ${totals.info} info.${truncated
-      ? ` Only the first ${MAX_REVIEWED_FILES} files were reviewed: narrow the paths.`
+      ? ` Only the first ${MAX_REVIEWED_FILES} files were reviewed, ${skipped} not reviewed: narrow the paths.`
       : ''}`)
     sections.push(...withIssues.map(review => formatFindings(review.findings, review.file)))
   }
