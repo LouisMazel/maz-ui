@@ -2,12 +2,14 @@
  * AI coding agents supported by `setupAgents`.
  *
  * - `claude`: Claude Code rule (`.claude/rules/<tool>.md`) and MCP server (`.mcp.json`)
- * - `agents-md`: section in `AGENTS.md` (Codex, Cursor, Copilot, Windsurf, Zed, Gemini...)
+ * - `agents-md`: section in `AGENTS.md` (Codex, OpenCode, Cursor, Copilot, Windsurf, Zed, Gemini...)
  * - `cursor`: MCP server in `.cursor/mcp.json` (rules come from `AGENTS.md`)
  * - `vscode`: MCP server in `.vscode/mcp.json` for GitHub Copilot (rules come from `AGENTS.md`)
  * - `gemini`: MCP server in `.gemini/settings.json` for Gemini CLI (rules come from `AGENTS.md`, added to its
  *   `context.fileName` with `agents-md`: Gemini CLI only reads `GEMINI.md` by default)
- * - `opencode`: MCP server in `opencode.json`, or the `opencode.jsonc` of the project (rules come from `AGENTS.md`)
+ * - `opencode`: MCP server in `opencode.json`, or the `opencode.jsonc` of the project, and with `hooks`, the OpenCode
+ *   plugin of the tool (rules come from `AGENTS.md`)
+ * - `codex`: MCP server in `.codex/config.toml`, read by Codex in the trusted projects (rules come from `AGENTS.md`)
  * - `junie`: MCP server in `.junie/mcp/mcp.json` for JetBrains Junie (rules come from `AGENTS.md`)
  * - `windsurf`: MCP server in `.devin/mcp_config.json` for Windsurf and Devin (rules come from `AGENTS.md`)
  * - `warp`: MCP server in `.warp/.mcp.json`, not written with `claude` since Warp also reads `.mcp.json` (rules come from `AGENTS.md`)
@@ -23,6 +25,7 @@ export const AGENT_TARGETS = [
   'vscode',
   'gemini',
   'opencode',
+  'codex',
   'junie',
   'windsurf',
   'warp',
@@ -41,6 +44,13 @@ export interface SetupAgentsOptions<T extends AgentTarget = AgentTarget> {
   rules?: boolean
   /** Register the MCP server of the tool. Default `true` */
   mcp?: boolean
+  /**
+   * With the `claude` target, register the review hook of the tool (`tool.reviewHookArgs`) in `.claude/settings.json`:
+   * Claude Code runs it after each edit of a file and sends the findings back to the agent. Skipped when the Claude
+   * Code plugin of the tool is enabled, it has its own hook. With the `opencode` target, add the OpenCode plugin of
+   * the tool (`tool.openCodePlugin`), which reviews each edit too. Default `false`
+   */
+  hooks?: boolean
   /** Compute the changes without writing anything */
   dryRun?: boolean
   /** Remove everything `setupAgents` added */
@@ -121,6 +131,16 @@ export interface AgentsTool {
    * contains the version would rewrite it at every release of the tool.
    */
   versionNote?: ((version: string) => string) | false
+  /**
+   * Arguments of `mcpBin` that review the file a Claude Code `PostToolUse` hook receives on stdin (e.g.
+   * `['review', '--hook']`), registered by the `hooks` option. Default: no hook
+   */
+  reviewHookArgs?: string[]
+  /**
+   * Package of the OpenCode plugin of the tool (e.g. `'@maz-ui/mcp'`), added to the `plugin` list of the OpenCode
+   * config by the `hooks` option, pinned to the version of the MCP server. Default: no plugin
+   */
+  openCodePlugin?: string
   /**
    * Packages (or bins) of former MCP servers of the tool: an entry of the MCP config files that references one of
    * them, when the tool has no entry yet, is replaced by the entry of the tool. Default: none

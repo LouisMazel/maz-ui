@@ -16,6 +16,8 @@ export const MAZ_UI_AGENTS_TOOL: AgentsTool = {
     '@maz-ui/translations',
   ],
   ruleGlobs: ['**/*.{vue,ts,tsx,css,scss}'],
+  reviewHookArgs: ['review', '--hook'],
+  openCodePlugin: '@maz-ui/mcp',
 }
 
 /** Values derived from a tool: markers, files and patterns of its generated content */
