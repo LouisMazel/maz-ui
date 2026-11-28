@@ -183,6 +183,9 @@ export default {
     copyUrlToClipboard: 'Copier l\'URL dans le presse-papiers',
     urlCopiedToClipboard: 'URL copiée dans le presse-papiers',
   },
+  btn: {
+    holdDescription: 'Maintiens appuyé pour confirmer',
+  },
   btnClipboard: {
     copy: 'Copier',
     copied: 'Copié',

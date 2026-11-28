@@ -183,6 +183,9 @@ export default {
     copyUrlToClipboard: 'URLをクリップボードにコピー',
     urlCopiedToClipboard: 'URLがクリップボードにコピーされました',
   },
+  btn: {
+    holdDescription: '長押しして確定',
+  },
   btnClipboard: {
     copy: 'コピー',
     copied: 'コピーしました',

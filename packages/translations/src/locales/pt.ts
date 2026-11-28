@@ -183,6 +183,9 @@ export default {
     copyUrlToClipboard: 'Copiar URL para a área de transferência',
     urlCopiedToClipboard: 'URL copiada para a área de transferência',
   },
+  btn: {
+    holdDescription: 'Mantenha pressionado para confirmar',
+  },
   btnClipboard: {
     copy: 'Copiar',
     copied: 'Copiado',

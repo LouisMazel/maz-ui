@@ -183,6 +183,9 @@ export default {
     copyUrlToClipboard: 'URL in Zwischenablage kopieren',
     urlCopiedToClipboard: 'URL in Zwischenablage kopiert',
   },
+  btn: {
+    holdDescription: 'Gedrückt halten zum Bestätigen',
+  },
   btnClipboard: {
     copy: 'Kopieren',
     copied: 'Kopiert',

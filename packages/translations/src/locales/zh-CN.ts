@@ -183,6 +183,9 @@ export default {
     copyUrlToClipboard: '复制 URL 到剪贴板',
     urlCopiedToClipboard: 'URL 已复制到剪贴板',
   },
+  btn: {
+    holdDescription: '长按以确认',
+  },
   btnClipboard: {
     copy: '复制',
     copied: '已复制',

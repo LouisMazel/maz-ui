@@ -348,6 +348,12 @@ export default {
     urlCopiedToClipboard: 'URL copied to clipboard',
   },
   /**
+   * Button texts: the description read by screen readers on a button to hold
+   */
+  btn: {
+    holdDescription: 'Press and hold to confirm',
+  },
+  /**
    * This is the translation for the btn clipboard component.
    * The keys are:
    * - copy: Label/tooltip of the button (default state).

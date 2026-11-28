@@ -183,6 +183,9 @@ export default {
     copyUrlToClipboard: 'Copia URL negli appunti',
     urlCopiedToClipboard: 'URL copiato negli appunti',
   },
+  btn: {
+    holdDescription: 'Tieni premuto per confermare',
+  },
   btnClipboard: {
     copy: 'Copia',
     copied: 'Copiato',
