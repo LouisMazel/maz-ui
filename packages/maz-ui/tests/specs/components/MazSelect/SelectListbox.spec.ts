@@ -1,5 +1,5 @@
 import SelectListbox from '@components/MazSelect/SelectListbox.vue'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 
 const options = [
   { label: 'Fruits', isOptGroup: true },
@@ -100,6 +100,131 @@ describe('given a SelectListbox', () => {
       expect(document.activeElement).toBe(option)
 
       vm.scrollToIndex(0)
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when an option is selected in a single listbox', () => {
+    it('then the selected option has a check icon and the others have none', async () => {
+      const wrapper = mountListbox()
+
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      const items = wrapper.findAll('.m-select-list-item')
+
+      expect(items[0].classes()).not.toContain('--is-selected')
+      expect(items[0].find('.m-select-list-item__check').exists()).toBe(false)
+      expect(items[1].classes()).toContain('--is-selected')
+      expect(items[1].find('.m-select-list-item__check').exists()).toBe(true)
+      expect(items[1].find('.m-select-list-item__check').attributes('aria-hidden')).toBe('true')
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when an option is selected in a multiple listbox', () => {
+    it('then the checkbox marks it and there is no check icon', async () => {
+      const wrapper = mountListbox({ multiple: true })
+
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      expect(wrapper.find('.m-select-list-item.--is-selected').exists()).toBe(true)
+      expect(wrapper.find('.m-select-list-item__check').exists()).toBe(false)
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when the highlight is placed on an option', () => {
+    it('then it takes the position and the size of the option', async () => {
+      const wrapper = mountListbox({ virtualFocus: true, activeIndex: 1 })
+      const option = wrapper.find('#option-1').element as HTMLElement
+
+      Object.defineProperties(option, {
+        offsetLeft: { value: 12, configurable: true },
+        offsetTop: { value: 40, configurable: true },
+        offsetWidth: { value: 180, configurable: true },
+        offsetHeight: { value: 36, configurable: true },
+      })
+
+      await wrapper.setProps({ activeIndex: 2 })
+      await wrapper.setProps({ activeIndex: 1 })
+      await flushPromises()
+
+      const style = wrapper.find('.m-select-list__highlight').attributes('style')
+
+      expect(style).toContain('translate(12px, 40px)')
+      expect(style).toContain('width: 180px')
+      expect(style).toContain('height: 36px')
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when the highlight is on the selected option', () => {
+    it('then the option is marked highlighted to show a single surface', async () => {
+      const wrapper = mountListbox({ virtualFocus: true, activeIndex: 2 })
+
+      await flushPromises()
+
+      expect(wrapper.find('#option-2').classes()).toContain('--is-selected')
+      expect(wrapper.find('#option-2').classes()).toContain('--is-highlighted')
+      expect(wrapper.find('#option-1').classes()).not.toContain('--is-highlighted')
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when the highlight is on another option than the selected one', () => {
+    it('then the selected option is not marked highlighted', async () => {
+      const wrapper = mountListbox({ virtualFocus: true, activeIndex: 1 })
+
+      await flushPromises()
+
+      expect(wrapper.find('#option-2').classes()).not.toContain('--is-highlighted')
+      expect(wrapper.find('#option-1').classes()).toContain('--is-highlighted')
+
+      wrapper.unmount()
+    })
+  })
+
+  describe('when the list is resized', () => {
+    it('then the highlight is measured again', async () => {
+      const originalObserver = globalThis.ResizeObserver
+      const callbacks: ((entries: unknown[], observer: unknown) => void)[] = []
+
+      vi.stubGlobal('ResizeObserver', class {
+        observe = vi.fn()
+        unobserve = vi.fn()
+        disconnect = vi.fn()
+
+        constructor(callback: (entries: unknown[], observer: unknown) => void) {
+          callbacks.push(callback)
+        }
+      })
+
+      const wrapper = mountListbox({ virtualFocus: true, activeIndex: 1 })
+
+      await flushPromises()
+
+      const option = wrapper.find('#option-1').element as HTMLElement
+
+      Object.defineProperties(option, {
+        offsetLeft: { value: 8, configurable: true },
+        offsetTop: { value: 30, configurable: true },
+        offsetWidth: { value: 240, configurable: true },
+        offsetHeight: { value: 36, configurable: true },
+      })
+
+      for (const callback of callbacks) callback([], {})
+      await flushPromises()
+
+      expect(wrapper.find('.m-select-list__highlight').attributes('style')).toContain('width: 240px')
+
+      vi.stubGlobal('ResizeObserver', originalObserver)
 
       wrapper.unmount()
     })

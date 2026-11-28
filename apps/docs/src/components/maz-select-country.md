@@ -771,3 +771,7 @@ const customRegions = [
 </script>
 
 <!--@include: ./../../.vitepress/generated-docs/maz-select-country.doc.md-->
+
+## Motion
+
+The list grows from the field, a highlight slides between the countries under the pointer (instant with the keyboard) and the matched letters of the search are underlined. With reduced motion, everything is instant.

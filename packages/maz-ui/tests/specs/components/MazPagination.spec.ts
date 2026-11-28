@@ -1,4 +1,5 @@
 import MazBtn from '@components/MazBtn.vue'
+import MazIcon from '@components/MazIcon.vue'
 import MazPagination from '@components/MazPagination.vue'
 import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig.ts'
 import { mount } from '@vue/test-utils'
@@ -116,6 +117,23 @@ describe('mazPagination.vue', () => {
   })
 
   // Add more test cases as needed
+})
+
+describe('given a pagination with the navigation buttons', () => {
+  describe('when it is rendered', () => {
+    it('then the previous chevrons are mirrored in RTL and the next ones are the reverse', () => {
+      const wrapper = mount(MazPagination, {
+        props: { totalPages: 10, modelValue: 5 },
+      })
+      const buttons = wrapper.findAllComponents(MazBtn)
+      const iconClasses = [0, 1, buttons.length - 2, buttons.length - 1].map(index => buttons[index]!.findComponent(MazIcon).classes())
+
+      expect(iconClasses[0]).toContain('maz:rtl:rotate-180')
+      expect(iconClasses[1]).toContain('maz:rtl:rotate-180')
+      expect(iconClasses[2]).toContain('maz:rtl:rotate-0')
+      expect(iconClasses[3]).toContain('maz:rtl:rotate-0')
+    })
+  })
 })
 
 describe('given a MazUi global default for size', () => {

@@ -79,7 +79,7 @@ selectedValues: {{ selectedValues }}
 
 Use `search` property to add a search input in the options list.
 
-The search is a fuzzy search (the [fuzzySearch](./../ecosystem/utils/fuzzy-search.md) helper of `@maz-ui/utils`, loaded only with `search`): it finds the prefixes, the words in any order, the initials ("nwz" finds "New Zealand"), the typos ("Franse" finds "France"), whatever the accents and the case. It searches the label, the input value and the value of the options. The best matches come first; with optgroups, the matched options keep the order of the list under their group.
+The search is a fuzzy search (the [fuzzySearch](./../ecosystem/utils/fuzzy-search.md) helper of `@maz-ui/utils`, loaded only with `search`): it finds the prefixes, the words in any order, the initials ("nwz" finds "New Zealand"), the typos ("Franse" finds "France"), whatever the accents and the case. It searches the label, the input value and the value of the options. While the list is open, a letter typed from the trigger or from an option goes into the search input. The best matches come first; with optgroups, the matched options keep the order of the list under their group.
 
 ::: tip
 You can use your own template to replace the empty icon when no results are found
@@ -437,6 +437,14 @@ const customOptions = [
 ```ts
 type ModelValueSimple = string | number | null | undefined | boolean
 ```
+
+## Label above the field
+
+Set `topLabel: true` in the [global defaults](../guide/global-defaults.md) to show the `label` above the field instead of floating inside it. A `top-label` set on an instance still wins.
+
+## Motion
+
+The list grows from the field and its options rise in quickly. A highlight slides between the options under the pointer and jumps instantly with the arrow keys. With `search`, the matched letters are underlined (accents and case aside). With reduced motion, everything is instant. The selected option is in bold with a check icon (the checkbox with `multiple`), so it does not rely on color.
 
 ## Accessibility
 
