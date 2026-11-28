@@ -70,7 +70,7 @@ const chartOptions = computed(() => ({
 </script>
 
 <template>
-  <HomeChapter id="inventory" number="07" label="Inventory" :swatch>
+  <HomeChapter id="inventory" number="08" label="Inventory" :swatch>
     <header>
       <p class="home-eyebrow">
         Everything in the box
