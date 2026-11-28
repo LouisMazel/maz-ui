@@ -50,7 +50,7 @@ export interface MazCarouselProps {
    */
   counter?: boolean
   /**
-   * Show a thin progress bar under the items: the part of the items already seen
+   * Show a compact progress pill under the items (a thumb that slides along a short track), the native scrollbar is hidden
    * @default false
    */
   progress?: boolean
@@ -77,7 +77,8 @@ const messages = computed<MazUiTranslationsNestedSchema['carousel']>(() => ({
 
 const { shouldReduceMotion } = useReducedMotion()
 
-const scrollRatio = ref(0)
+const thumbSize = ref(100)
+const thumbOffset = ref(0)
 const pageCount = ref(1)
 const currentPage = ref(1)
 const isDragging = ref(false)
@@ -109,8 +110,13 @@ function previous() {
 function updateMetrics(target: Element) {
   const position = Math.abs(target.scrollLeft)
 
-  scrollRatio.value = target.scrollWidth > 0
-    ? Math.min(1, Math.max(0, (position + target.clientWidth) / target.scrollWidth))
+  const maxScroll = target.scrollWidth - target.clientWidth
+
+  thumbSize.value = target.scrollWidth > 0
+    ? Math.min(100, Math.max(15, (target.clientWidth / target.scrollWidth) * 100))
+    : 100
+  thumbOffset.value = maxScroll > 0
+    ? Math.min(1, position / maxScroll) * (100 / thumbSize.value - 1) * 100
     : 0
   pageCount.value = target.clientWidth > 0
     ? Math.max(1, Math.ceil(target.scrollWidth / target.clientWidth))
@@ -284,6 +290,7 @@ onBeforeUnmount(() => {
     class="m-carousel m-reset-css maz:relative maz:flex maz:flex-col"
     :class="{
       '--hide-scrollbar': hideScrollbar,
+      '--indicator': progress || counter,
       '--drag-scroll': dragScroll,
       '--dragging': isDragging,
     }"
@@ -297,7 +304,7 @@ onBeforeUnmount(() => {
         </slot>
       </div>
       <div v-if="!hideScrollButtons || counter" class="m-carousel__header__actions maz:flex maz:flex-1 maz:items-center maz:justify-end maz:space-x-2">
-        <span v-if="counter && pageCount > 1" class="m-carousel__counter maz:inline-flex maz:items-center maz:gap-1 maz:text-sm maz:text-muted maz:tabular-nums" aria-hidden="true">
+        <span v-if="counter && pageCount > 1" dir="ltr" class="m-carousel__counter maz:inline-flex maz:items-center maz:gap-1 maz:text-sm maz:text-muted maz:tabular-nums" aria-hidden="true">
           <MazRollingText :value="currentPage" />
           <span>/</span>
           <span>{{ pageCount }}</span>
@@ -335,8 +342,11 @@ onBeforeUnmount(() => {
       <slot />
       <div class="m-carousel__items__spacer" />
     </div>
-    <div v-if="progress" class="m-carousel__progress maz:h-0.5 maz:w-full maz:overflow-hidden maz:rounded-full maz:bg-foreground/10" aria-hidden="true">
-      <div class="m-carousel__progress-bar maz:size-full maz:rounded-full maz:bg-primary" :style="{ transform: `scaleX(${scrollRatio})` }" />
+    <div v-if="progress" class="m-carousel__progress maz:relative maz:mx-auto maz:h-1 maz:w-16 maz:overflow-hidden maz:rounded-full maz:bg-foreground/10" aria-hidden="true">
+      <div
+        class="m-carousel__progress-bar maz:absolute maz:inset-y-0 maz:inset-s-0 maz:rounded-full maz:bg-primary"
+        :style="{ '--m-carousel-thumb-size': `${thumbSize}%`, '--m-carousel-thumb-x': `${thumbOffset}%` }"
+      />
     </div>
   </div>
 </template>
@@ -367,12 +377,21 @@ onBeforeUnmount(() => {
 }
 
 .m-carousel__progress-bar {
-  transform-origin: left;
+  inline-size: var(--m-carousel-thumb-size, 100%);
+  transform: translateX(var(--m-carousel-thumb-x, 0%));
   transition: transform calc(var(--maz-motion-fast) * var(--maz-motion-scale)) var(--maz-easing-out);
 }
 
 [dir='rtl'] .m-carousel__progress-bar {
-  transform-origin: right;
+  transform: translateX(calc(var(--m-carousel-thumb-x, 0%) * -1));
+}
+
+.m-carousel.--indicator .m-carousel__items {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .m-carousel__btn.--muted {

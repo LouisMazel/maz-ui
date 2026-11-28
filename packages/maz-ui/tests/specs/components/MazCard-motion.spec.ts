@@ -8,9 +8,9 @@ describe.each([
 ] as const)('given %s elevation and border draw', (_name, component, selector) => {
   describe('when the elevation is a level', () => {
     it.each([
-      [1, 'maz:shadow-sm'],
-      [2, 'maz:shadow-elevation'],
-      [3, 'maz:shadow-lg'],
+      [1, 'maz:shadow-elevation-1'],
+      [2, 'maz:shadow-elevation-2'],
+      [3, 'maz:shadow-elevation-3'],
     ] as const)('then the level %s applies its shadow without the drop shadow', (elevation, expected) => {
       const wrapper = mount(component, { props: { elevation } })
       const classes = wrapper.find(selector).classes()

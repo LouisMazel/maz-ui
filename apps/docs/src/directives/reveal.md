@@ -149,6 +149,8 @@ Lines are the ones rendered on the screen, or the parts split by `<br>`. Use a t
 
 With `mode: 'scroll'`, the progress follows the scroll (`animation-timeline: view()`). Browsers without it use the normal reveal.
 
+The animation starts when the element is clearly entering the screen and ends a bit after. To change this range, set the `--maz-reveal-range` CSS variable (default `entry 20% cover 30%`), for example `class="[--maz-reveal-range:entry_40%_cover_50%]"`.
+
 <ComponentDemo>
   <div v-reveal="{ effect: 'curtain-up', mode: 'scroll' }" class="maz:rounded-md maz:bg-primary maz:p-10 maz:text-center maz:text-primary-foreground">
     I open while you scroll the page

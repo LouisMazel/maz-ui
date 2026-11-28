@@ -92,3 +92,16 @@ describe('given a stepper', () => {
     })
   })
 })
+
+describe('given a stepper with a validated and an error step', () => {
+  describe('when it renders', () => {
+    it('then the content of each step carries the state class of its color', () => {
+      const wrapper = mountStepper({ steps: [{ ...steps[0], success: true }, { ...steps[1], error: true }, steps[2]] })
+      const contents = wrapper.findAll('.m-stepper__content')
+
+      expect(contents[0].classes()).toContain('--success')
+      expect(contents[1].classes()).toContain('--error')
+      expect(contents[2].classes()).toContain('--normal')
+    })
+  })
+})

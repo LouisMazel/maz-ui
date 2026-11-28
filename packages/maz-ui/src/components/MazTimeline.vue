@@ -862,11 +862,20 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
       view-timeline: --m-timeline-rail block;
     }
 
-    .m-timeline-connector.--completed .m-timeline-connector-fill {
+    .m-timeline-connector-track {
+      transform-origin: left top;
       animation: m-timeline-rail-fill linear both;
       animation-timeline: --m-timeline-rail;
       animation-range: entry 0% cover 40%;
     }
+
+    &.--vertical .m-timeline-connector-track {
+      transform-origin: center top;
+    }
+  }
+
+  [dir='rtl'] .m-timeline.--animated.--horizontal .m-timeline-connector-track {
+    transform-origin: right top;
   }
 }
 
@@ -899,6 +908,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 /* --- Reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
   .m-timeline.--animated .m-timeline-indicator,
+  .m-timeline.--animated .m-timeline-connector-track,
   .m-timeline.--animated .m-timeline-connector-fill {
     @apply maz:transition-none!;
 

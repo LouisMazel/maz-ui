@@ -412,6 +412,7 @@ describe('given the reveal system', () => {
       expect(REVEAL_CSS).toContain('prefers-reduced-motion:reduce')
       expect(REVEAL_CSS).toContain('html.m-motion-reduced')
       expect(REVEAL_CSS).not.toContain('maz:')
+      expect(REVEAL_CSS).toContain('animation-range:var(--maz-reveal-range,entry 20% cover 30%)')
     })
   })
 })

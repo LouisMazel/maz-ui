@@ -17,4 +17,7 @@
   --shadow-lg: var(--maz-shadow-style-lg);
   --shadow-xl: var(--maz-shadow-style-xl);
   --shadow-elevation: var(--maz-shadow-style-elevation);
+  --shadow-elevation-1: var(--maz-shadow-style-elevation-1, var(--maz-shadow-style-sm));
+  --shadow-elevation-2: var(--maz-shadow-style-elevation-2, var(--maz-shadow-style-elevation));
+  --shadow-elevation-3: var(--maz-shadow-style-elevation-3, var(--maz-shadow-style-lg));
 }

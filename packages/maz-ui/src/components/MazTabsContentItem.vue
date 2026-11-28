@@ -64,7 +64,7 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
  */
 .m-tabs-content-item {
   --maz-tab-dx: 1;
-  --maz-tab-offset: 1.5rem;
+  --maz-tab-offset: 2.5rem;
 
   flex: 1 0 auto;
 
@@ -88,9 +88,10 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 .maz-tab-vertical-reverse-transition-leave-active {
   position: absolute !important;
   inset-block-start: 0;
+  inset-inline: 0;
   transition:
-    transform calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in),
-    opacity calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1)) var(--maz-easing-in, ease-in);
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in-out, ease-in-out),
+    opacity calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in-out, ease-in-out);
 }
 
 .maz-tab-transition-enter-from,

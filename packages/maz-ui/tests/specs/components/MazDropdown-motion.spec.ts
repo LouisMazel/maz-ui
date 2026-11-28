@@ -174,3 +174,17 @@ describe('given a closed dropdown', () => {
     })
   })
 })
+
+describe('given an open dropdown with a highlighted item', () => {
+  describe('when the pointer crosses the gap between two items', () => {
+    it('then the highlight stays', async () => {
+      const wrapper = await mountOpenDropdown()
+      const menu = wrapper.get('.m-dropdown__menu')
+
+      await menuItems(wrapper)[0].trigger('pointerover', { pointerType: 'mouse' })
+      await menu.trigger('pointerover', { pointerType: 'mouse' })
+
+      expect(wrapper.find('.m-dropdown__highlight').exists()).toBe(true)
+    })
+  })
+})

@@ -1242,7 +1242,11 @@ onBeforeMount(() => {
         }
 
         &.--sortable {
-          @apply maz:cursor-interactive maz:hover:bg-foreground/5;
+          @apply maz:cursor-interactive;
+
+          &:hover {
+            background-image: linear-gradient(color-mix(in srgb, var(--maz-foreground) 5%, transparent) 0 0);
+          }
 
           &:focus-visible {
             outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary));
@@ -1479,7 +1483,14 @@ onBeforeMount(() => {
 }
 
 /* Soft band on the sorted column */
-.m-table th.--sorted-column,
+.m-table thead th.--sorted-column {
+  background-image: linear-gradient(color-mix(in srgb, var(--maz-foreground) 4%, transparent) 0 0);
+
+  &.--sortable:hover {
+    background-image: linear-gradient(color-mix(in srgb, var(--maz-foreground) 9%, transparent) 0 0);
+  }
+}
+
 .m-table td.--sorted-column {
   position: relative;
   isolation: isolate;

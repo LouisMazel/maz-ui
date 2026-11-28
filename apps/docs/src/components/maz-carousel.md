@@ -265,7 +265,7 @@ Show the current page and the page count next to the buttons. The current page r
 
 ### progress
 
-A thin bar under the items follows the scroll position.
+A small pill under the items shows where you are: its thumb is as wide as the visible part and slides while you scroll (reversed in RTL). The native scrollbar is hidden when `progress` or `counter` is set.
 
 ```html
 <MazCarousel progress>...</MazCarousel>
@@ -306,7 +306,7 @@ Drag the items with the mouse. They keep gliding a little when you release. Touc
 
 ## Motion
 
-- The counter rolls, the progress bar glides, and `drag-scroll` adds a little inertia.
+- The counter rolls, the progress thumb glides, and `drag-scroll` adds a little inertia.
 - The buttons scroll by one page, in the direction of the text (reversed in RTL).
 - Reduced motion removes the rolling and the inertia.
 

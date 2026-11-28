@@ -60,7 +60,7 @@ describe('given MazCarousel counter and progress', () => {
   })
 
   describe('when the progress bar is enabled', () => {
-    it('then it shows the part of the items already seen', async () => {
+    it('then the thumb is as wide as the visible part and slides with the scroll', async () => {
       const wrapper = await mountCarousel({ progress: true })
       const items = wrapper.find('.m-carousel__items').element as HTMLElement
 
@@ -69,7 +69,7 @@ describe('given MazCarousel counter and progress', () => {
       await flushPromises()
 
       expect(wrapper.find('.m-carousel__progress').attributes('aria-hidden')).toBe('true')
-      expect(wrapper.find('.m-carousel__progress-bar').attributes('style')).toContain('scaleX(0.625)')
+      expect(wrapper.find('.m-carousel__progress-bar').attributes('style')).toContain('--m-carousel-thumb-size: 25%; --m-carousel-thumb-x: 150%')
     })
 
     it('then it starts with the first page visible', async () => {
@@ -80,13 +80,20 @@ describe('given MazCarousel counter and progress', () => {
       items.dispatchEvent(new Event('scroll'))
       await flushPromises()
 
-      expect(wrapper.find('.m-carousel__progress-bar').attributes('style')).toContain('scaleX(0.25)')
+      expect(wrapper.find('.m-carousel__progress-bar').attributes('style')).toContain('--m-carousel-thumb-x: 0%')
     })
 
     it('then it is not rendered by default', async () => {
       const wrapper = await mountCarousel()
 
       expect(wrapper.find('.m-carousel__progress').exists()).toBe(false)
+      expect(wrapper.find('.m-carousel').classes()).not.toContain('--indicator')
+    })
+
+    it('then the native scrollbar is hidden', async () => {
+      const wrapper = await mountCarousel({ progress: true })
+
+      expect(wrapper.find('.m-carousel').classes()).toContain('--indicator')
     })
   })
 })

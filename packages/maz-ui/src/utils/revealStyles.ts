@@ -32,7 +32,7 @@ export const REVEAL_CSS = `
 ${TARGET_HIDDEN}{opacity:var(--mr-o);transform:translate(var(--mr-x),var(--mr-y)) scale(var(--mr-s));filter:blur(var(--mr-b));clip-path:var(--mr-cf)}
 ${TARGET_IN}{opacity:1;transform:none;filter:blur(0px);clip-path:var(--mr-ct);will-change:opacity,transform;transition-property:opacity,transform,filter,clip-path;transition-duration:calc(var(--maz-reveal-duration,var(--maz-motion-slower,450ms))*var(--maz-motion-scale,1));transition-timing-function:var(--maz-reveal-easing,var(--maz-easing-out,cubic-bezier(.16,1,.3,1)));transition-delay:calc(var(--maz-reveal-delay,0ms) + var(--maz-reveal-cascade,0ms) + var(--maz-i,0)*var(--maz-reveal-stagger,0ms))}
 @keyframes maz-reveal-scroll{from{opacity:var(--mr-o);transform:translate(var(--mr-x),var(--mr-y)) scale(var(--mr-s));filter:blur(var(--mr-b));clip-path:var(--mr-cf)}to{opacity:1;transform:none;filter:blur(0px);clip-path:var(--mr-ct)}}
-@supports (animation-timeline:view()){${TARGET_SCROLL}{animation:maz-reveal-scroll linear both;animation-timeline:view();animation-range:entry 0% entry 75%}}
+@supports (animation-timeline:view()){${TARGET_SCROLL}{animation:maz-reveal-scroll linear both;animation-timeline:view();animation-range:var(--maz-reveal-range,entry 20% cover 30%)}}
 .m-reveal-line{display:block;overflow:hidden;padding-block:.12em;margin-block:-.12em}
 .m-reveal-line>[data-maz-reveal-item]{display:block}
 .m-reveal-word{display:inline-block}

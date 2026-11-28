@@ -369,9 +369,9 @@ describe('given mazCardSpotlight component', () => {
 
   describe('when elevation is a level', () => {
     it.each([
-      [1, 'maz:shadow-sm'],
-      [2, 'maz:shadow-elevation'],
-      [3, 'maz:shadow-lg'],
+      [1, 'maz:shadow-elevation-1'],
+      [2, 'maz:shadow-elevation-2'],
+      [3, 'maz:shadow-elevation-3'],
     ] as const)('applies the shadow of the level %s', (elevation, expected) => {
       const wrapper = mount(MazCardSpotlight, { props: { elevation } })
 

@@ -4,9 +4,9 @@
 export type MazElevation = boolean | 0 | 1 | 2 | 3
 
 const ELEVATION_CLASS: Record<1 | 2 | 3, string> = {
-  1: 'maz:shadow-sm',
-  2: 'maz:shadow-elevation',
-  3: 'maz:shadow-lg',
+  1: 'maz:shadow-elevation-1',
+  2: 'maz:shadow-elevation-2',
+  3: 'maz:shadow-elevation-3',
 }
 
 export function getElevationClass(elevation: MazElevation | undefined): string | undefined {

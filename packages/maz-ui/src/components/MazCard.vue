@@ -176,6 +176,15 @@ const footerAlignClass = computed(() =>
 
 const elevationClass = computed(() => getElevationClass(elevation.value))
 
+const GALLERY_RADIUS_CLASS = {
+  'column': 'maz:rounded-t-[inherit]',
+  'column-reverse': 'maz:rounded-b-[inherit]',
+  'row': 'maz:rounded-s-[inherit]',
+  'row-reverse': 'maz:rounded-e-[inherit]',
+} as const
+
+const galleryRadiusClass = computed(() => radius.value ? GALLERY_RADIUS_CLASS[orientation] : undefined)
+
 function onPointerEnter(event: PointerEvent) {
   if (borderDraw)
     setBorderDrawFrom(event)
@@ -239,7 +248,7 @@ function toggleCollapse() {
     <component
       v-bind="wrapperData"
       :is="wrapperData.is"
-      class="m-card__wrapper maz:flex maz:flex-1"
+      class="m-card__wrapper maz:flex maz:flex-1 maz:rounded-[inherit]"
       :class="[
         `m-card__wrapper--${orientation}`,
         orientation === 'row' ? 'maz:flex-row' : orientation === 'row-reverse' ? 'maz:flex-row-reverse' : orientation === 'column' ? 'maz:flex-col' : 'maz:flex-col-reverse',
@@ -247,7 +256,11 @@ function toggleCollapse() {
       ]"
       @click="!to && onLinkClick($event, href, hrefTarget)"
     >
-      <div v-if="galleryOptions.images" class="m-card__gallery__wrapper maz:relative maz:flex maz:overflow-hidden">
+      <div
+        v-if="galleryOptions.images"
+        class="m-card__gallery__wrapper maz:relative maz:isolate maz:flex maz:transform-gpu maz:overflow-hidden"
+        :class="galleryRadiusClass"
+      >
         <MazGallery
           v-bind="{
             ...galleryOptions,
@@ -348,7 +361,12 @@ function toggleCollapse() {
   }
 
   .m-card--linked:hover :deep(.m-card__arrow) {
-    transform: translateX(calc(0.25rem * var(--maz-dir, 1)));
+    transform: translateX(0.25rem);
+  }
+
+  [dir='rtl'] .m-card--linked:hover :deep(.m-card__arrow),
+  .m-card--linked:dir(rtl):hover :deep(.m-card__arrow) {
+    transform: translateX(-0.25rem);
   }
 }
 

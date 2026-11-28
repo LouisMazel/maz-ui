@@ -313,11 +313,11 @@ function isLastStep(step: number): boolean {
       <div
         :id="getContentId(step)"
         class="m-stepper__content maz:relative maz:ms-[1.95rem] maz:border-s maz:py-2 maz:ps-8"
-        :class="{
+        :class="[{
           'maz:border-transparent': isLastStep(step),
           'maz:border-divider': !isLastStep(step),
           '--filled': isLineFilled(step),
-        }"
+        }, getStepStateData(step).class]"
       >
         <MazExpandAnimation
           :model-value="isStepOpen(step)"
@@ -403,6 +403,27 @@ function isLastStep(step: number): boolean {
   &.--before {
     transition-duration: calc(var(--maz-motion-normal, 200ms) * 0.7 * var(--maz-motion-scale, 1));
     transition-timing-function: var(--maz-easing-in, ease-in);
+  }
+}
+
+.m-stepper__header,
+.m-stepper__content {
+  &.--success {
+    --round-step-bg-color: var(--maz-success);
+    --round-step-text-color: var(--maz-success-foreground);
+    --round-step-border-color: transparent;
+  }
+
+  &.--warning {
+    --round-step-bg-color: var(--maz-warning);
+    --round-step-text-color: var(--maz-warning-foreground);
+    --round-step-border-color: transparent;
+  }
+
+  &.--error {
+    --round-step-bg-color: var(--maz-destructive);
+    --round-step-text-color: var(--maz-destructive-foreground);
+    --round-step-border-color: transparent;
   }
 }
 

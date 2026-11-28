@@ -328,7 +328,12 @@ function onMenuPointerOver(event: PointerEvent) {
   if (event.pointerType === 'touch')
     return
 
-  const item = (event.target as HTMLElement).closest<HTMLElement>('.menuitem--hoverable:not(:disabled, [aria-disabled="true"])')
+  const target = event.target as HTMLElement
+
+  if (!target.closest('.menuitem'))
+    return
+
+  const item = target.closest<HTMLElement>('.menuitem--hoverable:not(:disabled, [aria-disabled="true"])')
 
   hoveredItem.value = item && menuRef.value?.contains(item)
     ? item
