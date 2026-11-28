@@ -288,6 +288,14 @@ export const DOC_ALIASES: Record<string, string[]> = {
     'loading screen',
     'blocking loader',
   ],
+  'components/maz-lightbox': [
+    'lightbox',
+    'image viewer',
+    'fullscreen image',
+    'open image in full screen',
+    'photo viewer',
+    'zoom on image',
+  ],
   'components/maz-gallery': [
     'gallery',
     'image grid',

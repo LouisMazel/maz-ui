@@ -115,6 +115,7 @@ Before writing logic by hand (a state shared between components, a timer, an eve
 ### Motion
 
 - Reuse the motion of maz-ui instead of hand-written animations: `MazRollingText` (a number or a text that changes), `MazDrawnIcon` (a check that draws itself), `MazMorphIcon` (a two-state icon), `useOriginTransition` (a panel that opens from its button), `useSlidingIndicator` (an active pill), `<TransitionGroup name="maz-list">`, the `press`, `focus-ring` and `border-draw` utilities.
+- Overlays: a `MazDialog` opens from its trigger (`#trigger` slot or `origin`, `useDialog().confirm({ origin: event })`), `MazDialogConfirm` takes a `confirmation` text to type for destructive actions, `toast.promise()` for an async action, `MazLightbox` (or `v-fullscreen-img`) to view images.
 - Durations and easings from the theme (`var(--maz-motion-normal)`, `var(--maz-easing-out)`, `duration-(--duration-normal)`), only `transform` and `opacity`, `useReducedMotion().shouldReduceMotion` in JS animations.
 
 ### Icons
