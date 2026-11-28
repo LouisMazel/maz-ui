@@ -89,7 +89,7 @@ const extraItems = [
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazRadio et MazSwitch" hint="Le point du radio rebondit en place. Le pouce de l'interrupteur s'étire quand tu le presses (maintiens le clic) puis rebondit en place.">
+    <ModernisationDemo title="MazRadio et MazSwitch" hint="Le point du radio rebondit en place. Le pouce de l'interrupteur est une capsule qui glisse en douceur, avec un léger étirement quand tu le presses (maintiens le clic).">
       <div class="flex flex-wrap items-center gap-10">
         <div class="flex gap-6">
           <MazRadio v-model="radioValue" name="pr3-radio" value="a" label="Option A" />
