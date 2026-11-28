@@ -22,7 +22,7 @@ const {
   totalPages,
   loading,
   animated = true,
-  fixedSlots = false,
+  fixedSlots = true,
 } = defineProps<MazPaginationProps>()
 
 const emits = defineEmits<
@@ -81,8 +81,8 @@ export interface MazPaginationProps {
   loading?: boolean
   /**
    * Always renders the same number of buttons (the pages around the current one, the first and the last, and the ellipses),
-   * so the pagination does not change its width when the current page moves
-   * @default false
+   * so the pagination does not change its width when the current page moves. `false` gives back the variable number of buttons
+   * @default true
    */
   fixedSlots?: boolean
   /**
@@ -306,6 +306,18 @@ const pillRounded = computed(() => buttonsPropsMerged.value.fab
   ? 'maz:rounded-full'
   : ROUNDED_SIZE_CLASS[buttonsPropsMerged.value.roundedSize ?? globalRoundedSize.value])
 
+const CONTROL_HEIGHT_FALLBACK: Record<MazSize, string> = { xl: '4rem', lg: '3.5rem', md: '3rem', sm: '2.5rem', xs: '2rem', mini: '1.5rem' }
+
+/** The ellipsis takes the size of a round button, so the width of the pagination does not depend on the number of ellipses */
+const ellipsisStyle = computed(() => {
+  if (!buttonsPropsMerged.value.fab)
+    return undefined
+
+  const height = `var(--maz-control-height-${size.value}, ${CONTROL_HEIGHT_FALLBACK[size.value]})`
+
+  return { width: height, height }
+})
+
 function setPageNumber(page: number) {
   if (page === modelValue)
     return
@@ -413,7 +425,7 @@ function setPageNumber(page: number) {
         </template>
 
         <template v-else-if="page.divider">
-          <div v-bind="buttonsPropsMerged" class="flex-center flex p-2">
+          <div class="m-pagination__ellipsis maz:flex maz:flex-center maz:p-2" :style="ellipsisStyle" aria-hidden="true">
             <MazEllipsisHorizontal />
           </div>
         </template>

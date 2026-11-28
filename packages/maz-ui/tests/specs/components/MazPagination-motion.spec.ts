@@ -51,7 +51,7 @@ describe('given a pagination with fixedSlots', () => {
 describe('given a pagination without fixedSlots', () => {
   describe('when it is on the first page', () => {
     it('then it keeps the compact list of pages', () => {
-      const wrapper = mountPagination()
+      const wrapper = mountPagination({ fixedSlots: false })
 
       expect(wrapper.findAll('button[aria-label^="Page"]')).toHaveLength(3)
     })
@@ -78,7 +78,7 @@ describe('given a pagination', () => {
 
   describe('when the numbers are displayed', () => {
     it('then each number is a rolling text', () => {
-      const wrapper = mountPagination()
+      const wrapper = mountPagination({ fixedSlots: false })
 
       expect(wrapper.findAllComponents({ name: 'MazRollingText' }).length).toBe(3)
     })
@@ -127,6 +127,22 @@ describe('given a pagination', () => {
 
       expect(tabbable).toHaveLength(1)
       expect(tabbable[0].attributes('aria-current')).toBe('page')
+    })
+  })
+})
+
+describe('given a pagination with the default fixed slots', () => {
+  describe('when the current page moves along the pages', () => {
+    it('then it renders the same number of items on every page', async () => {
+      const wrapper = mountPagination()
+      const counts = new Set<number>()
+
+      for (const page of [1, 2, 4, 5, 10, 17, 19, 20]) {
+        await wrapper.setProps({ modelValue: page })
+        counts.add(wrapper.findAll('li').length)
+      }
+
+      expect([...counts]).toHaveLength(1)
     })
   })
 })
