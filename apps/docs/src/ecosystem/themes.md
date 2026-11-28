@@ -418,9 +418,9 @@ Three presets imitate the look of a native desktop app, for Tauri, Electron or a
 
 | Preset | Look | Specifics |
 | --- | --- | --- |
-| `macos` | macOS 26: SF Pro at `13px`, white blocks on a light gray window, translucent sidebars and toolbars | `primary` follows the system accent color, the labels and separators follow the system through [`systemColors`](#system-colors) (WebKit). `secondary`, `accent` and `info` are the system purple, pink and teal |
+| `macos` | macOS 26: SF Pro at `13px`, neutral grays measured on the system, translucent sidebars and toolbars | The labels and separators follow the system through [`systemColors`](#system-colors) (Safari and WebKit views). Browsers never expose the user accent: override `primary` if your app reads it natively. `secondary`, `accent` and `info` are the system purple, pink and teal |
 | `windows` | Windows 11, Fluent 2: Segoe UI Variable at `14px`, Mica window, 4px controls and 8px cards | Acrylic `glass`. The user accent is not exposed to the web: override `primary` if your app reads it natively. `secondary`, `accent` and `info` are the Fluent purple, magenta and teal |
-| `linux` | GNOME, libadwaita: Adwaita Sans at `14px`, white cards, 6px controls and 12px cards | Opaque `glass` (GNOME draws no blurred material). Override `primary` if your app reads the desktop accent. `secondary`, `accent` and `info` are the Adwaita purple, pink and teal |
+| `linux` | GNOME, libadwaita 1.8: Adwaita Sans at `11pt` (`14.67px`), white cards, 9px controls and 12px cards | Opaque `glass` (GNOME draws no blurred material). Override `primary` if your app reads the desktop accent. `secondary`, `accent` and `info` are the Adwaita purple, pink and teal |
 
 ```typescript
 import { linux, macos, windows } from '@maz-ui/themes/presets'
@@ -428,15 +428,15 @@ import { linux, macos, windows } from '@maz-ui/themes/presets'
 
 Each of them also sets the [`typography`](#typography) of the preset on the scale of its system: the `text-display`, `text-title-1`...`text-caption` utilities follow the text styles of macOS, the Fluent type ramp and the libadwaita style classes, so headings and body text look native without any class change.
 
-| Utility | `macos` | `windows` | `linux` (at `14px`) |
+| Utility | `macos` | `windows` | `linux` (at `14.67px`) |
 | --- | --- | --- | --- |
-| `text-display` | 34px, bold | 68px, semibold | 42px, light |
-| `text-title-1` | 26px, bold | 28px, semibold | 25px, extra bold |
-| `text-title-2` | 22px, bold | 20px, semibold | 19px, extra bold |
-| `text-title-3` | 17px, semibold | 18px, semibold | 19px, bold |
-| `text-title-4` | 13px, semibold | 14px, semibold | 17px, bold |
-| `text-body` | 13px | 14px | 14px |
-| `text-body-sm`, `text-caption` | 12px, 11px | 12px | 11.5px |
+| `text-display` | 26px | 68px, semibold | 44px, light |
+| `text-title-1` | 22px | 28px, semibold | 26.5px, extra bold |
+| `text-title-2` | 17px | 20px, semibold | 20px, extra bold |
+| `text-title-3` | 15px | 18px, semibold | 20px, bold |
+| `text-title-4` | 13px, bold | 14px, semibold | 17.3px, bold |
+| `text-body` | 13px | 14px | 14.67px |
+| `text-body-sm`, `text-caption` | 12px, 11px | 12px | 12px |
 
 Pick the preset from the platform of the user. In a browser, `navigator.userAgentData?.platform` is the modern source (Chromium), `navigator.platform` the fallback. In Tauri or Electron, prefer the OS reported by the shell (`@tauri-apps/plugin-os`, `process.platform`): it is reliable and available before the first render.
 
@@ -661,14 +661,15 @@ Each token has a precise role. Pick the values with that role in mind, not from 
 | `divider` | Borders and separators. |
 | `overlay` | Backdrop behind dialogs and drawers. |
 | `shadow` | Tint of the shadows. |
+| `neutral`, `neutral-foreground` | Soft grey of the neutral components and its text (`color="neutral"`). Optional in a custom preset. See [Neutral color](#neutral-color). |
 
-Every brand and state color (`primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast`) has a `-foreground` color: the text or icon color to put on top of it (`bg-primary text-primary-foreground`). The token and its `-foreground` are chosen as a pair, in light and dark modes.
+Every brand and state color (`primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast`, `neutral`) has a `-foreground` color: the text or icon color to put on top of it (`bg-primary text-primary-foreground`). The token and its `-foreground` are chosen as a pair, in light and dark modes.
 
 For a discreet background, never make `secondary` pale. Use:
 
 - `surface`, `container` or `muted` (for example `bg-muted/10`)
 - the light steps of a color (`bg-primary-50`, `bg-secondary-100`)
-- `MazBtn` with the `pastel` or `outlined` props (`<MazBtn color="secondary" pastel>`)
+- `MazBtn` with `variant="soft"` or `variant="outline"` (`<MazBtn color="secondary" variant="soft">`)
 
 ```html
 <div class="rounded-lg bg-container p-4 text-foreground">
@@ -682,13 +683,13 @@ Check the contrast of every color you set, in light **and** dark modes (WCAG 2):
 
 - Text (a token and its `-foreground`, `foreground` on `surface`, `muted` on `surface`): at least 4.5:1 (AA).
 - UI elements and large text: at least 3:1.
-- A brand color used as text or border (`text-primary`, `MazBtn outlined`, focus ring) must reach 3:1 against `surface` and `container`. This is why `primary` and `secondary` cannot be pale: lower their lightness in light mode, raise it in dark mode.
+- A brand color used as text or border (`text-primary`, `MazBtn variant="outline"`, focus ring) must reach 3:1 against `surface` and `container`. This is why `primary` and `secondary` cannot be pale: lower their lightness in light mode, raise it in dark mode.
 
 The `review_code` tool of the [MCP server](/guide/ai-agents) warns when the `primary` or `secondary` of a `definePreset` is under 3:1 against its surface.
 
 #### Common mistakes
 
-- **A pale `secondary`** (close to `surface`), copied from the shadcn/ui convention where `secondary` is a muted surface: `MazBtn color="secondary" outlined` becomes invisible. Keep it a strong brand color.
+- **A pale `secondary`** (close to `surface`), copied from the shadcn/ui convention where `secondary` is a muted surface: `MazBtn color="secondary" variant="outline"` becomes invisible. Keep it a strong brand color.
 - **Hard-coded colors** (`#3b82f6`, `rgb(...)`, `bg-[#fff]`): they ignore the preset and the dark mode. Use theme colors.
 - **`dark:` overrides of theme colors** (`bg-surface dark:bg-gray-900`): theme colors already resolve per mode with `light-dark()`. `bg-surface` is enough.
 - **The default Tailwind palette** (`bg-blue-500`, `text-gray-600`, `bg-white`): use `bg-primary`, `text-muted`, `bg-surface`.
@@ -894,7 +895,7 @@ A system keyword is only understood by some browsers: a browser that does not kn
 
 ### System colors
 
-`systemColors` binds a color role to a system color of the platform: the accent color chosen by the user, the label and separator colors... Each keyword is emitted under `@supports (color: <keyword>)` after the colors, so it replaces the color of its role only where the browser supports it. Everywhere else, the color of `colors` stays: it is the fallback, keep it a good color.
+`systemColors` binds a color role to a system color of the platform: the label and separator colors, the canvas... Each keyword is emitted under `@supports (color: <keyword>)` after the colors, so it replaces the color of its role only where the browser supports it. Everywhere else, the color of `colors` stays: it is the fallback, keep it a good color.
 
 ```typescript
 const myMacPreset = definePreset({
@@ -902,9 +903,7 @@ const myMacPreset = definePreset({
   overrides: {
     name: 'my-mac-app',
     systemColors: {
-      primary: '-apple-system-control-accent',
       foreground: '-apple-system-label',
-      muted: '-apple-system-secondary-label',
       divider: '-apple-system-separator',
     },
   },
@@ -914,17 +913,18 @@ const myMacPreset = definePreset({
 The generated CSS:
 
 ```css
-@supports (color: -apple-system-control-accent) {
+@supports (color: -apple-system-label) {
   :root {
-    --maz-primary: -apple-system-control-accent;
+    --maz-foreground: -apple-system-label;
   }
 }
 ```
 
 - The keys are the color roles of [`colors`](#colors) (`primary`, `foreground`, `divider`...). Values are system keywords: `AccentColor`, `AccentColorText`, `Canvas`, `CanvasText`, `LinkText`... or the WebKit keywords of macOS.
 - A system color follows the color scheme by itself: one keyword serves the light and the dark mode.
-- The `macos` preset uses it for the accent, the labels and the separators. The steps of `primary` (`primary-300`...) and its `-foreground` are computed from the system color, so they follow it.
-- Check the contrast of the fallback colors: the system color is chosen by the user and cannot be checked ahead.
+- The `macos` preset uses it for the labels and the separators. The `-apple-system-*` keywords only exist in Safari and the WebKit views (Tauri on macOS): every other browser keeps the fallback colors.
+- Browsers never expose the accent color of the user: `AccentColor` and `-apple-system-control-accent` return a fixed blue (fingerprinting protection), also in Tauri. Read the accent natively and override `primary` instead.
+- A system color can be translucent (`-apple-system-label` is black or white at 85%): colors mixed from it keep some transparency.
 
 ### Glass material
 
@@ -1000,6 +1000,168 @@ const calmTheme = definePreset({
 
 ```html
 <div role="button" tabindex="0" class="cursor-interactive">Custom control</div>
+```
+
+### Density
+
+By default, a `md` control is 42px tall (3rem at the 14px base). The `compact` density makes every control about 14% shorter (36px for `md`), with tighter paddings and menu rows. Nothing changes until you enable it.
+
+|                   | `default` | `compact` |
+| ----------------- | --------- | --------- |
+| `mini`            | 21px      | 18px      |
+| `xs`              | 28px      | 24px      |
+| `sm`              | 35px      | 30px      |
+| `md`              | 42px      | 36px      |
+| `lg`              | 49px      | 42px      |
+| `xl`              | 56px      | 48px      |
+
+Heights are given at the 14px base of the `maz-ui` preset. It applies to `MazBtn`, the fields (`MazInput`, `MazSelect`, `MazInputPhoneNumber`, `MazInputPrice`, `MazInputNumber`, `MazInputSecret`, `MazInputAutocomplete`, `MazDatePicker`, `MazTextarea`, `MazInputTags`, `MazInputCode`), `MazSegmented`, `MazTabsBar`, `MazBtnGroup`, `MazPagination`, `MazDropdown`, `MazListItem` and the options of `MazSelect`. The `size` prop still works: compact scales each size.
+
+Enable it with the `density` option of `MazUi`, or `mazUi.density` with Nuxt (the server renders the class: no layout shift):
+
+```ts
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  density: 'compact',
+})
+```
+
+The option adds the class `m-density-compact` to `<html>`. The class works on any block, to make only a part of a page compact (`m-density-default` resets a block inside it):
+
+```vue
+<template>
+  <form class="m-density-compact">
+    <MazInput label="Name" />
+    <MazBtn>Save</MazBtn>
+  </form>
+</template>
+```
+
+<ComponentDemo title="Default and compact">
+  <div class="maz:flex maz:flex-wrap maz:items-start maz:gap-8">
+    <div class="m-density-default maz:flex maz:flex-col maz:gap-3">
+      <MazBtn>Default</MazBtn>
+      <MazInput label="Name" />
+    </div>
+    <div class="m-density-compact maz:flex maz:flex-col maz:gap-3">
+      <MazBtn>Compact</MazBtn>
+      <MazInput label="Name" />
+    </div>
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <div class="m-density-default flex flex-col gap-3">
+    <MazBtn>Default</MazBtn>
+    <MazInput label="Name" />
+  </div>
+  <div class="m-density-compact flex flex-col gap-3">
+    <MazBtn>Compact</MazBtn>
+    <MazInput label="Name" />
+  </div>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+The heights, paddings and menu spacing are CSS variables, to use in your own controls (`min-height: var(--maz-control-height-md)`):
+
+| Variable | Default | Compact |
+| -------- | ------- | ------- |
+| `--maz-control-height-{mini,xs,sm,md,lg,xl}` | `1.5rem`, `2rem`, `2.5rem`, `3rem`, `3.5rem`, `4rem` | 6/7 of the default (`lg` is `3rem`) |
+| `--maz-control-padding-x-{mini,xs,sm,md,lg,xl}` | `0.25rem` to `2rem` | about 25% tighter |
+| `--maz-menu-padding`, `--maz-menu-gap`, `--maz-menu-item-padding-y` | `0.5rem`, `0.25rem`, `0.5rem` | `0.25rem`, `0.125rem`, `0.3125rem` |
+| `--maz-density-ratio` | `1` | `0.8571` (multiplier of the other paddings) |
+
+::: info Compact becomes the default in v6
+`density: 'default'` will keep the current heights.
+:::
+
+### Focus ring
+
+By default each component draws its own focus ring: 2px, offset 2px, in its color. `components.focusRing` sets one ring for all of them, distinct from `primary`: a color per mode, a width and an offset. It applies to `MazBtn` and `MazSwitch`.
+
+```typescript
+const ringTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'ring',
+    components: {
+      focusRing: {
+        color: { light: '#000000', dark: '#ffffff' },
+        width: '2px',
+        offset: '2px',
+      },
+    },
+  },
+})
+```
+
+The variables are `--maz-focus-ring-color`, `--maz-focus-ring-width` and `--maz-focus-ring-offset`: use them in your own controls (`outline: var(--maz-focus-ring-width, 2px) solid var(--maz-focus-ring-color, var(--maz-primary))`). The `windows` preset uses the Fluent ring, black in light mode and white in dark mode.
+
+### Focus border of the fields
+
+A boxed field has no ring on focus: its border takes the color of the field and the width `foundation['focus-border-width']` (`2px` by default, WCAG 2.4.13), with a smooth transition (instant with reduced motion). The width above `border-width` is an inner shadow, so nothing moves. A field without border (`bordered="false"`) and the other controls (checkbox, switch, slider, buttons...) keep the focus ring.
+
+```ts
+foundation: {
+  'border-width': '1px',
+  'focus-border-width': '3px',
+}
+```
+
+For your own fields, put `field-focus` on the box (see [Utilities](../guide/tailwind.md#focus-and-press)).
+
+### Shadow per color mode
+
+A black shadow is barely visible on a dark background. Each entry of `scales.shadow` is a string, or `{ light, dark }` for a shadow per mode: a stronger shadow, or a light hairline, in dark mode. The bundled presets already do it: their shadows are deeper in dark mode, and the large ones get a hairline light edge.
+
+```typescript
+const shadowTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'shadow',
+    scales: {
+      shadow: {
+        elevation: {
+          light: '0 8px 24px rgb(0 0 0 / 0.15)',
+          dark: '0 8px 24px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.08)',
+        },
+      },
+    },
+  },
+})
+```
+
+The light value goes in `:root`, the dark one under the dark class (`darkModeStrategy: 'class'`) or in a `prefers-color-scheme: dark` query (`'media'`). A plain string is emitted once and costs nothing more. The `macos`, `windows` and `linux` presets use it for `elevation`.
+
+### Neutral color
+
+`neutral` is the soft grey of the neutral components, with `neutral-foreground` as its text: the push button of the native platforms, a secondary action, a badge or a chip that should not draw the eye. `surface` and `container` do not fit: the grey of a push button is neither the page nor the card.
+
+Every component with a `color` prop accepts it. As a large fill (button, badge, alert, avatar, selected segment), it takes the `neutral` background with a `divider` border. As a small accent (checkbox, radio, switch, progress, spinner, tab indicator, link), a light grey would disappear: the component uses `neutral-foreground` instead, like the graphite accent of macOS.
+
+Every built-in preset sets both colors, in light and dark mode: the measured grey of the push buttons on `macos`, `windows` and `linux`, a grey a bit darker than the page (light) or lighter than the cards (dark) on the others. A custom preset without them gets a grey mixed from `surface` and `foreground`.
+
+```vue
+<MazBtn color="neutral">Cancel</MazBtn>
+<MazBadge color="neutral">Draft</MazBadge>
+```
+
+```typescript
+const buttonTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'buttons',
+    colors: {
+      light: { neutral: '#ebebeb' },
+      dark: { neutral: '#3a3a3a' },
+    },
+  },
+})
 ```
 
 ## useTheme Composable API
@@ -1302,19 +1464,48 @@ Single-value design tokens. Set via `foundation.<key>` on the preset.
 | --- | --- | --- | --- |
 | `base-font-size` | `--maz-base-font-size` | `14px` | Anchors `rem` for the whole app. Apply on `html { font-size: var(--maz-base-font-size) }`. |
 | `border-width` | `--maz-border-width` | `1px` | Default border for components and the global `*::before/::after` reset. |
+| `focus-border-width` | `--maz-focus-border-width` | `2px` | Border width of a boxed field (`MazInput`, `MazSelect`, `MazTextarea`, `MazInputCode`, `MazMarkdownEditor`, `MazDropzone`...) with the focus. Only the color and this width change on focus: the part above `border-width` is drawn inside the box, the layout does not move. See [Focus border of the fields](#focus-border-of-the-fields). |
 | `space` | `--maz-space` | `0.25rem` | Base step for every Tailwind spacing utility (`p-1`, `gap-2`, …). |
 | `font-family` | `--maz-font-family` | preset-specific | Sans / body font stack. Bridged to Tailwind `--font-sans`. |
 | `font-mono-stack` | `--maz-font-mono-stack` | `ui-monospace, …` | Monospace stack — `MazInputCode`, `<code>`, `<kbd>`. Bridged to `--font-mono`. |
 | `font-display-stack` | `--maz-font-display-stack` | same as `font-family` | Display / heading stack. Bridged to `--font-display`. |
-| `motion-fast` | `--maz-motion-fast` | `100ms` | Bridged to Tailwind `--duration-fast`. |
-| `motion-normal` | `--maz-motion-normal` | `200ms` | Default transition duration (`--default-transition-duration`). |
-| `motion-slow` | `--maz-motion-slow` | `300ms` | Bridged to `--duration-slow`. |
-| `easing-out` | `--maz-easing-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Default easing (`--ease-out`, also `--default-transition-timing-function`). |
-| `easing-in` | `--maz-easing-in` | `cubic-bezier(0.4, 0, 1, 1)` | Bridged to `--ease-in`. |
-| `easing-in-out` | `--maz-easing-in-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Bridged to `--ease-in-out`. |
+| `motion-instant` | `--maz-motion-instant` | `80ms` | Press, hover, toggle. Bridged to `--duration-instant`. |
+| `motion-fast` | `--maz-motion-fast` | `100ms` | Tooltip, menu, switch. Bridged to `--duration-fast`. |
+| `motion-normal` | `--maz-motion-normal` | `200ms` | Popover, dialog, drawer. Default transition duration (`--default-transition-duration`). |
+| `motion-slow` | `--maz-motion-slow` | `300ms` | Moves of a layout, bottom sheet, toast. Bridged to `--duration-slow`. |
+| `motion-slower` | `--maz-motion-slower` | `450ms` | Large transitions and reveals. Bridged to `--duration-slower`. |
+| `motion-scale` | `--maz-motion-scale` | `1` | Multiplies every duration: `0.5` is twice faster. Near `0` under reduced motion (see [Reduced motion](#reduced-motion)). |
+| `easing-out` | `--maz-easing-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Entrances. Default easing (`--ease-out`, also `--default-transition-timing-function`). |
+| `easing-in` | `--maz-easing-in` | `cubic-bezier(0.4, 0, 1, 1)` | Exits. Bridged to `--ease-in`. |
+| `easing-in-out` | `--maz-easing-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | Moves on the screen. Bridged to `--ease-in-out`. |
+| `easing-spring` | `--maz-easing-spring` | `linear(...)` spring, no bounce | Sliding indicators, sheets. Bridged to `--ease-spring`. |
+| `easing-bounce` | `--maz-easing-bounce` | `linear(...)` spring, small bounce | Check marks, press feedback, badges. Bridged to `--ease-bounce`. |
 | `disabled-opacity` | `--maz-disabled-opacity` | `0.5` | Applied to disabled buttons / inputs. |
 | `disabled-cursor` | `--maz-disabled-cursor` | `not-allowed` | Cursor for disabled interactive elements. |
 | `interactive-cursor` | `--maz-interactive-cursor` | `pointer` | Cursor of the interactive controls, `default` on the platform presets. Utility `cursor-interactive` (see [Interactive cursor](#interactive-cursor)). |
+
+Each preset has its own rhythm: `windows` is short and never bounces, `pristine` and `ocean` are softer. Build your own springs with `springEasing`:
+
+```ts
+import { definePreset } from '@maz-ui/themes'
+import { mazUi } from '@maz-ui/themes/presets'
+import { springEasing } from '@maz-ui/themes/utils'
+
+export const myPreset = definePreset({
+  base: mazUi,
+  overrides: {
+    foundation: {
+      'easing-bounce': springEasing({ stiffness: 300, damping: 18 }),
+    },
+  },
+})
+```
+
+`springEasing` simulates a spring and returns a CSS `linear()` easing. A lower `damping` bounces more, a higher `stiffness` is faster.
+
+#### Reduced motion
+
+When the user asks for reduced motion (`prefers-reduced-motion: reduce`), the components of maz-ui stop their animations and `motion-scale` is near `0`. The animations of your app are not touched. Force it either way, or apply it to the whole page, with the `motion` option of the [MazUi plugin](./../guide/vue.md#motion) or of the [Nuxt module](./nuxt.md#motion).
 
 > **Why `font-mono-stack` / `font-display-stack` / `motion-*`?** Under Tailwind v4 `prefix(maz)`, the bridge LHS gets prefixed (`--font-mono` → `--maz-font-mono`), so a same-named source token would self-cycle. The `-stack` and `motion-` suffixes break the collision.
 
@@ -1346,6 +1537,8 @@ Defined per mode under `colors.light` / `colors.dark`. Each base color also gets
 | `muted` | `--maz-muted` | `--maz-muted-50..900` | Muted / secondary text. |
 | `overlay` | `--maz-overlay` | `--maz-overlay-50..900` | Backdrop / dialog scrim. |
 | `shadow` | `--maz-shadow` | `--maz-shadow-50..900` | Tint used by Tailwind `shadow-*` utilities (via `--color-elevation`). |
+| `neutral` | `--maz-neutral` | `--maz-neutral-50..950` | Soft grey of the neutral components (`color="neutral"`). |
+| `neutral-foreground` | `--maz-neutral-foreground` | — | Text on `neutral`. |
 
 ### Scales
 
@@ -1354,7 +1547,7 @@ Multi-step scales under `scales.<key>`.
 | Preset key | CSS variables | Tailwind utility |
 | --- | --- | --- |
 | `rounded.xs..3xl` | `--maz-rounded-xs..3xl` | `rounded-{key}` (bridged to `--radius-{key}`) |
-| `shadow.{sm, md, lg, xl, elevation}` | `--maz-shadow-style-{key}` | `shadow-{key}` (bridged to `--shadow-{key}`) |
+| `shadow.{sm, md, lg, xl, elevation}` | `--maz-shadow-style-{key}` | `shadow-{key}` (bridged to `--shadow-{key}`). A string, or `{ light, dark }` for a [shadow per mode](#shadow-per-color-mode). |
 | `color` (`'relative'` \| `'perceptual'`) | `--maz-color-<role>-50..950`, `--color-<role>-50..950` | `bg-primary-300`... (see [Color scales](#color-scales)) |
 
 > Same naming-collision avoidance as foundation: `rounded.*` (instead of `radius.*`) and `shadow-style-*` (instead of plain `shadow-*`) keep the bridge cycle-free under `prefix(maz)`.
@@ -1372,6 +1565,9 @@ Per-component knobs under `components.<key>`. All optional — omit to fall back
 | `glass.border.light` / `.dark` | `--maz-glass-border` (per mode) | Hairline edge of the material. Defaults to the divider color. Bridged to `--color-glass-border` (`border-glass`). |
 | `glass.blur` | `--maz-glass-blur` | Backdrop blur. Defaults to `24px`. |
 | `glass.saturate` | `--maz-glass-saturate` | Backdrop saturation. Defaults to `1.4`. |
+| `focusRing.color.light` / `.dark` | `--maz-focus-ring-color` (per mode) | Color of the focus ring of `MazBtn` and `MazSwitch`. Without it, the ring takes the color of the control. See [Focus ring](#focus-ring). |
+| `focusRing.width` | `--maz-focus-ring-width` | Thickness of the focus ring. Defaults to `2px`. |
+| `focusRing.offset` | `--maz-focus-ring-offset` | Gap between the control and its ring. Defaults to `2px`. |
 | `dialog.max-width` | `--maz-dialog-max-width` | Max-width of `MazDialog` on tablet and up. Defaults to `38rem` (`33.25rem` on `ocean`). Overridable via the `max-width` prop. |
 | `dialog.min-width` | `--maz-dialog-min-width` | Min-width of `MazDialog` on tablet and up. Defaults to `32rem` (`28rem` on `ocean`). Overridable via the `min-width` prop. |
 
