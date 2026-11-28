@@ -6,9 +6,9 @@ import { useInjectStrict } from '../composables/useInjectStrict.ts'
 const props = defineProps({
   tab: { type: Number, required: true },
 })
-const transitionName = ref<string>('maz-tab-transition')
+const isForward = ref(true)
 
-const { currentTab, idPrefix } = useInjectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab, idPrefix, orientation } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
 const panelId = computed(() => idPrefix
   ? `${idPrefix.value}-panel-${props.tab}`
@@ -21,12 +21,21 @@ watch(
   () => currentTab.value,
   (value, oldValue) => {
     if (typeof value === 'number' && typeof oldValue === 'number') {
-      const newTabIsBigger = oldValue < value
-      transitionName.value = newTabIsBigger ? 'maz-tab-transition' : 'maz-tab-reverse-transition'
+      isForward.value = oldValue < value
     }
   },
   { immediate: true },
 )
+
+const transitionName = computed(() => {
+  const base = orientation?.value === 'vertical'
+    ? 'maz-tab-vertical'
+    : 'maz-tab'
+
+  return isForward.value
+    ? `${base}-transition`
+    : `${base}-reverse-transition`
+})
 
 const itemTabNumber = computed(() => props.tab - 1)
 
@@ -49,42 +58,63 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 </template>
 
 <style scoped>
+/*
+ * The panel comes from the side of its tab with a short offset and a fade, and leaves toward the other side
+ * (`--maz-tab-offset` changes the distance). The sides follow the reading direction.
+ */
 .m-tabs-content-item {
+  --maz-tab-dx: 1;
+  --maz-tab-offset: 2.5rem;
+
   flex: 1 0 auto;
-  transition: all 500ms cubic-bezier(0.25, 0.8, 0.5, 1);
+
+  &:dir(rtl) {
+    --maz-tab-dx: -1;
+  }
 }
 
-/** Tabs Transisiton */
-
-.maz-tab-transition-leave-to {
-  position: absolute !important;
-  transform: translate(-100%, 0);
+.maz-tab-transition-enter-active,
+.maz-tab-reverse-transition-enter-active,
+.maz-tab-vertical-transition-enter-active,
+.maz-tab-vertical-reverse-transition-enter-active {
+  transition:
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out),
+    opacity calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-out, ease-out);
 }
 
-.maz-tab-transition-leave,
-.maz-tab-transition-leave-active {
+.maz-tab-transition-leave-active,
+.maz-tab-reverse-transition-leave-active,
+.maz-tab-vertical-transition-leave-active,
+.maz-tab-vertical-reverse-transition-leave-active {
   position: absolute !important;
   inset-block-start: 0;
+  inset-inline: 0;
+  transition:
+    transform calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in-out, ease-in-out),
+    opacity calc(var(--maz-motion-normal, 200ms) * var(--maz-motion-scale, 1)) var(--maz-easing-in-out, ease-in-out);
 }
 
-.maz-tab-transition-enter-from {
-  transform: translate(100%, 0);
-}
-
-.maz-tab-reverse-transition-leave,
+.maz-tab-transition-enter-from,
 .maz-tab-reverse-transition-leave-to {
-  inset-block-start: 0;
-  position: absolute !important;
-  transform: translate(100%, 0);
+  opacity: 0;
+  transform: translate(calc(var(--maz-tab-offset) * var(--maz-tab-dx)), 0);
 }
 
-.maz-tab-reverse-transition-leave,
-.maz-tab-reverse-transition-leave-active {
-  position: absolute !important;
-  inset-block-start: 0;
-}
-
+.maz-tab-transition-leave-to,
 .maz-tab-reverse-transition-enter-from {
-  transform: translate(-100%, 0);
+  opacity: 0;
+  transform: translate(calc(var(--maz-tab-offset) * var(--maz-tab-dx) * -1), 0);
+}
+
+.maz-tab-vertical-transition-enter-from,
+.maz-tab-vertical-reverse-transition-leave-to {
+  opacity: 0;
+  transform: translate(0, var(--maz-tab-offset));
+}
+
+.maz-tab-vertical-transition-leave-to,
+.maz-tab-vertical-reverse-transition-enter-from {
+  opacity: 0;
+  transform: translate(0, calc(var(--maz-tab-offset) * -1));
 }
 </style>

@@ -58,7 +58,7 @@ const props: MazPaginationProps = {
 
 ## Colors
 
-The page buttons use the neutral `container` color by default (see `color`) and the active page uses `activeColor` (`contrast` by default).
+The page buttons use the neutral `container` color by default (see `color`) and the active page uses `activeColor` (`contrast` by default, `neutral` is also available).
 
 <div class="vp-raw maz:flex maz:flex-col maz:gap-4">
   <MazPagination :total-pages="10" v-model="currentPage" active-color="primary" />
@@ -68,11 +68,28 @@ The page buttons use the neutral `container` color by default (see `color`) and 
   <MazPagination :total-pages="10" v-model="currentPage" active-color="destructive" />
 </div>
 
+## Motion
+
+- A pill slides from a page to the current one, and the numbers that change roll.
+- The pagination always renders the same number of buttons (the first and the last page, two ellipses and the pages around the current one), so it keeps its width on every page. `:fixed-slots="false"` gives back the variable number of buttons.
+- `:animated="false"` removes the pill and the rolling numbers. Reduced motion does too.
+- The pill replaces the background of the current page when the buttons are solid. The `soft`, `ghost` and `pastel` buttons keep their own background.
+- Only one button is in the tab sequence. <kbd>←</kbd> / <kbd>→</kbd> (reversed in RTL), <kbd>Home</kbd> and <kbd>End</kbd> move between the enabled buttons, the focus ring shows on keyboard focus only.
+
+<div class="vp-raw maz:flex maz:flex-col maz:gap-4">
+  <MazPagination :total-pages="40" v-model="fixedPage" :page-range="1" />
+</div>
+
+```html
+<MazPagination v-model="page" :total-pages="40" :fixed-slots="false" />
+```
+
 <script lang="ts" setup>
   import type { MazPaginationProps } from 'maz-ui/components'
   import { ref } from 'vue'
 
   const currentPage = ref(1)
+  const fixedPage = ref(1)
 
   const props: Props = {
     totalPages: 10,
