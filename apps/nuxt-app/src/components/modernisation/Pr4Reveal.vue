@@ -106,6 +106,12 @@ useReveal({ root: staticRoot, selector: '[data-maz-reveal]' })
         >
           mode scroll, {{ effect }}
         </div>
+        <p id="pr4-scroll-short" v-reveal="{ effect: 'slide-up', mode: 'scroll' }" class="text-center">
+          Une ligne courte
+        </p>
+        <div id="pr4-scroll-tall" v-reveal="{ effect: 'scale', mode: 'scroll' }" class="flex h-[70vh] items-center justify-center rounded-lg bg-primary p-8 text-primary-foreground">
+          Un grand bloc
+        </div>
       </div>
     </ModernisationDemo>
 

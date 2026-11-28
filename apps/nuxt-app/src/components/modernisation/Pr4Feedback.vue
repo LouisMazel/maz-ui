@@ -33,11 +33,33 @@ const skeletonLoaded = ref(false)
 
 const showLoader = ref(false)
 
+const LOADER_DURATION = 3
+
+const loaderSeconds = ref(LOADER_DURATION)
+let loaderTimer: ReturnType<typeof setInterval> | undefined
+
+function closeLoader() {
+  clearInterval(loaderTimer)
+  showLoader.value = false
+}
+
 function openLoader() {
+  loaderSeconds.value = LOADER_DURATION
   showLoader.value = true
-  setTimeout(() => {
-    showLoader.value = false
-  }, 2200)
+  clearInterval(loaderTimer)
+  loaderTimer = setInterval(() => {
+    loaderSeconds.value--
+    if (loaderSeconds.value <= 0)
+      closeLoader()
+  }, 1000)
+}
+
+onBeforeUnmount(() => clearInterval(loaderTimer))
+
+const imageKey = ref(0)
+
+function reloadImages() {
+  imageKey.value++
 }
 
 const scrollTarget = ref<HTMLElement>()
@@ -75,24 +97,23 @@ const scrollTarget = ref<HTMLElement>()
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazBtnClipboard et MazBtnScroll" hint="Copier : l'icône se transforme en coche. Avec roll-label, le texte roule aussi vers « Copié » sans bouger le bouton. Le bouton de retour en haut est en bas à droite de la page : sa flèche décolle au clic.">
+    <ModernisationDemo title="MazBtnClipboard et MazBtnScroll" hint="Copier : l'icône se transforme en coche. Avec roll-label, le texte roule aussi vers « Copié » sans bouger le bouton. Dans la zone qui défile, fais défiler vers le bas : le bouton de retour en haut apparaît en bas à droite et reste en place. Au clic, sa flèche décolle et la zone remonte.">
       <div class="flex flex-wrap items-center gap-4">
         <MazBtnClipboard value="usr_8f3a21c9" />
         <MazBtnClipboard value="usr_8f3a21c9" roll-label copy-label="Copier" copied-label="Copié" />
         <MazBtnClipboard value="npm i maz-ui" prompt="$" variant="solid" color="primary" />
       </div>
-      <div
-        ref="scrollTarget"
-        class="relative mt-4 h-40 overflow-y-auto rounded-lg border border-divider p-3"
-      >
-        <p v-for="line in 20" :key="line" class="m-0 py-1 text-muted">
-          Ligne {{ line }}
-        </p>
+      <div class="relative mt-4 rounded-lg border border-divider">
+        <div ref="scrollTarget" class="h-40 overflow-y-auto p-3">
+          <p v-for="line in 30" :key="line" class="m-0 py-1 text-muted">
+            Ligne {{ line }}
+          </p>
+        </div>
         <MazBtnScroll :target="scrollTarget" :threshold="80" position="bottom-end" offset="1rem" size="sm" />
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazAlert" hint="L'icône de la couleur se dessine à l'apparition. Avec dismissible, la croix replie l'alerte (hauteur et opacité) au lieu de la faire disparaître d'un coup. Relance-la avec le bouton.">
+    <ModernisationDemo title="MazAlert" hint="L'icône de la couleur se dessine à l'apparition. Avec dismissible, la croix de la première alerte la replie (hauteur et opacité) au lieu de la faire disparaître d'un coup. Le bouton « Afficher l'alerte » la déplie à nouveau.">
       <div class="flex flex-col gap-3">
         <MazAlert
           v-model:open="alertOpen"
@@ -208,29 +229,47 @@ const scrollTarget = ref<HTMLElement>()
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazLazyImg et MazFullscreenLoader" hint="Avec placeholder=blur, un bloc teinté remplace le spinner puis l'image passe du flou au net en fondu. Le loader plein écran apparaît et disparaît en fondu (2 secondes).">
+    <ModernisationDemo title="MazLazyImg et MazFullscreenLoader" hint="MazLazyImg : clique sur « Recharger les images ». Celle de gauche (placeholder=blur) montre un bloc teinté puis passe du flou au net en fondu. Celle de droite garde le spinner d'origine. MazFullscreenLoader : « Afficher le loader » recouvre la page d'un voile flouté avec un spinner. Il se ferme en fondu tout seul au bout de 3 secondes, ou avec le bouton Fermer.">
       <div class="flex flex-wrap items-start gap-4">
-        <MazLazyImg
-          src="https://placedog.net/400/260?id=21"
-          placeholder="blur"
-          alt="Un chien"
-          class="w-64 overflow-hidden rounded-lg"
-          block
-        />
-        <MazLazyImg
-          src="https://placedog.net/400/260?id=22"
-          alt="Un autre chien"
-          class="w-64 overflow-hidden rounded-lg"
-          block
-        />
-        <MazBtn @click="openLoader">
+        <div class="flex flex-col gap-1">
+          <MazLazyImg
+            :key="`blur-${imageKey}`"
+            :src="`https://placedog.net/400/260?id=21&t=${imageKey}`"
+            placeholder="blur"
+            alt="Un chien"
+            class="w-64 overflow-hidden rounded-lg"
+            block
+          />
+          <span class="text-sm text-muted">placeholder="blur"</span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <MazLazyImg
+            :key="`default-${imageKey}`"
+            :src="`https://placedog.net/400/260?id=22&t=${imageKey}`"
+            alt="Un autre chien"
+            class="w-64 overflow-hidden rounded-lg"
+            block
+          />
+          <span class="text-sm text-muted">par défaut (spinner)</span>
+        </div>
+      </div>
+      <div class="mt-4 flex flex-wrap items-center gap-4">
+        <MazBtn size="sm" variant="outline" @click="reloadImages">
+          Recharger les images
+        </MazBtn>
+        <MazBtn size="sm" @click="openLoader">
           Afficher le loader
         </MazBtn>
       </div>
       <MazFullscreenLoader v-if="showLoader">
-        <p class="text-lg">
-          Chargement...
-        </p>
+        <div class="flex flex-col items-center gap-3">
+          <p class="m-0 text-lg">
+            Chargement, fermeture dans {{ loaderSeconds }} s
+          </p>
+          <MazBtn size="sm" @click="closeLoader">
+            Fermer
+          </MazBtn>
+        </div>
       </MazFullscreenLoader>
     </ModernisationDemo>
   </ModernisationSection>

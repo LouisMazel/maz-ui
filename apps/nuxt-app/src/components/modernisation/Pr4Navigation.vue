@@ -3,6 +3,13 @@ const tab = ref(1)
 const stretchTab = ref(1)
 const tabItems = ['Aperçu', 'Activité', 'Paramètres', 'Facturation']
 
+const activityEntries = [
+  { title: 'Commande 1042', subtitle: 'Il y a 2 heures', text: 'Expédiée à Lyon.' },
+  { title: 'Commande 1041', subtitle: 'Hier', text: 'En préparation.' },
+  { title: 'Commande 1040', subtitle: 'Il y a 3 jours', text: 'Livrée.' },
+]
+const invoices = ['Janvier 2026', 'Février 2026', 'Mars 2026', 'Avril 2026', 'Mai 2026', 'Juin 2026', 'Juillet 2026']
+
 const page = ref(1)
 const fixedPage = ref(1)
 const softPage = ref(3)
@@ -51,8 +58,43 @@ const listActive = ref('b')
         <MazTabs v-model="tab">
           <MazTabsBar :items="tabItems" />
           <MazTabsContent>
-            <MazTabsContentItem v-for="(label, index) in tabItems" :key="label" :tab="index + 1" class="py-4">
-              Contenu de l'onglet « {{ label }} »
+            <MazTabsContentItem :tab="1" class="py-4">
+              <MazCard title="Aperçu">
+                <p class="text-muted">
+                  Trois indicateurs du mois : 128 visites, 14 commandes et 3 retours.
+                </p>
+              </MazCard>
+            </MazTabsContentItem>
+            <MazTabsContentItem :tab="2" class="py-4">
+              <div class="flex flex-col gap-3">
+                <MazCard v-for="entry in activityEntries" :key="entry.title" :title="entry.title">
+                  <div class="flex items-center justify-between gap-4">
+                    <span class="text-muted">{{ entry.subtitle }} : {{ entry.text }}</span>
+                    <MazBtn size="sm" color="secondary">
+                      Voir
+                    </MazBtn>
+                  </div>
+                </MazCard>
+              </div>
+            </MazTabsContentItem>
+            <MazTabsContentItem :tab="3" class="py-4">
+              <MazCard title="Paramètres">
+                <div class="flex flex-col gap-4">
+                  <MazInput label="Nom du projet" model-value="Refonte du site" />
+                  <MazInput label="Adresse e-mail" model-value="equipe@exemple.fr" />
+                  <div class="flex justify-end gap-2">
+                    <MazBtn color="transparent">
+                      Annuler
+                    </MazBtn>
+                    <MazBtn>Enregistrer</MazBtn>
+                  </div>
+                </div>
+              </MazCard>
+            </MazTabsContentItem>
+            <MazTabsContentItem :tab="4" class="py-4">
+              <MazList title="Factures">
+                <MazListItem v-for="invoice in invoices" :key="invoice" :title="invoice" clickable />
+              </MazList>
             </MazTabsContentItem>
           </MazTabsContent>
         </MazTabs>
@@ -68,10 +110,10 @@ const listActive = ref('b')
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazPagination" hint="Une pill glisse vers la page courante et les numéros qui changent roulent. La première pagination garde sa taille d'origine (le nombre de boutons varie). La deuxième, avec fixed-slots, a toujours le même nombre de cases : elle ne saute pas. Au clavier, un seul bouton est dans l'ordre de tabulation, les flèches, Début et Fin déplacent le focus.">
+    <ModernisationDemo title="MazPagination" hint="Une pill glisse vers la page courante et les numéros qui changent roulent. La première pagination a toujours le même nombre de cases : sa largeur ne change jamais. La deuxième (fixed-slots à false) garde l'ancien comportement, où le nombre de boutons varie. Au clavier, un seul bouton est dans l'ordre de tabulation, les flèches, Début et Fin déplacent le focus.">
       <div class="flex flex-col gap-6">
         <MazPagination v-model="page" :total-pages="30" />
-        <MazPagination v-model="fixedPage" :total-pages="30" fixed-slots />
+        <MazPagination v-model="fixedPage" :total-pages="30" :fixed-slots="false" />
         <MazPagination v-model="softPage" :total-pages="12" :button-props="{ variant: 'soft' }" active-color="primary" />
         <p class="text-body-sm text-muted">
           La troisième utilise des boutons « soft » : sans pill, le fond de la page courante reste celui du bouton.

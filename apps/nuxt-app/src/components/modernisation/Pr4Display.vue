@@ -198,7 +198,7 @@ const expanded = ref(false)
       </div>
     </ModernisationDemo>
 
-    <ModernisationDemo title="MazCarousel" hint="Compteur qui roule, barre de progression et glisser à la souris avec un peu d'inertie : lance les cartes et lâche. Un clic qui termine un glissement n'ouvre rien.">
+    <ModernisationDemo title="MazCarousel" hint="Compteur qui roule, petite pastille de progression (la barre de défilement native est masquée) et glisser à la souris avec un peu d'inertie : lance les cartes et lâche. Un clic qui termine un glissement n'ouvre rien.">
       <MazCarousel title="Mes cartes" counter progress drag-scroll>
         <MazCard v-for="item in carouselItems" :key="item" class="min-w-56">
           <template #content-title>
