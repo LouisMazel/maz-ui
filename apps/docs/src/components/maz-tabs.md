@@ -184,6 +184,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
   import { ref } from 'vue'
 
   const currentTab = ref(2)
+  const stretchTab = ref(1)
 
   const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
@@ -194,7 +195,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
   const tabs2: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab', 'Fourth Tab', 'Fifth Tab', 'Sixth Tab', 'Seventh Tab', 'Eighth Tab', 'Ninth Tab', 'Tenth Tab']
 
   const badgeTabs: MazTabsBarItem[] = [
-    { label: 'Inbox', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+    { label: 'Inbox', badge: { content: 12, color: 'primary', variant: 'soft', roundedSize: 'full' } },
     { label: 'Mentions', badge: { content: true, color: 'destructive' } },
     { label: 'Archive' },
   ]
@@ -204,6 +205,12 @@ You can choose the name of this query parameter with the props `query-param` `@d
     { label: 'Messages', indicator: { content: 128, max: 99, color: 'destructive' } },
     { label: 'Updates', indicator: { color: 'success', pulse: true, label: 'New updates' } },
     { label: 'Settings' },
+  ]
+
+  const sectionTabs: MazTabsBarItem[] = [
+    { label: 'General' },
+    { label: 'Notifications', badge: { content: 12, color: 'primary', variant: 'soft', roundedSize: 'full' } },
+    { label: 'Security', badge: { content: true, color: 'destructive' } },
   ]
 
   const standaloneModel = ref('weekly')
@@ -232,7 +239,7 @@ Each item can show a **badge** next to its label, or an **indicator** on the top
 import type { MazTabsBarItem } from 'maz-ui/components'
 
 const badgeTabs: MazTabsBarItem[] = [
-  { label: 'Inbox', badge: { content: 12, color: 'primary', pastel: true, roundedSize: 'full' } },
+  { label: 'Inbox', badge: { content: 12, color: 'primary', variant: 'soft', roundedSize: 'full' } },
   { label: 'Mentions', badge: { content: true, color: 'destructive' } },
   { label: 'Archive' },
 ]
@@ -296,6 +303,54 @@ The active tab is highlighted by the indicator. Use the `color` prop (`MazColor`
 </template>
 ```
 
+## Vertical orientation
+
+Set `orientation="vertical"` on `MazTabs` for a column of sections with the content beside it, like a settings page. The bar stacks the tabs, the content takes the remaining width, and the arrows <kbd>↑</kbd> / <kbd>↓</kbd> move between tabs. A `badge` per tab gives a counter that sticks to the end of the row.
+
+<div class="vp-raw">
+<MazTabs orientation="vertical" color="primary" size="sm">
+  <MazTabsBar :items="sectionTabs" aria-label="Settings sections" />
+
+  <MazTabsContent>
+    <MazTabsContentItem :tab="1" class="maz:px-4">
+      General settings
+    </MazTabsContentItem>
+    <MazTabsContentItem :tab="2" class="maz:px-4">
+      Notifications
+    </MazTabsContentItem>
+    <MazTabsContentItem :tab="3" class="maz:px-4">
+      Security
+    </MazTabsContentItem>
+  </MazTabsContent>
+</MazTabs>
+</div>
+
+```vue
+<script lang="ts" setup>
+import type { MazTabsBarItem } from 'maz-ui/components'
+
+const sectionTabs: MazTabsBarItem[] = [
+  { label: 'General' },
+  { label: 'Notifications', badge: { content: 12, color: 'primary', variant: 'soft', roundedSize: 'full' } },
+  { label: 'Security', badge: { content: true, color: 'destructive' } },
+]
+</script>
+
+<template>
+  <MazTabs orientation="vertical" color="primary" size="sm">
+    <MazTabsBar :items="sectionTabs" aria-label="Settings sections" />
+
+    <MazTabsContent>
+      <MazTabsContentItem :tab="1" class="px-4">General settings</MazTabsContentItem>
+      <MazTabsContentItem :tab="2" class="px-4">Notifications</MazTabsContentItem>
+      <MazTabsContentItem :tab="3" class="px-4">Security</MazTabsContentItem>
+    </MazTabsContent>
+  </MazTabs>
+</template>
+```
+
+`MazTabsBar` also takes `orientation` on its own, for a standalone side navigation (without `MazTabs`, with its own `v-model`). Do not build a column of `MazBtn` with `role="tablist"` by hand: it loses the roving tabindex, the arrow keys and the active indicator.
+
 ## Standalone usage
 
 `MazTabsBar` can be used on its own, without `MazTabs`, as an independent switcher with its own `v-model`.
@@ -352,6 +407,42 @@ const items = ['First', 'Second', 'Third']
 </template>
 ```
 
+## Motion
+
+- The indicator slides to the selected tab. Set `stretch` on `MazTabsBar` to make it stretch toward the new tab on its way, like a drop of ink. `:animated="false"` removes the slide.
+- The content of `MazTabsContentItem` comes from the side of its tab, with a short offset and a fade (in the reading direction, so it follows RTL). Going back reverses the sides.
+- The first placement is never animated. The speed follows the `--maz-motion-*` tokens and reduced motion removes the slides.
+
+<div class="vp-raw">
+  <MazTabs v-model="stretchTab">
+    <MazTabsBar :items="['Overview', 'Activity', 'Settings']" stretch />
+
+    <MazTabsContent>
+      <MazTabsContentItem :tab="1" class="maz:py-4">
+        Overview
+      </MazTabsContentItem>
+      <MazTabsContentItem :tab="2" class="maz:py-4">
+        Activity
+      </MazTabsContentItem>
+      <MazTabsContentItem :tab="3" class="maz:py-4">
+        Settings
+      </MazTabsContentItem>
+    </MazTabsContent>
+  </MazTabs>
+</div>
+
+```html
+<MazTabs v-model="tab">
+  <MazTabsBar :items="['Overview', 'Activity', 'Settings']" stretch />
+
+  <MazTabsContent>
+    <MazTabsContentItem :tab="1">Overview</MazTabsContentItem>
+    <MazTabsContentItem :tab="2">Activity</MazTabsContentItem>
+    <MazTabsContentItem :tab="3">Settings</MazTabsContentItem>
+  </MazTabsContent>
+</MazTabs>
+```
+
 ## Types
 
 ```ts
@@ -396,7 +487,8 @@ type MazTabsBarItem<Value extends string | number = string | number>
 The tabs follow the [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/):
 
 - `MazTabsBar` is a `tablist` (pass an `aria-label` to name it), each item is a `tab` with `aria-selected`, linked to its `MazTabsContentItem` (`tabpanel`) through `aria-controls` / `aria-labelledby`.
-- **Keyboard**: only the selected tab is in the tab sequence, <kbd>←</kbd> / <kbd>→</kbd> select the previous / next tab (reversed in RTL), <kbd>Home</kbd> / <kbd>End</kbd> the first / last one. Disabled tabs are skipped.
+- **Keyboard**: only the selected tab is in the tab sequence, <kbd>←</kbd> / <kbd>→</kbd> select the previous / next tab (reversed in RTL), <kbd>↑</kbd> / <kbd>↓</kbd> when the orientation is `vertical`, <kbd>Home</kbd> / <kbd>End</kbd> the first / last one. Disabled tabs are skipped.
+- The tab list exposes `aria-orientation` (`horizontal` or `vertical`).
 
 ## Props & Events emitted
 

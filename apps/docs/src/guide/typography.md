@@ -139,6 +139,7 @@ The level is visual, the tag stays semantic: `<h2 class="text-title-3">` is fine
 ```html
 <article class="rich-text" v-html="html" />
 
+<article class="rich-text rich-text-xs">...</article>
 <article class="rich-text rich-text-sm">...</article>
 <article class="rich-text rich-text-lg">...</article>
 ```
@@ -157,7 +158,7 @@ The level is visual, the tag stays semantic: `<h2 class="text-title-3">` is fine
 | `code`, `kbd`, `pre code` | `code` |
 | `figcaption` | `caption` |
 
-- `rich-text-sm` and `rich-text-lg` set `--maz-rich-text-scale` (`0.875` and `1.125`), which multiplies every size above. Set the variable yourself for another scale.
+- `rich-text-xs`, `rich-text-sm` and `rich-text-lg` set `--maz-rich-text-scale` (`0.8125`, `0.875` and `1.125`), which multiplies every size above. Set the variable yourself for another scale.
 - `--maz-rich-text-size` forces the base size, `--maz-rich-text-max-width` changes the `70ch` reading width (`max-w-none` removes it).
 - `not-rich-text` on an element opts it and its children out (an embedded component, a custom block).
 - `MazCodeHighlight` blocks keep their own style inside.
@@ -194,7 +195,7 @@ The components follow the scale, so a preset change restyles them:
 - Hints and helper texts of the form fields: `text-body-sm`.
 - Tabs, list items, toasts and segmented controls: `type-label`.
 - `MazSidebarGroup` label: `text-overline`.
-- `MazMarkdownEditor` preview: `rich-text`.
+- `MazMarkdown` and the `MazMarkdownEditor` preview: `rich-text`.
 
 ## Best practices
 

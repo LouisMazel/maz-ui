@@ -2,8 +2,9 @@
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { FuzzySearchKey, FuzzySearchSegment } from '@maz-ui/utils/helpers/fuzzySearch'
 import type { HTMLAttributes } from 'vue'
+import type { MazIconLike } from '../composables/useMazIconProps.ts'
 import type { MazPopoverProps } from './MazPopover.vue'
-import type { MazColor, MazSize } from './types.ts'
+import type { MazColor, MazRoundedSize, MazSize } from './types.ts'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { createFuzzySearch, highlightMatches } from '@maz-ui/utils/helpers/fuzzySearch'
 import { computed, onBeforeUnmount, ref, shallowRef, useTemplateRef, watch } from 'vue'
@@ -117,6 +118,72 @@ export interface MazInputAutocompleteProps<T> {
    * @default 'primary'
    */
   color?: MazColor
+  /**
+   * Accept a typed value that is not in the suggestions: instead of "no results", the list offers to use the text as it is
+   * (`Enter` or a click), signalled by the `free-entry` event. `selected` stays `undefined` for such a value
+   * @default false
+   */
+  freeEntry?: boolean
+  /** Hint displayed in place of the label (like `MazInput`) */
+  hint?: string
+  /** Text displayed under the input */
+  assistiveText?: string
+  /**
+   * Display the input in error state
+   * @default false
+   */
+  error?: boolean
+  /**
+   * Display the input in success state
+   * @default false
+   */
+  success?: boolean
+  /**
+   * Display the input in warning state
+   * @default false
+   */
+  warning?: boolean
+  /**
+   * Icon on the inline-start edge of the input, accepts a bare value or a full `MazIconProps` object
+   */
+  startIcon?: MazIconLike
+  /**
+   * Icon on the inline-end edge of the input, accepts a bare value or a full `MazIconProps` object
+   */
+  endIcon?: MazIconLike
+  /**
+   * The border radius of the input
+   * @values none, sm, md, lg, xl, full
+   * @default 'md'
+   */
+  roundedSize?: MazRoundedSize
+  /**
+   * Mark the input as required
+   * @default false
+   */
+  required?: boolean
+  /**
+   * Make the input read-only
+   * @default false
+   */
+  readonly?: boolean
+  /** The name of the input, for the form submission */
+  name?: string
+  /** The `inputmode` attribute of the input */
+  inputmode?: HTMLAttributes['inputmode']
+  /** CSS classes of the wrapper of the input */
+  inputClasses?: string
+  /**
+   * Draw the border of the input
+   * @default true
+   */
+  bordered?: boolean
+  /**
+   * Draw the border of the input
+   * @deprecated Use `bordered` instead
+   * @default true
+   */
+  border?: boolean
   /** Disable the component */
   disabled?: boolean
   /** The input will be displayed in full width */
@@ -141,7 +208,7 @@ export interface MazInputAutocompleteProps<T> {
   /**
    * The translations of the component
    * @type {Partial<MazUiTranslationsNestedSchema['inputAutocomplete']>}
-   * @default { noResults: 'No results', loading: 'Loading...', error: 'An error occurred, try again', results: 'Results: {count}' }
+   * @default { noResults: 'No results', loading: 'Loading...', error: 'An error occurred, try again', results: 'Results: {count}', freeEntry: 'Use "{query}"' }
    */
   translations?: Partial<MazUiTranslationsNestedSchema['inputAutocomplete']>
 }
@@ -165,6 +232,9 @@ const {
   limit,
   highlight = true,
   openOnFocus = false,
+  freeEntry = false,
+  border = true,
+  bordered = undefined,
   label,
   topLabel,
   placeholder,
@@ -182,26 +252,31 @@ const emits = defineEmits<{
    * A suggestion is chosen
    * @property {T} item - the suggestion
    */
-  select: [item: T]
+  'select': [item: T]
   /** The list is opened */
-  open: []
+  'open': []
   /** The list is closed */
-  close: []
+  'close': []
   /**
    * The input is focused
    * @property {Event} event - the event
    */
-  focus: [event: Event]
+  'focus': [event: Event]
   /**
    * The input is blurred
    * @property {Event} event - the event
    */
-  blur: [event: Event]
+  'blur': [event: Event]
   /**
    * The `source` failed
    * @property {unknown} error - the error thrown
    */
-  error: [error: unknown]
+  'error': [error: unknown]
+  /**
+   * A value that is not in the suggestions is validated (`free-entry` mode)
+   * @property {string} value - the text typed
+   */
+  'free-entry': [value: string]
 }>()
 
 const slots = defineSlots<{
@@ -227,6 +302,11 @@ const slots = defineSlots<{
    * @binding {function} retry - call the `source` again
    */
   'error'?: (props: { error: unknown, retry: () => void }) => unknown
+  /**
+   * The row offering to use the typed text (`free-entry` mode)
+   * @binding {string} query - the text typed
+   */
+  'free-entry'?: (props: { query: string }) => unknown
   /** Content above the suggestions */
   'header'?: () => unknown
   /** Content below the suggestions */
@@ -246,9 +326,10 @@ const messages = computed(() => ({
   loading: translations?.loading || t('inputAutocomplete.loading'),
   error: translations?.error || t('inputAutocomplete.error'),
   results: translations?.results || t('inputAutocomplete.results'),
+  freeEntry: translations?.freeEntry || t('inputAutocomplete.freeEntry'),
 } satisfies MazUiTranslationsNestedSchema['inputAutocomplete']))
 
-const { size } = useGlobalConfig<{ size: MazSize }>('MazInputAutocomplete', { size: 'md' })
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazInputAutocomplete', { size: 'md', roundedSize: 'md' })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazInputAutocomplete',
@@ -449,6 +530,18 @@ const activeIndex = ref(-1)
 const hasItems = computed(() => listOptions.value.length > 0)
 const isPanelVisible = computed(() => isOpen.value && isQueryLongEnough.value)
 
+const showFreeEntry = computed(() => {
+  if (!freeEntry || !isPanelVisible.value || isLoading.value || sourceError.value) {
+    return false
+  }
+
+  const text = query.value.trim().toLowerCase()
+
+  return !!text && !listOptions.value.some(option => option.label.trim().toLowerCase() === text)
+})
+
+const freeEntryLabel = computed(() => messages.value.freeEntry.replace('{query}', query.value.trim()))
+
 const status = computed(() => {
   if (!isPanelVisible.value) {
     return ''
@@ -462,9 +555,17 @@ const status = computed(() => {
     return messages.value.error
   }
 
-  return hasItems.value
-    ? messages.value.results.replace('{count}', String(listOptions.value.length))
-    : messages.value.noResults
+  if (showFreeEntry.value && !hasItems.value) {
+    return freeEntryLabel.value
+  }
+
+  if (!hasItems.value) {
+    return messages.value.noResults
+  }
+
+  const results = messages.value.results.replace('{count}', String(listOptions.value.length))
+
+  return showFreeEntry.value ? `${results}. ${freeEntryLabel.value}` : results
 })
 
 function openList() {
@@ -532,6 +633,11 @@ function selectOption(option: ListOption) {
   emits('select', option.item)
 }
 
+function selectFreeEntry() {
+  closeList()
+  emits('free-entry', query.value.trim())
+}
+
 function setActiveIndex(index: number) {
   activeIndex.value = index
   listboxRef.value?.scrollToIndex(index)
@@ -577,6 +683,12 @@ function onKeydown(event: KeyboardEvent) {
       break
     }
     case 'Enter': {
+      if (showFreeEntry.value && activeIndex.value === -1) {
+        event.preventDefault()
+        selectFreeEntry()
+        break
+      }
+
       const option = isPanelVisible.value
         ? listOptions.value[Math.max(activeIndex.value, 0)]
         : undefined
@@ -665,6 +777,20 @@ defineExpose({
         :placeholder
         :disabled
         :loading="isLoading"
+        :hint
+        :assistive-text
+        :error
+        :success
+        :warning
+        :start-icon
+        :end-icon
+        :rounded-size
+        :required
+        :readonly
+        :name
+        :inputmode
+        :input-classes
+        :bordered="bordered ?? border"
         autocomplete="off"
         role="combobox"
         aria-autocomplete="list"
@@ -692,8 +818,7 @@ defineExpose({
       :style="{
         'maxHeight': `${maxListHeight}px`,
         'minWidth': listMinWidth ? `${listMinWidth}px` : undefined,
-        '--selected-bg-color': 'color-mix(in srgb, var(--selected-text-color) 12%, transparent)',
-        '--selected-text-color': `light-dark(oklch(from var(--maz-${color}) min(l, calc(0.25 + c * 2)) c h), oklch(from var(--maz-${color}) max(l, calc(0.92 - c * 2)) c h))`,
+        '--selected-text-color': color === 'neutral' ? 'var(--maz-neutral-foreground)' : `light-dark(oklch(from var(--maz-${color}) min(l, calc(0.25 + c * 2)) c h), oklch(from var(--maz-${color}) max(l, calc(0.92 - c * 2)) c h))`,
       }"
       @mousedown.prevent
     >
@@ -712,7 +837,7 @@ defineExpose({
       </div>
 
       <SelectListbox
-        v-else
+        v-else-if="hasItems || !showFreeEntry"
         :id="listboxId"
         ref="listbox"
         :options="listOptions"
@@ -753,6 +878,19 @@ defineExpose({
         </template>
       </SelectListbox>
 
+      <button
+        v-if="showFreeEntry"
+        type="button"
+        tabindex="-1"
+        aria-hidden="true"
+        class="m-input-autocomplete-free-entry"
+        @click="selectFreeEntry"
+      >
+        <slot name="free-entry" :query="query.trim()">
+          {{ freeEntryLabel }}
+        </slot>
+      </button>
+
       <slot name="footer" />
     </div>
   </MazPopover>
@@ -771,7 +909,17 @@ defineExpose({
   @apply maz:p-4 maz:text-center maz:text-muted;
 }
 
+.m-input-autocomplete-free-entry {
+  @apply maz:mx-2 maz:mb-2 maz:cursor-interactive maz:rounded-md maz:border-none maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:text-foreground maz:transition-colors maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
+
+  transition-duration: calc(var(--maz-motion-fast, 150ms) * var(--maz-motion-scale, 1));
+}
+
 .m-input-autocomplete-mark {
   @apply maz:bg-transparent maz:font-semibold maz:text-inherit;
+
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 </style>

@@ -72,10 +72,57 @@ You can remove the buttons with the props `hide-buttons`
   </template>
 </ComponentDemo>
 
+## Prefix and suffix
+
+`prefix` and `suffix` display a unit before or after the number, inside the field. Use the `prefix` and `suffix` slots for rich content (an icon, a badge).
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-wrap maz:gap-4">
+    <MazInputNumber v-model="price" prefix="$" :min="0" :step="5" />
+    <MazInputNumber v-model="duration" suffix="min" :min="0" />
+  </div>
+
+<template #code>
+
+```html
+<MazInputNumber v-model="price" prefix="$" :min="0" :step="5" />
+<MazInputNumber v-model="duration" suffix="min" :min="0" />
+```
+
+  </template>
+</ComponentDemo>
+
+## Label above the field
+
+Set `topLabel: true` in the [global defaults](../guide/global-defaults.md) to show the `label` above the field instead of floating inside it. A `top-label` set on an instance still wins.
+
+## Motion
+
+- A click on <kbd>+</kbd> or <kbd>-</kbd> slides the value a little in the direction of the change. Typing and the arrow keys never animate.
+- Hold a button: after a short delay the value repeats and the repeat speeds up. It stops at `min` and `max`.
+- At a limit the button fades out.
+
+Set `:animated="false"` to turn the slide and the hold to repeat off. Reduced motion is respected.
+
+<ComponentDemo>
+  <MazInputNumber v-model="holdValue" :min="0" :max="200" />
+
+<template #code>
+
+```html
+<MazInputNumber v-model="value" :min="0" :max="200" />
+```
+
+  </template>
+</ComponentDemo>
+
 <!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../../.vitepress/generated-docs/maz-input-number.doc.md-->
 
 <script lang="ts" setup>
   import { ref } from 'vue'
   const numberValue = ref()
+  const price = ref(20)
+  const duration = ref(30)
+  const holdValue = ref(10)
 </script>

@@ -65,6 +65,28 @@ const { setColorMode } = useTheme()
   </template>
 </ComponentDemo>
 
+## Free color
+
+`color` also takes any CSS color for the halo, which is purely decorative. See [Free colors](./../guide/free-colors.md) for the accepted values and how the rest is derived.
+
+<ComponentDemo>
+  <MazCardSpotlight color="#8b5cf6" style="width: 500px; max-width: 100%;">
+    Hover this card, the halo is violet.
+  </MazCardSpotlight>
+
+<template #code>
+
+```vue
+<template>
+  <MazCardSpotlight color="#8b5cf6">
+    Hover this card, the halo is violet.
+  </MazCardSpotlight>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Effect with multiple cards and with secondary color
 
 <ComponentDemo>
@@ -112,6 +134,22 @@ const { setColorMode } = useTheme()
 
   </template>
 </ComponentDemo>
+
+## Elevation and border draw
+
+`elevation` takes `0` to `3` (`true` keeps the default shadow). `border-draw` draws the border from the point where the pointer enters.
+
+```html
+<MazCardSpotlight :elevation="2" border-draw>
+  Content
+</MazCardSpotlight>
+```
+
+## Motion
+
+- The halo follows the pointer over the card, with a mouse, a pen or a finger that presses the card, and fades out when it leaves.
+- The listener is on the card itself, not on the window.
+- Reduced motion turns the halo off.
 
 <!--@include: ./../../.vitepress/generated-docs/maz-card-spotlight.doc.md-->
 

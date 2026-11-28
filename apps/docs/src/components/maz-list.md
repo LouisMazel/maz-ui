@@ -15,8 +15,9 @@ description: MazList and MazListItem group rows in a rounded block, like the set
 | -------------- | ---------------------------------------------------------------------------------------------- |
 | `MazList`      | The block: optional title above, footer below, hairline separators between the rows           |
 | `MazListItem`  | A row: static, clickable, link or collapsible, with slots for icons, values and actions       |
+| `MazListSeparator` | A titled separator that groups the rows under it                                         |
 
-Both are exported by `maz-ui/components/MazList` and `maz-ui/components/MazListItem`.
+They are exported by `maz-ui/components/MazList`, `maz-ui/components/MazListItem` and `maz-ui/components/MazListSeparator`.
 
 ## Basic usage
 
@@ -337,7 +338,7 @@ The default slot receives `{ open }`: render heavy content (a table, a chart, a 
         <MazAvatar :caption="project.name" color="auto" size="1.75rem" no-elevation />
       </template>
       <template #end>
-        <MazBadge size="sm" :color="project.status === 'On track' ? 'success' : 'warning'" pastel>
+        <MazBadge size="sm" :color="project.status === 'On track' ? 'success' : 'warning'" variant="soft">
           {{ project.status }}
         </MazBadge>
       </template>
@@ -411,7 +412,7 @@ const projects = reactive([
       </template>
 
       <template #end>
-        <MazBadge size="sm" :color="project.status === 'On track' ? 'success' : 'warning'" pastel>
+        <MazBadge size="sm" :color="project.status === 'On track' ? 'success' : 'warning'" variant="soft">
           {{ project.status }}
         </MazBadge>
       </template>
@@ -511,6 +512,54 @@ Titles and subtitles are truncated on one line. Add `wrap` to let them run on se
   </MazList>
 </template>
 ```
+
+## Content under a row
+
+A row that is not collapsible can show a wide content zone under its title: put it in the default slot. It is always visible, full width, and outside of the clickable area, so it can hold a form, a preview or a long description. `content-class` replaces its padding.
+
+```vue
+<template>
+  <MazList>
+    <MazListItem title="Webhook" subtitle="Called on every release">
+      <MazInput v-model="url" label="URL" block />
+    </MazListItem>
+  </MazList>
+</template>
+```
+
+## Groups with a title
+
+Put a `MazListSeparator` between the rows to start a group. Its `title` (or its default slot) is displayed above the rows that follow, with a hairline above it.
+
+<ComponentDemo>
+  <MazList>
+    <MazListItem title="Profile" />
+    <MazListItem title="Security" />
+    <MazListSeparator title="Workspace" />
+    <MazListItem title="Members" />
+    <MazListItem title="Billing" />
+  </MazList>
+
+  <template #code>
+
+```vue
+<template>
+  <MazList>
+    <MazListItem title="Profile" />
+    <MazListItem title="Security" />
+    <MazListSeparator title="Workspace" />
+    <MazListItem title="Members" />
+    <MazListItem title="Billing" />
+  </MazList>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Empty list
+
+A list without rows renders only its header and footer (no empty block). A `header-end` slot without a `title` still gets its header row, for a list titled by the page around it.
 
 ## Scrolling items
 
@@ -782,6 +831,12 @@ import MazListItem from 'maz-ui/components/MazListItem'
   </template>
 </ComponentDemo>
 
+## Motion
+
+- A clickable row gets a soft background on hover and a 2 px ring on keyboard focus only.
+- The chevron of a collapsible row turns with the speed and the easing of the theme (`--maz-motion-*`), and the content opens with the same speed. Reduced motion makes both instant.
+- `MazListItem` is the menu row of the library: `MazDropdown` uses the same hover and focus look.
+
 ## Accessibility
 
 - The list is rendered with `role="list"` and each row with `role="listitem"`, so screen readers announce the count of rows.
@@ -849,3 +904,7 @@ const team = [
 ## MazListItem
 
 <!--@include: ./../../.vitepress/generated-docs/maz-list-item.doc.md-->
+
+## MazListSeparator
+
+<!--@include: ./../../.vitepress/generated-docs/maz-list-separator.doc.md-->
