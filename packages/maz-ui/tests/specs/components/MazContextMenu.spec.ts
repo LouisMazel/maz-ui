@@ -73,6 +73,29 @@ describe('given a MazContextMenu', () => {
       expect(menuItems(wrapper)).toHaveLength(4)
     })
 
+    it('then a click outside of the menu closes it', async () => {
+      const wrapper = mountMenu()
+
+      await open(wrapper)
+      document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0 }))
+      await flushPromises()
+
+      expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([false])
+      wrapper.unmount()
+    })
+
+    it('then a second right click in the zone keeps it open', async () => {
+      const wrapper = mountMenu()
+
+      await open(wrapper, 10, 20)
+      wrapper.find('.zone').element.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 2 }))
+      await open(wrapper, 200, 120)
+
+      expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([true])
+      expect(menuItems(wrapper)).toHaveLength(4)
+      wrapper.unmount()
+    })
+
     it('then the panel has the menu role and a name', async () => {
       const wrapper = mountMenu()
 

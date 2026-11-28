@@ -135,6 +135,7 @@ const labelId = computed(() => `${instanceId.value}-label`)
 
 const point = shallowRef({ x: 0, y: 0 })
 const menuRef = useTemplateRef<HTMLElement>('menu')
+const zoneRef = useTemplateRef<HTMLElement>('zone')
 const hoveredItem = shallowRef<HTMLElement>()
 
 let returnFocusTo: HTMLElement | null = null
@@ -173,7 +174,9 @@ function openAt(x: number, y: number, byKeyboard = false) {
 
   cancelPress()
 
-  returnFocusTo = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  if (!isOpen.value)
+    returnFocusTo = document.activeElement instanceof HTMLElement ? document.activeElement : null
+
   point.value = { x, y }
 
   if (byKeyboard)
@@ -206,9 +209,10 @@ function onContextmenu(event: MouseEvent) {
 
   event.preventDefault()
 
-  if (isOpen.value || Date.now() - openedByKeyboardAt < NATIVE_EVENT_GRACE)
+  if (Date.now() - openedByKeyboardAt < NATIVE_EVENT_GRACE)
     return
 
+  // A new right click moves the open menu to the new point
   openAt(event.clientX, event.clientY)
 }
 
@@ -320,7 +324,28 @@ watch(isOpen, (value) => {
     returnFocusTo.focus({ preventScroll: true })
 })
 
-onBeforeUnmount(cancelPress)
+// The popover is manual: the click outside of the menu is handled here
+function onDocumentPointerdown(event: PointerEvent) {
+  const target = event.target as Node
+
+  // A right click in the zone moves the menu (`contextmenu`), anywhere else it closes it
+  if (menuRef.value?.contains(target) || (event.button === 2 && zoneRef.value?.contains(target)))
+    return
+
+  close()
+}
+
+watch(isOpen, (open) => {
+  if (open)
+    document.addEventListener('pointerdown', onDocumentPointerdown, true)
+  else
+    document.removeEventListener('pointerdown', onDocumentPointerdown, true)
+})
+
+onBeforeUnmount(() => {
+  cancelPress()
+  document.removeEventListener('pointerdown', onDocumentPointerdown, true)
+})
 
 defineExpose({
   /**
@@ -337,6 +362,7 @@ defineExpose({
 <template>
   <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
   <div
+    ref="zone"
     class="m-context-menu"
     :class="{ '--long-press': longPress && !disabled }"
     @contextmenu="onContextmenu"
