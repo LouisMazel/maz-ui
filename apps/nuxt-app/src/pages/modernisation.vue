@@ -39,6 +39,7 @@ useHead({
       <ModernisationPullRequest :number="2" title="Overlays" description="Everything that opens: popovers, dialogs, drawers, bottom sheets, toasts, tooltips and the lightbox, growing from their origin." />
 
       <ModernisationPr2Popovers />
+      <ModernisationPr2PopoverAnimations />
       <ModernisationPr2Toasts />
       <ModernisationPr2Dialogs />
       <ModernisationPr2Sheets />
