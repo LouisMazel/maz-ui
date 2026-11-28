@@ -42,6 +42,7 @@ import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId.ts'
 import { useDropzone } from './../composables/useDropzone.ts'
 import MazBtn from './MazBtn.vue'
+import { getFieldFocusColor } from './MazField/useFieldState.ts'
 import MazIcon from './MazIcon.vue'
 import MazLink from './MazLink.vue'
 
@@ -126,6 +127,7 @@ const emits = defineEmits<{
 }>()
 
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
+const MazRollingText = defineAsyncComponent(() => import('./MazRollingText.vue'))
 
 export type MazDropzoneErrorCode = 'FILE_SIZE_EXCEEDED' | 'MAX_FILES_EXCEEDED' | 'FILE_TYPE_NOT_ALLOWED' | 'FILE_DUPLICATED' | 'FILE_UPLOAD_ERROR' | 'NO_FILES_TO_UPLOAD' | 'FILE_UPLOAD_ERROR_MULTIPLE' | 'NO_URL' | 'FILE_SIZE_TOO_SMALL'
 
@@ -251,6 +253,10 @@ export interface MazDropzoneFileData {
   thumbnail?: string
   lastModifiedDate?: Date
   uploading?: boolean
+  /**
+   * Upload progress from `0` to `100`, set it while `uploading` (the percentage rolls and a thin bar fills)
+   */
+  progress?: number
   success?: boolean
   error?: boolean
   url?: string
@@ -976,19 +982,36 @@ defineExpose({
 </script>
 
 <template>
+  <!-- The label is the keyboard target of the hidden file input: Enter and Space open the picker -->
+  <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
   <label
     ref="dropZoneRef"
     :for="`input-file-uploader-${instanceId}`"
-    class="m-dropzone m-reset-css maz:flex maz:w-full maz:cursor-pointer maz:flex-col maz:flex-center maz:gap-2 maz:overflow-hidden maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:bg-input maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50"
+    :tabindex="disabled ? -1 : 0"
+    class="m-dropzone m-reset-css maz:relative maz:flex maz:w-full maz:cursor-pointer maz:flex-col maz:flex-center maz:gap-2 maz:overflow-hidden maz:rounded-md maz:border maz:border-dashed maz:field-focus maz:border-divider maz:bg-input maz:p-6 maz:outline-hidden maz:hover:bg-foreground/5"
     :class="{
       'm-dropzone--disabled maz:disabled-state': disabled,
       'm-dropzone--is-over-drop-zone': isOverDropZone && !isOverError,
       'm-dropzone--is-over-error': isOverError,
     }"
     :style="{
-      '--active-color': `var(--maz-${color})`,
+      '--active-color': getFieldFocusColor(color),
+      '--m-field-color': getFieldFocusColor(color),
     }"
+    @keydown.enter.self.prevent="!disabled && handleFileInputClick()"
+    @keydown.space.self.prevent="!disabled && handleFileInputClick()"
   >
+    <svg
+      v-if="isOverDropZone && !isOverError"
+      class="m-dropzone__march"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="0" y="0" width="100" height="100" />
+    </svg>
+
     <!--
       @slot files-area - Slot to customize the files area
       @binding {MazDropzoneFileData[]} files-data - The files data
@@ -1023,13 +1046,32 @@ defineExpose({
                 <span class="m-dropzone__file-name">{{ file.name }}</span>
                 <span class="m-dropzone__file-size">{{ file.sizeInMb }} MB</span>
               </div>
+              <div
+                v-if="file.uploading && file.progress !== undefined"
+                class="m-dropzone__progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                :aria-valuenow="Math.round(file.progress)"
+                :aria-label="file.name"
+              >
+                <MazRollingText
+                  class="m-dropzone__progress-value"
+                  aria-hidden="true"
+                  :value="Math.min(100, Math.max(0, file.progress)) / 100"
+                  :format="{ style: 'percent', maximumFractionDigits: 0 }"
+                />
+                <div class="m-dropzone__progress-track" aria-hidden="true">
+                  <div class="m-dropzone__progress-bar" :style="{ transform: `scaleX(${Math.min(100, Math.max(0, file.progress)) / 100})` }" />
+                </div>
+              </div>
               <MazBtn
                 v-if="!file.uploading && !file.success"
                 size="xs"
                 :icon="MazTrash"
                 :disabled
                 color="destructive"
-                pastel
+                variant="soft"
                 :aria-label="`${t('aria.removeFile')} ${file.name}`"
                 v-bind="removeFileBtnProps"
                 @click.prevent="handleFileRemove(file)"
@@ -1095,13 +1137,15 @@ defineExpose({
 .m-dropzone {
   .icon-scale-enter-active,
   .icon-scale-leave-active {
-    transition: transform 300ms ease-in-out;
+    transition:
+      transform calc(var(--maz-motion-normal) * var(--maz-motion-scale)) var(--maz-easing-out),
+      opacity calc(var(--maz-motion-normal) * var(--maz-motion-scale)) var(--maz-easing-out);
   }
 
   .icon-scale-enter-from {
     opacity: 0;
     position: absolute;
-    transform: scale(0);
+    transform: scale(0.8);
   }
 
   .icon-scale-leave-to {
@@ -1109,26 +1153,75 @@ defineExpose({
   }
 
   .file-scale-enter-active {
-    transition: all 300ms ease-in-out;
+    transition:
+      transform calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out),
+      opacity calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out);
   }
 
   .file-scale-leave-active {
-    transition: all 300ms ease-in-out;
+    transition:
+      transform calc(var(--maz-motion-slow) * var(--maz-motion-scale) * 0.7) var(--maz-easing-in),
+      opacity calc(var(--maz-motion-slow) * var(--maz-motion-scale) * 0.7) var(--maz-easing-in);
   }
 
   .file-scale-enter-from {
     opacity: 0;
-    transform: scale(0.3);
+    transform: scale(0.8);
   }
 
   .file-scale-leave-to {
     opacity: 0;
-    transform: translateY(-100%);
+    transform: translateY(-1rem) scale(0.95);
   }
 
   .file-scale-move {
-    transition: transform 300ms ease-in-out;
+    transition: transform calc(var(--maz-motion-slow) * var(--maz-motion-scale)) var(--maz-easing-out);
   }
+}
+
+.m-dropzone__march {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+  pointer-events: none;
+
+  & rect {
+    fill: none;
+    stroke: var(--active-color);
+    stroke-width: 4;
+    stroke-dasharray: 8 6;
+    vector-effect: non-scaling-stroke;
+    animation: m-dropzone-march calc(var(--maz-motion-slower) * var(--maz-motion-scale) * 1.5) linear infinite;
+  }
+}
+
+@keyframes m-dropzone-march {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+.m-dropzone__progress {
+  @apply maz:flex maz:w-full maz:flex-col maz:items-center maz:gap-1 maz:text-xs maz:tabular-nums maz:text-muted;
+}
+
+.m-dropzone__progress-track {
+  @apply maz:h-1 maz:w-full maz:overflow-hidden maz:rounded-full maz:bg-foreground/10;
+}
+
+.m-dropzone__progress-bar {
+  @apply maz:size-full maz:rounded-full;
+
+  background-color: var(--active-color);
+  transform-origin: left;
+  transition: transform calc(var(--maz-motion-normal) * var(--maz-motion-scale)) var(--maz-easing-out);
+}
+
+[dir='rtl'] .m-dropzone__progress-bar {
+  transform-origin: right;
 }
 
 .m-dropzone__file-input {
@@ -1193,8 +1286,6 @@ defineExpose({
 
 .m-dropzone__file-item {
   @apply maz:relative maz:flex maz:size-40 maz:cursor-auto maz:flex-col maz:items-center maz:overflow-hidden maz:rounded-md maz:bg-surface-600 maz:dark:bg-surface-400;
-
-  transition: all 300ms ease-in-out;
 }
 
 .m-dropzone__files-container {
@@ -1222,7 +1313,7 @@ defineExpose({
 .m-dropzone--is-over-drop-zone {
   @apply maz:bg-primary-400/20 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
 
-  border-color: var(--active-color);
+  border-color: transparent;
 
   .maz-dropzone__upload-icon {
     color: var(--active-color);

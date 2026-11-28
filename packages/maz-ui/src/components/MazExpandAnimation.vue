@@ -3,13 +3,13 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 export interface MazExpandAnimationProps {
   /**
-   * Duration of the animation in milliseconds
-   * @default '300ms'
+   * Duration of the opening (the closing is faster), any CSS time
+   * @default the `--maz-motion-slow` token of the theme
    */
   duration?: string
   /**
    * Timing function of the animation
-   * @default 'ease-in-out'
+   * @default the `--maz-easing-in-out` token of the theme
    */
   timingFunction?: string
   /**
@@ -23,7 +23,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const { duration = '300ms', timingFunction = 'ease-in-out', lazy = false } = defineProps<MazExpandAnimationProps>()
+const { duration = undefined, timingFunction = undefined, lazy = false } = defineProps<MazExpandAnimationProps>()
 
 const isOpen = defineModel<boolean>()
 const hasOverflowHidden = ref(!isOpen.value)
@@ -68,7 +68,7 @@ onUnmounted(() => {
     :class="{ 'm-expand-animation--expanded': isOpen }"
     :aria-hidden="!isOpen"
     role="region"
-    :style="[{ '--expand-animation-duration': duration, '--expand-animation-timing-function': timingFunction }]"
+    :style="{ '--expand-animation-duration': duration, '--expand-animation-timing-function': timingFunction }"
   >
     <div
       class="m-expand-animation__inner maz:max-w-full maz:overflow-x-auto"
@@ -87,11 +87,14 @@ onUnmounted(() => {
 .m-expand-animation {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--expand-animation-duration) var(--expand-animation-timing-function);
+  transition: grid-template-rows
+    calc(var(--expand-animation-duration, calc(var(--maz-motion-slow) * var(--maz-motion-scale))) * 0.7)
+    var(--expand-animation-timing-function, var(--maz-easing-in-out));
 }
 
 .m-expand-animation--expanded {
   grid-template-rows: 1fr;
+  transition-duration: var(--expand-animation-duration, calc(var(--maz-motion-slow) * var(--maz-motion-scale)));
 }
 
 .m-expand-animation__inner.--overflow-hidden {
